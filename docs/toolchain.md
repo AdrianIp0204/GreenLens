@@ -48,7 +48,7 @@ The initial concurrent bootstrap and compilation attempts left inconsistent rust
 
 When a Git commit exists, the development script sets process-local `GREENLENS_SOURCE_COMMIT` from the checkout HEAD unless the build environment already supplied it. It also sets `GREENLENS_SOURCE_DIRTY` from tracked and non-ignored untracked changes unless explicitly supplied. Compiled provenance can therefore distinguish a clean source revision from a development build with uncommitted changes.
 
-The repository does not add `crt-static` Rust flags. Native MSVC output therefore uses the dynamic Microsoft C runtime by default. Build Tools are development prerequisites; executable recipients instead need the separately acquired Microsoft Visual C++ v14 x64 Redistributable. See `windows-runtime.md` for binary inspection and final-release verification status.
+The repository does not add `crt-static` Rust flags. The desktop explicitly disables Tauri's default static VC support-library override using `build.windows.staticVCRuntime: false`, so it and the CLI use the dynamic Microsoft C runtime. Build Tools are development prerequisites; executable recipients instead need the separately acquired Microsoft Visual C++ v14 x64 Redistributable. See `windows-runtime.md` for binary inspection and final-release verification status.
 
 ## Dependency acquisition recovery
 

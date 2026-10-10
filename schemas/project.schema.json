@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greenlens.org/schemas/project.v0.1.json",
+  "title": "GreenLens portable project v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "name", "alternatives", "runs"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "id": {"type": "string", "format": "uuid"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "alternatives": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false, "required": ["id", "model"],
+        "properties": {"id": {"enum": ["A", "B"]}, "model": {"$ref": "model-v0.1.schema.json"}}
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "alternative_id", "path", "scientific_input_hash", "comparison_fingerprint"],
+        "properties": {
+          "id": {"type": "string", "format": "uuid"},
+          "alternative_id": {"enum": ["A", "B"]},
+          "path": {"type": "string", "pattern": "^runs/[0-9a-f-]{36}$"},
+          "scientific_input_hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+          "comparison_fingerprint": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+        }
+      }
+    }
+  },
+  "$comment": "Rust additionally requires exactly one A and B, unique run IDs, exact path/ID correspondence and verified immutable run evidence. JSON schema is documentation; authoritative validation occurs in Rust."
+}

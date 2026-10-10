@@ -1,0 +1,37 @@
+{
+  "schema_version": "1",
+  "name": "Radiance",
+  "release": "6.0.2",
+  "tag": "rad6R0P2",
+  "commit": "c1700d56ccb9e34e56b3512c6cce3f579430497a",
+  "release_api": "https://api.github.com/repos/LBNL-ETA/Radiance/releases/tags/rad6R0P2",
+  "source": "https://github.com/LBNL-ETA/Radiance/tree/rad6R0P2",
+  "asset": "Radiance_c1700d56_Windows.zip",
+  "download_url": "https://github.com/LBNL-ETA/Radiance/releases/download/rad6R0P2/Radiance_c1700d56_Windows.zip",
+  "sha256": "c4f02efcb4a33f4a43b7ce0ba58100544abc317a1be61f7b0425a64a66eb8a09",
+  "bytes": 33584750,
+  "version_output": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+  "license": "Radiance Software License Version 2.0 (BSD-style with enhancement grant)",
+  "license_source": "https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/License.txt",
+  "license_sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6",
+  "license_notice": "third-party/Radiance-LICENSE.txt",
+  "modified": false,
+  "redistribution": "Engine and bundled libraries are not redistributed by GreenLens; installer acquires the pinned upstream ZIP separately. Retain Radiance notices and conditions if redistribution changes.",
+  "executables": {
+    "gensky": { "sha256": "72745cf8f263d34549d0c01d86a7e04b5cb2558cab483d8f27417c95913409f8" },
+    "oconv": { "sha256": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2" },
+    "rtrace": { "sha256": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9" }
+  },
+  "critical_libraries": {
+    "rayinit.cal": { "sha256": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60" },
+    "skybright.cal": { "sha256": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454" }
+  },
+  "bundled_components_review": [
+    { "component": "MSVC runtime DLLs", "version": "14.44.35211.0", "license": "Microsoft Visual C++ Redistributable license", "required_by_workflow": "vcruntime140.dll; Windows Universal CRT also required", "review": "Redistribution governed by Microsoft terms; not copied into GreenLens package." },
+    { "component": "Qt5Core/Gui/Widgets and plugins", "version": "5.15.2.0", "license": "Upstream Qt licensing alternatives include LGPL-3.0/GPL/commercial; exact package grant not documented in ZIP", "required_by_workflow": false, "review": "No redistribution authorized by this inventory; unused by gensky/oconv/rtrace." },
+    { "component": "libgcc_s_seh-1.dll / libstdc++-6.dll", "version": "Unspecified in ZIP metadata", "license": "GCC libraries generally GPL with GCC Runtime Library Exception; exact build not established", "required_by_workflow": false, "review": "Unused by the three required executables; not redistributed. Full packaging license review remains necessary before bundling." },
+    { "component": "libwinpthread-1.dll", "version": "1.0.0.0 resource version", "license": "mingw-w64 winpthreads notices must be retained if redistributed; ZIP carries no notice", "required_by_workflow": false, "review": "Unused and not redistributed." },
+    { "component": "perl532.dll and packaged script executables", "version": "Perl 5.32 inferred from filename", "license": "Perl Artistic/GPL alternatives; exact packaging dependencies not established", "required_by_workflow": false, "review": "Unused and not redistributed." }
+  ],
+  "archive_notice": "The selected ZIP contains bin/ and lib/ but no license files. The unmodified license retained by GreenLens comes from the exact source tag and surprisingly labels its copyright line v6.1; the binary identifies 6.0.2. This upstream text is preserved as supplied."
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:project:v0.1",
+  "title": "GreenLens v0.1 portable project manifest",
+  "description": "Project manifests reference immutable run directories. Rust additionally validates model semantics, run identity, checksums, provenance and evidence consistency.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "name", "alternatives", "runs"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "id": { "type": "string", "format": "uuid" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "alternatives": {
+      "type": "array", "minItems": 2, "maxItems": 2,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "model"],
+        "properties": {
+          "id": { "enum": ["A", "B"] },
+          "model": { "$ref": "urn:greenlens:model:v0.1" }
+        }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["id", "alternative_id", "path", "scientific_input_hash", "comparison_fingerprint"],
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "alternative_id": { "enum": ["A", "B"] },
+          "path": { "type": "string", "pattern": "^runs/[0-9a-fA-F-]+$" },
+          "scientific_input_hash": { "$ref": "#/$defs/sha256" },
+          "comparison_fingerprint": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

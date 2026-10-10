@@ -1,0 +1,9 @@
+GreenLens
+Copyright 2026 GreenLens contributors
+
+Original GreenLens source code is licensed under Apache License 2.0.
+Third-party dependencies remain under their respective licenses.
+Radiance is acquired separately from its official upstream distribution.
+Its source and binary license notices must be retained when redistributing it.
+See docs/dependencies.md for the reviewed dependency record.
+The GreenLens project is not endorsed by the authors of its dependencies.

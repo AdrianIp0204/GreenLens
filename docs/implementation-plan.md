@@ -3,14 +3,14 @@
 Gates are sequential acceptance barriers; independent preparatory work can overlap. Status is recorded per item in progress.md. No future roadmap work is part of completion.
 
 ## Gate 0 — feasibility
-- [ ] Native Rust/MSVC, Node/npm, WebView2 verified
-- [ ] Official Radiance artifact/digest/archive/licenses/libraries inspected
-- [ ] gensky/oconv/rtrace real finite calculation, child library lookup
-- [ ] Spaces and non-ASCII working paths executed
-- [ ] Versions, commands and feasibility evidence recorded
+- [x] Native Rust/MSVC, Node/npm, WebView2 verified
+- [x] Official Radiance artifact/digest/archive/licenses/libraries inspected
+- [x] gensky/oconv/rtrace real finite calculation, child library lookup
+- [x] Spaces and non-ASCII working paths executed
+- [x] Versions, commands and feasibility evidence recorded
 
 ## Gate 1 — headless science
-- [ ] Domain schema, validation, geometry/aperture/transforms/sensors/glazing
+- [x] Domain schema, validation, geometry/aperture/transforms/sensors/glazing
 - [ ] Adapter and supervised jobs, cancellation and shutdown trees
 - [ ] Shared service and doctor/validate/run/compare/export/replay CLI
 - [ ] Immutable runs, staleness, fingerprints, comparison rules

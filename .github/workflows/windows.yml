@@ -1,0 +1,81 @@
+name: Native Windows verification
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  native:
+    runs-on: windows-latest
+    timeout-minutes: 150
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+      - name: Native development environment and pinned toolchain
+        run: |
+          rustup toolchain install 1.99.0 --profile minimal --component rustfmt,clippy --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Rust installation failed' }
+          "CARGO_TARGET_DIR=$env:LOCALAPPDATA/GreenLens/build/ci" >> $env:GITHUB_ENV
+          "GREENLENS_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
+      - name: Acquire and verify pinned native engine
+        run: ./scripts/install-radiance.ps1
+      - name: Engine feasibility in spaces and non-ASCII path
+        run: ./scripts/engine-feasibility.ps1
+      - name: Frontend install, types, tests and production assets
+        working-directory: apps/desktop
+        run: |
+          npm ci
+          if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
+          npm run test
+          if ($LASTEXITCODE -ne 0) { throw 'Frontend tests failed' }
+          npm run build
+          if ($LASTEXITCODE -ne 0) { throw 'Frontend build failed' }
+      - name: Rust format, lint and unit/integration checks
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo fmt --all -- --check
+          if ($LASTEXITCODE -ne 0) { throw 'Formatting failed' }
+          cargo clippy --workspace --all-targets -- -D warnings
+          if ($LASTEXITCODE -ne 0) { throw 'Lint failed' }
+          cargo test --workspace --exclude greenlens-radiance
+          if ($LASTEXITCODE -ne 0) { throw 'Workspace tests failed' }
+          cargo test -p greenlens-radiance --lib
+          if ($LASTEXITCODE -ne 0) { throw 'Adapter tests failed' }
+      - name: Required real-engine scientific suite (missing engine is failure)
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo test -p greenlens-radiance --test scientific -- --nocapture
+          if ($LASTEXITCODE -ne 0) { throw 'Scientific acceptance failed' }
+      - name: Real CLI A/B, portable save/export and replay
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo build -p greenlens-cli
+          if ($LASTEXITCODE -ne 0) { throw 'CLI build failed' }
+          ./scripts/cli-integration.ps1
+      - name: Production per-user Windows package and CLI
+        run: |
+          . ./scripts/dev-env.ps1
+          node scripts/license-inventory.mjs --strict --check
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency license review has unresolved gaps' }
+          cargo build -p greenlens-cli --release
+          if ($LASTEXITCODE -ne 0) { throw 'CLI release build failed' }
+          Push-Location apps/desktop
+          try { npm run tauri -- build --ci; if ($LASTEXITCODE -ne 0) { throw 'Desktop production build failed' } }
+          finally { Pop-Location }
+          node scripts/license-inventory.mjs --strict --check --installer-cache "$env:LOCALAPPDATA/tauri/NSIS"
+          if ($LASTEXITCODE -ne 0) { throw 'Installer component verification failed' }
+          ./scripts/package-artifacts.ps1 -OutputDirectory artifacts
+      - uses: actions/upload-artifact@v4
+        with:
+          name: greenlens-windows-unsigned
+          path: artifacts/*
+          if-no-files-found: error

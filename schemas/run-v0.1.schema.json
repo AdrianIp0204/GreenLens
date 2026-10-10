@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:run:v0.1",
+  "title": "GreenLens v0.1 completed run record",
+  "description": "The shared Rust reader checks all calculated fields against immutable model input, exact sensor order, raw output, process records and checksums. Structural validity alone does not prove engine execution.",
+  "type": "object",
+  "required": ["id", "alternative_id", "model", "validated", "lux", "statistics", "provenance"],
+  "properties": {
+    "id": { "type": "string", "format": "uuid" },
+    "alternative_id": { "enum": ["A", "B"] },
+    "model": { "$ref": "urn:greenlens:model:v0.1" },
+    "validated": {
+      "type": "object",
+      "required": ["model", "surfaces", "sensor_grid", "normalized_input_hash", "scientific_input_hash", "sensor_hash", "comparison_conditions_hash"],
+      "properties": {
+        "model": { "$ref": "urn:greenlens:model:v0.1" },
+        "surfaces": {
+          "type": "array", "minItems": 10,
+          "items": {
+            "type": "object", "required": ["id", "material", "vertices", "reflectance"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "material": { "enum": ["floor", "wall", "ceiling", "glass", "overhang", "obstruction"] },
+              "vertices": { "type": "array", "minItems": 3, "items": { "$ref": "#/$defs/vector3" } },
+              "reflectance": { "type": ["number", "null"], "minimum": 0, "maximum": 0.95 }
+            }
+          }
+        },
+        "sensor_grid": {
+          "type": "object",
+          "required": ["sensors", "columns", "rows", "actual_spacing_x_m", "actual_spacing_y_m", "cell_area_m2"],
+          "properties": {
+            "sensors": {
+              "type": "array", "minItems": 1, "maxItems": 10000,
+              "items": {
+                "type": "object", "required": ["id", "position", "direction"],
+                "properties": {
+                  "id": { "type": "string", "pattern": "^s[0-9]{6}$" },
+                  "position": { "$ref": "#/$defs/vector3" },
+                  "direction": { "const": [0, 0, 1] }
+                }
+              }
+            },
+            "columns": { "type": "integer", "minimum": 1 },
+            "rows": { "type": "integer", "minimum": 1 },
+            "actual_spacing_x_m": { "type": "number", "exclusiveMinimum": 0 },
+            "actual_spacing_y_m": { "type": "number", "exclusiveMinimum": 0 },
+            "cell_area_m2": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "normalized_input_hash": { "$ref": "#/$defs/sha256" },
+        "scientific_input_hash": { "$ref": "#/$defs/sha256" },
+        "sensor_hash": { "$ref": "#/$defs/sha256" },
+        "comparison_conditions_hash": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "lux": { "type": "array", "minItems": 1, "maxItems": 10000, "items": { "type": "number", "minimum": 0 } },
+    "statistics": { "$ref": "#/$defs/statistics" },
+    "provenance": {
+      "type": "object",
+      "required": ["schema_version", "state", "units", "application_version", "adapter_version", "engine", "profile", "started_utc", "finished_utc", "processes", "input_hash", "sensor_hash", "run_fingerprint", "comparison_fingerprint"],
+      "properties": {
+        "schema_version": { "const": "0.1.0" },
+        "state": { "const": "completed" },
+        "units": { "const": "lx" },
+        "application_version": { "type": "string" },
+        "adapter_version": { "type": "string" },
+        "engine": { "type": "object" },
+        "profile": { "type": "object" },
+        "started_utc": { "type": "string", "format": "date-time" },
+        "finished_utc": { "type": "string", "format": "date-time" },
+        "processes": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "$ref": "#/$defs/process" } },
+        "input_hash": { "$ref": "#/$defs/sha256" },
+        "sensor_hash": { "$ref": "#/$defs/sha256" },
+        "run_fingerprint": { "$ref": "#/$defs/sha256" },
+        "comparison_fingerprint": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "vector3": { "type": "array", "minItems": 3, "maxItems": 3, "items": { "type": "number" } },
+    "statistics": {
+      "type": "object", "required": ["min", "mean", "max", "count"],
+      "properties": {
+        "min": { "type": "number", "minimum": 0 },
+        "mean": { "type": "number", "minimum": 0 },
+        "max": { "type": "number", "minimum": 0 },
+        "count": { "type": "integer", "minimum": 1, "maximum": 10000 }
+      }
+    },
+    "process": {
+      "type": "object",
+      "required": ["executable", "arguments", "exit_code", "started_utc", "finished_utc", "elapsed_ms", "stderr"],
+      "properties": {
+        "executable": { "enum": ["gensky.exe", "oconv.exe", "rtrace.exe"] },
+        "arguments": { "type": "array", "items": { "type": "string" } },
+        "exit_code": { "const": 0 },
+        "started_utc": { "type": "string", "format": "date-time" },
+        "finished_utc": { "type": "string", "format": "date-time" },
+        "elapsed_ms": { "type": "integer", "minimum": 0 },
+        "stderr": { "type": "string" }
+      }
+    }
+  }
+}

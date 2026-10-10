@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:checksums:v0.1",
+  "title": "GreenLens v0.1 evidence integrity manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "sha256"],
+  "properties": {
+    "schema_version": { "const": "0.1.0" },
+    "sha256": {
+      "type": "object", "minProperties": 1,
+      "description": "Keys are relative regular-file paths. The Rust reader additionally rejects traversal, aliases, reserved Windows names, symlinks and reparse points.",
+      "additionalProperties": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+    }
+  }
+}

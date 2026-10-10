@@ -1,0 +1,9 @@
+# Serialized contracts
+
+`model-v0.1.schema.json` documents editable model input. `project-v0.1.schema.json` documents the portable `project.json` manifest. `run-v0.1.schema.json` documents completed `results.json` records. `checksums-v0.1.schema.json` documents per-run and exported-package integrity manifests. Register schemas by their `urn:greenlens:...` identifiers when using a generic JSON Schema validator; the project and run schemas reference the model schema by that identifier.
+
+These schemas describe structure. The shared Rust application service remains authoritative for dependent constraints, geometry, exact A/B alternative identities, stable sensor definitions, run references, scientific fingerprints, checksum coverage, process success and raw-to-processed result consistency. Schema validation alone does not establish a completed run or authorize replay.
+
+`results.json` stores a `greenlens_runner::RunRecord`: immutable model input, authoritative validated geometry/sensors and fingerprints, ordered `lux` values, min/mean/max/count statistics, and provenance. Its provenance carries `schema_version: "0.1.0"`, state `completed`, units `lx`, application/adapter/engine identities, frozen numerical profile, UTC timestamps, successful process records and separate comparison/run fingerprints. `results.csv` is a table fallback for the same ordered sensor values. The stable Rust types and `docs/model-contract.md` specify those calculated fields; they are always regenerated or validated from inputs on load.
+
+Saved and exported paths are relative to their project/run root. No schema grants permission to execute package-supplied commands. `replay` uses the installed pinned adapter and engine, validates evidence and rebuilds disposable octrees.

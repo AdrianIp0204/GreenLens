@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:model:v0.1",
+  "title": "GreenLens v0.1 prescribed overcast room model",
+  "description": "Structural contract. The shared Rust validator additionally enforces geometry containment, clearance, polygon validity and a maximum of 10000 sensors.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "name", "room", "window", "materials", "overhang", "obstruction", "sensors", "sky"],
+  "properties": {
+    "schema_version": { "const": "greenlens.model.v0.1" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 120 },
+    "room": {
+      "type": "object", "additionalProperties": false,
+      "required": ["width_m", "depth_m", "height_m", "rotation_deg"],
+      "properties": {
+        "width_m": { "type": "number", "minimum": 0.5, "maximum": 100 },
+        "depth_m": { "type": "number", "minimum": 0.5, "maximum": 100 },
+        "height_m": { "type": "number", "minimum": 0.5, "maximum": 20 },
+        "rotation_deg": { "type": "number", "minimum": 0, "maximum": 359.999999 }
+      }
+    },
+    "window": {
+      "type": "object", "additionalProperties": false,
+      "required": ["width_m", "height_m", "sill_m", "center_x_m"],
+      "properties": {
+        "width_m": { "type": "number", "minimum": 0.05, "maximum": 99.98 },
+        "height_m": { "type": "number", "minimum": 0.05, "maximum": 19.98 },
+        "sill_m": { "type": "number", "minimum": 0.01, "maximum": 19.94 },
+        "center_x_m": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+    "materials": {
+      "type": "object", "additionalProperties": false,
+      "required": ["ceiling_reflectance", "wall_reflectance", "floor_reflectance", "visible_transmittance"],
+      "properties": {
+        "ceiling_reflectance": { "$ref": "#/$defs/reflectance" },
+        "wall_reflectance": { "$ref": "#/$defs/reflectance" },
+        "floor_reflectance": { "$ref": "#/$defs/reflectance" },
+        "visible_transmittance": { "type": "number", "minimum": 0.01, "maximum": 0.9 }
+      }
+    },
+    "overhang": {
+      "oneOf": [{ "type": "null" }, {
+        "type": "object", "additionalProperties": false,
+        "required": ["projection_m", "side_extension_m", "gap_above_window_m", "reflectance"],
+        "properties": {
+          "projection_m": { "type": "number", "minimum": 0.01, "maximum": 10 },
+          "side_extension_m": { "type": "number", "minimum": 0, "maximum": 10 },
+          "gap_above_window_m": { "type": "number", "minimum": 0, "maximum": 10 },
+          "reflectance": { "$ref": "#/$defs/reflectance" }
+        }
+      }]
+    },
+    "obstruction": {
+      "oneOf": [{ "type": "null" }, {
+        "type": "object", "additionalProperties": false,
+        "required": ["center_x_m", "width_m", "depth_m", "height_m", "distance_m", "reflectance"],
+        "properties": {
+          "center_x_m": { "type": "number", "minimum": -100, "maximum": 200 },
+          "width_m": { "type": "number", "minimum": 0.05, "maximum": 100 },
+          "depth_m": { "type": "number", "minimum": 0.05, "maximum": 100 },
+          "height_m": { "type": "number", "minimum": 0.05, "maximum": 100 },
+          "distance_m": { "type": "number", "minimum": 0.05, "maximum": 100 },
+          "reflectance": { "$ref": "#/$defs/reflectance" }
+        }
+      }]
+    },
+    "sensors": {
+      "type": "object", "additionalProperties": false,
+      "required": ["workplane_height_m", "requested_spacing_m", "wall_inset_m"],
+      "properties": {
+        "workplane_height_m": { "type": "number", "minimum": 0.05, "maximum": 19.95 },
+        "requested_spacing_m": { "type": "number", "minimum": 0.05, "maximum": 10 },
+        "wall_inset_m": { "type": "number", "minimum": 0.01, "maximum": 49.99 }
+      }
+    },
+    "sky": {
+      "type": "object", "additionalProperties": false,
+      "required": ["exterior_horizontal_illuminance_lux", "ground_reflectance"],
+      "properties": {
+        "exterior_horizontal_illuminance_lux": { "type": "number", "minimum": 1, "maximum": 200000 },
+        "ground_reflectance": { "$ref": "#/$defs/reflectance" }
+      }
+    },
+    "metadata": {
+      "oneOf": [{ "type": "null" }, {
+        "type": "object", "additionalProperties": false,
+        "properties": {
+          "location": { "type": ["string", "null"], "maxLength": 120 },
+          "iana_timezone": { "type": ["string", "null"], "maxLength": 120 }
+        }
+      }]
+    }
+  },
+  "$defs": {
+    "reflectance": { "type": "number", "minimum": 0, "maximum": 0.95 }
+  }
+}

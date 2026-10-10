@@ -1,0 +1,109 @@
+{
+  "schema_version": "1",
+  "verified_utc": "2026-10-10T17:55:44.1121953Z",
+  "platform": "native Windows",
+  "working_path_contains_spaces": true,
+  "working_path_contains_non_ascii": true,
+  "engine_version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+  "executable_hashes": {
+    "gensky": "72745cf8f263d34549d0c01d86a7e04b5cb2558cab483d8f27417c95913409f8",
+    "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+    "rtrace": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9"
+  },
+  "raypath": ".;<engine>/lib",
+  "rgb": [
+    55.77737,
+    55.77737,
+    55.77737
+  ],
+  "illuminance_lux": 9984.149229999999,
+  "configured_illuminance_lux": 10000,
+  "relative_error": 0.001585077000000092,
+  "processes": [
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-version"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-10T17:55:41.0384915Z",
+      "finished_utc": "2026-10-10T17:55:41.5068560Z"
+    },
+    {
+      "executable": "gensky.exe",
+      "arguments": [
+        "-ang",
+        "45",
+        "0",
+        "-c",
+        "-B",
+        "55.865921787709496",
+        "-g",
+        "0.2"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-10T17:55:41.5479567Z",
+      "finished_utc": "2026-10-10T17:55:42.0179787Z"
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "sky.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-10T17:55:42.0369007Z",
+      "finished_utc": "2026-10-10T17:55:42.5070938Z"
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "1",
+        "-ad",
+        "32768",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "12",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "scene.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-10T17:55:42.5113220Z",
+      "finished_utc": "2026-10-10T17:55:43.1595521Z"
+    }
+  ]
+}

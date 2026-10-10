@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "GreenLens SHA-256 evidence manifest v0.1",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "sha256"],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "sha256": {"type": "object", "minProperties": 1, "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+  },
+  "$comment": "Keys are contained relative slash-separated filenames. Rust rejects traversal, symlinks, reparse points, Windows reserved names, aliases, oversized entries, missing or extra ZIP evidence and digest mismatches. The manifest excludes itself and is integrity evidence, not an authenticity signature."
+}

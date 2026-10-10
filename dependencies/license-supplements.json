@@ -1,0 +1,117 @@
+{
+  "schema_version": "greenlens.license-supplements.v0.1",
+  "review_date": "2026-10-11",
+  "packages": {
+    "cargo:alloc-stdlib@0.3.0": {
+      "source_commit": "0a81fd6928ea3b33c8cd484aa4575d50ffb98012",
+      "declared_license": "BSD-3-Clause",
+      "reason": "Published subcrate omits workspace license. Retain the repository root license at the source commit recorded in the crate archive.",
+      "files": [{"path":"third-party/upstream/alloc-stdlib-0.3.0-LICENSE.txt","source":"https://raw.githubusercontent.com/dropbox/rust-alloc-no-stdlib/0a81fd6928ea3b33c8cd484aa4575d50ffb98012/LICENSE","sha256":"c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"}]
+    },
+    "cargo:defmt-parser@1.0.0": {
+      "source_commit": "4a8cdb44891ed57b8ff5a023b6bec7137c48708f",
+      "declared_license": "MIT OR Apache-2.0",
+      "selected_license": "MIT",
+      "reason": "Published subcrate omits workspace license. Select MIT and retain the repository root text at the recorded source commit.",
+      "files": [{"path":"third-party/upstream/defmt-parser-1.0.0-LICENSE-MIT.txt","source":"https://raw.githubusercontent.com/knurling-rs/defmt/4a8cdb44891ed57b8ff5a023b6bec7137c48708f/LICENSE-MIT","sha256":"2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50"}]
+    },
+    "cargo:dunce@1.0.5": {
+      "source_commit": "1ee29a83526c9f4c3618e1335f0454c878a54dcf",
+      "declared_license": "CC0-1.0 OR MIT-0 OR Apache-2.0",
+      "selected_license": "CC0-1.0",
+      "reason": "Select the declared CC0-1.0 alternative whose complete text is present in the crate LICENSE file.",
+      "files": []
+    },
+    "cargo:selectors@0.38.0": {
+      "source_commit": "572ecba2d1600e7c3d490586692a209faf703baa",
+      "declared_license": "MPL-2.0",
+      "reason": "Published sources include the MPL-2.0 Exhibit A notice in lib.rs and other source files but omit the complete license. Retain the canonical license text from Mozilla; exact covered source archive remains linked in the resolved inventory.",
+      "source_notice": "https://github.com/servo/stylo/blob/572ecba2d1600e7c3d490586692a209faf703baa/selectors/lib.rs",
+      "files": [{"path":"third-party/upstream/MPL-2.0.txt","source":"https://www.mozilla.org/media/MPL/2.0/index.f75d2927d3c1.txt","sha256":"3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"}]
+    },
+    "cargo:webview2-com-macros@0.8.1": {
+      "source_commit": "dffa41a8a46d3f5565eefbff2de57d38d399f158",
+      "declared_license": "MIT",
+      "reason": "Published subcrate omits workspace license. Root license at this exact commit matches the retained text.",
+      "files": [{"path":"third-party/upstream/webview2-rs-LICENSE.txt","source":"https://raw.githubusercontent.com/wravery/webview2-rs/dffa41a8a46d3f5565eefbff2de57d38d399f158/LICENSE","sha256":"0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"}]
+    },
+    "cargo:webview2-com-sys@0.39.1": {
+      "source_commit": "edc2caf886175ccaebe86078c9cfe1ae2a187328",
+      "declared_license": "MIT",
+      "reason": "Published subcrate omits workspace license. MIT covers the Rust wrapper; Microsoft SDK loader binaries are inventoried separately under their actual BSD-3-Clause license and SDK notices.",
+      "files": [{"path":"third-party/upstream/webview2-rs-LICENSE.txt","source":"https://raw.githubusercontent.com/wravery/webview2-rs/edc2caf886175ccaebe86078c9cfe1ae2a187328/LICENSE","sha256":"0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"}]
+    },
+    "cargo:webview2-com@0.39.1": {
+      "source_commit": "edc2caf886175ccaebe86078c9cfe1ae2a187328",
+      "declared_license": "MIT",
+      "reason": "Published subcrate omits workspace license. Retain the repository root license at the recorded source commit.",
+      "files": [{"path":"third-party/upstream/webview2-rs-LICENSE.txt","source":"https://raw.githubusercontent.com/wravery/webview2-rs/edc2caf886175ccaebe86078c9cfe1ae2a187328/LICENSE","sha256":"0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"}]
+    }
+  },
+  "installer_components": [
+    {
+      "name": "NSIS", "version": "3.11",
+      "source": "https://sourceforge.net/projects/nsis/files/NSIS%203/3.11/",
+      "source_download": "https://sourceforge.net/projects/nsis/files/NSIS%203/3.11/nsis-3.11-src.tar.bz2/download",
+      "binary_download": "https://github.com/tauri-apps/binary-releases/releases/download/nsis-3.11/nsis-3.11.zip",
+      "archive_sha256": "c7d27f780ddb6cffb4730138cd1591e841f4b7edb155856901cdf5f214394fa1",
+      "upstream_pinned_sha1": "ef7ff767e5cbd9edd22add3a32c9b8f4500bb10d",
+      "declared_license": "Zlib AND bzip2-1.0.6 AND CPL-1.0",
+      "license_exception": "COPYING includes the authors' explicit linking exception for the LZMA compression module; this does not license modifications to that module differently.",
+      "usage": "Compiler is build-only. Installer/uninstaller stubs, LZMA decoder, Modern UI and referenced plugins are included in the installer. Unused compression modules are covered by the archive inventory, not asserted to be embedded.",
+      "modifications": "No modifications to downloaded NSIS components. GreenLens changes its own Tauri template as recorded separately.",
+      "review": "Official Tauri 2.12.1 source pins this unchanged archive. Archive SHA1 verified; COPYING and component notices inspected; SHA256 recorded for compiler and potential runtime stubs/plugins. Final cache is checked separately before release packaging.",
+      "redistribution": {"review":"manual_reviewed","requirements":["Retain original component notices and attribution; identify any changes.","LZMA component source remains available under CPL-1.0 from the versioned source archive; inform recipients how to obtain it and preserve all CPL disclaimers.","The explicit LZMA linking exception allows separately licensed GreenLens code; any modified LZMA source remains subject to CPL-1.0."]},
+      "binary_sha256": {
+        "makensis.exe":"f497e92deb9f179f7b8f7553fcb3bd04f511bb2949e5e4a2aee80a10f7b20431",
+        "Bin/makensis.exe":"42850802704ecb11163f7e0329d35ee54bd288953200d4966e226d572848cfc5",
+        "Stubs/lzma-x86-unicode":"e916a205c5421f4287411d402fe1d2cb37e3df93db00ff4cfbacec3b8ec8877e",
+        "Stubs/lzma_solid-x86-unicode":"a0d065b62d34be5f0aaaf7c162e101a5e25d7cd3eb10a13fdb37f91b02ebfce2",
+        "Plugins/x86-unicode/NSISdl.dll":"ddf40229dd9d6b268902d8dea88c8a04aacf1af218dd29f6dcd35babc54ac08d",
+        "Plugins/x86-unicode/StartMenu.dll":"fe330320459637d8dd2b5d84d07925c38ec264152ffd3b1760a4d44d76536caa",
+        "Plugins/x86-unicode/System.dll":"8b4c47c4cf5e76ec57dd5a050d5acd832a0d532ee875d7b44f6cdaf68f90d37c",
+        "Plugins/x86-unicode/nsDialogs.dll":"b1350f487692057c8ffde75dcc55287a52a3272240d4d4912f24464b27551fc0"
+      },
+      "files": [
+        {"path":"third-party/upstream/NSIS-3.11-COPYING.txt","source":"nsis-3.11.zip/nsis-3.11/COPYING","sha256":"e7dd514003ab96cb3ddccbc028fe5c795fccf57dc41f21cfb9d4dd16ead23bf5"},
+        {"path":"third-party/upstream/NSIS-3.11-ModernUI2-LICENSE.txt","source":"nsis-3.11.zip/nsis-3.11/Docs/Modern UI 2/License.txt","encoding":"windows-1252","sha256":"d5957bd99460eb21148bd2695eeb5a3718abae6b118040a4678926da3f4cfbc0"},
+        {"path":"third-party/upstream/NSIS-3.11-NSISdl-LICENSE.txt","source":"nsis-3.11.zip/nsis-3.11/Docs/NSISdl/License.txt","sha256":"326e587f36ca58e14bd09cca153f9e69f1c5ed701189aa47d2d0627af7e16280"}
+      ]
+    },
+    {
+      "name":"nsis-tauri-utils", "version":"0.5.3",
+      "source":"https://github.com/tauri-apps/nsis-tauri-utils/tree/13d9edd27b69310e108d6fbd49f90992f8a05390",
+      "source_download":"https://github.com/tauri-apps/nsis-tauri-utils/archive/13d9edd27b69310e108d6fbd49f90992f8a05390.tar.gz",
+      "source_commit":"13d9edd27b69310e108d6fbd49f90992f8a05390",
+      "binary_download":"https://github.com/tauri-apps/nsis-tauri-utils/releases/download/nsis_tauri_utils-v0.5.3/nsis_tauri_utils.dll",
+      "archive_sha256":"5ba143b5db4a87d32d6e7802e033330aae56cbceabe0d1e3ba41948385ad4709",
+      "upstream_pinned_sha1":"75197fee3c6a814fe035788d1c34ead39349b860",
+      "declared_license":"MIT OR Apache-2.0", "selected_license":"MIT",
+      "usage":"Native NSIS plugin embedded in the installer for version/process/shell helpers.",
+      "modifications":"Unchanged upstream release binary.",
+      "review":"Exact release binary matches Tauri 2.12.1 SHA1 pin; SHA256 and release source commit recorded. Source is no_std Rust, with MIT/Apache workspace and windows-sys/semver dependencies. Upstream does not publish Cargo.lock or exact compiler provenance for this helper, so a byte-identical source rebuild is not claimed.",
+      "binary_sha256":{"Plugins/x86-unicode/additional/nsis_tauri_utils.dll":"5ba143b5db4a87d32d6e7802e033330aae56cbceabe0d1e3ba41948385ad4709"},
+      "files":[{"path":"third-party/upstream/nsis-tauri-utils-0.5.3-LICENSE-MIT.txt","source":"https://raw.githubusercontent.com/tauri-apps/nsis-tauri-utils/13d9edd27b69310e108d6fbd49f90992f8a05390/LICENSE_MIT","sha256":"1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe"}]
+    }
+  ],
+  "webview2_sdk": {
+    "name": "Microsoft.Web.WebView2",
+    "version": "1.0.3800.47",
+    "parent_crate": "webview2-com-sys@0.39.1",
+    "source": "https://www.nuget.org/packages/Microsoft.Web.WebView2/1.0.3800.47",
+    "source_download": "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.3800.47/microsoft.web.webview2.1.0.3800.47.nupkg",
+    "archive_sha256": "56c9f26bdd07916a2d1949fb58a5c7e434dfa1173577dca879206050c4e718db",
+    "declared_license": "BSD-3-Clause",
+    "review": "Downloaded official NuGet archive and compared its three build/native/x64 loader files against the exact Cargo crate bytes. Version also matches upstream binding update script at edc2caf886175ccaebe86078c9cfe1ae2a187328 and DLL product metadata. Windows MSVC binds the static loader. Other architectures in the crate are build inputs, not shipped x64 application components. The separately installed WebView2 browser runtime has separate Microsoft terms.",
+    "version_source": "https://github.com/wravery/webview2-rs/blob/edc2caf886175ccaebe86078c9cfe1ae2a187328/crates/update-bindings/src/main.rs",
+    "binary_sha256": {
+      "x64/WebView2Loader.dll": "86545b66cdb0603bc26b626fb9ad610cb6e71f28d468f5ea66df23b03dda96d5",
+      "x64/WebView2Loader.dll.lib": "bfc8ccaaa056be95243a5b66a827e5849d2bb39676fca4dcc2053796d8e15c6d",
+      "x64/WebView2LoaderStatic.lib": "89c6b872783b8f6c3cedbff618adb42082d455c615453ae10cfc753f1e8f25d8"
+    },
+    "files": [
+      {"path":"third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-LICENSE.txt","source":"Microsoft.Web.WebView2.1.0.3800.47.nupkg/LICENSE.txt","sha256":"0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55"},
+      {"path":"third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-NOTICE.txt","source":"Microsoft.Web.WebView2.1.0.3800.47.nupkg/NOTICE.txt","sha256":"106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90"}
+    ]
+  }
+}

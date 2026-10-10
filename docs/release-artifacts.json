@@ -1,0 +1,47 @@
+{
+  "schema_version": "greenlens.release-artifacts.v0.1",
+  "generated_utc": "2026-10-10T18:29:51.2234262Z",
+  "application_source_commit": "2c3de39e05271353a3818a2fd10e81c423c27b78",
+  "signed": false,
+  "engine_included": false,
+  "artifact_directory": "%LOCALAPPDATA%/GreenLens/releases/0.1.0/20261011-verified",
+  "installed_application": "%LOCALAPPDATA%/Programs/GreenLens/greenlens-desktop.exe",
+  "saved_example": "synthetic-a-b-project/project.json",
+  "source_example": "examples/synthetic-a.json",
+  "artifacts": [
+    {
+      "file": "GreenLens_0.1.0_x64-setup.exe",
+      "bytes": 2603527,
+      "sha256": "fc215f3a3ae61189ddcd01418e615cc3f33efce109c1dff0be4ce7233e5e62b5"
+    },
+    {
+      "file": "GreenLens-CLI-0.1.0-windows-x64.zip",
+      "bytes": 1387445,
+      "sha256": "c5583b3b0e8918927a17e12a794f253f137df0c2735c4f6e02016b7de5043260"
+    },
+    {
+      "file": "GreenLens-synthetic-a-b-evidence.zip",
+      "bytes": 94116,
+      "sha256": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec"
+    },
+    {
+      "file": "report.html",
+      "bytes": 85091,
+      "sha256": "726bed9e1fdcf3368a6ad87b3be1ffd4971d4e0b9344231a42b0233f44ab542d"
+    }
+  ],
+  "checks": {
+    "distributed_cli_reopened_copied_project": true,
+    "inventory_packages": 357,
+    "distributed_cli_doctor_passed": true,
+    "review_gaps": 0,
+    "actual_nsis_components_verified": true,
+    "notice_texts": 195
+  },
+  "evidence": {
+    "scientific": "science-evidence.json",
+    "native": "native-desktop-evidence.json",
+    "ci": "ci-evidence.json",
+    "cli": "cli-evidence.json"
+  }
+}

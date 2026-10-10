@@ -18,14 +18,16 @@ dumpbin /dependents "$env:CARGO_TARGET_DIR/release/greenlens.exe"
 dumpbin /dependents "$env:CARGO_TARGET_DIR/release/greenlens-desktop.exe"
 ```
 
-Inspect the exact installed desktop copy as well, comparing its SHA-256 with the packaged build. Record all imported libraries; do not assume a successful developer-machine launch proves runtime portability. Dynamically loaded WebView2 components also require the runtime even if they are absent from this static import listing.
+Inspect the exact installed desktop copy as well, recording its SHA-256 and comparing its bytes with the packaged build. Tauri deliberately changes its bundle-type marker from `__TAURI_BUNDLE_TYPE_VAR_UNK` to `__TAURI_BUNDLE_TYPE_VAR_NSS` for NSIS, so the installed executable and unbundled executable have different hashes. Confirm that any difference is explained, rather than silently assuming equality. Record imported libraries; do not assume a successful developer-machine launch proves runtime portability. Dynamically loaded WebView2 components also require the runtime even if they are absent from this static import listing.
 
 | Artifact | Evidence | Status |
 | --- | --- | --- |
 | Rust native standard-library smoke | `rustc --print cfg --target x86_64-pc-windows-msvc` contains no `crt-static`. `dumpbin /dependents` reports VCRUNTIME140.dll, six `api-ms-win-crt-*` libraries and Windows system libraries. | Verified 2026-10-11; toolchain evidence only. |
 | Provisional desktop before explicit configuration | Imported UCRT and Windows libraries without VCRUNTIME140.dll. Inspection of pinned `tauri-build` 2.7.1 showed its default static VC support-library override. | Diagnostic only; prompted explicit `staticVCRuntime: false` and requires a new artifact check. |
-| Release CLI | Import inspection requires the completed artifact. | Pending. |
-| Installed desktop | Import inspection, copy hash and real native launch require the completed package. | Pending. |
+| Release CLI | `dumpbin /dependents` confirms VCRUNTIME140.dll and Windows/UCRT imports. SHA-256 `cc9d7a228cfe4cfd7f386d9f8f66346edea4e7d68b9f08b54ad717795b826dc8`. | Verified 2026-10-11. |
+| Installed desktop | `dumpbin /dependents` confirms VCRUNTIME140.dll, VCRUNTIME140_1.dll and Windows/UCRT imports. Installed SHA-256 `66196ab72212617a2232043b8dd71e2cacd4ef3dc4d357d46385c41f9fc7986d`. Native application launch succeeded using installed WebView2. | Verified 2026-10-11; workflow evidence is recorded separately in `native-verification.md`. |
 | Clean machine without developer tools | Not tested on a separate clean Windows installation. | Unverified; installation route documented. |
 
 The [Rust linkage reference](https://doc.rust-lang.org/reference/linkage.html#static-and-dynamic-c-runtimes) documents `crt-static` and recommends checking the resulting executable. [Tauri's Windows installer documentation](https://v2.tauri.app/distribute/windows-installer/#skipping-installation) documents the installed WebView2 requirement when acquisition is skipped. A future static-CRT change requires a fresh build, license review of linked runtime material and binary inspection; it is not enabled implicitly by this release.
+
+The verified desktop source revision is `2c3de39e05271353a3818a2fd10e81c423c27b78`. Its unbundled desktop SHA-256 is `befaa5e113618d8139948f3c83314935e3a4043a14f4050cac50feb4a60c3fa6`. The installed file has exactly three different bytes, at offsets 8,580,464–8,580,466: the documented `UNK` to `NSS` bundle marker. Pinned `tauri-utils` source (`src/platform.rs`, bundle-type definition and parser) confirms this packaging behavior. No other byte differed.

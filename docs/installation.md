@@ -1,6 +1,6 @@
 # Installation and launch
 
-Release status: implementation and verification are in progress. Package paths and executed acceptance evidence will be recorded in `docs/progress.md`; the following is the intended reproducible route, not a claim that a clean machine has been tested.
+The per-user NSIS installation and production desktop A/B run, save, reopen and export workflow have been exercised on native Windows with no development server. See [native verification](native-verification.md) and [release progress](progress.md) for build identities and acceptance status. The following clean-machine installation route is documented; a separate clean Windows installation has not been tested.
 
 ## Windows users
 
@@ -8,6 +8,24 @@ Release status: implementation and verification are in progress. Package paths a
 2. Obtain the unsigned GreenLens per-user NSIS setup package from the project build/release artifacts. Signing and SmartScreen reputation are not claimed. The application installs for the current user.
 3. Acquire the separately licensed pinned Radiance engine. In PowerShell 7.2 or newer, from a source checkout, run `./scripts/install-radiance.ps1`. It verifies the official release asset and SHA-256 before extraction into `%LOCALAPPDATA%/GreenLens/engines/radiance-6.0.2/package`. There is no engine binary inside the GreenLens evidence ZIP or desktop installer.
 4. Launch GreenLens from its installed shortcut. Use the synthetic A/B example, enter a project directory and run the calculation. Save the completed result, run the second alternative, compare, then export to a new ZIP filename.
+
+For a default installation, the exact PowerShell launch command is:
+
+```powershell
+& "$env:LOCALAPPDATA/Programs/GreenLens/greenlens-desktop.exe"
+```
+
+The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and retained notices. Extract the entire directory before use. From the extracted `GreenLens-CLI-0.1.0-windows-x64` directory:
+
+```powershell
+./greenlens.exe doctor
+./greenlens.exe validate ./examples/synthetic-a.json
+./greenlens.exe run ./examples/synthetic-a.json --project "$env:LOCALAPPDATA/GreenLens/projects/example" --alternative A
+./greenlens.exe run ./examples/synthetic-b.json --project "$env:LOCALAPPDATA/GreenLens/projects/example" --alternative B
+./greenlens.exe compare "$env:LOCALAPPDATA/GreenLens/projects/example"
+./greenlens.exe export "$env:LOCALAPPDATA/GreenLens/projects/example" "$env:LOCALAPPDATA/GreenLens/projects/example-evidence.zip"
+./greenlens.exe replay "$env:LOCALAPPDATA/GreenLens/projects/example-evidence.zip"
+```
 
 For an engine installed elsewhere, select the directory containing `bin` and `lib` in the app. CLI commands accept `--engine-dir <directory>`. Initial acquisition needs internet; ordinary calculation, reopening, report viewing and exporting operate locally without it.
 
@@ -34,6 +52,8 @@ Push-Location apps/desktop
 npm run tauri -- build --ci
 Pop-Location
 Get-ChildItem "$env:CARGO_TARGET_DIR/release/bundle/nsis"
+node scripts/license-inventory.mjs --strict --check --installer-cache "$env:LOCALAPPDATA/tauri/NSIS"
+./scripts/package-artifacts.ps1
 ```
 
 The CLI is `$env:CARGO_TARGET_DIR/release/greenlens.exe`. The installer is beneath `$env:CARGO_TARGET_DIR/release/bundle/nsis`. The production app embeds the frontend and runs without a Vite development server. Preserve the version-matched source documentation and third-party notices alongside distributed artifacts.

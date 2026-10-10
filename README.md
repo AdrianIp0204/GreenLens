@@ -4,9 +4,11 @@ Local-first building environmental simulation with Rust, a native Tauri desktop,
 
 **Static daylight illuminance under a prescribed CIE standard overcast sky.**
 
-Version 0.1 is under implementation. Gate 0 has executed the native engine; the remaining release acceptance is tracked in [the implementation plan](docs/implementation-plan.md) and [progress record](docs/progress.md). Do not interpret unfinished checks as a validated release.
+Version 0.1 implements the bounded daylight workflow and has passed the required native scientific, installed desktop and Windows CI checks. See [the completed implementation plan](docs/implementation-plan.md), [progress record](docs/progress.md), [scientific record](docs/scientific-validation.md) and [native verification](docs/native-verification.md) for measured evidence and its limits. The Windows packages are unsigned; a separate clean-machine test has not been performed.
 
 The bounded workflow models one rectangular room, a rectangular window, an optional horizontal overhang and a detached opaque obstruction. Inputs and completed runs stay in portable local project directories. Normal calculation requires no internet, cloud account, paid service or Python runtime.
+
+Start with the [installation and launch guide](docs/installation.md). Verified package and synthetic evidence hashes are recorded in [release-artifacts.json](docs/release-artifacts.json); the native CI build is recorded in [ci-evidence.json](docs/ci-evidence.json).
 
 ## Native Windows development
 

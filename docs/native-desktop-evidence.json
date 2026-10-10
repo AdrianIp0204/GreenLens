@@ -1,0 +1,332 @@
+{
+  "schema_version": "greenlens.native-verification.v0.1",
+  "local_observation_date": "2026-10-11",
+  "source_commit": "2c3de39e05271353a3818a2fd10e81c423c27b78",
+  "source_worktree_dirty": false,
+  "method": "Installed production Tauri app, native accessibility actions and screenshots, actual Rust service and pinned native Radiance, plus process and immutable-file inspection.",
+  "environment": {
+    "os": "Windows 11 x64",
+    "build": "26200",
+    "webview2": "154.0.4258.62",
+    "rust": "1.99.0",
+    "development_server_used": false,
+    "clean_machine": false
+  },
+  "artifacts": {
+    "initial_installer_sha256": "abf57fde5c0f4e5e85c68809c079d04f5f47b9d73ece96c4620480da7ee8e149",
+    "refreshed_installer_sha256": "fc215f3a3ae61189ddcd01418e615cc3f33efce109c1dff0be4ce7233e5e62b5",
+    "installed_desktop_sha256": "66196ab72212617a2232043b8dd71e2cacd4ef3dc4d357d46385c41f9fc7986d",
+    "unbundled_desktop_sha256": "befaa5e113618d8139948f3c83314935e3a4043a14f4050cac50feb4a60c3fa6",
+    "release_cli_sha256": "cc9d7a228cfe4cfd7f386d9f8f66346edea4e7d68b9f08b54ad717795b826dc8",
+    "signatures": "NotSigned",
+    "installer_exit_codes": [
+      0,
+      0
+    ],
+    "per_user_install": true,
+    "installed_payload_identical_after_document_refresh": true,
+    "bundled_marker_difference": {
+      "offsets": [
+        8580464,
+        8580465,
+        8580466
+      ],
+      "before": "UNK",
+      "after": "NSS",
+      "other_byte_differences": 0
+    },
+    "retained_notices_match": true,
+    "runtime_document_sha256": "57a4d762282c812b3f23970a21619e6f712979ec8c44e6d41a36f47cc308673c"
+  },
+  "checks": [
+    {
+      "id": "native_launch_and_geometry",
+      "passed": true,
+      "evidence": "01-initial.png"
+    },
+    {
+      "id": "invalid_input",
+      "passed": true,
+      "evidence": "02-invalid.png",
+      "details": "width0 rejected; finite0.5–100m validation; Run disabled"
+    },
+    {
+      "id": "missing_engine",
+      "passed": true,
+      "evidence": "03-missing-engine.png"
+    },
+    {
+      "id": "failed_job",
+      "passed": true,
+      "evidence": "04-failed-job.png",
+      "details": "Real backend preparation failure using explicit nonexistent engine directory; no completed result"
+    },
+    {
+      "id": "cancel_real_rtrace",
+      "passed": true,
+      "evidence": [
+        "05-running.png",
+        "06-cancelled.png"
+      ],
+      "engine_tree_ended": true,
+      "completed_runs": 0
+    },
+    {
+      "id": "real_native_a",
+      "passed": true,
+      "evidence": "07-A-completed.png"
+    },
+    {
+      "id": "real_native_b",
+      "passed": true,
+      "evidence": [
+        "08-B-running.png",
+        "09-B-completed-evidence.png"
+      ]
+    },
+    {
+      "id": "compatible_comparison_and_shared_scale",
+      "passed": true,
+      "evidence": [
+        "10-comparison.png",
+        "11-shared-scale-deltas.png"
+      ],
+      "table": {
+        "rows": 77,
+        "ids_match": true,
+        "max_display_rounding_difference_lux": 0.0004980000000003315
+      }
+    },
+    {
+      "id": "stale_input",
+      "passed": true,
+      "evidence": "12-stale.png",
+      "edit": "overhang0.60→0.70m",
+      "old_heatmap_hidden": true,
+      "old_table_values_hidden": true,
+      "restored_input_reuses_matching_historical_result": true
+    },
+    {
+      "id": "save_reopen",
+      "passed": true
+    },
+    {
+      "id": "close_during_real_rtrace",
+      "passed": true,
+      "evidence": [
+        "shutdown-before.json",
+        "shutdown-after.json"
+      ],
+      "application_ended": true,
+      "engine_tree_ended": true,
+      "completed_runs_before": 2,
+      "completed_runs_after": 2
+    },
+    {
+      "id": "copy_reopen_without_original_scratch",
+      "passed": true,
+      "evidence": "13-relocated-reopened.png",
+      "spaces_and_non_ascii_path": true,
+      "original_scratch_absent": true,
+      "result_and_provenance_hashes": [
+        {
+          "file": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/results.json",
+          "sha256": "41C244C792E2B3C40962773F9EAC6C2AE54C7C5AA075D6BC77AAD6C695E143A1",
+          "copy_matches": true
+        },
+        {
+          "file": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/provenance.json",
+          "sha256": "86F49E2A2A0E3A20E7071604F41EAD5DD14845B3EFB78DB1D46604F10BA8DA92",
+          "copy_matches": true
+        },
+        {
+          "file": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/results.json",
+          "sha256": "D06D73FE930586992210232A26E1A2EDC276C4E0F76FBC9C0CB804131EFF9DF1",
+          "copy_matches": true
+        },
+        {
+          "file": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/provenance.json",
+          "sha256": "5774C0DE3EAC1C1A5C3F79B139E7A3947A92837483C630DF4E9A433D3F5ED277",
+          "copy_matches": true
+        }
+      ],
+      "reopened_a_table": {
+        "rows": 77,
+        "ids_match": true,
+        "max_display_rounding_difference_lux": 0.0004969999999957508
+      }
+    },
+    {
+      "id": "native_copied_export",
+      "passed": true,
+      "evidence": "14-relocated-export.png"
+    },
+    {
+      "id": "replay_native_export",
+      "passed": true,
+      "checks": [
+        {
+          "max_absolute_error_lux": 0,
+          "passed": true,
+          "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0,
+          "passed": true,
+          "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+          "sensors": 77
+        }
+      ],
+      "verification": "same-engine integration, not independent physical validation"
+    }
+  ],
+  "runs": [
+    {
+      "id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+      "alternative_id": "A",
+      "statistics": {
+        "count": 77,
+        "max": 1454.3633650000002,
+        "mean": 237.21244494025976,
+        "min": 45.964711900000005
+      },
+      "engine_version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+      "engine_fingerprint": "cb04363f2d28ab2513aa7d2bebf3e7449f01450c4b40cf4d0f0a77a7dead9d09",
+      "comparison_fingerprint": "97618f951be65e6f647c67582f24de7645292090c75e77df60ad2a02b43fe226",
+      "sensor_hash": "25438312e18ac7ff2eac72f4ad0f52cb6d0e1c7bdf9f29015a615214ec6023bf",
+      "started_utc": "2026-10-10T18:11:45.782774100+00:00",
+      "finished_utc": "2026-10-10T18:15:01.335029+00:00",
+      "processes": [
+        {
+          "executable": "gensky.exe",
+          "exit_code": 0,
+          "elapsed_ms": 63,
+          "started_utc": "2026-10-10T18:11:45.807339300+00:00",
+          "finished_utc": "2026-10-10T18:11:45.870435500+00:00"
+        },
+        {
+          "executable": "oconv.exe",
+          "exit_code": 0,
+          "elapsed_ms": 63,
+          "started_utc": "2026-10-10T18:11:45.872506900+00:00",
+          "finished_utc": "2026-10-10T18:11:45.935989400+00:00"
+        },
+        {
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "elapsed_ms": 195395,
+          "started_utc": "2026-10-10T18:11:45.937405700+00:00",
+          "finished_utc": "2026-10-10T18:15:01.332891600+00:00"
+        }
+      ]
+    },
+    {
+      "id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+      "alternative_id": "B",
+      "statistics": {
+        "count": 77,
+        "max": 1079.445896,
+        "mean": 175.62391238311687,
+        "min": 40.526280199999995
+      },
+      "engine_version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+      "engine_fingerprint": "cb04363f2d28ab2513aa7d2bebf3e7449f01450c4b40cf4d0f0a77a7dead9d09",
+      "comparison_fingerprint": "97618f951be65e6f647c67582f24de7645292090c75e77df60ad2a02b43fe226",
+      "sensor_hash": "25438312e18ac7ff2eac72f4ad0f52cb6d0e1c7bdf9f29015a615214ec6023bf",
+      "started_utc": "2026-10-10T18:15:32.942935800+00:00",
+      "finished_utc": "2026-10-10T18:18:16.641667600+00:00",
+      "processes": [
+        {
+          "executable": "gensky.exe",
+          "exit_code": 0,
+          "elapsed_ms": 58,
+          "started_utc": "2026-10-10T18:15:32.957634800+00:00",
+          "finished_utc": "2026-10-10T18:15:33.016150700+00:00"
+        },
+        {
+          "executable": "oconv.exe",
+          "exit_code": 0,
+          "elapsed_ms": 57,
+          "started_utc": "2026-10-10T18:15:33.019277+00:00",
+          "finished_utc": "2026-10-10T18:15:33.076824100+00:00"
+        },
+        {
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "elapsed_ms": 163562,
+          "started_utc": "2026-10-10T18:15:33.077750400+00:00",
+          "finished_utc": "2026-10-10T18:18:16.639881500+00:00"
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "statistics": {
+      "count": 77,
+      "max": -5.4384317000000095,
+      "mean": -61.58853255714287,
+      "min": -374.9174690000002
+    },
+    "scale_max_lux": 1454.3633650000002,
+    "conditions": {
+      "delta": "B minus A (lx)",
+      "fingerprint": "97618f951be65e6f647c67582f24de7645292090c75e77df60ad2a02b43fe226",
+      "percentage_delta": "omitted",
+      "sensor_hash": "25438312e18ac7ff2eac72f4ad0f52cb6d0e1c7bdf9f29015a615214ec6023bf"
+    },
+    "design_differences": {
+      "a": {
+        "glazing": 0.6,
+        "overhang": null,
+        "window": {
+          "center_x_m": 2,
+          "height_m": 1.5,
+          "sill_m": 0.9,
+          "width_m": 1.8
+        }
+      },
+      "b": {
+        "glazing": 0.6,
+        "overhang": {
+          "gap_above_window_m": 0,
+          "projection_m": 0.6,
+          "reflectance": 0.5,
+          "side_extension_m": 0
+        },
+        "window": {
+          "center_x_m": 2,
+          "height_m": 1.5,
+          "sill_m": 0.9,
+          "width_m": 1.8
+        }
+      }
+    }
+  },
+  "exports": {
+    "original_and_relocated_byte_identical": true,
+    "entry_hashes_identical": 27,
+    "bytes_each": 94116,
+    "sha256": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec",
+    "replay_tolerance": "max(0.1 lx,0.1% of reference)"
+  },
+  "html_report": {
+    "bytes": 85091,
+    "inline_svg_heatmaps": 2,
+    "script_elements": 0,
+    "external_src_or_href": 0,
+    "has_exact_label": true,
+    "has_shared_scale": true,
+    "has_alternative_a": true,
+    "has_alternative_b": true,
+    "has_assumptions": true,
+    "visual_rendering": "not executed: browser tool policy blocks file URLs; no workaround attempted"
+  },
+  "limitations": [
+    "Unsigned package",
+    "Separate clean-machine installation not tested",
+    "Extracted HTML visual rendering not performed: browser tool file-URL policy; no workaround attempted",
+    "Observed stochastic equality in this replay is not a claim of universal byte-identical reproduction",
+    "Synthetic fixture results are not measured-building validation or certification"
+  ]
+}

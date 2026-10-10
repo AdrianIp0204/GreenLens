@@ -56,4 +56,21 @@ Original-code unit tests validate the bounded geometry, split aperture, sensor t
 
 ## Measured status
 
-Native Gate 0 and the initial exterior normalization result are recorded in [engine-feasibility.md](engine-feasibility.md) and [gate-0-evidence.json](gate-0-evidence.json). The numerical profiles are frozen after the documented investigation. The [Rust fixture record](science-fixtures-evidence.json) confirms B–E, scaling, symmetry, failed-exit handling and actual rtrace cancellation in a working directory containing spaces and non-ASCII characters. B differed from pi*L by 0.13310%; C differed from prescribed exterior illuminance by 0.16905%; D produced zero at all five sensors; E's largest error was 1.98187%, with maximum final quadrature change 0.00060843%. Full A/F Rust suite evidence is pending execution; this document does not claim Gates 1–3 passed.
+Native Gate 0 and the initial exterior normalization result are recorded in [engine-feasibility.md](engine-feasibility.md) and [gate-0-evidence.json](gate-0-evidence.json). The numerical profiles are frozen after the documented investigation. The [Rust fixture record](science-fixtures-evidence.json) additionally checks working directories containing spaces and non-ASCII characters.
+
+The [full native Rust suite record](science-evidence.json) completed at **2026-10-10T18:09:11Z** on Windows. Every required numerical check passed without changing its threshold:
+
+| Check | Observed result |
+| --- | --- |
+| A | All 77 adapter/direct sensor differences were 0 lx in this execution, within max(0.1 lx, 0.1%). This does not claim universal byte-identical results. |
+| B | 563.093546 lx versus 562.345085 lx; relative error 0.133096%. |
+| C | 9,983.094920 lx versus 10,000 lx; relative error 0.169051%. |
+| D | All five sensors returned 0 lx, below 0.1 lx. |
+| E | Largest Radiance/reference error 1.981872%; largest 256²-to-512² quadrature change 0.000608427%. Every sensor passed its respective tolerance. |
+| F | Mean absolute difference divided by reference mean 0.759061%; largest sensor relative difference 4.336391%. All 77 sensors met max(2 lx, 5%); the largest fraction of an allowed per-sensor tolerance was 0.867278. |
+
+Sky-intensity scaling, mirror symmetry, retained nonzero-exit diagnostics and actual rtrace cancellation also passed. The default room mean was 237.212445 lx for shipping and 238.698194 lx for reference. Native rtrace elapsed times were 196.430 seconds and 1,183.974 seconds respectively; simultaneous development activity makes these illustrative rather than a performance guarantee.
+
+This suite ran the standalone `greenlens-science.exe` built at 2026-10-10T17:42:15Z from the implementation working tree later committed as `019e5ff`. Its SHA-256 was `5d053c8bcbdf3bc449f6e6c16d272ef547bbbc25adfe4ece3dc1a98b0a29fd92`. Subsequent commit `2c3de39` tightened invalid overhang/obstruction contact and saved-provenance validation and isolated the process-tree test directory; it did not change these default scientific fixtures, profiles or adapter calculation. Final-revision CI and packaged-desktop evidence are recorded separately. The copied report SHA-256 is `96aba8962519463f53b02071b741a345dbbbc43b7f0145a703bdb9c428cdfd69`.
+
+This scientific record alone does not establish the separate CLI/export-replay, portability, native desktop, packaging or repository acceptance items. Its `release_acceptance_complete: false` field intentionally preserves that boundary; the complete release checklist is maintained in [progress.md](progress.md).

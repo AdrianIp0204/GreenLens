@@ -26,7 +26,7 @@ New-Item -ItemType Directory -Path (Join-Path $cliDirectory 'dependencies'),(Joi
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'dependencies/resolved-inventory.json') -Destination (Join-Path $cliDirectory 'dependencies/resolved-inventory.json')
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'dependencies/radiance.json') -Destination (Join-Path $cliDirectory 'dependencies/radiance.json')
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'dependencies/license-supplements.json') -Destination (Join-Path $cliDirectory 'dependencies/license-supplements.json')
-foreach ($file in @('installation.md','replay.md','model-contract.md','scientific-validation.md','dependencies.md','windows-runtime.md')) { Copy-Item -LiteralPath (Join-Path $sourceRoot "docs/$file") -Destination (Join-Path $cliDirectory "docs/$file") }
+foreach ($file in @('installation.md','replay.md','model-contract.md','scientific-validation.md','dependencies.md','windows-runtime.md','windows-installer.md')) { Copy-Item -LiteralPath (Join-Path $sourceRoot "docs/$file") -Destination (Join-Path $cliDirectory "docs/$file") }
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'examples') -Destination (Join-Path $cliDirectory 'examples') -Recurse
 Compress-Archive -LiteralPath $cliDirectory -DestinationPath (Join-Path $OutputDirectory 'GreenLens-CLI-0.1.0-windows-x64.zip')
 foreach ($installer in $installers) { Copy-Item -LiteralPath $installer.FullName -Destination (Join-Path $OutputDirectory $installer.Name) }

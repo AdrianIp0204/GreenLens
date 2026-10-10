@@ -355,8 +355,8 @@ fn validate_inputs(m: &Model) -> Result<()> {
             bound(field, value, min, max)?;
         }
         if let Some(h) = &m.overhang {
-            let x_overlap = o.center_x_m + o.width_m / 2.0 > left - h.side_extension_m
-                && o.center_x_m - o.width_m / 2.0 < right + h.side_extension_m;
+            let x_overlap = o.center_x_m + o.width_m / 2.0 >= left - h.side_extension_m
+                && o.center_x_m - o.width_m / 2.0 <= right + h.side_extension_m;
             if x_overlap
                 && o.height_m >= m.window.sill_m + m.window.height_m + h.gap_above_window_m
                 && o.distance_m < h.projection_m + 0.01
@@ -1033,6 +1033,47 @@ mod tests {
         assert!(validate_model(&m).is_err());
         m.obstruction.as_mut().unwrap().distance_m = 1.;
         assert!(validate_model(&m).is_ok());
+    }
+    #[test]
+    fn obstruction_overhang_edge_contact_is_rejected_but_detached_cases_remain_valid() {
+        let mut model = Model::alternative_b();
+        model.obstruction = Some(Obstruction {
+            center_x_m: 3.4,
+            width_m: 1.,
+            depth_m: 0.2,
+            height_m: 3.,
+            distance_m: 0.2,
+            reflectance: 0.2,
+        });
+        // The box face touches x=2.9 (or x=1.1 on the opposite side)
+        // across the overhang. Boundary-only contact is not detached.
+        for rotation in [0., 37.] {
+            model.room.rotation_deg = rotation;
+            for center_x in [3.4, 0.6] {
+                for height in [3., model.window.sill_m + model.window.height_m] {
+                    let obstruction = model.obstruction.as_mut().unwrap();
+                    obstruction.center_x_m = center_x;
+                    obstruction.height_m = height;
+                    assert!(validate_model(&model)
+                        .unwrap_err()
+                        .to_string()
+                        .contains("clear the overhang"));
+                }
+            }
+        }
+        for (center_x, height, distance) in [
+            (3.400001, 3., 0.2),
+            (0.599999, 3., 0.2),
+            (2., 2.399999, 0.2),
+            (3.4, 3., 0.61),
+            (2., 3., 0.61),
+        ] {
+            let obstruction = model.obstruction.as_mut().unwrap();
+            obstruction.center_x_m = center_x;
+            obstruction.height_m = height;
+            obstruction.distance_m = distance;
+            assert!(validate_model(&model).is_ok());
+        }
     }
     #[test]
     fn polygon_rejects_reversal_degeneracy_nonplanarity_and_crossing() {

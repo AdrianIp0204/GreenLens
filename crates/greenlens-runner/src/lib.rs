@@ -170,6 +170,19 @@ pub fn validate_record(record: &RunRecord) -> Result<()> {
         "Incomplete run provenance"
     );
     ensure!(
+        ["application_version", "adapter_version"]
+            .iter()
+            .all(|field| {
+                p[field].as_str().is_some_and(|version| {
+                    !version.trim().is_empty()
+                        && version.chars().count() <= 120
+                        && !version.chars().any(char::is_control)
+                })
+            })
+            && p["calculation_label"] == CALCULATION_LABEL,
+        "Invalid or missing application, adapter or calculation provenance"
+    );
+    ensure!(
         p["input_hash"] == validated.normalized_input_hash
             && p["sensor_hash"] == validated.sensor_hash,
         "Run input/sensor provenance mismatch"
@@ -184,6 +197,7 @@ pub fn validate_record(record: &RunRecord) -> Result<()> {
     let identity: greenlens_radiance::EngineIdentity = serde_json::from_value(p["engine"].clone())?;
     ensure!(
         identity.version == greenlens_radiance::ENGINE_VERSION
+            && identity.adapter_version == greenlens_radiance::ADAPTER_VERSION
             && identity.executable_sha256.len() == 3
             && !identity.library_sha256.is_empty(),
         "Incomplete engine identity"

@@ -244,6 +244,7 @@ fn mock_record(model: greenlens_core::Model, alternative: &str) -> greenlens_run
     }).collect::<Vec<_>>();
     let provenance = json!({"schema_version":greenlens_runner::SCHEMA_VERSION,"state":"completed","units":"lx",
         "application_version":"0.1.0","adapter_version":greenlens_radiance::ADAPTER_VERSION,
+        "calculation_label":greenlens_runner::CALCULATION_LABEL,
         "test_fixture":"MOCK; not engine execution or acceptance evidence", "engine":engine,"profile":profile,
         "started_utc":"2026-01-01T00:00:00Z","finished_utc":"2026-01-01T00:00:01Z","processes":processes,
         "input_hash":validated.normalized_input_hash,"sensor_hash":validated.sensor_hash,
@@ -265,6 +266,45 @@ fn mocked_record_validation_rejects_corrupted_identity_values_and_provenance() {
     use greenlens_runner::validate_record;
     let valid = mock_record(greenlens_core::Model::default(), "A");
     validate_record(&valid).unwrap();
+    let mut historical = valid.clone();
+    historical.provenance["application_version"] = serde_json::json!("0.0.9");
+    historical.provenance["adapter_version"] = serde_json::json!("0.1.0");
+    validate_record(&historical).unwrap();
+    for field in [
+        "application_version",
+        "adapter_version",
+        "calculation_label",
+    ] {
+        let mut missing = valid.clone();
+        missing.provenance.as_object_mut().unwrap().remove(field);
+        assert!(validate_record(&missing)
+            .unwrap_err()
+            .to_string()
+            .contains("application, adapter or calculation provenance"));
+        for invalid in [
+            serde_json::Value::Null,
+            serde_json::json!(""),
+            serde_json::json!(" "),
+            serde_json::json!("invalid\nversion"),
+            serde_json::json!(1),
+        ] {
+            let mut changed = valid.clone();
+            changed.provenance[field] = invalid;
+            assert!(validate_record(&changed)
+                .unwrap_err()
+                .to_string()
+                .contains("application, adapter or calculation provenance"));
+        }
+    }
+    let mut wrong_calculation = valid.clone();
+    wrong_calculation.provenance["calculation_label"] = serde_json::json!("Annual daylight");
+    assert!(validate_record(&wrong_calculation).is_err());
+    let mut incompatible_adapter = valid.clone();
+    incompatible_adapter.provenance["engine"]["adapter_version"] = serde_json::json!("unsupported");
+    assert!(validate_record(&incompatible_adapter)
+        .unwrap_err()
+        .to_string()
+        .contains("engine identity"));
     let mut corrupted = valid.clone();
     corrupted.validated.sensor_grid.sensors.swap(0, 1);
     assert!(validate_record(&corrupted).is_err());

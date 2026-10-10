@@ -2,7 +2,14 @@
 param([string]$InstallDirectory = (Join-Path $env:LOCALAPPDATA 'GreenLens/engines/radiance-6.0.2'))
 $ErrorActionPreference = 'Stop'
 $manifest = Get-Content -LiteralPath (Join-Path $PSScriptRoot '../dependencies/radiance.json') -Raw | ConvertFrom-Json
-$release = Invoke-RestMethod -Uri $manifest.release_api
+$releaseHeaders = @{ Accept = 'application/vnd.github+json' }
+if ($env:GITHUB_TOKEN) {
+    # The CI token is sent only to this fixed official API endpoint, never to
+    # release-asset redirects. Do not print or persist authorization headers.
+    if ($manifest.release_api -ne 'https://api.github.com/repos/LBNL-ETA/Radiance/releases/tags/rad6R0P2') { throw 'Unexpected release API endpoint for authenticated verification.' }
+    $releaseHeaders.Authorization = "Bearer $env:GITHUB_TOKEN"
+}
+$release = Invoke-RestMethod -Uri $manifest.release_api -Headers $releaseHeaders -MaximumRedirection 0
 $asset = @($release.assets | Where-Object name -eq $manifest.asset)
 if ($asset.Count -ne 1 -or $asset[0].digest -ne "sha256:$($manifest.sha256)" -or $asset[0].size -ne $manifest.bytes -or $asset[0].browser_download_url -ne $manifest.download_url) {
     throw 'Official release asset no longer matches the pinned manifest; review upstream before changing the pin.'

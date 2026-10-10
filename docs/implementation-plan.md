@@ -11,18 +11,18 @@ Gates are sequential acceptance barriers; independent preparatory work can overl
 
 ## Gate 1 — headless science
 - [x] Domain schema, validation, geometry/aperture/transforms/sensors/glazing
-- [ ] Adapter and supervised jobs, cancellation and shutdown trees
-- [ ] Shared service and doctor/validate/run/compare/export/replay CLI
-- [ ] Immutable runs, staleness, fingerprints, comparison rules
-- [ ] Safe portable persistence, locking/conflicts/checksums/package validation
-- [ ] Offline report, ZIP and replay
+- [x] Adapter and supervised jobs, cancellation and shutdown trees
+- [x] Shared service and doctor/validate/run/compare/export/replay CLI
+- [x] Immutable runs, staleness, fingerprints, comparison rules
+- [x] Safe portable persistence, locking/conflicts/checksums/package validation
+- [x] Offline report, ZIP and replay
 - [ ] A direct/adapter/replay tolerance
-- [ ] B pi-L hemisphere
-- [ ] C prescribed exterior illuminance
-- [ ] D black enclosure
-- [ ] E converged independent aperture quadrature and Radiance agreement
+- [x] B pi-L hemisphere
+- [x] C prescribed exterior illuminance
+- [x] D black enclosure
+- [x] E converged independent aperture quadrature and Radiance agreement
 - [ ] F frozen shipping/reference convergence
-- [ ] Rejection, scaling/symmetry, malformed output/exits/missing engine/cancel/stale tests
+- [x] Rejection, scaling/symmetry, malformed output/exits/missing engine/cancel/stale tests
 
 ## Gate 2 — native workflow
 - [ ] Native desktop real Rust/Radiance A/B edit/run/compare
@@ -35,7 +35,7 @@ Gates are sequential acceptance barriers; independent preparatory work can overl
 - [ ] Per-user NSIS package and CLI artifact
 - [ ] Installed production application real run/save/export without dev server
 - [ ] Clean-machine installation, method, validation, limitations/replay docs
-- [ ] Dependency inventory and third-party notices
+- [x] Dependency inventory and third-party notices
 - [ ] Windows CI fmt/clippy/tests/TS/frontend/CLI/real engine/desktop production
 - [ ] Inspected public Git repository/commits/push and CI results
 

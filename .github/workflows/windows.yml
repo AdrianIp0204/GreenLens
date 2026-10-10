@@ -27,6 +27,8 @@ jobs:
           "CARGO_TARGET_DIR=$env:LOCALAPPDATA/GreenLens/build/ci" >> $env:GITHUB_ENV
           "GREENLENS_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
       - name: Acquire and verify pinned native engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./scripts/install-radiance.ps1
       - name: Engine feasibility in spaces and non-ASCII path
         run: ./scripts/engine-feasibility.ps1

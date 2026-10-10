@@ -222,9 +222,14 @@ mod tests {
 
     #[test]
     fn cancellation_terminates_process_tree() {
-        let base = std::path::PathBuf::from(std::env::var_os("LOCALAPPDATA").unwrap()).join(
-            format!("GreenLens/verification/process-tree-{}", std::process::id()),
-        );
+        // A recycled Windows PID must not make old fixture marker files look
+        // like freshly launched descendants in a later test invocation.
+        let base =
+            std::path::PathBuf::from(std::env::var_os("LOCALAPPDATA").unwrap()).join(format!(
+                "GreenLens/verification/process-tree-{}-{}",
+                std::process::id(),
+                Utc::now().timestamp_micros()
+            ));
         fs::create_dir_all(base.join("bin")).unwrap();
         fs::copy(
             std::env::current_exe().unwrap(),

@@ -1,0 +1,35 @@
+{
+  "passed": true,
+  "schema_version": "0.1.0",
+  "platform": "native Windows",
+  "verified_utc": "2026-10-10T18:01:40.2757497Z",
+  "checks": [
+    "doctor",
+    "validate",
+    "real A/B runs",
+    "compatible comparison",
+    "copy exact evidence",
+    "reopen/export without scratch",
+    "ZIP replay tolerance"
+  ],
+  "replay": {
+    "checks": [
+      {
+        "max_absolute_error_lux": 0.0,
+        "passed": true,
+        "run_id": "e22e44db-85e1-4487-bf09-84a6ddeb5a2b",
+        "sensors": 77
+      },
+      {
+        "max_absolute_error_lux": 0.0,
+        "passed": true,
+        "run_id": "a34dbd7d-1f76-4f70-8a24-286ef20ada78",
+        "sensors": 77
+      }
+    ],
+    "passed": true,
+    "verification": "same-engine integration, not independent physical validation"
+  },
+  "exported_entries": 27,
+  "personal_path_scan_matches": 0
+}

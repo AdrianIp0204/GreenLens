@@ -1,0 +1,15 @@
+/target/
+**/node_modules/
+**/dist/
+**/.vite/
+*.log
+*.oct
+*.amb
+*.zip
+*.exe
+*.msi
+.env*
+!.env.example
+/artifacts/
+/local/
+.DS_Store

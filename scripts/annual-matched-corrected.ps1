@@ -1,5 +1,5 @@
 #Requires -Version 7.2
-# Match actual v2 adapter output to independently traced identical patch skies
+# Match actual v2/v3 adapter output to independently traced identical patch skies
 # and continuous solar sources. Input is trusted local adapter scratch, never
 # an imported command/scene. Failed hours and all sensor values are retained.
 param(
@@ -19,7 +19,8 @@ $kernelHash=Get-MatchedKernelHash $harnessSource
 Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $OutputDirectory 'harness-source.ps1')
 @{harness_sha256=(Get-MatchedHash (Join-Path $OutputDirectory 'harness-source.ps1'));numerical_kernel_sha256=$kernelHash;retained_before_execution=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $OutputDirectory 'harness-source.json') -Encoding utf8
 $recipe=Get-Content -LiteralPath (Join-Path $CandidateDirectory 'annual-recipe.json') -Raw|ConvertFrom-Json
-if($recipe.schema_version -ne 'greenlens.annual-recipe.v2' -or $recipe.interval_indices.Count -ne 8760 -or ($recipe.interval_indices -join ',') -ne ((0..8759) -join ',')){throw 'This harness requires complete v2 annual output with all 8760 ordered intervals'}
+$methodTuple=Get-MatchedMethodTuple $recipe
+if($recipe.interval_indices.Count -ne 8760 -or ($recipe.interval_indices -join ',') -ne ((0..8759) -join ',')){throw 'This harness requires complete annual output with all 8760 ordered intervals'}
 $sensorCount=[int]$recipe.sensor_count
 if($sensorCount -lt 1 -or $sensorCount -gt 256){throw 'Invalid sensor count'}
 $mf=[int]$recipe.profile.sky_basis_mf
@@ -55,10 +56,21 @@ $sunByIndex=@{}
 foreach($match in [regex]::Matches([IO.File]::ReadAllText((Join-Path $OutputDirectory 'suns.rad')),'(?s)void light solar(\d+)\s+0\s+0\s+3\s+.*?(?=\s*void light|\z)')){$sunByIndex[[int](([int]$match.Groups[1].Value-30)/60)]=$match.Value}
 function Hash([string]$Path){return (Get-FileHash -LiteralPath $Path).Hash.ToLowerInvariant()}
 $referenceIdentity=[ordered]@{scene_sha256=(Hash (Join-Path $OutputDirectory 'scene.rad'));sensor_sha256=(Hash (Join-Path $OutputDirectory 'sensors.pts'));sky_sha256=(Hash (Join-Path $OutputDirectory 'identical-sky.mtx'));sun_sha256=(Hash (Join-Path $OutputDirectory 'suns.rad'));engine=$recipe.engine;ab=$ReferenceBounces;ad=$ReferenceSamples;lw=1e-9;lr=16;finite_samples=4096;mf=$mf;interval_indices=$declaredIndices}
+if($ReferenceDirectory){
+    $cached=Get-Content -LiteralPath (Join-Path $ReferenceDirectory 'declaration.json') -Raw|ConvertFrom-Json
+    Assert-MatchedReference $cached
+    Assert-MatchedPhysicalReference $referenceIdentity $cached.reference
+    Assert-MatchedSource $ReferenceDirectory $kernelHash
+    foreach($pair in @(@('scene.rad','scene_sha256'),@('sensors.pts','sensor_sha256'),@('identical-sky.mtx','sky_sha256'),@('suns.rad','sun_sha256'))){if((Hash (Join-Path $ReferenceDirectory $pair[0])) -cne $cached.reference.($pair[1])){throw 'Cached physical input bytes changed'}}
+    # Preserve the old reference's actual identity; bind the new candidate below.
+    $referenceIdentity=$cached.reference
+}
 $identityText=$referenceIdentity|ConvertTo-Json -Depth 8 -Compress
 $identityHash=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($utf8.GetBytes($identityText))).ToLowerInvariant()
 $declaration=[ordered]@{schema_version='greenlens.corrected-matched-investigation.v1';declared_utc=[DateTime]::UtcNow.ToString('o');candidate_recipe_sha256=(Hash (Join-Path $CandidateDirectory 'annual-recipe.json'));candidate_rgb_sha256=(Hash $candidateFile);candidate_profile=$recipe.profile;reference=$referenceIdentity;reference_identity_sha256=$identityHash;reference_policy='Identical generated diffuse/ground patch sky plus actual continuous solar source. High-quality native full trace minus native centroid direct trace plus independent all-ray 4096-direction solid-angle quadrature. Reflected solar in this reference remains continuous centroid-sampled; direct finite shadows are separately checked analytically.';tolerance='max(5.0 lx, 5% of reference) at every sensor';shadow_fixture='Separate elevated-radiance eleven-point finite-disc fixture and native all-ray/culling equality regression; not replaced by these weather hours';results='not executed at declaration'}
 $declaration.numerical_kernel_sha256=$kernelHash
+$declaration.candidate_method_tuple=$methodTuple
+$declaration.reference_reuse_policy='Exact physical input bytes, executable/library identities, ordered interval plan and numerical kernel/settings must match. A retained reference keeps its original method provenance; candidate recipe and final RGB identities are separate.'
 $declaration.executed_interval_indices=@($indices)
 $declaration.shard=($indices.Count -ne $declaredIndices.Count)
 $declaration|ConvertTo-Json -Depth 12|Set-Content -LiteralPath (Join-Path $OutputDirectory 'declaration.json') -Encoding utf8

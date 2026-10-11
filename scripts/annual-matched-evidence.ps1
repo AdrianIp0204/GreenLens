@@ -3,9 +3,42 @@
 function Get-MatchedHash([string]$Path) {
     return (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant()
 }
+function Get-MatchedTransportNames([string]$Kind) {
+    if ($Kind -eq 'coefficient') { return @('scene.rad','sensors.pts','receiver.rad','declaration.json','coefficients.mtx','direct-coefficients.mtx','processes.json') }
+    if ($Kind -eq 'solar') { return @('scene.rad','sensors.pts','selected-suns.rad','selected-modifiers.txt','selected-skies.mtx','declaration.json','solar-declaration.json','solar-rgb.mtx','solar-centroid-direct.mtx','processes.json') }
+    throw 'Unsupported research transport kind.'
+}
+function Assert-MatchedTransport([string]$Directory, [string]$Kind) {
+    $seal=Get-Content -LiteralPath (Join-Path $Directory 'transport-integrity.json') -Raw|ConvertFrom-Json
+    if ($seal.schema_version -ne 'greenlens.research-transport-integrity.v1' -or $seal.kind -ne $Kind -or $seal.captured_after_execution -ne $true) { throw 'Unsupported research transport seal.' }
+    $expected=@(Get-MatchedTransportNames $Kind|Sort-Object)
+    $actual=@($seal.files.psobject.Properties.Name|Sort-Object)
+    if (($expected -join ',') -cne ($actual -join ',')) { throw 'Research transport seal file set is incomplete or unexpected.' }
+    foreach ($name in $expected) {
+        if ($seal.files.$name -cnotmatch '^[0-9a-f]{64}$' -or (Get-MatchedHash (Join-Path $Directory $name)) -cne $seal.files.$name) { throw 'Retained research transport changed after sealing.' }
+    }
+}
 function Get-MatchedReferenceHash($Reference) {
     $text=$Reference|ConvertTo-Json -Depth 8 -Compress
     return [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($text))).ToLowerInvariant()
+}
+function Get-MatchedPhysicalReferenceHash($Reference) {
+    # Method provenance is distinct from the unchanged reference calculation.
+    # Clone before removing the three identity fields; never rewrite old evidence.
+    $physical=$Reference|ConvertTo-Json -Depth 12|ConvertFrom-Json -AsHashtable
+    $pair=$physical.engine.adapter_version+'|'+$physical.engine.method_version
+    if ($pair -notin @('radiance-climate-direct-corrected/2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2','radiance-climate-explicit-indirect-finite-direct/3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3')) { throw 'Unsupported reference method tuple.' }
+    foreach ($name in @('adapter_version','method_version','fingerprint')) { $null=$physical.engine.Remove($name) }
+    return Get-MatchedReferenceHash $physical
+}
+function Get-MatchedMethodTuple($Recipe) {
+    $tuple=$Recipe.schema_version+'|'+$Recipe.method_version+'|'+$Recipe.engine.adapter_version+'|'+$Recipe.engine.method_version
+    $supported=@('greenlens.annual-recipe.v2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2|radiance-climate-direct-corrected/2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2','greenlens.annual-recipe.v3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3|radiance-climate-explicit-indirect-finite-direct/3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3')
+    if ($tuple -notin $supported) { throw 'Unsupported annual matched method tuple.' }
+    return $tuple
+}
+function Assert-MatchedPhysicalReference($First, $Second) {
+    if ((Get-MatchedPhysicalReferenceHash $First) -cne (Get-MatchedPhysicalReferenceHash $Second)) { throw 'Reference physical inputs, engine or numerical settings differ.' }
 }
 function Assert-MatchedReference($Declaration) {
     if ($Declaration.reference_identity_sha256 -cne (Get-MatchedReferenceHash $Declaration.reference)) { throw 'Matched reference identity checksum mismatch.' }

@@ -46,6 +46,31 @@ Assert-Rejected {Assert-MatchedSource $badSource $kernel} 'source checksum misma
 $badIdentity=New-Fixture 'bad-identity' 20
 $path=Join-Path $badIdentity 'matched-corrected.json';$record=Get-Content $path -Raw|ConvertFrom-Json;$record.declaration.reference.interval_indices=@(10,20,30);$record|ConvertTo-Json -Depth 12|Set-Content $path
 Assert-Rejected {Join-MatchedEvidence @($first,$badIdentity)} 'reference identity checksum' 'changed full plan with stale reference digest rejected'
+$transport=Join-Path $root 'transport';$null=New-Item -ItemType Directory -Path $transport
+$files=[ordered]@{}
+foreach($name in (Get-MatchedTransportNames 'coefficient')){[IO.File]::WriteAllText((Join-Path $transport $name),'synthetic');$files[$name]=Get-MatchedHash (Join-Path $transport $name)}
+$seal=@{schema_version='greenlens.research-transport-integrity.v1';kind='coefficient';captured_after_execution=$true;files=$files}
+$sealPath=Join-Path $transport 'transport-integrity.json';$seal|ConvertTo-Json -Depth 5|Set-Content -LiteralPath $sealPath
+Assert-MatchedTransport $transport 'coefficient';$checks.Add('complete explicit transport seal accepted')
+$files.Remove('coefficients.mtx');$seal|ConvertTo-Json -Depth 5|Set-Content -LiteralPath $sealPath
+Assert-Rejected {Assert-MatchedTransport $transport 'coefficient'} 'file set' 'omitted coefficient checksum cannot bypass transport validation'
+$files['coefficients.mtx']=Get-MatchedHash (Join-Path $transport 'coefficients.mtx');$seal|ConvertTo-Json -Depth 5|Set-Content -LiteralPath $sealPath
+[IO.File]::WriteAllText((Join-Path $transport 'coefficients.mtx'),'changed')
+Assert-Rejected {Assert-MatchedTransport $transport 'coefficient'} 'changed after sealing' 'changed coefficient values rejected'
+$oldMethod='perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2';$newMethod='perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3'
+$physical=[ordered]@{scene_sha256=('a'*64);sensor_sha256=('b'*64);sky_sha256=('c'*64);sun_sha256=('d'*64);engine=[ordered]@{version='pinned';adapter_version='radiance-climate-direct-corrected/2';method_version=$oldMethod;fingerprint=('e'*64);executable_sha256=@{rtrace=('f'*64)};library_sha256=@{rayinit=('1'*64)}};ab=9;ad=262144;lw=1e-9;lr=16;finite_samples=4096;mf=2;interval_indices=@(10,20)}
+$new=$physical|ConvertTo-Json -Depth 10|ConvertFrom-Json -AsHashtable
+$new.engine.adapter_version='radiance-climate-explicit-indirect-finite-direct/3';$new.engine.method_version=$newMethod;$new.engine.fingerprint=('2'*64)
+Assert-MatchedPhysicalReference $physical $new;$checks.Add('method-only provenance difference may reuse unchanged physical reference')
+Assert-Test ($physical.engine.method_version -ceq $oldMethod -and $physical.engine.fingerprint -ceq ('e'*64)) 'historical reference identity remains immutable'
+foreach($mutation in @({param($x)$x.sky_sha256='changed'},{param($x)$x.ad=131072},{param($x)$x.engine.library_sha256.rayinit='changed'},{param($x)$x.engine.executable_sha256.rtrace='changed'},{param($x)$x.interval_indices=@(20,10)})){
+    $different=$new|ConvertTo-Json -Depth 10|ConvertFrom-Json -AsHashtable;& $mutation $different
+    Assert-Rejected {Assert-MatchedPhysicalReference $physical $different} 'physical inputs' 'physical input, argument, binary, library or interval-order change prevents reuse'
+}
+$recipe=@{schema_version='greenlens.annual-recipe.v3';method_version=$newMethod;engine=$new.engine}
+Assert-Test ((Get-MatchedMethodTuple $recipe).StartsWith('greenlens.annual-recipe.v3|')) 'matched harness recognizes exact method3 contract'
+$recipe.schema_version='greenlens.annual-recipe.v2'
+Assert-Rejected {Get-MatchedMethodTuple $recipe} 'method tuple' 'mixed annual method tuple rejected'
 $report=@{scope='Synthetic evidence-handling regression, not scientific acceptance';checks=$checks;pass=$true}
 $report|ConvertTo-Json -Depth 4|Set-Content -LiteralPath (Join-Path $root 'result.json') -Encoding utf8
 Write-Host "Matched evidence regression: $($checks.Count) checks passed."

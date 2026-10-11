@@ -1,6 +1,6 @@
 {
   "schema_version": "greenlens.v0.3-engine-investigation.v1",
-  "snapshot_utc": "2026-10-11T07:21:17.9145692Z",
+  "snapshot_utc": "2026-10-11T08:31:58.1083416Z",
   "release_complete": false,
   "profile_frozen": false,
   "native_platform": "Windows x64 / pinned Radiance 6.0.2",
@@ -26,20 +26,24 @@
     "Full-year MF4 diffuse/ground ASCII sky generation produced 226,165,911 bytes in 38.579 seconds, with sampled child peak working set 249,835,520 bytes. This fits the 512 MiB scratch file limit; nine unusually-bright sky warnings are retained.",
     "Corrected Rust adapter completed 8,760 × 24 finite nonnegative lux values in 317.948 s under concurrent verification load. Peak child working set 68,231,168 B; sampled runner-plus-child 78,712,832 B; whole scratch peak 136,546,918 B. It emitted 3,733,872 of 108,404,736 finite-disc rays across 106 bounded batches. This establishes resource feasibility, not numerical acceptance.",
     "Actual shared-service A/B shipping exports each replayed all 8,760 × 24 values through the same frozen CLI with zero observed lux differences. Caller wall times were 341.539 and 343.217 seconds. This is integration verification, not independent physical validation; the old executable did not report replay memory or scratch telemetry.",
-    "Separate horizontal-overhang and detached-context edge fixtures passed all 36 checks at 1,024 and 4,096 finite-disc samples. Independent projected-disc quadrature (16,384 to 65,536 slices) changed by at most 1.986914e-7 relative; maximum error/tolerance was 0.103019. This establishes only finite direct visibility, not diffuse transport, glazing or arbitrary-building accuracy."
+    "Separate horizontal-overhang and detached-context edge fixtures passed all 36 checks at 1,024 and 4,096 finite-disc samples. Independent projected-disc quadrature (16,384 to 65,536 slices) changed by at most 1.986914e-7 relative; maximum error/tolerance was 0.103019. This establishes only finite direct visibility, not diffuse transport, glazing or arbitrary-building accuracy.",
+    "An exploratory explicit-solar A candidate with MF2 diffuse sampling of 262,144, solar sampling of 4,096 and 1,024 finite-disc rays passes all 12 retained hours and all 288 sensor values against older ab9/ad131072 matched references with 4,096 finite rays; maximum error/tolerance is 0.797649. The lower solar2,048 candidate fails one winter value. New actual-grid A/B references and annual convergence remain required."
   ],
   "unresolved": [
     "The finite-disc corrected adapter and same-recipe full-year A/B replay have completed native execution. Independent matched-sky and final numerical profile acceptance remain outstanding.",
     "Full-year A/B shipping/reference execution completed, but A sensor s000023 DA differs by 2.27397260 percentage points, exceeding the fixed 2-point tolerance; the other 239 metric checks and all 96 UDI partition checks passed. Installed annual UI acceptance is in progress, and final scientific profile freeze remains open.",
     "The completed twelve-hour A high-sampling centroid investigation fails at two intervals, 1912 and 6320. It is retained as failed evidence; no subset counts as acceptance.",
     "The direct-corrected prototype has winter reflected-solar errors exceeding tolerance. Its profile remains provisional while basis/sampling are investigated.",
-    "Winter sensor 4 reference is stable at high sampling, but the full-grid MF2/ad262144 diagnostic still fails seven sensors at interval 8504 (maximum 8.28%). Intervals 1908, 1912 and 6320 pass against the retained reference. A 1,048,576-sample coefficient investigation and new actual-adapter matched references are running; numerical profile freeze remains open."
+    "The MF2/ad1,048,576 full-grid coefficient diagnostic still fails six sensors at winter interval 8504 (maximum 7.74%), all without direct beam. The other three retained diagnostic hours pass. This supports investigating explicit reflected-solar transport; the fixed tolerance is unchanged.",
+    "Explicit solar sampling of 8,192 with diffuse sampling of 262,144 passes all 288 A values but fails B zero-based sensor index 15 (stable ID s000016) at interval 8512, with 19.022688 lx error versus 17.929929 lx allowance. Its complete failed record is retained.",
+    "Full-grid diffuse sampling of 1,048,576 with explicit solar sampling of 8,192 passes all 288 A values, but B fails one value at interval 8512: stable sensor s000023 (zero-based index 22), 183.72413220000004 lx versus 193.500432 lx, with tolerance 9.6750216 lx. The earlier index 15 (s000016) failure now passes. Reference convergence at the remaining point is being investigated; no failure is rounded away."
   ],
   "failed_checks_retained": [
     "Four completed matched-sky candidate profiles fail. The first ab5 failure file uses integer-rounded diagnostic allowed_error_lux; the corrected script uses the exact max(5.0 lx, 5%) threshold.",
     "The centroid-sun half-disc aperture check reports 0 instead of 60.830157 lx. Changing -ds cannot correct the distant-source nopart behavior.",
     "Radiance dj1 approximate square-to-disc jitter has off-centre bias and is not selected for correction.",
-    "Equal-solid-angle 256-ray sampling fails an offset edge. The 1,024/4,096-ray passes do not alone freeze a production profile."
+    "Equal-solid-angle 256-ray sampling fails an offset edge. The 1,024/4,096-ray passes do not alone freeze a production profile.",
+    "Complete actual-grid method2 matched references now cover twelve hours for each alternative: A and B each fail 13 of 288 sensor values, with all values retained."
   ],
   "evidence": [
     {
@@ -121,6 +125,26 @@
     {
       "file": "evidence/v0.3-engine/finite-context-overhang-edges.json",
       "sha256": "a45fd12d3d1ab923943e7430fdcfe8e045fcfd646f322e6e62c7af8571c5f98e"
+    },
+    {
+      "file": "evidence/v0.3-engine/corrected-MF2-ad1048576-four-hours.json",
+      "sha256": "20d333c54514e65dd18085265932d59b5185887fa0e62bd7873fba45d05b2cac"
+    },
+    {
+      "file": "evidence/v0.3-engine/explicit-solar-A-sampling.json",
+      "sha256": "f09c92b488efdc636f7604adeff01941e4c8044ce6d6bc53a2a7020b6e0510b2"
+    },
+    {
+      "file": "evidence/v0.3-engine/method2-actual-ab-twelve-hours-failed.json",
+      "sha256": "3705502d66c1c43108a78ee168baf7e881904b279d4cde741ba53f9bc0ccd30e"
+    },
+    {
+      "file": "evidence/v0.3-engine/explicit-actual-ab-diffuse262144-solar8192.json",
+      "sha256": "91232e086d02d68e7a904e2e4acffa715f076893904ca3b4bc8410f30f0b5a84"
+    },
+    {
+      "file": "evidence/v0.3-engine/explicit-actual-ab-diffuse1048576-solar8192.json",
+      "sha256": "3ec5598aef8fc90148d0407d1ca19a4014f859110f373a0f901d28525c60a9a6"
     }
   ],
   "native_resource_feasibility": true

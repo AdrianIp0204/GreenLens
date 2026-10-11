@@ -12,6 +12,12 @@ The bounded workflow models one rectangular room, a rectangular window, an optio
 
 Start with the [installation and launch guide](docs/installation.md). Fresh v0.2 checks are recorded in [scientific and CLI verification](docs/v0.2-scientific-verification.md) and [installed workspace verification](docs/v0.2-native-verification.md). The [v0.1 package hashes](docs/release-artifacts.json) and [v0.1 CI record](docs/ci-evidence.json) describe the historical release only.
 
+The current unsigned v0.2 installer, CLI, saved example and evidence/report paths and hashes are listed in [v0.2 artifact inventory](docs/v0.2-release-artifacts.json). Its acceptance status remains explicit; a built candidate is not a completed release.
+
+![Installed GreenLens four-view workspace with constrained window editing](docs/images/v0.2/four-view-window-editing.png)
+
+[Native screenshot context and tested sizes](docs/images/v0.2/README.md).
+
 ## Native Windows development
 
 Install Visual Studio C++ Build Tools, WebView2, Node.js 24 and the pinned Rust toolchain following [toolchain instructions](docs/toolchain.md). From this repository in PowerShell:

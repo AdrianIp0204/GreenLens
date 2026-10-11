@@ -6,9 +6,11 @@ GreenLens uses original controls and a bounded Rhino-inspired interaction model.
 
 Click a viewport title to activate it. Double-click it, or use its square button, to maximize/restore. **4View** restores the four-view layout. Perspective uses right-drag orbit and Shift+right-drag pan; Top, Front and Right use right-drag pan with a fixed orthographic projection. Wheel zooms. With a viewport focused, arrow keys navigate; Shift+arrows pan, plus/minus zoom. **ZoomExtents** frames visible geometry and **ZoomSelected** frames the selection. Each camera survives selection, accepted model edits, display modes, panel changes and arriving calculation results.
 
-Scientific coordinates are metres, +X east, +Y north and +Z up. The model-local y=0 window facade faces south at zero rotation; supported rotation is clockwise from true north. Renderer coordinates are `[x,z,-y]`. Top looks down Z with +X right/+Y up; Front looks north with +X right/+Z up; Right looks west with +Y right/+Z up. The construction grid and model handles are distinct from the equal-area scientific sensor grid.
+Scientific coordinates are metres, +X east, +Y north and +Z up. The model-local y=0 window facade faces south at zero rotation. Model rotation is clockwise about Z from that unrotated model; the facade's azimuth clockwise from true north is `(180 + rotation) mod 360` degrees. Renderer coordinates are `[x,z,-y]`. Top looks down Z with +X right/+Y up; Front looks north with +X right/+Z up; Right looks west with +Y right/+Z up. The construction grid and model handles are distinct from the equal-area scientific sensor grid.
 
-Click geometry or a sensor to select. Shift adds; Ctrl removes. Left-to-right rectangular selection includes fully contained objects; right-to-left crossing includes intersecting objects. The overlap chooser disambiguates coincident surfaces, envelope and sensors. Escape cancels a provisional operation or clears selection. Layers and Properties use the same semantic IDs; generated faces are inspectable parts of the envelope, not independently editable CAD objects. Hidden objects cannot be picked. Locked objects cannot be picked for editing and have no manipulation handles; unlock them through Layers or **Unlock**.
+Click geometry or a sensor to select. Shift adds; Ctrl removes. Left-to-right rectangular selection includes fully contained objects; right-to-left crossing includes intersecting objects. The overlap chooser disambiguates coincident surfaces, envelope and sensors. Escape cancels a provisional operation or clears selection. Layers and Properties use the same semantic IDs; generated faces are inspectable parts of the envelope, not independently editable CAD objects. Hidden or locked objects cannot be newly selected. An already-selected object remains inspectable but read-only when locked, with no manipulation handles; unlock it through Layers or **Unlock**.
+
+Rectangular selection operates on the inspectable room surfaces, window, optional objects and sensors. Select the aggregate **Room envelope** through the overlap chooser or object list for room parameter editing; the aggregate is omitted from rectangular selection to avoid duplicating its child surfaces.
 
 ## Supported editing
 
@@ -18,7 +20,7 @@ Window movement is local X/Z within its facade, with width/height resizing. Over
 
 The visible construction grid has 1 m lines in world XY (Top/Perspective), XZ (Front) and YZ (Right). Grid Snap uses 0.1 m increments on supported model-local parameters. Ortho constrains planar movement to the dominant supported local axis. Endpoint, midpoint and center snaps derive from validated rectangular geometry and use a 9 CSS-pixel proximity tolerance; the marker and coordinate strip report the active snap. Geometric snaps position the selected object's Move grip; Resize/Rotate use grid/angular snapping and numeric values, without pretending to solve arbitrary boundary alignment. Object snaps and grid snapping can be toggled separately. Final candidates still require Rust validation. Hiding a layer never removes its geometry from Radiance; lock/visibility/camera/mode changes cannot stale a valid scientific result.
 
-An applied object snap takes priority over grid rounding. A planar Move still obeys its facade/construction plane and Ortho axis, so the marker reports the resulting projected grip position. Ortho preserves the untouched coordinate even when that starting coordinate is off the construction grid.
+An applied object snap takes priority over grid rounding. A planar Move still obeys its facade/construction plane and Ortho axis, so the marker reports the resulting projected grip position. Ortho preserves the untouched coordinate even when that starting coordinate is off the construction grid. For room rotation, Grid Snap uses 5-degree increments and Ortho uses 90-degree increments.
 
 Property fields accept lengths such as `1800mm`, `1.8m`, `150 cm`, `1ft` or `2in`. Enter commits; Escape restores the accepted value. Native text selection, clipboard and text-field undo shortcuts are preserved. Outside text fields: Ctrl+N/O/S, Ctrl+Shift+S, Ctrl+Z/Y, Ctrl+Shift+Z, Ctrl+A, Delete, F8 Ortho and F9 Grid Snap operate on the document/workspace.
 
@@ -49,7 +51,7 @@ Cancel
 Export
 ```
 
-Other commands include New, Open, Save, SaveAs, Close, Perspective/Top/Front/Right, ZoomSelected, SelectAll/SelectNone, Hide/Show, Lock/Unlock, Wireframe/Shaded/Analysis, Cutaway and Grid/Snap/Ortho/Osnap/Gumball. Cutaway makes the envelope translucent for interior inspection without removing any scientific surface. Menu items and command entry dispatch the same application actions. The tool strip selects a manipulation mode; it never runs a shell or arbitrary code.
+Other commands include New, Open, Save, SaveAs, Close, Perspective/Top/Front/Right, ZoomSelected, SelectAll/SelectNone, Hide/Show, Lock/Unlock, Wireframe/Shaded/Analysis, Cutaway and Grid/Snap/Ortho/Osnap/Gumball. Cutaway makes walls and ceiling translucent for interior inspection; the floor stays opaque and no scientific surface is removed. Menu items and command entry dispatch the same application actions. The tool strip selects a manipulation mode; it never runs a shell or arbitrary code.
 
 ## Documents and evidence
 

@@ -1,0 +1,310 @@
+{
+  "schema_version": "greenlens.v0.2-scientific-verification.v1",
+  "scope": "Fresh native Windows scientific A-F and headless CLI verification; separate from installed desktop and final-source CI acceptance",
+  "application_build": {
+    "verified_utc": "2026-10-11T01:16:51.5245435Z",
+    "source_commit": "4a4237fb62f4bc6128739eeac503265e988dd3bf",
+    "source_worktree_dirty": true,
+    "application_version": "0.2.0",
+    "target": "x86_64-pc-windows-msvc",
+    "profile": "release",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "binaries": {
+      "greenlens-science.exe": "9138cb727a4cff16482ec3699fee663a36931722f3ba960ee88239a42d1ddd1d",
+      "greenlens.exe": "4cc4a715ebb20e2716e1ac6e4fb20f750472f09b24d8bb7d17ea1f0fd2877c7a"
+    }
+  },
+  "native_platform": "windows",
+  "engine": {
+    "version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+    "adapter_version": "radiance-static-overcast/1",
+    "fingerprint": "cb04363f2d28ab2513aa7d2bebf3e7449f01450c4b40cf4d0f0a77a7dead9d09"
+  },
+  "engine_artifact": {
+    "name": "Radiance_c1700d56_Windows.zip",
+    "tag": "rad6R0P2",
+    "sha256": "c4f02efcb4a33f4a43b7ce0ba58100544abc317a1be61f7b0425a64a66eb8a09"
+  },
+  "science_verified_utc": "2026-10-11T01:58:55.652625300+00:00",
+  "all_scientific_checks_passed": true,
+  "fixtures_only": false,
+  "fixture_profile": {
+    "ambient_accuracy": 0.0,
+    "ambient_bounces": 1,
+    "ambient_divisions": 131072,
+    "ambient_resolution": 256,
+    "ambient_supersamples": 0,
+    "limit_reflections": 12,
+    "limit_weight": 1e-06,
+    "name": "analytical-fixture-v1"
+  },
+  "checks": [
+    {
+      "actual_lux": 563.0935460000001,
+      "expected_lux": 562.345084992573,
+      "id": "B",
+      "name": "Uniform hemisphere E=pi*L",
+      "passed": true,
+      "relative_error": 0.0013309638999280179,
+      "tolerance_relative": 0.01
+    },
+    {
+      "actual_lux": 9983.09492,
+      "expected_lux": 10000.0,
+      "id": "C",
+      "name": "Prescribed overcast exterior normalization",
+      "passed": true,
+      "relative_error": 0.0016905080000000454,
+      "tolerance_relative": 0.01
+    },
+    {
+      "actual_lux": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "id": "D",
+      "name": "Sealed black enclosure",
+      "passed": true,
+      "tolerance_lux": 0.1
+    },
+    {
+      "id": "E",
+      "name": "Independent black room aperture integration",
+      "passed": true,
+      "quadrature_tolerance_relative": 0.001,
+      "rows": [
+        {
+          "absolute_error_lux": 3.1170479424595214,
+          "passed": true,
+          "quadrature_128_lux": 2752.5495007218324,
+          "quadrature_256_lux": 2752.482504678556,
+          "quadrature_512_lux": 2752.4657579424597,
+          "quadrature_relative_change": 6.084266824324389e-06,
+          "quadrature_relative_change_128_to_256": 2.4340224928814866e-05,
+          "radiance_lux": 2749.34871,
+          "sensor": [
+            2.0,
+            0.5,
+            0.8
+          ],
+          "tolerance_lux": 82.5739727382738
+        },
+        {
+          "absolute_error_lux": 3.086569464248555,
+          "passed": true,
+          "quadrature_128_lux": 726.0088671854543,
+          "quadrature_256_lux": 726.0011265765487,
+          "quadrature_512_lux": 725.9991914642486,
+          "quadrature_relative_change": 2.6654469079861187e-06,
+          "quadrature_relative_change_128_to_256": 1.0661979192896366e-05,
+          "radiance_lux": 722.912622,
+          "sensor": [
+            2.0,
+            1.5,
+            0.8
+          ],
+          "tolerance_lux": 21.77997574392746
+        },
+        {
+          "absolute_error_lux": 1.8916500360338944,
+          "passed": true,
+          "quadrature_128_lux": 139.12217238984584,
+          "quadrature_256_lux": 139.12167650561406,
+          "quadrature_512_lux": 139.1215525360339,
+          "quadrature_relative_change": 8.910882454865577e-07,
+          "quadrature_relative_change_128_to_256": 3.564392294840684e-06,
+          "radiance_lux": 137.2299025,
+          "sensor": [
+            2.0,
+            3.0,
+            0.8
+          ],
+          "tolerance_lux": 4.173646576081017
+        },
+        {
+          "absolute_error_lux": 2.245859274479727,
+          "passed": true,
+          "quadrature_128_lux": 117.09666074192926,
+          "quadrature_256_lux": 117.09639020751618,
+          "quadrature_512_lux": 117.09632257447973,
+          "quadrature_relative_change": 5.77584632585532e-07,
+          "quadrature_relative_change_128_to_256": 2.3103565583582074e-06,
+          "radiance_lux": 114.8504633,
+          "sensor": [
+            1.0,
+            3.0,
+            0.8
+          ],
+          "tolerance_lux": 3.5128896772343916
+        },
+        {
+          "absolute_error_lux": 2.320699174476985,
+          "passed": true,
+          "quadrature_128_lux": 117.09666074192897,
+          "quadrature_256_lux": 117.09639020751851,
+          "quadrature_512_lux": 117.09632257447699,
+          "quadrature_relative_change": 5.775846759112028e-07,
+          "quadrature_relative_change_128_to_256": 2.310356536027864e-06,
+          "radiance_lux": 114.7756234,
+          "sensor": [
+            3.0,
+            3.0,
+            0.8
+          ],
+          "tolerance_lux": 3.5128896772343094
+        }
+      ]
+    },
+    {
+      "id": "scaling",
+      "name": "Sky intensity scaling x2",
+      "passed": true,
+      "ratios": [
+        2.0004381655901335,
+        2.0004357926399576,
+        2.000438271826361,
+        2.0004388872151813,
+        2.0004332470478223
+      ],
+      "relative_tolerance": 0.002
+    },
+    {
+      "id": "symmetry",
+      "name": "Black aperture mirror sensors",
+      "passed": true,
+      "relative_difference": 0.0006518414442848286,
+      "tolerance_relative": 0.03
+    },
+    {
+      "exit_code": 1,
+      "id": "nonzero_exit",
+      "name": "Malformed scene fails and retains native exit record",
+      "passed": true
+    },
+    {
+      "diagnostic": "Simulation cancelled during rtrace; process tree terminated",
+      "id": "cancellation",
+      "name": "Actual rtrace cancelled without finalized evidence",
+      "passed": true
+    },
+    {
+      "id": "A",
+      "name": "Adapter vs direct pinned-engine invocation (integration verification)",
+      "passed": true,
+      "sensor_count": 77,
+      "max_absolute_difference_lux": 0.0,
+      "tolerance": "max(0.1 lx, 0.1% of reference), every sensor"
+    },
+    {
+      "id": "F",
+      "mean_absolute_difference_divided_by_reference_mean": 0.007590611273328036,
+      "mean_relative_tolerance": 0.02,
+      "name": "Shipping vs higher-quality profile convergence",
+      "passed": true,
+      "reference_profile": {
+        "ambient_accuracy": 0.05,
+        "ambient_bounces": 6,
+        "ambient_divisions": 8192,
+        "ambient_resolution": 256,
+        "ambient_supersamples": 2048,
+        "limit_reflections": 12,
+        "limit_weight": 1e-05,
+        "name": "reference-v1"
+      },
+      "sensor_count": 77,
+      "shipping_profile": {
+        "ambient_accuracy": 0.075,
+        "ambient_bounces": 5,
+        "ambient_divisions": 4096,
+        "ambient_resolution": 192,
+        "ambient_supersamples": 1024,
+        "limit_reflections": 12,
+        "limit_weight": 5e-05,
+        "name": "shipping-v1"
+      },
+      "max_absolute_difference_lux": 7.502605999999986,
+      "max_relative_sensor_difference": 0.043363911716272484,
+      "max_fraction_of_per_sensor_allowance": 0.8672782343254496,
+      "per_sensor_tolerance": "max(2 lx, 5% of reference), every sensor",
+      "shipping_statistics_lux": {
+        "minimum": 45.964711900000005,
+        "mean": 237.21244494025976,
+        "maximum": 1454.3633650000002
+      },
+      "reference_statistics_lux": {
+        "minimum": 47.22252700000001,
+        "mean": 238.69819352597403,
+        "maximum": 1451.521203
+      }
+    }
+  ],
+  "cli": {
+    "schema_version": "0.1.0",
+    "passed": true,
+    "verified_utc": "2026-10-11T01:37:03.6373219Z",
+    "platform": "native Windows",
+    "checks": [
+      "doctor",
+      "validate",
+      "real A/B runs",
+      "compatible comparison",
+      "copy exact evidence",
+      "reopen/export without scratch",
+      "ZIP replay tolerance"
+    ],
+    "replay": {
+      "checks": [
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "29071130-e9ed-4694-8386-309b5e981468",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "1e87b69d-c0a0-4b59-ae07-c4129791728f",
+          "sensors": 77
+        }
+      ],
+      "passed": true,
+      "verification": "same-engine integration, not independent physical validation"
+    },
+    "archive": {
+      "entries": 27,
+      "uncompressed_bytes": 272461.0,
+      "zip_bytes": 94232,
+      "private_path_matches": 0,
+      "report_sha256": "7a03c6843c025147985af1e6c32c511f386f72bc6c9bdd6506e526fdabf470a0",
+      "zip_sha256": "310bddb1ce7a4996b226c8dd8ef2f078b87412d8f0a65591f464f2ea13e85983"
+    }
+  },
+  "evidence_root": "%LOCALAPPDATA%/GreenLens/verification/v0.2 科学 20261011-011637",
+  "artifacts": {
+    "full science/science-report.json": {
+      "sha256": "586f2f81401606a411537b1af944352e7b19fc30fbc5250fee36e1d26e18ae67",
+      "bytes": 27409
+    },
+    "CLI portable/summary.json": {
+      "sha256": "b71d20c7f550777b721bc5532e3f7da4717ed60ba0a944dec6e8091a602d042a",
+      "bytes": 337
+    },
+    "CLI portable/replay.json": {
+      "sha256": "5c785a09b6d889e54a7c45c954d7f0df30158fda6607f18b9fccc558cab87bcb",
+      "bytes": 416
+    },
+    "CLI portable/evidence.zip": {
+      "sha256": "310bddb1ce7a4996b226c8dd8ef2f078b87412d8f0a65591f464f2ea13e85983",
+      "bytes": 94232
+    },
+    "CLI portable/report.html": {
+      "sha256": "7a03c6843c025147985af1e6c32c511f386f72bc6c9bdd6506e526fdabf470a0",
+      "bytes": 85243
+    }
+  },
+  "limitations": "Analytical fixtures establish limited behavior; integration verification is not independent physical validation. Export replay and desktop acceptance are separate gates.",
+  "release_acceptance_complete": false
+}

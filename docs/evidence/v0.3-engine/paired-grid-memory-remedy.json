@@ -1,0 +1,113 @@
+{
+  "schema_version": "greenlens.paired-grid-memory-remedy.v1",
+  "captured_utc": "2026-10-11T11:07:48.0488566Z",
+  "scope": "Research-only input streaming repair; fixed scientific tuple, cap and ray bytes unchanged. No production adapter change or numerical acceptance.",
+  "failed_attempt": {
+    "primary_side": 256,
+    "completed": false,
+    "secondary_divisions": 128,
+    "alternative": "A",
+    "output_bytes": 0,
+    "raw_process_evidence_sha256": "ab113cedb2b048c246b69d9a4c99c96148029619d1517d7a0649cf9ca69390ce",
+    "variant": "higher",
+    "wall_seconds": 1.6825904,
+    "ambient_bounces": 8,
+    "declaration_sha256": "d4640350834bcd507ad7bccebebc1d10e44d3cac4b9d70a909717df9ae26a7fa",
+    "memory_limit_bytes": 2147483648,
+    "observed_combined_working_set_bytes": 3283824640,
+    "exit_code": -1,
+    "reason": "observed runner-plus-engine working set exceeded declared bytes"
+  },
+  "remedy": "Incremental G17/LF primary writer and async 64KiB file-to-stdin copying in isolated paired research supervisor. Existing sealed reference supervisor unchanged.",
+  "ray_equivalence": {
+    "side128": {
+      "passed": true,
+      "sha256": "a884da622442aa562348efa705d03fea06254e2427725a2a605bbdc542387ece",
+      "new_writer_sha256": "445e32c1042cdfa5bc9585dca1c526e9cfd3961d0d91633fa1a8e3febe8c5021",
+      "old_declaration_sha256": "ba8ef7b59a9a7889c62ce54969cab9d165c4c9bcfbde15331e1dbd42459c79e4",
+      "completed_utc": "2026-10-11T10:57:34.0728551Z",
+      "bytes": 40097296
+    },
+    "side256": {
+      "schema_version": "greenlens.paired-primary-byte-equivalence.v1",
+      "passed": true,
+      "completed_utc": "2026-10-11T11:00:00.8626829Z",
+      "primary_side": 256,
+      "sensor_count": 24,
+      "bytes": 161416264,
+      "old_sha256": "e279c3157cacf675e842a3aa7cbe966e9ce28327352c951cd8cf4b410bac5326",
+      "new_sha256": "e279c3157cacf675e842a3aa7cbe966e9ce28327352c951cd8cf4b410bac5326",
+      "sensors_sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+      "old_declaration_sha256": "d4640350834bcd507ad7bccebebc1d10e44d3cac4b9d70a909717df9ae26a7fa",
+      "new_writer_sha256": "445e32c1042cdfa5bc9585dca1c526e9cfd3961d0d91633fa1a8e3febe8c5021",
+      "generation_seconds": 3.9567984,
+      "scope": "Original failed higher-input string writer versus incremental file writer, exact scientific input bytes only; no engine or accuracy verification"
+    }
+  },
+  "native_pipe_regression": {
+    "checks": [
+      {
+        "name": "byte-exact 2 MiB native pipe",
+        "passed": true
+      },
+      {
+        "name": "nonzero",
+        "passed": true
+      },
+      {
+        "name": "zero-incomplete-input",
+        "passed": true
+      },
+      {
+        "name": "partial-input",
+        "passed": true
+      },
+      {
+        "name": "timeout",
+        "passed": true
+      },
+      {
+        "name": "memory",
+        "passed": true
+      },
+      {
+        "name": "file",
+        "passed": true
+      },
+      {
+        "name": "scratch",
+        "passed": true
+      },
+      {
+        "name": "input-open-failure",
+        "passed": true
+      },
+      {
+        "name": "output-open-failure",
+        "passed": true
+      },
+      {
+        "name": "input-path-escape",
+        "passed": true
+      },
+      {
+        "name": "output-path-escape",
+        "passed": true
+      }
+    ],
+    "original_evidence_sha256": "64b5781e479da348cccc6b54eb2e6a89e1bedfe46b8e0a435ed10b6b12101654",
+    "test_sha256": "76aa36a9380cad3c6d191a1c4886b87a08dfbf1b9c7cb7823288519536208ff6",
+    "supervisor_sha256": "590efb23ec227c6f4d15a7f40b414c2ee53b20a4ab94efab176c028ed7f106b1",
+    "passed": true
+  },
+  "new_higher_native_run": "Started after both byte-equivalence checks and 12 pipe/lifecycle/cap regressions; result pending",
+  "release_acceptance_complete": false,
+  "checkout_line_ending_regression": {
+    "check_count": 12,
+    "test_sha256": "76aa36a9380cad3c6d191a1c4886b87a08dfbf1b9c7cb7823288519536208ff6",
+    "original_evidence_sha256": "097c970faf6563bb1d36c84a769164eeca17b7312d47868516ae89a2ec3df1bd",
+    "passed": true,
+    "scope": "Same supervisor after CRLF normalization required by repository attributes; all12 native pipe checks repeated",
+    "supervisor_sha256": "e20e38e370014673e31bfb2b3d57e1ae2c284cb8132ebb105057001406ac65dc"
+  }
+}

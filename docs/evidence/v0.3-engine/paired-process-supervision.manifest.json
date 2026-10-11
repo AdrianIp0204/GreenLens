@@ -1,0 +1,16 @@
+{
+  "schema_version": "greenlens.evidence-manifest.v1",
+  "scope": "Paired research process supervision only; sanitized observed failure and final synthetic lifecycle checks",
+  "records": [
+    {
+      "bytes": 5594,
+      "path": "docs/v0.3-paired-process-supervision.md",
+      "sha256": "24bd69675a365e11001e68a08f64196a9263e799f723b053ba70464c7525a174"
+    },
+    {
+      "bytes": 19095,
+      "path": "docs/evidence/v0.3-engine/paired-process-supervision.json",
+      "sha256": "f25fe12a13c4f38d1c9b15bfd8ec115fccf0980e6b6d7c708c1617e30857355d"
+    }
+  ]
+}

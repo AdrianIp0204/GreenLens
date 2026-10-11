@@ -1,0 +1,151 @@
+{
+  "schema_version": "greenlens.hammersley-stream-public-evidence.v1",
+  "snapshot_utc": "2026-10-11T11:50:35.529117+00:00",
+  "scope": "Typed primary generation and synthetic native Windows stream lifecycle only; no Radiance numerical qualification",
+  "generator_sha256": "49ccb427479ee2951c1b94753dafecd318b519511c3aca7c6b629eed695045cd",
+  "pure": {
+    "source_evidence_sha256": "513653202cb4c3842fd394c3ee28cfb58e131b1ece0fcaddb87234f3374c468b",
+    "completed_utc": "2026-10-11T11:49:50.9871765Z",
+    "test_sha256": "436946f218aed9f8a336a3f010755bd9db421b5e7a027e4eff73c59c3197da87",
+    "checks": [
+      {
+        "name": "complete two-sensor stream hash and count",
+        "receipt": {
+          "Bytes": 2784066,
+          "Rays": 32768,
+          "Sha256": "14559b54d0806d02f322faac2faef4d1f3e0e1f91c4d8e076992cca511e04466"
+        },
+        "passed": true
+      },
+      {
+        "name": "known independent base2 sequence",
+        "passed": true
+      },
+      {
+        "name": "all finite ASCII directions, cosine radial mapping and sensor-major order",
+        "first_second_sensor": "3 4 0.90010000000000001 0.0055242717280199029 0 0.9999847410945204",
+        "maximum_norm_error": 3.3306690738754696e-16,
+        "last_first_sensor": "1 2 0.80010000000000003 0.9999846675613604 -0.0003834893358550838 0.0055242717280199029",
+        "passed": true
+      },
+      {
+        "name": "BOM-free ASCII and LF terminators",
+        "passed": true
+      },
+      {
+        "name": "pre-cancelled generation writes no partial success",
+        "passed": true
+      },
+      {
+        "name": "unsupported count",
+        "passed": true
+      },
+      {
+        "name": "missing newline",
+        "passed": true
+      },
+      {
+        "name": "nonfinite",
+        "passed": true
+      },
+      {
+        "name": "wrong normal",
+        "passed": true
+      }
+    ]
+  },
+  "native": {
+    "source_evidence_sha256": "fa1ced81f9d6efacabbc69b5d892235b7c5888c1e083f94b3a54fbf85f44cc90",
+    "completed_utc": "2026-10-11T11:48:56.8722961Z",
+    "test_sha256": "cefa9777f9d522c15df7efaddaa14d1902229d2a7349113484014d66183913e8",
+    "supervisor_sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "native_process_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "checks": [
+      {
+        "name": "complete generated native ASCII bytes",
+        "passed": true,
+        "receipt": {
+          "Bytes": 2784066,
+          "Rays": 32768,
+          "Sha256": "14559b54d0806d02f322faac2faef4d1f3e0e1f91c4d8e076992cca511e04466"
+        },
+        "process_wall_seconds": 3.5986394,
+        "observed_call_seconds": null,
+        "completed": true,
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "exit_code": 0,
+        "termination_reason": null,
+        "input_transport": "typed-continuous-generated-stream-65536",
+        "input_bytes": 2784066,
+        "input_receipt": {
+          "Bytes": 2784066,
+          "Rays": 32768,
+          "Sha256": "14559b54d0806d02f322faac2faef4d1f3e0e1f91c4d8e076992cca511e04466"
+        },
+        "output_bytes": 2784066,
+        "limits": {
+          "file_bytes": 536870912,
+          "timeout_seconds": 7200.0,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "scratch_bytes": 2147483648
+        }
+      },
+      {
+        "name": "timeout",
+        "passed": true,
+        "receipt": null,
+        "process_wall_seconds": 4.1874299,
+        "observed_call_seconds": 4.3004125,
+        "completed": false,
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "exit_code": -1073741510,
+        "termination_reason": "process and stream deadline exceeded declared seconds",
+        "input_transport": "typed-continuous-generated-stream-65536",
+        "input_bytes": null,
+        "input_receipt": null,
+        "output_bytes": 0,
+        "limits": {
+          "file_bytes": 536870912,
+          "timeout_seconds": 4.0,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "scratch_bytes": 2147483648
+        }
+      },
+      {
+        "name": "generator-failure",
+        "passed": true,
+        "receipt": null,
+        "process_wall_seconds": 0.2544214,
+        "observed_call_seconds": 0.294283,
+        "completed": false,
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "exit_code": -1073741510,
+        "termination_reason": "engine exited before accepting complete input",
+        "input_transport": "typed-continuous-generated-stream-65536",
+        "input_bytes": null,
+        "input_receipt": null,
+        "output_bytes": 0,
+        "limits": {
+          "file_bytes": 536870912,
+          "timeout_seconds": 4.0,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "scratch_bytes": 2147483648
+        }
+      }
+    ]
+  },
+  "release_acceptance_complete": false,
+  "current_source_sha256": {
+    "scripts/annual-paired-primary-stream.cs": "49ccb427479ee2951c1b94753dafecd318b519511c3aca7c6b629eed695045cd",
+    "scripts/test-annual-paired-primary-stream.ps1": "436946f218aed9f8a336a3f010755bd9db421b5e7a027e4eff73c59c3197da87",
+    "scripts/test-annual-hammersley-native-stream.ps1": "cefa9777f9d522c15df7efaddaa14d1902229d2a7349113484014d66183913e8",
+    "scripts/annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "scripts/annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b"
+  }
+}

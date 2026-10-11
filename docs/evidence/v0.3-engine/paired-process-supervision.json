@@ -1,0 +1,506 @@
+{
+  "schema_version": "greenlens.paired-process-supervision-evidence.v1",
+  "scope": "Research-only native process lifecycle and binary-stream tests using original synthetic fixtures. No Radiance execution or annual numerical acceptance.",
+  "original_failure": {
+    "observation": {
+      "scope": "Synthetic exited-parent inherited-pipe reproduction; no Radiance or live research worker",
+      "supervisor_sha256": "e20e38e370014673e31bfb2b3d57e1ae2c284cb8132ebb105057001406ac65dc",
+      "declared_timeout_seconds": 10,
+      "watchdog_observation_seconds": 20.0954275,
+      "parent_exited": true,
+      "hung_beyond_timeout": true,
+      "host_exit_after_owned_child_cleanup": 1,
+      "external_watchdog_cleanup": true,
+      "actual_process_record_created_only_after_cleanup": true,
+      "release_acceptance_complete": false
+    },
+    "retained_raw_record_sha256": "6f344793bfcf6dc2b006e0dde8912e3063f4b78e5d7b94eb60b3e0b75832f090",
+    "source_retention": "Exact original supervisor bytes retained separately; historical live reference helper and workers unchanged"
+  },
+  "primitive": {
+    "command": "pwsh -NoProfile -File scripts/test-annual-paired-native-process.ps1",
+    "passed": true,
+    "completed_utc": "2026-10-11T11:45:58.7204782Z",
+    "check_count": 12,
+    "source_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "test_sha256": "77e44fafd9cfbc1ca313e8dc7c7c0149f5959a4a273e6a376b1c2df93af2196b",
+    "retained_raw_record_sha256": "dca64fbba68ca4f3db4174462266f08c43932c5d322450b378dab86025c1f041",
+    "checks": [
+      {
+        "passed": true,
+        "name": "argument-array-quoting-Unicode-child-environment",
+        "argument_count": 7
+      },
+      {
+        "bytes": 2097152,
+        "passed": true,
+        "name": "binary-2MiB-round-trip",
+        "sha256": "3576fb4c340cd1fd272a79a7fc8357065a717bb84a5a00298a943090bd4d9167"
+      },
+      {
+        "exit_code": 7,
+        "passed": true,
+        "name": "nonzero-exit-and-stderr"
+      },
+      {
+        "termination_seconds": 0.1506511,
+        "passed": true,
+        "child_exited": true,
+        "name": "kill-after-parent-exit",
+        "live_job_working_set_bytes": 111480832
+      },
+      {
+        "termination_seconds": 0.3233832,
+        "passed": true,
+        "child_exited": true,
+        "name": "dispose-after-parent-exit",
+        "live_job_working_set_bytes": 102760448
+      },
+      {
+        "termination_seconds": 0.1629147,
+        "passed": true,
+        "child_exited": true,
+        "name": "pending-stdin-after-parent-exit",
+        "live_job_working_set_bytes": 102133760
+      },
+      {
+        "termination_seconds": 0.1960587,
+        "passed": true,
+        "child_exited": true,
+        "name": "kill-live-parent-and-child",
+        "live_job_working_set_bytes": 211324928
+      },
+      {
+        "name": "only-explicit-standard-handles-inherited",
+        "passed": true
+      },
+      {
+        "name": "missing-executable",
+        "passed": true
+      },
+      {
+        "name": "missing-directory",
+        "passed": true
+      },
+      {
+        "name": "NUL-argument",
+        "passed": true
+      },
+      {
+        "name": "negative-wait",
+        "passed": true
+      }
+    ]
+  },
+  "supervisor": {
+    "command": "pwsh -NoProfile -File scripts/test-annual-paired-process.ps1",
+    "passed": true,
+    "completed_utc": "2026-10-11T11:46:22.9108785Z",
+    "check_count": 16,
+    "source_sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "native_process_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "test_sha256": "d5c19d29981f469f71fcc335f956883d8e0badb63c578e877a61af8fa7abf1c8",
+    "retained_raw_record_sha256": "09f19a5cf956112a6543a2d2ba8d27219ef28d25f114b0d610b0b19bd9a0685b",
+    "checks": [
+      {
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:45:29.6346828Z",
+          "finished_utc": "2026-10-11T11:45:32.3891918Z",
+          "wall_seconds": 2.7110956,
+          "sampled_peak_working_set_bytes": 96870400,
+          "sampled_runner_plus_engine_peak_bytes": 292106240,
+          "sampled_scratch_peak_bytes": 4194309,
+          "input_bytes": 2097152,
+          "input_transport": "owned-file-stream-65536",
+          "input_receipt": {},
+          "output_bytes": 2097152,
+          "terminated_tree_reason": null,
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 7200.0
+          },
+          "completed": true
+        },
+        "output_sha256": "3576fb4c340cd1fd272a79a7fc8357065a717bb84a5a00298a943090bd4d9167",
+        "input_sha256": "3576fb4c340cd1fd272a79a7fc8357065a717bb84a5a00298a943090bd4d9167",
+        "name": "byte-exact 2 MiB native pipe",
+        "passed": true,
+        "bytes": 2097152
+      },
+      {
+        "passed": true,
+        "name": "nonzero",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 7,
+          "started_utc": "2026-10-11T11:45:32.7337711Z",
+          "finished_utc": "2026-10-11T11:45:35.3534849Z",
+          "wall_seconds": 2.5987007,
+          "sampled_peak_working_set_bytes": 97886208,
+          "sampled_runner_plus_engine_peak_bytes": 296763392,
+          "sampled_scratch_peak_bytes": 2097157,
+          "input_bytes": 2097152,
+          "input_transport": "owned-file-stream-65536",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "engine exited before accepting complete input",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 7200.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "zero-incomplete-input",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:45:35.4473815Z",
+          "finished_utc": "2026-10-11T11:45:38.2169087Z",
+          "wall_seconds": 2.7492278,
+          "sampled_peak_working_set_bytes": 92520448,
+          "sampled_runner_plus_engine_peak_bytes": 293339136,
+          "sampled_scratch_peak_bytes": 2097157,
+          "input_bytes": 2097152,
+          "input_transport": "owned-file-stream-65536",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "engine exited before accepting complete input",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 7200.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "partial-input",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:45:38.3004176Z",
+          "finished_utc": "2026-10-11T11:45:41.5408657Z",
+          "wall_seconds": 3.216019,
+          "sampled_peak_working_set_bytes": 107638784,
+          "sampled_runner_plus_engine_peak_bytes": 299147264,
+          "sampled_scratch_peak_bytes": 2097157,
+          "input_bytes": 2097152,
+          "input_transport": "owned-file-stream-65536",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "engine exited before accepting complete input",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 7200.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "timeout",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": -1073741510,
+          "started_utc": "2026-10-11T11:45:41.6142941Z",
+          "finished_utc": "2026-10-11T11:45:45.9586089Z",
+          "wall_seconds": 4.3159779,
+          "sampled_peak_working_set_bytes": 189448192,
+          "sampled_runner_plus_engine_peak_bytes": 382701568,
+          "sampled_scratch_peak_bytes": 2097162,
+          "input_bytes": 2097152,
+          "input_transport": "owned-file-stream-65536",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "process and stream deadline exceeded declared seconds",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 4.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "memory",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": -1073741510,
+          "started_utc": "2026-10-11T11:45:46.0253091Z",
+          "finished_utc": "2026-10-11T11:45:46.2319257Z",
+          "wall_seconds": 0.1831605,
+          "sampled_peak_working_set_bytes": 5562368,
+          "sampled_runner_plus_engine_peak_bytes": 198885376,
+          "sampled_scratch_peak_bytes": 0,
+          "input_bytes": 0,
+          "input_transport": "small-text",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "observed runner-plus-job working set exceeded declared bytes",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 1,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 7200.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "file",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:45:46.2836494Z",
+          "finished_utc": "2026-10-11T11:45:48.8990324Z",
+          "wall_seconds": 2.5989766,
+          "sampled_peak_working_set_bytes": 98516992,
+          "sampled_runner_plus_engine_peak_bytes": 293564416,
+          "sampled_scratch_peak_bytes": 4101,
+          "input_bytes": 0,
+          "input_transport": "small-text",
+          "input_receipt": null,
+          "output_bytes": 4096,
+          "terminated_tree_reason": "generated file exceeded declared bytes",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 1024,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 7200.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "scratch",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:45:48.9517858Z",
+          "finished_utc": "2026-10-11T11:45:51.4759885Z",
+          "wall_seconds": 2.5092996,
+          "sampled_peak_working_set_bytes": 97951744,
+          "sampled_runner_plus_engine_peak_bytes": 293380096,
+          "sampled_scratch_peak_bytes": 4100,
+          "input_bytes": 0,
+          "input_transport": "small-text",
+          "input_receipt": null,
+          "output_bytes": 4096,
+          "terminated_tree_reason": "paired scratch exceeded declared bytes",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 1024,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 7200.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "live-open-stdout-file-cap",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": -1073741510,
+          "started_utc": "2026-10-11T11:45:51.5302331Z",
+          "finished_utc": "2026-10-11T11:45:56.7930058Z",
+          "wall_seconds": 5.2439356,
+          "sampled_peak_working_set_bytes": 106577920,
+          "sampled_runner_plus_engine_peak_bytes": 301477888,
+          "sampled_scratch_peak_bytes": 131099,
+          "input_bytes": 0,
+          "input_transport": "small-text",
+          "input_receipt": null,
+          "output_bytes": 131088,
+          "terminated_tree_reason": "generated file exceeded declared bytes",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 4096,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 20.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "live-open-scratch-cap",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": -1073741510,
+          "started_utc": "2026-10-11T11:45:56.8723122Z",
+          "finished_utc": "2026-10-11T11:46:02.1084343Z",
+          "wall_seconds": 5.2157677,
+          "sampled_peak_working_set_bytes": 105541632,
+          "sampled_runner_plus_engine_peak_bytes": 300670976,
+          "sampled_scratch_peak_bytes": 131099,
+          "input_bytes": 0,
+          "input_transport": "small-text",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "paired scratch exceeded declared bytes",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 8192,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 20.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "exited-parent-inherited-output",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:46:02.1669624Z",
+          "finished_utc": "2026-10-11T11:46:12.3945275Z",
+          "wall_seconds": 10.2051012,
+          "sampled_peak_working_set_bytes": 208408576,
+          "sampled_runner_plus_engine_peak_bytes": 402812928,
+          "sampled_scratch_peak_bytes": 15,
+          "input_bytes": 0,
+          "input_transport": "small-text",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "process and stream deadline exceeded declared seconds",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 10.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "passed": true,
+        "name": "exited-parent-inherited-stdin-output",
+        "process": {
+          "executable": "fixture.exe",
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:46:12.4752037Z",
+          "finished_utc": "2026-10-11T11:46:22.6200205Z",
+          "wall_seconds": 10.1253145,
+          "sampled_peak_working_set_bytes": 206540800,
+          "sampled_runner_plus_engine_peak_bytes": 401035264,
+          "sampled_scratch_peak_bytes": 2097167,
+          "input_bytes": 2097152,
+          "input_transport": "owned-file-stream-65536",
+          "input_receipt": null,
+          "output_bytes": 0,
+          "terminated_tree_reason": "process and stream deadline exceeded declared seconds",
+          "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+          "job_empty": true,
+          "stream_tasks_completed": true,
+          "limits": {
+            "file_bytes": 536870912,
+            "scratch_bytes": 2147483648,
+            "memory_bytes": 2147483648,
+            "cleanup_seconds": 5,
+            "timeout_seconds": 10.0
+          },
+          "completed": false
+        }
+      },
+      {
+        "child_started": false,
+        "passed": true,
+        "name": "input-open-failure"
+      },
+      {
+        "child_started": false,
+        "passed": true,
+        "name": "output-open-failure"
+      },
+      {
+        "child_started": false,
+        "passed": true,
+        "name": "input-path-escape"
+      },
+      {
+        "child_started": false,
+        "passed": true,
+        "name": "output-path-escape"
+      }
+    ]
+  },
+  "limitations": [
+    "Windows 10 or newer; atomic nested Job Object creation must be permitted, otherwise launch fails explicitly.",
+    "Working-set peaks are sampled observations, not unsampled lifetime maxima.",
+    "Synthetic descendants use ordinary CreateProcess inheritance; this is not a sandbox for hostile or externally brokered processes.",
+    "No hosted CI, native desktop workflow, or scientific-profile acceptance is implied.",
+    "Disk limits are sampled every five seconds and at finalization; bytes can grow between checks."
+  ],
+  "redaction": "Personal absolute paths and synthetic process argument paths omitted; original local records remain retained.",
+  "release_acceptance_complete": false,
+  "prior_observation": {
+    "scope": "Earlier12primitive/14wrapper pass before live-file-cap and observed-member-signal strengthening; original local records retained",
+    "primitive_source_sha256": "e7a3a973b15dad50b83768c9ed902a710bb1e9398f62c16caf7ceee2d8e6acfd",
+    "primitive_record_sha256": "1a1873fdc6a539227d1b38c3fa915f7b6013ce0f3daf984135dd892d90d0705e",
+    "supervisor_source_sha256": "b41823bc8fbdf25965fce93a5d6f139b1f2e1c9528a629523e8f93142b843f07",
+    "supervisor_record_sha256": "9e564ff1712277ff08fb661457330cc9aa7e42cae387c4b01fff01cac4b27573"
+  }
+}

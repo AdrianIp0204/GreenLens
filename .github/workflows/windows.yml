@@ -88,7 +88,11 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Offline package documentation regressions failed' }
       - name: Required bounded reference-harness regressions
         run: |
-          $scripts = @('test-annual-matched-evidence','test-annual-reference','test-annual-reference-process','test-annual-reference-sensitivity','test-annual-reference-boundary-stop')
+          # Recovery tests read this exact historical source as data; they never
+          # execute it or reconstruct an unchecked approximation of the defect.
+          git fetch --no-tags --depth=1 origin 8e7fe4bc95c07856f89ba008fdd4d6cc751b1615
+          if ($LASTEXITCODE -ne 0) { throw 'Required historical reference-harness source is unavailable' }
+          $scripts = @('test-annual-matched-evidence','test-annual-reference','test-annual-reference-process','test-annual-reference-sensitivity','test-annual-reference-boundary-stop','test-annual-reference-identity','test-annual-collect-reference','test-annual-reference-recovery','test-annual-paired-native-process','test-annual-paired-process','test-annual-paired-primary-stream','test-annual-hammersley-native-stream')
           foreach ($name in $scripts) {
             pwsh -NoProfile -File "scripts/$name.ps1" 2>&1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE "$name.txt")
             if ($LASTEXITCODE -ne 0) { throw "Required bounded harness regression failed: $name" }

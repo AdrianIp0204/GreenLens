@@ -1,5 +1,13 @@
 # Progress and acceptance evidence
 
+## 2026-10-12 local — fixed permutation investigation closed
+
+- Hosted main CI completed: clean `5cde6dc` passes native foundations, selected-hour and all four annual execution jobs, but fails the same six annual metric comparisons; dependent replay is skipped. All 336 compact report rows match both prior checkpoints exactly. The [source-bound record](evidence/v0.3-ci/final-main-5cde6dc.json) is a digest/report audit, not another raw-array audit. Application source remains unchanged from candidate07.
+- Verified execution/integrity: all four streams and eight native stages succeed. Fresh strict collection and independent raw rederivation preserve all 384 checks, 147,456 raw scalars and 15,074 arithmetic comparisons (maximum difference 4.55e-12). A further compact audit verifies every row, denominator and binding.
+- Verified failure: the [final record](evidence/v0.3-engine/fixed-reference-permutation.json) has eighteen failed depth comparisons: eight for seed 0 and ten for seed 1. All 192 prefix, 96 half and 48 cross-seed checks pass. No seed is selected or averaged; the reference family remains unqualified.
+- Blocked acceptance: the existing six annual convergence failures, unqualified same-sky reference and rejected angular correction require further transport/reference engineering. Repeating the same experiments cannot establish acceptance. No new native experiments or production profiles follow this bounded investigation. Physical modifier selection remains unverified while the user is unavailable; completed independent implementation, delivery and replay evidence remains retained.
+- Packaging preparation: the documentation-only regression passes for 167 exact-byte files and 253 local links within the unchanged 8 MiB guard, including both final hosted records. This does not rebuild the frozen candidate07 installer. All additions are scoped evidence, research tooling or documentation; application and dependency source remains unchanged from `890166b`.
+
 ## 2026-10-12 local — proposed angular correction rejected
 
 - Verified analytical failure: the [fixed 42-case screen](evidence/v0.3-engine/moment-angular-feasibility.json) converges, but 36/84 surrogate responses fail its 1% surface criterion and 13/84 fail its separate 5 lx/5% component band. Independent reviewers confirm every row/outcome and the shadow/glass counterexample. This concerns intermediate-surface illumination, not a newly measured room failure. Original finite direct does not generally repair reflected illumination.

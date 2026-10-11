@@ -72,3 +72,5 @@ docs/evidence/v0.3-engine/canonical128-moment-room-controls.json -text -whitespa
 # Preserve the independently reviewed angular diagnostic and standalone source seals.
 docs/evidence/v0.3-engine/moment-angular-feasibility.json -text -whitespace
 scripts/angular_feasibility.py -text -whitespace
+docs/evidence/v0.3-engine/fixed-reference-permutation.json -text -whitespace
+docs/evidence/v0.3-ci/final-main-5cde6dc.json -text -whitespace

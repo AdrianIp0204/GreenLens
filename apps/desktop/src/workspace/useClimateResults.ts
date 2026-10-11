@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
-import type { ClimateComparison, ClimateProjectDocument, ClimateRunRecord, ClimateSensorSeries, ClimateValues, CurrentClimateResult, ResultField, Study, WeatherIntervalView } from '../climate-types';
+import type { ClimateComparison, ClimateProjectDocument, ClimateRunRecord, ClimateRunSummary, ClimateSensorSeries, ClimateValues, CurrentClimateResult, ResultField, Study, RunWeatherIntervalView } from '../climate-types';
 import type { ValidatedModel } from '../types';
 import { climateOverlayMatches, climateRequestKey, ClimateRequestGate, climateSeriesSensor } from './climate-presentation.mjs';
 import { climateRelationKey, selectedRecordProject, selectedPairProject, selectedPairRelation, snapshotDisplayContext, snapshotDisplayScale } from './climate-pair-context.mjs';
@@ -10,12 +10,14 @@ interface Options {
   study:Study|null; current:CurrentClimateResult|null; records:ClimateRunRecord[];
   validated:ValidatedModel|null; selection:string[];
 }
-function useWeatherView(path:string,project:ClimateProjectDocument|null,run:ClimateRunRecord|null,interval:number) {
-  const weatherId=project?.climate?.weather.find(w=>w.binding.original_sha256===run?.weather_asset.binding.original_sha256&&w.binding.normalized_sha256===run?.weather_asset.binding.normalized_sha256&&w.binding.time_axis_sha256===run?.weather_asset.binding.time_axis_sha256)?.id??null;
-  const key=JSON.stringify([path,weatherId,interval]);
-  const [state,setState]=useState<{key:string;value:WeatherIntervalView|null;error:string}|null>(null);
-  useEffect(()=>{let live=true;if(!path||!weatherId)return;const timer=window.setTimeout(()=>{
-    invoke<WeatherIntervalView>('weather_interval',{path,weatherId,intervalIndex:interval}).then(value=>live&&setState({key,value,error:''})).catch(e=>live&&setState({key,value:null,error:String(e)}));
+export function useRunWeatherView(path:string,summary:ClimateRunSummary|null,interval:number) {
+  const key=JSON.stringify([path,summary,interval]);
+  const [state,setState]=useState<{key:string;value:RunWeatherIntervalView|null;error:string}|null>(null);
+  useEffect(()=>{let live=true;if(!path||!summary)return;const timer=window.setTimeout(()=>{
+    invoke<RunWeatherIntervalView>('run_weather_interval',{path,summary,intervalIndex:interval}).then(value=>{
+      if(value.run_id!==summary.id||value.record_sha256!==summary.record_sha256||value.interval.index!==interval||value.hour.index!==interval)throw new Error('Weather response does not match the requested immutable run and interval.');
+      if(live)setState({key,value,error:''});
+    }).catch(e=>live&&setState({key,value:null,error:String(e)}));
   },70);return()=>{live=false;window.clearTimeout(timer);};},[key]);
   return state?.key===key?state:null;
 }
@@ -57,7 +59,7 @@ export function useClimateResults(options:Options) {
   const selectedCondition=view.runId==='current'?current:selectedResponse?.value??null;
   const selectedRelation=selectedPairRelation(summary,selectedCondition??undefined,selectedResponse?.error);
   const canOverlay=climateOverlayMatches(summary,selectedCondition,values,validated);
-  const weatherView=useWeatherView(path,project,run,interval);
+  const weatherView=useRunWeatherView(path,summary,interval);
   const [historicalSensor,setHistoricalSensor]=useState<{key:string;id:string|null}|null>(null);
   const historicalSensorKey=JSON.stringify([context,summary?.id,summary?.record_sha256]);
   const sensorId=climateSeriesSensor(canOverlay,selection,historicalSensor?.key===historicalSensorKey?historicalSensor.id:null,run?.series.sensor_ids??[]);
@@ -78,7 +80,7 @@ export function useClimateResults(options:Options) {
   const [pairDisplay,setPairDisplay]=useState({documentId,field:'illuminance' as ResultField,interval:1908});
   const pairView=pairDisplay.documentId===documentId?pairDisplay:{documentId,field:'illuminance' as ResultField,interval:1908};
   const {annual:pairAnnual,field:pairField,interval:pairInterval}=snapshotDisplayContext(pairA,pairView);
-  const pairWeather=useWeatherView(path,project,pairA,pairInterval);
+  const pairWeather=useRunWeatherView(path,a,pairInterval);
   const pairKey=JSON.stringify([path,a?.id,a?.record_sha256,b?.id,b?.record_sha256,pairField,pairInterval]);
   const [comparisonState,setComparison]=useState<{key:string;value:ClimateComparison|null;error:string}|null>(null);
   const pairGate=useRef(new ClimateRequestGate());
@@ -106,7 +108,7 @@ export function useClimateResults(options:Options) {
     scale:snapshotDisplayScale(field,values),
     weather:weatherView?.value??null,weatherError:weatherView?.error??'',sensorSeries:sensorSeries?.value??null,seriesError:sensorSeries?.error??'',sensorId,
     selectHistoricalSensor:(id:string|null)=>setHistoricalSensor({key:historicalSensorKey,id}),
-    pairTime:{path,annual:pairAnnual,field:pairField,interval:pairInterval,setInterval:(interval:number)=>setPairDisplay({...pairView,documentId,interval}),weather:pairWeather?.value??null,weatherError:pairWeather?.error??''},
+    pairTime:{path,summary:a,annual:pairAnnual,field:pairField,interval:pairInterval,setInterval:(interval:number)=>setPairDisplay({...pairView,documentId,interval}),weather:pairWeather?.value??null,weatherError:pairWeather?.error??''},
     setPairField:(field:ResultField)=>setPairDisplay({...pairView,documentId,field}),pairRelation,
     comparison:pairResponse?.value??null,comparisonError:pairResponse?.error??'',comparing:Boolean(a&&b&&!pairResponse),a,b,selectPair};
 }

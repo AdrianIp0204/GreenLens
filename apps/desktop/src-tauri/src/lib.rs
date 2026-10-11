@@ -425,6 +425,30 @@ async fn weather_find_interval(
 }
 
 #[tauri::command]
+async fn run_weather_interval(
+    path: String,
+    summary: ClimateRunSummary,
+    interval_index: usize,
+) -> CommandResult<climate::RunWeatherIntervalView> {
+    blocking(move || climate::run_weather_interval(Path::new(&path), &summary, interval_index))
+        .await
+}
+
+#[tauri::command]
+async fn run_weather_find_interval(
+    path: String,
+    summary: ClimateRunSummary,
+    month: u8,
+    day: u8,
+    hour_ending: u8,
+) -> CommandResult<climate::RunWeatherIntervalView> {
+    blocking(move || {
+        climate::run_weather_find_interval(Path::new(&path), &summary, month, day, hour_ending)
+    })
+    .await
+}
+
+#[tauri::command]
 fn study_defaults() -> Study {
     Study::default()
 }
@@ -619,6 +643,8 @@ pub fn run() {
             weather_asset_inspect,
             weather_interval,
             weather_find_interval,
+            run_weather_interval,
+            run_weather_find_interval,
             study_defaults,
             study_validate,
             study_configure,

@@ -972,6 +972,74 @@ pub fn open_series_for_run(
     Ok((record, reader))
 }
 
+/// A historical weather query is bound to an immutable run, not a current
+/// project weather identifier. It reads compact metadata and retained weather,
+/// without scanning result chunks or requiring the original import location.
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct RunWeatherIntervalView {
+    pub run_id: String,
+    pub record_sha256: String,
+    pub binding: WeatherBinding,
+    pub hour: greenlens_core::weather::WeatherHour,
+    pub interval: greenlens_core::weather::WeatherInterval,
+}
+
+fn retained_run_weather(
+    root: &Path,
+    summary: &ClimateRunSummary,
+) -> Result<(ClimateRunRecord, greenlens_core::weather::ParsedWeather)> {
+    let record = read_result_metadata(root, summary)?;
+    let (asset, parsed) = weather::open(&root.join(&summary.path).join("weather"))?;
+    ensure!(
+        asset == record.weather_asset,
+        "Historical weather differs from the immutable run snapshot"
+    );
+    Ok((record, parsed))
+}
+
+fn run_weather_view(
+    summary: &ClimateRunSummary,
+    parsed: &greenlens_core::weather::ParsedWeather,
+    index: usize,
+) -> Result<RunWeatherIntervalView> {
+    let interval = parsed.data.interval(index)?;
+    Ok(RunWeatherIntervalView {
+        run_id: summary.id.clone(),
+        record_sha256: summary.record_sha256.clone(),
+        binding: parsed.data.binding(),
+        hour: parsed.data.hours[index].clone(),
+        interval,
+    })
+}
+
+pub fn run_weather_interval(
+    root: &Path,
+    summary: &ClimateRunSummary,
+    interval_index: usize,
+) -> Result<RunWeatherIntervalView> {
+    let (_, parsed) = retained_run_weather(root, summary)?;
+    run_weather_view(summary, &parsed, interval_index)
+}
+
+pub fn run_weather_find_interval(
+    root: &Path,
+    summary: &ClimateRunSummary,
+    month: u8,
+    day: u8,
+    hour_ending: u8,
+) -> Result<RunWeatherIntervalView> {
+    ensure!(
+        (1..=12).contains(&month) && (1..=31).contains(&day) && (1..=24).contains(&hour_ending),
+        "Weather selection requires month 1–12, day 1–31 and EPW hour ending 1–24 in local standard time"
+    );
+    let (_, parsed) = retained_run_weather(root, summary)?;
+    let hour = parsed.data.hours.iter().find(|hour| {
+        hour.month == month && hour.day == day && hour.hour_ending == hour_ending
+    }).context("Date/hour is absent from the retained non-leap weather year; February 29 and invalid month/day combinations are unsupported")?;
+    run_weather_view(summary, &parsed, hour.index)
+}
+
 pub fn verify_project_evidence(root: &Path, project: &ClimateProject) -> Result<()> {
     validate_extension_references(project)?;
     for reference in &project.weather {

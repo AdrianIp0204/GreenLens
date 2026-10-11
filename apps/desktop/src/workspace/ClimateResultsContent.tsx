@@ -26,9 +26,9 @@ export function ClimateResultControls({controller:c,records,alternative}:{contro
     {!c.run&&<p className="panel-note">No completed result matches the current scientific inputs. Undo restores matching history; otherwise run this study. Retained snapshots remain selectable.</p>}
   </section>;
 }
-export function ClimateTimeControl({controller:c}:{controller:Pick<ClimateResultController,'path'|'interval'|'annual'|'setInterval'|'weather'|'weatherError'>}) {
+export function ClimateTimeControl({controller:c}:{controller:Pick<ClimateResultController,'path'|'summary'|'interval'|'annual'|'setInterval'|'weather'|'weatherError'>}) {
   return <div className="climate-time"><label>Displayed weather interval <input aria-label="Displayed weather interval" type="number" min={0} max={8759} step={1} value={c.interval} disabled={!c.annual} onChange={e=>{const value=e.currentTarget.valueAsNumber;if(Number.isInteger(value)&&value>=0&&value<8760)c.setInterval(value);}}/></label>{c.annual&&<input aria-label="Hourly result time slider" type="range" min={0} max={8759} step={1} value={c.interval} onChange={e=>c.setInterval(Number(e.target.value))}/>}
-    {c.annual&&<WeatherCalendarPicker path={c.path} weatherId={c.weather?.weather_id??null} current={c.weather} onSelect={c.setInterval}/>}
+    {c.annual&&<WeatherCalendarPicker path={c.path} summary={c.summary} current={c.weather} onSelect={c.setInterval}/>}
     <p>{hourLabel(c.weather)}</p>{c.weather&&<small>DNI {fmt(c.weather.hour.direct_normal_wh_m2)} Wh/m² · DHI {fmt(c.weather.hour.diffuse_horizontal_wh_m2)} Wh/m² per hourly interval. Source-year label {c.weather.hour.source_year} is provenance.</small>}{c.weatherError&&<p role="alert">{c.weatherError}</p>}
     <small>{c.annual?'Changing the displayed hour reads saved values; it does not calculate again.':'This result contains only the selected weather interval.'} No OS timezone or daylight-saving conversion.</small>
   </div>;

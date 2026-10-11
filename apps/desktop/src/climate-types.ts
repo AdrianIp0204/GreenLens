@@ -58,6 +58,9 @@ export interface WeatherInterval {
 export interface WeatherIntervalView {
   weather_id: string; binding: WeatherBinding; hour: WeatherHour; interval: WeatherInterval;
 }
+export interface RunWeatherIntervalView {
+  run_id: string; record_sha256: string; binding: WeatherBinding; hour: WeatherHour; interval: WeatherInterval;
+}
 
 export type NumericalProfile = 'shipping' | 'reference';
 export type StudyMode =
@@ -169,6 +172,12 @@ export interface ClimateCommands {
   };
   weather_find_interval: {
     args: { path: string; weatherId: string; month: number; day: number; hourEnding: number }; result: WeatherIntervalView;
+  };
+  run_weather_interval: {
+    args: { path: string; summary: ClimateRunSummary; intervalIndex: number }; result: RunWeatherIntervalView;
+  };
+  run_weather_find_interval: {
+    args: { path: string; summary: ClimateRunSummary; month: number; day: number; hourEnding: number }; result: RunWeatherIntervalView;
   };
   study_defaults: { args: Record<string, never>; result: Study };
   study_validate: { args: { model: Model; study: Study }; result: StudyValidation };

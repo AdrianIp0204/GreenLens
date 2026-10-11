@@ -8,4 +8,4 @@ export class ClimateRequestGate {
   cancel():void;
   read<T>(request:()=>Promise<T>,expected?:(value:T)=>boolean):Promise<{value:T|null;error:string}|null>;
 }
-export function hourLabel(view:WeatherIntervalView|null):string;
+export function hourLabel(view:Pick<WeatherIntervalView,'hour'>|null):string;

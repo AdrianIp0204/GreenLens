@@ -1209,3 +1209,144 @@ fn historical_process_builders_match_independent_frozen_contracts() {
         assert_eq!(json!(expected), snapshot["processes"]);
     }
 }
+
+#[test]
+fn historical_weather_navigation_uses_embedded_assets_without_current_weather_references() {
+    for method in [
+        annual::LEGACY_METHOD_VERSION,
+        annual::EXPLICIT_METHOD_VERSION,
+        annual::METHOD_VERSION,
+    ] {
+        let scratch = tempdir().unwrap();
+        let root = tempdir().unwrap();
+        let record = fixture_for_method(scratch.path(), false, method);
+        let reference = summary(&record).unwrap();
+        promote_run(scratch.path(), root.path(), &record.id).unwrap();
+        drop(scratch);
+        let mut extension = ClimateProject::default();
+        append_run(&mut extension, &record).unwrap();
+        let mut project = crate::example();
+        project.schema_version = "0.3.0".into();
+        project.climate = Some(extension);
+        write_json(&root.path().join("project.json"), &project).unwrap();
+        let view = crate::open_project(root.path()).unwrap();
+        assert!(view.project.climate.as_ref().unwrap().weather.is_empty());
+        assert!(view
+            .project
+            .climate
+            .as_ref()
+            .unwrap()
+            .studies
+            .values()
+            .all(|study| matches!(study.calculation, StudyMode::StaticOvercast)));
+        assert!(!root.path().join("weather").exists());
+        let directory = root.path().join(&reference.path);
+        let before = evidence_files(&record)
+            .into_iter()
+            .chain(["checksums.json".into()])
+            .map(|name| {
+                let data = fs::read(directory.join(&name)).unwrap();
+                (name, data)
+            })
+            .collect::<Vec<_>>();
+        for (month, day, hour, index) in [(1, 1, 1, 0), (12, 31, 24, 8759)] {
+            let found =
+                run_weather_find_interval(root.path(), &reference, month, day, hour).unwrap();
+            let direct = run_weather_interval(root.path(), &reference, index).unwrap();
+            assert_eq!(json!(found), json!(direct));
+            assert_eq!(found.run_id, record.id);
+            assert_eq!(found.record_sha256, reference.record_sha256);
+            assert_eq!(found.binding, record.weather_asset.binding);
+            assert_eq!(
+                (found.hour.month, found.hour.day, found.hour.hour_ending),
+                (month, day, hour)
+            );
+            assert_eq!(found.hour.index, index);
+            assert_eq!(found.interval.local_start_minute, (index * 60) as i32);
+        }
+        for (name, original) in before {
+            assert_eq!(fs::read(directory.join(name)).unwrap(), original);
+        }
+    }
+}
+
+#[test]
+fn historical_weather_queries_reject_bad_labels_and_record_pins_without_scanning_result_chunks() {
+    let scratch = tempdir().unwrap();
+    let root = tempdir().unwrap();
+    let record = fixture(scratch.path(), false);
+    let reference = summary(&record).unwrap();
+    promote_run(scratch.path(), root.path(), &record.id).unwrap();
+    // Weather queries use compact metadata and retained EPW, not raw results.
+    let chunk = root
+        .path()
+        .join(&reference.path)
+        .join("series")
+        .join(&record.series.chunks[0].file);
+    let bytes = fs::read(&chunk).unwrap();
+    fs::remove_file(&chunk).unwrap();
+    run_weather_interval(root.path(), &reference, 8759).unwrap();
+    run_weather_find_interval(root.path(), &reference, 1, 1, 1).unwrap();
+    assert!(open_series_for_run(root.path(), &reference)
+        .unwrap()
+        .1
+        .hour(0)
+        .is_err());
+    fs::write(chunk, bytes).unwrap();
+    for (month, day, hour) in [
+        (0, 1, 1),
+        (13, 1, 1),
+        (2, 29, 1),
+        (4, 31, 1),
+        (1, 1, 0),
+        (1, 1, 25),
+    ] {
+        assert!(run_weather_find_interval(root.path(), &reference, month, day, hour).is_err());
+    }
+    assert!(run_weather_interval(root.path(), &reference, 8760).is_err());
+    let mut changed = reference.clone();
+    changed.record_sha256 = "f".repeat(64);
+    assert!(run_weather_interval(root.path(), &changed, 0).is_err());
+    changed.path = "runs/../outside".into();
+    assert!(run_weather_find_interval(root.path(), &changed, 1, 1, 1).is_err());
+}
+
+#[test]
+fn historical_weather_reparses_and_rejects_coherently_resealed_asset_substitution() {
+    let scratch = tempdir().unwrap();
+    let root = tempdir().unwrap();
+    let record = fixture_for_method(scratch.path(), false, annual::LEGACY_METHOD_VERSION);
+    let reference = summary(&record).unwrap();
+    promote_run(scratch.path(), root.path(), &record.id).unwrap();
+    let directory = root.path().join(&reference.path);
+    let weather = directory.join("weather");
+    let mut changed = record.weather_asset.clone();
+    changed.source.citation = "Different source attribution after resealing".into();
+    write_json(&weather.join("asset.json"), &changed).unwrap();
+    let seal_weather = || {
+        seal(
+            &weather,
+            &[
+                "asset.json",
+                "weather.json",
+                "original.epw",
+                "normalized.epw",
+            ],
+        )
+        .unwrap()
+    };
+    seal_weather();
+    reseal(&directory, &record);
+    assert!(run_weather_interval(root.path(), &reference, 0)
+        .unwrap_err()
+        .to_string()
+        .contains("immutable run snapshot"));
+    write_json(&weather.join("asset.json"), &record.weather_asset).unwrap();
+    let mut metadata: greenlens_core::weather::WeatherData =
+        read_json(&weather.join("weather.json")).unwrap();
+    metadata.hours[0].direct_normal_wh_m2 = 500.0;
+    write_json(&weather.join("weather.json"), &metadata).unwrap();
+    seal_weather();
+    reseal(&directory, &record);
+    assert!(run_weather_find_interval(root.path(), &reference, 1, 1, 1).is_err());
+}

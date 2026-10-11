@@ -83,6 +83,23 @@ test('overhang projection is a dimension edit, so only its translated gap accept
   assert.equal(candidate.overhang.projection_m, model.overhang.projection_m + .2);
   assert.equal(candidate.overhang.gap_above_window_m, model.overhang.gap_above_window_m);
 });
+test('planar object snaps preserve off-grid targets while Ortho projects without changing its untouched coordinate', () => {
+  const targetDelta = [.25, 0, .15];
+  const snapped = candidateForPlanarMove(model, 'window', targetDelta, false, true, true);
+  assert.equal(snapped.window.center_x_m, 2.25);
+  assert.equal(snapped.window.sill_m, 1.05);
+  const gridOnly = candidateForPlanarMove(model, 'window', targetDelta, false, true, false);
+  assert.notEqual(gridOnly.window.center_x_m, snapped.window.center_x_m);
+  const ortho = candidateForPlanarMove(model, 'window', targetDelta, true, true, true);
+  assert.equal(ortho.window.center_x_m, 2.25);
+  assert.equal(ortho.window.sill_m, model.window.sill_m);
+  const offGridOrigin = structuredClone(model); offGridOrigin.window.sill_m = .93;
+  assert.equal(candidateForPlanarMove(offGridOrigin, 'window', targetDelta, true, true, false).window.sill_m, .93);
+  const context = { ...model, obstruction: { center_x_m: 2, distance_m: 5, width_m: 2, depth_m: 1, height_m: 4, reflectance: .2 } };
+  const contextSnap = candidateForPlanarMove(context, 'obstruction', [.25, .25, 0], false, true, true);
+  assert.equal(contextSnap.obstruction.center_x_m, 2.25);
+  assert.equal(contextSnap.obstruction.distance_m, 4.75);
+});
 test('context facade-distance sign and room clockwise angle remain bounded-schema operations', () => {
   const context = { ...model, obstruction: { center_x_m: 2, distance_m: 5, width_m: 2, depth_m: 1, height_m: 4, reflectance: .2 } };
   assert.equal(candidateForPlanarMove(context, 'obstruction', [0, .3, 0]).obstruction.distance_m, 4.7);

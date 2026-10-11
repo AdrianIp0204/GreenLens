@@ -111,14 +111,17 @@ export function candidateForHandle(model, handle, delta) {
   if (handle.kind === 'rotate') candidate[group][field] = ((candidate[group][field] % 360) + 360) % 360;
   return candidate; // Invalid bounds remain visible in preview; Rust decides acceptance.
 }
-export function candidateForPlanarMove(model, objectId, delta, ortho = false, gridSnap = false) {
+export function candidateForPlanarMove(model, objectId, delta, ortho = false, gridSnap = false, appliedObjectSnap = false) {
   const constrained = constrainedDelta(delta, ortho), candidate = structuredClone(model);
+  // A geometric target wins over the construction grid. Ortho still projects
+  // onto one axis and must not round the untouched coordinate off its origin.
+  const coordinate = (base, change) => ortho && change === 0 ? base : snapScalar(base + change, 0.1, gridSnap && !appliedObjectSnap);
   if (objectId === 'window') {
-    candidate.window.center_x_m = snapScalar(model.window.center_x_m + constrained[0], 0.1, gridSnap);
-    candidate.window.sill_m = snapScalar(model.window.sill_m + constrained[2], 0.1, gridSnap);
+    candidate.window.center_x_m = coordinate(model.window.center_x_m, constrained[0]);
+    candidate.window.sill_m = coordinate(model.window.sill_m, constrained[2]);
   } else if (objectId === 'obstruction' && candidate.obstruction) {
-    candidate.obstruction.center_x_m = snapScalar(model.obstruction.center_x_m + constrained[0], 0.1, gridSnap);
-    candidate.obstruction.distance_m = snapScalar(model.obstruction.distance_m - constrained[1], 0.1, gridSnap);
+    candidate.obstruction.center_x_m = coordinate(model.obstruction.center_x_m, constrained[0]);
+    candidate.obstruction.distance_m = coordinate(model.obstruction.distance_m, -constrained[1]);
   } else return null;
   return candidate;
 }

@@ -316,6 +316,10 @@ pub fn atomic_json(root: &Path, value: &impl Serialize) -> Result<String> {
     let temporary = root.join(format!(".project-{}.tmp", Uuid::new_v4()));
     let mut data = serde_json::to_vec_pretty(value)?;
     data.push(b'\n');
+    ensure!(
+        data.len() as u64 <= MAX_EVIDENCE_FILE_BYTES,
+        "Project manifest exceeds the 64 MiB readable limit. The existing project was retained; save a project with fewer historical runs"
+    );
     let mut file = OpenOptions::new()
         .create_new(true)
         .write(true)
@@ -538,6 +542,20 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn oversized_manifest_preserves_previous_file_without_temporary_write() {
+        let project = tempfile::tempdir().unwrap();
+        let prior_revision = atomic_json(project.path(), &vec!["retained project"]).unwrap();
+        let prior_bytes = fs::read(project.path().join("project.json")).unwrap();
+        let oversized = "x".repeat(MAX_EVIDENCE_FILE_BYTES as usize);
+        assert!(atomic_json(project.path(), &oversized).is_err());
+        assert_eq!(
+            fs::read(project.path().join("project.json")).unwrap(),
+            prior_bytes
+        );
+        assert_eq!(revision(project.path()).unwrap(), Some(prior_revision));
+        assert_eq!(fs::read_dir(project.path()).unwrap().count(), 1);
+    }
     #[test]
     fn shared_archive_budget_accepts_exact_bounds_and_rejects_one_over() {
         let mut entries = PackageBudget::default();

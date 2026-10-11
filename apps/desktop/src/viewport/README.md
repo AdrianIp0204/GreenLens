@@ -24,6 +24,8 @@ The visible construction grid is 1 m. Grid Snap quantizes edited scalar coordina
 
 Object snaps use authoritative polygon endpoints, real edge midpoints and polygon vertex-average centers, including the sensor-plane rectangle. Compound context faces remain separate so no connector edges are invented. Candidates within 9 CSS pixels are eligible; the nearest wins, with End before Mid before Cen on a distance tie. Hidden geometry is excluded; locking does not remove a geometric snap reference. Coincident points retain their semantic owners.
 
+An applied object snap takes precedence over Grid Snap, retaining off-grid target coordinates. A planar Move projects the target onto its permitted plane; Ortho additionally keeps only the dominant local axis and preserves the other starting coordinate. Its marker and coordinate feedback show that provisional constrained reference point, labelled plane projection or Ortho projection. They do not promise coincidence with an off-plane or off-axis target; Rust still validates the final candidate.
+
 The blue provisional outline uses exact supported parameter wire corners and model rotation, preserving fixed anchors such as the window sill. It is not simulation geometry. The displayed numeric candidate describes the proposed parameter edit; Rust validates the accepted geometry after release. Invalid candidates are never silently clamped into valid input. Display layers, camera positions, selection and aids are separate from scientific inputs/hashes.
 
 ## Supplemental verification

@@ -311,14 +311,21 @@ export class ViewportEngine {
     if (handle.planar) {
       this.ray(view, p); const point = this.raycaster.ray.intersectPlane(d.plane!, new THREE.Vector3()); if (!point) return;
       const snap = this.coordinate(view, p), displacement = point.sub(d.startPoint!);
-      if (snap && !this.props.selection.includes(snap.objectId)) { displacement.copy(vector(snap.position as Vec3).sub(d.origin!)); displacement.addScaledVector(d.plane!.normal, -displacement.dot(d.plane!.normal)); }
+      const appliedObjectSnap = Boolean(snap && !this.props.selection.includes(snap.objectId));
+      if (snap && appliedObjectSnap) { displacement.copy(vector(snap.position as Vec3).sub(d.origin!)); displacement.addScaledVector(d.plane!.normal, -displacement.dot(d.plane!.normal)); }
       const local = worldToLocal(world(displacement), d.original!.room.rotation_deg);
-      d.candidate = candidateForPlanarMove(d.original!, this.props.selection[0], local, this.props.display.ortho, this.props.display.grid_snap) as Model;
+      d.candidate = candidateForPlanarMove(d.original!, this.props.selection[0], local, this.props.display.ortho, this.props.display.grid_snap, appliedObjectSnap) as Model;
       if (!d.candidate) return;
       this.props.onPreviewCandidate?.(d.candidate, handle.label);
       this.previewGeometry(d);
       const id = this.props.selection[0];
       const deltaLocal: Vec3 = id === 'window' ? [d.candidate.window.center_x_m - d.original!.window.center_x_m, 0, d.candidate.window.sill_m - d.original!.window.sill_m] : [d.candidate.obstruction!.center_x_m - d.original!.obstruction!.center_x_m, d.original!.obstruction!.distance_m - d.candidate.obstruction!.distance_m, 0];
+      if (snap && appliedObjectSnap) {
+        const reference = world(d.origin!.clone().add(vector(localToWorld(deltaLocal, d.original!.room.rotation_deg) as Vec3)));
+        const screen = this.project(reference, view), label = `${snap.kind} · ${this.props.display.ortho ? 'Ortho projection' : 'plane projection'}`;
+        this.emit({ snap: screen ? { view: view.id, x: screen[0], y: screen[1], label } : null });
+        this.props.onPointerStatus?.({ world: reference, snap: label, view: view.id });
+      }
       this.emit({ preview: `${handle.label} · Δ ${deltaLocal.map(x => x.toFixed(3)).join(', ')} m${this.props.display.ortho ? ' · Ortho' : ''}` }); if (this.cells) this.cells.visible = false; return;
     }
     if (handle.kind === 'rotate') {

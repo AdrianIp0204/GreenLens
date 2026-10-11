@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "greenlens.study.v0.3",
+  "$id": "urn:greenlens:study:v0.3",
   "title": "GreenLens versioned daylight study",
   "type": "object",
   "additionalProperties": false,

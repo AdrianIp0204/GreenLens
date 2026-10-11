@@ -1,0 +1,451 @@
+{
+  "evidence_status": "exploratory completed experiment; not release acceptance",
+  "experiment": "v0.3 finite disc offset sampling 空間",
+  "source_evidence_sha256": "7db61755a22d27f3dd907134ca620267a961b31ea0eecaccf68288728e4f86f7",
+  "results": [
+    {
+      "passed": true,
+      "expected_lux": 121.66031417473963,
+      "absolute_error_lux": 6.437473962250806e-05,
+      "actual_lux": 121.6602498,
+      "sensor_index": 0,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 121.66031417473963,
+      "absolute_error_lux": 4.6474739633595163e-05,
+      "actual_lux": 121.66026769999999,
+      "sensor_index": 1,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 60.83015708736981,
+      "absolute_error_lux": 1.4287369815235706e-05,
+      "actual_lux": 60.8301428,
+      "sensor_index": 2,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 0.0,
+      "absolute_error_lux": 0.0,
+      "actual_lux": 0.0,
+      "sensor_index": 3,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 0.0,
+      "absolute_error_lux": 0.0,
+      "actual_lux": 0.0,
+      "sensor_index": 4,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 112.88291104053631,
+      "absolute_error_lux": 2.124069859463688,
+      "actual_lux": 115.0069809,
+      "sensor_index": 5,
+      "samples": 256
+    },
+    {
+      "passed": false,
+      "expected_lux": 97.87558777414992,
+      "absolute_error_lux": 5.204638574149911,
+      "actual_lux": 92.67094920000001,
+      "sensor_index": 6,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 79.98936677226693,
+      "absolute_error_lux": 3.951688272266935,
+      "actual_lux": 76.0376785,
+      "sensor_index": 7,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 41.67094740247269,
+      "absolute_error_lux": 2.5259067975273126,
+      "actual_lux": 44.196854200000004,
+      "sensor_index": 8,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 23.78472640058969,
+      "absolute_error_lux": 4.729329199410312,
+      "actual_lux": 28.514055600000002,
+      "sensor_index": 9,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 8.7774031342033,
+      "absolute_error_lux": 0.2231900342033004,
+      "actual_lux": 8.5542131,
+      "sensor_index": 10,
+      "samples": 256
+    },
+    {
+      "passed": true,
+      "expected_lux": 121.66031417473963,
+      "absolute_error_lux": 6.437473962250806e-05,
+      "actual_lux": 121.6602498,
+      "sensor_index": 0,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 121.66031417473963,
+      "absolute_error_lux": 6.437473962250806e-05,
+      "actual_lux": 121.6602498,
+      "sensor_index": 1,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 60.83015708736981,
+      "absolute_error_lux": 3.218736981125403e-05,
+      "actual_lux": 60.8301249,
+      "sensor_index": 2,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 0.0,
+      "absolute_error_lux": 0.0,
+      "actual_lux": 0.0,
+      "sensor_index": 3,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 0.0,
+      "absolute_error_lux": 0.0,
+      "actual_lux": 0.0,
+      "sensor_index": 4,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 112.88291104053631,
+      "absolute_error_lux": 2.1530456405363196,
+      "actual_lux": 110.7298654,
+      "sensor_index": 5,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 97.87558777414992,
+      "absolute_error_lux": 2.828467274149915,
+      "actual_lux": 95.0471205,
+      "sensor_index": 6,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 79.98936677226693,
+      "absolute_error_lux": 2.7635936722669356,
+      "actual_lux": 77.2257731,
+      "sensor_index": 7,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 41.67094740247269,
+      "absolute_error_lux": 2.1694819975273063,
+      "actual_lux": 43.8404294,
+      "sensor_index": 8,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 23.78472640058969,
+      "absolute_error_lux": 4.01647959941031,
+      "actual_lux": 27.801206,
+      "sensor_index": 9,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 8.7774031342033,
+      "absolute_error_lux": 1.7965493057966988,
+      "actual_lux": 10.57395244,
+      "sensor_index": 10,
+      "samples": 1024
+    },
+    {
+      "passed": true,
+      "expected_lux": 121.66031417473963,
+      "absolute_error_lux": 6.437473962250806e-05,
+      "actual_lux": 121.6602498,
+      "sensor_index": 0,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 121.66031417473963,
+      "absolute_error_lux": 6.437473962250806e-05,
+      "actual_lux": 121.6602498,
+      "sensor_index": 1,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 60.83015708736981,
+      "absolute_error_lux": 3.218736981125403e-05,
+      "actual_lux": 60.8301249,
+      "sensor_index": 2,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 0.0,
+      "absolute_error_lux": 0.0,
+      "actual_lux": 0.0,
+      "sensor_index": 3,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 0.0,
+      "absolute_error_lux": 0.0,
+      "actual_lux": 0.0,
+      "sensor_index": 4,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 112.88291104053631,
+      "absolute_error_lux": 1.4995882405363261,
+      "actual_lux": 111.38332279999999,
+      "sensor_index": 5,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 97.87558777414992,
+      "absolute_error_lux": 3.0363936741499202,
+      "actual_lux": 94.8391941,
+      "sensor_index": 6,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 79.98936677226693,
+      "absolute_error_lux": 2.258652572266925,
+      "actual_lux": 77.73071420000001,
+      "sensor_index": 7,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 41.67094740247269,
+      "absolute_error_lux": 2.347694397527306,
+      "actual_lux": 44.0186418,
+      "sensor_index": 8,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 23.78472640058969,
+      "absolute_error_lux": 3.1254175994103086,
+      "actual_lux": 26.910144,
+      "sensor_index": 9,
+      "samples": 4096
+    },
+    {
+      "passed": true,
+      "expected_lux": 8.7774031342033,
+      "absolute_error_lux": 1.7371463657966988,
+      "actual_lux": 10.5145495,
+      "sensor_index": 10,
+      "samples": 4096
+    }
+  ],
+  "processes": [
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "vertical.rad",
+        "aperture.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:41:59.9042686Z",
+      "finished_utc": "2026-10-11T05:42:00.0827922Z",
+      "wall_seconds": 0.1660301,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 1007,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-faa",
+        "-n",
+        "1",
+        "-y",
+        "11",
+        "-c",
+        "256",
+        "-ab",
+        "0",
+        "-ad",
+        "1",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "1",
+        "-ds",
+        "0",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V+",
+        "-m",
+        "sun",
+        "aperture.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:42:00.2791287Z",
+      "finished_utc": "2026-10-11T05:42:00.4127036Z",
+      "wall_seconds": 0.1324617,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 796,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-faa",
+        "-n",
+        "1",
+        "-y",
+        "11",
+        "-c",
+        "1024",
+        "-ab",
+        "0",
+        "-ad",
+        "1",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "1",
+        "-ds",
+        "0",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V+",
+        "-m",
+        "sun",
+        "aperture.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:42:00.5650914Z",
+      "finished_utc": "2026-10-11T05:42:00.7838415Z",
+      "wall_seconds": 0.2185449,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 797,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-faa",
+        "-n",
+        "1",
+        "-y",
+        "11",
+        "-c",
+        "4096",
+        "-ab",
+        "0",
+        "-ad",
+        "1",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "1",
+        "-ds",
+        "0",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V+",
+        "-m",
+        "sun",
+        "aperture.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:42:01.2262820Z",
+      "finished_utc": "2026-10-11T05:42:01.5815598Z",
+      "wall_seconds": 0.3551204,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 797,
+      "timeout_killed_tree": false
+    }
+  ]
+}

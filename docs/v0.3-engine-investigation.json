@@ -1,0 +1,89 @@
+{
+  "schema_version": "greenlens.v0.3-engine-investigation.v1",
+  "snapshot_utc": "2026-10-11T06:03:24Z",
+  "release_complete": false,
+  "profile_frozen": false,
+  "native_platform": "Windows x64 / pinned Radiance 6.0.2",
+  "hardware": {
+    "cpu": "Intel Core i7-13650HX",
+    "logical_processors": 20,
+    "physical_cores": 14,
+    "ram_bytes": 25463480320
+  },
+  "weather": {
+    "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+    "canonical_normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+    "earlier_numerically_equivalent_research_copy_sha256": "45e81714b7c2a1bf458fa9e76ddee16002ff2f45d98bb9bc4334cc086137ef43",
+    "note": "Original PVGIS TMY bytes are preserved. The explicit normalization changes minute 0 to 60 and singular SAVING to SAVINGS. An earlier research text copy has different bytes; its hash must not replace the canonical provider hash."
+  },
+  "verified_limited": [
+    "Native ASCII full-year shape: 3 sensors × 8,760 intervals with 4,411 solar columns, finite outputs and independent small-matrix multiplication. Non-climatic feasibility data and low exploratory settings only.",
+    "Selected-hour three-record dew-point context exactly matches all 578 annual sky RGB rows and corresponding solar definitions in eight predeclared boundary/daylight cases.",
+    "Exact piecewise-sky horizontal integral error: 0.0041024%; uniform pi L error: 0.054038%; all six orientation bins exact; solar cosine and blocked-beam checks pass.",
+    "Equal-solid-angle direct transmission with 1,024 and 4,096 rays passes all eleven finite-disc aperture points at elevated radiance. The 256-ray profile fails one offset edge.",
+    "Angle-dependent glass direct transmission agrees with the explicit engine beam at 0, 30 and 60 degrees within 0.000724%.",
+    "A 128-positive-source, 24-sensor solar transport measurement took 350.160 seconds with a sampled child peak working set of 7,798,784 bytes. Positive-source count scaling estimates 3.08 hours for annual shipping solar alone; this is not an annual measurement.",
+    "Full-year MF4 diffuse/ground ASCII sky generation produced 226,165,911 bytes in 38.579 seconds, with sampled child peak working set 249,835,520 bytes. This fits the 512 MiB scratch file limit; nine unusually-bright sky warnings are retained."
+  ],
+  "unresolved": [
+    "The current 24-sensor, twelve-hour A matched investigation is incomplete. Hour 1912 fails one sensor by 5.308%, exceeding the frozen 5% relative threshold. No subset counts as acceptance.",
+    "The finite-disc corrected adapter is not yet integrated or replay-verified.",
+    "Full-year 24-sensor A/B, shipping/reference metrics, resource budget freeze and installed annual UI acceptance have not yet been completed."
+  ],
+  "failed_checks_retained": [
+    "All three completed matched-sky candidate profiles fail. The first ab5 failure file uses integer-rounded diagnostic allowed_error_lux; the corrected script uses the exact max(5.0 lx, 5%) threshold.",
+    "The centroid-sun half-disc aperture check reports 0 instead of 60.830157 lx. Changing -ds cannot correct the distant-source nopart behavior.",
+    "Radiance dj1 approximate square-to-disc jitter has off-centre bias and is not selected for correction.",
+    "Equal-solid-angle 256-ray sampling fails an offset edge. The 1,024/4,096-ray passes do not alone freeze a production profile."
+  ],
+  "evidence": [
+    {
+      "file": "evidence/v0.3-engine/feasibility-24h.json",
+      "sha256": "576f1fac71b2e44ee095154b5c96733b0f3a78a3140002007a299f9b589f730c"
+    },
+    {
+      "file": "evidence/v0.3-engine/feasibility-8760h-3sensors.json",
+      "sha256": "cc0f729fb256e645f01ff90d21bb440e9a5915ff5d5c1fdf1328c50200d705ec"
+    },
+    {
+      "file": "evidence/v0.3-engine/matched-A-ab5-ad2048-failed.json",
+      "sha256": "f8e4e96d9e9ccddb1a5ae934ee9de116771c018279a95eb02c7a283786107ca9"
+    },
+    {
+      "file": "evidence/v0.3-engine/matched-A-ab7-ad8192-weight1e5-failed.json",
+      "sha256": "513c3f7b0a6687db236e029dc1e5186d0fa51839fecf33cf695122ff8ebe6589"
+    },
+    {
+      "file": "evidence/v0.3-engine/matched-A-ab7-ad8192-weight1e7-failed.json",
+      "sha256": "7484091e04dff28eb496a7de1ca254a80771f22d5dba2cdbfd8e2e4a42225a2b"
+    },
+    {
+      "file": "evidence/v0.3-engine/isolated-transport-high-sampling.json",
+      "sha256": "615954ea1f1b87a656a8484868a8c42c68d7e24be4af9e48b41bed2729642c8d"
+    },
+    {
+      "file": "evidence/v0.3-engine/weather-selected-context.json",
+      "sha256": "2be6b1ca79782f39ddf5bd234eefcab065991be1b1235d0dc68d7228aafc2509"
+    },
+    {
+      "file": "evidence/v0.3-engine/analytical-centroid-edge-failed.json",
+      "sha256": "b36c02c9dac8255bfb156282d2ce1a794ab7471da813542a4ec88539a47e912b"
+    },
+    {
+      "file": "evidence/v0.3-engine/jittered-disc-offset-failed.json",
+      "sha256": "30ec954df55b454769e7dde35fbb7da4fa7ad72e04693dc6ee376da4304648aa"
+    },
+    {
+      "file": "evidence/v0.3-engine/directional-disc-quadrature.json",
+      "sha256": "9869702b68370cf02b94ed2691a69e7db7e8d6837cac5a68d6b52c1b36a7f2b1"
+    },
+    {
+      "file": "evidence/v0.3-engine/solar128-resource.json",
+      "sha256": "9e42422bd99e7c78c3bb163bf74d3750a8079efabc6a976c87bd9cc1fb86a1ea"
+    },
+    {
+      "file": "evidence/v0.3-engine/MF4-full-weather-sky-resource.json",
+      "sha256": "e791cd0dc0b26c7d217a90559926da03c0089bd60dc4f2f5bc872cff9fdcd10b"
+    }
+  ]
+}

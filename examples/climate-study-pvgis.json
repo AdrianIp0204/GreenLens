@@ -1,0 +1,19 @@
+{
+  "schema_version": "greenlens.study.v0.3",
+  "calculation": {
+    "mode": "annual",
+    "weather": {
+      "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+      "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+      "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+      "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+    },
+    "profile": "shipping"
+  },
+  "metrics": {
+    "da_threshold_lux": 300.0,
+    "udi_lower_lux": 100.0,
+    "udi_upper_lux": 3000.0,
+    "occupancy": { "kind": "daily", "start_minute": 480, "end_minute": 1080 }
+  }
+}

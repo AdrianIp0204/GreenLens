@@ -1,0 +1,535 @@
+{
+  "evidence_status": "exploratory completed experiment; not release acceptance",
+  "experiment": "v0.3 weather context 空間",
+  "source_evidence_sha256": "4708233fb2a0f9e9a0c898a351a439ecb2c7e5d574739cce160125548b464629",
+  "results": {
+    "annual_shape": [
+      578,
+      8760,
+      3
+    ],
+    "method": "Pinned native gendaymtx full-year columns versus preceding-two-record selected context; equality of parsed numeric sky and exact requested solar source. Integration consistency only.",
+    "all_passed": true,
+    "checks": [
+      {
+        "has_solar_source": false,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          0
+        ],
+        "hour_ending": 1,
+        "index": 0,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      },
+      {
+        "has_solar_source": false,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          0,
+          1
+        ],
+        "hour_ending": 2,
+        "index": 1,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      },
+      {
+        "has_solar_source": true,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          6,
+          7,
+          8
+        ],
+        "hour_ending": 9,
+        "index": 8,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      },
+      {
+        "has_solar_source": false,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          21,
+          22,
+          23
+        ],
+        "hour_ending": 24,
+        "index": 23,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      },
+      {
+        "has_solar_source": false,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          22,
+          23,
+          24
+        ],
+        "hour_ending": 1,
+        "index": 24,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      },
+      {
+        "has_solar_source": true,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          30,
+          31,
+          32
+        ],
+        "hour_ending": 9,
+        "index": 32,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      },
+      {
+        "has_solar_source": true,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          1906,
+          1907,
+          1908
+        ],
+        "hour_ending": 13,
+        "index": 1908,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      },
+      {
+        "has_solar_source": false,
+        "solar_source_exact_match": true,
+        "context_indices": [
+          8757,
+          8758,
+          8759
+        ],
+        "hour_ending": 24,
+        "index": 8759,
+        "passed": true,
+        "sky_max_absolute_rgb_radiance_error": 0.0
+      }
+    ],
+    "weather_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+    "schema_version": "greenlens.annual-weather-context-check.v1"
+  },
+  "processes": [
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "annual.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n",
+      "started_utc": "2026-10-11T05:34:49.4219292Z",
+      "finished_utc": "2026-10-11T05:34:58.9670141Z",
+      "wall_seconds": 9.5308849,
+      "sampled_peak_working_set_bytes": 67248128,
+      "output_bytes": 56693512,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "annual-suns.rad",
+        "-M",
+        "annual-modifiers.txt",
+        "annual.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n",
+      "started_utc": "2026-10-11T05:34:59.0894075Z",
+      "finished_utc": "2026-10-11T05:34:59.3256813Z",
+      "wall_seconds": 0.2351208,
+      "sampled_peak_working_set_bytes": 4780032,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:03.9881381Z",
+      "finished_utc": "2026-10-11T05:35:04.0975884Z",
+      "wall_seconds": 0.1093136,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 4198,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-0.rad",
+        "-M",
+        "modifiers-0.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:04.1082846Z",
+      "finished_utc": "2026-10-11T05:35:04.2212095Z",
+      "wall_seconds": 0.1127453,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:04.3334269Z",
+      "finished_utc": "2026-10-11T05:35:04.4461417Z",
+      "wall_seconds": 0.1125922,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 9400,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-1.rad",
+        "-M",
+        "modifiers-1.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:04.4613107Z",
+      "finished_utc": "2026-10-11T05:35:04.5948829Z",
+      "wall_seconds": 0.133438,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:04.6306057Z",
+      "finished_utc": "2026-10-11T05:35:04.7558817Z",
+      "wall_seconds": 0.1251254,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 18234,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-8.rad",
+        "-M",
+        "modifiers-8.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:04.7692519Z",
+      "finished_utc": "2026-10-11T05:35:04.8897103Z",
+      "wall_seconds": 0.1203094,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:04.9257362Z",
+      "finished_utc": "2026-10-11T05:35:05.0677983Z",
+      "wall_seconds": 0.1419544,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 13446,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-23.rad",
+        "-M",
+        "modifiers-23.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:05.0773562Z",
+      "finished_utc": "2026-10-11T05:35:05.1962467Z",
+      "wall_seconds": 0.1187778,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:05.2254347Z",
+      "finished_utc": "2026-10-11T05:35:05.3329822Z",
+      "wall_seconds": 0.1074255,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 13446,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-24.rad",
+        "-M",
+        "modifiers-24.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:05.3399176Z",
+      "finished_utc": "2026-10-11T05:35:05.4459433Z",
+      "wall_seconds": 0.1058881,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:05.4816600Z",
+      "finished_utc": "2026-10-11T05:35:05.5983470Z",
+      "wall_seconds": 0.1165846,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 18246,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-32.rad",
+        "-M",
+        "modifiers-32.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:05.6069230Z",
+      "finished_utc": "2026-10-11T05:35:05.7347349Z",
+      "wall_seconds": 0.1276953,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:05.7798185Z",
+      "finished_utc": "2026-10-11T05:35:05.9140786Z",
+      "wall_seconds": 0.1340463,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 27543,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-1908.rad",
+        "-M",
+        "modifiers-1908.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:05.9247537Z",
+      "finished_utc": "2026-10-11T05:35:06.0608525Z",
+      "wall_seconds": 0.1359917,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:06.0944838Z",
+      "finished_utc": "2026-10-11T05:35:06.2340844Z",
+      "wall_seconds": 0.1395012,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 13446,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "suns-8759.rad",
+        "-M",
+        "modifiers-8759.txt",
+        "selected.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:35:06.2438940Z",
+      "finished_utc": "2026-10-11T05:35:06.3689033Z",
+      "wall_seconds": 0.1248933,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    }
+  ]
+}

@@ -70,6 +70,7 @@ fn completed_app(scratch: &Path, project: &Project, run: RunRecord) -> Applicati
                 error: None,
                 result: Some(run),
                 pending_evidence: true,
+                climate_result: None,
             })),
             cancel: Arc::new(AtomicBool::new(false)),
             handle: None,

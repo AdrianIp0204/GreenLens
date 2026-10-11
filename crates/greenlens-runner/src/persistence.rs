@@ -398,15 +398,24 @@ pub fn verify_seal(root: &Path) -> Result<Checksums> {
     Ok(checksums)
 }
 pub fn promote_run(source: &Path, project: &Path, id: &str) -> Result<()> {
-    Uuid::parse_str(id).context("Invalid run identifier")?;
+    promote_evidence(source, project, "runs", id)
+}
+
+/// Caller owns the project writer lock, as for run promotion.
+pub fn promote_weather(source: &Path, project: &Path, id: &str) -> Result<()> {
+    promote_evidence(source, project, "weather", id)
+}
+
+fn promote_evidence(source: &Path, project: &Path, prefix: &str, id: &str) -> Result<()> {
+    Uuid::parse_str(id).context("Invalid evidence identifier")?;
     let sums = verify_seal(source)?;
-    let (runs, _destination_guards) = create_checked_directories(project, Path::new("runs"))?;
+    let (runs, _destination_guards) = create_checked_directories(project, Path::new(prefix))?;
     let target = runs.join(id);
     if fs::symlink_metadata(&target).is_ok() {
         let _existing_guard = DirectoryGuard::open(&target)?;
         ensure!(
             verify_seal(&target)?.sha256 == sums.sha256,
-            "Run identity conflict"
+            "Evidence identity conflict"
         );
         return Ok(());
     }

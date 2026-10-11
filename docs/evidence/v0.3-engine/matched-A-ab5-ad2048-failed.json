@@ -1,0 +1,3811 @@
+{
+  "evidence_status": "exploratory completed experiment; not release acceptance",
+  "experiment": "v0.3 matched A canonical ab5 ad2048 空間",
+  "source_evidence_sha256": "12caf3967127c53aa99b59197135f03e58a9209b190d88cb9c7eb8d655c343fe",
+  "results": {
+    "declaration": {
+      "declared_utc": "2026-10-11T05:08:08.1865579Z",
+      "weather_sha256": "45e81714b7c2a1bf458fa9e76ddee16002ff2f45d98bb9bc4334cc086137ef43",
+      "sensor_count": 24,
+      "intervals": [
+        {
+          "index": 1904,
+          "condition": "overcast"
+        },
+        {
+          "index": 1908,
+          "condition": "mixed"
+        },
+        {
+          "index": 1912,
+          "condition": "mixed"
+        },
+        {
+          "index": 4112,
+          "condition": "mixed"
+        },
+        {
+          "index": 4116,
+          "condition": "mixed"
+        },
+        {
+          "index": 4120,
+          "condition": "mixed"
+        },
+        {
+          "index": 6320,
+          "condition": "clear"
+        },
+        {
+          "index": 6324,
+          "condition": "mixed"
+        },
+        {
+          "index": 6328,
+          "condition": "mixed"
+        },
+        {
+          "index": 8504,
+          "condition": "clear"
+        },
+        {
+          "index": 8508,
+          "condition": "clear"
+        },
+        {
+          "index": 8512,
+          "condition": "clear"
+        }
+      ],
+      "candidate": {
+        "ad": 2048,
+        "mf": 2,
+        "ab": 5
+      },
+      "reference": {
+        "ab": 7,
+        "ad": 16384
+      },
+      "tolerance": "max(5lx,5%reference)",
+      "results": "not executed at declaration"
+    },
+    "checks": [
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 32.01835829000004,
+            "candidate_lux": 439.83011671,
+            "reference_lux": 471.84847500000006,
+            "allowed_error_lux": 24
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 22.411902639999994,
+            "candidate_lux": 471.04515164000003,
+            "reference_lux": 448.63324900000003,
+            "allowed_error_lux": 22
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 21.89971329300002,
+            "candidate_lux": 176.616835707,
+            "reference_lux": 198.51654900000003,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 19.05241542500002,
+            "candidate_lux": 123.48927627500001,
+            "reference_lux": 142.54169170000003,
+            "allowed_error_lux": 7
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 19.958757402000003,
+            "candidate_lux": 136.976288498,
+            "reference_lux": 156.9350459,
+            "allowed_error_lux": 8
+          }
+        ],
+        "maximum_error_over_tolerance": 2.72177363214286,
+        "interval_index": 1904,
+        "condition": "overcast",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 3.218366300000298,
+            "candidate_lux": 1452.7140053,
+            "reference_lux": 1449.4956389999998,
+            "allowed_error_lux": 72
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 52.387623909999775,
+            "candidate_lux": 2068.2516139100003,
+            "reference_lux": 2015.8639900000005,
+            "allowed_error_lux": 101
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 64.91492280000011,
+            "candidate_lux": 1439.0063822,
+            "reference_lux": 1503.921305,
+            "allowed_error_lux": 75
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 13.773251660000028,
+            "candidate_lux": 474.74978934,
+            "reference_lux": 488.52304100000003,
+            "allowed_error_lux": 24
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 8.561956640000062,
+            "candidate_lux": 874.4320336400001,
+            "reference_lux": 865.870077,
+            "allowed_error_lux": 43
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 5.678984430000014,
+            "candidate_lux": 881.1641645699999,
+            "reference_lux": 886.8431489999999,
+            "allowed_error_lux": 44
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 2.482194790000108,
+            "candidate_lux": 687.23237121,
+            "reference_lux": 689.7145660000001,
+            "allowed_error_lux": 34
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 10.77721409999998,
+            "candidate_lux": 426.34830389999996,
+            "reference_lux": 437.12551799999994,
+            "allowed_error_lux": 22
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 32.01835829000004,
+            "candidate_lux": 439.83011671,
+            "reference_lux": 471.84847500000006,
+            "allowed_error_lux": 24
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 22.411902639999994,
+            "candidate_lux": 471.04515164000003,
+            "reference_lux": 448.63324900000003,
+            "allowed_error_lux": 22
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 11.617703230000018,
+            "candidate_lux": 377.11444876999997,
+            "reference_lux": 388.732152,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 14.255706780000025,
+            "candidate_lux": 291.04866222,
+            "reference_lux": 305.304369,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 7.945260470000051,
+            "candidate_lux": 263.84780252999997,
+            "reference_lux": 271.793063,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 1.3572531800000434,
+            "candidate_lux": 274.58876018,
+            "reference_lux": 273.23150699999997,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 6.503195299999959,
+            "candidate_lux": 249.12140629999996,
+            "reference_lux": 242.618211,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 4.077195769999946,
+            "candidate_lux": 197.70024277,
+            "reference_lux": 193.62304700000004,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 21.89971329300002,
+            "candidate_lux": 176.616835707,
+            "reference_lux": 198.51654900000003,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 7.7507236279999745,
+            "candidate_lux": 179.015728372,
+            "reference_lux": 186.766452,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 7.291681350000005,
+            "candidate_lux": 177.74400175,
+            "reference_lux": 170.4523204,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 6.11329857399997,
+            "candidate_lux": 160.850904674,
+            "reference_lux": 154.73760610000002,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 19.05241542500002,
+            "candidate_lux": 123.48927627500001,
+            "reference_lux": 142.54169170000003,
+            "allowed_error_lux": 7
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 19.958757402000003,
+            "candidate_lux": 136.976288498,
+            "reference_lux": 156.9350459,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 3.4949989859999846,
+            "candidate_lux": 143.51898408600002,
+            "reference_lux": 140.02398510000003,
+            "allowed_error_lux": 7
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 5.254263432999991,
+            "candidate_lux": 126.77287053299999,
+            "reference_lux": 121.5186071,
+            "allowed_error_lux": 6
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 42.98248239999987,
+            "candidate_lux": 743.5984706000002,
+            "reference_lux": 786.580953,
+            "allowed_error_lux": 39
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 26.057370100000128,
+            "candidate_lux": 472.74241889999996,
+            "reference_lux": 498.7997890000001,
+            "allowed_error_lux": 25
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 24.26978660000003,
+            "candidate_lux": 341.5421314,
+            "reference_lux": 365.81191800000005,
+            "allowed_error_lux": 18
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 41.176930880000015,
+            "candidate_lux": 244.23874812,
+            "reference_lux": 285.415679,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 36.87825483000006,
+            "candidate_lux": 285.30724617,
+            "reference_lux": 322.18550100000004,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 18.73437806999999,
+            "candidate_lux": 301.09655693,
+            "reference_lux": 319.830935,
+            "allowed_error_lux": 16
+          }
+        ],
+        "maximum_error_over_tolerance": 2.9412093485714297,
+        "interval_index": 1908,
+        "condition": "mixed",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 12.73959109999987,
+            "candidate_lux": 1842.1640189000002,
+            "reference_lux": 1854.90361,
+            "allowed_error_lux": 93
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 46.14389090000077,
+            "candidate_lux": 6783.8302291,
+            "reference_lux": 6829.974120000001,
+            "allowed_error_lux": 341
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 20.084211700001106,
+            "candidate_lux": 6783.848988299999,
+            "reference_lux": 6803.9332,
+            "allowed_error_lux": 340
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 34.31048729999998,
+            "candidate_lux": 1791.5342627,
+            "reference_lux": 1825.84475,
+            "allowed_error_lux": 91
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 5.832088500000282,
+            "candidate_lux": 1309.5982784999999,
+            "reference_lux": 1315.4303670000002,
+            "allowed_error_lux": 66
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 8.35457439999982,
+            "candidate_lux": 2170.9842444,
+            "reference_lux": 2162.6296700000003,
+            "allowed_error_lux": 108
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 27.548905500000274,
+            "candidate_lux": 2166.6313045,
+            "reference_lux": 2194.1802100000004,
+            "allowed_error_lux": 110
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 9.368394600000101,
+            "candidate_lux": 1305.3572136,
+            "reference_lux": 1295.988819,
+            "allowed_error_lux": 65
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 42.98248239999987,
+            "candidate_lux": 743.5984706000002,
+            "reference_lux": 786.580953,
+            "allowed_error_lux": 39
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 24.310043699999824,
+            "candidate_lux": 1025.6390867,
+            "reference_lux": 1001.3290430000002,
+            "allowed_error_lux": 50
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 18.851295500000106,
+            "candidate_lux": 970.6483534999999,
+            "reference_lux": 989.499649,
+            "allowed_error_lux": 49
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 7.731994500000042,
+            "candidate_lux": 784.1103055,
+            "reference_lux": 791.8423,
+            "allowed_error_lux": 40
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 26.057370100000128,
+            "candidate_lux": 472.74241889999996,
+            "reference_lux": 498.7997890000001,
+            "allowed_error_lux": 25
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 3.4159107000000404,
+            "candidate_lux": 589.6029627,
+            "reference_lux": 586.187052,
+            "allowed_error_lux": 29
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 3.4654758000001493,
+            "candidate_lux": 574.6422322,
+            "reference_lux": 578.1077080000001,
+            "allowed_error_lux": 29
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 22.19412050000011,
+            "candidate_lux": 498.13077649999997,
+            "reference_lux": 520.3248970000001,
+            "allowed_error_lux": 26
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 24.26978660000003,
+            "candidate_lux": 341.5421314,
+            "reference_lux": 365.81191800000005,
+            "allowed_error_lux": 18
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 7.506560109999953,
+            "candidate_lux": 382.68479988999997,
+            "reference_lux": 390.1913599999999,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 0.011581299999988914,
+            "candidate_lux": 396.8053563,
+            "reference_lux": 396.79377500000004,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 7.532355800000005,
+            "candidate_lux": 368.9088328,
+            "reference_lux": 361.376477,
+            "allowed_error_lux": 18
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 41.176930880000015,
+            "candidate_lux": 244.23874812,
+            "reference_lux": 285.415679,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 36.87825483000006,
+            "candidate_lux": 285.30724617,
+            "reference_lux": 322.18550100000004,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 18.73437806999999,
+            "candidate_lux": 301.09655693,
+            "reference_lux": 319.830935,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 3.6293592499999363,
+            "candidate_lux": 283.02347825,
+            "reference_lux": 279.39411900000005,
+            "allowed_error_lux": 14
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 36.109569760000056,
+            "candidate_lux": 361.34650523999994,
+            "reference_lux": 397.456075,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 17.796178209999994,
+            "candidate_lux": 258.28858879,
+            "reference_lux": 276.084767,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 11.008295939999982,
+            "candidate_lux": 198.25111706,
+            "reference_lux": 209.259413,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 15.81861305999999,
+            "candidate_lux": 225.33596505999998,
+            "reference_lux": 209.517352,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 23.552189920000018,
+            "candidate_lux": 249.44607292,
+            "reference_lux": 225.893883,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 13.050743220000015,
+            "candidate_lux": 248.78067622,
+            "reference_lux": 235.729933,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 19.15617366999996,
+            "candidate_lux": 150.66640683000003,
+            "reference_lux": 169.8225805,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 18.919421110000002,
+            "candidate_lux": 165.59861189,
+            "reference_lux": 184.518033,
+            "allowed_error_lux": 9
+          }
+        ],
+        "maximum_error_over_tolerance": 2.394521708749995,
+        "interval_index": 1912,
+        "condition": "mixed",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 3.3273880400000735,
+            "candidate_lux": 649.93955596,
+            "reference_lux": 653.2669440000001,
+            "allowed_error_lux": 33
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 56.65179771000021,
+            "candidate_lux": 1835.8400222899998,
+            "reference_lux": 1892.49182,
+            "allowed_error_lux": 95
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 1.3284484999999222,
+            "candidate_lux": 2633.2239815000003,
+            "reference_lux": 2634.55243,
+            "allowed_error_lux": 132
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 66.12340550000044,
+            "candidate_lux": 1989.2423045,
+            "reference_lux": 2055.3657100000005,
+            "allowed_error_lux": 103
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 0.8765218299998878,
+            "candidate_lux": 567.63008083,
+            "reference_lux": 566.7535590000001,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 9.946539540000003,
+            "candidate_lux": 861.0370304600001,
+            "reference_lux": 870.9835700000001,
+            "allowed_error_lux": 44
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 9.088241700000253,
+            "candidate_lux": 1080.9132843,
+            "reference_lux": 1090.0015260000002,
+            "allowed_error_lux": 55
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 14.039986719999888,
+            "candidate_lux": 1069.07469328,
+            "reference_lux": 1083.11468,
+            "allowed_error_lux": 54
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 36.109569760000056,
+            "candidate_lux": 361.34650523999994,
+            "reference_lux": 397.456075,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 12.107219899999905,
+            "candidate_lux": 509.5181479,
+            "reference_lux": 497.41092800000007,
+            "allowed_error_lux": 25
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 15.411345099999949,
+            "candidate_lux": 545.2855699,
+            "reference_lux": 560.696915,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 8.093800039999905,
+            "candidate_lux": 567.26241304,
+            "reference_lux": 559.168613,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 17.796178209999994,
+            "candidate_lux": 258.28858879,
+            "reference_lux": 276.084767,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 6.953575409999985,
+            "candidate_lux": 315.35991059,
+            "reference_lux": 322.313486,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 7.604036350000058,
+            "candidate_lux": 340.97411965,
+            "reference_lux": 348.57815600000004,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 8.580082180000034,
+            "candidate_lux": 341.08889982,
+            "reference_lux": 349.668982,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 11.008295939999982,
+            "candidate_lux": 198.25111706,
+            "reference_lux": 209.259413,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 15.81861305999999,
+            "candidate_lux": 225.33596505999998,
+            "reference_lux": 209.517352,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 23.552189920000018,
+            "candidate_lux": 249.44607292,
+            "reference_lux": 225.893883,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 13.050743220000015,
+            "candidate_lux": 248.78067622,
+            "reference_lux": 235.729933,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 19.15617366999996,
+            "candidate_lux": 150.66640683000003,
+            "reference_lux": 169.8225805,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 18.919421110000002,
+            "candidate_lux": 165.59861189,
+            "reference_lux": 184.518033,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 6.246239009999954,
+            "candidate_lux": 192.97599600999996,
+            "reference_lux": 186.729757,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 1.402987679999967,
+            "candidate_lux": 184.75754932000004,
+            "reference_lux": 186.160537,
+            "allowed_error_lux": 9
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 38.30617899999993,
+            "candidate_lux": 678.450812,
+            "reference_lux": 716.756991,
+            "allowed_error_lux": 36
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 30.541158999999993,
+            "candidate_lux": 437.880898,
+            "reference_lux": 468.422057,
+            "allowed_error_lux": 23
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 15.703848999999991,
+            "candidate_lux": 282.635809,
+            "reference_lux": 298.339658,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 19.93308200000007,
+            "candidate_lux": 269.287958,
+            "reference_lux": 289.2210400000001,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 13.652884900000004,
+            "candidate_lux": 150.47558030000002,
+            "reference_lux": 164.12846520000002,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 23.833420399999994,
+            "candidate_lux": 169.1504176,
+            "reference_lux": 192.983838,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 14.892352499999987,
+            "candidate_lux": 183.49254200000001,
+            "reference_lux": 168.60018950000003,
+            "allowed_error_lux": 8
+          }
+        ],
+        "maximum_error_over_tolerance": 2.3833420399999996,
+        "interval_index": 4112,
+        "condition": "mixed",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 41.74172599999997,
+            "candidate_lux": 1257.26557,
+            "reference_lux": 1215.523844,
+            "allowed_error_lux": 61
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 46.701100000000224,
+            "candidate_lux": 2158.34083,
+            "reference_lux": 2111.63973,
+            "allowed_error_lux": 106
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 25.658934000000272,
+            "candidate_lux": 1783.664116,
+            "reference_lux": 1809.3230500000002,
+            "allowed_error_lux": 90
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 38.30617899999993,
+            "candidate_lux": 678.450812,
+            "reference_lux": 716.756991,
+            "allowed_error_lux": 36
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 7.419012999999836,
+            "candidate_lux": 791.11735,
+            "reference_lux": 783.6983370000002,
+            "allowed_error_lux": 39
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 4.228517000000124,
+            "candidate_lux": 935.5614,
+            "reference_lux": 939.7899170000002,
+            "allowed_error_lux": 47
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 10.343335999999908,
+            "candidate_lux": 849.015974,
+            "reference_lux": 859.3593099999999,
+            "allowed_error_lux": 43
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 12.849873000000002,
+            "candidate_lux": 591.6030549999999,
+            "reference_lux": 604.4529279999999,
+            "allowed_error_lux": 30
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 30.541158999999993,
+            "candidate_lux": 437.880898,
+            "reference_lux": 468.422057,
+            "allowed_error_lux": 23
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 8.675771999999938,
+            "candidate_lux": 529.36744,
+            "reference_lux": 520.691668,
+            "allowed_error_lux": 26
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 0.2124729999999886,
+            "candidate_lux": 475.290645,
+            "reference_lux": 475.078172,
+            "allowed_error_lux": 24
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 14.208841000000064,
+            "candidate_lux": 398.52935900000006,
+            "reference_lux": 412.7382000000001,
+            "allowed_error_lux": 21
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 15.703848999999991,
+            "candidate_lux": 282.635809,
+            "reference_lux": 298.339658,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 1.544949000000031,
+            "candidate_lux": 323.15586,
+            "reference_lux": 321.610911,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 6.987980999999991,
+            "candidate_lux": 317.853164,
+            "reference_lux": 310.865183,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 19.93308200000007,
+            "candidate_lux": 269.287958,
+            "reference_lux": 289.2210400000001,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 9.209728999999982,
+            "candidate_lux": 203.46142400000002,
+            "reference_lux": 212.671153,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 10.859571999999986,
+            "candidate_lux": 223.649044,
+            "reference_lux": 234.508616,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 8.891288000000003,
+            "candidate_lux": 230.721155,
+            "reference_lux": 221.829867,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 5.577103000000022,
+            "candidate_lux": 214.171352,
+            "reference_lux": 208.594249,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 13.652884900000004,
+            "candidate_lux": 150.47558030000002,
+            "reference_lux": 164.12846520000002,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 23.833420399999994,
+            "candidate_lux": 169.1504176,
+            "reference_lux": 192.983838,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 14.892352499999987,
+            "candidate_lux": 183.49254200000001,
+            "reference_lux": 168.60018950000003,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 1.2712937999999951,
+            "candidate_lux": 169.8651467,
+            "reference_lux": 168.5938529,
+            "allowed_error_lux": 8
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 23.42787800000002,
+            "candidate_lux": 325.079752,
+            "reference_lux": 348.50763,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 13.476551999999998,
+            "candidate_lux": 240.042938,
+            "reference_lux": 253.51949,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 17.66121400000003,
+            "candidate_lux": 179.850787,
+            "reference_lux": 197.51200100000003,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 12.134231,
+            "candidate_lux": 204.681846,
+            "reference_lux": 216.816077,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 13.71891800000003,
+            "candidate_lux": 217.70284300000003,
+            "reference_lux": 203.983925,
+            "allowed_error_lux": 10
+          }
+        ],
+        "maximum_error_over_tolerance": 1.766121400000003,
+        "interval_index": 4116,
+        "condition": "mixed",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 17.788661999999704,
+            "candidate_lux": 1216.6959359999998,
+            "reference_lux": 1198.9072740000001,
+            "allowed_error_lux": 60
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 23.69065000000046,
+            "candidate_lux": 3475.8488500000003,
+            "reference_lux": 3452.1582,
+            "allowed_error_lux": 173
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 14.951869999999872,
+            "candidate_lux": 3545.1021600000004,
+            "reference_lux": 3560.0540300000002,
+            "allowed_error_lux": 178
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 30.161141999999927,
+            "candidate_lux": 1272.7739510000001,
+            "reference_lux": 1302.935093,
+            "allowed_error_lux": 65
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 1.8243679999999358,
+            "candidate_lux": 843.801525,
+            "reference_lux": 845.6258929999999,
+            "allowed_error_lux": 42
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 30.91437400000018,
+            "candidate_lux": 1231.462362,
+            "reference_lux": 1262.3767360000002,
+            "allowed_error_lux": 63
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 9.373693000000003,
+            "candidate_lux": 1242.627845,
+            "reference_lux": 1252.001538,
+            "allowed_error_lux": 63
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 6.185703000000103,
+            "candidate_lux": 861.7145919999999,
+            "reference_lux": 867.900295,
+            "allowed_error_lux": 43
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 22.60573100000005,
+            "candidate_lux": 498.70456099999996,
+            "reference_lux": 521.310292,
+            "allowed_error_lux": 26
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 12.383935999999949,
+            "candidate_lux": 653.675422,
+            "reference_lux": 641.2914860000001,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 27.256330000000048,
+            "candidate_lux": 619.841558,
+            "reference_lux": 647.097888,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 6.124305999999933,
+            "candidate_lux": 529.8937000000001,
+            "reference_lux": 536.018006,
+            "allowed_error_lux": 27
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 23.42787800000002,
+            "candidate_lux": 325.079752,
+            "reference_lux": 348.50763,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 16.168174999999962,
+            "candidate_lux": 400.60880199999997,
+            "reference_lux": 384.440627,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 3.596289000000013,
+            "candidate_lux": 398.781391,
+            "reference_lux": 395.185102,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 7.371219999999937,
+            "candidate_lux": 345.40162200000003,
+            "reference_lux": 352.77284199999997,
+            "allowed_error_lux": 18
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 13.476551999999998,
+            "candidate_lux": 240.042938,
+            "reference_lux": 253.51949,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 2.1857690000000503,
+            "candidate_lux": 276.778392,
+            "reference_lux": 278.96416100000005,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 0.8302019999999857,
+            "candidate_lux": 283.038201,
+            "reference_lux": 282.20799900000003,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 9.910335000000032,
+            "candidate_lux": 262.846106,
+            "reference_lux": 252.935771,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 17.66121400000003,
+            "candidate_lux": 179.850787,
+            "reference_lux": 197.51200100000003,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 12.134231,
+            "candidate_lux": 204.681846,
+            "reference_lux": 216.816077,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 13.71891800000003,
+            "candidate_lux": 217.70284300000003,
+            "reference_lux": 203.983925,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 4.016581000000002,
+            "candidate_lux": 204.764186,
+            "reference_lux": 200.747605,
+            "allowed_error_lux": 10
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 28.1341460000001,
+            "candidate_lux": 395.408315,
+            "reference_lux": 423.5424610000001,
+            "allowed_error_lux": 21
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 21.446169000000054,
+            "candidate_lux": 270.101692,
+            "reference_lux": 291.54786100000007,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 22.43764999999999,
+            "candidate_lux": 226.011307,
+            "reference_lux": 203.573657,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 31.181442000000004,
+            "candidate_lux": 240.439423,
+            "reference_lux": 209.257981,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 12.816936999999967,
+            "candidate_lux": 229.887373,
+            "reference_lux": 217.07043600000003,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 21.920608499999958,
+            "candidate_lux": 151.7489863,
+            "reference_lux": 173.66959479999997,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 9.26786820000001,
+            "candidate_lux": 169.6428466,
+            "reference_lux": 178.91071480000002,
+            "allowed_error_lux": 9
+          }
+        ],
+        "maximum_error_over_tolerance": 3.1181442000000006,
+        "interval_index": 4120,
+        "condition": "mixed",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 24.958506999999827,
+            "candidate_lux": 752.4261419999999,
+            "reference_lux": 727.4676350000001,
+            "allowed_error_lux": 36
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 53.86646999999971,
+            "candidate_lux": 1956.87991,
+            "reference_lux": 2010.7463799999998,
+            "allowed_error_lux": 101
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 59.390409999999974,
+            "candidate_lux": 2303.2914499999997,
+            "reference_lux": 2362.6818599999997,
+            "allowed_error_lux": 118
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 40.18209900000011,
+            "candidate_lux": 1280.318622,
+            "reference_lux": 1320.500721,
+            "allowed_error_lux": 66
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 2.6837470000000394,
+            "candidate_lux": 634.67314,
+            "reference_lux": 637.356887,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 5.229306000000065,
+            "candidate_lux": 910.509276,
+            "reference_lux": 915.7385820000001,
+            "allowed_error_lux": 46
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 1.37973199999999,
+            "candidate_lux": 991.40403,
+            "reference_lux": 992.783762,
+            "allowed_error_lux": 50
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 1.4395179999996799,
+            "candidate_lux": 813.2272509999999,
+            "reference_lux": 811.7877330000002,
+            "allowed_error_lux": 41
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 28.1341460000001,
+            "candidate_lux": 395.408315,
+            "reference_lux": 423.5424610000001,
+            "allowed_error_lux": 21
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 10.422812000000022,
+            "candidate_lux": 527.540208,
+            "reference_lux": 517.117396,
+            "allowed_error_lux": 26
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 16.268594000000007,
+            "candidate_lux": 519.215813,
+            "reference_lux": 535.484407,
+            "allowed_error_lux": 27
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 8.959844999999973,
+            "candidate_lux": 478.26759400000003,
+            "reference_lux": 487.227439,
+            "allowed_error_lux": 24
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 21.446169000000054,
+            "candidate_lux": 270.101692,
+            "reference_lux": 291.54786100000007,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 2.990732000000037,
+            "candidate_lux": 324.04531099999997,
+            "reference_lux": 321.05457899999993,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 8.202675,
+            "candidate_lux": 333.54502,
+            "reference_lux": 325.342345,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 5.9909509999999955,
+            "candidate_lux": 302.170795,
+            "reference_lux": 308.161746,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 3.050875999999988,
+            "candidate_lux": 202.211467,
+            "reference_lux": 205.262343,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 22.43764999999999,
+            "candidate_lux": 226.011307,
+            "reference_lux": 203.573657,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 31.181442000000004,
+            "candidate_lux": 240.439423,
+            "reference_lux": 209.257981,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 12.816936999999967,
+            "candidate_lux": 229.887373,
+            "reference_lux": 217.07043600000003,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 21.920608499999958,
+            "candidate_lux": 151.7489863,
+            "reference_lux": 173.66959479999997,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 9.26786820000001,
+            "candidate_lux": 169.6428466,
+            "reference_lux": 178.91071480000002,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 0.87692100000001,
+            "candidate_lux": 189.19387099999997,
+            "reference_lux": 190.07079199999998,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 5.31141329999997,
+            "candidate_lux": 177.8755757,
+            "reference_lux": 183.18698899999998,
+            "allowed_error_lux": 9
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 32.90385160000005,
+            "candidate_lux": 608.8199194,
+            "reference_lux": 641.723771,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 22.22136429999989,
+            "candidate_lux": 384.42116970000006,
+            "reference_lux": 406.64253399999996,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 17.172042799999986,
+            "candidate_lux": 284.4766092,
+            "reference_lux": 301.64865199999997,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 14.549710699999991,
+            "candidate_lux": 285.7211067,
+            "reference_lux": 271.171396,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 31.788346869999998,
+            "candidate_lux": 199.12559113,
+            "reference_lux": 230.913938,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 16.66531169999999,
+            "candidate_lux": 220.34178630000002,
+            "reference_lux": 237.007098,
+            "allowed_error_lux": 12
+          }
+        ],
+        "maximum_error_over_tolerance": 2.649028905833333,
+        "interval_index": 6320,
+        "condition": "clear",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 14.169460999999956,
+            "candidate_lux": 2236.282979,
+            "reference_lux": 2250.45244,
+            "allowed_error_lux": 113
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 11.879406600000038,
+            "candidate_lux": 2736.3326534000003,
+            "reference_lux": 2748.2120600000003,
+            "allowed_error_lux": 137
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 67.8999268,
+            "candidate_lux": 1810.4204632,
+            "reference_lux": 1878.32039,
+            "allowed_error_lux": 94
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 15.319840300000124,
+            "candidate_lux": 684.0116797,
+            "reference_lux": 699.3315200000001,
+            "allowed_error_lux": 35
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 22.071451799999977,
+            "candidate_lux": 1201.3934408,
+            "reference_lux": 1179.321989,
+            "allowed_error_lux": 59
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 15.871965800000225,
+            "candidate_lux": 1145.7938212,
+            "reference_lux": 1161.6657870000001,
+            "allowed_error_lux": 58
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 3.1999651000000995,
+            "candidate_lux": 907.6980988999999,
+            "reference_lux": 910.898064,
+            "allowed_error_lux": 46
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 12.199834500000065,
+            "candidate_lux": 619.2462935,
+            "reference_lux": 631.446128,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 32.90385160000005,
+            "candidate_lux": 608.8199194,
+            "reference_lux": 641.723771,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 18.431003499999974,
+            "candidate_lux": 653.1249075,
+            "reference_lux": 634.693904,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 16.569367700000043,
+            "candidate_lux": 541.0890223,
+            "reference_lux": 557.65839,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 4.5549413999999615,
+            "candidate_lux": 444.0960644,
+            "reference_lux": 439.541123,
+            "allowed_error_lux": 22
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 22.22136429999989,
+            "candidate_lux": 384.42116970000006,
+            "reference_lux": 406.64253399999996,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 7.149510600000042,
+            "candidate_lux": 408.49167560000006,
+            "reference_lux": 401.342165,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 5.995390200000031,
+            "candidate_lux": 383.2173052,
+            "reference_lux": 377.22191499999997,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 14.013229799999976,
+            "candidate_lux": 317.0635592,
+            "reference_lux": 331.07678899999996,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 11.080046300000049,
+            "candidate_lux": 267.1827927,
+            "reference_lux": 278.26283900000004,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 17.172042799999986,
+            "candidate_lux": 284.4766092,
+            "reference_lux": 301.64865199999997,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 14.549710699999991,
+            "candidate_lux": 285.7211067,
+            "reference_lux": 271.171396,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 0.9837661000000253,
+            "candidate_lux": 260.68627410000005,
+            "reference_lux": 259.702508,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 31.788346869999998,
+            "candidate_lux": 199.12559113,
+            "reference_lux": 230.913938,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 16.66531169999999,
+            "candidate_lux": 220.34178630000002,
+            "reference_lux": 237.007098,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 5.322906890000013,
+            "candidate_lux": 228.54918511,
+            "reference_lux": 233.872092,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 5.321600190000055,
+            "candidate_lux": 204.77857580999998,
+            "reference_lux": 210.10017600000003,
+            "allowed_error_lux": 11
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 49.182111599999985,
+            "candidate_lux": 751.7115024000001,
+            "reference_lux": 800.8936140000001,
+            "allowed_error_lux": 40
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 28.32438719999999,
+            "candidate_lux": 503.91474980000004,
+            "reference_lux": 532.239137,
+            "allowed_error_lux": 27
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 34.12834585000007,
+            "candidate_lux": 276.93391614999996,
+            "reference_lux": 311.06226200000003,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 17.696351700000037,
+            "candidate_lux": 322.5087213,
+            "reference_lux": 340.205073,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 17.376102800000012,
+            "candidate_lux": 322.7225368,
+            "reference_lux": 305.346434,
+            "allowed_error_lux": 15
+          }
+        ],
+        "maximum_error_over_tolerance": 2.1330216156250046,
+        "interval_index": 6324,
+        "condition": "mixed",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 22.678655599999956,
+            "candidate_lux": 1542.6212124,
+            "reference_lux": 1565.299868,
+            "allowed_error_lux": 78
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 45.5764608999998,
+            "candidate_lux": 5483.9537091,
+            "reference_lux": 5529.53017,
+            "allowed_error_lux": 276
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 18.747350200000255,
+            "candidate_lux": 5676.3596098,
+            "reference_lux": 5695.10696,
+            "allowed_error_lux": 285
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 41.38859479999974,
+            "candidate_lux": 1750.9491452000002,
+            "reference_lux": 1792.33774,
+            "allowed_error_lux": 90
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 5.7912585999997646,
+            "candidate_lux": 1221.7842615999998,
+            "reference_lux": 1215.993003,
+            "allowed_error_lux": 61
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 27.344773900000064,
+            "candidate_lux": 1930.9528161,
+            "reference_lux": 1958.2975900000001,
+            "allowed_error_lux": 98
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 18.26120410000044,
+            "candidate_lux": 1998.7806059,
+            "reference_lux": 2017.0418100000004,
+            "allowed_error_lux": 101
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 22.388460800000075,
+            "candidate_lux": 1314.7427922000002,
+            "reference_lux": 1337.1312530000002,
+            "allowed_error_lux": 67
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 49.182111599999985,
+            "candidate_lux": 751.7115024000001,
+            "reference_lux": 800.8936140000001,
+            "allowed_error_lux": 40
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 13.32769559999997,
+            "candidate_lux": 1023.6692095999999,
+            "reference_lux": 1010.341514,
+            "allowed_error_lux": 51
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 13.693356799999947,
+            "candidate_lux": 983.8281772000001,
+            "reference_lux": 997.5215340000001,
+            "allowed_error_lux": 50
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 13.226435300000162,
+            "candidate_lux": 837.1562037,
+            "reference_lux": 850.3826390000002,
+            "allowed_error_lux": 43
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 28.32438719999999,
+            "candidate_lux": 503.91474980000004,
+            "reference_lux": 532.239137,
+            "allowed_error_lux": 27
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 18.697248100000024,
+            "candidate_lux": 622.6024719,
+            "reference_lux": 641.29972,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 6.409560400000032,
+            "candidate_lux": 625.4104986,
+            "reference_lux": 631.820059,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 12.223820499999988,
+            "candidate_lux": 545.4820045,
+            "reference_lux": 557.705825,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 9.835996299999977,
+            "candidate_lux": 379.9549407,
+            "reference_lux": 389.790937,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 11.584092399999975,
+            "candidate_lux": 424.73306160000004,
+            "reference_lux": 436.317154,
+            "allowed_error_lux": 22
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 6.4163445000000365,
+            "candidate_lux": 446.4350395,
+            "reference_lux": 440.018695,
+            "allowed_error_lux": 22
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 2.880879699999923,
+            "candidate_lux": 414.79890169999993,
+            "reference_lux": 411.918022,
+            "allowed_error_lux": 21
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 34.12834585000007,
+            "candidate_lux": 276.93391614999996,
+            "reference_lux": 311.06226200000003,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 17.696351700000037,
+            "candidate_lux": 322.5087213,
+            "reference_lux": 340.205073,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 7.513686099999973,
+            "candidate_lux": 344.9530659,
+            "reference_lux": 352.466752,
+            "allowed_error_lux": 18
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 17.376102800000012,
+            "candidate_lux": 322.7225368,
+            "reference_lux": 305.346434,
+            "allowed_error_lux": 15
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 34.67076954999999,
+            "candidate_lux": 323.40781145,
+            "reference_lux": 358.078581,
+            "allowed_error_lux": 18
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 17.64040883000004,
+            "candidate_lux": 236.24728417,
+            "reference_lux": 253.88769300000004,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 13.18225989000004,
+            "candidate_lux": 183.26845010999997,
+            "reference_lux": 196.45071000000002,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 18.52030659999994,
+            "candidate_lux": 229.6125006,
+            "reference_lux": 211.09219400000006,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 15.325872600000025,
+            "candidate_lux": 140.65381449999998,
+            "reference_lux": 155.9796871,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 24.076599060000007,
+            "candidate_lux": 154.66605264,
+            "reference_lux": 178.7426517,
+            "allowed_error_lux": 9
+          }
+        ],
+        "maximum_error_over_tolerance": 2.675177673333334,
+        "interval_index": 6328,
+        "condition": "mixed",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 7.803771710000092,
+            "candidate_lux": 570.2096032899999,
+            "reference_lux": 578.013375,
+            "allowed_error_lux": 29
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 4.045412529999794,
+            "candidate_lux": 1527.4352945299997,
+            "reference_lux": 1523.389882,
+            "allowed_error_lux": 76
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 13.02056739999989,
+            "candidate_lux": 2149.7202974,
+            "reference_lux": 2136.6997300000003,
+            "allowed_error_lux": 107
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 45.76417819999983,
+            "candidate_lux": 1671.1429618,
+            "reference_lux": 1716.9071399999998,
+            "allowed_error_lux": 86
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 0.7288539900000615,
+            "candidate_lux": 502.72755199000005,
+            "reference_lux": 501.998698,
+            "allowed_error_lux": 25
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 7.323443109999971,
+            "candidate_lux": 742.9915728899999,
+            "reference_lux": 750.3150159999999,
+            "allowed_error_lux": 38
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 1.2842677199998889,
+            "candidate_lux": 914.25121372,
+            "reference_lux": 912.9669460000001,
+            "allowed_error_lux": 46
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 12.5894029399999,
+            "candidate_lux": 912.51535406,
+            "reference_lux": 925.104757,
+            "allowed_error_lux": 46
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 34.67076954999999,
+            "candidate_lux": 323.40781145,
+            "reference_lux": 358.078581,
+            "allowed_error_lux": 18
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 11.379092650000018,
+            "candidate_lux": 451.57589265,
+            "reference_lux": 440.1968,
+            "allowed_error_lux": 22
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 7.961415219999992,
+            "candidate_lux": 478.86005178,
+            "reference_lux": 486.821467,
+            "allowed_error_lux": 24
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 9.945096800000044,
+            "candidate_lux": 494.03656319999993,
+            "reference_lux": 503.98166,
+            "allowed_error_lux": 25
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 17.64040883000004,
+            "candidate_lux": 236.24728417,
+            "reference_lux": 253.88769300000004,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 12.042353880000007,
+            "candidate_lux": 284.24220512,
+            "reference_lux": 296.284559,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 4.353818789999991,
+            "candidate_lux": 306.73833979,
+            "reference_lux": 302.384521,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 1.5152421600000139,
+            "candidate_lux": 305.39099784,
+            "reference_lux": 306.90624,
+            "allowed_error_lux": 15
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 13.18225989000004,
+            "candidate_lux": 183.26845010999997,
+            "reference_lux": 196.45071000000002,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 0.9155438299999616,
+            "candidate_lux": 208.73991383,
+            "reference_lux": 207.82437000000004,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 18.52030659999994,
+            "candidate_lux": 229.6125006,
+            "reference_lux": 211.09219400000006,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 3.8888770300000317,
+            "candidate_lux": 226.37084103,
+            "reference_lux": 222.48196399999998,
+            "allowed_error_lux": 11
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 15.325872600000025,
+            "candidate_lux": 140.65381449999998,
+            "reference_lux": 155.9796871,
+            "allowed_error_lux": 8
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 24.076599060000007,
+            "candidate_lux": 154.66605264,
+            "reference_lux": 178.7426517,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 2.9501777600000025,
+            "candidate_lux": 181.72091456,
+            "reference_lux": 178.7707368,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 1.948323710000011,
+            "candidate_lux": 172.03487909,
+            "reference_lux": 173.98320280000002,
+            "allowed_error_lux": 9
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 31.563857599999892,
+            "candidate_lux": 596.7227414,
+            "reference_lux": 628.2865989999999,
+            "allowed_error_lux": 31
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 38.25086800000008,
+            "candidate_lux": 590.922497,
+            "reference_lux": 552.6716289999999,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 23.375252000000103,
+            "candidate_lux": 427.90630200000004,
+            "reference_lux": 451.28155400000014,
+            "allowed_error_lux": 23
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 22.208655299999975,
+            "candidate_lux": 380.1108497,
+            "reference_lux": 402.319505,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 23.12073190000001,
+            "candidate_lux": 359.8387059,
+            "reference_lux": 336.71797399999997,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 57.72268489999999,
+            "candidate_lux": 266.8741251,
+            "reference_lux": 324.59681,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 22.51472739999997,
+            "candidate_lux": 307.28668660000005,
+            "reference_lux": 329.801414,
+            "allowed_error_lux": 16
+          }
+        ],
+        "maximum_error_over_tolerance": 3.6076678062499994,
+        "interval_index": 8504,
+        "condition": "clear",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 18.33676000000014,
+            "candidate_lux": 11290.3534,
+            "reference_lux": 11308.69016,
+            "allowed_error_lux": 565
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 157.30340999999862,
+            "candidate_lux": 11365.864549999998,
+            "reference_lux": 11208.56114,
+            "allowed_error_lux": 560
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 26.860381999999845,
+            "candidate_lux": 1852.7989280000002,
+            "reference_lux": 1879.65931,
+            "allowed_error_lux": 94
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 4.195402000000172,
+            "candidate_lux": 736.8313039999999,
+            "reference_lux": 741.0267060000001,
+            "allowed_error_lux": 37
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 33.67938700000013,
+            "candidate_lux": 2935.577267,
+            "reference_lux": 2901.89788,
+            "allowed_error_lux": 145
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 7.128137999999808,
+            "candidate_lux": 1686.1552980000001,
+            "reference_lux": 1693.283436,
+            "allowed_error_lux": 85
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 9.362057999999934,
+            "candidate_lux": 1081.22265,
+            "reference_lux": 1071.860592,
+            "allowed_error_lux": 54
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 2.6026600000000144,
+            "candidate_lux": 714.929759,
+            "reference_lux": 717.532419,
+            "allowed_error_lux": 36
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 42.41888299999982,
+            "candidate_lux": 1189.9461760000002,
+            "reference_lux": 1232.365059,
+            "allowed_error_lux": 62
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 19.71416499999998,
+            "candidate_lux": 973.428671,
+            "reference_lux": 953.714506,
+            "allowed_error_lux": 48
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 33.097099999999955,
+            "candidate_lux": 688.386207,
+            "reference_lux": 721.483307,
+            "allowed_error_lux": 36
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 7.790974999999889,
+            "candidate_lux": 566.7514110000001,
+            "reference_lux": 574.542386,
+            "allowed_error_lux": 29
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 31.563857599999892,
+            "candidate_lux": 596.7227414,
+            "reference_lux": 628.2865989999999,
+            "allowed_error_lux": 31
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 38.25086800000008,
+            "candidate_lux": 590.922497,
+            "reference_lux": 552.6716289999999,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 2.1782510000001594,
+            "candidate_lux": 518.967719,
+            "reference_lux": 521.1459700000001,
+            "allowed_error_lux": 26
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 23.375252000000103,
+            "candidate_lux": 427.90630200000004,
+            "reference_lux": 451.28155400000014,
+            "allowed_error_lux": 23
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 22.208655299999975,
+            "candidate_lux": 380.1108497,
+            "reference_lux": 402.319505,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 13.228064200000006,
+            "candidate_lux": 395.3202828,
+            "reference_lux": 408.548347,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 17.762348999999972,
+            "candidate_lux": 370.033991,
+            "reference_lux": 387.79634,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 23.12073190000001,
+            "candidate_lux": 359.8387059,
+            "reference_lux": 336.71797399999997,
+            "allowed_error_lux": 17
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 57.72268489999999,
+            "candidate_lux": 266.8741251,
+            "reference_lux": 324.59681,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 22.51472739999997,
+            "candidate_lux": 307.28668660000005,
+            "reference_lux": 329.801414,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 12.466956200000027,
+            "candidate_lux": 332.8672902,
+            "reference_lux": 320.400334,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 8.474056899999937,
+            "candidate_lux": 286.8926259,
+            "reference_lux": 278.41856900000005,
+            "allowed_error_lux": 14
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 68.71111900000028,
+            "candidate_lux": 1131.2288059999998,
+            "reference_lux": 1199.9399250000001,
+            "allowed_error_lux": 60
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 64.61209059999999,
+            "candidate_lux": 433.7262364,
+            "reference_lux": 498.338327,
+            "allowed_error_lux": 25
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 33.737723099999926,
+            "candidate_lux": 522.7526919000001,
+            "reference_lux": 556.490415,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 29.190353400000163,
+            "candidate_lux": 548.4259996,
+            "reference_lux": 577.6163530000001,
+            "allowed_error_lux": 29
+          }
+        ],
+        "maximum_error_over_tolerance": 2.5844836239999993,
+        "interval_index": 8508,
+        "condition": "clear",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 8.215383999999858,
+            "candidate_lux": 1637.432393,
+            "reference_lux": 1645.647777,
+            "allowed_error_lux": 82
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 117.98964000000342,
+            "candidate_lux": 31944.54406,
+            "reference_lux": 32062.533700000004,
+            "allowed_error_lux": 1603
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 83.83107000000382,
+            "candidate_lux": 32038.61393,
+            "reference_lux": 32122.445000000003,
+            "allowed_error_lux": 1606
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 22.298030000000153,
+            "candidate_lux": 1753.0638869999998,
+            "reference_lux": 1775.361917,
+            "allowed_error_lux": 89
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 5.652104000000236,
+            "candidate_lux": 1678.4651000000001,
+            "reference_lux": 1672.8129959999999,
+            "allowed_error_lux": 84
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 55.77639999999883,
+            "candidate_lux": 28665.3285,
+            "reference_lux": 28609.5521,
+            "allowed_error_lux": 1430
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 52.01023999999961,
+            "candidate_lux": 28770.122260000004,
+            "reference_lux": 28822.132500000003,
+            "allowed_error_lux": 1441
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 25.25439399999982,
+            "candidate_lux": 1851.8595360000002,
+            "reference_lux": 1877.11393,
+            "allowed_error_lux": 94
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 68.71111900000028,
+            "candidate_lux": 1131.2288059999998,
+            "reference_lux": 1199.9399250000001,
+            "allowed_error_lux": 60
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 37.09237999999982,
+            "candidate_lux": 1687.444814,
+            "reference_lux": 1650.3524340000001,
+            "allowed_error_lux": 83
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 35.008462000000236,
+            "candidate_lux": 1651.821845,
+            "reference_lux": 1686.8303070000002,
+            "allowed_error_lux": 84
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 5.432113000000072,
+            "candidate_lux": 1284.362053,
+            "reference_lux": 1289.7941660000001,
+            "allowed_error_lux": 64
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 32.328832000000034,
+            "candidate_lux": 791.5118659999999,
+            "reference_lux": 823.840698,
+            "allowed_error_lux": 41
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 13.000233000000094,
+            "candidate_lux": 1006.3045269999999,
+            "reference_lux": 1019.30476,
+            "allowed_error_lux": 51
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 26.828162000000134,
+            "candidate_lux": 1007.2145629999999,
+            "reference_lux": 1034.042725,
+            "allowed_error_lux": 52
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 24.85414999999989,
+            "candidate_lux": 850.6770939999999,
+            "reference_lux": 825.822944,
+            "allowed_error_lux": 41
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 30.826717700000017,
+            "candidate_lux": 599.1566223,
+            "reference_lux": 629.98334,
+            "allowed_error_lux": 31
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 10.86025219999999,
+            "candidate_lux": 681.9282808,
+            "reference_lux": 692.788533,
+            "allowed_error_lux": 35
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 12.167292299999872,
+            "candidate_lux": 717.1299733,
+            "reference_lux": 704.9626810000001,
+            "allowed_error_lux": 35
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 11.978107200000068,
+            "candidate_lux": 656.6467862000001,
+            "reference_lux": 644.668679,
+            "allowed_error_lux": 32
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 64.61209059999999,
+            "candidate_lux": 433.7262364,
+            "reference_lux": 498.338327,
+            "allowed_error_lux": 25
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 33.737723099999926,
+            "candidate_lux": 522.7526919000001,
+            "reference_lux": 556.490415,
+            "allowed_error_lux": 28
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 29.190353400000163,
+            "candidate_lux": 548.4259996,
+            "reference_lux": 577.6163530000001,
+            "allowed_error_lux": 29
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 8.351477699999919,
+            "candidate_lux": 510.3998303000001,
+            "reference_lux": 518.751308,
+            "allowed_error_lux": 26
+          }
+        ]
+      },
+      {
+        "pass": false,
+        "failures": [
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 135.39094599999976,
+            "candidate_lux": 1722.5955809999998,
+            "reference_lux": 1587.204635,
+            "allowed_error_lux": 79
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 47.545389299999954,
+            "candidate_lux": 331.5118127,
+            "reference_lux": 379.05720199999996,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 13.267497899999967,
+            "candidate_lux": 270.4400199,
+            "reference_lux": 257.172522,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 16.937320100000022,
+            "candidate_lux": 277.5058301,
+            "reference_lux": 260.56851,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 13.50785909999999,
+            "candidate_lux": 167.3827389,
+            "reference_lux": 180.89059799999998,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 17.76664500000001,
+            "candidate_lux": 175.73521900000003,
+            "reference_lux": 193.50186400000004,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 15.140500199999991,
+            "candidate_lux": 216.6984382,
+            "reference_lux": 201.557938,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 13.597448600000007,
+            "candidate_lux": 206.43092660000002,
+            "reference_lux": 192.833478,
+            "allowed_error_lux": 10
+          }
+        ],
+        "maximum_error_over_tolerance": 2.5023889105263133,
+        "interval_index": 8512,
+        "condition": "clear",
+        "sensors": [
+          {
+            "sensor_index": 0,
+            "absolute_error_lux": 1.8431092999999805,
+            "candidate_lux": 510.0283337,
+            "reference_lux": 511.871443,
+            "allowed_error_lux": 26
+          },
+          {
+            "sensor_index": 1,
+            "absolute_error_lux": 53.51469919999977,
+            "candidate_lux": 1358.5158102,
+            "reference_lux": 1305.0011110000003,
+            "allowed_error_lux": 65
+          },
+          {
+            "sensor_index": 2,
+            "absolute_error_lux": 16.3176399999993,
+            "candidate_lux": 4778.76658,
+            "reference_lux": 4795.08422,
+            "allowed_error_lux": 240
+          },
+          {
+            "sensor_index": 3,
+            "absolute_error_lux": 23.75813300000118,
+            "candidate_lux": 4634.360656999999,
+            "reference_lux": 4658.11879,
+            "allowed_error_lux": 233
+          },
+          {
+            "sensor_index": 4,
+            "absolute_error_lux": 13.16518149999996,
+            "candidate_lux": 464.04559650000004,
+            "reference_lux": 477.210778,
+            "allowed_error_lux": 24
+          },
+          {
+            "sensor_index": 5,
+            "absolute_error_lux": 17.093139599999972,
+            "candidate_lux": 728.4635194,
+            "reference_lux": 745.556659,
+            "allowed_error_lux": 37
+          },
+          {
+            "sensor_index": 6,
+            "absolute_error_lux": 26.828699000000142,
+            "candidate_lux": 1105.526196,
+            "reference_lux": 1132.3548950000002,
+            "allowed_error_lux": 57
+          },
+          {
+            "sensor_index": 7,
+            "absolute_error_lux": 135.39094599999976,
+            "candidate_lux": 1722.5955809999998,
+            "reference_lux": 1587.204635,
+            "allowed_error_lux": 79
+          },
+          {
+            "sensor_index": 8,
+            "absolute_error_lux": 47.545389299999954,
+            "candidate_lux": 331.5118127,
+            "reference_lux": 379.05720199999996,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 9,
+            "absolute_error_lux": 9.946152899999959,
+            "candidate_lux": 472.9144379,
+            "reference_lux": 462.96828500000004,
+            "allowed_error_lux": 23
+          },
+          {
+            "sensor_index": 10,
+            "absolute_error_lux": 14.811408700000015,
+            "candidate_lux": 585.4760103,
+            "reference_lux": 600.287419,
+            "allowed_error_lux": 30
+          },
+          {
+            "sensor_index": 11,
+            "absolute_error_lux": 16.873972000000094,
+            "candidate_lux": 753.1050889999999,
+            "reference_lux": 769.979061,
+            "allowed_error_lux": 38
+          },
+          {
+            "sensor_index": 12,
+            "absolute_error_lux": 5.3060970000000225,
+            "candidate_lux": 272.019677,
+            "reference_lux": 277.325774,
+            "allowed_error_lux": 14
+          },
+          {
+            "sensor_index": 13,
+            "absolute_error_lux": 15.824852999999962,
+            "candidate_lux": 313.05668000000003,
+            "reference_lux": 328.881533,
+            "allowed_error_lux": 16
+          },
+          {
+            "sensor_index": 14,
+            "absolute_error_lux": 12.255306599999926,
+            "candidate_lux": 366.4753994000001,
+            "reference_lux": 378.730706,
+            "allowed_error_lux": 19
+          },
+          {
+            "sensor_index": 15,
+            "absolute_error_lux": 7.10714129999991,
+            "candidate_lux": 405.5770723,
+            "reference_lux": 398.4699310000001,
+            "allowed_error_lux": 20
+          },
+          {
+            "sensor_index": 16,
+            "absolute_error_lux": 6.607033199999989,
+            "candidate_lux": 200.8994328,
+            "reference_lux": 207.506466,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 17,
+            "absolute_error_lux": 5.506326400000091,
+            "candidate_lux": 236.35829459999997,
+            "reference_lux": 241.86462100000006,
+            "allowed_error_lux": 12
+          },
+          {
+            "sensor_index": 18,
+            "absolute_error_lux": 13.267497899999967,
+            "candidate_lux": 270.4400199,
+            "reference_lux": 257.172522,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 19,
+            "absolute_error_lux": 16.937320100000022,
+            "candidate_lux": 277.5058301,
+            "reference_lux": 260.56851,
+            "allowed_error_lux": 13
+          },
+          {
+            "sensor_index": 20,
+            "absolute_error_lux": 13.50785909999999,
+            "candidate_lux": 167.3827389,
+            "reference_lux": 180.89059799999998,
+            "allowed_error_lux": 9
+          },
+          {
+            "sensor_index": 21,
+            "absolute_error_lux": 17.76664500000001,
+            "candidate_lux": 175.73521900000003,
+            "reference_lux": 193.50186400000004,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 22,
+            "absolute_error_lux": 15.140500199999991,
+            "candidate_lux": 216.6984382,
+            "reference_lux": 201.557938,
+            "allowed_error_lux": 10
+          },
+          {
+            "sensor_index": 23,
+            "absolute_error_lux": 13.597448600000007,
+            "candidate_lux": 206.43092660000002,
+            "reference_lux": 192.833478,
+            "allowed_error_lux": 10
+          }
+        ]
+      }
+    ]
+  },
+  "declaration": {
+    "declared_utc": "2026-10-11T05:08:08.1865579Z",
+    "weather_sha256": "45e81714b7c2a1bf458fa9e76ddee16002ff2f45d98bb9bc4334cc086137ef43",
+    "sensor_count": 24,
+    "intervals": [
+      {
+        "index": 1904,
+        "condition": "overcast"
+      },
+      {
+        "index": 1908,
+        "condition": "mixed"
+      },
+      {
+        "index": 1912,
+        "condition": "mixed"
+      },
+      {
+        "index": 4112,
+        "condition": "mixed"
+      },
+      {
+        "index": 4116,
+        "condition": "mixed"
+      },
+      {
+        "index": 4120,
+        "condition": "mixed"
+      },
+      {
+        "index": 6320,
+        "condition": "clear"
+      },
+      {
+        "index": 6324,
+        "condition": "mixed"
+      },
+      {
+        "index": 6328,
+        "condition": "mixed"
+      },
+      {
+        "index": 8504,
+        "condition": "clear"
+      },
+      {
+        "index": 8508,
+        "condition": "clear"
+      },
+      {
+        "index": 8512,
+        "condition": "clear"
+      }
+    ],
+    "candidate": {
+      "ad": 2048,
+      "mf": 2,
+      "ab": 5
+    },
+    "reference": {
+      "ab": 7,
+      "ad": 16384
+    },
+    "tolerance": "max(5lx,5%reference)",
+    "results": "not executed at declaration"
+  },
+  "processes": [
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "weather.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n",
+      "started_utc": "2026-10-11T05:08:08.4002034Z",
+      "finished_utc": "2026-10-11T05:08:16.1631190Z",
+      "wall_seconds": 7.7564161,
+      "sampled_peak_working_set_bytes": 67248128,
+      "output_bytes": 56693513,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "all-suns.rad",
+        "-M",
+        "all-modifiers.txt",
+        "weather.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n",
+      "started_utc": "2026-10-11T05:08:16.2339021Z",
+      "finished_utc": "2026-10-11T05:08:16.4460110Z",
+      "wall_seconds": 0.2119377,
+      "sampled_peak_working_set_bytes": 4780032,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "receiver.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:20.8342381Z",
+      "finished_utc": "2026-10-11T05:08:20.9320765Z",
+      "wall_seconds": 0.0977441,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2064,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "selected-suns.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:20.9399813Z",
+      "finished_utc": "2026-10-11T05:08:21.0334302Z",
+      "wall_seconds": 0.0933377,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2897,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-n",
+        "1",
+        "-faa",
+        "-y",
+        "24",
+        "-ab",
+        "5",
+        "-ad",
+        "2048",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.00001",
+        "-lr",
+        "12",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V-",
+        "-e",
+        "MF:2",
+        "-f",
+        "reinhart.cal",
+        "-b",
+        "rbin",
+        "-bn",
+        "Nrbins",
+        "-m",
+        "sky_glow",
+        "diffuse.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:21.0412396Z",
+      "finished_utc": "2026-10-11T05:08:22.2392483Z",
+      "wall_seconds": 1.1978629,
+      "sampled_peak_working_set_bytes": 6230016,
+      "output_bytes": 541458,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "dctimestep.exe",
+      "arguments": [
+        "-oa",
+        "coefficients.mtx",
+        "selected-skies.mtx"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:22.2511153Z",
+      "finished_utc": "2026-10-11T05:08:22.3802631Z",
+      "wall_seconds": 0.1290494,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 11421,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-n",
+        "1",
+        "-faa",
+        "-y",
+        "24",
+        "-ab",
+        "5",
+        "-ad",
+        "2048",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.00001",
+        "-lr",
+        "12",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V+",
+        "-M",
+        "selected-modifiers.txt",
+        "solar.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:22.3871234Z",
+      "finished_utc": "2026-10-11T05:08:25.8573912Z",
+      "wall_seconds": 3.4701128,
+      "sampled_peak_working_set_bytes": 6287360,
+      "output_bytes": 11657,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-1904.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:25.8765290Z",
+      "finished_utc": "2026-10-11T05:08:25.9592153Z",
+      "wall_seconds": 0.0826086,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-1904.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:25.9644030Z",
+      "finished_utc": "2026-10-11T05:08:43.4865723Z",
+      "wall_seconds": 17.5220672,
+      "sampled_peak_working_set_bytes": 7770112,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-1908.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:43.7123989Z",
+      "finished_utc": "2026-10-11T05:08:43.8366227Z",
+      "wall_seconds": 0.124103,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-1908.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:08:43.8440174Z",
+      "finished_utc": "2026-10-11T05:09:03.6233562Z",
+      "wall_seconds": 19.7792633,
+      "sampled_peak_working_set_bytes": 7766016,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-1912.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:03.6412528Z",
+      "finished_utc": "2026-10-11T05:09:03.7315399Z",
+      "wall_seconds": 0.0902173,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-1912.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:03.7362159Z",
+      "finished_utc": "2026-10-11T05:09:18.8753152Z",
+      "wall_seconds": 15.1390338,
+      "sampled_peak_working_set_bytes": 7761920,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-4112.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:18.8899589Z",
+      "finished_utc": "2026-10-11T05:09:18.9690816Z",
+      "wall_seconds": 0.079047,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-4112.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:18.9733936Z",
+      "finished_utc": "2026-10-11T05:09:29.0094844Z",
+      "wall_seconds": 10.0360323,
+      "sampled_peak_working_set_bytes": 7770112,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-4116.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:29.0221621Z",
+      "finished_utc": "2026-10-11T05:09:29.0947659Z",
+      "wall_seconds": 0.0725379,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-4116.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:29.0984374Z",
+      "finished_utc": "2026-10-11T05:09:40.9138158Z",
+      "wall_seconds": 11.8153112,
+      "sampled_peak_working_set_bytes": 7766016,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-4120.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:40.9352339Z",
+      "finished_utc": "2026-10-11T05:09:41.0392516Z",
+      "wall_seconds": 0.1038556,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-4120.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:41.0459654Z",
+      "finished_utc": "2026-10-11T05:09:51.8274429Z",
+      "wall_seconds": 10.7814151,
+      "sampled_peak_working_set_bytes": 7774208,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-6320.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:51.8409994Z",
+      "finished_utc": "2026-10-11T05:09:51.9199727Z",
+      "wall_seconds": 0.0789175,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-6320.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:09:51.9242673Z",
+      "finished_utc": "2026-10-11T05:10:05.2439873Z",
+      "wall_seconds": 13.3196597,
+      "sampled_peak_working_set_bytes": 7766016,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-6324.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:05.2585564Z",
+      "finished_utc": "2026-10-11T05:10:05.3437629Z",
+      "wall_seconds": 0.0851374,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-6324.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:05.3490424Z",
+      "finished_utc": "2026-10-11T05:10:18.6525521Z",
+      "wall_seconds": 13.3034458,
+      "sampled_peak_working_set_bytes": 7774208,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-6328.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:18.6740362Z",
+      "finished_utc": "2026-10-11T05:10:18.7573273Z",
+      "wall_seconds": 0.0832272,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-6328.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:18.7621534Z",
+      "finished_utc": "2026-10-11T05:10:33.8122912Z",
+      "wall_seconds": 15.0500674,
+      "sampled_peak_working_set_bytes": 7770112,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-8504.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:33.8311815Z",
+      "finished_utc": "2026-10-11T05:10:33.9284439Z",
+      "wall_seconds": 0.0971958,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-8504.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:33.9338314Z",
+      "finished_utc": "2026-10-11T05:10:55.1319492Z",
+      "wall_seconds": 21.1980367,
+      "sampled_peak_working_set_bytes": 7770112,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-8508.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:55.1599280Z",
+      "finished_utc": "2026-10-11T05:10:55.2848555Z",
+      "wall_seconds": 0.1248198,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-8508.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:10:55.2955957Z",
+      "finished_utc": "2026-10-11T05:11:17.7601234Z",
+      "wall_seconds": 22.4644512,
+      "sampled_peak_working_set_bytes": 7761920,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-8512.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:11:17.7888632Z",
+      "finished_utc": "2026-10-11T05:11:17.9187036Z",
+      "wall_seconds": 0.129722,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2204,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "7",
+        "-ad",
+        "16384",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.000001",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-8512.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:11:17.9273934Z",
+      "finished_utc": "2026-10-11T05:11:38.0326259Z",
+      "wall_seconds": 20.105149,
+      "sampled_peak_working_set_bytes": 7770112,
+      "output_bytes": 984,
+      "timeout_killed_tree": false
+    }
+  ]
+}

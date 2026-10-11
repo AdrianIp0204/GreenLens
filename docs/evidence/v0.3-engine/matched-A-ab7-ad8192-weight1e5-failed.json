@@ -1,0 +1,4095 @@
+{
+  "evidence_status": "exploratory completed experiment; not release acceptance",
+  "experiment": "v0.3 matched A canonical ab7 ad8192 空間",
+  "source_evidence_sha256": "fd06d19e2fa73ce9d07af6cad1d0421dfd8c6baf7196236189eb7e8ccad42e82",
+  "results": {
+    "checks": [
+      {
+        "failures": [
+          {
+            "candidate_lux": 457.99291377,
+            "reference_lux": 488.52304100000003,
+            "absolute_error_lux": 30.530127230000062,
+            "allowed_error_lux": 24.426152050000002,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 654.07946438,
+            "reference_lux": 689.7145660000001,
+            "absolute_error_lux": 35.635101620000114,
+            "allowed_error_lux": 34.485728300000005,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 400.08464346,
+            "reference_lux": 437.12551799999994,
+            "absolute_error_lux": 37.04087453999995,
+            "allowed_error_lux": 21.8562759,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 435.64773159000003,
+            "reference_lux": 471.84847500000006,
+            "absolute_error_lux": 36.20074341000003,
+            "allowed_error_lux": 23.592423750000005,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 425.86739534,
+            "reference_lux": 448.63324900000003,
+            "absolute_error_lux": 22.76585366000006,
+            "allowed_error_lux": 22.431662450000005,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 347.62017484999996,
+            "reference_lux": 388.732152,
+            "absolute_error_lux": 41.11197715000003,
+            "allowed_error_lux": 19.436607600000002,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 273.47953298,
+            "reference_lux": 305.304369,
+            "absolute_error_lux": 31.82483602000002,
+            "allowed_error_lux": 15.26521845,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 253.02284376,
+            "reference_lux": 271.793063,
+            "absolute_error_lux": 18.770219240000017,
+            "allowed_error_lux": 13.589653150000002,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 243.71282463999998,
+            "reference_lux": 273.23150699999997,
+            "absolute_error_lux": 29.518682359999985,
+            "allowed_error_lux": 13.66157535,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 218.33529296,
+            "reference_lux": 242.618211,
+            "absolute_error_lux": 24.28291804,
+            "allowed_error_lux": 12.130910550000001,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 158.61200489400002,
+            "reference_lux": 198.51654900000003,
+            "absolute_error_lux": 39.904544106,
+            "allowed_error_lux": 9.925827450000002,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 161.93711498,
+            "reference_lux": 186.766452,
+            "absolute_error_lux": 24.829337019999997,
+            "allowed_error_lux": 9.3383226,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 144.684427131,
+            "reference_lux": 170.4523204,
+            "absolute_error_lux": 25.767893268999984,
+            "allowed_error_lux": 8.52261602,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 131.36255493800002,
+            "reference_lux": 154.73760610000002,
+            "absolute_error_lux": 23.375051162000005,
+            "allowed_error_lux": 7.7368803050000015,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 118.90490512700002,
+            "reference_lux": 142.54169170000003,
+            "absolute_error_lux": 23.63678657300001,
+            "allowed_error_lux": 7.127084585000002,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 122.74073121099998,
+            "reference_lux": 156.9350459,
+            "absolute_error_lux": 34.194314689000024,
+            "allowed_error_lux": 7.846752295000001,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 114.558197112,
+            "reference_lux": 140.02398510000003,
+            "absolute_error_lux": 25.46578798800003,
+            "allowed_error_lux": 7.001199255000002,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 113.081220498,
+            "reference_lux": 121.5186071,
+            "absolute_error_lux": 8.437386602000004,
+            "allowed_error_lux": 6.075930355000001,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 4.357766551492756,
+        "condition": "overcast",
+        "pass": false,
+        "interval_index": 1904,
+        "reference_rgb_sha256": "98674fc98514f5e05fba4067d4358f4d30c9f8b1ca422b1232f821f5d1180a6c",
+        "sensors": [
+          {
+            "candidate_lux": 1401.5101603,
+            "reference_lux": 1449.4956389999998,
+            "absolute_error_lux": 47.9854786999997,
+            "allowed_error_lux": 72.47478195,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 2042.81864414,
+            "reference_lux": 2015.8639900000005,
+            "absolute_error_lux": 26.954654139999548,
+            "allowed_error_lux": 100.79319950000003,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 1436.71346559,
+            "reference_lux": 1503.921305,
+            "absolute_error_lux": 67.20783941000013,
+            "allowed_error_lux": 75.19606525,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 457.99291377,
+            "reference_lux": 488.52304100000003,
+            "absolute_error_lux": 30.530127230000062,
+            "allowed_error_lux": 24.426152050000002,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 833.6312784200001,
+            "reference_lux": 865.870077,
+            "absolute_error_lux": 32.23879857999998,
+            "allowed_error_lux": 43.29350385000001,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 864.2384973699999,
+            "reference_lux": 886.8431489999999,
+            "absolute_error_lux": 22.604651630000035,
+            "allowed_error_lux": 44.34215745,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 654.07946438,
+            "reference_lux": 689.7145660000001,
+            "absolute_error_lux": 35.635101620000114,
+            "allowed_error_lux": 34.485728300000005,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 400.08464346,
+            "reference_lux": 437.12551799999994,
+            "absolute_error_lux": 37.04087453999995,
+            "allowed_error_lux": 21.8562759,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 435.64773159000003,
+            "reference_lux": 471.84847500000006,
+            "absolute_error_lux": 36.20074341000003,
+            "allowed_error_lux": 23.592423750000005,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 425.86739534,
+            "reference_lux": 448.63324900000003,
+            "absolute_error_lux": 22.76585366000006,
+            "allowed_error_lux": 22.431662450000005,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 347.62017484999996,
+            "reference_lux": 388.732152,
+            "absolute_error_lux": 41.11197715000003,
+            "allowed_error_lux": 19.436607600000002,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 273.47953298,
+            "reference_lux": 305.304369,
+            "absolute_error_lux": 31.82483602000002,
+            "allowed_error_lux": 15.26521845,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 253.02284376,
+            "reference_lux": 271.793063,
+            "absolute_error_lux": 18.770219240000017,
+            "allowed_error_lux": 13.589653150000002,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 243.71282463999998,
+            "reference_lux": 273.23150699999997,
+            "absolute_error_lux": 29.518682359999985,
+            "allowed_error_lux": 13.66157535,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 218.33529296,
+            "reference_lux": 242.618211,
+            "absolute_error_lux": 24.28291804,
+            "allowed_error_lux": 12.130910550000001,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 185.9145552,
+            "reference_lux": 193.62304700000004,
+            "absolute_error_lux": 7.708491800000047,
+            "allowed_error_lux": 9.681152350000003,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 158.61200489400002,
+            "reference_lux": 198.51654900000003,
+            "absolute_error_lux": 39.904544106,
+            "allowed_error_lux": 9.925827450000002,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 161.93711498,
+            "reference_lux": 186.766452,
+            "absolute_error_lux": 24.829337019999997,
+            "allowed_error_lux": 9.3383226,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 144.684427131,
+            "reference_lux": 170.4523204,
+            "absolute_error_lux": 25.767893268999984,
+            "allowed_error_lux": 8.52261602,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 131.36255493800002,
+            "reference_lux": 154.73760610000002,
+            "absolute_error_lux": 23.375051162000005,
+            "allowed_error_lux": 7.7368803050000015,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 118.90490512700002,
+            "reference_lux": 142.54169170000003,
+            "absolute_error_lux": 23.63678657300001,
+            "allowed_error_lux": 7.127084585000002,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 122.74073121099998,
+            "reference_lux": 156.9350459,
+            "absolute_error_lux": 34.194314689000024,
+            "allowed_error_lux": 7.846752295000001,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 114.558197112,
+            "reference_lux": 140.02398510000003,
+            "absolute_error_lux": 25.46578798800003,
+            "allowed_error_lux": 7.001199255000002,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 113.081220498,
+            "reference_lux": 121.5186071,
+            "absolute_error_lux": 8.437386602000004,
+            "allowed_error_lux": 6.075930355000001,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 1752.861438,
+            "reference_lux": 1854.90361,
+            "absolute_error_lux": 102.04217200000016,
+            "allowed_error_lux": 92.7451805,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 1215.6167629,
+            "reference_lux": 1315.4303670000002,
+            "absolute_error_lux": 99.81360410000025,
+            "allowed_error_lux": 65.77151835000001,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1214.3851534,
+            "reference_lux": 1295.988819,
+            "absolute_error_lux": 81.60366559999989,
+            "allowed_error_lux": 64.79944095,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 700.1204088,
+            "reference_lux": 786.580953,
+            "absolute_error_lux": 86.46054420000007,
+            "allowed_error_lux": 39.32904765000001,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 924.0591643,
+            "reference_lux": 1001.3290430000002,
+            "absolute_error_lux": 77.26987870000016,
+            "allowed_error_lux": 50.06645215000001,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 892.8294102,
+            "reference_lux": 989.499649,
+            "absolute_error_lux": 96.67023879999999,
+            "allowed_error_lux": 49.47498245,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 712.5642024,
+            "reference_lux": 791.8423,
+            "absolute_error_lux": 79.27809760000002,
+            "allowed_error_lux": 39.59211500000001,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 437.9835187,
+            "reference_lux": 498.7997890000001,
+            "absolute_error_lux": 60.8162703000001,
+            "allowed_error_lux": 24.939989450000006,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 510.52638329999996,
+            "reference_lux": 586.187052,
+            "absolute_error_lux": 75.66066870000003,
+            "allowed_error_lux": 29.3093526,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 508.16188280000006,
+            "reference_lux": 578.1077080000001,
+            "absolute_error_lux": 69.94582520000006,
+            "allowed_error_lux": 28.905385400000007,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 447.661458,
+            "reference_lux": 520.3248970000001,
+            "absolute_error_lux": 72.6634390000001,
+            "allowed_error_lux": 26.016244850000007,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 289.82368109,
+            "reference_lux": 365.81191800000005,
+            "absolute_error_lux": 75.98823691000007,
+            "allowed_error_lux": 18.290595900000003,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 338.74973140000003,
+            "reference_lux": 390.1913599999999,
+            "absolute_error_lux": 51.44162859999989,
+            "allowed_error_lux": 19.509567999999998,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 326.90057579999996,
+            "reference_lux": 396.79377500000004,
+            "absolute_error_lux": 69.89319920000008,
+            "allowed_error_lux": 19.839688750000004,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 303.91535943,
+            "reference_lux": 361.376477,
+            "absolute_error_lux": 57.46111757,
+            "allowed_error_lux": 18.06882385,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 223.39667727,
+            "reference_lux": 285.415679,
+            "absolute_error_lux": 62.019001730000014,
+            "allowed_error_lux": 14.270783950000002,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 248.7261564,
+            "reference_lux": 322.18550100000004,
+            "absolute_error_lux": 73.45934460000004,
+            "allowed_error_lux": 16.109275050000004,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 251.82013381,
+            "reference_lux": 319.830935,
+            "absolute_error_lux": 68.01080119000002,
+            "allowed_error_lux": 15.991546750000001,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 240.97134118999998,
+            "reference_lux": 279.39411900000005,
+            "absolute_error_lux": 38.42277781000007,
+            "allowed_error_lux": 13.969705950000003,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 4.560065202934133,
+        "condition": "mixed",
+        "pass": false,
+        "interval_index": 1908,
+        "reference_rgb_sha256": "9eaca6d5746e64d85eb609f7ac98ffba29c51cd0e435a6bef0b767ad622675c3",
+        "sensors": [
+          {
+            "candidate_lux": 1752.861438,
+            "reference_lux": 1854.90361,
+            "absolute_error_lux": 102.04217200000016,
+            "allowed_error_lux": 92.7451805,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 6779.529378199999,
+            "reference_lux": 6829.974120000001,
+            "absolute_error_lux": 50.44474180000179,
+            "allowed_error_lux": 341.4987060000001,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 6775.8729631,
+            "reference_lux": 6803.9332,
+            "absolute_error_lux": 28.060236900000746,
+            "allowed_error_lux": 340.19666000000007,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 1752.4480196,
+            "reference_lux": 1825.84475,
+            "absolute_error_lux": 73.39673040000002,
+            "allowed_error_lux": 91.2922375,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 1215.6167629,
+            "reference_lux": 1315.4303670000002,
+            "absolute_error_lux": 99.81360410000025,
+            "allowed_error_lux": 65.77151835000001,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 2114.4881212,
+            "reference_lux": 2162.6296700000003,
+            "absolute_error_lux": 48.14154880000024,
+            "allowed_error_lux": 108.13148350000002,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 2095.0718122000003,
+            "reference_lux": 2194.1802100000004,
+            "absolute_error_lux": 99.10839780000015,
+            "allowed_error_lux": 109.70901050000003,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 1214.3851534,
+            "reference_lux": 1295.988819,
+            "absolute_error_lux": 81.60366559999989,
+            "allowed_error_lux": 64.79944095,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 700.1204088,
+            "reference_lux": 786.580953,
+            "absolute_error_lux": 86.46054420000007,
+            "allowed_error_lux": 39.32904765000001,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 924.0591643,
+            "reference_lux": 1001.3290430000002,
+            "absolute_error_lux": 77.26987870000016,
+            "allowed_error_lux": 50.06645215000001,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 892.8294102,
+            "reference_lux": 989.499649,
+            "absolute_error_lux": 96.67023879999999,
+            "allowed_error_lux": 49.47498245,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 712.5642024,
+            "reference_lux": 791.8423,
+            "absolute_error_lux": 79.27809760000002,
+            "allowed_error_lux": 39.59211500000001,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 437.9835187,
+            "reference_lux": 498.7997890000001,
+            "absolute_error_lux": 60.8162703000001,
+            "allowed_error_lux": 24.939989450000006,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 510.52638329999996,
+            "reference_lux": 586.187052,
+            "absolute_error_lux": 75.66066870000003,
+            "allowed_error_lux": 29.3093526,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 508.16188280000006,
+            "reference_lux": 578.1077080000001,
+            "absolute_error_lux": 69.94582520000006,
+            "allowed_error_lux": 28.905385400000007,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 447.661458,
+            "reference_lux": 520.3248970000001,
+            "absolute_error_lux": 72.6634390000001,
+            "allowed_error_lux": 26.016244850000007,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 289.82368109,
+            "reference_lux": 365.81191800000005,
+            "absolute_error_lux": 75.98823691000007,
+            "allowed_error_lux": 18.290595900000003,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 338.74973140000003,
+            "reference_lux": 390.1913599999999,
+            "absolute_error_lux": 51.44162859999989,
+            "allowed_error_lux": 19.509567999999998,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 326.90057579999996,
+            "reference_lux": 396.79377500000004,
+            "absolute_error_lux": 69.89319920000008,
+            "allowed_error_lux": 19.839688750000004,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 303.91535943,
+            "reference_lux": 361.376477,
+            "absolute_error_lux": 57.46111757,
+            "allowed_error_lux": 18.06882385,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 223.39667727,
+            "reference_lux": 285.415679,
+            "absolute_error_lux": 62.019001730000014,
+            "allowed_error_lux": 14.270783950000002,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 248.7261564,
+            "reference_lux": 322.18550100000004,
+            "absolute_error_lux": 73.45934460000004,
+            "allowed_error_lux": 16.109275050000004,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 251.82013381,
+            "reference_lux": 319.830935,
+            "absolute_error_lux": 68.01080119000002,
+            "allowed_error_lux": 15.991546750000001,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 240.97134118999998,
+            "reference_lux": 279.39411900000005,
+            "absolute_error_lux": 38.42277781000007,
+            "allowed_error_lux": 13.969705950000003,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 602.1248074599999,
+            "reference_lux": 653.2669440000001,
+            "absolute_error_lux": 51.14213654000014,
+            "allowed_error_lux": 32.663347200000004,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 516.58714251,
+            "reference_lux": 566.7535590000001,
+            "absolute_error_lux": 50.166416490000074,
+            "allowed_error_lux": 28.337677950000007,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 823.29608692,
+            "reference_lux": 870.9835700000001,
+            "absolute_error_lux": 47.687483080000106,
+            "allowed_error_lux": 43.54917850000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 1035.1674178,
+            "reference_lux": 1090.0015260000002,
+            "absolute_error_lux": 54.83410820000017,
+            "allowed_error_lux": 54.50007630000002,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 1023.9436524000001,
+            "reference_lux": 1083.11468,
+            "absolute_error_lux": 59.171027599999775,
+            "allowed_error_lux": 54.155733999999995,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 350.85232773,
+            "reference_lux": 397.456075,
+            "absolute_error_lux": 46.603747269999985,
+            "allowed_error_lux": 19.872803750000003,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 452.81012629,
+            "reference_lux": 497.41092800000007,
+            "absolute_error_lux": 44.60080171000004,
+            "allowed_error_lux": 24.870546400000006,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 510.22894616,
+            "reference_lux": 560.696915,
+            "absolute_error_lux": 50.46796883999997,
+            "allowed_error_lux": 28.034845750000002,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 529.38626543,
+            "reference_lux": 559.168613,
+            "absolute_error_lux": 29.78234757000007,
+            "allowed_error_lux": 27.958430650000004,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 240.1493714,
+            "reference_lux": 276.084767,
+            "absolute_error_lux": 35.93539559999999,
+            "allowed_error_lux": 13.80423835,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 278.10696400999996,
+            "reference_lux": 322.313486,
+            "absolute_error_lux": 44.206521990000056,
+            "allowed_error_lux": 16.115674300000002,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 306.11175387,
+            "reference_lux": 348.57815600000004,
+            "absolute_error_lux": 42.46640213000006,
+            "allowed_error_lux": 17.4289078,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 313.44387131999997,
+            "reference_lux": 349.668982,
+            "absolute_error_lux": 36.22511068000006,
+            "allowed_error_lux": 17.4834491,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 169.40899921,
+            "reference_lux": 209.259413,
+            "absolute_error_lux": 39.850413790000005,
+            "allowed_error_lux": 10.46297065,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 197.0516488,
+            "reference_lux": 209.517352,
+            "absolute_error_lux": 12.465703199999979,
+            "allowed_error_lux": 10.4758676,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 199.29664711,
+            "reference_lux": 225.893883,
+            "absolute_error_lux": 26.59723588999998,
+            "allowed_error_lux": 11.29469415,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 206.07200117,
+            "reference_lux": 235.729933,
+            "absolute_error_lux": 29.657931829999995,
+            "allowed_error_lux": 11.78649665,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 135.75901117,
+            "reference_lux": 169.8225805,
+            "absolute_error_lux": 34.06356932999998,
+            "allowed_error_lux": 8.491129025,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 148.85665418,
+            "reference_lux": 184.518033,
+            "absolute_error_lux": 35.66137882000001,
+            "allowed_error_lux": 9.22590165,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 156.28938753,
+            "reference_lux": 186.729757,
+            "absolute_error_lux": 30.440369470000007,
+            "allowed_error_lux": 9.336487850000001,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 163.16085564,
+            "reference_lux": 186.160537,
+            "absolute_error_lux": 22.99968136000001,
+            "allowed_error_lux": 9.308026850000001,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 4.011665495802542,
+        "condition": "mixed",
+        "pass": false,
+        "interval_index": 1912,
+        "reference_rgb_sha256": "39a856f67accf97fe75c3144b59cace35a22cce53fcd25174c291658a671faf5",
+        "sensors": [
+          {
+            "candidate_lux": 602.1248074599999,
+            "reference_lux": 653.2669440000001,
+            "absolute_error_lux": 51.14213654000014,
+            "allowed_error_lux": 32.663347200000004,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 1807.18986941,
+            "reference_lux": 1892.49182,
+            "absolute_error_lux": 85.30195058999993,
+            "allowed_error_lux": 94.62459100000001,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 2640.9144300999997,
+            "reference_lux": 2634.55243,
+            "absolute_error_lux": 6.362000099999477,
+            "allowed_error_lux": 131.72762150000003,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 2017.9157059000004,
+            "reference_lux": 2055.3657100000005,
+            "absolute_error_lux": 37.450004100000115,
+            "allowed_error_lux": 102.76828550000003,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 516.58714251,
+            "reference_lux": 566.7535590000001,
+            "absolute_error_lux": 50.166416490000074,
+            "allowed_error_lux": 28.337677950000007,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 823.29608692,
+            "reference_lux": 870.9835700000001,
+            "absolute_error_lux": 47.687483080000106,
+            "allowed_error_lux": 43.54917850000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 1035.1674178,
+            "reference_lux": 1090.0015260000002,
+            "absolute_error_lux": 54.83410820000017,
+            "allowed_error_lux": 54.50007630000002,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 1023.9436524000001,
+            "reference_lux": 1083.11468,
+            "absolute_error_lux": 59.171027599999775,
+            "allowed_error_lux": 54.155733999999995,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 350.85232773,
+            "reference_lux": 397.456075,
+            "absolute_error_lux": 46.603747269999985,
+            "allowed_error_lux": 19.872803750000003,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 452.81012629,
+            "reference_lux": 497.41092800000007,
+            "absolute_error_lux": 44.60080171000004,
+            "allowed_error_lux": 24.870546400000006,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 510.22894616,
+            "reference_lux": 560.696915,
+            "absolute_error_lux": 50.46796883999997,
+            "allowed_error_lux": 28.034845750000002,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 529.38626543,
+            "reference_lux": 559.168613,
+            "absolute_error_lux": 29.78234757000007,
+            "allowed_error_lux": 27.958430650000004,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 240.1493714,
+            "reference_lux": 276.084767,
+            "absolute_error_lux": 35.93539559999999,
+            "allowed_error_lux": 13.80423835,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 278.10696400999996,
+            "reference_lux": 322.313486,
+            "absolute_error_lux": 44.206521990000056,
+            "allowed_error_lux": 16.115674300000002,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 306.11175387,
+            "reference_lux": 348.57815600000004,
+            "absolute_error_lux": 42.46640213000006,
+            "allowed_error_lux": 17.4289078,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 313.44387131999997,
+            "reference_lux": 349.668982,
+            "absolute_error_lux": 36.22511068000006,
+            "allowed_error_lux": 17.4834491,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 169.40899921,
+            "reference_lux": 209.259413,
+            "absolute_error_lux": 39.850413790000005,
+            "allowed_error_lux": 10.46297065,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 197.0516488,
+            "reference_lux": 209.517352,
+            "absolute_error_lux": 12.465703199999979,
+            "allowed_error_lux": 10.4758676,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 199.29664711,
+            "reference_lux": 225.893883,
+            "absolute_error_lux": 26.59723588999998,
+            "allowed_error_lux": 11.29469415,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 206.07200117,
+            "reference_lux": 235.729933,
+            "absolute_error_lux": 29.657931829999995,
+            "allowed_error_lux": 11.78649665,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 135.75901117,
+            "reference_lux": 169.8225805,
+            "absolute_error_lux": 34.06356932999998,
+            "allowed_error_lux": 8.491129025,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 148.85665418,
+            "reference_lux": 184.518033,
+            "absolute_error_lux": 35.66137882000001,
+            "allowed_error_lux": 9.22590165,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 156.28938753,
+            "reference_lux": 186.729757,
+            "absolute_error_lux": 30.440369470000007,
+            "allowed_error_lux": 9.336487850000001,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 163.16085564,
+            "reference_lux": 186.160537,
+            "absolute_error_lux": 22.99968136000001,
+            "allowed_error_lux": 9.308026850000001,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 663.005439,
+            "reference_lux": 716.756991,
+            "absolute_error_lux": 53.75155199999995,
+            "allowed_error_lux": 35.83784955,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 740.960118,
+            "reference_lux": 783.6983370000002,
+            "absolute_error_lux": 42.738219000000186,
+            "allowed_error_lux": 39.18491685000001,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 555.704068,
+            "reference_lux": 604.4529279999999,
+            "absolute_error_lux": 48.74885999999992,
+            "allowed_error_lux": 30.2226464,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 427.80892600000004,
+            "reference_lux": 468.422057,
+            "absolute_error_lux": 40.61313099999995,
+            "allowed_error_lux": 23.42110285,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 480.261117,
+            "reference_lux": 520.691668,
+            "absolute_error_lux": 40.43055100000004,
+            "allowed_error_lux": 26.034583400000002,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 440.439166,
+            "reference_lux": 475.078172,
+            "absolute_error_lux": 34.639005999999995,
+            "allowed_error_lux": 23.753908600000003,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 376.684736,
+            "reference_lux": 412.7382000000001,
+            "absolute_error_lux": 36.05346400000013,
+            "allowed_error_lux": 20.636910000000007,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 270.62258199999997,
+            "reference_lux": 298.339658,
+            "absolute_error_lux": 27.71707600000002,
+            "allowed_error_lux": 14.9169829,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 291.460151,
+            "reference_lux": 321.610911,
+            "absolute_error_lux": 30.15075999999999,
+            "allowed_error_lux": 16.08054555,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 281.272724,
+            "reference_lux": 310.865183,
+            "absolute_error_lux": 29.59245900000002,
+            "allowed_error_lux": 15.54325915,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 256.546022,
+            "reference_lux": 289.2210400000001,
+            "absolute_error_lux": 32.67501800000008,
+            "allowed_error_lux": 14.461052000000004,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 182.14932600000003,
+            "reference_lux": 212.671153,
+            "absolute_error_lux": 30.521826999999973,
+            "allowed_error_lux": 10.63355765,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 202.194283,
+            "reference_lux": 234.508616,
+            "absolute_error_lux": 32.314332999999976,
+            "allowed_error_lux": 11.7254308,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 191.368721,
+            "reference_lux": 221.829867,
+            "absolute_error_lux": 30.461146000000014,
+            "allowed_error_lux": 11.09149335,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 181.31930300000002,
+            "reference_lux": 208.594249,
+            "absolute_error_lux": 27.27494599999997,
+            "allowed_error_lux": 10.42971245,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 142.6393362,
+            "reference_lux": 164.12846520000002,
+            "absolute_error_lux": 21.48912900000002,
+            "allowed_error_lux": 8.206423260000001,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 154.49602769999998,
+            "reference_lux": 192.983838,
+            "absolute_error_lux": 38.48781030000001,
+            "allowed_error_lux": 9.6491919,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 152.6239204,
+            "reference_lux": 168.60018950000003,
+            "absolute_error_lux": 15.976269100000025,
+            "allowed_error_lux": 8.430009475000002,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 151.6833828,
+            "reference_lux": 168.5938529,
+            "absolute_error_lux": 16.910470099999998,
+            "allowed_error_lux": 8.429692645000001,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 3.9887081424922233,
+        "condition": "mixed",
+        "pass": false,
+        "interval_index": 4112,
+        "reference_rgb_sha256": "3c73347a819aafb4ba8c8d02957c5dbcb27c3596da51b0a1cb3e86be1ee55817",
+        "sensors": [
+          {
+            "candidate_lux": 1208.534968,
+            "reference_lux": 1215.523844,
+            "absolute_error_lux": 6.988876000000118,
+            "allowed_error_lux": 60.776192200000004,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 2138.10846,
+            "reference_lux": 2111.63973,
+            "absolute_error_lux": 26.46873000000005,
+            "allowed_error_lux": 105.5819865,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 1779.5345860000002,
+            "reference_lux": 1809.3230500000002,
+            "absolute_error_lux": 29.788463999999976,
+            "allowed_error_lux": 90.46615250000002,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 663.005439,
+            "reference_lux": 716.756991,
+            "absolute_error_lux": 53.75155199999995,
+            "allowed_error_lux": 35.83784955,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 740.960118,
+            "reference_lux": 783.6983370000002,
+            "absolute_error_lux": 42.738219000000186,
+            "allowed_error_lux": 39.18491685000001,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 913.138786,
+            "reference_lux": 939.7899170000002,
+            "absolute_error_lux": 26.65113100000019,
+            "allowed_error_lux": 46.98949585000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 817.5629889999999,
+            "reference_lux": 859.3593099999999,
+            "absolute_error_lux": 41.796321000000034,
+            "allowed_error_lux": 42.9679655,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 555.704068,
+            "reference_lux": 604.4529279999999,
+            "absolute_error_lux": 48.74885999999992,
+            "allowed_error_lux": 30.2226464,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 427.80892600000004,
+            "reference_lux": 468.422057,
+            "absolute_error_lux": 40.61313099999995,
+            "allowed_error_lux": 23.42110285,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 480.261117,
+            "reference_lux": 520.691668,
+            "absolute_error_lux": 40.43055100000004,
+            "allowed_error_lux": 26.034583400000002,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 440.439166,
+            "reference_lux": 475.078172,
+            "absolute_error_lux": 34.639005999999995,
+            "allowed_error_lux": 23.753908600000003,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 376.684736,
+            "reference_lux": 412.7382000000001,
+            "absolute_error_lux": 36.05346400000013,
+            "allowed_error_lux": 20.636910000000007,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 270.62258199999997,
+            "reference_lux": 298.339658,
+            "absolute_error_lux": 27.71707600000002,
+            "allowed_error_lux": 14.9169829,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 291.460151,
+            "reference_lux": 321.610911,
+            "absolute_error_lux": 30.15075999999999,
+            "allowed_error_lux": 16.08054555,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 281.272724,
+            "reference_lux": 310.865183,
+            "absolute_error_lux": 29.59245900000002,
+            "allowed_error_lux": 15.54325915,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 256.546022,
+            "reference_lux": 289.2210400000001,
+            "absolute_error_lux": 32.67501800000008,
+            "allowed_error_lux": 14.461052000000004,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 182.14932600000003,
+            "reference_lux": 212.671153,
+            "absolute_error_lux": 30.521826999999973,
+            "allowed_error_lux": 10.63355765,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 202.194283,
+            "reference_lux": 234.508616,
+            "absolute_error_lux": 32.314332999999976,
+            "allowed_error_lux": 11.7254308,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 191.368721,
+            "reference_lux": 221.829867,
+            "absolute_error_lux": 30.461146000000014,
+            "allowed_error_lux": 11.09149335,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 181.31930300000002,
+            "reference_lux": 208.594249,
+            "absolute_error_lux": 27.27494599999997,
+            "allowed_error_lux": 10.42971245,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 142.6393362,
+            "reference_lux": 164.12846520000002,
+            "absolute_error_lux": 21.48912900000002,
+            "allowed_error_lux": 8.206423260000001,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 154.49602769999998,
+            "reference_lux": 192.983838,
+            "absolute_error_lux": 38.48781030000001,
+            "allowed_error_lux": 9.6491919,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 152.6239204,
+            "reference_lux": 168.60018950000003,
+            "absolute_error_lux": 15.976269100000025,
+            "allowed_error_lux": 8.430009475000002,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 151.6833828,
+            "reference_lux": 168.5938529,
+            "absolute_error_lux": 16.910470099999998,
+            "allowed_error_lux": 8.429692645000001,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 773.562462,
+            "reference_lux": 845.6258929999999,
+            "absolute_error_lux": 72.06343099999992,
+            "allowed_error_lux": 42.28129465,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1198.072776,
+            "reference_lux": 1262.3767360000002,
+            "absolute_error_lux": 64.30396000000019,
+            "allowed_error_lux": 63.11883680000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 804.403625,
+            "reference_lux": 867.900295,
+            "absolute_error_lux": 63.496669999999995,
+            "allowed_error_lux": 43.39501475,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 468.664423,
+            "reference_lux": 521.310292,
+            "absolute_error_lux": 52.645869000000005,
+            "allowed_error_lux": 26.0655146,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 592.830458,
+            "reference_lux": 641.2914860000001,
+            "absolute_error_lux": 48.461028000000056,
+            "allowed_error_lux": 32.064574300000004,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 570.366853,
+            "reference_lux": 647.097888,
+            "absolute_error_lux": 76.73103500000002,
+            "allowed_error_lux": 32.3548944,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 492.53854800000005,
+            "reference_lux": 536.018006,
+            "absolute_error_lux": 43.479457999999966,
+            "allowed_error_lux": 26.800900300000002,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 305.882181,
+            "reference_lux": 348.50763,
+            "absolute_error_lux": 42.625449,
+            "allowed_error_lux": 17.4253815,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 353.479892,
+            "reference_lux": 384.440627,
+            "absolute_error_lux": 30.960735,
+            "allowed_error_lux": 19.22203135,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 349.086695,
+            "reference_lux": 395.185102,
+            "absolute_error_lux": 46.09840699999995,
+            "allowed_error_lux": 19.7592551,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 322.15256500000004,
+            "reference_lux": 352.77284199999997,
+            "absolute_error_lux": 30.62027699999993,
+            "allowed_error_lux": 17.6386421,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 210.366707,
+            "reference_lux": 253.51949,
+            "absolute_error_lux": 43.152783,
+            "allowed_error_lux": 12.6759745,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 245.74587799999998,
+            "reference_lux": 278.96416100000005,
+            "absolute_error_lux": 33.21828300000007,
+            "allowed_error_lux": 13.948208050000003,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 236.204641,
+            "reference_lux": 282.20799900000003,
+            "absolute_error_lux": 46.00335800000002,
+            "allowed_error_lux": 14.110399950000001,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 223.777566,
+            "reference_lux": 252.935771,
+            "absolute_error_lux": 29.15820499999998,
+            "allowed_error_lux": 12.64678855,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 165.1945534,
+            "reference_lux": 197.51200100000003,
+            "absolute_error_lux": 32.31744760000004,
+            "allowed_error_lux": 9.875600050000003,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 183.129172,
+            "reference_lux": 216.816077,
+            "absolute_error_lux": 33.686904999999996,
+            "allowed_error_lux": 10.84080385,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 185.213448,
+            "reference_lux": 203.983925,
+            "absolute_error_lux": 18.770477,
+            "allowed_error_lux": 10.19919625,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 177.91355950000002,
+            "reference_lux": 200.747605,
+            "absolute_error_lux": 22.834045499999974,
+            "allowed_error_lux": 10.03738025,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 3.404297081853549,
+        "condition": "mixed",
+        "pass": false,
+        "interval_index": 4116,
+        "reference_rgb_sha256": "9545b1474f456a838f5ccfb645ad36e7f2675864d4cbb7b0e171af55c9c3f3e4",
+        "sensors": [
+          {
+            "candidate_lux": 1162.269196,
+            "reference_lux": 1198.9072740000001,
+            "absolute_error_lux": 36.63807800000018,
+            "allowed_error_lux": 59.94536370000001,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 3464.1529900000005,
+            "reference_lux": 3452.1582,
+            "absolute_error_lux": 11.994790000000648,
+            "allowed_error_lux": 172.60791,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 3534.8526199999997,
+            "reference_lux": 3560.0540300000002,
+            "absolute_error_lux": 25.20141000000058,
+            "allowed_error_lux": 178.00270150000003,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 1253.294455,
+            "reference_lux": 1302.935093,
+            "absolute_error_lux": 49.64063800000008,
+            "allowed_error_lux": 65.14675465,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 773.562462,
+            "reference_lux": 845.6258929999999,
+            "absolute_error_lux": 72.06343099999992,
+            "allowed_error_lux": 42.28129465,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1198.072776,
+            "reference_lux": 1262.3767360000002,
+            "absolute_error_lux": 64.30396000000019,
+            "allowed_error_lux": 63.11883680000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 1201.3914359999999,
+            "reference_lux": 1252.001538,
+            "absolute_error_lux": 50.6101020000001,
+            "allowed_error_lux": 62.600076900000005,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 804.403625,
+            "reference_lux": 867.900295,
+            "absolute_error_lux": 63.496669999999995,
+            "allowed_error_lux": 43.39501475,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 468.664423,
+            "reference_lux": 521.310292,
+            "absolute_error_lux": 52.645869000000005,
+            "allowed_error_lux": 26.0655146,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 592.830458,
+            "reference_lux": 641.2914860000001,
+            "absolute_error_lux": 48.461028000000056,
+            "allowed_error_lux": 32.064574300000004,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 570.366853,
+            "reference_lux": 647.097888,
+            "absolute_error_lux": 76.73103500000002,
+            "allowed_error_lux": 32.3548944,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 492.53854800000005,
+            "reference_lux": 536.018006,
+            "absolute_error_lux": 43.479457999999966,
+            "allowed_error_lux": 26.800900300000002,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 305.882181,
+            "reference_lux": 348.50763,
+            "absolute_error_lux": 42.625449,
+            "allowed_error_lux": 17.4253815,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 353.479892,
+            "reference_lux": 384.440627,
+            "absolute_error_lux": 30.960735,
+            "allowed_error_lux": 19.22203135,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 349.086695,
+            "reference_lux": 395.185102,
+            "absolute_error_lux": 46.09840699999995,
+            "allowed_error_lux": 19.7592551,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 322.15256500000004,
+            "reference_lux": 352.77284199999997,
+            "absolute_error_lux": 30.62027699999993,
+            "allowed_error_lux": 17.6386421,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 210.366707,
+            "reference_lux": 253.51949,
+            "absolute_error_lux": 43.152783,
+            "allowed_error_lux": 12.6759745,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 245.74587799999998,
+            "reference_lux": 278.96416100000005,
+            "absolute_error_lux": 33.21828300000007,
+            "allowed_error_lux": 13.948208050000003,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 236.204641,
+            "reference_lux": 282.20799900000003,
+            "absolute_error_lux": 46.00335800000002,
+            "allowed_error_lux": 14.110399950000001,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 223.777566,
+            "reference_lux": 252.935771,
+            "absolute_error_lux": 29.15820499999998,
+            "allowed_error_lux": 12.64678855,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 165.1945534,
+            "reference_lux": 197.51200100000003,
+            "absolute_error_lux": 32.31744760000004,
+            "allowed_error_lux": 9.875600050000003,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 183.129172,
+            "reference_lux": 216.816077,
+            "absolute_error_lux": 33.686904999999996,
+            "allowed_error_lux": 10.84080385,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 185.213448,
+            "reference_lux": 203.983925,
+            "absolute_error_lux": 18.770477,
+            "allowed_error_lux": 10.19919625,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 177.91355950000002,
+            "reference_lux": 200.747605,
+            "absolute_error_lux": 22.834045499999974,
+            "allowed_error_lux": 10.03738025,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 586.150178,
+            "reference_lux": 637.356887,
+            "absolute_error_lux": 51.206709000000046,
+            "allowed_error_lux": 31.867844350000002,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 769.840873,
+            "reference_lux": 811.7877330000002,
+            "absolute_error_lux": 41.94686000000024,
+            "allowed_error_lux": 40.589386650000016,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 381.99512899999996,
+            "reference_lux": 423.5424610000001,
+            "absolute_error_lux": 41.547332000000154,
+            "allowed_error_lux": 21.177123050000006,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 476.133019,
+            "reference_lux": 517.117396,
+            "absolute_error_lux": 40.984376999999995,
+            "allowed_error_lux": 25.8558698,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 485.03415199999995,
+            "reference_lux": 535.484407,
+            "absolute_error_lux": 50.450255000000084,
+            "allowed_error_lux": 26.774220350000004,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 448.093922,
+            "reference_lux": 487.227439,
+            "absolute_error_lux": 39.13351699999998,
+            "allowed_error_lux": 24.361371950000002,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 255.388071,
+            "reference_lux": 291.54786100000007,
+            "absolute_error_lux": 36.15979000000007,
+            "allowed_error_lux": 14.577393050000005,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 290.92350899999997,
+            "reference_lux": 321.05457899999993,
+            "absolute_error_lux": 30.131069999999966,
+            "allowed_error_lux": 16.05272895,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 297.94478399999997,
+            "reference_lux": 325.342345,
+            "absolute_error_lux": 27.397561000000053,
+            "allowed_error_lux": 16.267117250000002,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 284.604272,
+            "reference_lux": 308.161746,
+            "absolute_error_lux": 23.557474000000013,
+            "allowed_error_lux": 15.4080873,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 176.0533199,
+            "reference_lux": 205.262343,
+            "absolute_error_lux": 29.209023099999996,
+            "allowed_error_lux": 10.26311715,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 198.18987399999997,
+            "reference_lux": 209.257981,
+            "absolute_error_lux": 11.068107000000026,
+            "allowed_error_lux": 10.46289905,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 194.097039,
+            "reference_lux": 217.07043600000003,
+            "absolute_error_lux": 22.973397000000034,
+            "allowed_error_lux": 10.853521800000003,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 140.34521850000002,
+            "reference_lux": 173.66959479999997,
+            "absolute_error_lux": 33.324376299999955,
+            "allowed_error_lux": 8.68347974,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 153.8215736,
+            "reference_lux": 178.91071480000002,
+            "absolute_error_lux": 25.08914120000003,
+            "allowed_error_lux": 8.945535740000002,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 156.5827023,
+            "reference_lux": 190.07079199999998,
+            "absolute_error_lux": 33.48808969999999,
+            "allowed_error_lux": 9.5035396,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 157.9387884,
+            "reference_lux": 183.18698899999998,
+            "absolute_error_lux": 25.24820059999999,
+            "allowed_error_lux": 9.159349449999999,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 3.837675367225531,
+        "condition": "mixed",
+        "pass": false,
+        "interval_index": 4120,
+        "reference_rgb_sha256": "abd941f377afaaaf3b89bed5e3011c3c6055794d28568ed8079a36d9c44c7efe",
+        "sensors": [
+          {
+            "candidate_lux": 709.9270670000001,
+            "reference_lux": 727.4676350000001,
+            "absolute_error_lux": 17.540568000000007,
+            "allowed_error_lux": 36.37338175000001,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 1936.2251,
+            "reference_lux": 2010.7463799999998,
+            "absolute_error_lux": 74.5212799999997,
+            "allowed_error_lux": 100.537319,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 2302.10468,
+            "reference_lux": 2362.6818599999997,
+            "absolute_error_lux": 60.57717999999977,
+            "allowed_error_lux": 118.134093,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 1288.046231,
+            "reference_lux": 1320.500721,
+            "absolute_error_lux": 32.45449000000008,
+            "allowed_error_lux": 66.02503605000001,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 586.150178,
+            "reference_lux": 637.356887,
+            "absolute_error_lux": 51.206709000000046,
+            "allowed_error_lux": 31.867844350000002,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 881.534904,
+            "reference_lux": 915.7385820000001,
+            "absolute_error_lux": 34.20367800000008,
+            "allowed_error_lux": 45.78692910000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 955.05808,
+            "reference_lux": 992.783762,
+            "absolute_error_lux": 37.725682000000006,
+            "allowed_error_lux": 49.639188100000005,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 769.840873,
+            "reference_lux": 811.7877330000002,
+            "absolute_error_lux": 41.94686000000024,
+            "allowed_error_lux": 40.589386650000016,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 381.99512899999996,
+            "reference_lux": 423.5424610000001,
+            "absolute_error_lux": 41.547332000000154,
+            "allowed_error_lux": 21.177123050000006,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 476.133019,
+            "reference_lux": 517.117396,
+            "absolute_error_lux": 40.984376999999995,
+            "allowed_error_lux": 25.8558698,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 485.03415199999995,
+            "reference_lux": 535.484407,
+            "absolute_error_lux": 50.450255000000084,
+            "allowed_error_lux": 26.774220350000004,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 448.093922,
+            "reference_lux": 487.227439,
+            "absolute_error_lux": 39.13351699999998,
+            "allowed_error_lux": 24.361371950000002,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 255.388071,
+            "reference_lux": 291.54786100000007,
+            "absolute_error_lux": 36.15979000000007,
+            "allowed_error_lux": 14.577393050000005,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 290.92350899999997,
+            "reference_lux": 321.05457899999993,
+            "absolute_error_lux": 30.131069999999966,
+            "allowed_error_lux": 16.05272895,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 297.94478399999997,
+            "reference_lux": 325.342345,
+            "absolute_error_lux": 27.397561000000053,
+            "allowed_error_lux": 16.267117250000002,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 284.604272,
+            "reference_lux": 308.161746,
+            "absolute_error_lux": 23.557474000000013,
+            "allowed_error_lux": 15.4080873,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 176.0533199,
+            "reference_lux": 205.262343,
+            "absolute_error_lux": 29.209023099999996,
+            "allowed_error_lux": 10.26311715,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 203.30139799999998,
+            "reference_lux": 203.573657,
+            "absolute_error_lux": 0.27225900000001957,
+            "allowed_error_lux": 10.178682850000001,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 198.18987399999997,
+            "reference_lux": 209.257981,
+            "absolute_error_lux": 11.068107000000026,
+            "allowed_error_lux": 10.46289905,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 194.097039,
+            "reference_lux": 217.07043600000003,
+            "absolute_error_lux": 22.973397000000034,
+            "allowed_error_lux": 10.853521800000003,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 140.34521850000002,
+            "reference_lux": 173.66959479999997,
+            "absolute_error_lux": 33.324376299999955,
+            "allowed_error_lux": 8.68347974,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 153.8215736,
+            "reference_lux": 178.91071480000002,
+            "absolute_error_lux": 25.08914120000003,
+            "allowed_error_lux": 8.945535740000002,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 156.5827023,
+            "reference_lux": 190.07079199999998,
+            "absolute_error_lux": 33.48808969999999,
+            "allowed_error_lux": 9.5035396,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 157.9387884,
+            "reference_lux": 183.18698899999998,
+            "absolute_error_lux": 25.24820059999999,
+            "allowed_error_lux": 9.159349449999999,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 650.9419667000001,
+            "reference_lux": 699.3315200000001,
+            "absolute_error_lux": 48.38955329999999,
+            "allowed_error_lux": 34.966576,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 1119.3178596,
+            "reference_lux": 1179.321989,
+            "absolute_error_lux": 60.00412940000001,
+            "allowed_error_lux": 58.96609945,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 856.5171301000001,
+            "reference_lux": 910.898064,
+            "absolute_error_lux": 54.38093389999983,
+            "allowed_error_lux": 45.5449032,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 579.5225777,
+            "reference_lux": 631.446128,
+            "absolute_error_lux": 51.92355029999999,
+            "allowed_error_lux": 31.572306400000002,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 593.2124798,
+            "reference_lux": 641.723771,
+            "absolute_error_lux": 48.51129120000007,
+            "allowed_error_lux": 32.08618855,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 591.304841,
+            "reference_lux": 634.693904,
+            "absolute_error_lux": 43.389062999999965,
+            "allowed_error_lux": 31.7346952,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 495.8743025,
+            "reference_lux": 557.65839,
+            "absolute_error_lux": 61.784087500000055,
+            "allowed_error_lux": 27.882919500000003,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 363.64566,
+            "reference_lux": 406.64253399999996,
+            "absolute_error_lux": 42.996873999999934,
+            "allowed_error_lux": 20.3321267,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 363.7404047,
+            "reference_lux": 401.342165,
+            "absolute_error_lux": 37.601760300000024,
+            "allowed_error_lux": 20.067108250000004,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 335.2615047,
+            "reference_lux": 377.22191499999997,
+            "absolute_error_lux": 41.96041029999998,
+            "allowed_error_lux": 18.86109575,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 300.3346667,
+            "reference_lux": 331.07678899999996,
+            "absolute_error_lux": 30.74212229999995,
+            "allowed_error_lux": 16.553839449999998,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 238.63815316,
+            "reference_lux": 278.26283900000004,
+            "absolute_error_lux": 39.62468584000004,
+            "allowed_error_lux": 13.913141950000004,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 259.29510400000004,
+            "reference_lux": 301.64865199999997,
+            "absolute_error_lux": 42.35354799999993,
+            "allowed_error_lux": 15.082432599999999,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 235.87995289999998,
+            "reference_lux": 271.171396,
+            "absolute_error_lux": 35.29144310000004,
+            "allowed_error_lux": 13.5585698,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 219.94948989999997,
+            "reference_lux": 259.702508,
+            "absolute_error_lux": 39.75301810000005,
+            "allowed_error_lux": 12.985125400000001,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 187.5285624,
+            "reference_lux": 230.913938,
+            "absolute_error_lux": 43.3853756,
+            "allowed_error_lux": 11.545696900000001,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 197.15849569000002,
+            "reference_lux": 237.007098,
+            "absolute_error_lux": 39.84860230999999,
+            "allowed_error_lux": 11.850354900000001,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 191.56886985,
+            "reference_lux": 233.872092,
+            "absolute_error_lux": 42.30322215000001,
+            "allowed_error_lux": 11.6936046,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 186.08730631000003,
+            "reference_lux": 210.10017600000003,
+            "absolute_error_lux": 24.012869690000002,
+            "allowed_error_lux": 10.505008800000002,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 3.757709558441639,
+        "condition": "clear",
+        "pass": false,
+        "interval_index": 6320,
+        "reference_rgb_sha256": "75818f86611b0935c61a622ad56f440a3f0d33f577f72ad0294fe0b52a547124",
+        "sensors": [
+          {
+            "candidate_lux": 2162.977646,
+            "reference_lux": 2250.45244,
+            "absolute_error_lux": 87.4747940000002,
+            "allowed_error_lux": 112.52262200000001,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 2685.8180658,
+            "reference_lux": 2748.2120600000003,
+            "absolute_error_lux": 62.39399420000018,
+            "allowed_error_lux": 137.410603,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 1803.4308175,
+            "reference_lux": 1878.32039,
+            "absolute_error_lux": 74.88957249999999,
+            "allowed_error_lux": 93.9160195,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 650.9419667000001,
+            "reference_lux": 699.3315200000001,
+            "absolute_error_lux": 48.38955329999999,
+            "allowed_error_lux": 34.966576,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 1119.3178596,
+            "reference_lux": 1179.321989,
+            "absolute_error_lux": 60.00412940000001,
+            "allowed_error_lux": 58.96609945,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1118.4643697,
+            "reference_lux": 1161.6657870000001,
+            "absolute_error_lux": 43.20141730000023,
+            "allowed_error_lux": 58.08328935000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 856.5171301000001,
+            "reference_lux": 910.898064,
+            "absolute_error_lux": 54.38093389999983,
+            "allowed_error_lux": 45.5449032,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 579.5225777,
+            "reference_lux": 631.446128,
+            "absolute_error_lux": 51.92355029999999,
+            "allowed_error_lux": 31.572306400000002,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 593.2124798,
+            "reference_lux": 641.723771,
+            "absolute_error_lux": 48.51129120000007,
+            "allowed_error_lux": 32.08618855,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 591.304841,
+            "reference_lux": 634.693904,
+            "absolute_error_lux": 43.389062999999965,
+            "allowed_error_lux": 31.7346952,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 495.8743025,
+            "reference_lux": 557.65839,
+            "absolute_error_lux": 61.784087500000055,
+            "allowed_error_lux": 27.882919500000003,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 422.7592107,
+            "reference_lux": 439.541123,
+            "absolute_error_lux": 16.781912300000045,
+            "allowed_error_lux": 21.977056150000003,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 363.64566,
+            "reference_lux": 406.64253399999996,
+            "absolute_error_lux": 42.996873999999934,
+            "allowed_error_lux": 20.3321267,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 363.7404047,
+            "reference_lux": 401.342165,
+            "absolute_error_lux": 37.601760300000024,
+            "allowed_error_lux": 20.067108250000004,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 335.2615047,
+            "reference_lux": 377.22191499999997,
+            "absolute_error_lux": 41.96041029999998,
+            "allowed_error_lux": 18.86109575,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 300.3346667,
+            "reference_lux": 331.07678899999996,
+            "absolute_error_lux": 30.74212229999995,
+            "allowed_error_lux": 16.553839449999998,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 238.63815316,
+            "reference_lux": 278.26283900000004,
+            "absolute_error_lux": 39.62468584000004,
+            "allowed_error_lux": 13.913141950000004,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 259.29510400000004,
+            "reference_lux": 301.64865199999997,
+            "absolute_error_lux": 42.35354799999993,
+            "allowed_error_lux": 15.082432599999999,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 235.87995289999998,
+            "reference_lux": 271.171396,
+            "absolute_error_lux": 35.29144310000004,
+            "allowed_error_lux": 13.5585698,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 219.94948989999997,
+            "reference_lux": 259.702508,
+            "absolute_error_lux": 39.75301810000005,
+            "allowed_error_lux": 12.985125400000001,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 187.5285624,
+            "reference_lux": 230.913938,
+            "absolute_error_lux": 43.3853756,
+            "allowed_error_lux": 11.545696900000001,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 197.15849569000002,
+            "reference_lux": 237.007098,
+            "absolute_error_lux": 39.84860230999999,
+            "allowed_error_lux": 11.850354900000001,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 191.56886985,
+            "reference_lux": 233.872092,
+            "absolute_error_lux": 42.30322215000001,
+            "allowed_error_lux": 11.6936046,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 186.08730631000003,
+            "reference_lux": 210.10017600000003,
+            "absolute_error_lux": 24.012869690000002,
+            "allowed_error_lux": 10.505008800000002,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 1468.810276,
+            "reference_lux": 1565.299868,
+            "absolute_error_lux": 96.48959200000013,
+            "allowed_error_lux": 78.26499340000001,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 1126.0316484,
+            "reference_lux": 1215.993003,
+            "absolute_error_lux": 89.96135460000005,
+            "allowed_error_lux": 60.799650150000005,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1228.7211739,
+            "reference_lux": 1337.1312530000002,
+            "absolute_error_lux": 108.4100791000003,
+            "allowed_error_lux": 66.85656265000001,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 715.1614029,
+            "reference_lux": 800.8936140000001,
+            "absolute_error_lux": 85.73221110000009,
+            "allowed_error_lux": 40.04468070000001,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 925.6824079,
+            "reference_lux": 1010.341514,
+            "absolute_error_lux": 84.65910609999992,
+            "allowed_error_lux": 50.5170757,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 910.4939894,
+            "reference_lux": 997.5215340000001,
+            "absolute_error_lux": 87.02754460000006,
+            "allowed_error_lux": 49.876076700000006,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 768.4392851,
+            "reference_lux": 850.3826390000002,
+            "absolute_error_lux": 81.94335390000015,
+            "allowed_error_lux": 42.51913195000001,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 476.48112029999993,
+            "reference_lux": 532.239137,
+            "absolute_error_lux": 55.7580167000001,
+            "allowed_error_lux": 26.611956850000002,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 555.2662161000001,
+            "reference_lux": 641.29972,
+            "absolute_error_lux": 86.03350389999991,
+            "allowed_error_lux": 32.064986,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 554.7636914999999,
+            "reference_lux": 631.820059,
+            "absolute_error_lux": 77.05636750000008,
+            "allowed_error_lux": 31.591002950000004,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 504.5146146,
+            "reference_lux": 557.705825,
+            "absolute_error_lux": 53.19121039999999,
+            "allowed_error_lux": 27.88529125,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 328.1756823,
+            "reference_lux": 389.790937,
+            "absolute_error_lux": 61.61525469999998,
+            "allowed_error_lux": 19.48954685,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 385.2121528,
+            "reference_lux": 436.317154,
+            "absolute_error_lux": 51.105001200000004,
+            "allowed_error_lux": 21.815857700000002,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 375.3393541,
+            "reference_lux": 440.018695,
+            "absolute_error_lux": 64.6793409,
+            "allowed_error_lux": 22.00093475,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 352.0785189,
+            "reference_lux": 411.918022,
+            "absolute_error_lux": 59.8395031,
+            "allowed_error_lux": 20.595901100000003,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 259.7597522,
+            "reference_lux": 311.06226200000003,
+            "absolute_error_lux": 51.30250980000005,
+            "allowed_error_lux": 15.553113100000003,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 289.4159173,
+            "reference_lux": 340.205073,
+            "absolute_error_lux": 50.78915570000004,
+            "allowed_error_lux": 17.010253650000003,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 293.64917779999996,
+            "reference_lux": 352.466752,
+            "absolute_error_lux": 58.817574200000024,
+            "allowed_error_lux": 17.6233376,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 283.05690649999997,
+            "reference_lux": 305.346434,
+            "absolute_error_lux": 22.28952750000002,
+            "allowed_error_lux": 15.2673217,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 3.3374821237039702,
+        "condition": "mixed",
+        "pass": false,
+        "interval_index": 6324,
+        "reference_rgb_sha256": "29adf7aadc4bf8a81ec3304ccf18c50f6eed209cad8c040d962cb5f20cc002d4",
+        "sensors": [
+          {
+            "candidate_lux": 1468.810276,
+            "reference_lux": 1565.299868,
+            "absolute_error_lux": 96.48959200000013,
+            "allowed_error_lux": 78.26499340000001,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 5481.5484324,
+            "reference_lux": 5529.53017,
+            "absolute_error_lux": 47.98173760000009,
+            "allowed_error_lux": 276.4765085,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 5669.276096500001,
+            "reference_lux": 5695.10696,
+            "absolute_error_lux": 25.830863499999396,
+            "allowed_error_lux": 284.755348,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 1717.1439927999998,
+            "reference_lux": 1792.33774,
+            "absolute_error_lux": 75.19374720000019,
+            "allowed_error_lux": 89.616887,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 1126.0316484,
+            "reference_lux": 1215.993003,
+            "absolute_error_lux": 89.96135460000005,
+            "allowed_error_lux": 60.799650150000005,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1878.0092880000002,
+            "reference_lux": 1958.2975900000001,
+            "absolute_error_lux": 80.28830199999993,
+            "allowed_error_lux": 97.91487950000001,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 1927.0750317,
+            "reference_lux": 2017.0418100000004,
+            "absolute_error_lux": 89.96677830000044,
+            "allowed_error_lux": 100.85209050000003,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 1228.7211739,
+            "reference_lux": 1337.1312530000002,
+            "absolute_error_lux": 108.4100791000003,
+            "allowed_error_lux": 66.85656265000001,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 715.1614029,
+            "reference_lux": 800.8936140000001,
+            "absolute_error_lux": 85.73221110000009,
+            "allowed_error_lux": 40.04468070000001,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 925.6824079,
+            "reference_lux": 1010.341514,
+            "absolute_error_lux": 84.65910609999992,
+            "allowed_error_lux": 50.5170757,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 910.4939894,
+            "reference_lux": 997.5215340000001,
+            "absolute_error_lux": 87.02754460000006,
+            "allowed_error_lux": 49.876076700000006,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 768.4392851,
+            "reference_lux": 850.3826390000002,
+            "absolute_error_lux": 81.94335390000015,
+            "allowed_error_lux": 42.51913195000001,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 476.48112029999993,
+            "reference_lux": 532.239137,
+            "absolute_error_lux": 55.7580167000001,
+            "allowed_error_lux": 26.611956850000002,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 555.2662161000001,
+            "reference_lux": 641.29972,
+            "absolute_error_lux": 86.03350389999991,
+            "allowed_error_lux": 32.064986,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 554.7636914999999,
+            "reference_lux": 631.820059,
+            "absolute_error_lux": 77.05636750000008,
+            "allowed_error_lux": 31.591002950000004,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 504.5146146,
+            "reference_lux": 557.705825,
+            "absolute_error_lux": 53.19121039999999,
+            "allowed_error_lux": 27.88529125,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 328.1756823,
+            "reference_lux": 389.790937,
+            "absolute_error_lux": 61.61525469999998,
+            "allowed_error_lux": 19.48954685,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 385.2121528,
+            "reference_lux": 436.317154,
+            "absolute_error_lux": 51.105001200000004,
+            "allowed_error_lux": 21.815857700000002,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 375.3393541,
+            "reference_lux": 440.018695,
+            "absolute_error_lux": 64.6793409,
+            "allowed_error_lux": 22.00093475,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 352.0785189,
+            "reference_lux": 411.918022,
+            "absolute_error_lux": 59.8395031,
+            "allowed_error_lux": 20.595901100000003,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 259.7597522,
+            "reference_lux": 311.06226200000003,
+            "absolute_error_lux": 51.30250980000005,
+            "allowed_error_lux": 15.553113100000003,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 289.4159173,
+            "reference_lux": 340.205073,
+            "absolute_error_lux": 50.78915570000004,
+            "allowed_error_lux": 17.010253650000003,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 293.64917779999996,
+            "reference_lux": 352.466752,
+            "absolute_error_lux": 58.817574200000024,
+            "allowed_error_lux": 17.6233376,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 283.05690649999997,
+            "reference_lux": 305.346434,
+            "absolute_error_lux": 22.28952750000002,
+            "allowed_error_lux": 15.2673217,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 525.96389104,
+            "reference_lux": 578.013375,
+            "absolute_error_lux": 52.049483959999975,
+            "allowed_error_lux": 28.90066875,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 456.71618911,
+            "reference_lux": 501.998698,
+            "absolute_error_lux": 45.282508889999974,
+            "allowed_error_lux": 25.0999349,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 709.29191235,
+            "reference_lux": 750.3150159999999,
+            "absolute_error_lux": 41.02310364999994,
+            "allowed_error_lux": 37.5157508,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 870.595677,
+            "reference_lux": 925.104757,
+            "absolute_error_lux": 54.509079999999926,
+            "allowed_error_lux": 46.25523785,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 315.93692067,
+            "reference_lux": 358.078581,
+            "absolute_error_lux": 42.14166032999998,
+            "allowed_error_lux": 17.90392905,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 400.13987749,
+            "reference_lux": 440.1968,
+            "absolute_error_lux": 40.05692250999999,
+            "allowed_error_lux": 22.00984,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 445.39976436,
+            "reference_lux": 486.821467,
+            "absolute_error_lux": 41.42170263999998,
+            "allowed_error_lux": 24.341073350000002,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 463.40216310000005,
+            "reference_lux": 503.98166,
+            "absolute_error_lux": 40.579496899999924,
+            "allowed_error_lux": 25.199083,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 219.27806985,
+            "reference_lux": 253.88769300000004,
+            "absolute_error_lux": 34.60962315000003,
+            "allowed_error_lux": 12.694384650000003,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 251.73526096,
+            "reference_lux": 296.284559,
+            "absolute_error_lux": 44.54929804,
+            "allowed_error_lux": 14.814227950000001,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 274.83303253,
+            "reference_lux": 302.384521,
+            "absolute_error_lux": 27.55148846999998,
+            "allowed_error_lux": 15.119226050000002,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 281.92972023,
+            "reference_lux": 306.90624,
+            "absolute_error_lux": 24.97651977000004,
+            "allowed_error_lux": 15.345312000000002,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 156.79734836,
+            "reference_lux": 196.45071000000002,
+            "absolute_error_lux": 39.653361640000014,
+            "allowed_error_lux": 9.8225355,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 182.40331089,
+            "reference_lux": 207.82437000000004,
+            "absolute_error_lux": 25.421059110000044,
+            "allowed_error_lux": 10.391218500000003,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 182.27084373000002,
+            "reference_lux": 211.09219400000006,
+            "absolute_error_lux": 28.82135027000004,
+            "allowed_error_lux": 10.554609700000004,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 189.08428004,
+            "reference_lux": 222.48196399999998,
+            "absolute_error_lux": 33.397683959999966,
+            "allowed_error_lux": 11.124098199999999,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 128.23990316,
+            "reference_lux": 155.9796871,
+            "absolute_error_lux": 27.739783939999995,
+            "allowed_error_lux": 7.798984355000001,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 139.24140784,
+            "reference_lux": 178.7426517,
+            "absolute_error_lux": 39.50124386000002,
+            "allowed_error_lux": 8.937132585,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 145.22041059,
+            "reference_lux": 178.7707368,
+            "absolute_error_lux": 33.55032621000001,
+            "allowed_error_lux": 8.938536840000001,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 153.49094628,
+            "reference_lux": 173.98320280000002,
+            "absolute_error_lux": 20.492256520000012,
+            "allowed_error_lux": 8.699160140000002,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 4.419901292087636,
+        "condition": "mixed",
+        "pass": false,
+        "interval_index": 6328,
+        "reference_rgb_sha256": "856a12f6e5c08c221b32c9611d23d8d03aaec03ca6db396af1650f4cf2131e00",
+        "sensors": [
+          {
+            "candidate_lux": 525.96389104,
+            "reference_lux": 578.013375,
+            "absolute_error_lux": 52.049483959999975,
+            "allowed_error_lux": 28.90066875,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 1503.38080018,
+            "reference_lux": 1523.389882,
+            "absolute_error_lux": 20.009081819999892,
+            "allowed_error_lux": 76.1694941,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 2155.3364223999997,
+            "reference_lux": 2136.6997300000003,
+            "absolute_error_lux": 18.636692399999447,
+            "allowed_error_lux": 106.83498650000001,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 1686.8379682,
+            "reference_lux": 1716.9071399999998,
+            "absolute_error_lux": 30.069171799999822,
+            "allowed_error_lux": 85.84535699999999,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 456.71618911,
+            "reference_lux": 501.998698,
+            "absolute_error_lux": 45.282508889999974,
+            "allowed_error_lux": 25.0999349,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 709.29191235,
+            "reference_lux": 750.3150159999999,
+            "absolute_error_lux": 41.02310364999994,
+            "allowed_error_lux": 37.5157508,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 873.2488686999999,
+            "reference_lux": 912.9669460000001,
+            "absolute_error_lux": 39.71807730000023,
+            "allowed_error_lux": 45.64834730000001,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 870.595677,
+            "reference_lux": 925.104757,
+            "absolute_error_lux": 54.509079999999926,
+            "allowed_error_lux": 46.25523785,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 315.93692067,
+            "reference_lux": 358.078581,
+            "absolute_error_lux": 42.14166032999998,
+            "allowed_error_lux": 17.90392905,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 400.13987749,
+            "reference_lux": 440.1968,
+            "absolute_error_lux": 40.05692250999999,
+            "allowed_error_lux": 22.00984,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 445.39976436,
+            "reference_lux": 486.821467,
+            "absolute_error_lux": 41.42170263999998,
+            "allowed_error_lux": 24.341073350000002,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 463.40216310000005,
+            "reference_lux": 503.98166,
+            "absolute_error_lux": 40.579496899999924,
+            "allowed_error_lux": 25.199083,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 219.27806985,
+            "reference_lux": 253.88769300000004,
+            "absolute_error_lux": 34.60962315000003,
+            "allowed_error_lux": 12.694384650000003,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 251.73526096,
+            "reference_lux": 296.284559,
+            "absolute_error_lux": 44.54929804,
+            "allowed_error_lux": 14.814227950000001,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 274.83303253,
+            "reference_lux": 302.384521,
+            "absolute_error_lux": 27.55148846999998,
+            "allowed_error_lux": 15.119226050000002,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 281.92972023,
+            "reference_lux": 306.90624,
+            "absolute_error_lux": 24.97651977000004,
+            "allowed_error_lux": 15.345312000000002,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 156.79734836,
+            "reference_lux": 196.45071000000002,
+            "absolute_error_lux": 39.653361640000014,
+            "allowed_error_lux": 9.8225355,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 182.40331089,
+            "reference_lux": 207.82437000000004,
+            "absolute_error_lux": 25.421059110000044,
+            "allowed_error_lux": 10.391218500000003,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 182.27084373000002,
+            "reference_lux": 211.09219400000006,
+            "absolute_error_lux": 28.82135027000004,
+            "allowed_error_lux": 10.554609700000004,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 189.08428004,
+            "reference_lux": 222.48196399999998,
+            "absolute_error_lux": 33.397683959999966,
+            "allowed_error_lux": 11.124098199999999,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 128.23990316,
+            "reference_lux": 155.9796871,
+            "absolute_error_lux": 27.739783939999995,
+            "allowed_error_lux": 7.798984355000001,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 139.24140784,
+            "reference_lux": 178.7426517,
+            "absolute_error_lux": 39.50124386000002,
+            "allowed_error_lux": 8.937132585,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 145.22041059,
+            "reference_lux": 178.7707368,
+            "absolute_error_lux": 33.55032621000001,
+            "allowed_error_lux": 8.938536840000001,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 153.49094628,
+            "reference_lux": 173.98320280000002,
+            "absolute_error_lux": 20.492256520000012,
+            "allowed_error_lux": 8.699160140000002,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 688.9588279999999,
+            "reference_lux": 741.0267060000001,
+            "absolute_error_lux": 52.06787800000018,
+            "allowed_error_lux": 37.051335300000005,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 1003.469704,
+            "reference_lux": 1071.860592,
+            "absolute_error_lux": 68.39088800000002,
+            "allowed_error_lux": 53.5930296,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 652.247181,
+            "reference_lux": 717.532419,
+            "absolute_error_lux": 65.28523800000005,
+            "allowed_error_lux": 35.87662095,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 1158.504289,
+            "reference_lux": 1232.365059,
+            "absolute_error_lux": 73.86077,
+            "allowed_error_lux": 61.61825295,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 898.4808340000001,
+            "reference_lux": 953.714506,
+            "absolute_error_lux": 55.233671999999956,
+            "allowed_error_lux": 47.6857253,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 651.092631,
+            "reference_lux": 721.483307,
+            "absolute_error_lux": 70.39067599999998,
+            "allowed_error_lux": 36.07416535,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 523.23132,
+            "reference_lux": 574.542386,
+            "absolute_error_lux": 51.31106599999998,
+            "allowed_error_lux": 28.7271193,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 579.6574005,
+            "reference_lux": 628.2865989999999,
+            "absolute_error_lux": 48.629198499999916,
+            "allowed_error_lux": 31.414329949999996,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 452.994584,
+            "reference_lux": 521.1459700000001,
+            "absolute_error_lux": 68.15138600000017,
+            "allowed_error_lux": 26.05729850000001,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 397.0934389,
+            "reference_lux": 451.28155400000014,
+            "absolute_error_lux": 54.18811510000012,
+            "allowed_error_lux": 22.56407770000001,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 365.0887401,
+            "reference_lux": 402.319505,
+            "absolute_error_lux": 37.2307649,
+            "allowed_error_lux": 20.11597525,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 356.68963049999996,
+            "reference_lux": 408.548347,
+            "absolute_error_lux": 51.858716500000014,
+            "allowed_error_lux": 20.42741735,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 320.48791869999997,
+            "reference_lux": 387.79634,
+            "absolute_error_lux": 67.30842130000002,
+            "allowed_error_lux": 19.389817,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 300.2563721,
+            "reference_lux": 336.71797399999997,
+            "absolute_error_lux": 36.46160189999995,
+            "allowed_error_lux": 16.835898699999998,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 259.84332730000006,
+            "reference_lux": 324.59681,
+            "absolute_error_lux": 64.75348269999995,
+            "allowed_error_lux": 16.2298405,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 280.55386000000004,
+            "reference_lux": 329.801414,
+            "absolute_error_lux": 49.24755399999998,
+            "allowed_error_lux": 16.4900707,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 260.59809870000004,
+            "reference_lux": 320.400334,
+            "absolute_error_lux": 59.80223529999995,
+            "allowed_error_lux": 16.0200167,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 259.3484997,
+            "reference_lux": 278.41856900000005,
+            "absolute_error_lux": 19.070069300000057,
+            "allowed_error_lux": 13.920928450000003,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 3.989779363512534,
+        "condition": "clear",
+        "pass": false,
+        "interval_index": 8504,
+        "reference_rgb_sha256": "971e2c663ef4f01f73dbec0a17a6ee9d2abf65b60b1dfb199cdc900e4afde6bc",
+        "sensors": [
+          {
+            "candidate_lux": 11195.97565,
+            "reference_lux": 11308.69016,
+            "absolute_error_lux": 112.71450999999979,
+            "allowed_error_lux": 565.434508,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 11293.06346,
+            "reference_lux": 11208.56114,
+            "absolute_error_lux": 84.5023199999996,
+            "allowed_error_lux": 560.428057,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 1847.527199,
+            "reference_lux": 1879.65931,
+            "absolute_error_lux": 32.132110999999895,
+            "allowed_error_lux": 93.9829655,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 688.9588279999999,
+            "reference_lux": 741.0267060000001,
+            "absolute_error_lux": 52.06787800000018,
+            "allowed_error_lux": 37.051335300000005,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 2861.797942,
+            "reference_lux": 2901.89788,
+            "absolute_error_lux": 40.09993799999984,
+            "allowed_error_lux": 145.094894,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1644.61441,
+            "reference_lux": 1693.283436,
+            "absolute_error_lux": 48.66902600000003,
+            "allowed_error_lux": 84.6641718,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 1003.469704,
+            "reference_lux": 1071.860592,
+            "absolute_error_lux": 68.39088800000002,
+            "allowed_error_lux": 53.5930296,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 652.247181,
+            "reference_lux": 717.532419,
+            "absolute_error_lux": 65.28523800000005,
+            "allowed_error_lux": 35.87662095,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 1158.504289,
+            "reference_lux": 1232.365059,
+            "absolute_error_lux": 73.86077,
+            "allowed_error_lux": 61.61825295,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 898.4808340000001,
+            "reference_lux": 953.714506,
+            "absolute_error_lux": 55.233671999999956,
+            "allowed_error_lux": 47.6857253,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 651.092631,
+            "reference_lux": 721.483307,
+            "absolute_error_lux": 70.39067599999998,
+            "allowed_error_lux": 36.07416535,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 523.23132,
+            "reference_lux": 574.542386,
+            "absolute_error_lux": 51.31106599999998,
+            "allowed_error_lux": 28.7271193,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 579.6574005,
+            "reference_lux": 628.2865989999999,
+            "absolute_error_lux": 48.629198499999916,
+            "allowed_error_lux": 31.414329949999996,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 530.333682,
+            "reference_lux": 552.6716289999999,
+            "absolute_error_lux": 22.337946999999986,
+            "allowed_error_lux": 27.633581449999998,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 452.994584,
+            "reference_lux": 521.1459700000001,
+            "absolute_error_lux": 68.15138600000017,
+            "allowed_error_lux": 26.05729850000001,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 397.0934389,
+            "reference_lux": 451.28155400000014,
+            "absolute_error_lux": 54.18811510000012,
+            "allowed_error_lux": 22.56407770000001,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 365.0887401,
+            "reference_lux": 402.319505,
+            "absolute_error_lux": 37.2307649,
+            "allowed_error_lux": 20.11597525,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 356.68963049999996,
+            "reference_lux": 408.548347,
+            "absolute_error_lux": 51.858716500000014,
+            "allowed_error_lux": 20.42741735,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 320.48791869999997,
+            "reference_lux": 387.79634,
+            "absolute_error_lux": 67.30842130000002,
+            "allowed_error_lux": 19.389817,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 300.2563721,
+            "reference_lux": 336.71797399999997,
+            "absolute_error_lux": 36.46160189999995,
+            "allowed_error_lux": 16.835898699999998,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 259.84332730000006,
+            "reference_lux": 324.59681,
+            "absolute_error_lux": 64.75348269999995,
+            "allowed_error_lux": 16.2298405,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 280.55386000000004,
+            "reference_lux": 329.801414,
+            "absolute_error_lux": 49.24755399999998,
+            "allowed_error_lux": 16.4900707,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 260.59809870000004,
+            "reference_lux": 320.400334,
+            "absolute_error_lux": 59.80223529999995,
+            "allowed_error_lux": 16.0200167,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 259.3484997,
+            "reference_lux": 278.41856900000005,
+            "absolute_error_lux": 19.070069300000057,
+            "allowed_error_lux": 13.920928450000003,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 1542.753744,
+            "reference_lux": 1645.647777,
+            "absolute_error_lux": 102.89403299999981,
+            "allowed_error_lux": 82.28238885,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 1557.991477,
+            "reference_lux": 1672.8129959999999,
+            "absolute_error_lux": 114.82151899999985,
+            "allowed_error_lux": 83.6406498,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 1743.082668,
+            "reference_lux": 1877.11393,
+            "absolute_error_lux": 134.03126199999997,
+            "allowed_error_lux": 93.85569650000001,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 1085.056472,
+            "reference_lux": 1199.9399250000001,
+            "absolute_error_lux": 114.88345300000015,
+            "allowed_error_lux": 59.99699625000001,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 1561.6647360000002,
+            "reference_lux": 1650.3524340000001,
+            "absolute_error_lux": 88.68769799999995,
+            "allowed_error_lux": 82.5176217,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 1567.357294,
+            "reference_lux": 1686.8303070000002,
+            "absolute_error_lux": 119.47301300000026,
+            "allowed_error_lux": 84.34151535000001,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 1183.853553,
+            "reference_lux": 1289.7941660000001,
+            "absolute_error_lux": 105.94061300000021,
+            "allowed_error_lux": 64.4897083,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 748.2644278,
+            "reference_lux": 823.840698,
+            "absolute_error_lux": 75.57627019999995,
+            "allowed_error_lux": 41.1920349,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 915.467755,
+            "reference_lux": 1019.30476,
+            "absolute_error_lux": 103.83700499999998,
+            "allowed_error_lux": 50.965238,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 935.344989,
+            "reference_lux": 1034.042725,
+            "absolute_error_lux": 98.69773599999996,
+            "allowed_error_lux": 51.70213625,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 528.833125,
+            "reference_lux": 629.98334,
+            "absolute_error_lux": 101.150215,
+            "allowed_error_lux": 31.499167,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 631.1493818,
+            "reference_lux": 692.788533,
+            "absolute_error_lux": 61.639151200000015,
+            "allowed_error_lux": 34.639426650000004,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 615.8847988,
+            "reference_lux": 704.9626810000001,
+            "absolute_error_lux": 89.07788220000009,
+            "allowed_error_lux": 35.248134050000004,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 570.4314541,
+            "reference_lux": 644.668679,
+            "absolute_error_lux": 74.2372249,
+            "allowed_error_lux": 32.23343395,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 413.2673419,
+            "reference_lux": 498.338327,
+            "absolute_error_lux": 85.07098509999997,
+            "allowed_error_lux": 24.91691635,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 470.9762975,
+            "reference_lux": 556.490415,
+            "absolute_error_lux": 85.5141175,
+            "allowed_error_lux": 27.82452075,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 475.75160580000005,
+            "reference_lux": 577.6163530000001,
+            "absolute_error_lux": 101.86474720000007,
+            "allowed_error_lux": 28.880817650000008,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 451.1457467,
+            "reference_lux": 518.751308,
+            "absolute_error_lux": 67.60556129999998,
+            "allowed_error_lux": 25.9375654,
+            "sensor_index": 23
+          }
+        ],
+        "maximum_error_over_tolerance": 3.5270728285630804,
+        "condition": "clear",
+        "pass": false,
+        "interval_index": 8508,
+        "reference_rgb_sha256": "2be2027a61a27d523583111f7961383ff8075dbd234d5207251b94311d550b30",
+        "sensors": [
+          {
+            "candidate_lux": 1542.753744,
+            "reference_lux": 1645.647777,
+            "absolute_error_lux": 102.89403299999981,
+            "allowed_error_lux": 82.28238885,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 31916.322920000002,
+            "reference_lux": 32062.533700000004,
+            "absolute_error_lux": 146.21078000000125,
+            "allowed_error_lux": 1603.1266850000002,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 32025.797530000003,
+            "reference_lux": 32122.445000000003,
+            "absolute_error_lux": 96.64746999999988,
+            "allowed_error_lux": 1606.1222500000003,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 1711.385527,
+            "reference_lux": 1775.361917,
+            "absolute_error_lux": 63.97639000000004,
+            "allowed_error_lux": 88.76809585000001,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 1557.991477,
+            "reference_lux": 1672.8129959999999,
+            "absolute_error_lux": 114.82151899999985,
+            "allowed_error_lux": 83.6406498,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 28591.390759999995,
+            "reference_lux": 28609.5521,
+            "absolute_error_lux": 18.16134000000602,
+            "allowed_error_lux": 1430.477605,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 28707.17154,
+            "reference_lux": 28822.132500000003,
+            "absolute_error_lux": 114.96096000000398,
+            "allowed_error_lux": 1441.1066250000003,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 1743.082668,
+            "reference_lux": 1877.11393,
+            "absolute_error_lux": 134.03126199999997,
+            "allowed_error_lux": 93.85569650000001,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 1085.056472,
+            "reference_lux": 1199.9399250000001,
+            "absolute_error_lux": 114.88345300000015,
+            "allowed_error_lux": 59.99699625000001,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 1561.6647360000002,
+            "reference_lux": 1650.3524340000001,
+            "absolute_error_lux": 88.68769799999995,
+            "allowed_error_lux": 82.5176217,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 1567.357294,
+            "reference_lux": 1686.8303070000002,
+            "absolute_error_lux": 119.47301300000026,
+            "allowed_error_lux": 84.34151535000001,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 1183.853553,
+            "reference_lux": 1289.7941660000001,
+            "absolute_error_lux": 105.94061300000021,
+            "allowed_error_lux": 64.4897083,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 748.2644278,
+            "reference_lux": 823.840698,
+            "absolute_error_lux": 75.57627019999995,
+            "allowed_error_lux": 41.1920349,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 915.467755,
+            "reference_lux": 1019.30476,
+            "absolute_error_lux": 103.83700499999998,
+            "allowed_error_lux": 50.965238,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 935.344989,
+            "reference_lux": 1034.042725,
+            "absolute_error_lux": 98.69773599999996,
+            "allowed_error_lux": 51.70213625,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 802.5833739999999,
+            "reference_lux": 825.822944,
+            "absolute_error_lux": 23.23957000000007,
+            "allowed_error_lux": 41.291147200000005,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 528.833125,
+            "reference_lux": 629.98334,
+            "absolute_error_lux": 101.150215,
+            "allowed_error_lux": 31.499167,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 631.1493818,
+            "reference_lux": 692.788533,
+            "absolute_error_lux": 61.639151200000015,
+            "allowed_error_lux": 34.639426650000004,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 615.8847988,
+            "reference_lux": 704.9626810000001,
+            "absolute_error_lux": 89.07788220000009,
+            "allowed_error_lux": 35.248134050000004,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 570.4314541,
+            "reference_lux": 644.668679,
+            "absolute_error_lux": 74.2372249,
+            "allowed_error_lux": 32.23343395,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 413.2673419,
+            "reference_lux": 498.338327,
+            "absolute_error_lux": 85.07098509999997,
+            "allowed_error_lux": 24.91691635,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 470.9762975,
+            "reference_lux": 556.490415,
+            "absolute_error_lux": 85.5141175,
+            "allowed_error_lux": 27.82452075,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 475.75160580000005,
+            "reference_lux": 577.6163530000001,
+            "absolute_error_lux": 101.86474720000007,
+            "allowed_error_lux": 28.880817650000008,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 451.1457467,
+            "reference_lux": 518.751308,
+            "absolute_error_lux": 67.60556129999998,
+            "allowed_error_lux": 25.9375654,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      },
+      {
+        "failures": [
+          {
+            "candidate_lux": 458.6547072,
+            "reference_lux": 511.871443,
+            "absolute_error_lux": 53.21673579999998,
+            "allowed_error_lux": 25.59357215,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 427.6169843,
+            "reference_lux": 477.210778,
+            "absolute_error_lux": 49.59379369999999,
+            "allowed_error_lux": 23.8605389,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 693.7684327,
+            "reference_lux": 745.556659,
+            "absolute_error_lux": 51.78822630000002,
+            "allowed_error_lux": 37.27783295,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 1067.114049,
+            "reference_lux": 1132.3548950000002,
+            "absolute_error_lux": 65.24084600000015,
+            "allowed_error_lux": 56.617744750000014,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 323.5748095,
+            "reference_lux": 379.05720199999996,
+            "absolute_error_lux": 55.482392499999946,
+            "allowed_error_lux": 18.9528601,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 426.12269230000004,
+            "reference_lux": 462.96828500000004,
+            "absolute_error_lux": 36.8455927,
+            "allowed_error_lux": 23.148414250000002,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 566.7765247,
+            "reference_lux": 600.287419,
+            "absolute_error_lux": 33.51089430000002,
+            "allowed_error_lux": 30.01437095,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 709.0962743,
+            "reference_lux": 769.979061,
+            "absolute_error_lux": 60.8827867,
+            "allowed_error_lux": 38.498953050000004,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 236.7124461,
+            "reference_lux": 277.325774,
+            "absolute_error_lux": 40.61332790000003,
+            "allowed_error_lux": 13.866288700000002,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 283.7825904,
+            "reference_lux": 328.881533,
+            "absolute_error_lux": 45.09894259999999,
+            "allowed_error_lux": 16.44407665,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 337.9748225,
+            "reference_lux": 378.730706,
+            "absolute_error_lux": 40.75588349999998,
+            "allowed_error_lux": 18.9365353,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 374.88911540000004,
+            "reference_lux": 398.4699310000001,
+            "absolute_error_lux": 23.58081560000005,
+            "allowed_error_lux": 19.923496550000007,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 173.66952320000001,
+            "reference_lux": 207.506466,
+            "absolute_error_lux": 33.836942799999974,
+            "allowed_error_lux": 10.3753233,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 207.429675,
+            "reference_lux": 241.86462100000006,
+            "absolute_error_lux": 34.43494600000005,
+            "allowed_error_lux": 12.093231050000004,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 219.0110466,
+            "reference_lux": 257.172522,
+            "absolute_error_lux": 38.16147540000003,
+            "allowed_error_lux": 12.858626100000002,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 234.93257750000004,
+            "reference_lux": 260.56851,
+            "absolute_error_lux": 25.635932499999967,
+            "allowed_error_lux": 13.0284255,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 148.6635991,
+            "reference_lux": 180.89059799999998,
+            "absolute_error_lux": 32.226998899999984,
+            "allowed_error_lux": 9.044529899999999,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 155.7987539,
+            "reference_lux": 193.50186400000004,
+            "absolute_error_lux": 37.70311010000003,
+            "allowed_error_lux": 9.675093200000003,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 172.4292859,
+            "reference_lux": 201.557938,
+            "absolute_error_lux": 29.12865210000001,
+            "allowed_error_lux": 10.0778969,
+            "sensor_index": 22
+          }
+        ],
+        "maximum_error_over_tolerance": 3.8969247448696436,
+        "condition": "clear",
+        "pass": false,
+        "interval_index": 8512,
+        "reference_rgb_sha256": "abffc3e621c5b8975245ace2fb71909702243c75b3304dda9e5ef0acb7d30eb9",
+        "sensors": [
+          {
+            "candidate_lux": 458.6547072,
+            "reference_lux": 511.871443,
+            "absolute_error_lux": 53.21673579999998,
+            "allowed_error_lux": 25.59357215,
+            "sensor_index": 0
+          },
+          {
+            "candidate_lux": 1338.117901,
+            "reference_lux": 1305.0011110000003,
+            "absolute_error_lux": 33.11678999999981,
+            "allowed_error_lux": 65.25005555000001,
+            "sensor_index": 1
+          },
+          {
+            "candidate_lux": 4813.12921,
+            "reference_lux": 4795.08422,
+            "absolute_error_lux": 18.044990000000325,
+            "allowed_error_lux": 239.754211,
+            "sensor_index": 2
+          },
+          {
+            "candidate_lux": 4606.195186,
+            "reference_lux": 4658.11879,
+            "absolute_error_lux": 51.92360400000052,
+            "allowed_error_lux": 232.90593950000004,
+            "sensor_index": 3
+          },
+          {
+            "candidate_lux": 427.6169843,
+            "reference_lux": 477.210778,
+            "absolute_error_lux": 49.59379369999999,
+            "allowed_error_lux": 23.8605389,
+            "sensor_index": 4
+          },
+          {
+            "candidate_lux": 693.7684327,
+            "reference_lux": 745.556659,
+            "absolute_error_lux": 51.78822630000002,
+            "allowed_error_lux": 37.27783295,
+            "sensor_index": 5
+          },
+          {
+            "candidate_lux": 1067.114049,
+            "reference_lux": 1132.3548950000002,
+            "absolute_error_lux": 65.24084600000015,
+            "allowed_error_lux": 56.617744750000014,
+            "sensor_index": 6
+          },
+          {
+            "candidate_lux": 1663.6261789999999,
+            "reference_lux": 1587.204635,
+            "absolute_error_lux": 76.42154399999981,
+            "allowed_error_lux": 79.36023175000001,
+            "sensor_index": 7
+          },
+          {
+            "candidate_lux": 323.5748095,
+            "reference_lux": 379.05720199999996,
+            "absolute_error_lux": 55.482392499999946,
+            "allowed_error_lux": 18.9528601,
+            "sensor_index": 8
+          },
+          {
+            "candidate_lux": 426.12269230000004,
+            "reference_lux": 462.96828500000004,
+            "absolute_error_lux": 36.8455927,
+            "allowed_error_lux": 23.148414250000002,
+            "sensor_index": 9
+          },
+          {
+            "candidate_lux": 566.7765247,
+            "reference_lux": 600.287419,
+            "absolute_error_lux": 33.51089430000002,
+            "allowed_error_lux": 30.01437095,
+            "sensor_index": 10
+          },
+          {
+            "candidate_lux": 709.0962743,
+            "reference_lux": 769.979061,
+            "absolute_error_lux": 60.8827867,
+            "allowed_error_lux": 38.498953050000004,
+            "sensor_index": 11
+          },
+          {
+            "candidate_lux": 236.7124461,
+            "reference_lux": 277.325774,
+            "absolute_error_lux": 40.61332790000003,
+            "allowed_error_lux": 13.866288700000002,
+            "sensor_index": 12
+          },
+          {
+            "candidate_lux": 283.7825904,
+            "reference_lux": 328.881533,
+            "absolute_error_lux": 45.09894259999999,
+            "allowed_error_lux": 16.44407665,
+            "sensor_index": 13
+          },
+          {
+            "candidate_lux": 337.9748225,
+            "reference_lux": 378.730706,
+            "absolute_error_lux": 40.75588349999998,
+            "allowed_error_lux": 18.9365353,
+            "sensor_index": 14
+          },
+          {
+            "candidate_lux": 374.88911540000004,
+            "reference_lux": 398.4699310000001,
+            "absolute_error_lux": 23.58081560000005,
+            "allowed_error_lux": 19.923496550000007,
+            "sensor_index": 15
+          },
+          {
+            "candidate_lux": 173.66952320000001,
+            "reference_lux": 207.506466,
+            "absolute_error_lux": 33.836942799999974,
+            "allowed_error_lux": 10.3753233,
+            "sensor_index": 16
+          },
+          {
+            "candidate_lux": 207.429675,
+            "reference_lux": 241.86462100000006,
+            "absolute_error_lux": 34.43494600000005,
+            "allowed_error_lux": 12.093231050000004,
+            "sensor_index": 17
+          },
+          {
+            "candidate_lux": 219.0110466,
+            "reference_lux": 257.172522,
+            "absolute_error_lux": 38.16147540000003,
+            "allowed_error_lux": 12.858626100000002,
+            "sensor_index": 18
+          },
+          {
+            "candidate_lux": 234.93257750000004,
+            "reference_lux": 260.56851,
+            "absolute_error_lux": 25.635932499999967,
+            "allowed_error_lux": 13.0284255,
+            "sensor_index": 19
+          },
+          {
+            "candidate_lux": 148.6635991,
+            "reference_lux": 180.89059799999998,
+            "absolute_error_lux": 32.226998899999984,
+            "allowed_error_lux": 9.044529899999999,
+            "sensor_index": 20
+          },
+          {
+            "candidate_lux": 155.7987539,
+            "reference_lux": 193.50186400000004,
+            "absolute_error_lux": 37.70311010000003,
+            "allowed_error_lux": 9.675093200000003,
+            "sensor_index": 21
+          },
+          {
+            "candidate_lux": 172.4292859,
+            "reference_lux": 201.557938,
+            "absolute_error_lux": 29.12865210000001,
+            "allowed_error_lux": 10.0778969,
+            "sensor_index": 22
+          },
+          {
+            "candidate_lux": 184.4811769,
+            "reference_lux": 192.833478,
+            "absolute_error_lux": 8.352301100000005,
+            "allowed_error_lux": 9.6416739,
+            "sensor_index": 23
+          }
+        ],
+        "reference_reused_from": "v0.3 matched A canonical ab5 ad2048 空間"
+      }
+    ],
+    "declaration": {
+      "declared_utc": "2026-10-11T05:13:13.8437031Z",
+      "weather_sha256": "45e81714b7c2a1bf458fa9e76ddee16002ff2f45d98bb9bc4334cc086137ef43",
+      "sensor_count": 24,
+      "intervals": [
+        {
+          "condition": "overcast",
+          "index": 1904
+        },
+        {
+          "condition": "mixed",
+          "index": 1908
+        },
+        {
+          "condition": "mixed",
+          "index": 1912
+        },
+        {
+          "condition": "mixed",
+          "index": 4112
+        },
+        {
+          "condition": "mixed",
+          "index": 4116
+        },
+        {
+          "condition": "mixed",
+          "index": 4120
+        },
+        {
+          "condition": "clear",
+          "index": 6320
+        },
+        {
+          "condition": "mixed",
+          "index": 6324
+        },
+        {
+          "condition": "mixed",
+          "index": 6328
+        },
+        {
+          "condition": "clear",
+          "index": 8504
+        },
+        {
+          "condition": "clear",
+          "index": 8508
+        },
+        {
+          "condition": "clear",
+          "index": 8512
+        }
+      ],
+      "candidate": {
+        "ab": 7,
+        "ad": 8192,
+        "mf": 2
+      },
+      "reference": {
+        "ab": 7,
+        "ad": 16384
+      },
+      "tolerance": "max(5lx,5%reference)",
+      "results": "not executed at declaration"
+    }
+  },
+  "declaration": {
+    "declared_utc": "2026-10-11T05:13:13.8437031Z",
+    "weather_sha256": "45e81714b7c2a1bf458fa9e76ddee16002ff2f45d98bb9bc4334cc086137ef43",
+    "sensor_count": 24,
+    "intervals": [
+      {
+        "condition": "overcast",
+        "index": 1904
+      },
+      {
+        "condition": "mixed",
+        "index": 1908
+      },
+      {
+        "condition": "mixed",
+        "index": 1912
+      },
+      {
+        "condition": "mixed",
+        "index": 4112
+      },
+      {
+        "condition": "mixed",
+        "index": 4116
+      },
+      {
+        "condition": "mixed",
+        "index": 4120
+      },
+      {
+        "condition": "clear",
+        "index": 6320
+      },
+      {
+        "condition": "mixed",
+        "index": 6324
+      },
+      {
+        "condition": "mixed",
+        "index": 6328
+      },
+      {
+        "condition": "clear",
+        "index": 8504
+      },
+      {
+        "condition": "clear",
+        "index": 8508
+      },
+      {
+        "condition": "clear",
+        "index": 8512
+      }
+    ],
+    "candidate": {
+      "ab": 7,
+      "ad": 8192,
+      "mf": 2
+    },
+    "reference": {
+      "ab": 7,
+      "ad": 16384
+    },
+    "tolerance": "max(5lx,5%reference)",
+    "results": "not executed at declaration"
+  },
+  "processes": [
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-m",
+        "2",
+        "-c",
+        "1",
+        "1",
+        "1",
+        "-g",
+        "0.2",
+        "0.2",
+        "0.2",
+        "-s",
+        "weather.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n",
+      "started_utc": "2026-10-11T05:13:14.1117766Z",
+      "finished_utc": "2026-10-11T05:13:21.8711576Z",
+      "wall_seconds": 7.7535483,
+      "sampled_peak_working_set_bytes": 67264512,
+      "output_bytes": 56693513,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "gendaymtx.exe",
+      "arguments": [
+        "-O0",
+        "-n",
+        "-D",
+        "all-suns.rad",
+        "-M",
+        "all-modifiers.txt",
+        "weather.epw"
+      ],
+      "exit_code": 0,
+      "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n",
+      "started_utc": "2026-10-11T05:13:21.9171529Z",
+      "finished_utc": "2026-10-11T05:13:22.0969372Z",
+      "wall_seconds": 0.1796182,
+      "sampled_peak_working_set_bytes": 4780032,
+      "output_bytes": 0,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "receiver.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:13:26.6559059Z",
+      "finished_utc": "2026-10-11T05:13:26.7504195Z",
+      "wall_seconds": 0.0944173,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2064,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "selected-suns.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:13:26.7573805Z",
+      "finished_utc": "2026-10-11T05:13:26.8524908Z",
+      "wall_seconds": 0.0949804,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 2897,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-n",
+        "1",
+        "-faa",
+        "-y",
+        "24",
+        "-ab",
+        "7",
+        "-ad",
+        "8192",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.00001",
+        "-lr",
+        "12",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V-",
+        "-e",
+        "MF:2",
+        "-f",
+        "reinhart.cal",
+        "-b",
+        "rbin",
+        "-bn",
+        "Nrbins",
+        "-m",
+        "sky_glow",
+        "diffuse.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:13:26.8607802Z",
+      "finished_utc": "2026-10-11T05:13:29.9035754Z",
+      "wall_seconds": 3.0426262,
+      "sampled_peak_working_set_bytes": 6774784,
+      "output_bytes": 541458,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "dctimestep.exe",
+      "arguments": [
+        "-oa",
+        "coefficients.mtx",
+        "selected-skies.mtx"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:13:29.9086307Z",
+      "finished_utc": "2026-10-11T05:13:30.0121650Z",
+      "wall_seconds": 0.1034564,
+      "sampled_peak_working_set_bytes": null,
+      "output_bytes": 11421,
+      "timeout_killed_tree": false
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-n",
+        "1",
+        "-faa",
+        "-y",
+        "24",
+        "-ab",
+        "7",
+        "-ad",
+        "8192",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "0.00001",
+        "-lr",
+        "12",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V+",
+        "-M",
+        "selected-modifiers.txt",
+        "solar.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:13:30.0173101Z",
+      "finished_utc": "2026-10-11T05:13:38.1558018Z",
+      "wall_seconds": 8.1384253,
+      "sampled_peak_working_set_bytes": 6836224,
+      "output_bytes": 11657,
+      "timeout_killed_tree": false
+    }
+  ]
+}

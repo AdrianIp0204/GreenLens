@@ -18,20 +18,96 @@
   "modified": false,
   "redistribution": "Engine and bundled libraries are not redistributed by GreenLens; installer acquires the pinned upstream ZIP separately. Retain Radiance notices and conditions if redistribution changes.",
   "executables": {
-    "gensky": { "sha256": "72745cf8f263d34549d0c01d86a7e04b5cb2558cab483d8f27417c95913409f8" },
-    "oconv": { "sha256": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2" },
-    "rtrace": { "sha256": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9" }
+    "gensky": {
+      "sha256": "72745cf8f263d34549d0c01d86a7e04b5cb2558cab483d8f27417c95913409f8"
+    },
+    "oconv": {
+      "sha256": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2"
+    },
+    "rtrace": {
+      "sha256": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9"
+    }
   },
   "critical_libraries": {
-    "rayinit.cal": { "sha256": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60" },
-    "skybright.cal": { "sha256": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454" }
+    "rayinit.cal": {
+      "sha256": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60"
+    },
+    "skybright.cal": {
+      "sha256": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454"
+    }
   },
   "bundled_components_review": [
-    { "component": "MSVC runtime DLLs", "version": "14.44.35211.0", "license": "Microsoft Visual C++ Redistributable license", "required_by_workflow": "vcruntime140.dll; Windows Universal CRT also required", "review": "Redistribution governed by Microsoft terms; not copied into GreenLens package." },
-    { "component": "Qt5Core/Gui/Widgets and plugins", "version": "5.15.2.0", "license": "Upstream Qt licensing alternatives include LGPL-3.0/GPL/commercial; exact package grant not documented in ZIP", "required_by_workflow": false, "review": "No redistribution authorized by this inventory; unused by gensky/oconv/rtrace." },
-    { "component": "libgcc_s_seh-1.dll / libstdc++-6.dll", "version": "Unspecified in ZIP metadata", "license": "GCC libraries generally GPL with GCC Runtime Library Exception; exact build not established", "required_by_workflow": false, "review": "Unused by the three required executables; not redistributed. Full packaging license review remains necessary before bundling." },
-    { "component": "libwinpthread-1.dll", "version": "1.0.0.0 resource version", "license": "mingw-w64 winpthreads notices must be retained if redistributed; ZIP carries no notice", "required_by_workflow": false, "review": "Unused and not redistributed." },
-    { "component": "perl532.dll and packaged script executables", "version": "Perl 5.32 inferred from filename", "license": "Perl Artistic/GPL alternatives; exact packaging dependencies not established", "required_by_workflow": false, "review": "Unused and not redistributed." }
+    {
+      "component": "MSVC runtime DLLs",
+      "version": "14.44.35211.0",
+      "license": "Microsoft Visual C++ Redistributable license",
+      "required_by_workflow": "vcruntime140.dll; Windows Universal CRT also required",
+      "review": "Redistribution governed by Microsoft terms; not copied into GreenLens package."
+    },
+    {
+      "component": "Qt5Core/Gui/Widgets and plugins",
+      "version": "5.15.2.0",
+      "license": "Upstream Qt licensing alternatives include LGPL-3.0/GPL/commercial; exact package grant not documented in ZIP",
+      "required_by_workflow": false,
+      "review": "No redistribution authorized by this inventory; unused by gensky/oconv/rtrace."
+    },
+    {
+      "component": "libgcc_s_seh-1.dll / libstdc++-6.dll",
+      "version": "Unspecified in ZIP metadata",
+      "license": "GCC libraries generally GPL with GCC Runtime Library Exception; exact build not established",
+      "required_by_workflow": false,
+      "review": "Unused by the three required executables; not redistributed. Full packaging license review remains necessary before bundling."
+    },
+    {
+      "component": "libwinpthread-1.dll",
+      "version": "1.0.0.0 resource version",
+      "license": "mingw-w64 winpthreads notices must be retained if redistributed; ZIP carries no notice",
+      "required_by_workflow": false,
+      "review": "Unused and not redistributed."
+    },
+    {
+      "component": "perl532.dll and packaged script executables",
+      "version": "Perl 5.32 inferred from filename",
+      "license": "Perl Artistic/GPL alternatives; exact packaging dependencies not established",
+      "required_by_workflow": false,
+      "review": "Unused and not redistributed."
+    }
   ],
-  "archive_notice": "The selected ZIP contains bin/ and lib/ but no license files. The unmodified license retained by GreenLens comes from the exact source tag and surprisingly labels its copyright line v6.1; the binary identifies 6.0.2. This upstream text is preserved as supplied."
+  "archive_notice": "The selected ZIP contains bin/ and lib/ but no license files. The unmodified license retained by GreenLens comes from the exact source tag and surprisingly labels its copyright line v6.1; the binary identifies 6.0.2. This upstream text is preserved as supplied.",
+  "annual_workflow_review": {
+    "status": "Native tools reviewed; numerical method and profile investigation ongoing",
+    "executables": {
+      "gendaymtx": {
+        "sha256": "07a022f4569c7815bba868148add3706aa0e120622f0e8e7c7029e7947af527d"
+      },
+      "rcontrib": {
+        "sha256": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975"
+      },
+      "dctimestep": {
+        "sha256": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+      }
+    },
+    "additional_critical_libraries": {
+      "reinhart.cal": {
+        "sha256": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934"
+      }
+    },
+    "existing_executables_used": [
+      "oconv",
+      "rtrace"
+    ],
+    "inspected_not_selected": {
+      "rfluxmtx": {
+        "sha256": "430bee3b7b6aab41b424423c7733eb4da1d842d84acca7a30a67d1390b4385fc",
+        "reason": "Pinned Windows source composes shell commands; explicit argument-array subprocesses selected instead."
+      }
+    },
+    "gendaymtx_embedded_license": {
+      "name": "byHeart Consultants Limited 2009–2012 permissive source/binary personal/commercial grant; source redistribution must retain the notice and disclaimer",
+      "source": "https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/gen/gendaymtx.c",
+      "notice": "third-party/Radiance-gendaymtx-NOTICE.txt",
+      "modified": false
+    },
+    "runtime_dependency_review": "Inspected PE imports of annual executables use MSVC/UCRT/Windows libraries. No Qt, Perl, GCC or winpthreads runtime required by this workflow. Same external pinned package, no binary redistribution."
+  }
 }

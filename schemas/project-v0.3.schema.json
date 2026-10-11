@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:project:v0.3",
+  "title": "GreenLens portable climate project",
+  "$comment": "Rust validates unique canonical UUIDs, exact path/ID agreement, exactly one A and B, weather bindings, record hashes and scientific compatibility. Legacy unextended 0.1.0 projects use their original schema and reader.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "name", "alternatives", "runs", "climate"],
+  "properties": {
+    "schema_version": {"const": "0.3.0"},
+    "id": {"type": "string", "format": "uuid"},
+    "name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "alternatives": {"$ref": "urn:greenlens:project:v0.2#/properties/alternatives"},
+    "runs": {"$ref": "urn:greenlens:project:v0.2#/properties/runs"},
+    "display_state": {"$ref": "urn:greenlens:project:v0.2#/properties/display_state"},
+    "climate": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "weather", "studies", "runs"],
+      "properties": {
+        "schema_version": {"const": "greenlens.climate-project.v0.3"},
+        "weather": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false, "required": ["id", "path", "binding"],
+          "properties": {
+            "id": {"type": "string", "format": "uuid"},
+            "path": {"type": "string", "pattern": "^weather/[0-9a-f-]+$"},
+            "binding": {"$ref": "urn:greenlens:study:v0.3#/$defs/weather"}
+          }
+        }},
+        "studies": {
+          "type": "object", "additionalProperties": false, "required": ["A", "B"],
+          "properties": {"A": {"$ref": "urn:greenlens:study:v0.3"}, "B": {"$ref": "urn:greenlens:study:v0.3"}}
+        },
+        "runs": {"type": "array", "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "alternative_id", "path", "physical_input_hash", "comparison_fingerprint", "record_sha256"],
+          "properties": {
+            "id": {"type": "string", "format": "uuid"},
+            "alternative_id": {"enum": ["A", "B"]},
+            "path": {"type": "string", "pattern": "^runs/[0-9a-f-]+$"},
+            "physical_input_hash": {"$ref": "urn:greenlens:study:v0.3#/$defs/sha256"},
+            "comparison_fingerprint": {"$ref": "urn:greenlens:study:v0.3#/$defs/sha256"},
+            "record_sha256": {"$ref": "urn:greenlens:study:v0.3#/$defs/sha256"}
+          }
+        }}
+      }
+    }
+  }
+}

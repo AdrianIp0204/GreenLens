@@ -1,0 +1,19 @@
+{
+  "schema_version": "greenlens.annual-investigation-plan.v1",
+  "declared_before_profile_tuning_utc": "2026-10-11T05:04:24Z",
+  "status": "predeclared checks, not results",
+  "weather": "Rights-reviewed PVGIS 5.3 TMY at latitude22.30 longitude114.17, original SHA-256 60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+  "geometries": ["Synthetic 4x6x3m room A without overhang", "Same room B with 0.60m overhang"],
+  "sensor_policy": "All sensors in the explicitly recorded annual example; no post-hoc sensor exclusion",
+  "fixed_intervals": [
+    {"month":3,"day":21,"hour_ending":9}, {"month":3,"day":21,"hour_ending":13}, {"month":3,"day":21,"hour_ending":17},
+    {"month":6,"day":21,"hour_ending":9}, {"month":6,"day":21,"hour_ending":13}, {"month":6,"day":21,"hour_ending":17},
+    {"month":9,"day":21,"hour_ending":9}, {"month":9,"day":21,"hour_ending":13}, {"month":9,"day":21,"hour_ending":17},
+    {"month":12,"day":21,"hour_ending":9}, {"month":12,"day":21,"hour_ending":13}, {"month":12,"day":21,"hour_ending":17}
+  ],
+  "condition_coverage": "Classify retained intervals from input DNI/DHI, not agreement. If clear, mixed or overcast is absent, append the first chronological daylight interval in the missing class with DHI>=50W/m2. Clear DNI/DHI>=3; mixed0.5<=DNI/DHI<3; overcastDNI/DHI<0.5. No replacement or exclusion of original12.",
+  "shadow_edges": "Additional constructed beam cases have sensor rays immediately inside/outside a known rectangular opening edge and an opaque overhang/context blocker. Retain them separately from fixed weather-hour checks.",
+  "reference_sky": "Identical generated patch radiance plus the actual explicit solar source, with correct preceding dew-point state. Do not substitute gendaylit.",
+  "tolerance_per_sensor_lux": "max(5, 0.05*reference)",
+  "all_failures_retained": true
+}

@@ -1,0 +1,30 @@
+{
+  "source_sha256": "1a052cfbae989b63bea6cb829b5054e5c0f3005736cf707feab186b32703398d",
+  "status": "Exploratory native measurement; not release acceptance",
+  "results": {
+    "executable": "gendaymtx.exe",
+    "arguments": [
+      "-O0",
+      "-m",
+      "4",
+      "-c",
+      "1",
+      "1",
+      "1",
+      "-g",
+      ".2",
+      ".2",
+      ".2",
+      "-s",
+      "weather.epw"
+    ],
+    "exit_code": 0,
+    "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n",
+    "started_utc": "2026-10-11T05:57:26.6722536Z",
+    "finished_utc": "2026-10-11T05:58:05.2670276Z",
+    "wall_seconds": 38.5791724,
+    "sampled_peak_working_set_bytes": 249835520,
+    "output_bytes": 226165911,
+    "timeout_killed_tree": false
+  }
+}

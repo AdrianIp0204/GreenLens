@@ -30,9 +30,12 @@
       "../../../dependencies/resolved-inventory.json": "notices/resolved-inventory.json",
       "../../../dependencies/license-supplements.json": "notices/license-supplements.json",
       "../../../dependencies/radiance.json": "notices/radiance.json",
+      "../../../dependencies/weather.json": "notices/weather.json",
       "../../../docs/dependencies.md": "notices/dependencies.md",
       "../../../docs/windows-runtime.md": "notices/windows-runtime.md",
       "../../../docs/windows-installer.md": "notices/windows-installer.md",
+      "../../../docs/v0.3-weather-sources.md": "notices/v0.3-weather-sources.md",
+      "../../../examples/": "examples/",
       "../../../third-party/": "notices/third-party/"
     },
     "icon": ["icons/icon.ico", "icons/32x32.png", "icons/128x128.png"],

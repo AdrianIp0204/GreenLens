@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "greenlens.timeseries.v0.3",
+  "$id": "urn:greenlens:timeseries:v0.3",
   "title": "GreenLens compact climate time series",
   "type": "object", "additionalProperties": false,
   "required": ["schema_version", "encoding", "ordering", "channels", "units", "sensor_ids", "interval_count", "chunks"],

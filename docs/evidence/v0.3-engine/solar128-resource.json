@@ -1,0 +1,88 @@
+{
+  "source_sha256": "c8bab927694dc07132b877320089a1a0bf806a148e2f381626a1b07852cb31b9",
+  "status": "Exploratory native measurement; not release acceptance",
+  "results": {
+    "measured_process": {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-n",
+        "1",
+        "-faa",
+        "-y",
+        "24",
+        "-ab",
+        "8",
+        "-ad",
+        "8192",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-V+",
+        "-M",
+        "modifiers.txt",
+        "solar.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T05:49:17.5632672Z",
+      "finished_utc": "2026-10-11T05:55:07.7240941Z",
+      "wall_seconds": 350.1596558,
+      "sampled_peak_working_set_bytes": 7798784,
+      "output_bytes": 120213,
+      "timeout_killed_tree": false
+    },
+    "estimate_caveat": "Simple positive-source count scaling from one bounded subset; solar direction/occlusion affects cost, host was shared, and this is not a measured annual duration.",
+    "declaration": {
+      "selected_positive_sources": 128,
+      "limit_weight": 1E-09,
+      "positive_full_year_source_count": 4058,
+      "sensors": 24,
+      "all_full_year_source_count": 4411,
+      "concurrent_engine_processes": [
+        {
+          "process_name": "rtrace"
+        },
+        {
+          "process_name": "rtrace"
+        }
+      ],
+      "ambient_bounces": 8,
+      "declared_utc": "2026-10-11T05:49:17.2213663Z",
+      "ambient_divisions": 8192,
+      "schema_version": "greenlens.annual-solar-budget.v1",
+      "status": "exploratory, not a frozen profile or full-year measurement"
+    },
+    "shape": [
+      24,
+      128,
+      3
+    ],
+    "scratch_bytes": 152676.0,
+    "estimated_full_year_solar_seconds_same_sensor_count": 11101.155337784376
+  }
+}

@@ -1,13 +1,37 @@
-use greenlens_core::{Model, ValidatedModel};
+use anyhow::{ensure, Context};
+use greenlens_core::{
+    study::{MetricSettings, Study, StudyMode, WeatherBinding},
+    weather::{WeatherHour, WeatherInterval, WeatherSourceProfile},
+    Model, ValidatedModel,
+};
 use greenlens_radiance::Profile;
-use greenlens_runner::{Application, Comparison, JobStatus, Project, ProjectView, RunRecord};
+use greenlens_runner::{
+    climate::{self, ClimateRunSummary},
+    persistence::{read_json, regular_child},
+    studies, weather, Application, Comparison, JobStatus, Project, ProjectView, RunRecord,
+};
+use serde::Serialize;
 use serde_json::{json, Value};
-use std::path::{Path, PathBuf};
+use std::{
+    io::Read,
+    path::{Path, PathBuf},
+};
 use tauri::Manager;
 
 type CommandResult<T> = Result<T, String>;
 fn error(e: impl std::fmt::Display) -> String {
     e.to_string()
+}
+// Parsing, checksums, copies and metric derivation can touch a complete year of
+// evidence. Keep those operations off the window thread; IPC returns only the
+// service's compact metadata or a bounded result slice.
+async fn blocking<T: Send + 'static>(
+    work: impl FnOnce() -> anyhow::Result<T> + Send + 'static,
+) -> CommandResult<T> {
+    tauri::async_runtime::spawn_blocking(work)
+        .await
+        .map_err(error)?
+        .map_err(error)
 }
 #[tauri::command]
 fn example() -> Project {
@@ -18,25 +42,27 @@ fn validate(model: Model) -> CommandResult<ValidatedModel> {
     greenlens_core::validate_model(&model).map_err(error)
 }
 #[tauri::command]
-fn doctor(engine_dir: Option<String>) -> CommandResult<Value> {
-    greenlens_runner::doctor(engine_dir.as_deref().map(Path::new)).map_err(error)
+async fn doctor(engine_dir: Option<String>) -> CommandResult<Value> {
+    blocking(move || greenlens_runner::doctor(engine_dir.as_deref().map(Path::new))).await
 }
 #[tauri::command]
-fn open_project(path: String) -> CommandResult<ProjectView> {
-    greenlens_runner::open_project(Path::new(&path)).map_err(error)
+async fn open_project(path: String) -> CommandResult<ProjectView> {
+    blocking(move || greenlens_runner::open_project(Path::new(&path))).await
 }
 #[tauri::command]
-fn save_project(
+async fn save_project(
     path: String,
     project: Project,
     expected_revision: Option<String>,
 ) -> CommandResult<ProjectView> {
-    greenlens_runner::save_project(Path::new(&path), &project, expected_revision.as_deref())
-        .map_err(error)
+    blocking(move || {
+        greenlens_runner::save_project(Path::new(&path), &project, expected_revision.as_deref())
+    })
+    .await
 }
 #[tauri::command]
-fn save_project_as(
-    app: tauri::State<'_, Application>,
+async fn save_project_as(
+    app: tauri::AppHandle,
     source_path: Option<String>,
     destination: String,
     project: Project,
@@ -46,38 +72,47 @@ fn save_project_as(
     // Save As is nondestructive recovery and deliberately does not demand that
     // the source manifest still has the UI's previous revision.
     let _ = expected_source_revision;
-    app.save_as(
-        source_path.as_deref().map(Path::new),
-        Path::new(&destination),
-        &project,
-        include_pending.unwrap_or(true),
-    )
-    .map_err(error)
+    blocking(move || {
+        app.state::<Application>().save_as(
+            source_path.as_deref().map(Path::new),
+            Path::new(&destination),
+            &project,
+            include_pending.unwrap_or(true),
+        )
+    })
+    .await
 }
 #[tauri::command]
-fn reconcile_completed_run(
-    app: tauri::State<'_, Application>,
+async fn reconcile_completed_run(
+    app: tauri::AppHandle,
     path: String,
     expected_revision: String,
 ) -> CommandResult<ProjectView> {
-    app.reconcile_completed_run(Path::new(&path), &expected_revision)
-        .map_err(error)
+    blocking(move || {
+        app.state::<Application>()
+            .reconcile_completed_run(Path::new(&path), &expected_revision)
+    })
+    .await
 }
 #[tauri::command]
-fn discard_job(app: tauri::State<'_, Application>) -> CommandResult<()> {
-    app.discard_job().map_err(error)
+async fn discard_job(app: tauri::AppHandle) -> CommandResult<()> {
+    blocking(move || app.state::<Application>().discard_job()).await
 }
 #[tauri::command]
-fn cancel_and_wait(app: tauri::State<'_, Application>) -> CommandResult<Option<JobStatus>> {
-    if app.status().is_err() {
-        return Ok(None);
-    }
-    app.cancel().map_err(error)?;
-    app.wait().map(Some).map_err(error)
+async fn cancel_and_wait(app: tauri::AppHandle) -> CommandResult<Option<JobStatus>> {
+    blocking(move || {
+        let service = app.state::<Application>();
+        if service.status().is_err() {
+            return Ok(None);
+        }
+        service.cancel()?;
+        service.wait().map(Some)
+    })
+    .await
 }
 #[tauri::command]
-fn prepare_close(app: tauri::State<'_, Application>, discard_pending: bool) -> CommandResult<()> {
-    app.prepare_close(discard_pending).map_err(error)
+async fn prepare_close(app: tauri::AppHandle, discard_pending: bool) -> CommandResult<()> {
+    blocking(move || app.state::<Application>().prepare_close(discard_pending)).await
 }
 #[cfg(windows)]
 fn file_dialog(
@@ -156,48 +191,405 @@ fn dialog_export_evidence(
     }
 }
 #[tauri::command]
-fn start_run(
-    app: tauri::State<'_, Application>,
+async fn start_run(
+    app: tauri::AppHandle,
     model: Model,
     alternative_id: String,
     engine_dir: Option<String>,
     project_id: Option<String>,
 ) -> CommandResult<JobStatus> {
-    app.start_for_project(
-        model,
-        alternative_id,
-        engine_dir.map(PathBuf::from),
-        Profile::shipping(),
-        project_id,
-    )
-    .map_err(error)
+    blocking(move || {
+        app.state::<Application>().start_for_project(
+            model,
+            alternative_id,
+            engine_dir.map(PathBuf::from),
+            Profile::shipping(),
+            project_id,
+        )
+    })
+    .await
 }
 #[tauri::command]
-fn job_status(app: tauri::State<'_, Application>) -> CommandResult<JobStatus> {
-    app.status().map_err(error)
+async fn job_status(app: tauri::AppHandle) -> CommandResult<JobStatus> {
+    blocking(move || app.state::<Application>().status()).await
 }
 #[tauri::command]
-fn cancel_run(app: tauri::State<'_, Application>) -> CommandResult<JobStatus> {
-    app.cancel().map_err(error)
+async fn cancel_run(app: tauri::AppHandle) -> CommandResult<JobStatus> {
+    blocking(move || app.state::<Application>().cancel()).await
 }
 #[tauri::command]
-fn collect_run(
-    app: tauri::State<'_, Application>,
+async fn collect_run(
+    app: tauri::AppHandle,
     path: String,
     project: Project,
     expected_revision: Option<String>,
 ) -> CommandResult<ProjectView> {
-    app.collect(Path::new(&path), &project, expected_revision.as_deref())
-        .map_err(error)
+    blocking(move || {
+        app.state::<Application>()
+            .collect(Path::new(&path), &project, expected_revision.as_deref())
+    })
+    .await
 }
 #[tauri::command]
 fn compare_runs(a: RunRecord, b: RunRecord) -> CommandResult<Comparison> {
     greenlens_runner::compare_runs(&a, &b).map_err(error)
 }
 #[tauri::command]
-fn export_project(path: String, destination: String) -> CommandResult<Value> {
-    greenlens_runner::export_project(Path::new(&path), Path::new(&destination)).map_err(error)?;
-    Ok(json!({"path":destination}))
+async fn export_project(
+    path: String,
+    destination: String,
+    selected_runs: Option<Vec<String>>,
+) -> CommandResult<Value> {
+    blocking(move || {
+        if let Some(selected) = selected_runs {
+            greenlens_runner::climate_export::export_selected(
+                Path::new(&path),
+                Path::new(&destination),
+                &selected,
+            )?;
+        } else {
+            // Old static clients retain their unchanged all-runs export. A
+            // climate project must name its immutable snapshots explicitly.
+            greenlens_runner::export_project(Path::new(&path), Path::new(&destination))?;
+        }
+        Ok(json!({"path":destination}))
+    })
+    .await
+}
+
+#[tauri::command]
+fn dialog_import_epw(
+    window: tauri::WebviewWindow,
+    initial_path: Option<String>,
+) -> CommandResult<Option<String>> {
+    #[cfg(windows)]
+    {
+        Ok(
+            file_dialog(initial_path, "Import hourly weather EPW", &window)
+                .add_filter("EnergyPlus weather", &["epw"])
+                .pick_file()
+                .map(|path| path.to_string_lossy().into_owned()),
+        )
+    }
+    #[cfg(not(windows))]
+    {
+        let _ = (window, initial_path);
+        Err("Native dialogs are currently supported on Windows".into())
+    }
+}
+
+#[tauri::command]
+fn dialog_weather_source(
+    window: tauri::WebviewWindow,
+    initial_path: Option<String>,
+) -> CommandResult<Option<String>> {
+    #[cfg(windows)]
+    {
+        Ok(file_dialog(
+            initial_path,
+            "Open weather citation and rights JSON",
+            &window,
+        )
+        .add_filter("Weather source record", &["json"])
+        .pick_file()
+        .map(|path| path.to_string_lossy().into_owned()))
+    }
+    #[cfg(not(windows))]
+    {
+        let _ = (window, initial_path);
+        Err("Native dialogs are currently supported on Windows".into())
+    }
+}
+
+#[tauri::command]
+async fn weather_inspect(
+    path: String,
+    profile: WeatherSourceProfile,
+) -> CommandResult<weather::WeatherInspection> {
+    blocking(move || weather::inspect(Path::new(&path), profile)).await
+}
+
+#[tauri::command]
+async fn weather_read_source(path: String) -> CommandResult<weather::WeatherSource> {
+    blocking(move || {
+        let file = std::fs::File::open(&path).context("Read weather source record")?;
+        ensure!(
+            file.metadata()?.is_file(),
+            "Weather source record must be a regular JSON file"
+        );
+        let mut bytes = Vec::new();
+        file.take(32 * 1024 + 1).read_to_end(&mut bytes)?;
+        ensure!(
+            bytes.len() <= 32 * 1024,
+            "Weather source record exceeds 32 KiB"
+        );
+        let source: weather::WeatherSource = serde_json::from_slice(&bytes)?;
+        source.validate()?;
+        Ok(source)
+    })
+    .await
+}
+
+#[tauri::command]
+async fn weather_import(
+    path: String,
+    destination: String,
+    profile: WeatherSourceProfile,
+    source: weather::WeatherSource,
+) -> CommandResult<weather::WeatherInspection> {
+    blocking(move || weather::import(Path::new(&path), Path::new(&destination), profile, source))
+        .await
+}
+
+#[tauri::command]
+async fn weather_attach(
+    path: String,
+    project: Project,
+    expected_revision: Option<String>,
+    asset_path: String,
+) -> CommandResult<ProjectView> {
+    blocking(move || {
+        studies::import_weather_asset(
+            Path::new(&path),
+            &project,
+            expected_revision.as_deref(),
+            Path::new(&asset_path),
+        )
+    })
+    .await
+}
+
+fn project_weather(
+    root: &Path,
+    weather_id: &str,
+) -> anyhow::Result<(
+    weather::WeatherAsset,
+    greenlens_core::weather::ParsedWeather,
+)> {
+    let project: Project = read_json(&regular_child(root, "project.json")?)?;
+    greenlens_runner::validate_project(&project)?;
+    let reference = project
+        .climate
+        .as_ref()
+        .and_then(|extension| extension.weather.iter().find(|item| item.id == weather_id))
+        .context("Weather asset is not retained in this project")?;
+    regular_child(root, &format!("{}/asset.json", reference.path))?;
+    let (asset, parsed) = weather::open(&root.join(&reference.path))?;
+    ensure!(
+        asset.binding == reference.binding,
+        "Project weather identity differs from retained asset"
+    );
+    Ok((asset, parsed))
+}
+
+#[derive(Serialize)]
+struct WeatherAssetInspection {
+    asset: weather::WeatherAsset,
+    inspection: weather::WeatherInspection,
+}
+
+#[tauri::command]
+async fn weather_asset_inspect(
+    path: String,
+    weather_id: String,
+) -> CommandResult<WeatherAssetInspection> {
+    blocking(move || {
+        let (asset, parsed) = project_weather(Path::new(&path), &weather_id)?;
+        Ok(WeatherAssetInspection {
+            asset,
+            inspection: weather::WeatherInspection::from(&parsed.data),
+        })
+    })
+    .await
+}
+
+#[derive(Serialize)]
+struct WeatherIntervalView {
+    weather_id: String,
+    binding: WeatherBinding,
+    hour: WeatherHour,
+    interval: WeatherInterval,
+}
+
+#[tauri::command]
+async fn weather_interval(
+    path: String,
+    weather_id: String,
+    interval_index: usize,
+) -> CommandResult<WeatherIntervalView> {
+    blocking(move || {
+        let (_, parsed) = project_weather(Path::new(&path), &weather_id)?;
+        let interval = parsed.data.interval(interval_index)?;
+        Ok(WeatherIntervalView {
+            weather_id,
+            binding: parsed.data.binding(),
+            hour: parsed.data.hours[interval_index].clone(),
+            interval,
+        })
+    })
+    .await
+}
+
+#[tauri::command]
+fn study_defaults() -> Study {
+    Study::default()
+}
+
+#[derive(Serialize)]
+struct StudyValidation {
+    study: Study,
+    physical_input_hash: String,
+    comparison_input_hash: String,
+}
+
+#[tauri::command]
+fn study_validate(model: Model, study: Study) -> CommandResult<StudyValidation> {
+    Ok(StudyValidation {
+        physical_input_hash: study.physical_input_hash(&model).map_err(error)?,
+        comparison_input_hash: study.comparison_input_hash(&model).map_err(error)?,
+        study,
+    })
+}
+
+#[tauri::command]
+fn study_configure(
+    project: Project,
+    alternative_id: String,
+    study: Study,
+) -> CommandResult<Project> {
+    studies::configure(&project, &alternative_id, study).map_err(error)
+}
+
+#[tauri::command]
+fn study_restore(
+    project: Project,
+    alternative_id: String,
+    snapshot: studies::StudyHistorySnapshot,
+) -> CommandResult<Project> {
+    studies::restore_study(&project, &alternative_id, &snapshot).map_err(error)
+}
+
+#[tauri::command]
+async fn start_study(
+    app: tauri::AppHandle,
+    path: Option<String>,
+    project: Project,
+    alternative_id: String,
+    study: Study,
+    engine_dir: Option<String>,
+) -> CommandResult<JobStatus> {
+    blocking(move || {
+        // Validate the same explicit document transaction as configuration. The
+        // caller retains unsaved edits; this command starts a job, not a save.
+        let project = studies::configure(&project, &alternative_id, study.clone())?;
+        let model = project
+            .alternatives
+            .iter()
+            .find(|item| item.id == alternative_id)
+            .context("Alternative must be A or B")?
+            .model
+            .clone();
+        let weather_path = if matches!(study.calculation, StudyMode::StaticOvercast) {
+            None
+        } else {
+            let root = path
+                .as_deref()
+                .context("Save the project and import portable weather before calculating")?;
+            studies::weather_path(Path::new(root), &project, &study)?
+        };
+        app.state::<Application>().start_study_for_project(
+            model,
+            alternative_id,
+            engine_dir.map(PathBuf::from),
+            study,
+            weather_path,
+            Some(project.id),
+        )
+    })
+    .await
+}
+
+#[tauri::command]
+async fn current_climate_result(
+    path: String,
+    project: Project,
+    alternative_id: String,
+    study: Study,
+) -> CommandResult<studies::CurrentClimateResult> {
+    blocking(move || studies::current_result(Path::new(&path), &project, &alternative_id, &study))
+        .await
+}
+
+#[tauri::command]
+async fn climate_result_values(
+    path: String,
+    summary: ClimateRunSummary,
+    field: studies::ResultField,
+    interval_index: usize,
+    settings: Option<MetricSettings>,
+) -> CommandResult<studies::ClimateValues> {
+    blocking(move || {
+        studies::result_values(Path::new(&path), &summary, field, interval_index, settings)
+    })
+    .await
+}
+
+#[derive(Serialize)]
+struct ClimateSensorSeries {
+    run_id: String,
+    sensor_id: String,
+    units: &'static str,
+    time_axis_sha256: String,
+    first_interval_index: usize,
+    values: Vec<f64>,
+}
+
+#[tauri::command]
+async fn climate_sensor_series(
+    path: String,
+    summary: ClimateRunSummary,
+    sensor_id: String,
+) -> CommandResult<ClimateSensorSeries> {
+    blocking(move || {
+        let (record, reader) = climate::open_series_for_run(Path::new(&path), &summary)?;
+        let first_interval_index = match record.study.calculation {
+            StudyMode::WeatherHour { interval_index, .. } => interval_index,
+            StudyMode::Annual { .. } => 0,
+            StudyMode::StaticOvercast => anyhow::bail!("Use the legacy static result reader"),
+        };
+        // One identified sensor only, at most 8,760 scalar illuminances. The
+        // complete sensor-by-time transport array never crosses IPC.
+        let values = reader.sensor(&sensor_id)?;
+        Ok(ClimateSensorSeries {
+            run_id: record.id,
+            sensor_id,
+            units: "lx",
+            time_axis_sha256: record.weather_asset.binding.time_axis_sha256,
+            first_interval_index,
+            values,
+        })
+    })
+    .await
+}
+
+#[tauri::command]
+async fn climate_derive_metrics(
+    path: String,
+    summary: ClimateRunSummary,
+    settings: MetricSettings,
+) -> CommandResult<studies::DerivedMetrics> {
+    blocking(move || studies::derive_metrics(Path::new(&path), &summary, settings)).await
+}
+
+#[tauri::command]
+async fn climate_compare(
+    path: String,
+    a: ClimateRunSummary,
+    b: ClimateRunSummary,
+    field: studies::ResultField,
+    interval_index: usize,
+) -> CommandResult<studies::ClimateComparison> {
+    blocking(move || studies::compare(Path::new(&path), &a, &b, field, interval_index)).await
 }
 
 pub fn run() {
@@ -222,7 +614,25 @@ pub fn run() {
             cancel_run,
             collect_run,
             compare_runs,
-            export_project
+            export_project,
+            dialog_import_epw,
+            dialog_weather_source,
+            weather_inspect,
+            weather_read_source,
+            weather_import,
+            weather_attach,
+            weather_asset_inspect,
+            weather_interval,
+            study_defaults,
+            study_validate,
+            study_configure,
+            study_restore,
+            start_study,
+            current_climate_result,
+            climate_result_values,
+            climate_sensor_series,
+            climate_derive_metrics,
+            climate_compare
         ])
         .build(tauri::generate_context!())
         .expect("failed to build GreenLens desktop")

@@ -1,9 +1,19 @@
 //! Shared application services for the CLI and native desktop.
+pub mod climate;
+#[cfg(test)]
+mod climate_document_tests;
+pub mod climate_export;
+mod climate_job;
 pub mod display;
 #[cfg(test)]
 mod document_tests;
 pub mod persistence;
 mod report;
+pub mod studies;
+#[cfg(test)]
+mod studies_tests;
+pub mod timeseries;
+pub mod weather;
 
 use anyhow::{bail, ensure, Context, Result};
 use chrono::Utc;
@@ -43,6 +53,8 @@ pub struct Project {
     pub runs: Vec<RunSummary>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub display_state: Option<display::DisplayState>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub climate: Option<climate::ClimateProject>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -68,6 +80,8 @@ pub struct ProjectView {
     pub project: Project,
     pub revision: String,
     pub results: Vec<RunRecord>,
+    #[serde(default)]
+    pub climate_results: Vec<climate::ClimateRunRecord>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Comparison {
@@ -97,11 +111,13 @@ pub fn example() -> Project {
         ],
         runs: vec![],
         display_state: None,
+        climate: None,
     }
 }
-fn validate_project(project: &Project) -> Result<()> {
+pub fn validate_project(project: &Project) -> Result<()> {
     ensure!(
-        project.schema_version == SCHEMA_VERSION,
+        (project.schema_version == SCHEMA_VERSION && project.climate.is_none())
+            || (project.schema_version == "0.3.0" && project.climate.is_some()),
         "Unsupported project schema"
     );
     Uuid::parse_str(&project.id)?;
@@ -137,6 +153,12 @@ fn validate_project(project: &Project) -> Result<()> {
             ["A", "B"].contains(&run.alternative_id.as_str()),
             "Unknown alternative"
         );
+    }
+    if let Some(climate) = &project.climate {
+        climate::validate_project_extension(climate, &project.alternatives)?;
+        for run in &climate.runs {
+            ensure!(ids.insert(&run.id), "Duplicate static/climate run id");
+        }
     }
     Ok(())
 }
@@ -319,10 +341,21 @@ pub fn open_project(path: &Path) -> Result<ProjectView> {
         .iter()
         .map(|s| read_run(path, s))
         .collect::<Result<Vec<_>>>()?;
+    let climate_results = if let Some(extension) = &project.climate {
+        climate::verify_project_evidence(path, extension)?;
+        extension
+            .runs
+            .iter()
+            .map(|run| climate::read_result_metadata(path, run))
+            .collect::<Result<Vec<_>>>()?
+    } else {
+        vec![]
+    };
     Ok(ProjectView {
         project,
         revision,
         results,
+        climate_results,
     })
 }
 pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> Result<ProjectView> {
@@ -331,6 +364,9 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
     check_revision(path, expected)?;
     for summary in &project.runs {
         read_run(path, summary)?;
+    }
+    if let Some(extension) = &project.climate {
+        climate::verify_project_evidence(path, extension)?;
     }
     check_revision(path, expected)?;
     atomic_json(path, project)?;
@@ -350,7 +386,7 @@ fn copy_project(
     source: Option<&Path>,
     destination: &Path,
     project: &Project,
-    pending: Option<(&Path, &RunRecord)>,
+    pending: Option<(&Path, CompletedRunRef<'_>)>,
 ) -> Result<ProjectView> {
     validate_project(project)?;
     let _source_lock = source.map(WriterLock::acquire).transpose()?;
@@ -369,7 +405,11 @@ fn copy_project(
         }
     } else {
         ensure!(
-            project.runs.is_empty(),
+            project.runs.is_empty()
+                && project
+                    .climate
+                    .as_ref()
+                    .is_none_or(|value| value.runs.is_empty() && value.weather.is_empty()),
             "A project with historical runs requires its source directory for Save As"
         );
     }
@@ -384,13 +424,15 @@ fn copy_project(
             read_run(source, run)?;
             promote_run(&source.join(&run.path), destination, &run.id)?;
         }
+        if let Some(extension) = &project.climate {
+            climate::copy_project_evidence(source, destination, extension)?;
+        }
     }
     let mut project = project.clone();
     if let Some((scratch, run)) = pending {
-        validate_record(run)?;
-        promote_run(scratch, destination, &run.id)?;
-        append_run(&mut project, run)?;
+        run.promote(scratch, destination, &mut project)?;
     }
+    validate_project(&project)?;
     atomic_json(destination, &project)?;
     open_project(destination)
 }
@@ -455,6 +497,8 @@ pub struct JobStatus {
     pub log: Vec<String>,
     pub error: Option<String>,
     pub result: Option<RunRecord>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub climate_result: Option<climate::ClimateRunRecord>,
     /// True until immutable completed evidence has been collected or explicitly discarded.
     pub pending_evidence: bool,
 }
@@ -464,6 +508,64 @@ struct ActiveJob {
     handle: Option<JoinHandle<()>>,
     scratch: PathBuf,
     project_id: Option<String>,
+}
+enum JobRequest {
+    Static(Profile),
+    Climate {
+        study: greenlens_core::study::Study,
+        weather: PathBuf,
+    },
+}
+enum CompletedRun {
+    Static(Box<RunRecord>),
+    Climate(Box<climate::ClimateRunRecord>),
+}
+enum CompletedRunRef<'a> {
+    Static(&'a RunRecord),
+    Climate(&'a climate::ClimateRunRecord),
+}
+impl JobStatus {
+    fn completed(&self) -> Result<CompletedRunRef<'_>> {
+        match (&self.result, &self.climate_result) {
+            (Some(run), None) => Ok(CompletedRunRef::Static(run)),
+            (None, Some(run)) => Ok(CompletedRunRef::Climate(run)),
+            _ => bail!("Missing or ambiguous completed result"),
+        }
+    }
+}
+impl CompletedRunRef<'_> {
+    fn promote(self, scratch: &Path, destination: &Path, project: &mut Project) -> Result<()> {
+        match self {
+            Self::Static(run) => {
+                validate_record(run)?;
+                promote_run(scratch, destination, &run.id)?;
+                append_run(project, run)?;
+            }
+            Self::Climate(run) => {
+                let retained = climate::read_run_directory(scratch)?;
+                ensure!(canonical_hash(&retained)? == canonical_hash(run)?, "Pending climate evidence changed; retained result does not match the completed job");
+                let extension = project
+                    .climate
+                    .get_or_insert_with(climate::ClimateProject::default);
+                if !extension
+                    .weather
+                    .iter()
+                    .any(|weather| weather.binding == run.weather_asset.binding)
+                {
+                    let reference = climate::import_project_weather(
+                        &scratch.join("weather"),
+                        destination,
+                        &Uuid::new_v4().to_string(),
+                    )?;
+                    extension.weather.push(reference);
+                }
+                promote_run(scratch, destination, &run.id)?;
+                climate::append_run(extension, run)?;
+                project.schema_version = "0.3.0".into();
+            }
+        }
+        Ok(())
+    }
 }
 #[derive(Default)]
 pub struct Application {
@@ -485,6 +587,47 @@ impl Application {
         alternative: String,
         engine_dir: Option<PathBuf>,
         profile: Profile,
+        project_id: Option<String>,
+    ) -> Result<JobStatus> {
+        self.start_request(
+            model,
+            alternative,
+            engine_dir,
+            JobRequest::Static(profile),
+            project_id,
+        )
+    }
+    pub fn start_study_for_project(
+        &self,
+        model: Model,
+        alternative: String,
+        engine_dir: Option<PathBuf>,
+        study: greenlens_core::study::Study,
+        weather: Option<PathBuf>,
+        project_id: Option<String>,
+    ) -> Result<JobStatus> {
+        study.validate(&model)?;
+        let request = if matches!(
+            study.calculation,
+            greenlens_core::study::StudyMode::StaticOvercast
+        ) {
+            JobRequest::Static(Profile::shipping())
+        } else {
+            JobRequest::Climate {
+                study,
+                weather: weather.context(
+                    "Import a portable weather asset before calculating a weather study",
+                )?,
+            }
+        };
+        self.start_request(model, alternative, engine_dir, request, project_id)
+    }
+    fn start_request(
+        &self,
+        model: Model,
+        alternative: String,
+        engine_dir: Option<PathBuf>,
+        request: JobRequest,
         project_id: Option<String>,
     ) -> Result<JobStatus> {
         if let Some(id) = &project_id {
@@ -523,6 +666,7 @@ impl Application {
             log: vec!["Job queued".into()],
             error: None,
             result: None,
+            climate_result: None,
             pending_evidence: false,
         };
         let status = Arc::new(Mutex::new(initial.clone()));
@@ -536,33 +680,53 @@ impl Application {
                 s.state = JobState::Preparing;
                 s.log.push("Validating inputs and engine".into());
             }
-            let result = run_job(
-                &id,
-                model,
-                alternative,
-                engine_dir.as_deref(),
-                profile,
-                &worker_scratch,
-                &worker_cancel,
-                &|line| {
-                    let mut s = worker_status.lock().unwrap();
-                    s.state = JobState::Running;
-                    if s.log.len() < 2000 {
-                        s.log.push(line.into());
-                    }
-                },
-            );
+            let log = |line: &str| {
+                let mut s = worker_status.lock().unwrap();
+                s.state = JobState::Running;
+                if s.log.len() < 2000 {
+                    s.log.push(line.into());
+                }
+            };
+            let result = match request {
+                JobRequest::Static(profile) => run_job(
+                    &id,
+                    model,
+                    alternative,
+                    engine_dir.as_deref(),
+                    profile,
+                    &worker_scratch,
+                    &worker_cancel,
+                    &log,
+                )
+                .map(|run| CompletedRun::Static(Box::new(run))),
+                JobRequest::Climate { study, weather } => climate_job::run(
+                    &id,
+                    model,
+                    alternative,
+                    engine_dir.as_deref(),
+                    study,
+                    &weather,
+                    &worker_scratch,
+                    &worker_cancel,
+                    &log,
+                )
+                .map(|run| CompletedRun::Climate(Box::new(run))),
+            };
             let mut s = worker_status.lock().unwrap();
             if worker_cancel.load(Ordering::SeqCst) {
                 s.state = JobState::Cancelled;
                 s.result = None;
+                s.climate_result = None;
                 s.log
                     .push("Cancelled; no completed result published".into());
             } else {
                 match result {
                     Ok(run) => {
                         s.state = JobState::Completed;
-                        s.result = Some(run);
+                        match run {
+                            CompletedRun::Static(run) => s.result = Some(*run),
+                            CompletedRun::Climate(run) => s.climate_result = Some(*run),
+                        }
                         s.pending_evidence = true;
                         s.log
                             .push("Validated completed result is ready to save".into());
@@ -665,7 +829,7 @@ impl Application {
             let mut status = job.status.lock().unwrap();
             if status.pending_evidence && include_pending {
                 ensure!(job.project_id.as_ref().is_none_or(|id| id == &project.id), "Completed run belongs to another project; it cannot be included in this Save As");
-                let run = status.result.as_ref().context("Missing completed result")?;
+                let run = status.completed()?;
                 let view = copy_project(source, destination, project, Some((&job.scratch, run)))?;
                 status.pending_evidence = false;
                 return Ok(view);
@@ -686,19 +850,21 @@ impl Application {
             status.state == JobState::Completed,
             "Job has not completed successfully"
         );
-        let run = status.result.as_ref().context("Missing result")?;
+        let run = status.completed()?;
         ensure!(job.project_id.as_ref().is_none_or(|id| id == &project.id), "Completed run belongs to another project; reopen its original project before collecting");
-        validate_record(run)?;
         validate_project(project)?;
         let _lock = WriterLock::acquire(path)?;
         check_revision(path, expected)?;
         for old in &project.runs {
             read_run(path, old)?;
         }
-        promote_run(&job.scratch, path, &run.id)?;
+        if let Some(extension) = &project.climate {
+            climate::verify_project_evidence(path, extension)?;
+        }
         let mut project = project.clone();
-        append_run(&mut project, run)?;
+        run.promote(&job.scratch, path, &mut project)?;
         check_revision(path, expected)?;
+        validate_project(&project)?;
         atomic_json(path, &project)?;
         let view = open_project(path)?;
         status.pending_evidence = false;
@@ -791,6 +957,7 @@ pub fn export_project(path: &Path, destination: &Path) -> Result<()> {
     // generating reports. Final generated files share the same writer budget.
     let project: Project = read_json(&regular_child(path, "project.json")?)?;
     validate_project(&project)?;
+    ensure!(project.climate.is_none(), "Choose explicit run IDs when exporting a climate project; use export --run <id> for each selected snapshot");
     let mut source_budget = PackageBudget::default();
     source_budget.add(
         "project.json",
@@ -880,13 +1047,20 @@ pub fn latest_compatible_comparisons(results: &[RunRecord]) -> Result<Vec<Compar
 }
 
 pub fn replay(package: &Path, engine_dir: Option<&Path>) -> Result<Value> {
+    replay_with_cancel(package, engine_dir, &AtomicBool::new(false))
+}
+pub fn replay_with_cancel(
+    package: &Path,
+    engine_dir: Option<&Path>,
+    cancel: &AtomicBool,
+) -> Result<Value> {
     let root = local_root()?
         .join("replay")
         .join(Uuid::new_v4().to_string());
     extract_package(package, &root)?;
     let view = open_project(&root)?;
     ensure!(
-        !view.results.is_empty(),
+        !view.results.is_empty() || !view.climate_results.is_empty(),
         "Evidence package contains no completed runs to replay"
     );
     let engine = Engine::discover(engine_dir)?;
@@ -904,7 +1078,7 @@ pub fn replay(package: &Path, engine_dir: Option<&Path>) -> Result<Value> {
             &validate_model(&run.model)?,
             &profile,
             &scratch,
-            &AtomicBool::new(false),
+            cancel,
             |_: &str| {},
         )?;
         ensure!(output.lux.len() == run.lux.len(), "Replay count mismatch");
@@ -927,6 +1101,12 @@ pub fn replay(package: &Path, engine_dir: Option<&Path>) -> Result<Value> {
             );
         }
     }
+    checks.extend(climate_export::replay_climate(
+        &root,
+        &view.climate_results,
+        engine_dir,
+        cancel,
+    )?);
     Ok(
         json!({"verification":"same-engine integration, not independent physical validation","checks":checks,"passed":true}),
     )

@@ -1,4 +1,4 @@
-use anyhow::{bail, Context, Result};
+use anyhow::{bail, ensure, Context, Result};
 use chrono::Utc;
 use serde::{Deserialize, Serialize};
 use std::{
@@ -22,6 +22,141 @@ pub struct ProcessRecord {
     pub stderr: String,
 }
 
+/// Annual-only telemetry. The historical ProcessRecord wire format is unchanged.
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct AnnualProcessResources {
+    pub executable: String,
+    pub started_utc: String,
+    pub finished_utc: String,
+    pub elapsed_ms: u128,
+    pub peak_child_working_set_bytes: u64,
+    pub peak_observed_runner_plus_child_working_set_bytes: u64,
+    pub peak_scratch_bytes: u64,
+    pub output_bytes: u64,
+    pub samples: u64,
+}
+
+pub(crate) const ANNUAL_MAX_FILE_BYTES: u64 = 512 * 1024 * 1024;
+pub(crate) const ANNUAL_MAX_SCRATCH_BYTES: u64 = 2 * 1024 * 1024 * 1024;
+pub(crate) const ANNUAL_MAX_OBSERVED_WORKING_SET_BYTES: u64 = 2 * 1024 * 1024 * 1024;
+
+pub(crate) fn scratch_sizes(directory: &Path) -> Result<(u64, u64)> {
+    fn visit(
+        directory: &Path,
+        depth: usize,
+        count: &mut usize,
+        total: &mut u64,
+        largest: &mut u64,
+    ) -> Result<()> {
+        ensure!(depth <= 16, "Annual scratch directory depth exceeds limit");
+        for entry in fs::read_dir(directory)? {
+            let entry = entry?;
+            *count += 1;
+            ensure!(*count <= 5000, "Annual scratch entry count exceeds limit");
+            let kind = entry.file_type()?;
+            let metadata = entry.metadata()?;
+            ensure!(
+                !kind.is_symlink(),
+                "Annual scratch must not contain symbolic links"
+            );
+            #[cfg(windows)]
+            {
+                use std::os::windows::fs::MetadataExt;
+                ensure!(
+                    metadata.file_attributes() & 0x400 == 0,
+                    "Annual scratch must not contain reparse points"
+                );
+            }
+            if kind.is_dir() {
+                visit(&entry.path(), depth + 1, count, total, largest)?;
+            } else {
+                ensure!(
+                    kind.is_file(),
+                    "Annual scratch contains an unsupported file type"
+                );
+                let size = metadata.len();
+                *total = total.checked_add(size).context("Scratch size overflow")?;
+                *largest = (*largest).max(size);
+            }
+        }
+        Ok(())
+    }
+    let (mut count, mut total, mut largest) = (0, 0_u64, 0);
+    visit(directory, 0, &mut count, &mut total, &mut largest)?;
+    Ok((total, largest))
+}
+
+#[cfg(windows)]
+fn working_sets(child: &std::process::Child) -> Result<(u64, u64)> {
+    use std::os::windows::io::AsRawHandle;
+    use windows_sys::Win32::System::{
+        ProcessStatus::{GetProcessMemoryInfo, PROCESS_MEMORY_COUNTERS},
+        Threading::GetCurrentProcess,
+    };
+    unsafe {
+        let mut child_counters: PROCESS_MEMORY_COUNTERS = std::mem::zeroed();
+        let mut runner_counters: PROCESS_MEMORY_COUNTERS = std::mem::zeroed();
+        let size = std::mem::size_of::<PROCESS_MEMORY_COUNTERS>() as u32;
+        child_counters.cb = size;
+        runner_counters.cb = size;
+        if GetProcessMemoryInfo(child.as_raw_handle(), &mut child_counters, size) == 0
+            || GetProcessMemoryInfo(GetCurrentProcess(), &mut runner_counters, size) == 0
+        {
+            return Err(std::io::Error::last_os_error().into());
+        }
+        Ok((
+            child_counters.PeakWorkingSetSize as u64,
+            child_counters.WorkingSetSize as u64 + runner_counters.WorkingSetSize as u64,
+        ))
+    }
+}
+
+#[cfg(not(windows))]
+fn working_sets(_child: &std::process::Child) -> Result<(u64, u64)> {
+    bail!("Annual resource supervision currently requires native Windows")
+}
+
+impl AnnualProcessResources {
+    fn sample(&mut self, child: &std::process::Child, directory: &Path) -> Result<()> {
+        let (child_peak, observed_combined) = working_sets(child)?;
+        let (scratch, largest) = scratch_sizes(directory)?;
+        self.samples += 1;
+        self.peak_child_working_set_bytes = self.peak_child_working_set_bytes.max(child_peak);
+        self.peak_observed_runner_plus_child_working_set_bytes = self
+            .peak_observed_runner_plus_child_working_set_bytes
+            .max(observed_combined);
+        self.peak_scratch_bytes = self.peak_scratch_bytes.max(scratch);
+        ensure!(
+            largest <= ANNUAL_MAX_FILE_BYTES,
+            "Annual output exceeds 512 MiB file budget"
+        );
+        ensure!(
+            scratch <= ANNUAL_MAX_SCRATCH_BYTES,
+            "Annual scratch exceeds 2 GiB budget"
+        );
+        ensure!(
+            observed_combined <= ANNUAL_MAX_OBSERVED_WORKING_SET_BYTES,
+            "Observed runner and engine working sets exceed 2 GiB budget"
+        );
+        Ok(())
+    }
+    fn finish(&mut self, directory: &Path, output: &Path, start: Instant) -> Result<()> {
+        self.finished_utc = Utc::now().to_rfc3339();
+        self.elapsed_ms = start.elapsed().as_millis();
+        self.output_bytes = output.metadata()?.len();
+        self.peak_scratch_bytes = self.peak_scratch_bytes.max(scratch_sizes(directory)?.0);
+        fs::write(
+            directory.join(format!(
+                "{}.resources.json",
+                self.executable.trim_end_matches(".exe")
+            )),
+            serde_json::to_vec_pretty(self)?,
+        )?;
+        Ok(())
+    }
+}
+
 /// No shell, no pipeline text conversion, and no inherited global RAYPATH.
 pub(crate) fn execute(
     engine: &Path,
@@ -32,6 +167,42 @@ pub(crate) fn execute(
     output: &Path,
     cancel: &AtomicBool,
 ) -> Result<ProcessRecord> {
+    execute_inner(
+        engine, name, arguments, directory, input, output, cancel, false,
+    )
+    .map(|(record, _)| record)
+}
+
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn execute_annual(
+    engine: &Path,
+    name: &str,
+    arguments: &[String],
+    directory: &Path,
+    input: Option<&Path>,
+    output: &Path,
+    cancel: &AtomicBool,
+) -> Result<(ProcessRecord, AnnualProcessResources)> {
+    let (record, resources) = execute_inner(
+        engine, name, arguments, directory, input, output, cancel, true,
+    )?;
+    Ok((
+        record,
+        resources.context("Annual resource measurement missing")?,
+    ))
+}
+
+#[allow(clippy::too_many_arguments)]
+fn execute_inner(
+    engine: &Path,
+    name: &str,
+    arguments: &[String],
+    directory: &Path,
+    input: Option<&Path>,
+    output: &Path,
+    cancel: &AtomicBool,
+    annual: bool,
+) -> Result<(ProcessRecord, Option<AnnualProcessResources>)> {
     if cancel.load(Ordering::SeqCst) {
         bail!("Simulation cancelled before {name}");
     }
@@ -72,13 +243,41 @@ pub(crate) fn execute(
             &serde_json::json!({"executable":format!("{name}.exe"),"pid":child.id(),"started_utc":started_utc}),
         )?,
     )?;
+    let mut resources = annual.then(|| AnnualProcessResources {
+        executable: format!("{name}.exe"),
+        started_utc: started_utc.clone(),
+        finished_utc: String::new(),
+        elapsed_ms: 0,
+        peak_child_working_set_bytes: 0,
+        peak_observed_runner_plus_child_working_set_bytes: 0,
+        peak_scratch_bytes: 0,
+        output_bytes: 0,
+        samples: 0,
+    });
     let status = loop {
-        if cancel.load(Ordering::SeqCst) {
+        let resource_error = resources
+            .as_mut()
+            .and_then(|resources| resources.sample(&child, directory).err());
+        if cancel.load(Ordering::SeqCst) || resource_error.is_some() {
             #[cfg(windows)]
             drop(job);
             #[cfg(not(windows))]
             child.kill()?;
             let status = child.wait()?;
+            if let Some(resources) = &mut resources {
+                resources.finish(directory, output, start)?;
+            }
+            if let Some(error) = resource_error {
+                fs::write(
+                    directory.join(format!("{name}.process.json")),
+                    serde_json::to_vec_pretty(
+                        &serde_json::json!({"executable":format!("{name}.exe"),"arguments":arguments,"exit_code":status.code(),"started_utc":started_utc,"finished_utc":Utc::now().to_rfc3339(),"resource_failure":error.to_string(),"process_tree_terminated":true}),
+                    )?,
+                )?;
+                bail!(
+                    "Annual resource supervision stopped {name}: {error}; process tree terminated"
+                );
+            }
             fs::write(
                 directory.join(format!("{name}.process.json")),
                 serde_json::to_vec_pretty(
@@ -92,6 +291,9 @@ pub(crate) fn execute(
             None => thread::sleep(Duration::from_millis(20)),
         }
     };
+    if let Some(resources) = &mut resources {
+        resources.finish(directory, output, start)?;
+    }
     let mut stderr = fs::read_to_string(stderr_path)?;
     for (path, replacement) in [(engine, "<engine>"), (directory, "<scratch>")] {
         let text = path.display().to_string();
@@ -117,7 +319,7 @@ pub(crate) fn execute(
     if !status.success() {
         bail!("{name} exited {}: {}", record.exit_code, record.stderr);
     }
-    Ok(record)
+    Ok((record, resources))
 }
 
 #[cfg(windows)]
@@ -222,6 +424,15 @@ mod tests {
 
     #[test]
     fn cancellation_terminates_process_tree() {
+        check_cancellation_tree(false);
+    }
+
+    #[test]
+    fn annual_cancellation_terminates_process_tree_and_retains_measurements() {
+        check_cancellation_tree(true);
+    }
+
+    fn check_cancellation_tree(annual: bool) {
         // A recycled Windows PID must not make old fixture marker files look
         // like freshly launched descendants in a later test invocation.
         let base =
@@ -249,7 +460,7 @@ mod tests {
             }
             thread_cancel.store(true, Ordering::SeqCst);
         });
-        let error = execute(
+        let error = execute_inner(
             &base,
             "helper",
             &[
@@ -262,6 +473,7 @@ mod tests {
             None,
             &base.join("fixture.stdout"),
             &cancel,
+            annual,
         )
         .unwrap_err();
         watcher.join().unwrap();
@@ -273,5 +485,29 @@ mod tests {
                 .unwrap();
             assert!(!active(pid), "Process {pid} survived job cancellation");
         }
+        if annual {
+            let resources: AnnualProcessResources =
+                serde_json::from_slice(&fs::read(base.join("helper.resources.json")).unwrap())
+                    .unwrap();
+            assert!(resources.samples > 0);
+            assert!(resources.peak_child_working_set_bytes > 0);
+            assert!(resources.peak_observed_runner_plus_child_working_set_bytes > 0);
+            assert!(resources.peak_scratch_bytes > 0);
+        }
+    }
+
+    #[test]
+    fn scratch_measurement_includes_nested_files() {
+        let base =
+            std::path::PathBuf::from(std::env::var_os("LOCALAPPDATA").unwrap()).join(format!(
+                "GreenLens/verification/annual-resource-shape-{}-{}",
+                std::process::id(),
+                Utc::now().timestamp_micros()
+            ));
+        fs::create_dir_all(base.join("weather/series")).unwrap();
+        fs::write(base.join("weather/original.epw"), [0; 13]).unwrap();
+        fs::write(base.join("weather/series/chunk"), [0; 17]).unwrap();
+        fs::write(base.join("scene.rad"), [0; 7]).unwrap();
+        assert_eq!(scratch_sizes(&base).unwrap(), (37, 17));
     }
 }

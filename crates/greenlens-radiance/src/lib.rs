@@ -1,5 +1,6 @@
 //! Pinned native Radiance adapter. This module owns subprocess execution;
 //! physical model validation and unit conversions remain in greenlens-core.
+pub mod annual;
 mod process;
 pub mod science;
 pub use process::ProcessRecord;

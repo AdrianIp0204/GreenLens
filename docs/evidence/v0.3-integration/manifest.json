@@ -1,7 +1,7 @@
 {
   "schema_version": "greenlens.v0.3.integration-evidence.v1",
-  "recorded_utc": "2026-10-11T06:14:29.7301834Z",
-  "scope": "Native selected-hour A/B integration and unchanged legacy science; four complete 8760-interval annual A/B shipping/reference runs, retained failed metric convergence, and two actual full-year shipping replays. Same-engine replay is integration verification, not accepted numerical profiles, independent physical validation, final-source CI or installed-desktop acceptance.",
+  "recorded_utc": "2026-10-11T07:41:55.151758Z",
+  "scope": "Native selected-hour A/B integration and unchanged legacy science; four complete 8760-interval annual A/B shipping/reference runs, retained failed metric convergence and independent diagnosis of its DA threshold crossings, and two actual full-year shipping replays. Same-engine replay is integration verification, not accepted numerical profiles, independent physical validation, final-source CI or installed-desktop acceptance.",
   "source_note": "Climate CLI source and dirty state are embedded in each real run. The older legacy scientific test harness does not embed a source commit; this record binds the observed test executable and complete report, not a final-source CI claim.",
   "legacy_test": {
     "command": "cargo test -p greenlens-core -p greenlens-radiance -p greenlens-runner --lib --tests -- --nocapture",
@@ -42,6 +42,11 @@
       "file": "corrected-annual-ab-replay.json",
       "sha256": "0d3d4b76887f03bc883d1aa4c4d24671689ad648235b593e3eef88c11dc31015",
       "bytes": 2899
+    },
+    {
+      "file": "annual-da-diagnostic.json",
+      "bytes": 86866,
+      "sha256": "223cd42664c38a8dc9fb9dde0e0d7ae01df5e5e3d056ed8c2ae1b1ec51e4c17e"
     }
   ],
   "release_acceptance_complete": false

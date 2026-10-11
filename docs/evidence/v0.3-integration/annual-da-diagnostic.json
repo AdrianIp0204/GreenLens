@@ -1,0 +1,2803 @@
+{
+  "schema_version": "greenlens.annual-da-diagnostic.v0.3",
+  "generated_utc": "2026-10-11T07:30:27.476317+00:00",
+  "scope": "Independent arithmetic/identity diagnostic of four completed retained annual series. No engine rerun, no independent physical accuracy claim, no changed threshold or exclusion. Prior convergence remains failed.",
+  "source_location": "%LOCALAPPDATA%/GreenLens/verification/v0.3 corrected annual candidate b0b46d98 空間/convergence",
+  "diagnostic_method": "Verify every archive member SHA and nested run seal, decode little-endian time/sensor/RGB/lux records, verify RGB conversion, independently recompute all five metrics for all 24 sensors in four runs. Daily occupied intervals are 08:00 through 18:00 local standard time, HE9-18, including every day. DA includes 300 lx. Analyze every occupied threshold disagreement for s000023. No OS time conversions.",
+  "input_convergence_sha256": "8fb4a4b56b0de0b300f50a58496b351b633a592842e015f3aadbac976ee5182e",
+  "original_convergence_failure_details": [
+    {
+      "kind": "metric_convergence",
+      "check": {
+        "alternative": "A",
+        "sensor_id": "s000023",
+        "metric": "da_percent",
+        "shipping": 38.794520547945204,
+        "reference": 41.06849315068493,
+        "absolute_difference_pp": 2.2739726027397253,
+        "tolerance_pp": 2,
+        "pass": false
+      }
+    }
+  ],
+  "validated_sources": [
+    {
+      "slot": "shipping-A",
+      "archive_sha256": "9868cc2b3d2e9d65bf25aaf4f28b41e2695ae4f68ea1eea01905e5540feef8cd",
+      "run_id": "78492b5e-35d7-4792-8278-b8f0e436650f",
+      "results_sha256": "ae4c718273bfcaee84241f8446913fe0ec6c06a372e40c4fbc2b697af564b136",
+      "record_sha256": "80262361213cc9472cb8f3103bb98b3ee6a9c1f3767c062ee1aec8221f005537",
+      "sealed_members_verified": 82,
+      "intervals": 8760,
+      "sensors": 24,
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "source_worktree_dirty": true,
+      "profile": {
+        "ambient_accuracy": 0.0,
+        "ambient_bounces": 8,
+        "ambient_divisions": 131072,
+        "ambient_resolution": 256,
+        "ambient_supersamples": 0,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "direct_ambient_divisions": 131072,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "direct_solar_samples": 1024,
+        "direct_threshold": 0.0,
+        "limit_weight": 1e-09,
+        "name": "shipping",
+        "ray_depth": 16,
+        "sky_basis_mf": 2,
+        "specular_sampling": 0.0,
+        "specular_threshold": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1
+      },
+      "engine_fingerprint": "d80f8767d8ca4117ac90c4f983f7ed5a9adfc21c3ea4d57ca6f495fadb8052d5",
+      "max_rgb_conversion_difference_lux": 0,
+      "max_recomputed_metric_difference_pp": 0,
+      "target_metrics": {
+        "da_percent": 38.794520547945204,
+        "cda_percent": 79.46794327068856,
+        "udi_percent": 92.0,
+        "underlit_percent": 8.0,
+        "overlit_percent": 0.0
+      }
+    },
+    {
+      "slot": "shipping-B",
+      "archive_sha256": "732e8081c15213241312429e61e160b2a7fa1db621879c3efa1589e19e1bee01",
+      "run_id": "95056251-4b38-4152-90c7-9f9c4b740d3c",
+      "results_sha256": "a8644bc26f26ff265d6f5ae2692fcf93d3a713f26cf3675c5278942d5e358e93",
+      "record_sha256": "cec07e998a981a50c1e0049497bea4a0657c851bcd71070e5803f966a8db461b",
+      "sealed_members_verified": 82,
+      "intervals": 8760,
+      "sensors": 24,
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "source_worktree_dirty": true,
+      "profile": {
+        "ambient_accuracy": 0.0,
+        "ambient_bounces": 8,
+        "ambient_divisions": 131072,
+        "ambient_resolution": 256,
+        "ambient_supersamples": 0,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "direct_ambient_divisions": 131072,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "direct_solar_samples": 1024,
+        "direct_threshold": 0.0,
+        "limit_weight": 1e-09,
+        "name": "shipping",
+        "ray_depth": 16,
+        "sky_basis_mf": 2,
+        "specular_sampling": 0.0,
+        "specular_threshold": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1
+      },
+      "engine_fingerprint": "d80f8767d8ca4117ac90c4f983f7ed5a9adfc21c3ea4d57ca6f495fadb8052d5",
+      "max_rgb_conversion_difference_lux": 0,
+      "max_recomputed_metric_difference_pp": 0,
+      "target_metrics": {
+        "da_percent": 25.397260273972606,
+        "cda_percent": 74.94589450205706,
+        "udi_percent": 90.35616438356165,
+        "underlit_percent": 9.643835616438356,
+        "overlit_percent": 0.0
+      }
+    },
+    {
+      "slot": "reference-A",
+      "archive_sha256": "9a5f0a31cf071d8e6f22841f0aaac1d853885b67551f2a77f2081b8298a9a7fa",
+      "run_id": "c3977b72-53d7-4705-9cee-f63f4c1c4115",
+      "results_sha256": "ecd18476a30ccef913a2221aca978236ba66149a7fca60a96ee4505d98710d99",
+      "record_sha256": "7153b42c9cedd31565b42aedc6382cb5fa570dfef25d75a1c0964cc81d9ae142",
+      "sealed_members_verified": 82,
+      "intervals": 8760,
+      "sensors": 24,
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "source_worktree_dirty": true,
+      "profile": {
+        "ambient_accuracy": 0.0,
+        "ambient_bounces": 9,
+        "ambient_divisions": 262144,
+        "ambient_resolution": 256,
+        "ambient_supersamples": 0,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "direct_ambient_divisions": 262144,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "direct_solar_samples": 4096,
+        "direct_threshold": 0.0,
+        "limit_weight": 1e-09,
+        "name": "reference",
+        "ray_depth": 16,
+        "sky_basis_mf": 4,
+        "specular_sampling": 0.0,
+        "specular_threshold": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1
+      },
+      "engine_fingerprint": "d80f8767d8ca4117ac90c4f983f7ed5a9adfc21c3ea4d57ca6f495fadb8052d5",
+      "max_rgb_conversion_difference_lux": 0,
+      "max_recomputed_metric_difference_pp": 0,
+      "target_metrics": {
+        "da_percent": 41.06849315068493,
+        "cda_percent": 80.31653300760063,
+        "udi_percent": 92.46575342465754,
+        "underlit_percent": 7.534246575342466,
+        "overlit_percent": 0.0
+      }
+    },
+    {
+      "slot": "reference-B",
+      "archive_sha256": "c9c33d6d4f48bc371b45a488949f11a05964e5793a8687ff4f8b00b58a31cc47",
+      "run_id": "e9b86f5e-0763-4c20-aa27-54fd8552e6ce",
+      "results_sha256": "8ed2f36540cae5c74a0217fc7c8e3af0695cc8ffa7208dc35339b4c6579a6874",
+      "record_sha256": "d63b0a95083f3e91521789bf0914e87aec2c8bf3d8769cbe3b2a4361c21ee2a0",
+      "sealed_members_verified": 82,
+      "intervals": 8760,
+      "sensors": 24,
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "source_worktree_dirty": true,
+      "profile": {
+        "ambient_accuracy": 0.0,
+        "ambient_bounces": 9,
+        "ambient_divisions": 262144,
+        "ambient_resolution": 256,
+        "ambient_supersamples": 0,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "direct_ambient_divisions": 262144,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "direct_solar_samples": 4096,
+        "direct_threshold": 0.0,
+        "limit_weight": 1e-09,
+        "name": "reference",
+        "ray_depth": 16,
+        "sky_basis_mf": 4,
+        "specular_sampling": 0.0,
+        "specular_threshold": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1
+      },
+      "engine_fingerprint": "d80f8767d8ca4117ac90c4f983f7ed5a9adfc21c3ea4d57ca6f495fadb8052d5",
+      "max_rgb_conversion_difference_lux": 0,
+      "max_recomputed_metric_difference_pp": 0,
+      "target_metrics": {
+        "da_percent": 26.9041095890411,
+        "cda_percent": 75.52067305530107,
+        "udi_percent": 90.4931506849315,
+        "underlit_percent": 9.506849315068493,
+        "overlit_percent": 0.0
+      }
+    }
+  ],
+  "sensor": {
+    "id": "s000023",
+    "position": [
+      2.4375,
+      5.291666666666666,
+      0.8
+    ],
+    "direction": [
+      0.0,
+      0.0,
+      1.0
+    ]
+  },
+  "weather_binding": {
+    "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+    "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+    "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+    "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+  },
+  "occupancy": {
+    "kind": "daily",
+    "start_minute": 480,
+    "end_minute": 1080
+  },
+  "occupied_hour_count": 3650,
+  "threshold_lux": 300,
+  "fixed_convergence_tolerance_pp": 2,
+  "profile_differences": {
+    "ambient_bounces": {
+      "shipping": 8,
+      "reference": 9
+    },
+    "ambient_divisions": {
+      "shipping": 131072,
+      "reference": 262144
+    },
+    "direct_ambient_divisions": {
+      "shipping": 131072,
+      "reference": 262144
+    },
+    "direct_solar_samples": {
+      "shipping": 1024,
+      "reference": 4096
+    },
+    "name": {
+      "shipping": "shipping",
+      "reference": "reference"
+    },
+    "sky_basis_mf": {
+      "shipping": 2,
+      "reference": 4
+    }
+  },
+  "pair_summary": {
+    "A": {
+      "shipping_above_count": 1416,
+      "reference_above_count": 1499,
+      "shipping_only_above_count": 0,
+      "reference_only_above_count": 83,
+      "occupied_lux_difference_shipping_minus_reference": {
+        "count": 3650,
+        "min": -59.34875669999991,
+        "mean": -6.231686852206306,
+        "median": -4.079073391394971,
+        "max": 52.910771100000034
+      },
+      "da_difference_pp": -2.2739726027397253,
+      "cda_difference_pp": -0.8485897369120607,
+      "crossing_intervals": [
+        39,
+        128,
+        183,
+        200,
+        272,
+        560,
+        608,
+        680,
+        728,
+        752,
+        896,
+        945,
+        1016,
+        1040,
+        1262,
+        1479,
+        1790,
+        1810,
+        2123,
+        2198,
+        2438,
+        2530,
+        2650,
+        2674,
+        2746,
+        2893,
+        2917,
+        3011,
+        3298,
+        3323,
+        3325,
+        3346,
+        3349,
+        3468,
+        3827,
+        3877,
+        3948,
+        3972,
+        4020,
+        4043,
+        4356,
+        4357,
+        4523,
+        4548,
+        4549,
+        4573,
+        4643,
+        4644,
+        4668,
+        4860,
+        5053,
+        5075,
+        5076,
+        5077,
+        5124,
+        5412,
+        5434,
+        5484,
+        5506,
+        5533,
+        5698,
+        6274,
+        6278,
+        6297,
+        6321,
+        6345,
+        6393,
+        6680,
+        6752,
+        6896,
+        6920,
+        6992,
+        7136,
+        7166,
+        7215,
+        7263,
+        7479,
+        7551,
+        7809,
+        7863,
+        7959,
+        8223,
+        8415
+      ]
+    },
+    "B": {
+      "shipping_above_count": 927,
+      "reference_above_count": 982,
+      "shipping_only_above_count": 16,
+      "reference_only_above_count": 71,
+      "occupied_lux_difference_shipping_minus_reference": {
+        "count": 3650,
+        "min": -50.97331090000006,
+        "mean": -2.163276935671594,
+        "median": -2.1593853576500237,
+        "max": 31.519125499999973
+      },
+      "da_difference_pp": -1.506849315068493,
+      "cda_difference_pp": -0.5747785532440162,
+      "crossing_intervals": [
+        157,
+        392,
+        536,
+        975,
+        1023,
+        1047,
+        1065,
+        1095,
+        1402,
+        1478,
+        1620,
+        1787,
+        1858,
+        1886,
+        1932,
+        1956,
+        2004,
+        2052,
+        2100,
+        2170,
+        2172,
+        2194,
+        2196,
+        2218,
+        2292,
+        2338,
+        2340,
+        2341,
+        2386,
+        2412,
+        2461,
+        2484,
+        2508,
+        2532,
+        2652,
+        2747,
+        2915,
+        3012,
+        3059,
+        3060,
+        3300,
+        5100,
+        5411,
+        5700,
+        5795,
+        5845,
+        6011,
+        6012,
+        6036,
+        6037,
+        6060,
+        6084,
+        6085,
+        6108,
+        6109,
+        6130,
+        6133,
+        6156,
+        6227,
+        6228,
+        6372,
+        6374,
+        6442,
+        6444,
+        6469,
+        6517,
+        6686,
+        6873,
+        6897,
+        6950,
+        6974,
+        7304,
+        7328,
+        7352,
+        7646,
+        7761,
+        7911,
+        8007,
+        8031,
+        8193,
+        8199,
+        8217,
+        8432,
+        8456,
+        8463,
+        8504,
+        8631
+      ]
+    }
+  },
+  "A_crossings_by_month": [
+    {
+      "month": 1,
+      "count": 9,
+      "shipping_only": 0,
+      "reference_only": 9,
+      "mean_shipping_minus_reference_lux": -31.270766977777765,
+      "cda_crossing_difference_pp": -0.006818055771689479
+    },
+    {
+      "month": 2,
+      "count": 6,
+      "shipping_only": 0,
+      "reference_only": 6,
+      "mean_shipping_minus_reference_lux": -28.585875770000012,
+      "cda_crossing_difference_pp": -0.011656974036529665
+    },
+    {
+      "month": 3,
+      "count": 4,
+      "shipping_only": 0,
+      "reference_only": 4,
+      "mean_shipping_minus_reference_lux": -5.287550809999985,
+      "cda_crossing_difference_pp": -0.000761300642009123
+    },
+    {
+      "month": 4,
+      "count": 6,
+      "shipping_only": 0,
+      "reference_only": 6,
+      "mean_shipping_minus_reference_lux": -4.618148388333329,
+      "cda_crossing_difference_pp": -0.0011496880949771642
+    },
+    {
+      "month": 5,
+      "count": 9,
+      "shipping_only": 0,
+      "reference_only": 9,
+      "mean_shipping_minus_reference_lux": -4.5236163562444425,
+      "cda_crossing_difference_pp": -0.001779998226757971
+    },
+    {
+      "month": 6,
+      "count": 6,
+      "shipping_only": 0,
+      "reference_only": 6,
+      "mean_shipping_minus_reference_lux": -5.212801367053326,
+      "cda_crossing_difference_pp": -0.0012454753609424582
+    },
+    {
+      "month": 7,
+      "count": 14,
+      "shipping_only": 0,
+      "reference_only": 14,
+      "mean_shipping_minus_reference_lux": -4.735720125429277,
+      "cda_crossing_difference_pp": -0.002517643162694036
+    },
+    {
+      "month": 8,
+      "count": 7,
+      "shipping_only": 0,
+      "reference_only": 7,
+      "mean_shipping_minus_reference_lux": -4.464345446928552,
+      "cda_crossing_difference_pp": -0.0013658886045662
+    },
+    {
+      "month": 9,
+      "count": 6,
+      "shipping_only": 0,
+      "reference_only": 6,
+      "mean_shipping_minus_reference_lux": -11.345259561666666,
+      "cda_crossing_difference_pp": -0.0034555834228310518
+    },
+    {
+      "month": 10,
+      "count": 9,
+      "shipping_only": 0,
+      "reference_only": 9,
+      "mean_shipping_minus_reference_lux": -15.255569554444428,
+      "cda_crossing_difference_pp": -0.005778848957990847
+    },
+    {
+      "month": 11,
+      "count": 5,
+      "shipping_only": 0,
+      "reference_only": 5,
+      "mean_shipping_minus_reference_lux": -14.728116420000003,
+      "cda_crossing_difference_pp": -0.004588029397260269
+    },
+    {
+      "month": 12,
+      "count": 2,
+      "shipping_only": 0,
+      "reference_only": 2,
+      "mean_shipping_minus_reference_lux": -16.232364399999966,
+      "cda_crossing_difference_pp": -0.0010186997442922295
+    }
+  ],
+  "A_crossings_by_hour_ending": [
+    {
+      "hour_ending": 9,
+      "count": 17,
+      "shipping_only": 0,
+      "reference_only": 17,
+      "mean_shipping_minus_reference_lux": -29.487350199999987,
+      "cda_crossing_difference_pp": -0.02053606371689493
+    },
+    {
+      "hour_ending": 10,
+      "count": 6,
+      "shipping_only": 0,
+      "reference_only": 6,
+      "mean_shipping_minus_reference_lux": -10.373728708333346,
+      "cda_crossing_difference_pp": -0.0029902280502283113
+    },
+    {
+      "hour_ending": 11,
+      "count": 11,
+      "shipping_only": 0,
+      "reference_only": 11,
+      "mean_shipping_minus_reference_lux": -5.58219216852726,
+      "cda_crossing_difference_pp": -0.00264521805826482
+    },
+    {
+      "hour_ending": 12,
+      "count": 8,
+      "shipping_only": 0,
+      "reference_only": 8,
+      "mean_shipping_minus_reference_lux": -5.27292490593625,
+      "cda_crossing_difference_pp": -0.0012048067975260212
+    },
+    {
+      "hour_ending": 13,
+      "count": 13,
+      "shipping_only": 0,
+      "reference_only": 13,
+      "mean_shipping_minus_reference_lux": -4.327683329084598,
+      "cda_crossing_difference_pp": -0.0024400644412145844
+    },
+    {
+      "hour_ending": 14,
+      "count": 11,
+      "shipping_only": 0,
+      "reference_only": 11,
+      "mean_shipping_minus_reference_lux": -4.649149997603636,
+      "cda_crossing_difference_pp": -0.002341586972110487
+    },
+    {
+      "hour_ending": 15,
+      "count": 6,
+      "shipping_only": 0,
+      "reference_only": 6,
+      "mean_shipping_minus_reference_lux": -6.84943977333332,
+      "cda_crossing_difference_pp": -0.002530884135159806
+    },
+    {
+      "hour_ending": 16,
+      "count": 11,
+      "shipping_only": 0,
+      "reference_only": 11,
+      "mean_shipping_minus_reference_lux": -15.201462718181812,
+      "cda_crossing_difference_pp": -0.007447333251141538
+    }
+  ],
+  "A_crossings_by_diagnostic_condition": [
+    {
+      "condition": "clear",
+      "count": 40,
+      "shipping_only": 0,
+      "reference_only": 40,
+      "mean_shipping_minus_reference_lux": -17.079793407076995,
+      "cda_crossing_difference_pp": -0.029222294620518632
+    },
+    {
+      "condition": "mixed",
+      "count": 41,
+      "shipping_only": 0,
+      "reference_only": 41,
+      "mean_shipping_minus_reference_lux": -6.831238030486576,
+      "cda_crossing_difference_pp": -0.011217382465035567
+    },
+    {
+      "condition": "overcast",
+      "count": 2,
+      "shipping_only": 0,
+      "reference_only": 2,
+      "mean_shipping_minus_reference_lux": -9.777802505000011,
+      "cda_crossing_difference_pp": -0.0016965083369862965
+    }
+  ],
+  "diagnostic_condition_policy": "low_diffuse if DHI<50 Wh/m2; otherwise clear if DNI/DHI>=3, mixed if>=0.5, else overcast. Descriptive radiation grouping, not an independent sky classification.",
+  "A_crossing_lux_difference": {
+    "count": 83,
+    "min": -56.06170809999992,
+    "mean": -11.841302416181076,
+    "median": -5.5524368000000095,
+    "max": -1.2482296499999848
+  },
+  "A_absolute_reference_distance_at_crossing_lux": {
+    "count": 83,
+    "min": 0.06856529999998884,
+    "mean": 6.282371929713384,
+    "median": 3.533695630000011,
+    "max": 41.74715800000001
+  },
+  "A_crossing_cda_difference_pp": -0.042136185422540495,
+  "A_non_crossing_cda_difference_pp": -0.8064535514895085,
+  "A_crossing_all_disc_rays_provably_miss_aperture_count": 83,
+  "direct_visibility_bound_method": "For each emitted solar cap, independent component min/max bounds enclose all ray directions. Since facade is y=0, interval arithmetic bounds the aperture x/z intersection. A bound fully outside the rectangle proves no direct ray; possible intersection is not proof of illumination. Uses effective sensor z+1e-4 m. Also exclude a cap wholly above atan2(window_head - effective_sensor_z, facade_distance), the largest possible altitude to any point of the aperture; component ranges include +/- axis directions when inside the cap.",
+  "A_all_crossings": [
+    {
+      "interval_index": 39,
+      "month": 1,
+      "day": 2,
+      "hour_ending": 16,
+      "source_year_label": 2014,
+      "condition": "mixed",
+      "dni_wh_m2": 224.41,
+      "dhi_wh_m2": 129.7,
+      "shipping_lux": 298.0484608,
+      "reference_lux": 313.890999,
+      "difference_lux": -15.842538200000035,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 13.890999000000022,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 26.62152758300782,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 128,
+      "month": 1,
+      "day": 6,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 535.8,
+      "dhi_wh_m2": 91.2,
+      "shipping_lux": 299.54756790000005,
+      "reference_lux": 330.85294949999997,
+      "difference_lux": -31.30538159999992,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 30.852949499999966,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 16.52137553930412,
+        "aperture_x_bound_m": [
+          10.307232838928218,
+          10.481214394987086
+        ],
+        "aperture_z_bound_m": [
+          3.5693400788094296,
+          3.700317578663589
+        ],
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "conservative aperture x/z interval does not intersect window"
+      }
+    },
+    {
+      "interval_index": 183,
+      "month": 1,
+      "day": 8,
+      "hour_ending": 16,
+      "source_year_label": 2014,
+      "condition": "mixed",
+      "dni_wh_m2": 233.13,
+      "dhi_wh_m2": 124.35,
+      "shipping_lux": 290.97400489999995,
+      "reference_lux": 311.82179479999996,
+      "difference_lux": -20.84778990000001,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 11.821794799999964,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 27.471553087631943,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 200,
+      "month": 1,
+      "day": 9,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 569.24,
+      "dhi_wh_m2": 82.5,
+      "shipping_lux": 296.483607,
+      "reference_lux": 319.1602757,
+      "difference_lux": -22.676668699999993,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 19.1602757,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 16.489940146972266,
+        "aperture_x_bound_m": [
+          10.450361633606782,
+          10.628728284771416
+        ],
+        "aperture_z_bound_m": [
+          3.598406974353741,
+          3.7317023127458255
+        ],
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "conservative aperture x/z interval does not intersect window"
+      }
+    },
+    {
+      "interval_index": 272,
+      "month": 1,
+      "day": 12,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 608.02,
+      "dhi_wh_m2": 75.8,
+      "shipping_lux": 297.7105983,
+      "reference_lux": 324.23666199999997,
+      "difference_lux": -26.526063699999952,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 24.236661999999967,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 16.502072348565836,
+        "aperture_x_bound_m": [
+          10.610356480228761,
+          10.793801038850749
+        ],
+        "aperture_z_bound_m": [
+          3.6396955435968517,
+          3.7757607448035673
+        ],
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "conservative aperture x/z interval does not intersect window"
+      }
+    },
+    {
+      "interval_index": 560,
+      "month": 1,
+      "day": 24,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 673.47,
+      "dhi_wh_m2": 85.95,
+      "shipping_lux": 297.5543134,
+      "reference_lux": 330.13752230000006,
+      "difference_lux": -32.583208900000045,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 30.137522300000057,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 16.99582609503957,
+        "aperture_x_bound_m": [
+          11.437505158888772,
+          11.64972414236886
+        ],
+        "aperture_z_bound_m": [
+          3.943312677341155,
+          4.095941136658668
+        ],
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "conservative aperture x/z interval does not intersect window"
+      }
+    },
+    {
+      "interval_index": 608,
+      "month": 1,
+      "day": 26,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 645.77,
+      "dhi_wh_m2": 81.75,
+      "shipping_lux": 287.84734030000004,
+      "reference_lux": 322.11830440000006,
+      "difference_lux": -34.270964100000015,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 22.118304400000056,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 17.148009455974623,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 680,
+      "month": 1,
+      "day": 29,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 732.99,
+      "dhi_wh_m2": 83.75,
+      "shipping_lux": 285.6854499000001,
+      "reference_lux": 341.747158,
+      "difference_lux": -56.06170809999992,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 41.74715800000001,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 17.413528958329113,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 728,
+      "month": 1,
+      "day": 31,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 616.13,
+      "dhi_wh_m2": 95.35,
+      "shipping_lux": 271.4909468,
+      "reference_lux": 312.8135264,
+      "difference_lux": -41.32257959999998,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 12.8135264,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 17.61509434670805,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 752,
+      "month": 2,
+      "day": 1,
+      "hour_ending": 9,
+      "source_year_label": 2018,
+      "condition": "clear",
+      "dni_wh_m2": 653.87,
+      "dhi_wh_m2": 89.05,
+      "shipping_lux": 270.75654560000004,
+      "reference_lux": 315.36320240000003,
+      "difference_lux": -44.606656799999996,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 15.363202400000034,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 17.723159813669156,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 896,
+      "month": 2,
+      "day": 7,
+      "hour_ending": 9,
+      "source_year_label": 2018,
+      "condition": "clear",
+      "dni_wh_m2": 696.98,
+      "dhi_wh_m2": 88.95,
+      "shipping_lux": 268.92310230000004,
+      "reference_lux": 302.47706400000004,
+      "difference_lux": -33.5539617,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.4770640000000412,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 18.47169776990163,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 945,
+      "month": 2,
+      "day": 9,
+      "hour_ending": 10,
+      "source_year_label": 2018,
+      "condition": "mixed",
+      "dni_wh_m2": 339.31,
+      "dhi_wh_m2": 167.2,
+      "shipping_lux": 295.0922042,
+      "reference_lux": 304.6775647,
+      "difference_lux": -9.585360499999979,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.677564700000005,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 30.728787983604647,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 1016,
+      "month": 2,
+      "day": 12,
+      "hour_ending": 9,
+      "source_year_label": 2018,
+      "condition": "clear",
+      "dni_wh_m2": 712.0,
+      "dhi_wh_m2": 89.15,
+      "shipping_lux": 264.9222554,
+      "reference_lux": 300.40299100000004,
+      "difference_lux": -35.48073560000006,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.40299100000004273,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 19.22120197745099,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 1040,
+      "month": 2,
+      "day": 13,
+      "hour_ending": 9,
+      "source_year_label": 2018,
+      "condition": "clear",
+      "dni_wh_m2": 817.34,
+      "dhi_wh_m2": 88.1,
+      "shipping_lux": 280.1827751,
+      "reference_lux": 320.863944,
+      "difference_lux": -40.68116889999999,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 20.863944000000004,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 19.3841372072303,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 1262,
+      "month": 2,
+      "day": 22,
+      "hour_ending": 15,
+      "source_year_label": 2018,
+      "condition": "overcast",
+      "dni_wh_m2": 70.53,
+      "dhi_wh_m2": 251.55,
+      "shipping_lux": 292.4792517,
+      "reference_lux": 300.08662282000006,
+      "difference_lux": -7.607371120000039,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.08662282000005916,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 46.77242482668417,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 1479,
+      "month": 3,
+      "day": 3,
+      "hour_ending": 16,
+      "source_year_label": 2005,
+      "condition": "mixed",
+      "dni_wh_m2": 420.32,
+      "dhi_wh_m2": 181.7,
+      "shipping_lux": 296.87030070000003,
+      "reference_lux": 300.0685653,
+      "difference_lux": -3.198264599999959,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.06856529999998884,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 37.88459321212728,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 1790,
+      "month": 3,
+      "day": 16,
+      "hour_ending": 15,
+      "source_year_label": 2005,
+      "condition": "mixed",
+      "dni_wh_m2": 405.35,
+      "dhi_wh_m2": 200.3,
+      "shipping_lux": 298.75404479,
+      "reference_lux": 306.68347450000005,
+      "difference_lux": -7.929429710000022,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 6.683474500000045,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 52.086658808704485,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 1810,
+      "month": 3,
+      "day": 17,
+      "hour_ending": 11,
+      "source_year_label": 2005,
+      "condition": "mixed",
+      "dni_wh_m2": 216.08,
+      "dhi_wh_m2": 290.95,
+      "shipping_lux": 299.78248034,
+      "reference_lux": 305.08796158,
+      "difference_lux": -5.305481240000006,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 5.087961580000012,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 51.58411539719548,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2123,
+      "month": 3,
+      "day": 30,
+      "hour_ending": 12,
+      "source_year_label": 2005,
+      "condition": "mixed",
+      "dni_wh_m2": 265.11,
+      "dhi_wh_m2": 323.6,
+      "shipping_lux": 296.25693214,
+      "reference_lux": 300.97395982999996,
+      "difference_lux": -4.717027689999952,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.9739598299999557,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 66.30458249349178,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2198,
+      "month": 4,
+      "day": 2,
+      "hour_ending": 15,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 719.09,
+      "dhi_wh_m2": 154.6,
+      "shipping_lux": 298.61888368,
+      "reference_lux": 304.39446904,
+      "difference_lux": -5.77558535999998,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.39446903999999,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 55.287494675911,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2438,
+      "month": 4,
+      "day": 12,
+      "hour_ending": 15,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 534.28,
+      "dhi_wh_m2": 229.8,
+      "shipping_lux": 298.99222756,
+      "reference_lux": 300.24045721,
+      "difference_lux": -1.2482296499999848,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.2404572099999882,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 56.68359262259511,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2530,
+      "month": 4,
+      "day": 16,
+      "hour_ending": 11,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 774.86,
+      "dhi_wh_m2": 163.65,
+      "shipping_lux": 297.01411825,
+      "reference_lux": 301.34294327,
+      "difference_lux": -4.328825019999954,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.342943269999978,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 60.15869886633347,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2650,
+      "month": 4,
+      "day": 21,
+      "hour_ending": 11,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 629.0,
+      "dhi_wh_m2": 206.7,
+      "shipping_lux": 298.52368611,
+      "reference_lux": 304.05373180000004,
+      "difference_lux": -5.530045690000009,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.053731800000037,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 61.218276051582386,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2674,
+      "month": 4,
+      "day": 22,
+      "hour_ending": 11,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 626.24,
+      "dhi_wh_m2": 190.5,
+      "shipping_lux": 296.00207194,
+      "reference_lux": 301.55450874,
+      "difference_lux": -5.5524368000000095,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.554508740000017,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 61.412410740234264,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2746,
+      "month": 4,
+      "day": 25,
+      "hour_ending": 11,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 610.53,
+      "dhi_wh_m2": 225.05,
+      "shipping_lux": 298.25992782,
+      "reference_lux": 303.53369563,
+      "difference_lux": -5.273767810000038,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.533695630000011,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 61.95780606948091,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2893,
+      "month": 5,
+      "day": 1,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 506.51,
+      "dhi_wh_m2": 229.65,
+      "shipping_lux": 297.96943767,
+      "reference_lux": 301.53380023,
+      "difference_lux": -3.5643625600000064,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.533800229999997,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 71.93253261427128,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 2917,
+      "month": 5,
+      "day": 2,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 553.07,
+      "dhi_wh_m2": 203.85,
+      "shipping_lux": 297.36352267,
+      "reference_lux": 300.76833179,
+      "difference_lux": -3.4048091199999817,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.7683317899999906,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 72.0444653354319,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3011,
+      "month": 5,
+      "day": 6,
+      "hour_ending": 12,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 585.82,
+      "dhi_wh_m2": 207.35,
+      "shipping_lux": 299.135317296,
+      "reference_lux": 304.81817457000005,
+      "difference_lux": -5.682857274000071,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.818174570000053,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 76.85485873844114,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3298,
+      "month": 5,
+      "day": 18,
+      "hour_ending": 11,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 729.76,
+      "dhi_wh_m2": 203.15,
+      "shipping_lux": 298.78009197500006,
+      "reference_lux": 302.9068506612,
+      "difference_lux": -4.126758686199935,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.9068506611999965,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 64.277423160038,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3323,
+      "month": 5,
+      "day": 19,
+      "hour_ending": 12,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 622.97,
+      "dhi_wh_m2": 220.65,
+      "shipping_lux": 299.44322468300004,
+      "reference_lux": 304.725398512,
+      "difference_lux": -5.282173828999987,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.725398512000027,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 78.12730316035073,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3325,
+      "month": 5,
+      "day": 19,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 612.09,
+      "dhi_wh_m2": 226.8,
+      "shipping_lux": 298.968569667,
+      "reference_lux": 303.777976035,
+      "difference_lux": -4.809406367999998,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.7779760349999947,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 73.39342171941492,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3346,
+      "month": 5,
+      "day": 20,
+      "hour_ending": 11,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 710.64,
+      "dhi_wh_m2": 189.55,
+      "shipping_lux": 296.14309225700003,
+      "reference_lux": 300.6892079546,
+      "difference_lux": -4.546115697599987,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.6892079546000218,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 64.33709332992683,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3349,
+      "month": 5,
+      "day": 20,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 633.97,
+      "dhi_wh_m2": 200.4,
+      "shipping_lux": 296.73012060900004,
+      "reference_lux": 301.35905534640005,
+      "difference_lux": -4.628934737400016,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.359055346400055,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 73.44881366927656,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3468,
+      "month": 5,
+      "day": 25,
+      "hour_ending": 13,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 542.62,
+      "dhi_wh_m2": 259.7,
+      "shipping_lux": 295.97564259,
+      "reference_lux": 300.642771524,
+      "difference_lux": -4.667128934000004,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.6427715240000111,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 87.31550767504895,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3827,
+      "month": 6,
+      "day": 9,
+      "hour_ending": 12,
+      "source_year_label": 2021,
+      "condition": "mixed",
+      "dni_wh_m2": 587.03,
+      "dhi_wh_m2": 226.9,
+      "shipping_lux": 297.09512525669,
+      "reference_lux": 302.214829,
+      "difference_lux": -5.119703743310026,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.214829000000009,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 77.91962069710793,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3877,
+      "month": 6,
+      "day": 11,
+      "hour_ending": 14,
+      "source_year_label": 2021,
+      "condition": "mixed",
+      "dni_wh_m2": 531.5,
+      "dhi_wh_m2": 249.0,
+      "shipping_lux": 295.57194654099004,
+      "reference_lux": 300.840288,
+      "difference_lux": -5.268341459009946,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.8402879999999868,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 74.46002995264232,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3948,
+      "month": 6,
+      "day": 14,
+      "hour_ending": 13,
+      "source_year_label": 2021,
+      "condition": "mixed",
+      "dni_wh_m2": 538.01,
+      "dhi_wh_m2": 244.3,
+      "shipping_lux": 297.043877,
+      "reference_lux": 302.413698,
+      "difference_lux": -5.369821000000002,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.413698000000011,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 88.1708472278486,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 3972,
+      "month": 6,
+      "day": 15,
+      "hour_ending": 13,
+      "source_year_label": 2021,
+      "condition": "mixed",
+      "dni_wh_m2": 590.9,
+      "dhi_wh_m2": 226.15,
+      "shipping_lux": 298.9020760000001,
+      "reference_lux": 304.18203900000003,
+      "difference_lux": -5.2799629999999524,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.182039000000032,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 88.18495675025048,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4020,
+      "month": 6,
+      "day": 17,
+      "hour_ending": 13,
+      "source_year_label": 2021,
+      "condition": "clear",
+      "dni_wh_m2": 628.14,
+      "dhi_wh_m2": 201.65,
+      "shipping_lux": 298.868245,
+      "reference_lux": 303.938778,
+      "difference_lux": -5.070533000000012,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.9387780000000134,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 88.21958794025248,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4043,
+      "month": 6,
+      "day": 18,
+      "hour_ending": 12,
+      "source_year_label": 2021,
+      "condition": "mixed",
+      "dni_wh_m2": 609.47,
+      "dhi_wh_m2": 219.2,
+      "shipping_lux": 298.88077499999997,
+      "reference_lux": 304.049221,
+      "difference_lux": -5.168446000000017,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.049220999999989,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 77.49360073497363,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4356,
+      "month": 7,
+      "day": 1,
+      "hour_ending": 13,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 645.35,
+      "dhi_wh_m2": 192.45,
+      "shipping_lux": 297.53827500000006,
+      "reference_lux": 302.460775,
+      "difference_lux": -4.922499999999957,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.4607750000000124,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 88.88984321520257,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4357,
+      "month": 7,
+      "day": 1,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 655.62,
+      "dhi_wh_m2": 190.4,
+      "shipping_lux": 298.19591430003004,
+      "reference_lux": 303.13632100000007,
+      "difference_lux": -4.940406699970026,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.1363210000000663,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 75.40043379338827,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4523,
+      "month": 7,
+      "day": 8,
+      "hour_ending": 12,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 644.28,
+      "dhi_wh_m2": 200.7,
+      "shipping_lux": 298.5848574089,
+      "reference_lux": 303.551422,
+      "difference_lux": -4.966564591099996,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.5514220000000023,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 76.59660741763695,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4548,
+      "month": 7,
+      "day": 9,
+      "hour_ending": 13,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 598.8,
+      "dhi_wh_m2": 208.1,
+      "shipping_lux": 296.67530943070005,
+      "reference_lux": 301.70503700000006,
+      "difference_lux": -5.029727569300007,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.7050370000000612,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 89.56943302295902,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4549,
+      "month": 7,
+      "day": 9,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 652.84,
+      "dhi_wh_m2": 187.85,
+      "shipping_lux": 298.36624386939,
+      "reference_lux": 303.3650992532,
+      "difference_lux": -4.998855383809996,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.3650992532000146,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 75.70563551415052,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4573,
+      "month": 7,
+      "day": 10,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 463.96,
+      "dhi_wh_m2": 311.1,
+      "shipping_lux": 296.74291367098004,
+      "reference_lux": 302.19465984743,
+      "difference_lux": -5.451746176449944,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.194659847429989,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 75.73403281924108,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4643,
+      "month": 7,
+      "day": 13,
+      "hour_ending": 12,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 512.04,
+      "dhi_wh_m2": 267.8,
+      "shipping_lux": 299.22536995850004,
+      "reference_lux": 304.53081656558004,
+      "difference_lux": -5.30544660708,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.530816565580039,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 76.39126436476397,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4644,
+      "month": 7,
+      "day": 13,
+      "hour_ending": 13,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 372.04,
+      "dhi_wh_m2": 343.75,
+      "shipping_lux": 298.181006362,
+      "reference_lux": 302.8706993021,
+      "difference_lux": -4.689692940099974,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.870699302099979,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 89.44176624763303,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4668,
+      "month": 7,
+      "day": 14,
+      "hour_ending": 13,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 498.44,
+      "dhi_wh_m2": 247.25,
+      "shipping_lux": 296.01457509,
+      "reference_lux": 300.32316859919996,
+      "difference_lux": -4.308593509199966,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.32316859919995977,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 89.32093077080017,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 4860,
+      "month": 7,
+      "day": 22,
+      "hour_ending": 13,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 627.46,
+      "dhi_wh_m2": 179.3,
+      "shipping_lux": 299.206475166,
+      "reference_lux": 302.418673305,
+      "difference_lux": -3.2121981390000087,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.418673305000027,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 87.93909126249636,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5053,
+      "month": 7,
+      "day": 30,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 555.15,
+      "dhi_wh_m2": 224.75,
+      "shipping_lux": 298.48247619299997,
+      "reference_lux": 303.356174349,
+      "difference_lux": -4.873698156000046,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.356174349000014,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 75.35183995559274,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5075,
+      "month": 7,
+      "day": 31,
+      "hour_ending": 12,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 582.26,
+      "dhi_wh_m2": 217.1,
+      "shipping_lux": 298.18576382400005,
+      "reference_lux": 304.126943337,
+      "difference_lux": -5.941179512999952,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.126943337,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 75.4170764537935,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5076,
+      "month": 7,
+      "day": 31,
+      "hour_ending": 13,
+      "source_year_label": 2011,
+      "condition": "clear",
+      "dni_wh_m2": 621.71,
+      "dhi_wh_m2": 184.95,
+      "shipping_lux": 299.03576752000004,
+      "reference_lux": 301.727091948,
+      "difference_lux": -2.691324427999973,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.7270919480000089,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 85.87116491152376,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5077,
+      "month": 7,
+      "day": 31,
+      "hour_ending": 14,
+      "source_year_label": 2011,
+      "condition": "mixed",
+      "dni_wh_m2": 537.7,
+      "dhi_wh_m2": 233.9,
+      "shipping_lux": 297.996859575,
+      "reference_lux": 302.965007618,
+      "difference_lux": -4.968148043000042,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.9650076180000156,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 75.26626499260725,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5124,
+      "month": 8,
+      "day": 2,
+      "hour_ending": 13,
+      "source_year_label": 2022,
+      "condition": "mixed",
+      "dni_wh_m2": 540.4,
+      "dhi_wh_m2": 225.55,
+      "shipping_lux": 299.86964976,
+      "reference_lux": 303.17117256849997,
+      "difference_lux": -3.3015228084999535,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 3.171172568499969,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 85.34988018595097,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5412,
+      "month": 8,
+      "day": 14,
+      "hour_ending": 13,
+      "source_year_label": 2022,
+      "condition": "clear",
+      "dni_wh_m2": 704.99,
+      "dhi_wh_m2": 184.35,
+      "shipping_lux": 298.57655018,
+      "reference_lux": 301.45423831,
+      "difference_lux": -2.8776881299999673,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.4542383099999938,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 81.79789296199478,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5434,
+      "month": 8,
+      "day": 15,
+      "hour_ending": 11,
+      "source_year_label": 2022,
+      "condition": "clear",
+      "dni_wh_m2": 625.15,
+      "dhi_wh_m2": 194.35,
+      "shipping_lux": 297.04265264000003,
+      "reference_lux": 302.61978786,
+      "difference_lux": -5.5771352199999455,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.619787859999974,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 60.73925147840508,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5484,
+      "month": 8,
+      "day": 17,
+      "hour_ending": 13,
+      "source_year_label": 2022,
+      "condition": "mixed",
+      "dni_wh_m2": 404.87,
+      "dhi_wh_m2": 292.0,
+      "shipping_lux": 297.39384527,
+      "reference_lux": 302.23303509,
+      "difference_lux": -4.839189820000001,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.233035089999987,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 80.80608894420894,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5506,
+      "month": 8,
+      "day": 18,
+      "hour_ending": 11,
+      "source_year_label": 2022,
+      "condition": "mixed",
+      "dni_wh_m2": 485.38,
+      "dhi_wh_m2": 270.7,
+      "shipping_lux": 298.7926354,
+      "reference_lux": 304.53585935000007,
+      "difference_lux": -5.743223950000072,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.535859350000067,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 60.498423799265495,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5533,
+      "month": 8,
+      "day": 19,
+      "hour_ending": 14,
+      "source_year_label": 2022,
+      "condition": "mixed",
+      "dni_wh_m2": 348.77,
+      "dhi_wh_m2": 288.65,
+      "shipping_lux": 297.97161789,
+      "reference_lux": 302.20355916,
+      "difference_lux": -4.231941269999993,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 2.2035591599999975,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 72.09618586173809,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 5698,
+      "month": 8,
+      "day": 26,
+      "hour_ending": 11,
+      "source_year_label": 2022,
+      "condition": "mixed",
+      "dni_wh_m2": 547.18,
+      "dhi_wh_m2": 198.15,
+      "shipping_lux": 295.39656864000005,
+      "reference_lux": 300.07628557,
+      "difference_lux": -4.679716929999927,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.07628556999998182,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 59.73204286271864,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6274,
+      "month": 9,
+      "day": 19,
+      "hour_ending": 11,
+      "source_year_label": 2012,
+      "condition": "mixed",
+      "dni_wh_m2": 369.04,
+      "dhi_wh_m2": 217.4,
+      "shipping_lux": 295.29753689,
+      "reference_lux": 306.0381437,
+      "difference_lux": -10.740606809999974,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 6.038143699999978,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 56.058488105383994,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6278,
+      "month": 9,
+      "day": 19,
+      "hour_ending": 15,
+      "source_year_label": 2012,
+      "condition": "mixed",
+      "dni_wh_m2": 322.44,
+      "dhi_wh_m2": 231.55,
+      "shipping_lux": 294.49842898,
+      "reference_lux": 301.08621788999994,
+      "difference_lux": -6.587788909999915,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.0862178899999435,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 51.11193743833867,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6297,
+      "month": 9,
+      "day": 20,
+      "hour_ending": 10,
+      "source_year_label": 2012,
+      "condition": "clear",
+      "dni_wh_m2": 533.39,
+      "dhi_wh_m2": 163.65,
+      "shipping_lux": 288.1464672,
+      "reference_lux": 301.31714400000004,
+      "difference_lux": -13.170676800000024,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.3171440000000416,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 43.77055724186884,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6321,
+      "month": 9,
+      "day": 21,
+      "hour_ending": 10,
+      "source_year_label": 2012,
+      "condition": "clear",
+      "dni_wh_m2": 623.03,
+      "dhi_wh_m2": 148.9,
+      "shipping_lux": 299.8386756,
+      "reference_lux": 314.39679930000005,
+      "difference_lux": -14.558123700000067,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 14.396799300000055,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 43.63690930958844,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6345,
+      "month": 9,
+      "day": 22,
+      "hour_ending": 10,
+      "source_year_label": 2012,
+      "condition": "mixed",
+      "dni_wh_m2": 365.05,
+      "dhi_wh_m2": 221.65,
+      "shipping_lux": 296.11015035,
+      "reference_lux": 306.1919405,
+      "difference_lux": -10.08179014999996,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 6.191940499999987,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 43.50050330487481,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6393,
+      "month": 9,
+      "day": 24,
+      "hour_ending": 10,
+      "source_year_label": 2012,
+      "condition": "clear",
+      "dni_wh_m2": 496.88,
+      "dhi_wh_m2": 153.1,
+      "shipping_lux": 288.27010249999995,
+      "reference_lux": 301.2026735,
+      "difference_lux": -12.932571000000053,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.202673500000003,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 43.219090494073384,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6680,
+      "month": 10,
+      "day": 6,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 740.4,
+      "dhi_wh_m2": 112.25,
+      "shipping_lux": 291.12529570000004,
+      "reference_lux": 305.6957525,
+      "difference_lux": -14.570456799999988,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 5.695752500000026,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 28.81499989082105,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6752,
+      "month": 10,
+      "day": 9,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 714.05,
+      "dhi_wh_m2": 107.55,
+      "shipping_lux": 295.88479830000006,
+      "reference_lux": 300.1092699,
+      "difference_lux": -4.2244715999999585,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.10926990000001524,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 28.422904200766503,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6896,
+      "month": 10,
+      "day": 15,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 637.68,
+      "dhi_wh_m2": 110.5,
+      "shipping_lux": 290.8729236,
+      "reference_lux": 304.0049006,
+      "difference_lux": -13.131977000000006,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 4.004900599999985,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 27.584866214136266,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6920,
+      "month": 10,
+      "day": 16,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 690.44,
+      "dhi_wh_m2": 99.5,
+      "shipping_lux": 294.2178071,
+      "reference_lux": 309.42992520000007,
+      "difference_lux": -15.212118100000055,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 9.42992520000007,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 27.438673782951053,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 6992,
+      "month": 10,
+      "day": 19,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 545.26,
+      "dhi_wh_m2": 123.15,
+      "shipping_lux": 293.7426337,
+      "reference_lux": 313.6110251,
+      "difference_lux": -19.868391400000007,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 13.611025100000006,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 26.98973287949338,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7136,
+      "month": 10,
+      "day": 25,
+      "hour_ending": 9,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 485.36,
+      "dhi_wh_m2": 134.3,
+      "shipping_lux": 288.1821419000001,
+      "reference_lux": 323.3905827,
+      "difference_lux": -35.20844079999989,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 23.39058269999998,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 26.050796976434455,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7166,
+      "month": 10,
+      "day": 26,
+      "hour_ending": 15,
+      "source_year_label": 2014,
+      "condition": "overcast",
+      "dni_wh_m2": 91.09,
+      "dhi_wh_m2": 223.65,
+      "shipping_lux": 288.94398201,
+      "reference_lux": 300.8922159,
+      "difference_lux": -11.948233889999983,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.8922158999999965,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 39.98059160338557,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7215,
+      "month": 10,
+      "day": 28,
+      "hour_ending": 16,
+      "source_year_label": 2014,
+      "condition": "clear",
+      "dni_wh_m2": 516.13,
+      "dhi_wh_m2": 105.9,
+      "shipping_lux": 298.25148260000003,
+      "reference_lux": 310.12039980000003,
+      "difference_lux": -11.868917199999999,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 10.12039980000003,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 28.388195091692673,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7263,
+      "month": 10,
+      "day": 30,
+      "hour_ending": 16,
+      "source_year_label": 2014,
+      "condition": "mixed",
+      "dni_wh_m2": 394.04,
+      "dhi_wh_m2": 132.35,
+      "shipping_lux": 295.500539,
+      "reference_lux": 306.76765819999997,
+      "difference_lux": -11.267119199999968,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 6.767658199999971,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 27.993460744241084,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7479,
+      "month": 11,
+      "day": 8,
+      "hour_ending": 16,
+      "source_year_label": 2017,
+      "condition": "clear",
+      "dni_wh_m2": 440.54,
+      "dhi_wh_m2": 104.25,
+      "shipping_lux": 282.4911949,
+      "reference_lux": 305.10650240000007,
+      "difference_lux": -22.615307500000085,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 5.106502400000068,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 26.451690774953928,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7551,
+      "month": 11,
+      "day": 11,
+      "hour_ending": 16,
+      "source_year_label": 2017,
+      "condition": "mixed",
+      "dni_wh_m2": 332.65,
+      "dhi_wh_m2": 117.75,
+      "shipping_lux": 291.516178,
+      "reference_lux": 310.66917800000004,
+      "difference_lux": -19.15300000000002,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 10.669178000000045,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 26.028695678413403,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7809,
+      "month": 11,
+      "day": 22,
+      "hour_ending": 10,
+      "source_year_label": 2017,
+      "condition": "mixed",
+      "dni_wh_m2": 214.46,
+      "dhi_wh_m2": 160.65,
+      "shipping_lux": 299.799403,
+      "reference_lux": 301.7132531,
+      "difference_lux": -1.9138500999999906,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 1.7132530999999744,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 32.08022487223458,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7863,
+      "month": 11,
+      "day": 24,
+      "hour_ending": 16,
+      "source_year_label": 2017,
+      "condition": "clear",
+      "dni_wh_m2": 394.47,
+      "dhi_wh_m2": 101.05,
+      "shipping_lux": 289.97334120000005,
+      "reference_lux": 305.1617418,
+      "difference_lux": -15.188400599999966,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 5.161741800000016,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 24.758720914073677,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 7959,
+      "month": 11,
+      "day": 28,
+      "hour_ending": 16,
+      "source_year_label": 2017,
+      "condition": "mixed",
+      "dni_wh_m2": 281.78,
+      "dhi_wh_m2": 117.95,
+      "shipping_lux": 285.98096100000004,
+      "reference_lux": 300.7509849,
+      "difference_lux": -14.770023899999956,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 0.7509848999999917,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 24.55686562491443,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 8223,
+      "month": 12,
+      "day": 9,
+      "hour_ending": 16,
+      "source_year_label": 2007,
+      "condition": "mixed",
+      "dni_wh_m2": 279.53,
+      "dhi_wh_m2": 130.45,
+      "shipping_lux": 298.15777610000004,
+      "reference_lux": 312.7956264,
+      "difference_lux": -14.637850299999968,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 12.795626400000003,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 24.45995207688521,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    },
+    {
+      "interval_index": 8415,
+      "month": 12,
+      "day": 17,
+      "hour_ending": 16,
+      "source_year_label": 2007,
+      "condition": "clear",
+      "dni_wh_m2": 331.06,
+      "dhi_wh_m2": 99.6,
+      "shipping_lux": 290.68746170000003,
+      "reference_lux": 308.5143402,
+      "difference_lux": -17.826878499999964,
+      "shipping_above": false,
+      "reference_above": true,
+      "reference_distance_to_threshold_lux": 8.514340199999992,
+      "solar_geometry": {
+        "solar_source": true,
+        "center_altitude_deg": 24.79910730021447,
+        "all_disc_rays_miss_aperture": true,
+        "exclusion": "whole solar disc above maximum aperture altitude"
+      }
+    }
+  ],
+  "generated_solar_sources_identical_all_four_runs": true,
+  "generated_solar_source_count": 4411,
+  "zero_dni_and_dhi_checks": {
+    "shipping-A": {
+      "intervals": 4398,
+      "maximum_lux": 0.0
+    },
+    "shipping-B": {
+      "intervals": 4398,
+      "maximum_lux": 0.0
+    },
+    "reference-A": {
+      "intervals": 4398,
+      "maximum_lux": 0.0
+    },
+    "reference-B": {
+      "intervals": 4398,
+      "maximum_lux": 0.0
+    }
+  },
+  "same_sensor_lag_diagnostic": [
+    {
+      "reference_offset_hours": -24,
+      "count": 3640,
+      "mean_absolute_difference_lux": 39.452852547846724,
+      "pearson_correlation": 0.8676493206508343
+    },
+    {
+      "reference_offset_hours": -2,
+      "count": 3650,
+      "mean_absolute_difference_lux": 115.28102783152066,
+      "pearson_correlation": 0.4192498685669057
+    },
+    {
+      "reference_offset_hours": -1,
+      "count": 3650,
+      "mean_absolute_difference_lux": 62.17395694244731,
+      "pearson_correlation": 0.7804465866507793
+    },
+    {
+      "reference_offset_hours": 0,
+      "count": 3650,
+      "mean_absolute_difference_lux": 7.777978001268224,
+      "pearson_correlation": 0.996868229650753
+    },
+    {
+      "reference_offset_hours": 1,
+      "count": 3650,
+      "mean_absolute_difference_lux": 53.089418799254844,
+      "pearson_correlation": 0.9058829444812978
+    },
+    {
+      "reference_offset_hours": 2,
+      "count": 3650,
+      "mean_absolute_difference_lux": 97.18059781871023,
+      "pearson_correlation": 0.7402106398487651
+    },
+    {
+      "reference_offset_hours": 24,
+      "count": 3640,
+      "mean_absolute_difference_lux": 39.559032928558125,
+      "pearson_correlation": 0.8675026265188797
+    }
+  ],
+  "near_threshold_crossing_counts": {
+    "1": 14,
+    "2": 25,
+    "5": 56,
+    "10": 66,
+    "20": 76,
+    "50": 83
+  },
+  "A_all_occupied_hour_sign_counts": {
+    "shipping_less": 3285,
+    "equal": 0,
+    "shipping_greater": 365
+  },
+  "A_cda_difference_components": [
+    {
+      "classification": "both_below",
+      "hours": 2151,
+      "contribution_shipping_minus_reference_pp": -0.8064535514895085
+    },
+    {
+      "classification": "both_above",
+      "hours": 1416,
+      "contribution_shipping_minus_reference_pp": 0.0
+    },
+    {
+      "classification": "threshold_disagreement",
+      "hours": 83,
+      "contribution_shipping_minus_reference_pp": -0.042136185422540495
+    }
+  ],
+  "A_occupied_by_hour_ending": [
+    {
+      "hour_ending": 9,
+      "count": 365,
+      "shipping_less": 347,
+      "shipping_greater": 18,
+      "shipping_mean_lux": 222.58566255731446,
+      "reference_mean_lux": 230.98131753118327,
+      "mean_difference_lux": -8.395654973868833
+    },
+    {
+      "hour_ending": 10,
+      "count": 365,
+      "shipping_less": 267,
+      "shipping_greater": 98,
+      "shipping_mean_lux": 287.6112350146482,
+      "reference_mean_lux": 289.1980760122449,
+      "mean_difference_lux": -1.586840997596662
+    },
+    {
+      "hour_ending": 11,
+      "count": 365,
+      "shipping_less": 332,
+      "shipping_greater": 33,
+      "shipping_mean_lux": 327.81557442327886,
+      "reference_mean_lux": 335.46146730188786,
+      "mean_difference_lux": -7.645892878608999
+    },
+    {
+      "hour_ending": 12,
+      "count": 365,
+      "shipping_less": 306,
+      "shipping_greater": 59,
+      "shipping_mean_lux": 361.3002355859746,
+      "reference_mean_lux": 366.01429399148583,
+      "mean_difference_lux": -4.714058405511255
+    },
+    {
+      "hour_ending": 13,
+      "count": 365,
+      "shipping_less": 309,
+      "shipping_greater": 56,
+      "shipping_mean_lux": 373.4327059477035,
+      "reference_mean_lux": 377.19068301300894,
+      "mean_difference_lux": -3.7579770653053783
+    },
+    {
+      "hour_ending": 14,
+      "count": 365,
+      "shipping_less": 290,
+      "shipping_greater": 75,
+      "shipping_mean_lux": 359.21142922342693,
+      "reference_mean_lux": 363.00254638123675,
+      "mean_difference_lux": -3.791117157809839
+    },
+    {
+      "hour_ending": 15,
+      "count": 365,
+      "shipping_less": 357,
+      "shipping_greater": 8,
+      "shipping_mean_lux": 317.81982938814264,
+      "reference_mean_lux": 331.82439576366755,
+      "mean_difference_lux": -14.00456637552495
+    },
+    {
+      "hour_ending": 16,
+      "count": 365,
+      "shipping_less": 347,
+      "shipping_greater": 18,
+      "shipping_mean_lux": 259.3809976457214,
+      "reference_mean_lux": 268.67115342620633,
+      "mean_difference_lux": -9.290155780485016
+    },
+    {
+      "hour_ending": 17,
+      "count": 365,
+      "shipping_less": 365,
+      "shipping_greater": 0,
+      "shipping_mean_lux": 178.03831384289086,
+      "reference_mean_lux": 184.81591627180248,
+      "mean_difference_lux": -6.777602428911631
+    },
+    {
+      "hour_ending": 18,
+      "count": 365,
+      "shipping_less": 365,
+      "shipping_greater": 0,
+      "shipping_mean_lux": 80.0182810322243,
+      "reference_mean_lux": 82.37128349066481,
+      "mean_difference_lux": -2.3530024584405016
+    }
+  ],
+  "interpretation": [
+    "All 480 stored metric values independently recompute exactly from retained lux samples, and all RGB-to-lux conversions agree exactly. Sensor IDs/order, time axis, weather and occupancy match across all four runs. No metric arithmetic/serialization error was found in these retained inputs.",
+    "The 83 occupied threshold disagreements are all shipping below 300 lx and reference at or above 300 lx. This is a real failed convergence result, not a count or denominator mismatch. The unchanged 2 percentage-point limit permits 73 net hourly classification differences at this occupancy; observed 83 exceeds it by 10.",
+    "DA is discontinuous at 300 lx; crossing hours contribute only about -0.04214 percentage points to cDA, while hours below threshold in both profiles contribute about -0.80645 points. This is consistent with broader small illuminance differences plus threshold crossings, not a DA/cDA implementation contradiction.",
+    "Every A crossing solar disc misses the window by an independently conservative aperture-direction bound. A has no overhang or surrounding obstruction. Thus the crossing differences cannot be attributed to the 1024-versus-4096 direct finite-disc quadrature at this sensor; diffuse/ground transport and/or reflected-solar/profile differences remain candidates.",
+    "The profiles jointly change sky basis MF2/MF4, bounce depth 8/9, full/direct coefficient sampling 131072/262144, and finite-disc samples. Retained combined arrays do not separate those components, so sampling alone cannot be established as the cause and the reference is not treated as ground truth.",
+    "Same-hour series alignment has substantially lower error than the inspected +/-1, +/-2 and +/-24 hour shifts. This supports correct paired indexing but is not an independent validation of the solar/time model.",
+    "No engine, matrix or light transport rerun was performed. All failed crossing samples and the original failed convergence check are retained; no tolerance, occupancy or sample was changed."
+  ],
+  "model_difference": {
+    "A_overhang": null,
+    "B_overhang": {
+      "projection_m": 0.6,
+      "side_extension_m": 0.0,
+      "gap_above_window_m": 0.0,
+      "reflectance": 0.5
+    },
+    "obstruction": null,
+    "window": {
+      "width_m": 1.8,
+      "height_m": 1.5,
+      "sill_m": 0.9,
+      "center_x_m": 2.0
+    },
+    "glazing_normal_transmittance": 0.6,
+    "shipping_reference_models_identical_per_alternative": true,
+    "A_B_only_scientific_difference": "overhang; names are display metadata"
+  },
+  "diagnostic_script_sha256": "9779155083ae37ca54a7111c3baec21b1b2ae941641ec4da920fcc9fac0f3611",
+  "diagnostic_script_location": "%LOCALAPPDATA%/GreenLens/verification/annual-da-diagnostic/inspect-retained.py",
+  "diagnostic_runtime": "Python standard library used only for this independent retained-data analysis; not a GreenLens runtime requirement.",
+  "conclusions_provisional": true,
+  "release_acceptance_passed": false,
+  "A_crossings_by_season": [
+    {
+      "season": "DJF",
+      "months": [
+        12,
+        1,
+        2
+      ],
+      "count": 17
+    },
+    {
+      "season": "MAM",
+      "months": [
+        3,
+        4,
+        5
+      ],
+      "count": 19
+    },
+    {
+      "season": "JJA",
+      "months": [
+        6,
+        7,
+        8
+      ],
+      "count": 27
+    },
+    {
+      "season": "SON",
+      "months": [
+        9,
+        10,
+        11
+      ],
+      "count": 20
+    }
+  ],
+  "aperture_maximum_altitude_deg": 16.822340439433386
+}

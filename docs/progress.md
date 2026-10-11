@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — independent primary-ray aperture investigation
+
+- Verified an independent aperture-area integral for both alternatives, all24 sensors and uniform/overcast skies. Exact horizontal integration and split vertical Gauss–Legendre orders16/32/64 converged within2.79e-14 relative change. The unchanged max(5lx,5%) diagnostic band exposed28/96 failures in the128×128 midpoint hemisphere rule;256² and512² each passed96 cases. Every failure remains retained.
+- A separately predeclared, unscrambled Hammersley cosine rule at16,384/65,536/262,144 primaries passed all288 corresponding checks, with maximum relative errors2.7463%/0.7041%/0.2811%. Independent source review and root arithmetic/input/source-hash checks passed. `v0.3-aperture-primary-quadrature.md` and its compact evidence retain all576 comparisons and exact synthetic inputs. This is limited black, unglazed direct-aperture validation, not acceptance of reflected transport, solar treatment, annual results or a production profile. The application still requires no Python runtime.
+- The controlled native reference ladder and higher reflected-light candidate remain in progress. A reproduced research-supervisor defect could wait indefinitely when a terminated parent left a descendant holding a pipe; a separate bounded Windows Job remedy is being tested before further research launches. Existing running processes and frozen evidence are unchanged.
+
 ## 2026-10-11 — installed completed-evidence recovery and cold portable export
 
 - Verified candidate04's real static completed-run conflict: an external manifest revision during `rtrace` prevented collection without overwriting the external bytes. Native-close Save also failed safely, retaining the window and pending evidence. Reload and reconcile retained the external edit and completed run; native Save As copied all157 compact run files (32,361,750bytes) unchanged. Cold reopen and selected three-run export succeeded with the original project and new static scratch paths unavailable. All ZIP seals and shared structural limits passed; fresh mixed-package replay is queued. See the candidate04 recovery record and native ledger for exact scope and identities.

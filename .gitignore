@@ -5,6 +5,8 @@
 **/node_modules/
 **/dist/
 **/.vite/
+**/__pycache__/
+*.py[cod]
 *.log
 *.oct
 *.amb

@@ -1,0 +1,39 @@
+{
+  "schema_version": "greenlens.model.v0.1",
+  "name": "Synthetic room — Alternative B",
+  "room": {
+    "width_m": 4.0,
+    "depth_m": 6.0,
+    "height_m": 3.0,
+    "rotation_deg": 0.0
+  },
+  "window": {
+    "width_m": 1.8,
+    "height_m": 1.5,
+    "sill_m": 0.9,
+    "center_x_m": 2.0
+  },
+  "materials": {
+    "ceiling_reflectance": 0.8,
+    "wall_reflectance": 0.5,
+    "floor_reflectance": 0.2,
+    "visible_transmittance": 0.6
+  },
+  "overhang": {
+    "projection_m": 0.6,
+    "side_extension_m": 0.0,
+    "gap_above_window_m": 0.0,
+    "reflectance": 0.5
+  },
+  "obstruction": null,
+  "sensors": {
+    "workplane_height_m": 0.8,
+    "requested_spacing_m": 1.0,
+    "wall_inset_m": 0.25
+  },
+  "sky": {
+    "exterior_horizontal_illuminance_lux": 10000.0,
+    "ground_reflectance": 0.2
+  },
+  "metadata": null
+}

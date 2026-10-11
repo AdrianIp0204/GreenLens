@@ -1,0 +1,336 @@
+{
+  "schema_version": "greenlens.hammersley-scheduling-cancellation-audit.v1",
+  "recorded_utc": "2026-10-11T13:12:02.6710533Z",
+  "scope": "Two supplementary MF2 higher Hammersley research experiments; completed A/B candidate transport evidence is unchanged",
+  "reason": "Free one production slot and reduce load on six ongoing controlled-reference workers",
+  "scientific_interpretation": "Scheduling cancellation is neither a numerical pass nor a numerical failure. All partial outputs are retained and excluded from qualification. No reference inputs, settings, deadlines, or running workers were changed.",
+  "concurrency_before": 8,
+  "concurrency_after": 6,
+  "capacity_after": "One slot reserved for production; the second released slot held idle",
+  "closed_bytes_scope": "Sum of the listed files after all owned harness/engine processes exited; not a peak-memory or in-flight scratch measurement",
+  "all_closed_member_hashes_rechecked": true,
+  "completed_results": 0,
+  "qualified": false,
+  "runs": [
+    {
+      "alternative": "A",
+      "status": "scheduling_cancelled_incomplete",
+      "raw_cancellation_record_sha256": "319f16cc41d1badf1791d9c909d5a4f1403d93364e9e86e7fb39975643f5fb54",
+      "requested_utc": "2026-10-11T13:10:12.8595555Z",
+      "finished_utc": "2026-10-11T13:10:16.7966811Z",
+      "experiment": "MF2 higher Hammersley research N65536/ad128/ab8/F4096",
+      "parent_command_sha256": "43beb2ad5c351f0f533d431f14ab177d220d6bbdab7ec17e9d8d1d7a0330db4a",
+      "child_command_sha256": "b66d13a1fa5c981343301a34dc4f9e7c2c2f9224a3d81ab62d71091db0f2f42f",
+      "terminated": true,
+      "parent_exit_confirmed": true,
+      "child_exit_confirmed": true,
+      "native_process_result": "No successful full-coefficient exit; harness and owned child tree were intentionally terminated",
+      "process_snapshots": [
+        {
+          "source": "declaration.json",
+          "bytes": 6975,
+          "snapshot": "scheduling-cancel-original-declaration.json",
+          "sha256": "2d519ab601f6e25b519677c9368e8b71d9f8a5e29e97bb55f52a8faf9cb9f76c"
+        },
+        {
+          "source": "processes.json",
+          "bytes": 1905,
+          "snapshot": "scheduling-cancel-original-processes.json",
+          "sha256": "faa88abc37314e50918365c13c54f5bf240f326e73e5036494d2ea8a577dabe7"
+        }
+      ],
+      "closed_file_count": 25,
+      "closed_bytes": 95598536,
+      "closed_files": [
+        {
+          "path": "coefficient.oct",
+          "bytes": 2071,
+          "sha256": "53a43d7e3d2cdd0a89c4daed0458a94cb5c4746e5744ad3488de0e7f85fc21b3"
+        },
+        {
+          "path": "declaration.json",
+          "bytes": 6975,
+          "sha256": "2d519ab601f6e25b519677c9368e8b71d9f8a5e29e97bb55f52a8faf9cb9f76c"
+        },
+        {
+          "path": "diffuse-selected.mtx",
+          "bytes": 99099,
+          "sha256": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa"
+        },
+        {
+          "path": "diffuse-year.mtx",
+          "bytes": 56693520,
+          "sha256": "6674542db4246ab8198f134efcb2d31c62abd86f01dc42cc8bb8df29482d4a8e"
+        },
+        {
+          "path": "finite-kernel.cs",
+          "bytes": 3824,
+          "sha256": "2ad71fb2d54b64c984ccc669a0507dc892e5d97e7d8c14e0babbcb00162abbf7"
+        },
+        {
+          "path": "full-coefficients.mtx",
+          "bytes": 90126,
+          "sha256": "4100bd733752a62606a8907aaa4171b5754591f1924ec00e7a734ad385d81883"
+        },
+        {
+          "path": "harness-source.ps1",
+          "bytes": 15181,
+          "sha256": "1d519c54b493c80e77536db8ea86a79cc594e9120674df398ccd8694135837d2"
+        },
+        {
+          "path": "model.json",
+          "bytes": 711,
+          "sha256": "583e519dd228b99f20505eb436759086b2884689b902fe20a43f03a35d6e3bdc"
+        },
+        {
+          "path": "native-process-source.cs",
+          "bytes": 21240,
+          "sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b"
+        },
+        {
+          "path": "primary-source.cs",
+          "bytes": 4732,
+          "sha256": "49ccb427479ee2951c1b94753dafecd318b519511c3aca7c6b629eed695045cd"
+        },
+        {
+          "path": "process-source.ps1",
+          "bytes": 9572,
+          "sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 1905,
+          "sha256": "faa88abc37314e50918365c13c54f5bf240f326e73e5036494d2ea8a577dabe7"
+        },
+        {
+          "path": "scaled-receiver.rad",
+          "bytes": 76,
+          "sha256": "7c747c899f317baebf482322f684cdef4df0e556710332afc1b4aa72d0fe7150"
+        },
+        {
+          "path": "scene.rad",
+          "bytes": 1221,
+          "sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57"
+        },
+        {
+          "path": "scheduling-cancel-original-declaration.json",
+          "bytes": 6975,
+          "sha256": "2d519ab601f6e25b519677c9368e8b71d9f8a5e29e97bb55f52a8faf9cb9f76c"
+        },
+        {
+          "path": "scheduling-cancel-original-processes.json",
+          "bytes": 1905,
+          "sha256": "faa88abc37314e50918365c13c54f5bf240f326e73e5036494d2ea8a577dabe7"
+        },
+        {
+          "path": "sensors.pts",
+          "bytes": 752,
+          "sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446"
+        },
+        {
+          "path": "solar-selected.mtx",
+          "bytes": 42678,
+          "sha256": "b0ed2898f67187c5e0079c51e685086672b79db9bad03e579c85acdbb1a10753"
+        },
+        {
+          "path": "solar-year.mtx",
+          "bytes": 35736077,
+          "sha256": "70b9560f9f461bf1db26985f3b3df894546b92c27bc94b623a9d0f6a84c416c4"
+        },
+        {
+          "path": "source-recipe.json",
+          "bytes": 373711,
+          "sha256": "52d948d817dee6bd27127e2f8eabbcfb39a07c189ce5e65530f0d66673aea553"
+        },
+        {
+          "path": "study.json",
+          "bytes": 695,
+          "sha256": "5a42bfc44284e3dfe4d8e6cdb4380ff7c1409e9d898fc27a3c941a59d84c88e4"
+        },
+        {
+          "path": "suns.rad",
+          "bytes": 620345,
+          "sha256": "168c3a9374263b0694df8e27ea7695eaf3e220335ab200cd87a72b305e0868d3"
+        },
+        {
+          "path": "transmission.oct",
+          "bytes": 2069,
+          "sha256": "9021d887db2dd88f1fccbea61e33ea1e11bf3936948fceffbba29db2fc0bbca4"
+        },
+        {
+          "path": "unit-receiver.rad",
+          "bytes": 70,
+          "sha256": "82c59864ab1ffaed4df44a6ada9ddb6e8c4fd9e73d63dd642aa8983bfb3cfe23"
+        },
+        {
+          "path": "weather.epw",
+          "bytes": 1863006,
+          "sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed"
+        }
+      ],
+      "partial_output_policy": "All retained output is partial and excluded from results or reference qualification. Future higher work starts fresh.",
+      "completed_result": false,
+      "qualified": false
+    },
+    {
+      "alternative": "B",
+      "status": "scheduling_cancelled_incomplete",
+      "raw_cancellation_record_sha256": "999999592d050388f6205ef94843a846b3e67fc891a41475b312642327c70b60",
+      "requested_utc": "2026-10-11T13:10:17.0368307Z",
+      "finished_utc": "2026-10-11T13:10:19.1894332Z",
+      "experiment": "MF2 higher Hammersley research N65536/ad128/ab8/F4096",
+      "parent_command_sha256": "6981b8e85677556061504fae220c8f23aa60a564d427e045e8942f3e32cea4a9",
+      "child_command_sha256": "b66d13a1fa5c981343301a34dc4f9e7c2c2f9224a3d81ab62d71091db0f2f42f",
+      "terminated": true,
+      "parent_exit_confirmed": true,
+      "child_exit_confirmed": true,
+      "native_process_result": "No successful full-coefficient exit; harness and owned child tree were intentionally terminated",
+      "process_snapshots": [
+        {
+          "source": "declaration.json",
+          "bytes": 7099,
+          "snapshot": "scheduling-cancel-original-declaration.json",
+          "sha256": "0517b7e6b00189e12d31a7821dee94b83a4890187cc641bce8bea4c7a8399c7f"
+        },
+        {
+          "source": "processes.json",
+          "bytes": 1905,
+          "snapshot": "scheduling-cancel-original-processes.json",
+          "sha256": "81bda84dfa16b6dc26b3af0428c46e564e3513f0700bf8d79da154b3f8363030"
+        }
+      ],
+      "closed_file_count": 25,
+      "closed_bytes": 95599259,
+      "closed_files": [
+        {
+          "path": "coefficient.oct",
+          "bytes": 2195,
+          "sha256": "733bb179ce0f2b0743a1193f9594cff51e8a80c4df6a782030578254b479f2ad"
+        },
+        {
+          "path": "declaration.json",
+          "bytes": 7099,
+          "sha256": "0517b7e6b00189e12d31a7821dee94b83a4890187cc641bce8bea4c7a8399c7f"
+        },
+        {
+          "path": "diffuse-selected.mtx",
+          "bytes": 99099,
+          "sha256": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa"
+        },
+        {
+          "path": "diffuse-year.mtx",
+          "bytes": 56693520,
+          "sha256": "6674542db4246ab8198f134efcb2d31c62abd86f01dc42cc8bb8df29482d4a8e"
+        },
+        {
+          "path": "finite-kernel.cs",
+          "bytes": 3824,
+          "sha256": "2ad71fb2d54b64c984ccc669a0507dc892e5d97e7d8c14e0babbcb00162abbf7"
+        },
+        {
+          "path": "full-coefficients.mtx",
+          "bytes": 90126,
+          "sha256": "2258ffba53339844b845655f29a90ec6446e201caf38c4ddb96ed7a1f20c9165"
+        },
+        {
+          "path": "harness-source.ps1",
+          "bytes": 15181,
+          "sha256": "1d519c54b493c80e77536db8ea86a79cc594e9120674df398ccd8694135837d2"
+        },
+        {
+          "path": "model.json",
+          "bytes": 820,
+          "sha256": "890e5761edace64268f4fb85c832f6ec829a3545441e864412994c803aaf8ea2"
+        },
+        {
+          "path": "native-process-source.cs",
+          "bytes": 21240,
+          "sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b"
+        },
+        {
+          "path": "primary-source.cs",
+          "bytes": 4732,
+          "sha256": "49ccb427479ee2951c1b94753dafecd318b519511c3aca7c6b629eed695045cd"
+        },
+        {
+          "path": "process-source.ps1",
+          "bytes": 9572,
+          "sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00"
+        },
+        {
+          "path": "processes.json",
+          "bytes": 1905,
+          "sha256": "81bda84dfa16b6dc26b3af0428c46e564e3513f0700bf8d79da154b3f8363030"
+        },
+        {
+          "path": "scaled-receiver.rad",
+          "bytes": 76,
+          "sha256": "7c747c899f317baebf482322f684cdef4df0e556710332afc1b4aa72d0fe7150"
+        },
+        {
+          "path": "scene.rad",
+          "bytes": 1352,
+          "sha256": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8"
+        },
+        {
+          "path": "scheduling-cancel-original-declaration.json",
+          "bytes": 7099,
+          "sha256": "0517b7e6b00189e12d31a7821dee94b83a4890187cc641bce8bea4c7a8399c7f"
+        },
+        {
+          "path": "scheduling-cancel-original-processes.json",
+          "bytes": 1905,
+          "sha256": "81bda84dfa16b6dc26b3af0428c46e564e3513f0700bf8d79da154b3f8363030"
+        },
+        {
+          "path": "sensors.pts",
+          "bytes": 752,
+          "sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446"
+        },
+        {
+          "path": "solar-selected.mtx",
+          "bytes": 42678,
+          "sha256": "b0ed2898f67187c5e0079c51e685086672b79db9bad03e579c85acdbb1a10753"
+        },
+        {
+          "path": "solar-year.mtx",
+          "bytes": 35736077,
+          "sha256": "70b9560f9f461bf1db26985f3b3df894546b92c27bc94b623a9d0f6a84c416c4"
+        },
+        {
+          "path": "source-recipe.json",
+          "bytes": 373698,
+          "sha256": "a8492af5539ad6686a39dd186c09837beb007c1d92f15af8743fb78e8d171811"
+        },
+        {
+          "path": "study.json",
+          "bytes": 695,
+          "sha256": "5a42bfc44284e3dfe4d8e6cdb4380ff7c1409e9d898fc27a3c941a59d84c88e4"
+        },
+        {
+          "path": "suns.rad",
+          "bytes": 620345,
+          "sha256": "168c3a9374263b0694df8e27ea7695eaf3e220335ab200cd87a72b305e0868d3"
+        },
+        {
+          "path": "transmission.oct",
+          "bytes": 2193,
+          "sha256": "c3eeceaee92c2a85cc23c5fa9996c4a0c76c3a3fb6d65b6d3ad63daf31f7a489"
+        },
+        {
+          "path": "unit-receiver.rad",
+          "bytes": 70,
+          "sha256": "82c59864ab1ffaed4df44a6ada9ddb6e8c4fd9e73d63dd642aa8983bfb3cfe23"
+        },
+        {
+          "path": "weather.epw",
+          "bytes": 1863006,
+          "sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed"
+        }
+      ],
+      "partial_output_policy": "All retained output is partial and excluded from results or reference qualification. Future higher work starts fresh.",
+      "completed_result": false,
+      "qualified": false
+    }
+  ]
+}

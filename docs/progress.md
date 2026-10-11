@@ -1,5 +1,10 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — resource-aware investigation scheduling
+
+- Two supplementary MF2 higher-sampling A/B research jobs were explicitly cancelled during their first coefficient stages after exact process ownership checks. Both owned trees exited; all 50 closed files, source/process snapshots and cancellation records were retained and rechecked. Their partial matrices are excluded from results and qualification. The completed lower-sampling candidate arrays remain unchanged.
+- Six controlled-reference jobs kept their original inputs, settings and fixed deadlines. One released slot is reserved for integrated production verification and the other is held idle. The winter references are approaching their two-hour limits with incomplete output; an actual timeout, if reached, must remain a failed resource observation. Future fresh shards will use lower concurrency. See `evidence/v0.3-engine/hammersley-higher-scheduling-cancellation.json`.
+
 ## 2026-10-11 — bounded reference scheduling
 
 - The scheduling watcher can now stop its exactly identified worker after two finalized winter cases as well as the original three-case default. PID, creation time, command hash, declared case order and retained report bytes are checked. Any next-case work racing with that boundary remains explicitly partial/cancelled and must run again in a fresh shard; no numerical result is inferred from scheduling.

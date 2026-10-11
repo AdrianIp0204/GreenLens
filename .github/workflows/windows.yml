@@ -87,6 +87,10 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Scientific acceptance failed' }
       - name: Required independent native matrix arithmetic
         run: ./scripts/test-matrix-multiplication.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'matrix arithmetic 空間')
+      - name: Required native sky normalization and ordering
+        run: |
+          pwsh -NoProfile -File scripts/test-sky-normalization.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'sky normalization 空間') 2>&1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'sky-normalization-step.txt')
+          if ($LASTEXITCODE -ne 0) { throw 'Required sky normalization, ordering or fault-injection verification failed' }
       - name: Required native solar-direction and clock fixture
         run: ./scripts/annual-solar-directions.ps1 -SolarOutputDirectory (Join-Path $env:CI_EVIDENCE 'solar-directions 空間')
       - name: Real CLI A/B, portable save/export and replay
@@ -154,7 +158,8 @@ jobs:
           [long]$total=0; $count=0
           foreach ($index in 0..($roots.Count-1)) {
             if (!(Test-Path -LiteralPath $roots[$index])) { continue }
-            foreach ($file in Get-ChildItem -LiteralPath $roots[$index] -File -Recurse) {
+            # Preserve compact summaries first, including sky failures, before larger diagnostics consume the cap.
+            foreach ($file in Get-ChildItem -LiteralPath $roots[$index] -File -Recurse | Sort-Object @{Expression={if ($_.Extension -eq '.json') {0} else {1}}},FullName) {
               $relative = [IO.Path]::GetRelativePath($roots[$index],$file.FullName)
               if ($relative -match '(^|[\\/])(target|Static-only engine|unavailable-scratch-)[^\\/]*[\\/]' -or $file.Extension -notin @('.json','.txt','.csv','.rgb','.rad','.pts','.epw')) { continue }
               if ($file.Length -gt 8MB -or $total+$file.Length -gt 128MB -or $count -ge 5000) { $omitted.Add(@{file="$index/$relative";bytes=$file.Length;reason='bounded diagnostic upload'}); continue }

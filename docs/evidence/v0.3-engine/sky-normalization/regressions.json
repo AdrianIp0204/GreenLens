@@ -1,0 +1,26 @@
+{
+  "scope": "Required native sky-only observations plus deliberately perturbed/malformed checks; no annual transport or installed desktop acceptance.",
+  "passed": true,
+  "native_report_sha256": "2d9bf353e79df8ceea6c27097799e8bfc3d619fb8c7c4c02587b9d96c19d0c35",
+  "schema_version": "greenlens.sky-normalization-regressions.v1",
+  "native_report_relative": "native sky 空間/sky-normalization.json",
+  "checks": [
+    "MF2 patch partition integrates pi and unequal-channel uniform field",
+    "MF2 ground contributes once to downward and zero to upward sensor",
+    "MF4 patch partition integrates pi and unequal-channel uniform field",
+    "MF4 ground contributes once to downward and zero to upward sensor",
+    "Green-only irradiance uses the pinned weighted RGB convention",
+    "Two-percent normalization perturbation fails fixed one-percent limit",
+    "Lux-preserving RGB perturbation is still rejected per channel",
+    "Gray shortcut rejects unequal RGB data",
+    "Truncated patch input rejects",
+    "Nonfinite channel rejects",
+    "Negative channel rejects",
+    "Hand-enumerated MF2 north/east/south/west/zenith/ground observations agree",
+    "One-bin north perturbation fails ordering",
+    "Unsupported MF3 rejects",
+    "Pinned native sky suite passes every one of the 23 predeclared observations",
+    "Five-percent perturbation of actual native uniform output fails",
+    "Missing native engine fails clearly rather than skipping"
+  ]
+}

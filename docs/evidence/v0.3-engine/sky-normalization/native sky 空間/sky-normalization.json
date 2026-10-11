@@ -1,0 +1,988 @@
+{
+  "schema_version": "greenlens.annual-sky-normalization.v1",
+  "started_utc": "2026-10-11T08:23:47.8046516Z",
+  "passed": true,
+  "scope": "Sky-only analytical projection and native piecewise-sky integration, plus directional patch order. No explicit solar disc, room transport, full-year convergence, matched-room or desktop acceptance.",
+  "tolerance": "Each RGB irradiance channel and converted illuminance within 1% of the independently integrated identical sky; cardinal RGB absolute error <=1e-6.",
+  "bases": [
+    2,
+    4
+  ],
+  "real_interval_index": 1908,
+  "real_context_indices": [
+    1906,
+    1907,
+    1908
+  ],
+  "units": {
+    "rtrace_I": "visible RGB irradiance W/m2",
+    "matrix": "visible RGB radiance W/(sr m2)",
+    "illuminance": "lx using 179*(0.265074126R+0.670114631G+0.064811243B)"
+  },
+  "original_fixture": "Unequal-channel uniform hemisphere, bin-coded sphere, and three original non-climatic EPW records.",
+  "verification_scripts": [
+    {
+      "sha256": "441764fec8642b83ba4b6740deb1a8c8d309139cb8f2938dae38aef36a0a9226",
+      "file": "annual-sky-normalization.ps1"
+    },
+    {
+      "sha256": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+      "file": "annual-feasibility.ps1"
+    },
+    {
+      "sha256": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+      "file": "verify-matrix-multiplication.ps1"
+    }
+  ],
+  "commands_record": "processes.json",
+  "checks": [
+    {
+      "channels": [
+        {
+          "allowed_error": 0.007853981633974483,
+          "passed": true,
+          "channel": "R",
+          "actual": 0.7849739,
+          "absolute_error": 0.0004242633974482768,
+          "expected": 0.7853981633974483
+        },
+        {
+          "allowed_error": 0.031415926535897934,
+          "passed": true,
+          "channel": "G",
+          "actual": 3.139895,
+          "absolute_error": 0.0016976535897930134,
+          "expected": 3.141592653589793
+        },
+        {
+          "allowed_error": 0.06283185307179587,
+          "passed": true,
+          "channel": "B",
+          "actual": 6.279791,
+          "absolute_error": 0.003394307179585887,
+          "expected": 6.283185307179586
+        }
+      ],
+      "expected_lux": 486.9940200097808,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "Unequal RGB uniform upper hemisphere E=pi*L",
+      "relative_lux_error": 0.0005403414842267236,
+      "expected_rgb_irradiance": [
+        0.7853981633974483,
+        3.141592653589793,
+        6.283185307179586
+      ],
+      "actual_lux": 486.7308769381992,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        0.7849739,
+        3.139895,
+        6.279791
+      ]
+    },
+    {
+      "name": "MF2 independent projected solid-angle partition",
+      "absolute_tolerance": 1E-12,
+      "passed": true,
+      "actual": 3.1415926535898135,
+      "kind": "analytical_partition",
+      "expected": 3.141592653589793
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 2.262803452796396,
+          "passed": true,
+          "channel": "R",
+          "actual": 226.3375,
+          "absolute_error": 0.05715472036044389,
+          "expected": 226.28034527963956
+        },
+        {
+          "allowed_error": 2.262803452796396,
+          "passed": true,
+          "channel": "G",
+          "actual": 226.3375,
+          "absolute_error": 0.05715472036044389,
+          "expected": 226.28034527963956
+        },
+        {
+          "allowed_error": 2.262803452796396,
+          "passed": true,
+          "channel": "B",
+          "actual": 226.3375,
+          "absolute_error": 0.05715472036044389,
+          "expected": 226.28034527963956
+        }
+      ],
+      "expected_lux": 40504.18180505548,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "real-mf2 exact upper patch integral",
+      "relative_lux_error": 0.00025258367132969823,
+      "expected_rgb_irradiance": [
+        226.28034527963956,
+        226.28034527963956,
+        226.28034527963956
+      ],
+      "actual_lux": 40514.412500000006,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        226.3375,
+        226.3375,
+        226.3375
+      ]
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 0.7225663103256524,
+          "passed": true,
+          "channel": "R",
+          "actual": 72.16576,
+          "absolute_error": 0.09087103256523221,
+          "expected": 72.25663103256524
+        },
+        {
+          "allowed_error": 0.7225663103256524,
+          "passed": true,
+          "channel": "G",
+          "actual": 72.16576,
+          "absolute_error": 0.09087103256523221,
+          "expected": 72.25663103256524
+        },
+        {
+          "allowed_error": 0.7225663103256524,
+          "passed": true,
+          "channel": "B",
+          "actual": 72.16576,
+          "absolute_error": 0.09087103256523221,
+          "expected": 72.25663103256524
+        }
+      ],
+      "expected_lux": 12933.936954829178,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "real-mf2 exact lower-ground integral",
+      "relative_lux_error": 0.0012576151318799934,
+      "expected_rgb_irradiance": [
+        72.25663103256524,
+        72.25663103256524,
+        72.25663103256524
+      ],
+      "actual_lux": 12917.671040000003,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        72.16576,
+        72.16576,
+        72.16576
+      ]
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 1.0602148497781734,
+          "passed": true,
+          "channel": "R",
+          "actual": 105.9904,
+          "absolute_error": 0.03108497781734343,
+          "expected": 106.02148497781734
+        },
+        {
+          "allowed_error": 1.1090049807434634,
+          "passed": true,
+          "channel": "G",
+          "actual": 110.8393,
+          "absolute_error": 0.061198074346336284,
+          "expected": 110.90049807434633
+        },
+        {
+          "allowed_error": 1.23470972002072,
+          "passed": true,
+          "channel": "B",
+          "actual": 123.4126,
+          "absolute_error": 0.05837200207199089,
+          "expected": 123.47097200207199
+        }
+      ],
+      "expected_lux": 19765.521170848948,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "synthetic-mf2 exact upper patch integral",
+      "relative_lux_error": 0.00048027345547095097,
+      "expected_rgb_irradiance": [
+        106.02148497781734,
+        110.90049807434633,
+        123.47097200207199
+      ],
+      "actual_lux": 19756.02831569704,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        105.9904,
+        110.8393,
+        123.4126
+      ]
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 0.5749114556069322,
+          "passed": true,
+          "channel": "R",
+          "actual": 57.27805,
+          "absolute_error": 0.213095560693219,
+          "expected": 57.49114556069322
+        },
+        {
+          "allowed_error": 1.1498229112138645,
+          "passed": true,
+          "channel": "G",
+          "actual": 114.5561,
+          "absolute_error": 0.426191121386438,
+          "expected": 114.98229112138644
+        },
+        {
+          "allowed_error": 1.7215927741672064,
+          "passed": true,
+          "channel": "B",
+          "actual": 172.0185,
+          "absolute_error": 0.14077741672065258,
+          "expected": 172.15927741672064
+        }
+      ],
+      "expected_lux": 18517.297164637526,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "synthetic-mf2 exact lower-ground integral",
+      "relative_lux_error": 0.0033949906263537693,
+      "expected_rgb_irradiance": [
+        57.49114556069322,
+        114.98229112138644,
+        172.15927741672064
+      ],
+      "actual_lux": 18454.431114338175,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        57.27805,
+        114.5561,
+        172.0185
+      ]
+    },
+    {
+      "name": "MF2 north patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        2.0,
+        9.0,
+        14.0
+      ],
+      "expected_rgb_radiance": [
+        2.0,
+        9.0,
+        14.0
+      ],
+      "expected_bin": 1,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF2 east patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        17.0,
+        39.0,
+        59.0
+      ],
+      "expected_rgb_radiance": [
+        17.0,
+        39.0,
+        59.0
+      ],
+      "expected_bin": 16,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF2 south patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        32.0,
+        69.0,
+        104.0
+      ],
+      "expected_rgb_radiance": [
+        32.0,
+        69.0,
+        104.0
+      ],
+      "expected_bin": 31,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF2 west patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        47.0,
+        99.0,
+        149.0
+      ],
+      "expected_rgb_radiance": [
+        47.0,
+        99.0,
+        149.0
+      ],
+      "expected_bin": 46,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF2 zenith patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        578.0,
+        1161.0,
+        1742.0
+      ],
+      "expected_rgb_radiance": [
+        578.0,
+        1161.0,
+        1742.0
+      ],
+      "expected_bin": 577,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF2 ground patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        1.0,
+        7.0,
+        11.0
+      ],
+      "expected_rgb_radiance": [
+        1.0,
+        7.0,
+        11.0
+      ],
+      "expected_bin": 0,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF4 independent projected solid-angle partition",
+      "absolute_tolerance": 1E-12,
+      "passed": true,
+      "actual": 3.141592653589841,
+      "kind": "analytical_partition",
+      "expected": 3.141592653589793
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 2.264956122243535,
+          "passed": true,
+          "channel": "R",
+          "actual": 226.4419,
+          "absolute_error": 0.053712224353489546,
+          "expected": 226.4956122243535
+        },
+        {
+          "allowed_error": 2.264956122243535,
+          "passed": true,
+          "channel": "G",
+          "actual": 226.4419,
+          "absolute_error": 0.053712224353489546,
+          "expected": 226.4956122243535
+        },
+        {
+          "allowed_error": 2.264956122243535,
+          "passed": true,
+          "channel": "B",
+          "actual": 226.4419,
+          "absolute_error": 0.053712224353489546,
+          "expected": 226.4956122243535
+        }
+      ],
+      "expected_lux": 40542.71458815927,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "real-mf4 exact upper patch integral",
+      "relative_lux_error": 0.00023714465735547794,
+      "expected_rgb_irradiance": [
+        226.4956122243535,
+        226.4956122243535,
+        226.4956122243535
+      ],
+      "actual_lux": 40533.1001,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        226.4419,
+        226.4419,
+        226.4419
+      ]
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 0.7225663103256524,
+          "passed": true,
+          "channel": "R",
+          "actual": 72.16576,
+          "absolute_error": 0.09087103256523221,
+          "expected": 72.25663103256524
+        },
+        {
+          "allowed_error": 0.7225663103256524,
+          "passed": true,
+          "channel": "G",
+          "actual": 72.16576,
+          "absolute_error": 0.09087103256523221,
+          "expected": 72.25663103256524
+        },
+        {
+          "allowed_error": 0.7225663103256524,
+          "passed": true,
+          "channel": "B",
+          "actual": 72.16576,
+          "absolute_error": 0.09087103256523221,
+          "expected": 72.25663103256524
+        }
+      ],
+      "expected_lux": 12933.936954829178,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "real-mf4 exact lower-ground integral",
+      "relative_lux_error": 0.0012576151318799934,
+      "expected_rgb_irradiance": [
+        72.25663103256524,
+        72.25663103256524,
+        72.25663103256524
+      ],
+      "actual_lux": 12917.671040000003,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        72.16576,
+        72.16576,
+        72.16576
+      ]
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 1.061290155866693,
+          "passed": true,
+          "channel": "R",
+          "actual": 106.022,
+          "absolute_error": 0.10701558666929145,
+          "expected": 106.1290155866693
+        },
+        {
+          "allowed_error": 1.1098991989994154,
+          "passed": true,
+          "channel": "G",
+          "actual": 110.8894,
+          "absolute_error": 0.10051989994154553,
+          "expected": 110.98991989994154
+        },
+        {
+          "allowed_error": 1.2359121676197256,
+          "passed": true,
+          "channel": "B",
+          "actual": 123.4953,
+          "absolute_error": 0.09591676197254628,
+          "expected": 123.59121676197255
+        }
+      ],
+      "expected_lux": 19782.744491452297,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "synthetic-mf4 exact upper patch integral",
+      "relative_lux_error": 0.0009224134297437175,
+      "expected_rgb_irradiance": [
+        106.1290155866693,
+        110.98991989994154,
+        123.59121676197255
+      ],
+      "actual_lux": 19764.496622256192,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        106.022,
+        110.8894,
+        123.4953
+      ]
+    },
+    {
+      "channels": [
+        {
+          "allowed_error": 0.5749114556069322,
+          "passed": true,
+          "channel": "R",
+          "actual": 57.27805,
+          "absolute_error": 0.213095560693219,
+          "expected": 57.49114556069322
+        },
+        {
+          "allowed_error": 1.1498229112138645,
+          "passed": true,
+          "channel": "G",
+          "actual": 114.5561,
+          "absolute_error": 0.426191121386438,
+          "expected": 114.98229112138644
+        },
+        {
+          "allowed_error": 1.7215927741672064,
+          "passed": true,
+          "channel": "B",
+          "actual": 172.0185,
+          "absolute_error": 0.14077741672065258,
+          "expected": 172.15927741672064
+        }
+      ],
+      "expected_lux": 18517.297164637526,
+      "relative_tolerance": 0.01,
+      "kind": "projected_hemisphere_integral",
+      "name": "synthetic-mf4 exact lower-ground integral",
+      "relative_lux_error": 0.0033949906263537693,
+      "expected_rgb_irradiance": [
+        57.49114556069322,
+        114.98229112138644,
+        172.15927741672064
+      ],
+      "actual_lux": 18454.431114338175,
+      "passed": true,
+      "actual_rgb_irradiance": [
+        57.27805,
+        114.5561,
+        172.0185
+      ]
+    },
+    {
+      "name": "MF4 north patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        2.0,
+        9.0,
+        14.0
+      ],
+      "expected_rgb_radiance": [
+        2.0,
+        9.0,
+        14.0
+      ],
+      "expected_bin": 1,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF4 east patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        32.0,
+        69.0,
+        104.0
+      ],
+      "expected_rgb_radiance": [
+        32.0,
+        69.0,
+        104.0
+      ],
+      "expected_bin": 31,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF4 south patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        62.0,
+        129.0,
+        194.0
+      ],
+      "expected_rgb_radiance": [
+        62.0,
+        129.0,
+        194.0
+      ],
+      "expected_bin": 61,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF4 west patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        92.0,
+        189.0,
+        284.0
+      ],
+      "expected_rgb_radiance": [
+        92.0,
+        189.0,
+        284.0
+      ],
+      "expected_bin": 91,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF4 zenith patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        2306.0,
+        4617.0,
+        6926.0
+      ],
+      "expected_rgb_radiance": [
+        2306.0,
+        4617.0,
+        6926.0
+      ],
+      "expected_bin": 2305,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    },
+    {
+      "name": "MF4 ground patch ordering",
+      "absolute_rgb_tolerance": 1E-06,
+      "actual_rgb_radiance": [
+        1.0,
+        7.0,
+        11.0
+      ],
+      "expected_rgb_radiance": [
+        1.0,
+        7.0,
+        11.0
+      ],
+      "expected_bin": 0,
+      "kind": "cardinal_patch_order",
+      "passed": true
+    }
+  ],
+  "engine": {
+    "tag": "rad6R0P2",
+    "identities": {
+      "gendaymtx.exe": "07a022f4569c7815bba868148add3706aa0e120622f0e8e7c7029e7947af527d",
+      "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+      "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+      "rayinit.cal": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+      "reinhart.cal": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934"
+    },
+    "release": "6.0.2",
+    "library_environment": "RAYPATH=.;<verified engine>/lib (child processes only)"
+  },
+  "weather": {
+    "citation": "PVGIS ERA5 typical year at 22.30 N, 114.17 E",
+    "no_dst": true,
+    "dew_point_context": "Requested record plus preceding two original records; final matrix column selected.",
+    "radiation_policy": "Hourly EPW DNI/DHI Wh/m2 numerically equal interval-average W/m2. Output is visible radiance from the pinned efficacy model, not broadband-to-lux conversion.",
+    "day": 21,
+    "source_year": 2005,
+    "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+    "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1",
+    "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+    "representative_local_standard_time": "12:30",
+    "hour_ending": 13,
+    "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+    "source_url": "https://re.jrc.ec.europa.eu/api/v5_3/tmy?lat=22.3&lon=114.17&outputformat=epw&startyear=2005&endyear=2023&usehorizon=0",
+    "utc_offset_minutes": 480,
+    "month": 3
+  },
+  "trace_settings": [
+    "-h",
+    "-faa",
+    "-ov",
+    "-n",
+    "1",
+    "-ab",
+    "1",
+    "-ad",
+    "262144",
+    "-as",
+    "0",
+    "-aa",
+    "0",
+    "-ar",
+    "256",
+    "-av",
+    "0",
+    "0",
+    "0",
+    "-lw",
+    "1e-10",
+    "-lr",
+    "16",
+    "-dt",
+    "0",
+    "-dc",
+    "1",
+    "-dj",
+    "0",
+    "-ds",
+    "0.01",
+    "-st",
+    "0",
+    "-ss",
+    "0",
+    "-u-"
+  ],
+  "ground_policy": "The -s matrix already contains the luminous ground term, including reflected direct-horizontal radiation. Reconstruct bin0 once; no ground polygon or added ground illumination. This sky-only check excludes explicit solar-disc irradiance.",
+  "finished_utc": "2026-10-11T08:24:06.7560794Z",
+  "resources": {
+    "wall_seconds": 12.455657299999999,
+    "sampled_peak_child_working_set_bytes": 39038976.0,
+    "measurement_policy": "Per-child working set sampled at 100 ms; short processes may have no sample. Scratch is completion size before this summary, not a continuously sampled peak. These small fixtures do not measure production annual peak memory.",
+    "processes": 19,
+    "scratch_bytes": 419781.0
+  },
+  "files": [
+    {
+      "sha256": "a8140c3043ffc1a26da5a0527db11d8a0e56298d394a3df6b42819f38f861415",
+      "bytes": 949,
+      "name": "basis-mf2.cal"
+    },
+    {
+      "sha256": "1ee11b575ada330cf0866d88d5c4bcf98a6ca4d5f690f7b094cfbc7915453b1b",
+      "bytes": 949,
+      "name": "basis-mf4.cal"
+    },
+    {
+      "sha256": "c9cd08b3e10ea5cd0b6e438add93caba800af51e8af7ded803dd9a90e5fcb5c1",
+      "bytes": 2216,
+      "name": "cardinal-mf2-0.dat"
+    },
+    {
+      "sha256": "947824ea9c13560de94a59ae6d1a6a107ae6fd1c43e0d25dc24dbfb4738a57b1",
+      "bytes": 2356,
+      "name": "cardinal-mf2-1.dat"
+    },
+    {
+      "sha256": "a51728a1992262f170bda6786612ab1619bcaf38893163e9f989957f649a5e4f",
+      "bytes": 2542,
+      "name": "cardinal-mf2-2.dat"
+    },
+    {
+      "sha256": "a25d9451f861515b4d0c0b0e49dbd2672e6716622759ba6ddeb76eab41f6d922",
+      "bytes": 729,
+      "name": "cardinal-mf2.oct"
+    },
+    {
+      "sha256": "cbc775251469bb0d94dbf5fa5693954aa6d356579781a75454075aaaf391dbc7",
+      "bytes": 197,
+      "name": "cardinal-mf2.rad"
+    },
+    {
+      "sha256": "c1c2658b7e7644b41643364ee0229af116b66a446a69c89aaecff270552bbe03",
+      "bytes": 246,
+      "name": "cardinal-mf2.rgb"
+    },
+    {
+      "sha256": "96b64dc67880b77cb888ad7aa6b903ba28567dbc90543f16f794af84b9420355",
+      "bytes": 10437,
+      "name": "cardinal-mf4-0.dat"
+    },
+    {
+      "sha256": "c56c201974c8796d21839f7834dc3b9b839a0bdcb03c4b666921d28a9be9b6c9",
+      "bytes": 10998,
+      "name": "cardinal-mf4-1.dat"
+    },
+    {
+      "sha256": "55210f53e213b7b88925e88be3683be76bdfa814c6e0f1f87a794f33f8bc9077",
+      "bytes": 11184,
+      "name": "cardinal-mf4-2.dat"
+    },
+    {
+      "sha256": "454c277b849fc83936689adf0ec6e642773c32210125e597e8776e13d65dbeac",
+      "bytes": 729,
+      "name": "cardinal-mf4.oct"
+    },
+    {
+      "sha256": "575d94e4eaf199ebc28300d45cc0b892d9a26e87a74e3b45865c4725dd0e777a",
+      "bytes": 197,
+      "name": "cardinal-mf4.rad"
+    },
+    {
+      "sha256": "063c94248a1eab462ee3fee8d2abbf9eed2a6c0eb5ce1586f80931c6584c534f",
+      "bytes": 246,
+      "name": "cardinal-mf4.rgb"
+    },
+    {
+      "sha256": "5f4e3c616510324e95dc5889e7f8845ca37dd4cc627e67a9d18e306256b69808",
+      "bytes": 49,
+      "name": "engine-version.txt"
+    },
+    {
+      "sha256": "0911b5e4a7c754aa0fc77f6eaff32bf9f459c2afc5d69999440bee00e25c9021",
+      "bytes": 11523,
+      "name": "processes.json"
+    },
+    {
+      "sha256": "410acedcac713983e1a15731fa2e8f08308e8bf969b2141cce45f58d72b8371f",
+      "bytes": 2724,
+      "name": "real-mf2-0.dat"
+    },
+    {
+      "sha256": "410acedcac713983e1a15731fa2e8f08308e8bf969b2141cce45f58d72b8371f",
+      "bytes": 2724,
+      "name": "real-mf2-1.dat"
+    },
+    {
+      "sha256": "410acedcac713983e1a15731fa2e8f08308e8bf969b2141cce45f58d72b8371f",
+      "bytes": 2724,
+      "name": "real-mf2-2.dat"
+    },
+    {
+      "sha256": "1b13809d6554f48bfcc6d87c4721e689c9fdfdcd5512e92445a11c84611b95e5",
+      "bytes": 27548,
+      "name": "real-mf2.mtx"
+    },
+    {
+      "sha256": "353a71a6ca83edcb089af2c80b49938d6888af9a19a0f7300c2b4170707c5d95",
+      "bytes": 713,
+      "name": "real-mf2.oct"
+    },
+    {
+      "sha256": "e9b39df0bf531c7f12177825056327f0da7f874a00b9c799bcee2175d3fd6529",
+      "bytes": 185,
+      "name": "real-mf2.rad"
+    },
+    {
+      "sha256": "d5569d0a8b0bba1d0b1dfbf912c982f6c6155f06757a385995e4d4b2e59a03e3",
+      "bytes": 82,
+      "name": "real-mf2.rgb"
+    },
+    {
+      "sha256": "e363c84babb54971e952d490e96de685b9b66f37d33bc550df341be70345a213",
+      "bytes": 10802,
+      "name": "real-mf4-0.dat"
+    },
+    {
+      "sha256": "e363c84babb54971e952d490e96de685b9b66f37d33bc550df341be70345a213",
+      "bytes": 10802,
+      "name": "real-mf4-1.dat"
+    },
+    {
+      "sha256": "e363c84babb54971e952d490e96de685b9b66f37d33bc550df341be70345a213",
+      "bytes": 10802,
+      "name": "real-mf4-2.dat"
+    },
+    {
+      "sha256": "e09d36c213ff6d0c5fd10f1a6d4dffe9ff69bc1390b269de99dccafbfebd4ba8",
+      "bytes": 108999,
+      "name": "real-mf4.mtx"
+    },
+    {
+      "sha256": "8fb8a52175e8aa72b402f62ca40215bde6dd220d30558d91b2a89b8cfa666543",
+      "bytes": 713,
+      "name": "real-mf4.oct"
+    },
+    {
+      "sha256": "7a3c53b8d8a06a86d0e3ad297ce38e17165b18887f90c9474b8d9c5ede79faa9",
+      "bytes": 185,
+      "name": "real-mf4.rad"
+    },
+    {
+      "sha256": "57b405dff54de41d38b875d295d96092201ddd7b41410e087153248e8ae4741d",
+      "bytes": 82,
+      "name": "real-mf4.rgb"
+    },
+    {
+      "sha256": "d0df414ca0850e54ef3898f6c369582834338b97e56d4b8d2e42b417aa67d35e",
+      "bytes": 1000,
+      "name": "real-selected.epw"
+    },
+    {
+      "sha256": "d3db3c76588522177ebd619775910ac51cd564efca847bb5ab531be82129c89c",
+      "bytes": 2775,
+      "name": "synthetic-mf2-0.dat"
+    },
+    {
+      "sha256": "3a2add980c7bc84173ffea0aadbf791cf36060a647c797b39978dc02b8886750",
+      "bytes": 2769,
+      "name": "synthetic-mf2-1.dat"
+    },
+    {
+      "sha256": "d957fcbe10838986754b0cea10256f6813364d6908144f4584f039d32b7d5fc9",
+      "bytes": 2787,
+      "name": "synthetic-mf2-2.dat"
+    },
+    {
+      "sha256": "89bd5e0511cb0c33895fca557aab7e85e4ffea99c771d4d82c681679cab6a367",
+      "bytes": 27969,
+      "name": "synthetic-mf2.mtx"
+    },
+    {
+      "sha256": "aa9004bcd4a7f4af5301db6d3e235ea6c6f2f6c3064a963f81c3826b5a45e4ba",
+      "bytes": 733,
+      "name": "synthetic-mf2.oct"
+    },
+    {
+      "sha256": "f68f08b15901d0ea18532ff33af7ae006cf39ead079044ed10df2c8c30e7efe4",
+      "bytes": 200,
+      "name": "synthetic-mf2.rad"
+    },
+    {
+      "sha256": "51446c6290fdfde56ce8c884a4d6e0e60e626cdf966ed02df2a0ed1bfe8ce1c0",
+      "bytes": 82,
+      "name": "synthetic-mf2.rgb"
+    },
+    {
+      "sha256": "35b0ac8780b04166209c8915625550a3834c1f6fbd67afa5e50984a0ed92684c",
+      "bytes": 11037,
+      "name": "synthetic-mf4-0.dat"
+    },
+    {
+      "sha256": "3438187224335b45b5f8edda3845ce6a1ddd1751636e2eac30502007ff5fbee0",
+      "bytes": 11125,
+      "name": "synthetic-mf4-1.dat"
+    },
+    {
+      "sha256": "5da6f6a1ad179f899d88b030e2ae82b8a39ab4b9b46d690bb61c654869cf7945",
+      "bytes": 11025,
+      "name": "synthetic-mf4-2.dat"
+    },
+    {
+      "sha256": "4f00b3f39e43990217af7a20f934507c7b286619aef6951814cf7d1509a53b2a",
+      "bytes": 111212,
+      "name": "synthetic-mf4.mtx"
+    },
+    {
+      "sha256": "1b92ef918d88801b393a5c8bbdc9fa29037914d8be02c0784517697d93a0fe70",
+      "bytes": 733,
+      "name": "synthetic-mf4.oct"
+    },
+    {
+      "sha256": "4f9c139bdce9999966349f8955963aae9f5af1be3239033c168a0eceb8cde51b",
+      "bytes": 200,
+      "name": "synthetic-mf4.rad"
+    },
+    {
+      "sha256": "533b3681ff8f2ece25d89f027974f88e7ad2fc95b19f04a6c88e08a49cc5e2e3",
+      "bytes": 82,
+      "name": "synthetic-mf4.rgb"
+    },
+    {
+      "sha256": "9858cd2fdeee1325af956bbc252e87e81c6e59f26b1f68aaa04c27d1febeafd7",
+      "bytes": 694,
+      "name": "synthetic-selected.epw"
+    },
+    {
+      "sha256": "9467c1b084d7a892337f78c948cf43f7350bc39ba64b83d2b0f0aba5a76d2078",
+      "bytes": 613,
+      "name": "uniform.oct"
+    },
+    {
+      "sha256": "b2c4fd062194aef251a9b20882375257939ba723dbcdb1a9047d41e461741a12",
+      "bytes": 72,
+      "name": "uniform.rad"
+    },
+    {
+      "sha256": "65b4cdf864727ce207bab2afb0a91dbd8646b819904138fc26c482e7aadfca13",
+      "bytes": 41,
+      "name": "uniform.rgb"
+    }
+  ]
+}

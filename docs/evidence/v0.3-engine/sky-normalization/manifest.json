@@ -1,0 +1,66 @@
+{
+  "schema_version": "greenlens.sky-normalization-evidence-manifest.v1",
+  "observed_utc": "2026-10-11T08:23:47.8046516Z",
+  "scope": "Native sky-only normalization, RGB photometry and Reinhart MF2/MF4 ordering, plus required fault-injection regressions. Not room/solar transport, annual convergence, general engine validation or desktop acceptance.",
+  "status": {
+    "native_observations": 23,
+    "hosted_execution": "pending",
+    "local_passed": true,
+    "regression_conditions": 17,
+    "ci_required_step": "Required native sky normalization and ordering"
+  },
+  "command": "pwsh -NoProfile -File scripts/test-sky-normalization.ps1",
+  "records": [
+    {
+      "original_sha256": "2d9bf353e79df8ceea6c27097799e8bfc3d619fb8c7c4c02587b9d96c19d0c35",
+      "retained_bytes": 27685,
+      "original_bytes": 28673,
+      "transformation": "UTF-8 JSON CRLF converted to LF only; no data fields changed",
+      "path": "native sky 空間/sky-normalization.json",
+      "retained_sha256": "d5ebb506377b26082f20b57264ce2ad0c64f1330f7dc63e6676c123fab97235e"
+    },
+    {
+      "original_sha256": "7bee8543195a9008013f33470f3fab107eb6ef2036d600763622975e9c02e47a",
+      "retained_bytes": 1460,
+      "original_bytes": 1486,
+      "transformation": "UTF-8 JSON CRLF converted to LF only; no data fields changed",
+      "path": "regressions.json",
+      "retained_sha256": "44f9795ec43e538510c416b697b2fefbc6baf9f6ec0fe29da9a4eb1b74001cca"
+    }
+  ],
+  "executed_scripts": [
+    {
+      "hash_scope": "Exact local executed script bytes; line endings are included in the hash and may differ from Git-normalized blobs.",
+      "sha256": "441764fec8642b83ba4b6740deb1a8c8d309139cb8f2938dae38aef36a0a9226",
+      "path": "scripts/annual-sky-normalization.ps1"
+    },
+    {
+      "hash_scope": "Exact local executed script bytes; line endings are included in the hash and may differ from Git-normalized blobs.",
+      "sha256": "cf131fb0d66e016cff8ceeef6131028b7e4566b387ea2a4231d78653778bbf46",
+      "path": "scripts/test-sky-normalization.ps1"
+    },
+    {
+      "hash_scope": "Exact local executed script bytes; line endings are included in the hash and may differ from Git-normalized blobs.",
+      "sha256": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+      "path": "scripts/annual-feasibility.ps1"
+    },
+    {
+      "hash_scope": "Exact local executed script bytes; line endings are included in the hash and may differ from Git-normalized blobs.",
+      "sha256": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+      "path": "scripts/verify-matrix-multiplication.ps1"
+    }
+  ],
+  "retention_policy": "Compact sanitized final JSON only. Generated inputs, raw engine output and process records remain outside source. Original report cross-reference hashes refer to original_sha256, retained LF copies to retained_sha256.",
+  "original_native_report_reference": {
+    "referencing_record": "regressions.json",
+    "field": "native_report_sha256",
+    "retained_record": "native sky 空間/sky-normalization.json",
+    "original_sha256": "2d9bf353e79df8ceea6c27097799e8bfc3d619fb8c7c4c02587b9d96c19d0c35"
+  },
+  "limitations": [
+    "Fixed same-generated-sky comparison; no independent weather illuminance assertion.",
+    "Native resource observations are small-fixture sampled measurements, not annual resource limits.",
+    "Known centroid-edge analytical failure remains separately retained; no tolerance relaxed.",
+    "No native executable, disposable octree or private absolute path is included."
+  ]
+}

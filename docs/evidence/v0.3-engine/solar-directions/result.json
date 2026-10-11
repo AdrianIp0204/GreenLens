@@ -1,0 +1,1567 @@
+{
+  "schema_version": "greenlens.solar-direction-verification.v1",
+  "completed_utc": "2026-10-11T06:16:43.4981913Z",
+  "declaration_sha256": "e989934db0196a1bdd02c5f24191ba0f7af46b7ae6f32897f9f1aa3fc06a5b69",
+  "script_sha256": "d6434f14832c5480347121d36118636e572283f73999200afd68dd54e2bf09f6",
+  "engine_version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+  "gendaymtx_sha256": "07a022f4569c7815bba868148add3706aa0e120622f0e8e7c7029e7947af527d",
+  "path_has_spaces": true,
+  "path_has_non_ascii": true,
+  "fixture_count": 11,
+  "case_count": 39,
+  "direction_count": 35,
+  "absent_source_case_count": 4,
+  "independent_vector_angle_limit_degrees": 1.0,
+  "maximum_independent_angle_degrees": 0.5325652448434747,
+  "equivalent_offset_angle_limit_degrees": 0.0002,
+  "maximum_equivalent_pair_angle_degrees": 0.0,
+  "cases": [
+    {
+      "id": "equator-greenwich-0321-h01",
+      "expected_solar_minute": 113790,
+      "source_present": false,
+      "expected_source_present": false,
+      "noaa_reference": {
+        "direction_enu": [
+          0.09582256233604869,
+          -0.0044544491406031,
+          -0.9953884640833487
+        ],
+        "altitude_degrees": -84.49537844633038,
+        "equation_of_time_minutes": -8.005120488194608,
+        "declination_degrees": -0.2552219798410498,
+        "representative_local_hour": 0.5,
+        "expected_solar_minute": 113790
+      },
+      "actual": null,
+      "angular_error_degrees": null,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h06",
+      "expected_solar_minute": 114090,
+      "source_present": false,
+      "expected_source_present": false,
+      "noaa_reference": {
+        "direction_enu": [
+          0.9863233625573654,
+          -0.0030178819286640255,
+          -0.1647941651339526
+        ],
+        "altitude_degrees": -9.485277315275745,
+        "equation_of_time_minutes": -7.9412836346447175,
+        "declination_degrees": -0.17291216005138507,
+        "representative_local_hour": 5.5,
+        "expected_solar_minute": 114090
+      },
+      "actual": null,
+      "angular_error_degrees": null,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h07",
+      "expected_solar_minute": 114150,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.9953625373473275,
+          -0.002730587468486866,
+          0.09615593136966095
+        ],
+        "altitude_degrees": 5.517854404020167,
+        "equation_of_time_minutes": -7.928499844691224,
+        "declination_degrees": -0.15645133195568914,
+        "representative_local_hour": 6.5,
+        "expected_solar_minute": 114150
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.995118,
+          -0.007045,
+          0.098439
+        ],
+        "direction_enu": [
+          0.9951181479392506,
+          -0.007045001047345159,
+          0.09843901463443722
+        ],
+        "rgb": [
+          1864000.0,
+          1864000.0,
+          1864000.0
+        ],
+        "printed_norm_error": 1.4866501119037423E-07
+      },
+      "angular_error_degrees": 0.28002580249857784,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h08",
+      "expected_solar_minute": 114210,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.9365405305923208,
+          -0.0024432996834266845,
+          0.3505508020879585
+        ],
+        "altitude_degrees": 20.521008324535398,
+        "equation_of_time_minutes": -7.915710648161261,
+        "declination_degrees": -0.13999089923049127,
+        "representative_local_hour": 7.5,
+        "expected_solar_minute": 114210
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.935733,
+          -0.007045,
+          0.35264
+        ],
+        "direction_enu": [
+          0.935732602821831,
+          -0.0070449970097023395,
+          0.35263985031957884
+        ],
+        "rgb": [
+          4338000.0,
+          4338000.0,
+          4338000.0
+        ],
+        "printed_norm_error": 4.2445690984216355E-07
+      },
+      "angular_error_degrees": 0.29323208192293304,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h09",
+      "expected_solar_minute": 114270,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.8138675629828723,
+          -0.0021560187224326528,
+          0.5810464194086294
+        ],
+        "altitude_degrees": 35.52417590908281,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.812578,
+          -0.007045,
+          0.582809
+        ],
+        "direction_enu": [
+          0.8125784190508616,
+          -0.007045003633144535,
+          0.5828093005577478
+        ],
+        "rgb": [
+          4844000.0,
+          4844000.0,
+          4844000.0
+        ],
+        "printed_norm_error": 5.157051329307549E-07
+      },
+      "angular_error_degrees": 0.3067967451243588,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h10",
+      "expected_solar_minute": 114330,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.6357070750119163,
+          -0.0018687447344179833,
+          0.7719281200817285
+        ],
+        "altitude_degrees": 50.52734948055738,
+        "equation_of_time_minutes": -7.890116149429816,
+        "declination_degrees": -0.10707124858866655,
+        "representative_local_hour": 9.5,
+        "expected_solar_minute": 114330
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.634048,
+          -0.007045,
+          0.773261
+        ],
+        "direction_enu": [
+          0.6340482940558158,
+          -0.007045003267297149,
+          0.7732613586193698
+        ],
+        "rgb": [
+          5135000.0,
+          5135000.0,
+          5135000.0
+        ],
+        "printed_norm_error": 4.637751076508323E-07
+      },
+      "angular_error_degrees": 0.3206660736458768,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h12",
+      "expected_solar_minute": 114450,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.16446431897055527,
+          -0.0012942182728012974,
+          0.9863821839351183
+        ],
+        "altitude_degrees": 80.53358711890104,
+        "equation_of_time_minutes": -7.864500366620078,
+        "declination_degrees": -0.07415326550136672,
+        "representative_local_hour": 11.5,
+        "expected_solar_minute": 114450
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.162471,
+          -0.007045,
+          0.986688
+        ],
+        "direction_enu": [
+          0.1624710270343688,
+          -0.007045001172253068,
+          0.9866881641799908
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.6639501387860633E-07
+      },
+      "angular_error_degrees": 0.3491680937653514,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h13",
+      "expected_solar_minute": 114510,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.098439,
+          -0.007045,
+          0.995118
+        ],
+        "direction_enu": [
+          -0.09843901463443722,
+          -0.007045001047345159,
+          0.9951181479392506
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.4866501119037423E-07
+      },
+      "angular_error_degrees": 0.36374289589497205,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h14",
+      "expected_solar_minute": 114570,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.35086576908459755,
+          -0.000719721489168532,
+          0.9364254877381606
+        ],
+        "altitude_degrees": 69.45967627668298,
+        "equation_of_time_minutes": -7.838863527986831,
+        "declination_degrees": -0.041237007314349566,
+        "representative_local_hour": 13.5,
+        "expected_solar_minute": 114570
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.35264,
+          -0.007045,
+          0.935733
+        ],
+        "direction_enu": [
+          -0.35263985031957884,
+          -0.0070449970097023395,
+          0.935732602821831
+        ],
+        "rgb": [
+          5162000.0,
+          5162000.0,
+          5162000.0
+        ],
+        "printed_norm_error": 4.2445690984216355E-07
+      },
+      "angular_error_degrees": 0.3784850205595341,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h16",
+      "expected_solar_minute": 114690,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.7721427501088011,
+          -0.00014525557353706393,
+          0.6354490950148848
+        ],
+        "altitude_degrees": 39.453300968026205,
+        "equation_of_time_minutes": -7.813205861867977,
+        "declination_degrees": -0.008322531343692364,
+        "representative_local_hour": 15.5,
+        "expected_solar_minute": 114690
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.773261,
+          -0.007045,
+          0.634048
+        ],
+        "direction_enu": [
+          -0.7732613586193698,
+          -0.007045003267297149,
+          0.6340482940558158
+        ],
+        "rgb": [
+          4893000.0,
+          4893000.0,
+          4893000.0
+        ],
+        "printed_norm_error": 4.637751076508323E-07
+      },
+      "angular_error_degrees": 0.4084520511761587,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h18",
+      "expected_solar_minute": 114810,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.9864381001008005,
+          0.000429178284650917,
+          0.1641331486188063
+        ],
+        "altitude_degrees": 9.446881021170489,
+        "equation_of_time_minutes": -7.787527596682652,
+        "declination_degrees": 0.024590105124053498,
+        "representative_local_hour": 17.5,
+        "expected_solar_minute": 114810
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.986688,
+          -0.007045,
+          0.162471
+        ],
+        "direction_enu": [
+          -0.9866881641799908,
+          -0.007045001172253068,
+          0.1624710270343688
+        ],
+        "rgb": [
+          2744000.0,
+          2744000.0,
+          2744000.0
+        ],
+        "printed_norm_error": 1.6639501387860633E-07
+      },
+      "angular_error_degrees": 0.4389351318572513,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h19",
+      "expected_solar_minute": 114870,
+      "source_present": false,
+      "expected_source_present": false,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.9953012320939094,
+          0.0007163828206606863,
+          -0.09682429544282872
+        ],
+        "altitude_degrees": -5.556328367036471,
+        "equation_of_time_minutes": -7.7746808108427805,
+        "declination_degrees": 0.0410457156503418,
+        "representative_local_hour": 18.5,
+        "expected_solar_minute": 114870
+      },
+      "actual": null,
+      "angular_error_degrees": null,
+      "passed": true
+    },
+    {
+      "id": "equator-greenwich-0321-h24",
+      "expected_solar_minute": 115170,
+      "source_present": false,
+      "expected_source_present": false,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.16380068371491702,
+          0.0021522756288013915,
+          -0.9864911067638388
+        ],
+        "altitude_degrees": -80.57160794047599,
+        "equation_of_time_minutes": -7.710371492097333,
+        "declination_degrees": 0.12331640508554297,
+        "representative_local_hour": 23.5,
+        "expected_solar_minute": 115170
+      },
+      "actual": null,
+      "angular_error_degrees": null,
+      "passed": true
+    },
+    {
+      "id": "longitude-east15-0321-h09",
+      "expected_solar_minute": 114270,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.6357498188325209,
+          -0.0021560187224326528,
+          0.7718921682707277
+        ],
+        "altitude_degrees": 50.52410929731106,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.634048,
+          -0.007045,
+          0.773261
+        ],
+        "direction_enu": [
+          0.6340482940558158,
+          -0.007045003267297149,
+          0.7732613586193698
+        ],
+        "rgb": [
+          5135000.0,
+          5135000.0,
+          5135000.0
+        ],
+        "printed_norm_error": 4.637751076508323E-07
+      },
+      "angular_error_degrees": 0.30679793914862313,
+      "passed": true
+    },
+    {
+      "id": "longitude-east15-0321-h13",
+      "expected_solar_minute": 114510,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.3508132957158118,
+          -0.0010069660968474736,
+          0.9364448822906185
+        ],
+        "altitude_degrees": 69.46284360088902,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.35264,
+          -0.007045,
+          0.935733
+        ],
+        "direction_enu": [
+          -0.35263985031957884,
+          -0.0070449970097023395,
+          0.935732602821831
+        ],
+        "rgb": [
+          5162000.0,
+          5162000.0,
+          5162000.0
+        ],
+        "printed_norm_error": 4.2445690984216355E-07
+      },
+      "angular_error_degrees": 0.3637338816183594,
+      "passed": true
+    },
+    {
+      "id": "longitude-west15-0321-h09",
+      "expected_solar_minute": 114270,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.9365215776956816,
+          -0.0021560187224326528,
+          0.3506033172884422
+        ],
+        "altitude_degrees": 20.524221128027015,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.935733,
+          -0.007045,
+          0.35264
+        ],
+        "direction_enu": [
+          0.935732602821831,
+          -0.0070449970097023395,
+          0.35263985031957884
+        ],
+        "rgb": [
+          4338000.0,
+          4338000.0,
+          4338000.0
+        ],
+        "printed_norm_error": 4.2445690984216355E-07
+      },
+      "angular_error_degrees": 0.30679803638944797,
+      "passed": true
+    },
+    {
+      "id": "longitude-west15-0321-h13",
+      "expected_solar_minute": 114510,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.16440921507007356,
+          -0.0010069660968474736,
+          0.9863917051655098
+        ],
+        "altitude_degrees": 80.53690458108012,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.162471,
+          -0.007045,
+          0.986688
+        ],
+        "direction_enu": [
+          0.1624710270343688,
+          -0.007045001172253068,
+          0.9866881641799908
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.6639501387860633E-07
+      },
+      "angular_error_degrees": 0.36373779550710794,
+      "passed": true
+    },
+    {
+      "id": "matched-east-zone-0321-h09",
+      "expected_solar_minute": 114270,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.8138675629828722,
+          -0.0021560187224326528,
+          0.5810464194086297
+        ],
+        "altitude_degrees": 35.52417590908282,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.812578,
+          -0.007045,
+          0.582809
+        ],
+        "direction_enu": [
+          0.8125784190508616,
+          -0.007045003633144535,
+          0.5828093005577478
+        ],
+        "rgb": [
+          4844000.0,
+          4844000.0,
+          4844000.0
+        ],
+        "printed_norm_error": 5.157051329307549E-07
+      },
+      "angular_error_degrees": 0.30679674512435096,
+      "passed": true
+    },
+    {
+      "id": "matched-east-zone-0321-h13",
+      "expected_solar_minute": 114510,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.098439,
+          -0.007045,
+          0.995118
+        ],
+        "direction_enu": [
+          -0.09843901463443722,
+          -0.007045001047345159,
+          0.9951181479392506
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.4866501119037423E-07
+      },
+      "angular_error_degrees": 0.36374289589497205,
+      "passed": true
+    },
+    {
+      "id": "matched-west-zone-0321-h09",
+      "expected_solar_minute": 114270,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.8138675629828723,
+          -0.0021560187224326528,
+          0.5810464194086294
+        ],
+        "altitude_degrees": 35.52417590908281,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.812578,
+          -0.007045,
+          0.582809
+        ],
+        "direction_enu": [
+          0.8125784190508616,
+          -0.007045003633144535,
+          0.5828093005577478
+        ],
+        "rgb": [
+          4844000.0,
+          4844000.0,
+          4844000.0
+        ],
+        "printed_norm_error": 5.157051329307549E-07
+      },
+      "angular_error_degrees": 0.3067967451243588,
+      "passed": true
+    },
+    {
+      "id": "matched-west-zone-0321-h13",
+      "expected_solar_minute": 114510,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.098439,
+          -0.007045,
+          0.995118
+        ],
+        "direction_enu": [
+          -0.09843901463443722,
+          -0.007045001047345159,
+          0.9951181479392506
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.4866501119037423E-07
+      },
+      "angular_error_degrees": 0.36374289589497205,
+      "passed": true
+    },
+    {
+      "id": "clock-plus-one-zone-0321-h10",
+      "expected_solar_minute": 114330,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.8138355806360289,
+          -0.0018687447344179833,
+          0.5810922091062102
+        ],
+        "altitude_degrees": 35.52739952926815,
+        "equation_of_time_minutes": -7.890116149429816,
+        "declination_degrees": -0.10707124858866655,
+        "representative_local_hour": 9.5,
+        "expected_solar_minute": 114330
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.812578,
+          -0.007045,
+          0.582809
+        ],
+        "direction_enu": [
+          0.8125784190508616,
+          -0.007045003633144535,
+          0.5828093005577478
+        ],
+        "rgb": [
+          4844000.0,
+          4844000.0,
+          4844000.0
+        ],
+        "printed_norm_error": 5.157051329307549E-07
+      },
+      "angular_error_degrees": 0.320664962018988,
+      "passed": true
+    },
+    {
+      "id": "clock-plus-one-zone-0321-h14",
+      "expected_solar_minute": 114570,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.09654555737353634,
+          -0.000719721489168532,
+          0.9953283063152636
+        ],
+        "altitude_degrees": 84.45956289669179,
+        "equation_of_time_minutes": -7.838863527986831,
+        "declination_degrees": -0.041237007314349566,
+        "representative_local_hour": 13.5,
+        "expected_solar_minute": 114570
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.098439,
+          -0.007045,
+          0.995118
+        ],
+        "direction_enu": [
+          -0.09843901463443722,
+          -0.007045001047345159,
+          0.9951181479392506
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.4866501119037423E-07
+      },
+      "angular_error_degrees": 0.3784934524460502,
+      "passed": true
+    },
+    {
+      "id": "half-hour-zone-0321-h09",
+      "expected_solar_minute": 114270,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.8138675629828722,
+          -0.0021560187224326528,
+          0.5810464194086297
+        ],
+        "altitude_degrees": 35.52417590908282,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.812578,
+          -0.007045,
+          0.582809
+        ],
+        "direction_enu": [
+          0.8125784190508616,
+          -0.007045003633144535,
+          0.5828093005577478
+        ],
+        "rgb": [
+          4844000.0,
+          4844000.0,
+          4844000.0
+        ],
+        "printed_norm_error": 5.157051329307549E-07
+      },
+      "angular_error_degrees": 0.30679674512435096,
+      "passed": true
+    },
+    {
+      "id": "half-hour-zone-0321-h13",
+      "expected_solar_minute": 114510,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.098439,
+          -0.007045,
+          0.995118
+        ],
+        "direction_enu": [
+          -0.09843901463443722,
+          -0.007045001047345159,
+          0.9951181479392506
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.4866501119037423E-07
+      },
+      "angular_error_degrees": 0.36374289589497205,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-east180-0321-h23",
+      "expected_solar_minute": 115110,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.41359337119454004,
+          0.0018651148783048771,
+          0.9104597984811993
+        ],
+        "altitude_degrees": 65.56896979564486,
+        "equation_of_time_minutes": -7.723243312514551,
+        "declination_degrees": 0.10686327279070316,
+        "representative_local_hour": 22.5,
+        "expected_solar_minute": 115110
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.412309,
+          -0.007045,
+          0.911017
+        ],
+        "direction_enu": [
+          0.4123089344851463,
+          -0.00704499888056738,
+          0.9110168552417107
+        ],
+        "rgb": [
+          5160000.0,
+          5160000.0,
+          5160000.0
+        ],
+        "printed_norm_error": 1.5889748739006393E-07
+      },
+      "angular_error_degrees": 0.51677734053394,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-east180-0321-h24",
+      "expected_solar_minute": 115170,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.16380068371491716,
+          0.0021522756288013915,
+          0.9864911067638388
+        ],
+        "altitude_degrees": 80.57160794047599,
+        "equation_of_time_minutes": -7.710371492097333,
+        "declination_degrees": 0.12331640508554297,
+        "representative_local_hour": 23.5,
+        "expected_solar_minute": 115170
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.162471,
+          -0.007045,
+          0.986688
+        ],
+        "direction_enu": [
+          0.1624710270343688,
+          -0.007045001172253068,
+          0.9866881641799908
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.6639501387860633E-07
+      },
+      "angular_error_degrees": 0.5325652448434747,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-east180-0322-h01",
+      "expected_solar_minute": 115230,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.0971592310224935,
+          0.002439427176932973,
+          0.9952658604725505
+        ],
+        "altitude_degrees": 84.42262763932098,
+        "equation_of_time_minutes": -7.697494750525002,
+        "declination_degrees": 0.13976902029103588,
+        "representative_local_hour": 0.5,
+        "expected_solar_minute": 115230
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.099764,
+          -0.0,
+          0.995011
+        ],
+        "direction_enu": [
+          -0.09976401267915883,
+          -0.0,
+          0.9950111264574646
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.2709150809531167E-07
+      },
+      "angular_error_degrees": 0.20499238084089497,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-east180-0322-h02",
+      "expected_solar_minute": 115290,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.3514947299802458,
+          0.0027265693743640245,
+          0.9361858899895686
+        ],
+        "altitude_degrees": 69.42058604269369,
+        "equation_of_time_minutes": -7.684613116394925,
+        "declination_degrees": 0.15622111126374957,
+        "representative_local_hour": 1.5,
+        "expected_solar_minute": 115290
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.353893,
+          -0.0,
+          0.935286
+        ],
+        "direction_enu": [
+          -0.35389297217605087,
+          -0.0,
+          0.935285926465485
+        ],
+        "rgb": [
+          5162000.0,
+          5162000.0,
+          5162000.0
+        ],
+        "printed_norm_error": 7.862249695733681E-08
+      },
+      "angular_error_degrees": 0.21434822717966084,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-west180-0321-h23",
+      "expected_solar_minute": 115110,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.4135933711945403,
+          0.0018651148783048771,
+          0.9104597984811992
+        ],
+        "altitude_degrees": 65.56896979564485,
+        "equation_of_time_minutes": -7.723243312514551,
+        "declination_degrees": 0.10686327279070316,
+        "representative_local_hour": 22.5,
+        "expected_solar_minute": 115110
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.412309,
+          -0.007045,
+          0.911017
+        ],
+        "direction_enu": [
+          0.4123089344851463,
+          -0.00704499888056738,
+          0.9110168552417107
+        ],
+        "rgb": [
+          5160000.0,
+          5160000.0,
+          5160000.0
+        ],
+        "printed_norm_error": 1.5889748739006393E-07
+      },
+      "angular_error_degrees": 0.516777340533943,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-west180-0321-h24",
+      "expected_solar_minute": 115170,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.1638006837149168,
+          0.0021522756288013915,
+          0.9864911067638388
+        ],
+        "altitude_degrees": 80.57160794047599,
+        "equation_of_time_minutes": -7.710371492097333,
+        "declination_degrees": 0.12331640508554297,
+        "representative_local_hour": 23.5,
+        "expected_solar_minute": 115170
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.162471,
+          -0.007045,
+          0.986688
+        ],
+        "direction_enu": [
+          0.1624710270343688,
+          -0.007045001172253068,
+          0.9866881641799908
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.6639501387860633E-07
+      },
+      "angular_error_degrees": 0.5325652448434717,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-west180-0322-h01",
+      "expected_solar_minute": 115230,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.09715923102249312,
+          0.002439427176932973,
+          0.9952658604725505
+        ],
+        "altitude_degrees": 84.42262763932098,
+        "equation_of_time_minutes": -7.697494750525002,
+        "declination_degrees": 0.13976902029103588,
+        "representative_local_hour": 0.5,
+        "expected_solar_minute": 115230
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.099764,
+          -0.0,
+          0.995011
+        ],
+        "direction_enu": [
+          -0.09976401267915883,
+          -0.0,
+          0.9950111264574646
+        ],
+        "rgb": [
+          5166000.0,
+          5166000.0,
+          5166000.0
+        ],
+        "printed_norm_error": 1.2709150809531167E-07
+      },
+      "angular_error_degrees": 0.20499238084091131,
+      "passed": true
+    },
+    {
+      "id": "artificial-hour24-west180-0322-h02",
+      "expected_solar_minute": 115290,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.35149472998024645,
+          0.0027265693743640245,
+          0.9361858899895684
+        ],
+        "altitude_degrees": 69.42058604269366,
+        "equation_of_time_minutes": -7.684613116394925,
+        "declination_degrees": 0.15622111126374957,
+        "representative_local_hour": 1.5,
+        "expected_solar_minute": 115290
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.353893,
+          -0.0,
+          0.935286
+        ],
+        "direction_enu": [
+          -0.35389297217605087,
+          -0.0,
+          0.935285926465485
+        ],
+        "rgb": [
+          5162000.0,
+          5162000.0,
+          5162000.0
+        ],
+        "printed_norm_error": 7.862249695733681E-08
+      },
+      "angular_error_degrees": 0.2143482271796347,
+      "passed": true
+    },
+    {
+      "id": "north-summer-0621-h09",
+      "expected_solar_minute": 246750,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.730970316027251,
+          0.008029208251805309,
+          0.6823620218783206
+        ],
+        "altitude_degrees": 43.028496637184276,
+        "equation_of_time_minutes": -1.2962676901519885,
+        "declination_degrees": 23.450954791202555,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 246750
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.731227,
+          0.008223,
+          0.682085
+        ],
+        "direction_enu": [
+          0.7312268206728595,
+          0.008222997983379885,
+          0.682084832724513
+        ],
+        "rgb": [
+          5082000.0,
+          5082000.0,
+          5082000.0
+        ],
+        "printed_norm_error": 2.4524147002047414E-07
+      },
+      "angular_error_degrees": 0.024320889040308165,
+      "passed": true
+    },
+    {
+      "id": "north-summer-0621-h13",
+      "expected_solar_minute": 246990,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.1144523412619149,
+          -0.1960744811586455,
+          0.9738867795683614
+        ],
+        "altitude_degrees": 76.87747303387687,
+        "equation_of_time_minutes": -1.3328039532404348,
+        "declination_degrees": 23.452189970914223,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 246990
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.114177,
+          -0.196116,
+          0.973911
+        ],
+        "direction_enu": [
+          -0.11417697095874861,
+          -0.1961159501173261,
+          0.97391075228291
+        ],
+        "rgb": [
+          5163000.0,
+          5163000.0,
+          5163000.0
+        ],
+        "printed_norm_error": 2.543529675769207E-07
+      },
+      "angular_error_degrees": 0.016014469657139083,
+      "passed": true
+    },
+    {
+      "id": "north-summer-0621-h17",
+      "expected_solar_minute": 247230,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.8454407424978049,
+          0.12175743442212317,
+          0.520004882753713
+        ],
+        "altitude_degrees": 31.33257902360413,
+        "equation_of_time_minutes": -1.3693417726261925,
+        "declination_degrees": 23.453233129565454,
+        "representative_local_hour": 16.5,
+        "expected_solar_minute": 247230
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.845404,
+          0.121654,
+          0.520089
+        ],
+        "direction_enu": [
+          -0.8454039210168743,
+          0.12165398863429416,
+          0.5200889514099118
+        ],
+        "rgb": [
+          4755000.0,
+          4755000.0,
+          4755000.0
+        ],
+        "printed_norm_error": 9.342649565091676E-08
+      },
+      "angular_error_degrees": 0.007923488735082211,
+      "passed": true
+    },
+    {
+      "id": "south-summer-1221-h09",
+      "expected_solar_minute": 510270,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          0.722512412247421,
+          -0.0010932274683522758,
+          0.691357085016213
+        ],
+        "altitude_degrees": 43.73763013690134,
+        "equation_of_time_minutes": 2.2383292231166716,
+        "declination_degrees": -23.418340943874295,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 510270
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          0.72115,
+          -0.000735,
+          0.692779
+        ],
+        "direction_enu": [
+          0.7211497816481386,
+          -0.000734999777454596,
+          0.6927787902383913
+        ],
+        "rgb": [
+          5101000.0,
+          5101000.0,
+          5101000.0
+        ],
+        "printed_norm_error": 3.027829542645577E-07
+      },
+      "angular_error_degrees": 0.11468228399449341,
+      "passed": true
+    },
+    {
+      "id": "south-summer-1221-h13",
+      "expected_solar_minute": 510510,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.12834503420688326,
+          0.1955606250579685,
+          0.9722569588958315
+        ],
+        "altitude_degrees": 76.47230312029308,
+        "equation_of_time_minutes": 2.1608380881855154,
+        "declination_degrees": -23.420098197327135,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 510510
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.130521,
+          0.194854,
+          0.972109
+        ],
+        "direction_enu": [
+          -0.13052101823130763,
+          0.19485402721740727,
+          0.9721091357851857
+        ],
+        "rgb": [
+          5165000.0,
+          5165000.0,
+          5165000.0
+        ],
+        "printed_norm_error": 1.3968100975869646E-07
+      },
+      "angular_error_degrees": 0.13135663146447438,
+      "passed": true
+    },
+    {
+      "id": "south-summer-1221-h17",
+      "expected_solar_minute": 510750,
+      "source_present": true,
+      "expected_source_present": true,
+      "noaa_reference": {
+        "direction_enu": [
+          -0.8509130571086431,
+          -0.12862424908594375,
+          0.5093159842269827
+        ],
+        "altitude_degrees": 30.618278530428814,
+        "equation_of_time_minutes": 2.0833208622079553,
+        "declination_degrees": -23.421638466266224,
+        "representative_local_hour": 16.5,
+        "expected_solar_minute": 510750
+      },
+      "actual": {
+        "diameter_degrees": 0.533,
+        "printed_direction_enu": [
+          -0.851671,
+          -0.130404,
+          0.507593
+        ],
+        "direction_enu": [
+          -0.8516712771739073,
+          -0.13040404243961132,
+          0.5075931651946998
+        ],
+        "rgb": [
+          4747000.0,
+          4747000.0,
+          4747000.0
+        ],
+        "printed_norm_error": 3.2544705308446E-07
+      },
+      "angular_error_degrees": 0.1484245063777302,
+      "passed": true
+    }
+  ],
+  "equivalent_pairs": [
+    {
+      "first": "longitude-east15-0321-h09",
+      "second": "equator-greenwich-0321-h10",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "longitude-east15-0321-h13",
+      "second": "equator-greenwich-0321-h14",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "longitude-west15-0321-h09",
+      "second": "equator-greenwich-0321-h08",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "longitude-west15-0321-h13",
+      "second": "equator-greenwich-0321-h12",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "matched-east-zone-0321-h09",
+      "second": "equator-greenwich-0321-h09",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "matched-east-zone-0321-h13",
+      "second": "equator-greenwich-0321-h13",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "matched-west-zone-0321-h09",
+      "second": "equator-greenwich-0321-h09",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "matched-west-zone-0321-h13",
+      "second": "equator-greenwich-0321-h13",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "clock-plus-one-zone-0321-h10",
+      "second": "equator-greenwich-0321-h09",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "clock-plus-one-zone-0321-h14",
+      "second": "equator-greenwich-0321-h13",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "half-hour-zone-0321-h09",
+      "second": "equator-greenwich-0321-h09",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "half-hour-zone-0321-h13",
+      "second": "equator-greenwich-0321-h13",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "artificial-hour24-east180-0321-h24",
+      "second": "artificial-hour24-west180-0321-h24",
+      "angle_degrees": 0.0,
+      "passed": true
+    },
+    {
+      "first": "artificial-hour24-east180-0322-h01",
+      "second": "artificial-hour24-west180-0322-h01",
+      "angle_degrees": 0.0,
+      "passed": true
+    }
+  ],
+  "hour24_rollover": {
+    "hour24_solar_minute": 115170,
+    "next_day_hour1_solar_minute": 115230,
+    "difference_minutes": 60,
+    "passed": true
+  },
+  "cardinal_checks": {
+    "morning_positive_east": true,
+    "afternoon_negative_east": true,
+    "near_noon_up_gt_0_95": true
+  },
+  "passed": true
+}

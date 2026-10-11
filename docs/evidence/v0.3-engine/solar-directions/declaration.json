@@ -1,0 +1,1190 @@
+{
+  "schema_version": "greenlens.solar-direction-verification.v1",
+  "declared_utc": "2026-10-11T06:16:39.9878864Z",
+  "status": "Declared before any engine execution",
+  "purpose": "Independent EPW-to-solar-direction/time/sign fixture; no illuminance or full-year accuracy claim",
+  "engine_tag": "rad6R0P2",
+  "engine_commit": "c1700d56ccb9e34e56b3512c6cce3f579430497a",
+  "gendaymtx_sha256": "07a022f4569c7815bba868148add3706aa0e120622f0e8e7c7029e7947af527d",
+  "script_sha256": "d6434f14832c5480347121d36118636e572283f73999200afd68dd54e2bf09f6",
+  "reference_source": "https://gml.noaa.gov/grad/solcalc/solareqns.PDF",
+  "engine_sources": [
+    "https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/gen/gendaymtx.c",
+    "https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/gen/sun.c"
+  ],
+  "independent_vector_angle_limit_degrees": 1.0,
+  "equivalent_offset_angle_limit_degrees": 0.0002,
+  "printed_vector_norm_limit": 2E-06,
+  "solar_id_tolerance_minutes": 0,
+  "tolerance_reason": "Independent low-order NOAA and pinned Radiance ephemerides differ; one degree detects hour/midpoint/sign mistakes without claiming exact ephemeris agreement. Exact paired relationships separately constrain sign/offset handling at printed-vector precision.",
+  "conventions": "ENU; longitude east-positive degrees; fixed UTC offset in hours (east-positive); EPW hour ending 1..24 minute60 represented at hour-0.5; non-leap ordinal, no DST or -i horizon time adjustment; geometric altitude, no refraction",
+  "horizon_scope": "Presence/absence only for declared centers more than three degrees from horizon; partial-disc horizon accuracy is outside this fixture",
+  "weather_scope": "Original non-climatic short EPWs, one or two complete local days; deliberately bypass shared full-year application importer and are not user-importable annual data. Longitude +/-180 with UTC0 is an artificial parser fixture.",
+  "fixtures": [
+    {
+      "id": "equator-greenwich",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": 0.0,
+      "utc_offset_hours": 0.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 1
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 6
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 7
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 8
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 10
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 12
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 13
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 14
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 16
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 18
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 19
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 24
+        }
+      ]
+    },
+    {
+      "id": "longitude-east15",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": 15.0,
+      "utc_offset_hours": 0.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 13
+        }
+      ]
+    },
+    {
+      "id": "longitude-west15",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": -15.0,
+      "utc_offset_hours": 0.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 13
+        }
+      ]
+    },
+    {
+      "id": "matched-east-zone",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": 30.0,
+      "utc_offset_hours": 2.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 13
+        }
+      ]
+    },
+    {
+      "id": "matched-west-zone",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": -75.0,
+      "utc_offset_hours": -5.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 13
+        }
+      ]
+    },
+    {
+      "id": "clock-plus-one-zone",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": 0.0,
+      "utc_offset_hours": 1.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 10
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 14
+        }
+      ]
+    },
+    {
+      "id": "half-hour-zone",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": 82.5,
+      "utc_offset_hours": 5.5,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 13
+        }
+      ]
+    },
+    {
+      "id": "artificial-hour24-east180",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": 180.0,
+      "utc_offset_hours": 0.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 2,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 23
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 24
+        },
+        {
+          "day": 22,
+          "month": 3,
+          "hour_ending": 1
+        },
+        {
+          "day": 22,
+          "month": 3,
+          "hour_ending": 2
+        }
+      ]
+    },
+    {
+      "id": "artificial-hour24-west180",
+      "latitude_deg_north": 0.0,
+      "longitude_deg_east": -180.0,
+      "utc_offset_hours": 0.0,
+      "first_month": 3,
+      "first_day": 21,
+      "days": 2,
+      "cases": [
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 23
+        },
+        {
+          "day": 21,
+          "month": 3,
+          "hour_ending": 24
+        },
+        {
+          "day": 22,
+          "month": 3,
+          "hour_ending": 1
+        },
+        {
+          "day": 22,
+          "month": 3,
+          "hour_ending": 2
+        }
+      ]
+    },
+    {
+      "id": "north-summer",
+      "latitude_deg_north": 35.0,
+      "longitude_deg_east": 0.0,
+      "utc_offset_hours": 0.0,
+      "first_month": 6,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 6,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 6,
+          "hour_ending": 13
+        },
+        {
+          "day": 21,
+          "month": 6,
+          "hour_ending": 17
+        }
+      ]
+    },
+    {
+      "id": "south-summer",
+      "latitude_deg_north": -35.0,
+      "longitude_deg_east": 0.0,
+      "utc_offset_hours": 0.0,
+      "first_month": 12,
+      "first_day": 21,
+      "days": 1,
+      "cases": [
+        {
+          "day": 21,
+          "month": 12,
+          "hour_ending": 9
+        },
+        {
+          "day": 21,
+          "month": 12,
+          "hour_ending": 13
+        },
+        {
+          "day": 21,
+          "month": 12,
+          "hour_ending": 17
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "id": "equator-greenwich-0321-h01",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 1,
+      "reference": {
+        "direction_enu": [
+          0.09582256233604869,
+          -0.0044544491406031,
+          -0.9953884640833487
+        ],
+        "altitude_degrees": -84.49537844633038,
+        "equation_of_time_minutes": -8.005120488194608,
+        "declination_degrees": -0.2552219798410498,
+        "representative_local_hour": 0.5,
+        "expected_solar_minute": 113790
+      },
+      "expected_source_present": false
+    },
+    {
+      "id": "equator-greenwich-0321-h06",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 6,
+      "reference": {
+        "direction_enu": [
+          0.9863233625573654,
+          -0.0030178819286640255,
+          -0.1647941651339526
+        ],
+        "altitude_degrees": -9.485277315275745,
+        "equation_of_time_minutes": -7.9412836346447175,
+        "declination_degrees": -0.17291216005138507,
+        "representative_local_hour": 5.5,
+        "expected_solar_minute": 114090
+      },
+      "expected_source_present": false
+    },
+    {
+      "id": "equator-greenwich-0321-h07",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 7,
+      "reference": {
+        "direction_enu": [
+          0.9953625373473275,
+          -0.002730587468486866,
+          0.09615593136966095
+        ],
+        "altitude_degrees": 5.517854404020167,
+        "equation_of_time_minutes": -7.928499844691224,
+        "declination_degrees": -0.15645133195568914,
+        "representative_local_hour": 6.5,
+        "expected_solar_minute": 114150
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h08",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 8,
+      "reference": {
+        "direction_enu": [
+          0.9365405305923208,
+          -0.0024432996834266845,
+          0.3505508020879585
+        ],
+        "altitude_degrees": 20.521008324535398,
+        "equation_of_time_minutes": -7.915710648161261,
+        "declination_degrees": -0.13999089923049127,
+        "representative_local_hour": 7.5,
+        "expected_solar_minute": 114210
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h09",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.8138675629828723,
+          -0.0021560187224326528,
+          0.5810464194086294
+        ],
+        "altitude_degrees": 35.52417590908281,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h10",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 10,
+      "reference": {
+        "direction_enu": [
+          0.6357070750119163,
+          -0.0018687447344179833,
+          0.7719281200817285
+        ],
+        "altitude_degrees": 50.52734948055738,
+        "equation_of_time_minutes": -7.890116149429816,
+        "declination_degrees": -0.10707124858866655,
+        "representative_local_hour": 9.5,
+        "expected_solar_minute": 114330
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h12",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 12,
+      "reference": {
+        "direction_enu": [
+          0.16446431897055527,
+          -0.0012942182728012974,
+          0.9863821839351183
+        ],
+        "altitude_degrees": 80.53358711890104,
+        "equation_of_time_minutes": -7.864500366620078,
+        "declination_degrees": -0.07415326550136672,
+        "representative_local_hour": 11.5,
+        "expected_solar_minute": 114450
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h13",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h14",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 14,
+      "reference": {
+        "direction_enu": [
+          -0.35086576908459755,
+          -0.000719721489168532,
+          0.9364254877381606
+        ],
+        "altitude_degrees": 69.45967627668298,
+        "equation_of_time_minutes": -7.838863527986831,
+        "declination_degrees": -0.041237007314349566,
+        "representative_local_hour": 13.5,
+        "expected_solar_minute": 114570
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h16",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 16,
+      "reference": {
+        "direction_enu": [
+          -0.7721427501088011,
+          -0.00014525557353706393,
+          0.6354490950148848
+        ],
+        "altitude_degrees": 39.453300968026205,
+        "equation_of_time_minutes": -7.813205861867977,
+        "declination_degrees": -0.008322531343692364,
+        "representative_local_hour": 15.5,
+        "expected_solar_minute": 114690
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h18",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 18,
+      "reference": {
+        "direction_enu": [
+          -0.9864381001008005,
+          0.000429178284650917,
+          0.1641331486188063
+        ],
+        "altitude_degrees": 9.446881021170489,
+        "equation_of_time_minutes": -7.787527596682652,
+        "declination_degrees": 0.024590105124053498,
+        "representative_local_hour": 17.5,
+        "expected_solar_minute": 114810
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "equator-greenwich-0321-h19",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 19,
+      "reference": {
+        "direction_enu": [
+          -0.9953012320939094,
+          0.0007163828206606863,
+          -0.09682429544282872
+        ],
+        "altitude_degrees": -5.556328367036471,
+        "equation_of_time_minutes": -7.7746808108427805,
+        "declination_degrees": 0.0410457156503418,
+        "representative_local_hour": 18.5,
+        "expected_solar_minute": 114870
+      },
+      "expected_source_present": false
+    },
+    {
+      "id": "equator-greenwich-0321-h24",
+      "fixture": "equator-greenwich",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 24,
+      "reference": {
+        "direction_enu": [
+          -0.16380068371491702,
+          0.0021522756288013915,
+          -0.9864911067638388
+        ],
+        "altitude_degrees": -80.57160794047599,
+        "equation_of_time_minutes": -7.710371492097333,
+        "declination_degrees": 0.12331640508554297,
+        "representative_local_hour": 23.5,
+        "expected_solar_minute": 115170
+      },
+      "expected_source_present": false
+    },
+    {
+      "id": "longitude-east15-0321-h09",
+      "fixture": "longitude-east15",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.6357498188325209,
+          -0.0021560187224326528,
+          0.7718921682707277
+        ],
+        "altitude_degrees": 50.52410929731106,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "longitude-east15-0321-h13",
+      "fixture": "longitude-east15",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          -0.3508132957158118,
+          -0.0010069660968474736,
+          0.9364448822906185
+        ],
+        "altitude_degrees": 69.46284360088902,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "longitude-west15-0321-h09",
+      "fixture": "longitude-west15",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.9365215776956816,
+          -0.0021560187224326528,
+          0.3506033172884422
+        ],
+        "altitude_degrees": 20.524221128027015,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "longitude-west15-0321-h13",
+      "fixture": "longitude-west15",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          0.16440921507007356,
+          -0.0010069660968474736,
+          0.9863917051655098
+        ],
+        "altitude_degrees": 80.53690458108012,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "matched-east-zone-0321-h09",
+      "fixture": "matched-east-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.8138675629828722,
+          -0.0021560187224326528,
+          0.5810464194086297
+        ],
+        "altitude_degrees": 35.52417590908282,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "matched-east-zone-0321-h13",
+      "fixture": "matched-east-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "matched-west-zone-0321-h09",
+      "fixture": "matched-west-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.8138675629828723,
+          -0.0021560187224326528,
+          0.5810464194086294
+        ],
+        "altitude_degrees": 35.52417590908281,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "matched-west-zone-0321-h13",
+      "fixture": "matched-west-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "clock-plus-one-zone-0321-h10",
+      "fixture": "clock-plus-one-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 10,
+      "reference": {
+        "direction_enu": [
+          0.8138355806360289,
+          -0.0018687447344179833,
+          0.5810922091062102
+        ],
+        "altitude_degrees": 35.52739952926815,
+        "equation_of_time_minutes": -7.890116149429816,
+        "declination_degrees": -0.10707124858866655,
+        "representative_local_hour": 9.5,
+        "expected_solar_minute": 114330
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "clock-plus-one-zone-0321-h14",
+      "fixture": "clock-plus-one-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 14,
+      "reference": {
+        "direction_enu": [
+          -0.09654555737353634,
+          -0.000719721489168532,
+          0.9953283063152636
+        ],
+        "altitude_degrees": 84.45956289669179,
+        "equation_of_time_minutes": -7.838863527986831,
+        "declination_degrees": -0.041237007314349566,
+        "representative_local_hour": 13.5,
+        "expected_solar_minute": 114570
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "half-hour-zone-0321-h09",
+      "fixture": "half-hour-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.8138675629828722,
+          -0.0021560187224326528,
+          0.5810464194086297
+        ],
+        "altitude_degrees": 35.52417590908282,
+        "equation_of_time_minutes": -7.902916073567948,
+        "declination_degrees": -0.12353086905053118,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 114270
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "half-hour-zone-0321-h13",
+      "fixture": "half-hour-zone",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          -0.09648985231188649,
+          -0.0010069660968474736,
+          0.9953334589071696
+        ],
+        "altitude_degrees": 84.46262150269958,
+        "equation_of_time_minutes": -7.851684565012204,
+        "declination_degrees": -0.057694917212380376,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 114510
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-east180-0321-h23",
+      "fixture": "artificial-hour24-east180",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 23,
+      "reference": {
+        "direction_enu": [
+          0.41359337119454004,
+          0.0018651148783048771,
+          0.9104597984811993
+        ],
+        "altitude_degrees": 65.56896979564486,
+        "equation_of_time_minutes": -7.723243312514551,
+        "declination_degrees": 0.10686327279070316,
+        "representative_local_hour": 22.5,
+        "expected_solar_minute": 115110
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-east180-0321-h24",
+      "fixture": "artificial-hour24-east180",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 24,
+      "reference": {
+        "direction_enu": [
+          0.16380068371491716,
+          0.0021522756288013915,
+          0.9864911067638388
+        ],
+        "altitude_degrees": 80.57160794047599,
+        "equation_of_time_minutes": -7.710371492097333,
+        "declination_degrees": 0.12331640508554297,
+        "representative_local_hour": 23.5,
+        "expected_solar_minute": 115170
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-east180-0322-h01",
+      "fixture": "artificial-hour24-east180",
+      "month": 3,
+      "day": 22,
+      "hour_ending": 1,
+      "reference": {
+        "direction_enu": [
+          -0.0971592310224935,
+          0.002439427176932973,
+          0.9952658604725505
+        ],
+        "altitude_degrees": 84.42262763932098,
+        "equation_of_time_minutes": -7.697494750525002,
+        "declination_degrees": 0.13976902029103588,
+        "representative_local_hour": 0.5,
+        "expected_solar_minute": 115230
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-east180-0322-h02",
+      "fixture": "artificial-hour24-east180",
+      "month": 3,
+      "day": 22,
+      "hour_ending": 2,
+      "reference": {
+        "direction_enu": [
+          -0.3514947299802458,
+          0.0027265693743640245,
+          0.9361858899895686
+        ],
+        "altitude_degrees": 69.42058604269369,
+        "equation_of_time_minutes": -7.684613116394925,
+        "declination_degrees": 0.15622111126374957,
+        "representative_local_hour": 1.5,
+        "expected_solar_minute": 115290
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-west180-0321-h23",
+      "fixture": "artificial-hour24-west180",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 23,
+      "reference": {
+        "direction_enu": [
+          0.4135933711945403,
+          0.0018651148783048771,
+          0.9104597984811992
+        ],
+        "altitude_degrees": 65.56896979564485,
+        "equation_of_time_minutes": -7.723243312514551,
+        "declination_degrees": 0.10686327279070316,
+        "representative_local_hour": 22.5,
+        "expected_solar_minute": 115110
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-west180-0321-h24",
+      "fixture": "artificial-hour24-west180",
+      "month": 3,
+      "day": 21,
+      "hour_ending": 24,
+      "reference": {
+        "direction_enu": [
+          0.1638006837149168,
+          0.0021522756288013915,
+          0.9864911067638388
+        ],
+        "altitude_degrees": 80.57160794047599,
+        "equation_of_time_minutes": -7.710371492097333,
+        "declination_degrees": 0.12331640508554297,
+        "representative_local_hour": 23.5,
+        "expected_solar_minute": 115170
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-west180-0322-h01",
+      "fixture": "artificial-hour24-west180",
+      "month": 3,
+      "day": 22,
+      "hour_ending": 1,
+      "reference": {
+        "direction_enu": [
+          -0.09715923102249312,
+          0.002439427176932973,
+          0.9952658604725505
+        ],
+        "altitude_degrees": 84.42262763932098,
+        "equation_of_time_minutes": -7.697494750525002,
+        "declination_degrees": 0.13976902029103588,
+        "representative_local_hour": 0.5,
+        "expected_solar_minute": 115230
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "artificial-hour24-west180-0322-h02",
+      "fixture": "artificial-hour24-west180",
+      "month": 3,
+      "day": 22,
+      "hour_ending": 2,
+      "reference": {
+        "direction_enu": [
+          -0.35149472998024645,
+          0.0027265693743640245,
+          0.9361858899895684
+        ],
+        "altitude_degrees": 69.42058604269366,
+        "equation_of_time_minutes": -7.684613116394925,
+        "declination_degrees": 0.15622111126374957,
+        "representative_local_hour": 1.5,
+        "expected_solar_minute": 115290
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "north-summer-0621-h09",
+      "fixture": "north-summer",
+      "month": 6,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.730970316027251,
+          0.008029208251805309,
+          0.6823620218783206
+        ],
+        "altitude_degrees": 43.028496637184276,
+        "equation_of_time_minutes": -1.2962676901519885,
+        "declination_degrees": 23.450954791202555,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 246750
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "north-summer-0621-h13",
+      "fixture": "north-summer",
+      "month": 6,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          -0.1144523412619149,
+          -0.1960744811586455,
+          0.9738867795683614
+        ],
+        "altitude_degrees": 76.87747303387687,
+        "equation_of_time_minutes": -1.3328039532404348,
+        "declination_degrees": 23.452189970914223,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 246990
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "north-summer-0621-h17",
+      "fixture": "north-summer",
+      "month": 6,
+      "day": 21,
+      "hour_ending": 17,
+      "reference": {
+        "direction_enu": [
+          -0.8454407424978049,
+          0.12175743442212317,
+          0.520004882753713
+        ],
+        "altitude_degrees": 31.33257902360413,
+        "equation_of_time_minutes": -1.3693417726261925,
+        "declination_degrees": 23.453233129565454,
+        "representative_local_hour": 16.5,
+        "expected_solar_minute": 247230
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "south-summer-1221-h09",
+      "fixture": "south-summer",
+      "month": 12,
+      "day": 21,
+      "hour_ending": 9,
+      "reference": {
+        "direction_enu": [
+          0.722512412247421,
+          -0.0010932274683522758,
+          0.691357085016213
+        ],
+        "altitude_degrees": 43.73763013690134,
+        "equation_of_time_minutes": 2.2383292231166716,
+        "declination_degrees": -23.418340943874295,
+        "representative_local_hour": 8.5,
+        "expected_solar_minute": 510270
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "south-summer-1221-h13",
+      "fixture": "south-summer",
+      "month": 12,
+      "day": 21,
+      "hour_ending": 13,
+      "reference": {
+        "direction_enu": [
+          -0.12834503420688326,
+          0.1955606250579685,
+          0.9722569588958315
+        ],
+        "altitude_degrees": 76.47230312029308,
+        "equation_of_time_minutes": 2.1608380881855154,
+        "declination_degrees": -23.420098197327135,
+        "representative_local_hour": 12.5,
+        "expected_solar_minute": 510510
+      },
+      "expected_source_present": true
+    },
+    {
+      "id": "south-summer-1221-h17",
+      "fixture": "south-summer",
+      "month": 12,
+      "day": 21,
+      "hour_ending": 17,
+      "reference": {
+        "direction_enu": [
+          -0.8509130571086431,
+          -0.12862424908594375,
+          0.5093159842269827
+        ],
+        "altitude_degrees": 30.618278530428814,
+        "equation_of_time_minutes": 2.0833208622079553,
+        "declination_degrees": -23.421638466266224,
+        "representative_local_hour": 16.5,
+        "expected_solar_minute": 510750
+      },
+      "expected_source_present": true
+    }
+  ],
+  "equivalent_pairs": [
+    [
+      "longitude-east15-0321-h09",
+      "equator-greenwich-0321-h10"
+    ],
+    [
+      "longitude-east15-0321-h13",
+      "equator-greenwich-0321-h14"
+    ],
+    [
+      "longitude-west15-0321-h09",
+      "equator-greenwich-0321-h08"
+    ],
+    [
+      "longitude-west15-0321-h13",
+      "equator-greenwich-0321-h12"
+    ],
+    [
+      "matched-east-zone-0321-h09",
+      "equator-greenwich-0321-h09"
+    ],
+    [
+      "matched-east-zone-0321-h13",
+      "equator-greenwich-0321-h13"
+    ],
+    [
+      "matched-west-zone-0321-h09",
+      "equator-greenwich-0321-h09"
+    ],
+    [
+      "matched-west-zone-0321-h13",
+      "equator-greenwich-0321-h13"
+    ],
+    [
+      "clock-plus-one-zone-0321-h10",
+      "equator-greenwich-0321-h09"
+    ],
+    [
+      "clock-plus-one-zone-0321-h14",
+      "equator-greenwich-0321-h13"
+    ],
+    [
+      "half-hour-zone-0321-h09",
+      "equator-greenwich-0321-h09"
+    ],
+    [
+      "half-hour-zone-0321-h13",
+      "equator-greenwich-0321-h13"
+    ],
+    [
+      "artificial-hour24-east180-0321-h24",
+      "artificial-hour24-west180-0321-h24"
+    ],
+    [
+      "artificial-hour24-east180-0322-h01",
+      "artificial-hour24-west180-0322-h01"
+    ]
+  ],
+  "exact_hour24_check": [
+    "artificial-hour24-east180-0321-h24",
+    "artificial-hour24-east180-0322-h01"
+  ],
+  "cardinal_checks": {
+    "afternoon_negative_east": "equator-greenwich-0321-h16",
+    "near_noon_up_gt_0_95": "equator-greenwich-0321-h13",
+    "morning_positive_east": "equator-greenwich-0321-h09"
+  }
+}

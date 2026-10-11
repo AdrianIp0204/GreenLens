@@ -1,6 +1,6 @@
 {
   "schema_version": "greenlens.v0.3-engine-investigation.v1",
-  "snapshot_utc": "2026-10-11T06:03:24Z",
+  "snapshot_utc": "2026-10-11T07:21:17.9145692Z",
   "release_complete": false,
   "profile_frozen": false,
   "native_platform": "Windows x64 / pinned Radiance 6.0.2",
@@ -23,15 +23,20 @@
     "Equal-solid-angle direct transmission with 1,024 and 4,096 rays passes all eleven finite-disc aperture points at elevated radiance. The 256-ray profile fails one offset edge.",
     "Angle-dependent glass direct transmission agrees with the explicit engine beam at 0, 30 and 60 degrees within 0.000724%.",
     "A 128-positive-source, 24-sensor solar transport measurement took 350.160 seconds with a sampled child peak working set of 7,798,784 bytes. Positive-source count scaling estimates 3.08 hours for annual shipping solar alone; this is not an annual measurement.",
-    "Full-year MF4 diffuse/ground ASCII sky generation produced 226,165,911 bytes in 38.579 seconds, with sampled child peak working set 249,835,520 bytes. This fits the 512 MiB scratch file limit; nine unusually-bright sky warnings are retained."
+    "Full-year MF4 diffuse/ground ASCII sky generation produced 226,165,911 bytes in 38.579 seconds, with sampled child peak working set 249,835,520 bytes. This fits the 512 MiB scratch file limit; nine unusually-bright sky warnings are retained.",
+    "Corrected Rust adapter completed 8,760 × 24 finite nonnegative lux values in 317.948 s under concurrent verification load. Peak child working set 68,231,168 B; sampled runner-plus-child 78,712,832 B; whole scratch peak 136,546,918 B. It emitted 3,733,872 of 108,404,736 finite-disc rays across 106 bounded batches. This establishes resource feasibility, not numerical acceptance.",
+    "Actual shared-service A/B shipping exports each replayed all 8,760 × 24 values through the same frozen CLI with zero observed lux differences. Caller wall times were 341.539 and 343.217 seconds. This is integration verification, not independent physical validation; the old executable did not report replay memory or scratch telemetry.",
+    "Separate horizontal-overhang and detached-context edge fixtures passed all 36 checks at 1,024 and 4,096 finite-disc samples. Independent projected-disc quadrature (16,384 to 65,536 slices) changed by at most 1.986914e-7 relative; maximum error/tolerance was 0.103019. This establishes only finite direct visibility, not diffuse transport, glazing or arbitrary-building accuracy."
   ],
   "unresolved": [
-    "The current 24-sensor, twelve-hour A matched investigation is incomplete. Hour 1912 fails one sensor by 5.308%, exceeding the frozen 5% relative threshold. No subset counts as acceptance.",
-    "The finite-disc corrected adapter is not yet integrated or replay-verified.",
-    "Full-year 24-sensor A/B, shipping/reference metrics, resource budget freeze and installed annual UI acceptance have not yet been completed."
+    "The finite-disc corrected adapter and same-recipe full-year A/B replay have completed native execution. Independent matched-sky and final numerical profile acceptance remain outstanding.",
+    "Full-year A/B shipping/reference execution completed, but A sensor s000023 DA differs by 2.27397260 percentage points, exceeding the fixed 2-point tolerance; the other 239 metric checks and all 96 UDI partition checks passed. Installed annual UI acceptance is in progress, and final scientific profile freeze remains open.",
+    "The completed twelve-hour A high-sampling centroid investigation fails at two intervals, 1912 and 6320. It is retained as failed evidence; no subset counts as acceptance.",
+    "The direct-corrected prototype has winter reflected-solar errors exceeding tolerance. Its profile remains provisional while basis/sampling are investigated.",
+    "Winter sensor 4 reference is stable at high sampling, but the full-grid MF2/ad262144 diagnostic still fails seven sensors at interval 8504 (maximum 8.28%). Intervals 1908, 1912 and 6320 pass against the retained reference. A 1,048,576-sample coefficient investigation and new actual-adapter matched references are running; numerical profile freeze remains open."
   ],
   "failed_checks_retained": [
-    "All three completed matched-sky candidate profiles fail. The first ab5 failure file uses integer-rounded diagnostic allowed_error_lux; the corrected script uses the exact max(5.0 lx, 5%) threshold.",
+    "Four completed matched-sky candidate profiles fail. The first ab5 failure file uses integer-rounded diagnostic allowed_error_lux; the corrected script uses the exact max(5.0 lx, 5%) threshold.",
     "The centroid-sun half-disc aperture check reports 0 instead of 60.830157 lx. Changing -ds cannot correct the distant-source nopart behavior.",
     "Radiance dj1 approximate square-to-disc jitter has off-centre bias and is not selected for correction.",
     "Equal-solid-angle 256-ray sampling fails an offset edge. The 1,024/4,096-ray passes do not alone freeze a production profile."
@@ -84,6 +89,39 @@
     {
       "file": "evidence/v0.3-engine/MF4-full-weather-sky-resource.json",
       "sha256": "e791cd0dc0b26c7d217a90559926da03c0089bd60dc4f2f5bc872cff9fdcd10b"
+    },
+    {
+      "sha256": "a0e02c1770e1d83fba18d06907f20764236fa0b834e7c261be068f0d5f99e996",
+      "file": "evidence/v0.3-engine/matched-A-ab8-ad65536-solar8192-weight1e9-failed.json"
+    },
+    {
+      "file": "evidence/v0.3-engine/corrected-8760h-24sensors-resource.json",
+      "sha256": "7de4620b02c71edb3326c1b9de9a9a401ee97ac5960676f234d642cd06891377"
+    },
+    {
+      "file": "evidence/v0.3-engine/corrected-MF2-interval8504-failed.json",
+      "sha256": "baeb0b66971a3e8a0e4b56d41aa2f274f3a70b0f02b8d15647e899fdb62f078c"
+    },
+    {
+      "file": "evidence/v0.3-engine/corrected-MF4-solar-interval8504-failed.json",
+      "sha256": "722e06ddf4e4e0fb66c710444da78a4730a2cda761d58c0c149e8e7e199b35c5"
+    },
+    {
+      "file": "evidence/v0.3-engine/winter-sensor4-component-convergence.json",
+      "sha256": "432a335796e3f2e1eddfdf6f431467b4b39e755d07918f60e861de1a8c240877"
+    },
+    {
+      "file": "evidence/v0.3-engine/corrected-MF2-ad262144-four-hours.json",
+      "sha256": "ef3f5db53c0f95fc1cc674dc838337c091bbe3a7c85d2baff6abacfb27c653c3"
+    },
+    {
+      "file": "evidence/v0.3-integration/corrected-annual-ab-replay.json",
+      "sha256": "0d3d4b76887f03bc883d1aa4c4d24671689ad648235b593e3eef88c11dc31015"
+    },
+    {
+      "file": "evidence/v0.3-engine/finite-context-overhang-edges.json",
+      "sha256": "a45fd12d3d1ab923943e7430fdcfe8e045fcfd646f322e6e62c7af8571c5f98e"
     }
-  ]
+  ],
+  "native_resource_feasibility": true
 }

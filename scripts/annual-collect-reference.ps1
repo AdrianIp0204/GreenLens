@@ -133,7 +133,9 @@ function Get-ReferenceAttempt([string]$Root,[int]$Index,$Attempt,[double[][]]$Di
 function Assert-ReferenceHourlyInputs([string]$Root,[int]$Index,$Check,$Sky,[string]$AllSuns){
  $culture=[Globalization.CultureInfo]::InvariantCulture;$name="hour-$Index"
  $sources=@([regex]::Matches($AllSuns,'(?s)void light solar(\d+)\s+0\s+0\s+3\s+.*?(?=\s*void light|\z)')|Where-Object{[int]$_.Groups[1].Value -eq $Index*60+30})
- if($sources.Count -ne 1){throw 'Missing/duplicate exact-midpoint source.'};$sun=$sources[0].Value
+ # Match the trusted harness Write-Input policy. The original annual source
+ # bytes and their hashes remain unchanged; only its generated text uses LF.
+ if($sources.Count -ne 1){throw 'Missing/duplicate exact-midpoint source.'};$sun=$sources[0].Value.Replace("`r`n","`n")
  if([IO.File]::ReadAllText((Read-ReferenceFile $Root "$name-sun.rad")) -cne $sun){throw 'Hourly sun differs from the hashed annual source.'}
  $data=[Text.StringBuilder]::new("1`n0 577 578`n")
  for($patch=0;$patch -lt 578;$patch++){$offset=($patch*8760+$Index)*3;$v=$Sky.values[$offset];if($v -ne $Sky.values[$offset+1] -or $v -ne $Sky.values[$offset+2]){throw 'Reference sky must be neutral.'};$null=$data.Append($v.ToString('R',$culture)).Append("`n")}

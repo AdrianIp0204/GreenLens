@@ -1,5 +1,17 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — displayed metric conventions
+
+- Added compact DA, cDA and UDI boundary and occupancy captions beside result heatmaps, sensor tables and accepted comparisons. Current derived results use the current Rust-validated settings; explicitly selected history and A/B pairs use their immutable saved settings. Pending responses do not retain a caption from the previous result. No metric arithmetic, numerical profile, evidence or camera state changed.
+- TypeScript, all 119 frontend tests and the production asset build passed. New tests cover current-versus-historical settings, inclusive UDI boundaries, midnight/daily and weighted-mask captions, and production component output. These use synthetic service data and do not establish installed-native acceptance; a fresh package is still required.
+
+## 2026-10-11 — partial reference collection and coupling evidence
+
+- Corrected an offline collector line-ending mismatch: generated hourly sources use the trusted writer's LF policy, while the original upstream annual source may use CRLF. Fifty-nine synthetic collector checks pass, including altered-radiance and lone-carriage-return rejection. Original inputs and numerical outputs are unchanged.
+- Independently collected all six recovered A/B cases at intervals 1904, 4112 and 8512: 144 of the required 576 baseline values pass the declared adjacent-rung and disjoint-half reference checks. The retained partial collection is explicitly unqualified; eighteen cases and both sensitivity families remain required. Original live scratch-size sampling limitations remain documented.
+- Both predeclared Hammersley research tuples passed their eight two-sensor coupling fixtures, with exact paired primary receipts, nonnegative per-bin differences, black residuals of zero and uniform normalization error below 0.00002%. The sensor totals, residual checks, raw-output hashes and process identities are in `evidence/v0.3-engine/hammersley-coupling.json`. Full-grid matched-sky checks, annual convergence and a production method remain unverified.
+- Hosted source `fc0b7c8` passed its native/static/package job, but three annual jobs failed the required nonnegative reflected-solar check despite successful process exits. No completed result or export was promoted. The checkpoint `evidence/v0.3-ci/fc0b7c8-annual-failure-checkpoint.json` preserves those failures and the other jobs' in-progress status at capture. This is not a passing annual CI result.
+
 ## 2026-10-11 — paired stream supervision and resource enforcement
 
 - Added a research-only primary stream generator and atomic Windows Job supervisor. The final native primitive passed 12 synthetic checks, its wrapper passed 16, and generation/native stream checks passed 9 and 3 respectively. The original inherited-pipe hang and stale open-file size failures remain retained. Exact tested sources and limits are recorded in `v0.3-paired-process-supervision.md`; these are lifecycle checks, not numerical qualification.

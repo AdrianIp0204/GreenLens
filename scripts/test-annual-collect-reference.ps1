@@ -98,6 +98,27 @@ Reject {Read-ReferenceSky $testRoot} 'bounded578x8760'
 Write-TestText 'identical-sky.mtx' "NROWS=578`nNROWS=578`nNCOLS=8760`nNCOMP=3`nFORMAT=ascii`n`n"
 Reject {Read-ReferenceSky $testRoot} 'Duplicate'
 
+# Actual upstream-style CRLF source, generated through the harness LF policy.
+# This exercises the full hourly source/sky validator without allocating8760columns.
+$hourlyIndex=1904;$hourlyName="hour-$hourlyIndex"
+$hourlySun="void light solar114270`n0`n0`n3`n1 2 3`nsolar114270 source sun114270`n0`n0`n4`n0 0 1 0.533`n"
+$hourlySky=@{values=@{}};for($patch=0;$patch -lt 578;$patch++){for($channel=0;$channel -lt 3;$channel++){$hourlySky.values[($patch*8760+$hourlyIndex)*3+$channel]=1.0}}
+Write-TestText "$hourlyName-sun.rad" $hourlySun
+Write-TestText "$hourlyName.dat" ("1`n0 577 578`n"+("1`n"*578))
+$hourlyScaled="void brightdata distribution`n4 noop $hourlyName.dat matched-basis.cal rbin`n0`n0`ndistribution glow sky_glow`n0`n0`n4 100 100 100 0`nsky_glow source dome`n0`n0`n4 0 0 1 360`n"+$hourlySun.Replace("1 2 3`n","100 200 300`n")
+Write-TestText "$hourlyName-scaled.rad" $hourlyScaled
+$hourlyCheck=@{sky_scene_sha256=(Reference-Hash $testRoot "$hourlyName-scaled.rad")}
+foreach($originalSun in @($hourlySun,$hourlySun.Replace("`n","`r`n"))){
+ $before=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($originalSun)))
+ $verified=Assert-ReferenceHourlyInputs $testRoot $hourlyIndex $hourlyCheck $hourlySky $originalSun
+ Assert-True ($verified.sun -ceq $hourlySun) 'CRLF source did not follow exact generated LF policy.'
+ Assert-True ($before -ceq [Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($originalSun)))) 'Original source text changed during verification.'
+}
+Write-TestText "$hourlyName-sun.rad" $hourlySun.Replace("1 2 3`n","1 2 4`n")
+Reject {Assert-ReferenceHourlyInputs $testRoot $hourlyIndex $hourlyCheck $hourlySky $hourlySun.Replace("`n","`r`n")} 'Hourly sun differs'
+Write-TestText "$hourlyName-sun.rad" $hourlySun
+Reject {Assert-ReferenceHourlyInputs $testRoot $hourlyIndex $hourlyCheck $hourlySky $hourlySun.Replace("`n","`r")} 'Hourly sun differs'
+
 $bins=@(Compare-ReferenceScaleBins $base.mean $base.mean)
 Assert-True ($bins.Count -eq 144 -and @($bins|Where-Object{!$_.passed}).Count -eq 0) 'Scale comparison missed a sensor/bin/channel.'
 $changed=Clone $base.mean;$changed.sensors[23].full_solar_rgb[2]+=0.01

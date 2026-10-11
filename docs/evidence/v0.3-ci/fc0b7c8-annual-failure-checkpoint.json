@@ -1,0 +1,1323 @@
+{
+  "schema_version": "greenlens.ci-annual-failure-checkpoint.v1",
+  "observed_utc": "2026-10-11T12:02:58.4794947Z",
+  "source_commit": "fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+  "run_id": 38134501350,
+  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350",
+  "run_status_at_snapshot": "in_progress",
+  "run_conclusion_at_snapshot": "",
+  "scope": "Fresh hosted Windows method4 annual numerical failures. Read-only CI/artifact inspection; no local simulation, CI cancellation, threshold change or new scientific acceptance.",
+  "adapter_version": "radiance-climate-repeated-direct-corrected/4",
+  "method_version": "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4",
+  "method_source_git_blob": "a5b5609b369ab6c2e71da673e37c690db0dd61cc",
+  "source_identity_basis": "Hosted run headSha and artifact identity; no completed annual provenance exists for these failed jobs. CLI identity is the hash reported by each executed wrapper.",
+  "earlier_native_checkpoint": "fc0b7c8-native-checkpoint.json",
+  "native_job": {
+    "id": 114455494569,
+    "conclusion": "success",
+    "completed_utc": "2026-10-11T11:40:06Z"
+  },
+  "failed_annual_jobs": [
+    {
+      "job_id": 114461040022,
+      "job_name": "annual (A, shipping)",
+      "status": "completed",
+      "conclusion": "failure",
+      "job_started_utc": "2026-10-11T11:40:09Z",
+      "job_completed_utc": "2026-10-11T11:50:46Z",
+      "failed_step": {
+        "completedAt": "2026-10-11T11:50:40Z",
+        "conclusion": "failure",
+        "name": "One complete year for the explicit alternative and profile",
+        "number": 7,
+        "startedAt": "2026-10-11T11:40:31Z",
+        "status": "completed"
+      },
+      "alternative": "A",
+      "profile": "shipping",
+      "artifact": {
+        "id": 11701695418,
+        "name": "greenlens-annual-shipping-A-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+        "compressed_bytes": 596205,
+        "github_reported_digest": "sha256:21401108060657e8cc68a2ba32bcc477717db3022d982b64269f3c6c35dc8d4b",
+        "digest_scope": "GitHub API reported archive digest; individual downloaded file bytes independently hashed below."
+      },
+      "cli_sha256": "bc31a113993c770006ab57b001d3a8568512c27120daa22da06c0a9fe797dbd9",
+      "cli_version": "greenlens-cli 0.3.0",
+      "cli_exit_code": 1,
+      "wall_seconds": 608.2081463,
+      "retained_stderr": "Job queued\r\nValidating inputs and engine\r\nPreparing visible Perez sky and luminous ground for every requested weather interval\r\nCompiling unchanged geometry with diffuse/ground coefficient receiver\r\nTracing diffuse and ground daylight coefficients; cancellation remains available\r\nMultiplying validated ASCII daylight and weather matrices\r\nTracing direct-only sky-patch coefficients for solar correction\r\nValidating every RGB value and assembling complete ordered time series\r\nRun failed; no completed result published\r\nGreenLens: Study Failed: Invalid reflected solar correction at sensor 2 interval 949; no negative residual is clamped\r\n",
+      "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 2 interval 949; no negative residual is clamped",
+      "first_reported_sensor_index": 2,
+      "first_reported_interval_index": 949,
+      "rejected_completed_result": true,
+      "saved_climate_run_count": 0,
+      "annual_export_present": false,
+      "required_native_process_records": 9,
+      "all_recorded_process_exits_zero": true,
+      "processes": [
+        {
+          "executable": "gendaymtx.exe",
+          "arguments": [
+            "-O0",
+            "-m",
+            "2",
+            "-c",
+            "1",
+            "1",
+            "1",
+            "-g",
+            "0.2",
+            "0.2",
+            "0.2",
+            "-s",
+            "annual-weather.epw"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:33.900491300+00:00",
+          "finished_utc": "2026-10-11T11:40:37.246694800+00:00",
+          "elapsed_ms": 3346,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "executable": "gendaymtx.exe",
+          "arguments": [
+            "-O0",
+            "-m",
+            "2",
+            "-d",
+            "-D",
+            "annual-suns.rad",
+            "-M",
+            "annual-sun-modifiers.txt",
+            "annual-weather.epw"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:37.251738600+00:00",
+          "finished_utc": "2026-10-11T11:40:39.378202200+00:00",
+          "elapsed_ms": 2126,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "annual-scene.rad",
+            "annual-receiver.rad"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:40.248098700+00:00",
+          "finished_utc": "2026-10-11T11:40:40.274550300+00:00",
+          "elapsed_ms": 26,
+          "stderr": ""
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "annual-scene.rad",
+            "annual-coefficient-receiver.rad"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:40.276180300+00:00",
+          "finished_utc": "2026-10-11T11:40:40.299325100+00:00",
+          "elapsed_ms": 23,
+          "stderr": ""
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "24",
+            "-ab",
+            "8",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "0.000000001",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "128",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "annual-coefficient.oct"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:40.301019700+00:00",
+          "finished_utc": "2026-10-11T11:50:12.675597300+00:00",
+          "elapsed_ms": 572375,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-coefficients.mtx",
+            "annual-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:12.683175700+00:00",
+          "finished_utc": "2026-10-11T11:50:16.127826400+00:00",
+          "elapsed_ms": 3444,
+          "stderr": ""
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "24",
+            "-ab",
+            "1",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "0.000000001",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "128",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "annual-coefficient.oct"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:16.129556400+00:00",
+          "finished_utc": "2026-10-11T11:50:33.830636800+00:00",
+          "elapsed_ms": 17701,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-coefficients.mtx",
+            "annual-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:33.834792500+00:00",
+          "finished_utc": "2026-10-11T11:50:36.925621900+00:00",
+          "elapsed_ms": 3090,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-direct-coefficients.mtx",
+            "annual-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:36.927443300+00:00",
+          "finished_utc": "2026-10-11T11:50:39.709602600+00:00",
+          "elapsed_ms": 2782,
+          "stderr": ""
+        }
+      ],
+      "observed_resources": {
+        "schema_version": "greenlens.annual-resources.v1",
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.",
+        "started_utc": "2026-10-11T11:40:33.887329900+00:00",
+        "finished_utc": "2026-10-11T11:50:39.710303600+00:00",
+        "total_wall_ms": 605824,
+        "peak_engine_working_set_bytes": 67596288,
+        "peak_observed_runner_plus_engine_working_set_bytes": 82489344,
+        "peak_scratch_bytes": 127024690,
+        "max_scratch_bytes": 2147483648,
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648,
+        "processes": [
+          {
+            "executable": "gendaymtx.exe",
+            "started_utc": "2026-10-11T11:40:33.900491300+00:00",
+            "finished_utc": "2026-10-11T11:40:37.246077400+00:00",
+            "elapsed_ms": 3345,
+            "peak_child_working_set_bytes": 66781184,
+            "peak_observed_runner_plus_child_working_set_bytes": 80818176,
+            "peak_scratch_bytes": 64911911,
+            "output_bytes": 56693520,
+            "samples": 163
+          },
+          {
+            "executable": "gendaymtx.exe",
+            "started_utc": "2026-10-11T11:40:37.251738600+00:00",
+            "finished_utc": "2026-10-11T11:40:39.334366700+00:00",
+            "elapsed_ms": 2082,
+            "peak_child_working_set_bytes": 66285568,
+            "peak_observed_runner_plus_child_working_set_bytes": 80388096,
+            "peak_scratch_bytes": 101327075,
+            "output_bytes": 35736077,
+            "samples": 102
+          },
+          {
+            "executable": "oconv.exe",
+            "started_utc": "2026-10-11T11:40:40.248098700+00:00",
+            "finished_utc": "2026-10-11T11:40:40.273669200+00:00",
+            "elapsed_ms": 25,
+            "peak_child_working_set_bytes": 4882432,
+            "peak_observed_runner_plus_child_working_set_bytes": 16936960,
+            "peak_scratch_bytes": 101332350,
+            "output_bytes": 2125,
+            "samples": 2
+          },
+          {
+            "executable": "oconv.exe",
+            "started_utc": "2026-10-11T11:40:40.276180300+00:00",
+            "finished_utc": "2026-10-11T11:40:40.298822+00:00",
+            "elapsed_ms": 22,
+            "peak_child_working_set_bytes": 4427776,
+            "peak_observed_runner_plus_child_working_set_bytes": 16912384,
+            "peak_scratch_bytes": 101335188,
+            "output_bytes": 2137,
+            "samples": 2
+          },
+          {
+            "executable": "rcontrib.exe",
+            "started_utc": "2026-10-11T11:40:40.301019700+00:00",
+            "finished_utc": "2026-10-11T11:50:12.674875+00:00",
+            "elapsed_ms": 572374,
+            "peak_child_working_set_bytes": 6348800,
+            "peak_observed_runner_plus_child_working_set_bytes": 21512192,
+            "peak_scratch_bytes": 101878135,
+            "output_bytes": 541496,
+            "samples": 27804
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:50:12.683175700+00:00",
+            "finished_utc": "2026-10-11T11:50:16.127216500+00:00",
+            "elapsed_ms": 3444,
+            "peak_child_working_set_bytes": 67596288,
+            "peak_observed_runner_plus_child_working_set_bytes": 82489344,
+            "peak_scratch_bytes": 110080290,
+            "output_bytes": 8199554,
+            "samples": 168
+          },
+          {
+            "executable": "rcontrib.exe",
+            "started_utc": "2026-10-11T11:50:16.129556400+00:00",
+            "finished_utc": "2026-10-11T11:50:33.830095800+00:00",
+            "elapsed_ms": 17700,
+            "peak_child_working_set_bytes": 5775360,
+            "peak_observed_runner_plus_child_working_set_bytes": 20750336,
+            "peak_scratch_bytes": 110621999,
+            "output_bytes": 541496,
+            "samples": 859
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:50:33.834792500+00:00",
+            "finished_utc": "2026-10-11T11:50:36.925012700+00:00",
+            "elapsed_ms": 3090,
+            "peak_child_working_set_bytes": 67125248,
+            "peak_observed_runner_plus_child_working_set_bytes": 82178048,
+            "peak_scratch_bytes": 118823399,
+            "output_bytes": 8199560,
+            "samples": 144
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:50:36.927443300+00:00",
+            "finished_utc": "2026-10-11T11:50:39.709045800+00:00",
+            "elapsed_ms": 2781,
+            "peak_child_working_set_bytes": 67125248,
+            "peak_observed_runner_plus_child_working_set_bytes": 82206720,
+            "peak_scratch_bytes": 127023696,
+            "output_bytes": 8199567,
+            "samples": 136
+          }
+        ]
+      },
+      "weather_binding": {
+        "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+        "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+      },
+      "retained_files": [
+        {
+          "path": "completed.stderr.txt",
+          "bytes": 639,
+          "sha256": "1054378c907ea51fdaabf61e59f6b78d28ad79cad090853bc3724ba3f0d6a68a"
+        },
+        {
+          "path": "completed.stdout.json",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "summary.json",
+          "bytes": 948,
+          "sha256": "be58a3b9fb6c8337433c9d5a8b3c1cea28b68139f823ac2a923b51e97e203dca"
+        },
+        {
+          "path": "project/project.json",
+          "bytes": 4115,
+          "sha256": "a823bd21ea0027abe5bc7c3e98f3b519dc937e418db67ea7e5cbb37dd4688011"
+        },
+        {
+          "path": "worker-diagnostics/26d747f7-8cab-440a-a56e-ddd544977caf/annual-logs.json",
+          "bytes": 5302,
+          "sha256": "62b105070233e39a18682f601917c5cf07346179db4abebfcea6ce4f5e82439b"
+        },
+        {
+          "path": "worker-diagnostics/26d747f7-8cab-440a-a56e-ddd544977caf/annual-resources.json",
+          "bytes": 4535,
+          "sha256": "d322416be76d71bf5d0bf00f700c76218fe22337833004e2075dca1f50c8f382"
+        }
+      ]
+    },
+    {
+      "job_id": 114461040111,
+      "job_name": "annual (B, shipping)",
+      "status": "completed",
+      "conclusion": "failure",
+      "job_started_utc": "2026-10-11T11:40:08Z",
+      "job_completed_utc": "2026-10-11T11:50:49Z",
+      "failed_step": {
+        "completedAt": "2026-10-11T11:50:43Z",
+        "conclusion": "failure",
+        "name": "One complete year for the explicit alternative and profile",
+        "number": 7,
+        "startedAt": "2026-10-11T11:40:27Z",
+        "status": "completed"
+      },
+      "alternative": "B",
+      "profile": "shipping",
+      "artifact": {
+        "id": 11701079497,
+        "name": "greenlens-annual-shipping-B-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+        "compressed_bytes": 596223,
+        "github_reported_digest": "sha256:9be7511acd270ed092c3df918760d1f41744733d77672802322e6ff5382e1c2d",
+        "digest_scope": "GitHub API reported archive digest; individual downloaded file bytes independently hashed below."
+      },
+      "cli_sha256": "bc31a113993c770006ab57b001d3a8568512c27120daa22da06c0a9fe797dbd9",
+      "cli_version": "greenlens-cli 0.3.0",
+      "cli_exit_code": 1,
+      "wall_seconds": 615.4814038,
+      "retained_stderr": "Job queued\r\nValidating inputs and engine\r\nPreparing visible Perez sky and luminous ground for every requested weather interval\r\nCompiling unchanged geometry with diffuse/ground coefficient receiver\r\nTracing diffuse and ground daylight coefficients; cancellation remains available\r\nMultiplying validated ASCII daylight and weather matrices\r\nTracing direct-only sky-patch coefficients for solar correction\r\nValidating every RGB value and assembling complete ordered time series\r\nRun failed; no completed result published\r\nGreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 5960; no negative residual is clamped\r\n",
+      "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 5960; no negative residual is clamped",
+      "first_reported_sensor_index": 1,
+      "first_reported_interval_index": 5960,
+      "rejected_completed_result": true,
+      "saved_climate_run_count": 0,
+      "annual_export_present": false,
+      "required_native_process_records": 9,
+      "all_recorded_process_exits_zero": true,
+      "processes": [
+        {
+          "executable": "gendaymtx.exe",
+          "arguments": [
+            "-O0",
+            "-m",
+            "2",
+            "-c",
+            "1",
+            "1",
+            "1",
+            "-g",
+            "0.2",
+            "0.2",
+            "0.2",
+            "-s",
+            "annual-weather.epw"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:30.041658+00:00",
+          "finished_utc": "2026-10-11T11:40:33.569277700+00:00",
+          "elapsed_ms": 3527,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "executable": "gendaymtx.exe",
+          "arguments": [
+            "-O0",
+            "-m",
+            "2",
+            "-d",
+            "-D",
+            "annual-suns.rad",
+            "-M",
+            "annual-sun-modifiers.txt",
+            "annual-weather.epw"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:33.572013800+00:00",
+          "finished_utc": "2026-10-11T11:40:35.839229+00:00",
+          "elapsed_ms": 2267,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "annual-scene.rad",
+            "annual-receiver.rad"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:36.757998600+00:00",
+          "finished_utc": "2026-10-11T11:40:36.783686500+00:00",
+          "elapsed_ms": 25,
+          "stderr": ""
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "annual-scene.rad",
+            "annual-coefficient-receiver.rad"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:36.785511800+00:00",
+          "finished_utc": "2026-10-11T11:40:36.808688200+00:00",
+          "elapsed_ms": 23,
+          "stderr": ""
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "24",
+            "-ab",
+            "8",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "0.000000001",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "128",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "annual-coefficient.oct"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:36.810774200+00:00",
+          "finished_utc": "2026-10-11T11:50:15.651584700+00:00",
+          "elapsed_ms": 578838,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-coefficients.mtx",
+            "annual-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:15.656747100+00:00",
+          "finished_utc": "2026-10-11T11:50:18.581939700+00:00",
+          "elapsed_ms": 2925,
+          "stderr": ""
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "24",
+            "-ab",
+            "1",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "0.000000001",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "128",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "annual-coefficient.oct"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:18.584259400+00:00",
+          "finished_utc": "2026-10-11T11:50:36.067068800+00:00",
+          "elapsed_ms": 17482,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-coefficients.mtx",
+            "annual-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:36.071235400+00:00",
+          "finished_utc": "2026-10-11T11:50:38.441639400+00:00",
+          "elapsed_ms": 2370,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-direct-coefficients.mtx",
+            "annual-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:50:38.443667100+00:00",
+          "finished_utc": "2026-10-11T11:50:43.422616200+00:00",
+          "elapsed_ms": 4978,
+          "stderr": ""
+        }
+      ],
+      "observed_resources": {
+        "schema_version": "greenlens.annual-resources.v1",
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.",
+        "started_utc": "2026-10-11T11:40:30.031851700+00:00",
+        "finished_utc": "2026-10-11T11:50:43.423394600+00:00",
+        "total_wall_ms": 613388,
+        "peak_engine_working_set_bytes": 67600384,
+        "peak_observed_runner_plus_engine_working_set_bytes": 82669568,
+        "peak_scratch_bytes": 127025065,
+        "max_scratch_bytes": 2147483648,
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648,
+        "processes": [
+          {
+            "executable": "gendaymtx.exe",
+            "started_utc": "2026-10-11T11:40:30.041658+00:00",
+            "finished_utc": "2026-10-11T11:40:33.568679500+00:00",
+            "elapsed_ms": 3526,
+            "peak_child_working_set_bytes": 66736128,
+            "peak_observed_runner_plus_child_working_set_bytes": 80683008,
+            "peak_scratch_bytes": 64912039,
+            "output_bytes": 56693520,
+            "samples": 172
+          },
+          {
+            "executable": "gendaymtx.exe",
+            "started_utc": "2026-10-11T11:40:33.572013800+00:00",
+            "finished_utc": "2026-10-11T11:40:35.838575100+00:00",
+            "elapsed_ms": 2266,
+            "peak_child_working_set_bytes": 66293760,
+            "peak_observed_runner_plus_child_working_set_bytes": 80232448,
+            "peak_scratch_bytes": 101327199,
+            "output_bytes": 35736077,
+            "samples": 111
+          },
+          {
+            "executable": "oconv.exe",
+            "started_utc": "2026-10-11T11:40:36.757998600+00:00",
+            "finished_utc": "2026-10-11T11:40:36.783189400+00:00",
+            "elapsed_ms": 25,
+            "peak_child_working_set_bytes": 4874240,
+            "peak_observed_runner_plus_child_working_set_bytes": 16703488,
+            "peak_scratch_bytes": 101332592,
+            "output_bytes": 2249,
+            "samples": 2
+          },
+          {
+            "executable": "oconv.exe",
+            "started_utc": "2026-10-11T11:40:36.785511800+00:00",
+            "finished_utc": "2026-10-11T11:40:36.808187600+00:00",
+            "elapsed_ms": 22,
+            "peak_child_working_set_bytes": 4423680,
+            "peak_observed_runner_plus_child_working_set_bytes": 16896000,
+            "peak_scratch_bytes": 101335554,
+            "output_bytes": 2261,
+            "samples": 2
+          },
+          {
+            "executable": "rcontrib.exe",
+            "started_utc": "2026-10-11T11:40:36.810774200+00:00",
+            "finished_utc": "2026-10-11T11:50:15.650822400+00:00",
+            "elapsed_ms": 578837,
+            "peak_child_working_set_bytes": 6373376,
+            "peak_observed_runner_plus_child_working_set_bytes": 21430272,
+            "peak_scratch_bytes": 101878507,
+            "output_bytes": 541496,
+            "samples": 28125
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:50:15.656747100+00:00",
+            "finished_utc": "2026-10-11T11:50:18.581175400+00:00",
+            "elapsed_ms": 2924,
+            "peak_child_working_set_bytes": 67600384,
+            "peak_observed_runner_plus_child_working_set_bytes": 82669568,
+            "peak_scratch_bytes": 110080668,
+            "output_bytes": 8199554,
+            "samples": 143
+          },
+          {
+            "executable": "rcontrib.exe",
+            "started_utc": "2026-10-11T11:50:18.584259400+00:00",
+            "finished_utc": "2026-10-11T11:50:36.066503700+00:00",
+            "elapsed_ms": 17482,
+            "peak_child_working_set_bytes": 5771264,
+            "peak_observed_runner_plus_child_working_set_bytes": 20692992,
+            "peak_scratch_bytes": 110622374,
+            "output_bytes": 541496,
+            "samples": 842
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:50:36.071235400+00:00",
+            "finished_utc": "2026-10-11T11:50:38.441064500+00:00",
+            "elapsed_ms": 2369,
+            "peak_child_working_set_bytes": 67129344,
+            "peak_observed_runner_plus_child_working_set_bytes": 82173952,
+            "peak_scratch_bytes": 118823774,
+            "output_bytes": 8199560,
+            "samples": 116
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:50:38.443667100+00:00",
+            "finished_utc": "2026-10-11T11:50:43.422055600+00:00",
+            "elapsed_ms": 4978,
+            "peak_child_working_set_bytes": 67112960,
+            "peak_observed_runner_plus_child_working_set_bytes": 82169856,
+            "peak_scratch_bytes": 127024071,
+            "output_bytes": 8199567,
+            "samples": 243
+          }
+        ]
+      },
+      "weather_binding": {
+        "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+        "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+      },
+      "retained_files": [
+        {
+          "path": "completed.stderr.txt",
+          "bytes": 640,
+          "sha256": "e1b9af0cc7e1ba9a159ca810ba4d97dce0a03bdcde9bc33cc4fa43d229272de1"
+        },
+        {
+          "path": "completed.stdout.json",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "summary.json",
+          "bytes": 948,
+          "sha256": "b2adc156bb8c87fc6b36a7b053f18923cc5798ddbcb366bc1ab9c4987cc48d94"
+        },
+        {
+          "path": "project/project.json",
+          "bytes": 4115,
+          "sha256": "bcac30288bed9ad1ebfebbe5334db26d127972f379a862f66f9423b47fc97f37"
+        },
+        {
+          "path": "worker-diagnostics/55e9968e-a7c9-44f3-b1f0-c315e47641c7/annual-logs.json",
+          "bytes": 5296,
+          "sha256": "d7fee5a0a0edb91719dd1ed18d8ecbc084c938b5e7b86f9120e234fa9b91e304"
+        },
+        {
+          "path": "worker-diagnostics/55e9968e-a7c9-44f3-b1f0-c315e47641c7/annual-resources.json",
+          "bytes": 4538,
+          "sha256": "d2ef0376cee373525505bdb32e07bfecec567a8959259c97febeb3c4d3b11663"
+        }
+      ]
+    },
+    {
+      "job_id": 114461040088,
+      "job_name": "annual (B, reference)",
+      "status": "completed",
+      "conclusion": "failure",
+      "job_started_utc": "2026-10-11T11:40:08Z",
+      "job_completed_utc": "2026-10-11T11:55:51Z",
+      "failed_step": {
+        "completedAt": "2026-10-11T11:55:46Z",
+        "conclusion": "failure",
+        "name": "One complete year for the explicit alternative and profile",
+        "number": 7,
+        "startedAt": "2026-10-11T11:40:22Z",
+        "status": "completed"
+      },
+      "alternative": "B",
+      "profile": "reference",
+      "artifact": {
+        "id": 11701596902,
+        "name": "greenlens-annual-reference-B-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+        "compressed_bytes": 596237,
+        "github_reported_digest": "sha256:1375bbfc6602613cc432d25d90fde7e885d0f80037a23c126b6f4a971d8b3cc1",
+        "digest_scope": "GitHub API reported archive digest; individual downloaded file bytes independently hashed below."
+      },
+      "cli_sha256": "bc31a113993c770006ab57b001d3a8568512c27120daa22da06c0a9fe797dbd9",
+      "cli_version": "greenlens-cli 0.3.0",
+      "cli_exit_code": 1,
+      "wall_seconds": 922.6871822,
+      "retained_stderr": "Job queued\r\nValidating inputs and engine\r\nPreparing visible Perez sky and luminous ground for every requested weather interval\r\nCompiling unchanged geometry with diffuse/ground coefficient receiver\r\nTracing diffuse and ground daylight coefficients; cancellation remains available\r\nMultiplying validated ASCII daylight and weather matrices\r\nTracing direct-only sky-patch coefficients for solar correction\r\nValidating every RGB value and assembling complete ordered time series\r\nRun failed; no completed result published\r\nGreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 705; no negative residual is clamped\r\n",
+      "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 705; no negative residual is clamped",
+      "first_reported_sensor_index": 1,
+      "first_reported_interval_index": 705,
+      "rejected_completed_result": true,
+      "saved_climate_run_count": 0,
+      "annual_export_present": false,
+      "required_native_process_records": 9,
+      "all_recorded_process_exits_zero": true,
+      "processes": [
+        {
+          "executable": "gendaymtx.exe",
+          "arguments": [
+            "-O0",
+            "-m",
+            "4",
+            "-c",
+            "1",
+            "1",
+            "1",
+            "-g",
+            "0.2",
+            "0.2",
+            "0.2",
+            "-s",
+            "annual-weather.epw"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:25.269272300+00:00",
+          "finished_utc": "2026-10-11T11:40:34.857506500+00:00",
+          "elapsed_ms": 9588,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "executable": "gendaymtx.exe",
+          "arguments": [
+            "-O0",
+            "-m",
+            "4",
+            "-d",
+            "-D",
+            "annual-suns.rad",
+            "-M",
+            "annual-sun-modifiers.txt",
+            "annual-weather.epw"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:34.858766500+00:00",
+          "finished_utc": "2026-10-11T11:40:40.777924100+00:00",
+          "elapsed_ms": 5919,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "annual-scene.rad",
+            "annual-receiver.rad"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:42.813947600+00:00",
+          "finished_utc": "2026-10-11T11:40:42.842010700+00:00",
+          "elapsed_ms": 28,
+          "stderr": ""
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "annual-scene.rad",
+            "annual-coefficient-receiver.rad"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:42.843082+00:00",
+          "finished_utc": "2026-10-11T11:40:42.865169200+00:00",
+          "elapsed_ms": 22,
+          "stderr": ""
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "24",
+            "-ab",
+            "9",
+            "-ad",
+            "65536",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "0.000000001",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "32",
+            "-V+",
+            "-e",
+            "MF:4",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "annual-coefficient.oct"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:40:42.866331800+00:00",
+          "finished_utc": "2026-10-11T11:55:02.349344800+00:00",
+          "elapsed_ms": 859466,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-coefficients.mtx",
+            "annual-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:55:02.356262100+00:00",
+          "finished_utc": "2026-10-11T11:55:10.520757200+00:00",
+          "elapsed_ms": 8164,
+          "stderr": ""
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "24",
+            "-ab",
+            "1",
+            "-ad",
+            "65536",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "0.000000001",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "32",
+            "-V+",
+            "-e",
+            "MF:4",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "annual-coefficient.oct"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:55:10.522003200+00:00",
+          "finished_utc": "2026-10-11T11:55:32.037639800+00:00",
+          "elapsed_ms": 21515,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-coefficients.mtx",
+            "annual-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:55:32.043604300+00:00",
+          "finished_utc": "2026-10-11T11:55:39.186992300+00:00",
+          "elapsed_ms": 7143,
+          "stderr": ""
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "annual-direct-coefficients.mtx",
+            "annual-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "started_utc": "2026-10-11T11:55:39.188150900+00:00",
+          "finished_utc": "2026-10-11T11:55:46.203680800+00:00",
+          "elapsed_ms": 7015,
+          "stderr": ""
+        }
+      ],
+      "observed_resources": {
+        "schema_version": "greenlens.annual-resources.v1",
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.",
+        "started_utc": "2026-10-11T11:40:25.262276100+00:00",
+        "finished_utc": "2026-10-11T11:55:46.204161600+00:00",
+        "total_wall_ms": 920924,
+        "peak_engine_working_set_bytes": 249757696,
+        "peak_observed_runner_plus_engine_working_set_bytes": 264740864,
+        "peak_scratch_bytes": 405651001,
+        "max_scratch_bytes": 2147483648,
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648,
+        "processes": [
+          {
+            "executable": "gendaymtx.exe",
+            "started_utc": "2026-10-11T11:40:25.269272300+00:00",
+            "finished_utc": "2026-10-11T11:40:34.857038600+00:00",
+            "elapsed_ms": 9587,
+            "peak_child_working_set_bytes": 248938496,
+            "peak_observed_runner_plus_child_working_set_bytes": 261271552,
+            "peak_scratch_bytes": 234312251,
+            "output_bytes": 226165921,
+            "samples": 469
+          },
+          {
+            "executable": "gendaymtx.exe",
+            "started_utc": "2026-10-11T11:40:34.858766500+00:00",
+            "finished_utc": "2026-10-11T11:40:40.777182800+00:00",
+            "elapsed_ms": 5918,
+            "peak_child_working_set_bytes": 248897536,
+            "peak_observed_runner_plus_child_working_set_bytes": 261197824,
+            "peak_scratch_bytes": 376718310,
+            "output_bytes": 141726966,
+            "samples": 290
+          },
+          {
+            "executable": "oconv.exe",
+            "started_utc": "2026-10-11T11:40:42.813947600+00:00",
+            "finished_utc": "2026-10-11T11:40:42.841687+00:00",
+            "elapsed_ms": 27,
+            "peak_child_working_set_bytes": 4878336,
+            "peak_observed_runner_plus_child_working_set_bytes": 16859136,
+            "peak_scratch_bytes": 376723715,
+            "output_bytes": 2249,
+            "samples": 2
+          },
+          {
+            "executable": "oconv.exe",
+            "started_utc": "2026-10-11T11:40:42.843082+00:00",
+            "finished_utc": "2026-10-11T11:40:42.864845600+00:00",
+            "elapsed_ms": 21,
+            "peak_child_working_set_bytes": 4431872,
+            "peak_observed_runner_plus_child_working_set_bytes": 16781312,
+            "peak_scratch_bytes": 376726668,
+            "output_bytes": 2261,
+            "samples": 2
+          },
+          {
+            "executable": "rcontrib.exe",
+            "started_utc": "2026-10-11T11:40:42.866331800+00:00",
+            "finished_utc": "2026-10-11T11:55:02.348845200+00:00",
+            "elapsed_ms": 859466,
+            "peak_child_working_set_bytes": 13754368,
+            "peak_observed_runner_plus_child_working_set_bytes": 28704768,
+            "peak_scratch_bytes": 378887021,
+            "output_bytes": 2158905,
+            "samples": 41971
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:55:02.356262100+00:00",
+            "finished_utc": "2026-10-11T11:55:10.520347600+00:00",
+            "elapsed_ms": 8163,
+            "peak_child_working_set_bytes": 249757696,
+            "peak_observed_runner_plus_child_working_set_bytes": 264740864,
+            "peak_scratch_bytes": 387089185,
+            "output_bytes": 8199554,
+            "samples": 399
+          },
+          {
+            "executable": "rcontrib.exe",
+            "started_utc": "2026-10-11T11:55:10.522003200+00:00",
+            "finished_utc": "2026-10-11T11:55:32.037194500+00:00",
+            "elapsed_ms": 21514,
+            "peak_child_working_set_bytes": 13164544,
+            "peak_observed_runner_plus_child_working_set_bytes": 28176384,
+            "peak_scratch_bytes": 389248302,
+            "output_bytes": 2158905,
+            "samples": 1047
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:55:32.043604300+00:00",
+            "finished_utc": "2026-10-11T11:55:39.186579100+00:00",
+            "elapsed_ms": 7142,
+            "peak_child_working_set_bytes": 249286656,
+            "peak_observed_runner_plus_child_working_set_bytes": 264196096,
+            "peak_scratch_bytes": 397449706,
+            "output_bytes": 8199560,
+            "samples": 349
+          },
+          {
+            "executable": "dctimestep.exe",
+            "started_utc": "2026-10-11T11:55:39.188150900+00:00",
+            "finished_utc": "2026-10-11T11:55:46.203280900+00:00",
+            "elapsed_ms": 7015,
+            "peak_child_working_set_bytes": 249286656,
+            "peak_observed_runner_plus_child_working_set_bytes": 264364032,
+            "peak_scratch_bytes": 405650005,
+            "output_bytes": 8199567,
+            "samples": 343
+          }
+        ]
+      },
+      "weather_binding": {
+        "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+        "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+      },
+      "retained_files": [
+        {
+          "path": "completed.stderr.txt",
+          "bytes": 639,
+          "sha256": "957363a66ea6f443682b1470122e55ff1fb621322aa613589cb30a7ca6d2ade4"
+        },
+        {
+          "path": "completed.stdout.json",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "summary.json",
+          "bytes": 949,
+          "sha256": "e1a403efe010b8c32a132487b2bfb033d15bd8aa3bb887c59a13eee31de6a583"
+        },
+        {
+          "path": "project/project.json",
+          "bytes": 4116,
+          "sha256": "05a2199bb5b8b1aba38eea2d629b3f227c7e1fef04a52f8ca7545ba535079335"
+        },
+        {
+          "path": "worker-diagnostics/3148d4fc-b8bd-46cb-82c6-edef9e459b6d/annual-logs.json",
+          "bytes": 5299,
+          "sha256": "482fb65c229f5c9d869d16ad7074b401fcf3b7092951f36d759dc82837b33e69"
+        },
+        {
+          "path": "worker-diagnostics/3148d4fc-b8bd-46cb-82c6-edef9e459b6d/annual-resources.json",
+          "bytes": 4555,
+          "sha256": "584f94a678625c801142cf2b3f3f7f0b459d9a31a9733f78172e678a35c1dfe1"
+        }
+      ]
+    }
+  ],
+  "other_jobs_at_snapshot": [
+    {
+      "id": 114461040024,
+      "name": "selected_hour",
+      "status": "in_progress",
+      "conclusion": "",
+      "started_utc": "2026-10-11T11:40:07Z"
+    },
+    {
+      "id": 114461040134,
+      "name": "annual (A, reference)",
+      "status": "in_progress",
+      "conclusion": "",
+      "started_utc": "2026-10-11T11:40:09Z"
+    }
+  ],
+  "inspection": {
+    "commands": [
+      "gh run view 38134501350 --repo AdrianIp0204/GreenLens --json databaseId,headSha,status,conclusion,jobs,url",
+      "gh api repos/AdrianIp0204/GreenLens/actions/runs/38134501350/artifacts",
+      "gh api repos/AdrianIp0204/GreenLens/actions/jobs/<job-id>/logs",
+      "gh run download 38134501350 --repo AdrianIp0204/GreenLens --name <exact-artifact-name> --dir <new-local-audit-directory>"
+    ],
+    "artifact_file_hash_algorithm": "SHA-256",
+    "local_retention": "The original downloaded artifact files and complete job log text remain outside the source checkout. This checkpoint retains compact sanitized diagnostics only.",
+    "no_scripts_from_artifacts_executed": true
+  },
+  "limitations": [
+    "Only the first rejected sensor/interval is reported by each CLI failure; no numerical residual magnitude or complete failure-array claim is inferred from these artifacts.",
+    "The native foundations success does not make this workflow or release successful. Full annual A/B convergence, replay dependencies and scientific acceptance remain unsatisfied.",
+    "The still-running job states are observations at the retained snapshot, not predictions. No running CI was cancelled.",
+    "The resource measurement policy strings are preserved exactly as emitted by this historical hosted binary; they are not rewritten to imply later supervision changes."
+  ],
+  "acceptance": {
+    "required_ci_passed": false,
+    "annual_accuracy_accepted": false,
+    "release_complete": false
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "greenlens.release-artifacts.v0.2",
+  "generated_utc": "2026-10-11T02:36:41.7811628Z",
+  "acceptance_status": "native_interaction_failures_under_investigation",
+  "application_source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+  "source_build_clean": true,
+  "signed": false,
+  "engine_included": false,
+  "artifact_directory": "%LOCALAPPDATA%/GreenLens/releases/0.2.0/20261011-workspace-candidate",
+  "installed_application": "%LOCALAPPDATA%/Programs/GreenLens/greenlens-desktop.exe",
+  "installed_desktop_sha256": "3160a0f1cf1f6c7c15f53cd14babf94aa8da48cd382b06ca5d8c7b638da2771c",
+  "cli_sha256": "d2f4431131744206833cf858cc425ac255a5f3ef980cba91a8ff9f72b581e8eb",
+  "saved_example": "synthetic-a-b-project/project.json",
+  "source_example": "examples/synthetic-a.json",
+  "artifacts": [
+    {
+      "file": "GreenLens_0.2.0_x64-setup.exe",
+      "bytes": 2676043,
+      "sha256": "25973324f80179d32ffa88d02355b25303719b7317ac469b02abc8e8b9ab7eeb"
+    },
+    {
+      "file": "GreenLens-CLI-0.2.0-windows-x64.zip",
+      "bytes": 1434147,
+      "sha256": "e8995ef185bae630e740aeea7e2801e30b96e122d5c658e66641ae59ce1a4588"
+    },
+    {
+      "file": "GreenLens-synthetic-a-b-evidence.zip",
+      "bytes": 94518,
+      "sha256": "1157bcdb31826b548a4143480ae4558c09211d0f3fbce0d0159d7836c6579959"
+    },
+    {
+      "file": "report.html",
+      "bytes": 85266,
+      "sha256": "d3edfb86410ca0bdd6953d3a69a316f63455de1fecf9b563f91f99bf86317fb2"
+    }
+  ],
+  "checks": {
+    "inventory_packages": 358,
+    "notice_texts": 196,
+    "review_gaps": 0,
+    "actual_nsis_components_verified": true,
+    "distributed_cli_doctor_passed": true,
+    "distributed_cli_reopened_copied_project": true,
+    "cli_zip_entries": 28,
+    "portable_example_files": 23,
+    "native_export_checksummed_files": 26,
+    "native_export_reader_structural_limits_passed": true,
+    "private_path_scan_passed": true,
+    "final_installed_run_observed_source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+    "final_installed_run_source_worktree_dirty": false,
+    "final_installed_run_id": "d11834a5-88f6-40eb-9963-cf809110c32b",
+    "display_layers_scene_byte_invariance": true
+  },
+  "evidence": {
+    "scientific": "v0.2-science-evidence.json",
+    "scientific_record": "v0.2-scientific-verification.md",
+    "native": "v0.2-native-verification.md",
+    "ci_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38103259502",
+    "ci_status": "passed for bb0456c candidate; subsequent native interaction failures require repair and new verification",
+    "native_required_demonstrations": "user reported modifier selection and held-drag Escape failures; repair and native retest required",
+    "native_export_final_cli_replay": "passed: 2 runs, 77 sensors each, maximum absolute error 0 lx",
+    "v01_export_final_cli_replay": "passed: 2 historical runs, 77 sensors each, maximum absolute error 0 lx"
+  },
+  "notes": [
+    "The saved example and evidence ZIP retain the actual native A/B run snapshots from the earlier b7b8d32 dirty candidate; their provenance was not rewritten to the final package commit.",
+    "The directory is named candidate until all required native and CI acceptance items have evidence. Historical v0.1 artifacts are preserved separately.",
+    "A separate clean-machine installation and signing have not been performed."
+  ]
+}

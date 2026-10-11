@@ -1,7 +1,7 @@
 {
   "schema_version": "greenlens.native-verification.v0.2",
   "observed_date_utc": "2026-10-11",
-  "acceptance_status": "user_reported_modifier_selection_and_drag_escape_failures",
+  "acceptance_status": "repaired_candidate04_installed_native_retest_pending",
   "method": "Installed per-user production Tauri application, embedded frontend, actual shared Rust backend and native Radiance; no development server",
   "environment": {
     "os": "Windows 11 Home",
@@ -16,27 +16,6 @@
     "webview_dpr": 1.25,
     "display_settings_changed": false,
     "clean_machine_tested": false
-  },
-  "final_candidate": {
-    "source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
-    "source_worktree_dirty": false,
-    "identity_source": "Actual completed installed-app run provenance.json",
-    "application_version": "0.2.0",
-    "scientific_schema_version": "0.1.0",
-    "installer_sha256": "25973324f80179d32ffa88d02355b25303719b7317ac469b02abc8e8b9ab7eeb",
-    "installed_desktop_sha256": "3160a0f1cf1f6c7c15f53cd14babf94aa8da48cd382b06ca5d8c7b638da2771c",
-    "cli_sha256": "d2f4431131744206833cf858cc425ac255a5f3ef980cba91a8ff9f72b581e8eb",
-    "installer_exit_code": 0,
-    "signed": false,
-    "fresh_completed_run": "d11834a5-88f6-40eb-9963-cf809110c32b",
-    "started_utc": "2026-10-11T02:00:56.794526700+00:00",
-    "finished_utc": "2026-10-11T02:05:00.051816600+00:00",
-    "required_process_exit_codes": [
-      0,
-      0,
-      0
-    ],
-    "sensors": 77
   },
   "earlier_native_ab_candidate": {
     "source_commit": "b7b8d324e60790fdf863e6ce79811a60add695f2",
@@ -133,18 +112,26 @@
     {
       "file": "native-v02-evidence.zip",
       "sha256": "1157bcdb31826b548a4143480ae4558c09211d0f3fbce0d0159d7836c6579959",
-      "final_cli_replay": "passed",
       "runs": 2,
       "sensors_each": 77,
-      "max_absolute_error_lux": 0
+      "max_absolute_error_lux": 0,
+      "candidate03_cli_replay": {
+        "status": "passed",
+        "source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+        "cli_sha256": "d2f4431131744206833cf858cc425ac255a5f3ef980cba91a8ff9f72b581e8eb"
+      }
     },
     {
       "file": "relocated-v01-v02-export.zip",
       "sha256": "b73d03e3d4c06d0d1589f0cae0729df1dc2eb23525ccc1958171c8a6e84959b7",
-      "final_cli_replay": "passed",
       "runs": 2,
       "sensors_each": 77,
-      "max_absolute_error_lux": 0
+      "max_absolute_error_lux": 0,
+      "candidate03_cli_replay": {
+        "status": "passed",
+        "source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+        "cli_sha256": "d2f4431131744206833cf858cc425ac255a5f3ef980cba91a8ff9f72b581e8eb"
+      }
     },
     {
       "file": "final-candidate-evidence.zip",
@@ -179,7 +166,10 @@
     "21-final-hidden-selection-rejected.png",
     "22-final-undo-lock-rejected.png",
     "23-final-redo-lock-rejected.png",
-    "24-manual-gesture-handoff.png"
+    "24-manual-gesture-handoff.png",
+    "25-before-candidate04-preserved-work.png",
+    "26-candidate04-text-escape-chooser-preserved.png",
+    "27-candidate04-gesture-retest-ready.png"
   ],
   "human_observation": {
     "status": "investigation and native retest required",
@@ -188,5 +178,93 @@
     "date_utc": "2026-10-11",
     "modifier_selection": "reported not working",
     "right_button_navigation": "not explicitly confirmed"
+  },
+  "historical_candidate_03": {
+    "source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+    "source_worktree_dirty": false,
+    "identity_source": "Actual completed installed-app run provenance.json",
+    "application_version": "0.2.0",
+    "scientific_schema_version": "0.1.0",
+    "installer_sha256": "25973324f80179d32ffa88d02355b25303719b7317ac469b02abc8e8b9ab7eeb",
+    "installed_desktop_sha256": "3160a0f1cf1f6c7c15f53cd14babf94aa8da48cd382b06ca5d8c7b638da2771c",
+    "cli_sha256": "d2f4431131744206833cf858cc425ac255a5f3ef980cba91a8ff9f72b581e8eb",
+    "installer_exit_code": 0,
+    "signed": false,
+    "fresh_completed_run": "d11834a5-88f6-40eb-9963-cf809110c32b",
+    "started_utc": "2026-10-11T02:00:56.794526700+00:00",
+    "finished_utc": "2026-10-11T02:05:00.051816600+00:00",
+    "required_process_exit_codes": [
+      0,
+      0,
+      0
+    ],
+    "sensors": 77,
+    "status": "superseded after user-reported native gesture failures; immutable evidence retained"
+  },
+  "current_candidate_04": {
+    "source_commit_asserted": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+    "source_worktree_dirty_asserted": false,
+    "actual_new_run_provenance": "pending fresh native A/B after gesture retest",
+    "installed_utc": "2026-10-11T02:49:40.0296565Z",
+    "installer_exit_code": 0,
+    "installer_sha256": "d2bdc0a69b8501c9f38599b0387ad2dfd407098f0779d6c80fcf134863cd09c3",
+    "installed_desktop_sha256": "8ccbc2ad518f991e8ba7a6cd7db8cfed5fe0aacf2fb7ef9e12127e05ecdaa657",
+    "cli_sha256": "02ea24b42311b7967afe26b6606cedd77a6840deace99406e40267723228595e",
+    "signed": false,
+    "frontend_tests_passed": 47,
+    "native_chooser_text_escape": "passed: chooser and selected window retained, width1.8m unchanged, Undo disabled",
+    "fresh_native_ab": "not started; waiting for required gesture retest",
+    "preserved_prior_work": {
+      "files": 35,
+      "all_copy_sha256_equal": true,
+      "original_saved_before_close": true
+    },
+    "handoff": {
+      "saved": true,
+      "selected": "window",
+      "tool": "move",
+      "window_center_x_m": 2,
+      "window_sill_m": 0.9,
+      "window_width_m": 1.8,
+      "window_height_m": 1.5,
+      "undo_enabled": false,
+      "redo_enabled": false,
+      "active_job": false,
+      "modal_open": false,
+      "native_input_paused": true
+    }
+  },
+  "human_retest_candidate04": {
+    "status": "pending",
+    "groups": [
+      "Perspective RMB orbit, Shift+RMB pan and orthographic RMB pan",
+      "Shift-add and Ctrl-remove selection",
+      "Escape during held handle drag"
+    ]
+  },
+  "native_checks_scope": "Unless explicitly candidate04, these observations belong to historical installed candidates01-03. Candidate03 reported modifier/held-Escape failures are retained separately.",
+  "candidate04_cli_v01_replay": {
+    "status": "passed",
+    "source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+    "cli_sha256": "02ea24b42311b7967afe26b6606cedd77a6840deace99406e40267723228595e",
+    "archive": "relocated-v01-v02-export.zip",
+    "archive_sha256": "b73d03e3d4c06d0d1589f0cae0729df1dc2eb23525ccc1958171c8a6e84959b7",
+    "raw_report": "candidate04-cli-v01-replay.json",
+    "checks": [
+      {
+        "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+        "sensors": 77,
+        "max_absolute_error_lux": 0,
+        "passed": true
+      },
+      {
+        "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+        "sensors": 77,
+        "max_absolute_error_lux": 0,
+        "passed": true
+      }
+    ],
+    "verification": "same-engine integration, not independent physical validation",
+    "scope": "Candidate04 CLI compatibility replay only; repaired desktop gestures and fresh installed A/B remain pending"
   }
 }

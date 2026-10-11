@@ -1,0 +1,5448 @@
+{
+  "schema_version": "greenlens.moderate-transport-pilot.v1",
+  "snapshot_utc": "2026-10-11T09:34:24.5622485Z",
+  "scope": "Two difficult B sensors, all twelve fixed intervals. Component and cost pilot only; candidate/ref tuples change ad, repeats and bounce depth. No qualified reference or full-grid acceptance is inferred.",
+  "release_acceptance_complete": false,
+  "profile_frozen": false,
+  "cases": {
+    "ship": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-transport-probe.v1",
+        "scope": "Bounded transport pilot; not accepted scientific profile",
+        "declared_utc": "2026-10-11T09:19:23.1217302Z",
+        "phase": "diffuse",
+        "ambient_divisions": 8192,
+        "ambient_bounces": 8,
+        "primary_repetitions": 128,
+        "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+        "source_receiver_scale": 100,
+        "ray_depth": -16,
+        "original_sensor_indices": [
+          15,
+          22
+        ],
+        "sensor_ids": [
+          "s000016",
+          "s000023"
+        ],
+        "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "primary_input_sha256": "5180d26a0eff60d5c7e80601fa9ee45753b7c8d44178a84a34bf1e07a18fe003",
+        "intervals": [
+          {
+            "condition": "overcast",
+            "index": 1904
+          },
+          {
+            "condition": "mixed",
+            "index": 1908
+          },
+          {
+            "condition": "mixed",
+            "index": 1912
+          },
+          {
+            "condition": "mixed",
+            "index": 4112
+          },
+          {
+            "condition": "mixed",
+            "index": 4116
+          },
+          {
+            "condition": "mixed",
+            "index": 4120
+          },
+          {
+            "condition": "clear",
+            "index": 6320
+          },
+          {
+            "condition": "mixed",
+            "index": 6324
+          },
+          {
+            "condition": "mixed",
+            "index": 6328
+          },
+          {
+            "condition": "clear",
+            "index": 8504
+          },
+          {
+            "condition": "clear",
+            "index": 8508
+          },
+          {
+            "condition": "clear",
+            "index": 8512
+          }
+        ],
+        "source_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+          "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+          "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+          "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+          "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+        },
+        "engine_sha256": {
+          "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+          "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+        },
+        "ray_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "128",
+          "-ab",
+          "8",
+          "-ad",
+          "8192",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            1.023396,
+            1.023396,
+            1.023396
+          ],
+          "lux": 183.187884
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            2.351456,
+            2.351456,
+            2.351456
+          ],
+          "lux": 420.91062400000004
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            1.647475,
+            1.647475,
+            1.647475
+          ],
+          "lux": 294.898025
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            1.431782,
+            1.431782,
+            1.431782
+          ],
+          "lux": 256.28897800000004
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            1.8191909999999998,
+            1.8191909999999998,
+            1.8191909999999998
+          ],
+          "lux": 325.63518899999997
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            1.556183,
+            1.556183,
+            1.556183
+          ],
+          "lux": 278.55675700000006
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            1.5961539999999999,
+            1.5961539999999999,
+            1.5961539999999999
+          ],
+          "lux": 285.71156599999995
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            2.587092,
+            2.587092,
+            2.587092
+          ],
+          "lux": 463.089468
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            1.5007130000000002,
+            1.5007130000000002,
+            1.5007130000000002
+          ],
+          "lux": 268.6276270000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            1.322517,
+            1.322517,
+            1.322517
+          ],
+          "lux": 236.73054299999998
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            3.3126499999999997,
+            3.3126499999999997,
+            3.3126499999999997
+          ],
+          "lux": 592.96435
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            1.6225630000000002,
+            1.6225630000000002,
+            1.6225630000000002
+          ],
+          "lux": 290.438777
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.7244963,
+            0.7244963,
+            0.7244963
+          ],
+          "lux": 129.6848377
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            1.5254699999999999,
+            1.5254699999999999,
+            1.5254699999999999
+          ],
+          "lux": 273.05913
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.9606169,
+            0.9606169,
+            0.9606169
+          ],
+          "lux": 171.95042510000002
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.9719656000000001,
+            0.9719656000000001,
+            0.9719656000000001
+          ],
+          "lux": 173.9818424
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            1.198524,
+            1.198524,
+            1.198524
+          ],
+          "lux": 214.53579599999998
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.9914574,
+            0.9914574,
+            0.9914574
+          ],
+          "lux": 177.47087460000003
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            1.139748,
+            1.139748,
+            1.139748
+          ],
+          "lux": 204.014892
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            1.714156,
+            1.714156,
+            1.714156
+          ],
+          "lux": 306.83392399999997
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.9012926,
+            0.9012926,
+            0.9012926
+          ],
+          "lux": 161.3313754
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            1.027963,
+            1.027963,
+            1.027963
+          ],
+          "lux": 184.00537699999998
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            2.22899,
+            2.22899,
+            2.22899
+          ],
+          "lux": 398.98921
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.8299557,
+            0.8299557,
+            0.8299557
+          ],
+          "lux": 148.56207030000002
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "coefficient-receiver.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:19:23.4292019Z",
+          "finished_utc": "2026-10-11T09:19:23.6373359Z",
+          "wall_seconds": 0.2002469,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 2247,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "128",
+            "-ab",
+            "8",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "coefficients.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:19:23.7003664Z",
+          "finished_utc": "2026-10-11T09:21:20.0375058Z",
+          "wall_seconds": 116.3369595,
+          "sampled_peak_working_set_bytes": 6770688,
+          "output_bytes": 45505,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "coefficients-scaled.mtx",
+            "selected-skies.mtx"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:21:20.0477402Z",
+          "finished_utc": "2026-10-11T09:21:20.1408055Z",
+          "wall_seconds": 0.0929857,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1109,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "c37718a3b3cf64a03524ba52b9013739996d3b98b8e7f0595e1bedddfddd800f"
+    },
+    "ref": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-transport-probe.v1",
+        "scope": "Bounded transport pilot; not accepted scientific profile",
+        "declared_utc": "2026-10-11T09:19:22.0726792Z",
+        "phase": "diffuse",
+        "ambient_divisions": 65536,
+        "ambient_bounces": 9,
+        "primary_repetitions": 32,
+        "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+        "source_receiver_scale": 100,
+        "ray_depth": -16,
+        "original_sensor_indices": [
+          15,
+          22
+        ],
+        "sensor_ids": [
+          "s000016",
+          "s000023"
+        ],
+        "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "primary_input_sha256": "51bc0f24e033aefa30b192bf435a9f96f6b0d7841fa0261459f14dbbdf652a78",
+        "intervals": [
+          {
+            "condition": "overcast",
+            "index": 1904
+          },
+          {
+            "condition": "mixed",
+            "index": 1908
+          },
+          {
+            "condition": "mixed",
+            "index": 1912
+          },
+          {
+            "condition": "mixed",
+            "index": 4112
+          },
+          {
+            "condition": "mixed",
+            "index": 4116
+          },
+          {
+            "condition": "mixed",
+            "index": 4120
+          },
+          {
+            "condition": "clear",
+            "index": 6320
+          },
+          {
+            "condition": "mixed",
+            "index": 6324
+          },
+          {
+            "condition": "mixed",
+            "index": 6328
+          },
+          {
+            "condition": "clear",
+            "index": 8504
+          },
+          {
+            "condition": "clear",
+            "index": 8508
+          },
+          {
+            "condition": "clear",
+            "index": 8512
+          }
+        ],
+        "source_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+          "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+          "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+          "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+          "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+        },
+        "engine_sha256": {
+          "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+          "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+        },
+        "ray_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "32",
+          "-ab",
+          "9",
+          "-ad",
+          "65536",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            1.03709,
+            1.03709,
+            1.03709
+          ],
+          "lux": 185.63911000000002
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            2.367676,
+            2.367676,
+            2.367676
+          ],
+          "lux": 423.81400399999995
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            1.668744,
+            1.668744,
+            1.668744
+          ],
+          "lux": 298.70517600000005
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            1.44669,
+            1.44669,
+            1.44669
+          ],
+          "lux": 258.95751
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            1.836444,
+            1.836444,
+            1.836444
+          ],
+          "lux": 328.723476
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            1.5728460000000002,
+            1.5728460000000002,
+            1.5728460000000002
+          ],
+          "lux": 281.539434
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            1.6186660000000002,
+            1.6186660000000002,
+            1.6186660000000002
+          ],
+          "lux": 289.74121400000007
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            2.607725,
+            2.607725,
+            2.607725
+          ],
+          "lux": 466.78277499999996
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            1.52086,
+            1.52086,
+            1.52086
+          ],
+          "lux": 272.23394
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            1.349829,
+            1.349829,
+            1.349829
+          ],
+          "lux": 241.61939099999998
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            3.3251139999999997,
+            3.3251139999999997,
+            3.3251139999999997
+          ],
+          "lux": 595.195406
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            1.643235,
+            1.643235,
+            1.643235
+          ],
+          "lux": 294.139065
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.7169625000000001,
+            0.7169625000000001,
+            0.7169625000000001
+          ],
+          "lux": 128.33628750000003
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            1.514532,
+            1.514532,
+            1.514532
+          ],
+          "lux": 271.101228
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.9626379,
+            0.9626379,
+            0.9626379
+          ],
+          "lux": 172.3121841
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.9640656,
+            0.9640656,
+            0.9640656
+          ],
+          "lux": 172.56774240000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            1.1913120000000001,
+            1.1913120000000001,
+            1.1913120000000001
+          ],
+          "lux": 213.24484800000008
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.9871470999999999,
+            0.9871470999999999,
+            0.9871470999999999
+          ],
+          "lux": 176.69933089999998
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            1.129981,
+            1.129981,
+            1.129981
+          ],
+          "lux": 202.26659899999999
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            1.7018719999999998,
+            1.7018719999999998,
+            1.7018719999999998
+          ],
+          "lux": 304.635088
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.9027683000000001,
+            0.9027683000000001,
+            0.9027683000000001
+          ],
+          "lux": 161.5955257
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            1.015648,
+            1.015648,
+            1.015648
+          ],
+          "lux": 181.800992
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            2.204609,
+            2.204609,
+            2.204609
+          ],
+          "lux": 394.6250110000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.8374491999999999,
+            0.8374491999999999,
+            0.8374491999999999
+          ],
+          "lux": 149.9034068
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "coefficient-receiver.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:19:22.3507584Z",
+          "finished_utc": "2026-10-11T09:19:22.537143Z",
+          "wall_seconds": 0.1801015,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 2247,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "32",
+            "-ab",
+            "9",
+            "-ad",
+            "65536",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "coefficients.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:19:22.6097489Z",
+          "finished_utc": "2026-10-11T09:23:29.7695104Z",
+          "wall_seconds": 247.1596212,
+          "sampled_peak_working_set_bytes": 14094336,
+          "output_bytes": 45505,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "coefficients-scaled.mtx",
+            "selected-skies.mtx"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:23:29.775615Z",
+          "finished_utc": "2026-10-11T09:23:29.871597Z",
+          "wall_seconds": 0.0958578,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1109,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "92e81d6d21a0869d1ee871efa7ef83bb9a3c95db83f0dacbe77d8e652519a902"
+    },
+    "solar1024": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-transport-probe.v1",
+        "scope": "Bounded transport pilot; not accepted scientific profile",
+        "declared_utc": "2026-10-11T09:19:22.804452Z",
+        "phase": "solar",
+        "ambient_divisions": 1024,
+        "ambient_bounces": 8,
+        "primary_repetitions": 1,
+        "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+        "source_receiver_scale": 1,
+        "ray_depth": -16,
+        "original_sensor_indices": [
+          15,
+          22
+        ],
+        "sensor_ids": [
+          "s000016",
+          "s000023"
+        ],
+        "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "primary_input_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "intervals": [
+          {
+            "condition": "overcast",
+            "index": 1904
+          },
+          {
+            "condition": "mixed",
+            "index": 1908
+          },
+          {
+            "condition": "mixed",
+            "index": 1912
+          },
+          {
+            "condition": "mixed",
+            "index": 4112
+          },
+          {
+            "condition": "mixed",
+            "index": 4116
+          },
+          {
+            "condition": "mixed",
+            "index": 4120
+          },
+          {
+            "condition": "clear",
+            "index": 6320
+          },
+          {
+            "condition": "mixed",
+            "index": 6324
+          },
+          {
+            "condition": "mixed",
+            "index": 6328
+          },
+          {
+            "condition": "clear",
+            "index": 8504
+          },
+          {
+            "condition": "clear",
+            "index": 8508
+          },
+          {
+            "condition": "clear",
+            "index": 8512
+          }
+        ],
+        "source_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+          "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+          "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+          "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+          "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+        },
+        "engine_sha256": {
+          "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+          "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+        },
+        "ray_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "1",
+          "-ab",
+          "8",
+          "-ad",
+          "1024",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            0.008462969,
+            0.008462969,
+            0.008462969
+          ],
+          "lux": 1.514871451
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            0.00418737,
+            0.00418737,
+            0.00418737
+          ],
+          "lux": 0.74953923
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            0.03155798,
+            0.03155798,
+            0.03155798
+          ],
+          "lux": 5.648878420000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            0.09001077,
+            0.09001077,
+            0.09001077
+          ],
+          "lux": 16.11192783
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            0.01219032,
+            0.01219032,
+            0.01219032
+          ],
+          "lux": 2.18206728
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            0.03366833,
+            0.03366833,
+            0.03366833
+          ],
+          "lux": 6.0266310700000005
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            0.8594677,
+            0.8594677,
+            0.8594677
+          ],
+          "lux": 153.84471829999998
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            0.7014267,
+            0.7014267,
+            0.7014267
+          ],
+          "lux": 125.55537930000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            0.3475538,
+            0.3475538,
+            0.3475538
+          ],
+          "lux": 62.212130200000004
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.006866345,
+            0.006866345,
+            0.006866345
+          ],
+          "lux": 1.229075755
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            0.004040573,
+            0.004040573,
+            0.004040573
+          ],
+          "lux": 0.723262567
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.02972263,
+            0.02972263,
+            0.02972263
+          ],
+          "lux": 5.32035077
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            0.07616427,
+            0.07616427,
+            0.07616427
+          ],
+          "lux": 13.633404330000003
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            0.005950381,
+            0.005950381,
+            0.005950381
+          ],
+          "lux": 1.065118199
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.02639202,
+            0.02639202,
+            0.02639202
+          ],
+          "lux": 4.72417158
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            0.6322442,
+            0.6322442,
+            0.6322442
+          ],
+          "lux": 113.17171180000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            0.3934539,
+            0.3934539,
+            0.3934539
+          ],
+          "lux": 70.4282481
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.2497697,
+            0.2497697,
+            0.2497697
+          ],
+          "lux": 44.708776300000004
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "selected-suns.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:19:23.1278634Z",
+          "finished_utc": "2026-10-11T09:19:23.3345518Z",
+          "wall_seconds": 0.2004102,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 3021,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "8",
+            "-ad",
+            "1024",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:19:23.399609Z",
+          "finished_utc": "2026-10-11T09:19:24.0086207Z",
+          "wall_seconds": 0.6088576,
+          "sampled_peak_working_set_bytes": 6258688,
+          "output_bytes": 1318,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1024",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:19:24.0370431Z",
+          "finished_utc": "2026-10-11T09:19:24.2216508Z",
+          "wall_seconds": 0.1844425,
+          "sampled_peak_working_set_bytes": 6180864,
+          "output_bytes": 1318,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "808966f84eeda199d33d5b1f00b2879c5513e1c97437a0f8b10498ac3961f464"
+    },
+    "solar4096": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-transport-probe.v1",
+        "scope": "Bounded transport pilot; not accepted scientific profile",
+        "declared_utc": "2026-10-11T09:20:59.055675Z",
+        "phase": "solar",
+        "ambient_divisions": 4096,
+        "ambient_bounces": 8,
+        "primary_repetitions": 1,
+        "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+        "source_receiver_scale": 1,
+        "ray_depth": -16,
+        "original_sensor_indices": [
+          15,
+          22
+        ],
+        "sensor_ids": [
+          "s000016",
+          "s000023"
+        ],
+        "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "primary_input_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "intervals": [
+          {
+            "condition": "overcast",
+            "index": 1904
+          },
+          {
+            "condition": "mixed",
+            "index": 1908
+          },
+          {
+            "condition": "mixed",
+            "index": 1912
+          },
+          {
+            "condition": "mixed",
+            "index": 4112
+          },
+          {
+            "condition": "mixed",
+            "index": 4116
+          },
+          {
+            "condition": "mixed",
+            "index": 4120
+          },
+          {
+            "condition": "clear",
+            "index": 6320
+          },
+          {
+            "condition": "mixed",
+            "index": 6324
+          },
+          {
+            "condition": "mixed",
+            "index": 6328
+          },
+          {
+            "condition": "clear",
+            "index": 8504
+          },
+          {
+            "condition": "clear",
+            "index": 8508
+          },
+          {
+            "condition": "clear",
+            "index": 8512
+          }
+        ],
+        "source_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+          "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+          "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+          "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+          "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+        },
+        "engine_sha256": {
+          "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+          "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+        },
+        "ray_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "1",
+          "-ab",
+          "8",
+          "-ad",
+          "4096",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            0.006933493,
+            0.006933493,
+            0.006933493
+          ],
+          "lux": 1.241095247
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            0.008350157,
+            0.008350157,
+            0.008350157
+          ],
+          "lux": 1.494678103
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            0.02972388,
+            0.02972388,
+            0.02972388
+          ],
+          "lux": 5.320574520000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            0.06608253,
+            0.06608253,
+            0.06608253
+          ],
+          "lux": 11.82877287
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            0.02089997,
+            0.02089997,
+            0.02089997
+          ],
+          "lux": 3.7410946299999996
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            0.03041419,
+            0.03041419,
+            0.03041419
+          ],
+          "lux": 5.44414001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            0.9946474,
+            0.9946474,
+            0.9946474
+          ],
+          "lux": 178.0418846
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            0.6337559,
+            0.6337559,
+            0.6337559
+          ],
+          "lux": 113.44230610000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            0.367793,
+            0.367793,
+            0.367793
+          ],
+          "lux": 65.834947
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.006451616,
+            0.006451616,
+            0.006451616
+          ],
+          "lux": 1.1548392640000003
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            0.003867831,
+            0.003867831,
+            0.003867831
+          ],
+          "lux": 0.692341749
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.02427527,
+            0.02427527,
+            0.02427527
+          ],
+          "lux": 4.34527333
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            0.06923122,
+            0.06923122,
+            0.06923122
+          ],
+          "lux": 12.39238838
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            0.009233709,
+            0.009233709,
+            0.009233709
+          ],
+          "lux": 1.6528339110000003
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.02350411,
+            0.02350411,
+            0.02350411
+          ],
+          "lux": 4.20723569
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            0.6150481,
+            0.6150481,
+            0.6150481
+          ],
+          "lux": 110.09360990000002
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            0.3981003,
+            0.3981003,
+            0.3981003
+          ],
+          "lux": 71.25995370000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.211167,
+            0.211167,
+            0.211167
+          ],
+          "lux": 37.798893
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "selected-suns.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:20:59.3151248Z",
+          "finished_utc": "2026-10-11T09:20:59.4928869Z",
+          "wall_seconds": 0.1715738,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 3021,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "8",
+            "-ad",
+            "4096",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:20:59.5570728Z",
+          "finished_utc": "2026-10-11T09:21:01.2747534Z",
+          "wall_seconds": 1.7175192,
+          "sampled_peak_working_set_bytes": 6934528,
+          "output_bytes": 1318,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "4096",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:21:01.3002013Z",
+          "finished_utc": "2026-10-11T09:21:01.4668144Z",
+          "wall_seconds": 0.1664807,
+          "sampled_peak_working_set_bytes": 6189056,
+          "output_bytes": 1318,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "a12f5f7fb4b35ccfe45790d0edd9ce54a9acdb0295a5d38113e6a776e43c1701"
+    },
+    "solar8192": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-transport-probe.v1",
+        "scope": "Bounded transport pilot; not accepted scientific profile",
+        "declared_utc": "2026-10-11T09:20:59.0778516Z",
+        "phase": "solar",
+        "ambient_divisions": 8192,
+        "ambient_bounces": 8,
+        "primary_repetitions": 1,
+        "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+        "source_receiver_scale": 1,
+        "ray_depth": -16,
+        "original_sensor_indices": [
+          15,
+          22
+        ],
+        "sensor_ids": [
+          "s000016",
+          "s000023"
+        ],
+        "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "primary_input_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "intervals": [
+          {
+            "condition": "overcast",
+            "index": 1904
+          },
+          {
+            "condition": "mixed",
+            "index": 1908
+          },
+          {
+            "condition": "mixed",
+            "index": 1912
+          },
+          {
+            "condition": "mixed",
+            "index": 4112
+          },
+          {
+            "condition": "mixed",
+            "index": 4116
+          },
+          {
+            "condition": "mixed",
+            "index": 4120
+          },
+          {
+            "condition": "clear",
+            "index": 6320
+          },
+          {
+            "condition": "mixed",
+            "index": 6324
+          },
+          {
+            "condition": "mixed",
+            "index": 6328
+          },
+          {
+            "condition": "clear",
+            "index": 8504
+          },
+          {
+            "condition": "clear",
+            "index": 8508
+          },
+          {
+            "condition": "clear",
+            "index": 8512
+          }
+        ],
+        "source_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+          "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+          "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+          "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+          "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+        },
+        "engine_sha256": {
+          "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+          "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+        },
+        "ray_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "1",
+          "-ab",
+          "8",
+          "-ad",
+          "8192",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            0.007187418,
+            0.007187418,
+            0.007187418
+          ],
+          "lux": 1.286547822
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            0.005724703,
+            0.005724703,
+            0.005724703
+          ],
+          "lux": 1.0247218370000002
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            0.03081596,
+            0.03081596,
+            0.03081596
+          ],
+          "lux": 5.516056840000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            0.08222628,
+            0.08222628,
+            0.08222628
+          ],
+          "lux": 14.718504120000002
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            0.01586076,
+            0.01586076,
+            0.01586076
+          ],
+          "lux": 2.83907604
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            0.03023449,
+            0.03023449,
+            0.03023449
+          ],
+          "lux": 5.411973709999999
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            0.8735002,
+            0.8735002,
+            0.8735002
+          ],
+          "lux": 156.35653580000002
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            0.6366123,
+            0.6366123,
+            0.6366123
+          ],
+          "lux": 113.95360170000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            0.3619284,
+            0.3619284,
+            0.3619284
+          ],
+          "lux": 64.7851836
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.006386674,
+            0.006386674,
+            0.006386674
+          ],
+          "lux": 1.1432146460000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            0.003384593,
+            0.003384593,
+            0.003384593
+          ],
+          "lux": 0.605842147
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.02402603,
+            0.02402603,
+            0.02402603
+          ],
+          "lux": 4.300659370000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            0.06502899,
+            0.06502899,
+            0.06502899
+          ],
+          "lux": 11.64018921
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            0.008426676,
+            0.008426676,
+            0.008426676
+          ],
+          "lux": 1.5083750040000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.02570276,
+            0.02570276,
+            0.02570276
+          ],
+          "lux": 4.600794040000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            0.5484396,
+            0.5484396,
+            0.5484396
+          ],
+          "lux": 98.1706884
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            0.4231314,
+            0.4231314,
+            0.4231314
+          ],
+          "lux": 75.7405206
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.217159,
+            0.217159,
+            0.217159
+          ],
+          "lux": 38.871461
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "selected-suns.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:20:59.3491461Z",
+          "finished_utc": "2026-10-11T09:20:59.5377358Z",
+          "wall_seconds": 0.1827279,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 3021,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "8",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:20:59.6016309Z",
+          "finished_utc": "2026-10-11T09:21:02.9869233Z",
+          "wall_seconds": 3.3850586,
+          "sampled_peak_working_set_bytes": 6856704,
+          "output_bytes": 1318,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:21:03.0167648Z",
+          "finished_utc": "2026-10-11T09:21:03.1797702Z",
+          "wall_seconds": 0.1628519,
+          "sampled_peak_working_set_bytes": 6184960,
+          "output_bytes": 1318,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "fd9a1ce9e707d27daadca69833a8ec478918dc003be5fb659d3deee6f4c68905"
+    },
+    "solar16384": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-transport-probe.v1",
+        "scope": "Bounded transport pilot; not accepted scientific profile",
+        "declared_utc": "2026-10-11T09:23:01.195901Z",
+        "phase": "solar",
+        "ambient_divisions": 16384,
+        "ambient_bounces": 9,
+        "primary_repetitions": 1,
+        "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+        "source_receiver_scale": 1,
+        "ray_depth": -16,
+        "original_sensor_indices": [
+          15,
+          22
+        ],
+        "sensor_ids": [
+          "s000016",
+          "s000023"
+        ],
+        "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "primary_input_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "intervals": [
+          {
+            "condition": "overcast",
+            "index": 1904
+          },
+          {
+            "condition": "mixed",
+            "index": 1908
+          },
+          {
+            "condition": "mixed",
+            "index": 1912
+          },
+          {
+            "condition": "mixed",
+            "index": 4112
+          },
+          {
+            "condition": "mixed",
+            "index": 4116
+          },
+          {
+            "condition": "mixed",
+            "index": 4120
+          },
+          {
+            "condition": "clear",
+            "index": 6320
+          },
+          {
+            "condition": "mixed",
+            "index": 6324
+          },
+          {
+            "condition": "mixed",
+            "index": 6328
+          },
+          {
+            "condition": "clear",
+            "index": 8504
+          },
+          {
+            "condition": "clear",
+            "index": 8508
+          },
+          {
+            "condition": "clear",
+            "index": 8512
+          }
+        ],
+        "source_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+          "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+          "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+          "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+          "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+        },
+        "engine_sha256": {
+          "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+          "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+        },
+        "ray_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "1",
+          "-ab",
+          "9",
+          "-ad",
+          "16384",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            0.009344712,
+            0.009344712,
+            0.009344712
+          ],
+          "lux": 1.672703448
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            0.008639683,
+            0.008639683,
+            0.008639683
+          ],
+          "lux": 1.5465032569999997
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            0.03271036,
+            0.03271036,
+            0.03271036
+          ],
+          "lux": 5.85515444
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            1.273645E-06,
+            1.273645E-06,
+            1.273645E-06
+          ],
+          "lux": 0.00022798245500000003
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            0.09688624,
+            0.09688624,
+            0.09688624
+          ],
+          "lux": 17.34263696
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            0.01785671,
+            0.01785671,
+            0.01785671
+          ],
+          "lux": 3.1963510900000007
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            0.03212386,
+            0.03212386,
+            0.03212386
+          ],
+          "lux": 5.750170939999999
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            0.8692462,
+            0.8692462,
+            0.8692462
+          ],
+          "lux": 155.5950698
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            0.6290601,
+            0.6290601,
+            0.6290601
+          ],
+          "lux": 112.6017579
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            0.3662496,
+            0.3662496,
+            0.3662496
+          ],
+          "lux": 65.5586784
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.00549915,
+            0.00549915,
+            0.00549915
+          ],
+          "lux": 0.98434785
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            0.005426532,
+            0.005426532,
+            0.005426532
+          ],
+          "lux": 0.9713492280000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.02419987,
+            0.02419987,
+            0.02419987
+          ],
+          "lux": 4.3317767300000005
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            0.06014844,
+            0.06014844,
+            0.06014844
+          ],
+          "lux": 10.766570759999999
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            0.01240902,
+            0.01240902,
+            0.01240902
+          ],
+          "lux": 2.22121458
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.02299991,
+            0.02299991,
+            0.02299991
+          ],
+          "lux": 4.116983889999999
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            0.57279,
+            0.57279,
+            0.57279
+          ],
+          "lux": 102.52941
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            0.4217961,
+            0.4217961,
+            0.4217961
+          ],
+          "lux": 75.50150190000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.2330302,
+            0.2330302,
+            0.2330302
+          ],
+          "lux": 41.7124058
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "selected-suns.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:23:01.4271316Z",
+          "finished_utc": "2026-10-11T09:23:01.9735474Z",
+          "wall_seconds": 0.5398949,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 3021,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "9",
+            "-ad",
+            "16384",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:23:02.0420301Z",
+          "finished_utc": "2026-10-11T09:23:09.768564Z",
+          "wall_seconds": 7.7263739,
+          "sampled_peak_working_set_bytes": 7888896,
+          "output_bytes": 1319,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "16384",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:23:09.7878016Z",
+          "finished_utc": "2026-10-11T09:23:09.8960161Z",
+          "wall_seconds": 0.1081035,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1319,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "3c6c12e91ddfc2df9cac39220141c2d4b02cc4985392d1ba035121c7cb4a0380"
+    },
+    "solar32768": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-transport-probe.v1",
+        "scope": "Bounded transport pilot; not accepted scientific profile",
+        "declared_utc": "2026-10-11T09:23:01.2340175Z",
+        "phase": "solar",
+        "ambient_divisions": 32768,
+        "ambient_bounces": 9,
+        "primary_repetitions": 1,
+        "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+        "source_receiver_scale": 1,
+        "ray_depth": -16,
+        "original_sensor_indices": [
+          15,
+          22
+        ],
+        "sensor_ids": [
+          "s000016",
+          "s000023"
+        ],
+        "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "primary_input_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+        "intervals": [
+          {
+            "condition": "overcast",
+            "index": 1904
+          },
+          {
+            "condition": "mixed",
+            "index": 1908
+          },
+          {
+            "condition": "mixed",
+            "index": 1912
+          },
+          {
+            "condition": "mixed",
+            "index": 4112
+          },
+          {
+            "condition": "mixed",
+            "index": 4116
+          },
+          {
+            "condition": "mixed",
+            "index": 4120
+          },
+          {
+            "condition": "clear",
+            "index": 6320
+          },
+          {
+            "condition": "mixed",
+            "index": 6324
+          },
+          {
+            "condition": "mixed",
+            "index": 6328
+          },
+          {
+            "condition": "clear",
+            "index": 8504
+          },
+          {
+            "condition": "clear",
+            "index": 8508
+          },
+          {
+            "condition": "clear",
+            "index": 8512
+          }
+        ],
+        "source_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+          "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+          "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+          "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+          "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+        },
+        "engine_sha256": {
+          "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+          "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+        },
+        "ray_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "1",
+          "-ab",
+          "9",
+          "-ad",
+          "32768",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            0.009127524,
+            0.009127524,
+            0.009127524
+          ],
+          "lux": 1.633826796
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            0.009403376,
+            0.009403376,
+            0.009403376
+          ],
+          "lux": 1.6832043040000002
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            0.03090843,
+            0.03090843,
+            0.03090843
+          ],
+          "lux": 5.532608970000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            0.09238755,
+            0.09238755,
+            0.09238755
+          ],
+          "lux": 16.53737145
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            0.01969963,
+            0.01969963,
+            0.01969963
+          ],
+          "lux": 3.5262337699999997
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            0.03039672,
+            0.03039672,
+            0.03039672
+          ],
+          "lux": 5.441012880000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            0.8740963,
+            0.8740963,
+            0.8740963
+          ],
+          "lux": 156.4632377
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            0.637956,
+            0.637956,
+            0.637956
+          ],
+          "lux": 114.19412399999999
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            0.3599053,
+            0.3599053,
+            0.3599053
+          ],
+          "lux": 64.4230487
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.005900982,
+            0.005900982,
+            0.005900982
+          ],
+          "lux": 1.056275778
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            0.004955354,
+            0.004955354,
+            0.004955354
+          ],
+          "lux": 0.8870083660000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.02374772,
+            0.02374772,
+            0.02374772
+          ],
+          "lux": 4.25084188
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            0.05781607,
+            0.05781607,
+            0.05781607
+          ],
+          "lux": 10.34907653
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            0.01180838,
+            0.01180838,
+            0.01180838
+          ],
+          "lux": 2.1137000200000005
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.02314112,
+            0.02314112,
+            0.02314112
+          ],
+          "lux": 4.14226048
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            0.587299,
+            0.587299,
+            0.587299
+          ],
+          "lux": 105.12652100000003
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            0.4079052,
+            0.4079052,
+            0.4079052
+          ],
+          "lux": 73.01503080000002
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.2248866,
+            0.2248866,
+            0.2248866
+          ],
+          "lux": 40.2547014
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "selected-suns.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:23:01.4632121Z",
+          "finished_utc": "2026-10-11T09:23:01.6275238Z",
+          "wall_seconds": 0.1583042,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 3021,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "9",
+            "-ad",
+            "32768",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:23:01.677415Z",
+          "finished_utc": "2026-10-11T09:23:14.5817653Z",
+          "wall_seconds": 12.9041204,
+          "sampled_peak_working_set_bytes": 9990144,
+          "output_bytes": 1319,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "32768",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-M",
+            "selected-modifiers.txt",
+            "solar.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:23:14.5988027Z",
+          "finished_utc": "2026-10-11T09:23:14.694889Z",
+          "wall_seconds": 0.0959484,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1319,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "fe8e3eee022576cd9f41e111e017d92d2134f1b10f5e4f5e8084754ea0000cd4"
+    },
+    "patch-ship": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-patch-probe.v1",
+        "scope": "Diagnostic patch-indirect reuse; no production or physical acceptance",
+        "declared_utc": "2026-10-11T09:24:34.1786439Z",
+        "prior": {
+          "schema_version": "greenlens.moderate-transport-probe.v1",
+          "scope": "Bounded transport pilot; not accepted scientific profile",
+          "declared_utc": "2026-10-11T09:19:23.1217302Z",
+          "phase": "diffuse",
+          "ambient_divisions": 8192,
+          "ambient_bounces": 8,
+          "primary_repetitions": 128,
+          "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+          "source_receiver_scale": 100,
+          "ray_depth": -16,
+          "original_sensor_indices": [
+            15,
+            22
+          ],
+          "sensor_ids": [
+            "s000016",
+            "s000023"
+          ],
+          "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+          "primary_input_sha256": "5180d26a0eff60d5c7e80601fa9ee45753b7c8d44178a84a34bf1e07a18fe003",
+          "intervals": [
+            {
+              "condition": "overcast",
+              "index": 1904
+            },
+            {
+              "condition": "mixed",
+              "index": 1908
+            },
+            {
+              "condition": "mixed",
+              "index": 1912
+            },
+            {
+              "condition": "mixed",
+              "index": 4112
+            },
+            {
+              "condition": "mixed",
+              "index": 4116
+            },
+            {
+              "condition": "mixed",
+              "index": 4120
+            },
+            {
+              "condition": "clear",
+              "index": 6320
+            },
+            {
+              "condition": "mixed",
+              "index": 6324
+            },
+            {
+              "condition": "mixed",
+              "index": 6328
+            },
+            {
+              "condition": "clear",
+              "index": 8504
+            },
+            {
+              "condition": "clear",
+              "index": 8508
+            },
+            {
+              "condition": "clear",
+              "index": 8512
+            }
+          ],
+          "source_sha256": {
+            "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+            "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+            "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+            "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+            "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+            "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+          },
+          "engine_sha256": {
+            "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+            "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+            "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+          },
+          "ray_arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "128",
+            "-ab",
+            "8",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+"
+          ],
+          "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+          "release_acceptance_complete": false
+        },
+        "input_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+          "repeated-sensors.pts": "5180d26a0eff60d5c7e80601fa9ee45753b7c8d44178a84a34bf1e07a18fe003",
+          "coefficient-receiver.rad": "e248c32b43dd8133e7294ab74d9ad06384e4dcd78509d77a050000058a50a839",
+          "coefficients-scaled.mtx": "e488fab7cb24b3d005753bc1c4937074095fcc185d5183f9bf6424e4b04df4a8",
+          "declaration.json": "31d7089ee53b955d47d7ca14e8bd34f1d8aa53d0399427d91a2512db9da7f181"
+        },
+        "original_solar_matrix_sha256": "70b9560f9f461bf1db26985f3b3df894546b92c27bc94b623a9d0f6a84c416c4",
+        "selected_solar_sha256": "b0ed2898f67187c5e0079c51e685086672b79db9bad03e579c85acdbb1a10753",
+        "direct_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "128",
+          "-ab",
+          "1",
+          "-ad",
+          "8192",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "formula": "(scaled_full_coefficients - scaled_ab1_coefficients) * pure_solar_matrix / 100; diffuse/ground and finite-disc direct remain separate",
+        "harness_sha256": "d033ffb902ca9ab05716ba00858960c58ee050dab19c8a5d01e9d2429d044419",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            0.0069520599999999995,
+            0.0069520599999999995,
+            0.0069520599999999995
+          ],
+          "lux": 1.24441874
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            0.016920189999999998,
+            0.016920189999999998,
+            0.016920189999999998
+          ],
+          "lux": 3.02871401
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            0.03392151,
+            0.03392151,
+            0.03392151
+          ],
+          "lux": 6.07195029
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            2.776361E-05,
+            2.776361E-05,
+            2.776361E-05
+          ],
+          "lux": 0.004969686190000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            0.06678675,
+            0.06678675,
+            0.06678675
+          ],
+          "lux": 11.95482825
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            0.0322776,
+            0.0322776,
+            0.0322776
+          ],
+          "lux": 5.777690399999999
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            0.028724569999999998,
+            0.028724569999999998,
+            0.028724569999999998
+          ],
+          "lux": 5.141698030000001
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            0.8048671000000001,
+            0.8048671000000001,
+            0.8048671000000001
+          ],
+          "lux": 144.07121090000004
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            0.6510789,
+            0.6510789,
+            0.6510789
+          ],
+          "lux": 116.5431231
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            0.3338199,
+            0.3338199,
+            0.3338199
+          ],
+          "lux": 59.7537621
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.0058561180000000004,
+            0.0058561180000000004,
+            0.0058561180000000004
+          ],
+          "lux": 1.0482451220000002
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            0.008468478,
+            0.008468478,
+            0.008468478
+          ],
+          "lux": 1.5158575619999999
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.02673988,
+            0.02673988,
+            0.02673988
+          ],
+          "lux": 4.78643852
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            4.1858869999999995E-06,
+            4.1858869999999995E-06,
+            4.1858869999999995E-06
+          ],
+          "lux": 0.0007492737729999999
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            0.0513364,
+            0.0513364,
+            0.0513364
+          ],
+          "lux": 9.1892156
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            0.01592827,
+            0.01592827,
+            0.01592827
+          ],
+          "lux": 2.8511603300000004
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.02244081,
+            0.02244081,
+            0.02244081
+          ],
+          "lux": 4.01690499
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            0.5860612,
+            0.5860612,
+            0.5860612
+          ],
+          "lux": 104.90495479999998
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            0.40148130000000004,
+            0.40148130000000004,
+            0.40148130000000004
+          ],
+          "lux": 71.86515270000001
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.1946772,
+            0.1946772,
+            0.1946772
+          ],
+          "lux": 34.8472188
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "coefficient-receiver.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:34.4926358Z",
+          "finished_utc": "2026-10-11T09:24:34.6270674Z",
+          "wall_seconds": 0.1299991,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 2247,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "128",
+            "-ab",
+            "1",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "direct.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:34.691893Z",
+          "finished_utc": "2026-10-11T09:24:37.7689667Z",
+          "wall_seconds": 3.076832,
+          "sampled_peak_working_set_bytes": 6766592,
+          "output_bytes": 45505,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "coefficients-scaled.mtx",
+            "selected-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:37.7846215Z",
+          "finished_utc": "2026-10-11T09:24:37.900403Z",
+          "wall_seconds": 0.1156394,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1113,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "direct-scaled.mtx",
+            "selected-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:37.9097473Z",
+          "finished_utc": "2026-10-11T09:24:38.0257191Z",
+          "wall_seconds": 0.1158384,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1107,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "a895cc5f1b254870acbe403b4be0d07921c93f443421087a4e0dc795146b76f3"
+    },
+    "patch-ref": {
+      "declaration": {
+        "schema_version": "greenlens.moderate-patch-probe.v1",
+        "scope": "Diagnostic patch-indirect reuse; no production or physical acceptance",
+        "declared_utc": "2026-10-11T09:24:34.1655839Z",
+        "prior": {
+          "schema_version": "greenlens.moderate-transport-probe.v1",
+          "scope": "Bounded transport pilot; not accepted scientific profile",
+          "declared_utc": "2026-10-11T09:19:22.0726792Z",
+          "phase": "diffuse",
+          "ambient_divisions": 65536,
+          "ambient_bounces": 9,
+          "primary_repetitions": 32,
+          "primary_order": "Consecutive repetitions per selected sensor; output one averaged row per sensor",
+          "source_receiver_scale": 100,
+          "ray_depth": -16,
+          "original_sensor_indices": [
+            15,
+            22
+          ],
+          "sensor_ids": [
+            "s000016",
+            "s000023"
+          ],
+          "selected_sensor_sha256": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+          "primary_input_sha256": "51bc0f24e033aefa30b192bf435a9f96f6b0d7841fa0261459f14dbbdf652a78",
+          "intervals": [
+            {
+              "condition": "overcast",
+              "index": 1904
+            },
+            {
+              "condition": "mixed",
+              "index": 1908
+            },
+            {
+              "condition": "mixed",
+              "index": 1912
+            },
+            {
+              "condition": "mixed",
+              "index": 4112
+            },
+            {
+              "condition": "mixed",
+              "index": 4116
+            },
+            {
+              "condition": "mixed",
+              "index": 4120
+            },
+            {
+              "condition": "clear",
+              "index": 6320
+            },
+            {
+              "condition": "mixed",
+              "index": 6324
+            },
+            {
+              "condition": "mixed",
+              "index": 6328
+            },
+            {
+              "condition": "clear",
+              "index": 8504
+            },
+            {
+              "condition": "clear",
+              "index": 8508
+            },
+            {
+              "condition": "clear",
+              "index": 8512
+            }
+          ],
+          "source_sha256": {
+            "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+            "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+            "selected-skies.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+            "selected-suns.rad": "e1e7e345b2cfbaf1dc3b39c329d42f9c48a8d5cd5b108ab962b875882a098667",
+            "selected-modifiers.txt": "0a9d76a7774795922b0be009eaf361b4fec0526edb1d72fed791267ae473215f",
+            "declaration.json": "158ec3b37a80d64ae246ec58a2ec2de902d5b79f9812108bcf094549bc2b771e"
+          },
+          "engine_sha256": {
+            "oconv": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+            "rcontrib": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+            "dctimestep": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05"
+          },
+          "ray_arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "32",
+            "-ab",
+            "9",
+            "-ad",
+            "65536",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+"
+          ],
+          "harness_sha256": "e7bd95ed404f36bbd1d77706c53431aa846e3523b0fc8d0fde2940798f43e203",
+          "release_acceptance_complete": false
+        },
+        "input_sha256": {
+          "scene.rad": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+          "sensors.pts": "eb7514cd05f3ec9628c7d856212ab6e96cd25fba757450b01b2babff22dbceb5",
+          "repeated-sensors.pts": "51bc0f24e033aefa30b192bf435a9f96f6b0d7841fa0261459f14dbbdf652a78",
+          "coefficient-receiver.rad": "e248c32b43dd8133e7294ab74d9ad06384e4dcd78509d77a050000058a50a839",
+          "coefficients-scaled.mtx": "e75f70016601d308ab54d8a154e63ea4cd094f6afe3f6a8c75f0f6ba31b402fa",
+          "declaration.json": "ca9f5920992ab29c5985a9fb5decea9bb6f903df873cded1e5d59ef110e19aaf"
+        },
+        "original_solar_matrix_sha256": "70b9560f9f461bf1db26985f3b3df894546b92c27bc94b623a9d0f6a84c416c4",
+        "selected_solar_sha256": "b0ed2898f67187c5e0079c51e685086672b79db9bad03e579c85acdbb1a10753",
+        "direct_arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-c",
+          "32",
+          "-ab",
+          "1",
+          "-ad",
+          "65536",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "1e-9",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-V+"
+        ],
+        "formula": "(scaled_full_coefficients - scaled_ab1_coefficients) * pure_solar_matrix / 100; diffuse/ground and finite-disc direct remain separate",
+        "harness_sha256": "d033ffb902ca9ab05716ba00858960c58ee050dab19c8a5d01e9d2429d044419",
+        "release_acceptance_complete": false
+      },
+      "results": [
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1904,
+          "rgb": [
+            0.009624788,
+            0.009624788,
+            0.009624788
+          ],
+          "lux": 1.722837052
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1908,
+          "rgb": [
+            0.015308949999999998,
+            0.015308949999999998,
+            0.015308949999999998
+          ],
+          "lux": 2.7403020499999995
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 1912,
+          "rgb": [
+            0.03717189,
+            0.03717189,
+            0.03717189
+          ],
+          "lux": 6.65376831
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4116,
+          "rgb": [
+            3.01799E-07,
+            3.01799E-07,
+            3.01799E-07
+          ],
+          "lux": 5.402202100000001E-05
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6320,
+          "rgb": [
+            0.08509931,
+            0.08509931,
+            0.08509931
+          ],
+          "lux": 15.232776490000003
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6324,
+          "rgb": [
+            0.03175684,
+            0.03175684,
+            0.03175684
+          ],
+          "lux": 5.68447436
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 6328,
+          "rgb": [
+            0.03495774,
+            0.03495774,
+            0.03495774
+          ],
+          "lux": 6.25743546
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8504,
+          "rgb": [
+            0.9137164,
+            0.9137164,
+            0.9137164
+          ],
+          "lux": 163.55523559999997
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8508,
+          "rgb": [
+            0.6296193,
+            0.6296193,
+            0.6296193
+          ],
+          "lux": 112.7018547
+        },
+        {
+          "sensor_index": 15,
+          "sensor_id": "s000016",
+          "interval_index": 8512,
+          "rgb": [
+            0.3945916,
+            0.3945916,
+            0.3945916
+          ],
+          "lux": 70.6318964
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1904,
+          "rgb": [
+            0.0059721259999999995,
+            0.0059721259999999995,
+            0.0059721259999999995
+          ],
+          "lux": 1.069010554
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1908,
+          "rgb": [
+            0.011465099999999999,
+            0.011465099999999999,
+            0.011465099999999999
+          ],
+          "lux": 2.0522528999999996
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 1912,
+          "rgb": [
+            0.02833869,
+            0.02833869,
+            0.02833869
+          ],
+          "lux": 5.07262551
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4112,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4116,
+          "rgb": [
+            2.063489E-05,
+            2.063489E-05,
+            2.063489E-05
+          ],
+          "lux": 0.0036936453100000002
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 4120,
+          "rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "lux": 0.0
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6320,
+          "rgb": [
+            0.05473425,
+            0.05473425,
+            0.05473425
+          ],
+          "lux": 9.79743075
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6324,
+          "rgb": [
+            0.01850412,
+            0.01850412,
+            0.01850412
+          ],
+          "lux": 3.31223748
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 6328,
+          "rgb": [
+            0.026600310000000002,
+            0.026600310000000002,
+            0.026600310000000002
+          ],
+          "lux": 4.76145549
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8504,
+          "rgb": [
+            0.5367503,
+            0.5367503,
+            0.5367503
+          ],
+          "lux": 96.0783037
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8508,
+          "rgb": [
+            0.442993,
+            0.442993,
+            0.442993
+          ],
+          "lux": 79.29574699999999
+        },
+        {
+          "sensor_index": 22,
+          "sensor_id": "s000023",
+          "interval_index": 8512,
+          "rgb": [
+            0.246135,
+            0.246135,
+            0.246135
+          ],
+          "lux": 44.058164999999995
+        }
+      ],
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "coefficient-receiver.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:34.4814551Z",
+          "finished_utc": "2026-10-11T09:24:34.6087469Z",
+          "wall_seconds": 0.1222452,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 2247,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-n",
+            "1",
+            "-faa",
+            "-y",
+            "2",
+            "-c",
+            "32",
+            "-ab",
+            "1",
+            "-ad",
+            "65536",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-V+",
+            "-e",
+            "MF:2",
+            "-f",
+            "reinhart.cal",
+            "-b",
+            "rbin",
+            "-bn",
+            "Nrbins",
+            "-m",
+            "sky_glow",
+            "direct.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:34.6697521Z",
+          "finished_utc": "2026-10-11T09:24:40.3405406Z",
+          "wall_seconds": 5.6706255,
+          "sampled_peak_working_set_bytes": 14090240,
+          "output_bytes": 45505,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "coefficients-scaled.mtx",
+            "selected-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:40.3504369Z",
+          "finished_utc": "2026-10-11T09:24:40.4423736Z",
+          "wall_seconds": 0.0918208,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1113,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "dctimestep.exe",
+          "arguments": [
+            "-oa",
+            "direct-scaled.mtx",
+            "selected-solar-sky.mtx"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T09:24:40.4508445Z",
+          "finished_utc": "2026-10-11T09:24:40.5369684Z",
+          "wall_seconds": 0.0860295,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1107,
+          "timeout_killed_tree": false
+        }
+      ],
+      "source_results_sha256": "ce7bbbe5758145ecd91cedb1af33a2875f38c690fa8113c3e4c789dfe2cb2c41"
+    }
+  },
+  "comparisons_without_finite_direct": {
+    "solar8192": [
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1904,
+        "candidate_without_finite_direct_lux": 184.47443182199999,
+        "pilot_reference_without_finite_direct_lux": 187.272936796,
+        "absolute_difference_lux": 2.798504974000025,
+        "allowance_lux": 9.363646839800001,
+        "difference_over_allowance": 0.2988691288638774
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1908,
+        "candidate_without_finite_direct_lux": 421.93534583700006,
+        "pilot_reference_without_finite_direct_lux": 425.49720830399997,
+        "absolute_difference_lux": 3.561862466999912,
+        "allowance_lux": 21.2748604152,
+        "difference_over_allowance": 0.16742119090262564
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1912,
+        "candidate_without_finite_direct_lux": 300.41408184,
+        "pilot_reference_without_finite_direct_lux": 304.23778497000006,
+        "absolute_difference_lux": 3.8237031300000695,
+        "allowance_lux": 15.211889248500004,
+        "difference_over_allowance": 0.25136280362921476
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4112,
+        "candidate_without_finite_direct_lux": 256.28897800000004,
+        "pilot_reference_without_finite_direct_lux": 258.95751,
+        "absolute_difference_lux": 2.6685319999999706,
+        "allowance_lux": 12.947875500000002,
+        "difference_over_allowance": 0.2060980583262459
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4116,
+        "candidate_without_finite_direct_lux": 325.63518899999997,
+        "pilot_reference_without_finite_direct_lux": 328.723476,
+        "absolute_difference_lux": 3.0882870000000366,
+        "allowance_lux": 16.436173800000002,
+        "difference_over_allowance": 0.1878957376320781
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4120,
+        "candidate_without_finite_direct_lux": 278.55675700000006,
+        "pilot_reference_without_finite_direct_lux": 281.539434,
+        "absolute_difference_lux": 2.982676999999967,
+        "allowance_lux": 14.076971700000001,
+        "difference_over_allowance": 0.2118834266037465
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6320,
+        "candidate_without_finite_direct_lux": 300.4300701199999,
+        "pilot_reference_without_finite_direct_lux": 306.2785854500001,
+        "absolute_difference_lux": 5.848515330000168,
+        "allowance_lux": 15.313929272500005,
+        "difference_over_allowance": 0.3819082108797931
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6324,
+        "candidate_without_finite_direct_lux": 465.92854404,
+        "pilot_reference_without_finite_direct_lux": 470.30900876999993,
+        "absolute_difference_lux": 4.380464729999915,
+        "allowance_lux": 23.515450438499997,
+        "difference_over_allowance": 0.18628028161553412
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6328,
+        "candidate_without_finite_direct_lux": 274.03960071000006,
+        "pilot_reference_without_finite_direct_lux": 277.67495288000003,
+        "absolute_difference_lux": 3.635352169999976,
+        "allowance_lux": 13.883747644000003,
+        "difference_over_allowance": 0.2618422823012797
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8504,
+        "candidate_without_finite_direct_lux": 393.0870788,
+        "pilot_reference_without_finite_direct_lux": 398.0826287,
+        "absolute_difference_lux": 4.9955499000000145,
+        "allowance_lux": 19.904131435,
+        "difference_over_allowance": 0.2509805522694497
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8508,
+        "candidate_without_finite_direct_lux": 706.9179517,
+        "pilot_reference_without_finite_direct_lux": 709.38953,
+        "absolute_difference_lux": 2.471578300000033,
+        "allowance_lux": 35.469476500000006,
+        "difference_over_allowance": 0.06968183756532274
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8512,
+        "candidate_without_finite_direct_lux": 355.2239606,
+        "pilot_reference_without_finite_direct_lux": 358.5621137,
+        "absolute_difference_lux": 3.3381530999999995,
+        "allowance_lux": 17.928105685000002,
+        "difference_over_allowance": 0.18619664334045893
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1904,
+        "candidate_without_finite_direct_lux": 130.828052346,
+        "pilot_reference_without_finite_direct_lux": 129.39256327800004,
+        "absolute_difference_lux": 1.4354890679999528,
+        "allowance_lux": 6.469628163900002,
+        "difference_over_allowance": 0.2218812320636702
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1908,
+        "candidate_without_finite_direct_lux": 273.66497214699996,
+        "pilot_reference_without_finite_direct_lux": 271.98823636599997,
+        "absolute_difference_lux": 1.6767357809999908,
+        "allowance_lux": 13.599411818299998,
+        "difference_over_allowance": 0.1232947279928458
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1912,
+        "candidate_without_finite_direct_lux": 176.25108447000002,
+        "pilot_reference_without_finite_direct_lux": 176.56302598,
+        "absolute_difference_lux": 0.3119415099999685,
+        "allowance_lux": 8.828151299,
+        "difference_over_allowance": 0.03533486224180405
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4112,
+        "candidate_without_finite_direct_lux": 173.9818424,
+        "pilot_reference_without_finite_direct_lux": 172.56774240000001,
+        "absolute_difference_lux": 1.4140999999999906,
+        "allowance_lux": 8.628387120000001,
+        "difference_over_allowance": 0.16388926230746012
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4116,
+        "candidate_without_finite_direct_lux": 214.53579599999998,
+        "pilot_reference_without_finite_direct_lux": 213.24484800000008,
+        "absolute_difference_lux": 1.2909479999999007,
+        "allowance_lux": 10.662242400000004,
+        "difference_over_allowance": 0.12107659454449285
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4120,
+        "candidate_without_finite_direct_lux": 177.47087460000003,
+        "pilot_reference_without_finite_direct_lux": 176.69933089999998,
+        "absolute_difference_lux": 0.771543700000052,
+        "allowance_lux": 8.834966544999999,
+        "difference_over_allowance": 0.08732842349433619
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6320,
+        "candidate_without_finite_direct_lux": 215.65508121,
+        "pilot_reference_without_finite_direct_lux": 212.61567552999998,
+        "absolute_difference_lux": 3.0394056800000158,
+        "allowance_lux": 10.6307837765,
+        "difference_over_allowance": 0.28590607653208117
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6324,
+        "candidate_without_finite_direct_lux": 308.342299004,
+        "pilot_reference_without_finite_direct_lux": 306.74878802,
+        "absolute_difference_lux": 1.5935109839999768,
+        "allowance_lux": 15.337439401000001,
+        "difference_over_allowance": 0.1038968071747413
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6328,
+        "candidate_without_finite_direct_lux": 165.93216944000002,
+        "pilot_reference_without_finite_direct_lux": 165.73778618,
+        "absolute_difference_lux": 0.19438326000002348,
+        "allowance_lux": 8.286889309000001,
+        "difference_over_allowance": 0.023456722148914547
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8504,
+        "candidate_without_finite_direct_lux": 282.17606539999997,
+        "pilot_reference_without_finite_direct_lux": 286.92751300000003,
+        "absolute_difference_lux": 4.751447600000063,
+        "allowance_lux": 14.346375650000002,
+        "difference_over_allowance": 0.33119498024576416
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8508,
+        "candidate_without_finite_direct_lux": 474.72973060000004,
+        "pilot_reference_without_finite_direct_lux": 467.6400418000001,
+        "absolute_difference_lux": 7.089688799999919,
+        "allowance_lux": 23.382002090000007,
+        "difference_over_allowance": 0.3032113662769721
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8512,
+        "candidate_without_finite_direct_lux": 187.43353130000003,
+        "pilot_reference_without_finite_direct_lux": 190.15810820000002,
+        "absolute_difference_lux": 2.724576899999988,
+        "allowance_lux": 9.507905410000001,
+        "difference_over_allowance": 0.2865591087111991
+      }
+    ],
+    "patch-ship": [
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1904,
+        "candidate_without_finite_direct_lux": 184.43230273999998,
+        "pilot_reference_without_finite_direct_lux": 187.272936796,
+        "absolute_difference_lux": 2.8406340560000274,
+        "allowance_lux": 9.363646839800001,
+        "difference_over_allowance": 0.30336834617960673
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1908,
+        "candidate_without_finite_direct_lux": 423.93933801000003,
+        "pilot_reference_without_finite_direct_lux": 425.49720830399997,
+        "absolute_difference_lux": 1.5578702939999403,
+        "allowance_lux": 21.2748604152,
+        "difference_over_allowance": 0.07322587615601496
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1912,
+        "candidate_without_finite_direct_lux": 300.96997529000004,
+        "pilot_reference_without_finite_direct_lux": 304.23778497000006,
+        "absolute_difference_lux": 3.2678096800000276,
+        "allowance_lux": 15.211889248500004,
+        "difference_over_allowance": 0.21481944988011636
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4112,
+        "candidate_without_finite_direct_lux": 256.28897800000004,
+        "pilot_reference_without_finite_direct_lux": 258.95751,
+        "absolute_difference_lux": 2.6685319999999706,
+        "allowance_lux": 12.947875500000002,
+        "difference_over_allowance": 0.2060980583262459
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4116,
+        "candidate_without_finite_direct_lux": 325.64015868619,
+        "pilot_reference_without_finite_direct_lux": 328.723476,
+        "absolute_difference_lux": 3.083317313810028,
+        "allowance_lux": 16.436173800000002,
+        "difference_over_allowance": 0.18759337491369357
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4120,
+        "candidate_without_finite_direct_lux": 278.55675700000006,
+        "pilot_reference_without_finite_direct_lux": 281.539434,
+        "absolute_difference_lux": 2.982676999999967,
+        "allowance_lux": 14.076971700000001,
+        "difference_over_allowance": 0.2118834266037465
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6320,
+        "candidate_without_finite_direct_lux": 297.66639424999994,
+        "pilot_reference_without_finite_direct_lux": 306.2785854500001,
+        "absolute_difference_lux": 8.612191200000154,
+        "allowance_lux": 15.313929272500005,
+        "difference_over_allowance": 0.5623763207177338
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6324,
+        "candidate_without_finite_direct_lux": 468.8671584,
+        "pilot_reference_without_finite_direct_lux": 470.30900876999993,
+        "absolute_difference_lux": 1.4418503699999405,
+        "allowance_lux": 23.515450438499997,
+        "difference_over_allowance": 0.061315022383722335
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6328,
+        "candidate_without_finite_direct_lux": 273.76932503000006,
+        "pilot_reference_without_finite_direct_lux": 277.67495288000003,
+        "absolute_difference_lux": 3.9056278499999735,
+        "allowance_lux": 13.883747644000003,
+        "difference_over_allowance": 0.2813093373738919
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8504,
+        "candidate_without_finite_direct_lux": 380.8017539,
+        "pilot_reference_without_finite_direct_lux": 398.0826287,
+        "absolute_difference_lux": 17.280874799999992,
+        "allowance_lux": 19.904131435,
+        "difference_over_allowance": 0.8682054203888949
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8508,
+        "candidate_without_finite_direct_lux": 709.5074731,
+        "pilot_reference_without_finite_direct_lux": 709.38953,
+        "absolute_difference_lux": 0.11794309999993402,
+        "allowance_lux": 35.469476500000006,
+        "difference_over_allowance": 0.0033251999081501528
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8512,
+        "candidate_without_finite_direct_lux": 350.19253910000003,
+        "pilot_reference_without_finite_direct_lux": 358.5621137,
+        "absolute_difference_lux": 8.369574599999964,
+        "allowance_lux": 17.928105685000002,
+        "difference_over_allowance": 0.46684098962014586
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1904,
+        "candidate_without_finite_direct_lux": 130.733082822,
+        "pilot_reference_without_finite_direct_lux": 129.39256327800004,
+        "absolute_difference_lux": 1.3405195439999602,
+        "allowance_lux": 6.469628163900002,
+        "difference_over_allowance": 0.20720194577486695
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1908,
+        "candidate_without_finite_direct_lux": 274.574987562,
+        "pilot_reference_without_finite_direct_lux": 271.98823636599997,
+        "absolute_difference_lux": 2.586751196000023,
+        "allowance_lux": 13.599411818299998,
+        "difference_over_allowance": 0.19021052017258355
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1912,
+        "candidate_without_finite_direct_lux": 176.73686362,
+        "pilot_reference_without_finite_direct_lux": 176.56302598,
+        "absolute_difference_lux": 0.17383764000001634,
+        "allowance_lux": 8.828151299,
+        "difference_over_allowance": 0.01969128463166548
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4112,
+        "candidate_without_finite_direct_lux": 173.9818424,
+        "pilot_reference_without_finite_direct_lux": 172.56774240000001,
+        "absolute_difference_lux": 1.4140999999999906,
+        "allowance_lux": 8.628387120000001,
+        "difference_over_allowance": 0.16388926230746012
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4116,
+        "candidate_without_finite_direct_lux": 214.536545273773,
+        "pilot_reference_without_finite_direct_lux": 213.24484800000008,
+        "absolute_difference_lux": 1.291697273772911,
+        "allowance_lux": 10.662242400000004,
+        "difference_over_allowance": 0.12114686810843005
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4120,
+        "candidate_without_finite_direct_lux": 177.47087460000003,
+        "pilot_reference_without_finite_direct_lux": 176.69933089999998,
+        "absolute_difference_lux": 0.771543700000052,
+        "allowance_lux": 8.834966544999999,
+        "difference_over_allowance": 0.08732842349433619
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6320,
+        "candidate_without_finite_direct_lux": 213.20410760000001,
+        "pilot_reference_without_finite_direct_lux": 212.61567552999998,
+        "absolute_difference_lux": 0.5884320700000387,
+        "allowance_lux": 10.6307837765,
+        "difference_over_allowance": 0.05535171087768749
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6324,
+        "candidate_without_finite_direct_lux": 309.68508433,
+        "pilot_reference_without_finite_direct_lux": 306.74878802,
+        "absolute_difference_lux": 2.936296309999989,
+        "allowance_lux": 15.337439401000001,
+        "difference_over_allowance": 0.1914463185953023
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6328,
+        "candidate_without_finite_direct_lux": 165.34828039,
+        "pilot_reference_without_finite_direct_lux": 165.73778618,
+        "absolute_difference_lux": 0.389505789999987,
+        "allowance_lux": 8.286889309000001,
+        "difference_over_allowance": 0.04700265388810769
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8504,
+        "candidate_without_finite_direct_lux": 288.9103318,
+        "pilot_reference_without_finite_direct_lux": 286.92751300000003,
+        "absolute_difference_lux": 1.9828187999999614,
+        "allowance_lux": 14.346375650000002,
+        "difference_over_allowance": 0.13821043365750435
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8508,
+        "candidate_without_finite_direct_lux": 470.8543627,
+        "pilot_reference_without_finite_direct_lux": 467.6400418000001,
+        "absolute_difference_lux": 3.2143208999999047,
+        "allowance_lux": 23.382002090000007,
+        "difference_over_allowance": 0.1374698748048869
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8512,
+        "candidate_without_finite_direct_lux": 183.40928910000002,
+        "pilot_reference_without_finite_direct_lux": 190.15810820000002,
+        "absolute_difference_lux": 6.7488190999999915,
+        "allowance_lux": 9.507905410000001,
+        "difference_over_allowance": 0.7098113421387089
+      }
+    ],
+    "patch-ref": [
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1904,
+        "candidate_without_finite_direct_lux": 187.361947052,
+        "pilot_reference_without_finite_direct_lux": 187.272936796,
+        "absolute_difference_lux": 0.08901025599999457,
+        "allowance_lux": 9.363646839800001,
+        "difference_over_allowance": 0.009505939034528533
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1908,
+        "candidate_without_finite_direct_lux": 426.55430605,
+        "pilot_reference_without_finite_direct_lux": 425.49720830399997,
+        "absolute_difference_lux": 1.0570977460000108,
+        "allowance_lux": 21.2748604152,
+        "difference_over_allowance": 0.04968764661058639
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 1912,
+        "candidate_without_finite_direct_lux": 305.35894431,
+        "pilot_reference_without_finite_direct_lux": 304.23778497000006,
+        "absolute_difference_lux": 1.1211593399999629,
+        "allowance_lux": 15.211889248500004,
+        "difference_over_allowance": 0.07370283346695525
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4112,
+        "candidate_without_finite_direct_lux": 258.95751,
+        "pilot_reference_without_finite_direct_lux": 258.95751,
+        "absolute_difference_lux": 0.0,
+        "allowance_lux": 12.947875500000002,
+        "difference_over_allowance": 0.0
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4116,
+        "candidate_without_finite_direct_lux": 328.723530022021,
+        "pilot_reference_without_finite_direct_lux": 328.723476,
+        "absolute_difference_lux": 5.402202100412978E-05,
+        "allowance_lux": 16.436173800000002,
+        "difference_over_allowance": 3.2867759651050765E-06
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 4120,
+        "candidate_without_finite_direct_lux": 281.539434,
+        "pilot_reference_without_finite_direct_lux": 281.539434,
+        "absolute_difference_lux": 0.0,
+        "allowance_lux": 14.076971700000001,
+        "difference_over_allowance": 0.0
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6320,
+        "candidate_without_finite_direct_lux": 304.97399049000006,
+        "pilot_reference_without_finite_direct_lux": 306.2785854500001,
+        "absolute_difference_lux": 1.3045949600000313,
+        "allowance_lux": 15.313929272500005,
+        "difference_over_allowance": 0.08519008654054308
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6324,
+        "candidate_without_finite_direct_lux": 472.46724936,
+        "pilot_reference_without_finite_direct_lux": 470.30900876999993,
+        "absolute_difference_lux": 2.158240590000048,
+        "allowance_lux": 23.515450438499997,
+        "difference_over_allowance": 0.0917796831340526
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 6328,
+        "candidate_without_finite_direct_lux": 278.49137546000003,
+        "pilot_reference_without_finite_direct_lux": 277.67495288000003,
+        "absolute_difference_lux": 0.816422579999994,
+        "allowance_lux": 13.883747644000003,
+        "difference_over_allowance": 0.05880419328658851
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8504,
+        "candidate_without_finite_direct_lux": 405.17462659999995,
+        "pilot_reference_without_finite_direct_lux": 398.0826287,
+        "absolute_difference_lux": 7.091997899999967,
+        "allowance_lux": 19.904131435,
+        "difference_over_allowance": 0.35630783102291985
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8508,
+        "candidate_without_finite_direct_lux": 707.8972607000001,
+        "pilot_reference_without_finite_direct_lux": 709.38953,
+        "absolute_difference_lux": 1.4922692999999754,
+        "allowance_lux": 35.469476500000006,
+        "difference_over_allowance": 0.042071929085279146
+      },
+      {
+        "sensor_id": "s000016",
+        "interval_index": 8512,
+        "candidate_without_finite_direct_lux": 364.77096140000003,
+        "pilot_reference_without_finite_direct_lux": 358.5621137,
+        "absolute_difference_lux": 6.208847700000035,
+        "allowance_lux": 17.928105685000002,
+        "difference_over_allowance": 0.34631922686593836
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1904,
+        "candidate_without_finite_direct_lux": 129.405298054,
+        "pilot_reference_without_finite_direct_lux": 129.39256327800004,
+        "absolute_difference_lux": 0.012734775999973635,
+        "allowance_lux": 6.469628163900002,
+        "difference_over_allowance": 0.0019683938052317516
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1908,
+        "candidate_without_finite_direct_lux": 273.1534809,
+        "pilot_reference_without_finite_direct_lux": 271.98823636599997,
+        "absolute_difference_lux": 1.16524453400001,
+        "allowance_lux": 13.599411818299998,
+        "difference_over_allowance": 0.0856834508410138
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 1912,
+        "candidate_without_finite_direct_lux": 177.38480961,
+        "pilot_reference_without_finite_direct_lux": 176.56302598,
+        "absolute_difference_lux": 0.8217836299999988,
+        "allowance_lux": 8.828151299,
+        "difference_over_allowance": 0.0930867179511395
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4112,
+        "candidate_without_finite_direct_lux": 172.56774240000001,
+        "pilot_reference_without_finite_direct_lux": 172.56774240000001,
+        "absolute_difference_lux": 0.0,
+        "allowance_lux": 8.628387120000001,
+        "difference_over_allowance": 0.0
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4116,
+        "candidate_without_finite_direct_lux": 213.24854164531007,
+        "pilot_reference_without_finite_direct_lux": 213.24484800000008,
+        "absolute_difference_lux": 0.0036936453099940536,
+        "allowance_lux": 10.662242400000004,
+        "difference_over_allowance": 0.0003464229353849667
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 4120,
+        "candidate_without_finite_direct_lux": 176.69933089999998,
+        "pilot_reference_without_finite_direct_lux": 176.69933089999998,
+        "absolute_difference_lux": 0.0,
+        "allowance_lux": 8.834966544999999,
+        "difference_over_allowance": 0.0
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6320,
+        "candidate_without_finite_direct_lux": 212.06402974999997,
+        "pilot_reference_without_finite_direct_lux": 212.61567552999998,
+        "absolute_difference_lux": 0.5516457800000012,
+        "allowance_lux": 10.6307837765,
+        "difference_over_allowance": 0.05189135548212805
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6324,
+        "candidate_without_finite_direct_lux": 307.94732548,
+        "pilot_reference_without_finite_direct_lux": 306.74878802,
+        "absolute_difference_lux": 1.1985374600000114,
+        "allowance_lux": 15.337439401000001,
+        "difference_over_allowance": 0.07814456042263918
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 6328,
+        "candidate_without_finite_direct_lux": 166.35698119,
+        "pilot_reference_without_finite_direct_lux": 165.73778618,
+        "absolute_difference_lux": 0.6191950099999985,
+        "allowance_lux": 8.286889309000001,
+        "difference_over_allowance": 0.07471983598568403
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8504,
+        "candidate_without_finite_direct_lux": 277.8792957,
+        "pilot_reference_without_finite_direct_lux": 286.92751300000003,
+        "absolute_difference_lux": 9.048217300000033,
+        "allowance_lux": 14.346375650000002,
+        "difference_over_allowance": 0.6306970848069234
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8508,
+        "candidate_without_finite_direct_lux": 473.9207580000001,
+        "pilot_reference_without_finite_direct_lux": 467.6400418000001,
+        "absolute_difference_lux": 6.280716199999972,
+        "allowance_lux": 23.382002090000007,
+        "difference_over_allowance": 0.2686132768196998
+      },
+      {
+        "sensor_id": "s000023",
+        "interval_index": 8512,
+        "candidate_without_finite_direct_lux": 193.9615718,
+        "pilot_reference_without_finite_direct_lux": 190.15810820000002,
+        "absolute_difference_lux": 3.8034635999999864,
+        "allowance_lux": 9.507905410000001,
+        "difference_over_allowance": 0.4000317037230586
+      }
+    ]
+  },
+  "comparison_policy": "Both sides omit finite direct and use their measured diffuse+indirect terms. This is a pilot diagnostic against an unqualified higher tuple, not the release matched-sky test.",
+  "observations": [
+    "Diffuse native times: 116.337 seconds for ad8192 times128/ab8, 247.160 seconds for ad65536 times32/ab9; concurrent workload. Maximum diffuse relative difference2.0234%.",
+    "Solar ad1024/4096 can differ from8192 by more than5% of diffuse+indirect total at winter8504. This does not establish a qualified8192reference.",
+    "Explicit8192 plus shipping diffuse has maximum diagnostic difference/allowance0.38191 against diffuse65536 times32 plus solar32768. Patch reuse has0.86821 shipping and0.63070 higher tuple.",
+    "Patch-indirect s000023 at8512 changes34.8472188 to44.058165 lx between coefficient tuples, versus explicit32768 value40.2547014. Proper reference and full-grid convergence remain necessary."
+  ]
+}

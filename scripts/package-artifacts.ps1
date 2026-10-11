@@ -10,7 +10,7 @@ function Get-PackageDocumentPaths {
         'docs/windows-installer.md','docs/workspace-guide.md','docs/rhino-interaction-matrix.md',
         'docs/v0.2-native-verification.md','docs/images/v0.2/README.md','docs/v0.3-spec.md',
         'docs/v0.3-implementation-plan.md','docs/v0.3-scientific-method.md',
-        'docs/v0.3-weather-sources.md','docs/v0.3-contracts.md','docs/v0.3-usage.md',
+        'docs/v0.3-weather-sources.md','docs/v0.3-contracts.md','docs/v0.3-usage.md','docs/v0.3-status.md',
         'docs/v0.3-native-verification.md','docs/v0.3-ci-package-validation.md','docs/progress.md',
         'docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md',
         'docs/v0.3-paired-adapter-integration.md','docs/v0.3-paired-hammersley-investigation.md',

@@ -2,7 +2,7 @@
 
 Local-first building environmental simulation with Rust, a native Tauri desktop, and Radiance.
 
-The v0.3 development candidate adds local EPW import, selected-weather-hour and annual daylight studies, hourly inspection, occupied-time metrics and portable climate evidence. **Scientific acceptance is incomplete:** matched-sky/reference convergence remains under investigation, with failures preserved. Start with the [climate usage guide](docs/v0.3-usage.md), [method and frozen tolerances](docs/v0.3-scientific-method.md), [acceptance plan](docs/v0.3-implementation-plan.md) and [progress record](docs/progress.md). A built installer or successful full-year calculation does not establish numerical accuracy.
+The v0.3 development candidate adds local EPW import, selected-weather-hour and annual daylight studies, hourly inspection, occupied-time metrics and portable climate evidence. **Scientific acceptance is incomplete:** matched-sky/reference convergence remains under investigation, with failures preserved. Start with the [candidate status and launch commands](docs/v0.3-status.md), [climate usage guide](docs/v0.3-usage.md), [method and frozen tolerances](docs/v0.3-scientific-method.md), [acceptance plan](docs/v0.3-implementation-plan.md) and [progress record](docs/progress.md). A built installer or successful full-year calculation does not establish numerical accuracy.
 
 The legacy calculation remains **Static daylight illuminance under a prescribed CIE standard overcast sky.** Its historical inputs, labels, identities and replay tolerance are preserved.
 

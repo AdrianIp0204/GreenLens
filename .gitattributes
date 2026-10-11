@@ -69,3 +69,6 @@ scripts/depth-order-plan.json -text -whitespace
 docs/evidence/v0.3-ci/depth-order-pre-dispatch/*.json -text -whitespace
 docs/evidence/v0.3-engine/horizon-moment-planar-controls.json -text -whitespace
 docs/evidence/v0.3-engine/canonical128-moment-room-controls.json -text -whitespace
+# Preserve the independently reviewed angular diagnostic and standalone source seals.
+docs/evidence/v0.3-engine/moment-angular-feasibility.json -text -whitespace
+scripts/angular_feasibility.py -text -whitespace

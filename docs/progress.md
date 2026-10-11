@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+## 2026-10-12 local — proposed angular correction rejected
+
+- Verified analytical failure: the [fixed 42-case screen](evidence/v0.3-engine/moment-angular-feasibility.json) converges, but 36/84 surrogate responses fail its 1% surface criterion and 13/84 fail its separate 5 lx/5% component band. Independent reviewers confirm every row/outcome and the shadow/glass counterexample. This concerns intermediate-surface illumination, not a newly measured room failure. Original finite direct does not generally repair reflected illumination.
+- Decision: stop this proposed general method6 mapper before implementation. No native stages, profile changes, source substitutions or threshold changes follow. The original and corrected compact projections, preliminary-counterexample chronology and full evidence remain retained. The published standalone reproducer regenerates the exact full result hash.
+- Delivery status: the [candidate summary](v0.3-status.md) records implemented features, actual native/replay evidence and remaining release barriers. Packaged candidate07 `doctor`, reviewed-weather inspection, retained-hour reading and A/B metric comparison succeed on fresh readback. These are inspection checks, not new simulations. Physical modifiers remain unverified; no renewed user request is needed.
+
 ## 2026-10-12 local — canonical annual-group room diagnostic completed
 
 - Verified execution: the [fixed canonical-group experiment](evidence/v0.3-engine/canonical128-moment-room-controls.json) completes all 24 native stages for A/B, four groups of 128 annual sources and all 24 sensors. The twelve fixed target intervals produce 576 readings, all inside the unchanged `max(5 lx, 5%)` descriptive band against retained baseline references; maximum error/allowance is 0.733521. All 73,728 reflected RGB residuals are nonnegative, including columns outside those target intervals.

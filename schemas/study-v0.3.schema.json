@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "greenlens.study.v0.3",
+  "title": "GreenLens versioned daylight study",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "calculation", "metrics"],
+  "properties": {
+    "schema_version": {"const": "greenlens.study.v0.3"},
+    "calculation": {
+      "oneOf": [
+        {"type": "object", "additionalProperties": false, "required": ["mode"], "properties": {"mode": {"const": "static_overcast"}}},
+        {"type": "object", "additionalProperties": false, "required": ["mode", "weather", "profile", "interval_index"], "properties": {"mode": {"const": "weather_hour"}, "weather": {"$ref": "#/$defs/weather"}, "profile": {"enum": ["shipping", "reference"]}, "interval_index": {"type": "integer", "minimum": 0, "maximum": 8759}}},
+        {"type": "object", "additionalProperties": false, "required": ["mode", "weather", "profile"], "properties": {"mode": {"const": "annual"}, "weather": {"$ref": "#/$defs/weather"}, "profile": {"enum": ["shipping", "reference"]}}}
+      ]
+    },
+    "metrics": {
+      "type": "object", "additionalProperties": false,
+      "required": ["da_threshold_lux", "udi_lower_lux", "udi_upper_lux", "occupancy"],
+      "properties": {
+        "da_threshold_lux": {"type": "number", "exclusiveMinimum": 0},
+        "udi_lower_lux": {"type": "number", "minimum": 0},
+        "udi_upper_lux": {"type": "number", "exclusiveMinimum": 0},
+        "occupancy": {"oneOf": [
+          {"type": "object", "additionalProperties": false, "required": ["kind", "start_minute", "end_minute"], "properties": {"kind": {"const": "daily"}, "start_minute": {"type": "integer", "minimum": 0, "maximum": 1439}, "end_minute": {"type": "integer", "minimum": 0, "maximum": 1440}}},
+          {"type": "object", "additionalProperties": false, "required": ["kind", "weights"], "properties": {"kind": {"const": "mask"}, "weights": {"type": "array", "minItems": 8760, "maxItems": 8760, "items": {"type": "number", "minimum": 0, "maximum": 1}}}}
+        ]}
+      },
+      "$comment": "Rust additionally requires lower < upper, a nonempty occupied period, valid source policy and valid geometry/sensor limits. Daily times wrap across midnight when start > end."
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "weather": {
+      "type": "object", "additionalProperties": false,
+      "required": ["original_sha256", "normalized_sha256", "time_axis_sha256", "interpretation"],
+      "properties": {"original_sha256": {"$ref": "#/$defs/sha256"}, "normalized_sha256": {"$ref": "#/$defs/sha256"}, "time_axis_sha256": {"$ref": "#/$defs/sha256"}, "interpretation": {"type": "string", "minLength": 1, "maxLength": 120}}
+    }
+  }
+}

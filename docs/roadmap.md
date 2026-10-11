@@ -1,5 +1,7 @@
 # Roadmap (excluded from v0.1)
 
+Climate-based daylight is now explicitly authorized for v0.3 under `v0.3-spec.md`. Historical exclusions below describe earlier release boundaries, not a prohibition on this new scope. Beyond v0.3, one-zone EnergyPlus requires a proper thermal/zoning/material/HVAC model and engine/license validation; bounded IFC ingress requires schema/units/placement/loss/rights checks; richer geometry requires robust topology and independent tests; regional assessments require current criterion/applicability/rights/evidence audits. No later feature follows automatically from v0.3 completion.
+
 Complete and evidence the static overcast daylight workflow before considering annual daylight, weather providers, energy engines, IFC, assessment modules, optimization or remote execution. No future feature is authorized by completing the v0.1 checklist.
 
 Any future regional assessment (including BEAM Plus) is a separately versioned evidence consumer requiring a fresh rights, applicability, amendment, standard and evidence audit. A simulation value is not a criterion decision or formal certification. No regional thresholds belong in the universal core.

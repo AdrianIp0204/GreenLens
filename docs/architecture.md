@@ -1,5 +1,7 @@
 # Architecture
 
+The active v0.3 extension introduces versioned static/hour/annual studies, a local EPW data provider, separate physical/metric identities and bounded chunked annual results. See `v0.3-spec.md` and `v0.3-scientific-method.md`; these additions are under implementation. Legacy model/run codecs and engine identity must remain separately dispatched without rewriting old evidence. Frontend requests bounded result slices and Rust-derived metrics rather than full matrices or local physics.
+
 The Rust core defines versioned inputs, authoritative geometry, sensor generation, scientific conversion, hashes, statistics and compatibility. The Radiance adapter produces bounded engine inputs and invokes the pinned executables. The runner/application service coordinates one job, process supervision, persistence, comparison, evidence export and replay. CLI and Tauri commands call the same service; React/Three.js only renders validated geometry/results and issues typed bounded requests.
 
 Simulation adapters produce evidence. Data providers supply validated inputs with source rights. Assessment modules can consume evidence but do not define simulation physics. Only the Radiance adapter and synthetic input data exist in v0.1; the latter two categories are architectural boundaries, not a marketplace or dynamic ABI.

@@ -1,5 +1,14 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — v0.3 authorization and inspected baseline
+
+- Implemented: persisted bounded climate-daylight specification, method investigation contract, frozen numerical acceptance targets, ownership and gate checklist. Updated durable scope and architecture; historical contracts/evidence remain preserved.
+- Verified: actual checkout was clean on `codex/v0.2-workspace` at `93a65f7`; application source remains `1fbb654`; expected existing GreenLens remote is configured. Created development branch `codex/v0.3-climate-daylight`. Read current scientific, persistence, architecture, release and progress records before implementation.
+- Unverified: v0.3 baseline regressions, annual executables in a real pipeline, weather rights/provider, all annual science/full-year A/B, new desktop and final-source CI. The physical Shift-add/Ctrl-remove observation remains unresolved from v0.2; no substitution or waiver is inferred.
+- Active ownership: baseline repair agent reproduces result/lock defects; engine agent investigates native matrix/sun feasibility; weather agent reviews EPW semantics and source rights. Root coordinates contracts/metrics/integration and builds. No production annual UI starts before feasibility/resource decisions.
+- Goal lifecycle: the existing v0.2 goal is blocked and incomplete. A new bounded goal will be attempted after this contract is persisted; an unfinished-goal limitation must not be bypassed by falsely completing v0.2. Independent implementation follows this plan regardless.
+- Goal creation was attempted and rejected by the runtime: an unfinished goal already exists and must be completed before replacement. v0.2 is not complete, so its status was preserved. This is a goal-tool limitation, not a simulation implementation blocker; v0.3 continues against its persisted plan.
+
 ## 2026-10-11 — initial inspection
 - Implemented: sanitized specification, durable instructions, architecture, roadmap and gate checklist.
 - Verified: requested source directory exists and is empty; no parent AGENTS.md found in inspected ancestry; no Git repository/remotes. Git/Node/npm/Python/uv/GitHub CLI available. GitHub authentication is active (account-specific details intentionally omitted).

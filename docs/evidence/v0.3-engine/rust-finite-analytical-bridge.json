@@ -1,0 +1,2253 @@
+{
+  "schema_version": "greenlens.rust-finite-analytical-bridge.v1",
+  "snapshot_utc": "2026-10-11T10:32:34.1915180+00:00",
+  "source_commit": "f5d2541cbbebc165d0133d20160e93f263855e70",
+  "source_worktree_dirty": true,
+  "fixture_source_sha256": "9f9e148dfdf3db4542ac8ef1c3cb9489be8c0dab16f2bf9cf0c7a4976d1b1658",
+  "scope": "Limited actual Rust direct-solar integration and native simplified-glass model checks, with independent analytical expectations. No algorithm/profile changed. No reflected-solar, complete annual, qualified reference or arbitrary-building accuracy is established.",
+  "release_acceptance_complete": false,
+  "hosted_ci_execution": "pending",
+  "commands": [
+    "cargo test -p greenlens-radiance --lib independent_finite_references_have_exact_limits_and_converge --locked --offline -- --nocapture",
+    "cargo test -p greenlens-radiance --lib native_aperture_culling_matches_all_rays_at_eleven_shadow_points --locked --offline -- --nocapture",
+    "cargo test -p greenlens-radiance --lib native_finite_glass_matches_independent_angular_transmission --locked --offline -- --nocapture",
+    "cargo clippy -p greenlens-radiance --all-targets --locked --offline -- -D warnings",
+    "scripts/annual-shadow-corrected.ps1 -OutputDirectory <new-local-verification-directory>"
+  ],
+  "verification": {
+    "glass_case_count": 6,
+    "radiance_strict_clippy_passed": true,
+    "workflow_yaml_and_37_powershell_blocks_parsed": true,
+    "pure_reference_helper_passed": true,
+    "independent_shadow_case_count": 36,
+    "aperture_case_count": 22
+  },
+  "records": {
+    "rust-aperture": {
+      "checks": [
+        {
+          "actual_lux": 9168.293788259474,
+          "all_ray_rgb": [
+            67.96665596341182,
+            47.57665917438826,
+            20.389996789023563
+          ],
+          "allowed_error_lux": 458.41469788696077,
+          "culled_rgb": [
+            67.96665596341182,
+            47.57665917438826,
+            20.389996789023563
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            67.96665721980384,
+            47.57666005386269,
+            20.389997165941153
+          ],
+          "passed": true,
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 9168.293957739215,
+          "reference_relative_change": 1.293836147750159E-07,
+          "samples": 1024,
+          "sensor_id": "fixture-0"
+        },
+        {
+          "actual_lux": 9168.293788259474,
+          "all_ray_rgb": [
+            67.96665596341182,
+            47.57665917438826,
+            20.389996789023563
+          ],
+          "allowed_error_lux": 458.41469788696077,
+          "culled_rgb": [
+            67.96665596341182,
+            47.57665917438826,
+            20.389996789023563
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            67.96665721980384,
+            47.57666005386269,
+            20.389997165941153
+          ],
+          "passed": true,
+          "position": [
+            0.09,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 9168.293957739215,
+          "reference_relative_change": 1.293836147750159E-07,
+          "samples": 1024,
+          "sensor_id": "fixture-1"
+        },
+        {
+          "actual_lux": 4584.146894129744,
+          "all_ray_rgb": [
+            33.983327981705955,
+            23.788329587194177,
+            10.194998394511778
+          ],
+          "allowed_error_lux": 229.20734894348038,
+          "culled_rgb": [
+            33.983327981705955,
+            23.788329587194177,
+            10.194998394511778
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            33.98332860990192,
+            23.788330026931344,
+            10.194998582970577
+          ],
+          "passed": true,
+          "position": [
+            0.1,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 4584.146978869608,
+          "reference_relative_change": 1.293836147750159E-07,
+          "samples": 1024,
+          "sensor_id": "fixture-2"
+        },
+        {
+          "actual_lux": 0.0,
+          "all_ray_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "allowed_error_lux": 5.0,
+          "culled_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": true,
+          "position": [
+            0.11,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 0.0,
+          "reference_relative_change": 0.0,
+          "samples": 1024,
+          "sensor_id": "fixture-3"
+        },
+        {
+          "actual_lux": 0.0,
+          "all_ray_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "allowed_error_lux": 5.0,
+          "culled_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": true,
+          "position": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 0.0,
+          "reference_relative_change": 0.0,
+          "samples": 1024,
+          "sensor_id": "fixture-4"
+        },
+        {
+          "actual_lux": 8505.74360467938,
+          "all_ray_rgb": [
+            63.0550201208137,
+            44.13851408456973,
+            18.916506036244215
+          ],
+          "allowed_error_lux": 425.34199879297825,
+          "culled_rgb": [
+            63.0550201208137,
+            44.13851408456973,
+            18.916506036244215
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            63.06314777079243,
+            44.1442034395547,
+            18.91894433123773
+          ],
+          "passed": true,
+          "position": [
+            0.09651184685027468,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 8506.839975859564,
+          "reference_relative_change": 1.4021285742090989E-07,
+          "samples": 1024,
+          "sensor_id": "fixture-5"
+        },
+        {
+          "actual_lux": 7377.614755192725,
+          "all_ray_rgb": [
+            54.69194328598922,
+            38.284360300192475,
+            16.407582985796783
+          ],
+          "allowed_error_lux": 368.79480097557246,
+          "culled_rgb": [
+            54.69194328598922,
+            38.284360300192475,
+            16.407582985796783
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            54.67920190581107,
+            38.27544133406775,
+            16.40376057174332
+          ],
+          "passed": true,
+          "position": [
+            0.0976745645668498,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 7375.896019511449,
+          "reference_relative_change": 1.623768431035714E-07,
+          "samples": 1024,
+          "sensor_id": "fixture-6"
+        },
+        {
+          "actual_lux": 6016.695304594844,
+          "all_ray_rgb": [
+            44.60313655390674,
+            31.22219558773481,
+            13.380940966172036
+          ],
+          "allowed_error_lux": 301.3995165117107,
+          "culled_rgb": [
+            44.60313655390674,
+            31.22219558773481,
+            13.380940966172036
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            44.68686915884495,
+            31.280808411191465,
+            13.406060747653486
+          ],
+          "passed": true,
+          "position": [
+            0.0988372822834249,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 6027.990330234214,
+          "reference_relative_change": 1.9467442001922675E-07,
+          "samples": 1024,
+          "sensor_id": "fixture-7"
+        },
+        {
+          "actual_lux": 3151.598483664644,
+          "all_ray_rgb": [
+            23.36351940950508,
+            16.35446358665357,
+            7.009055822851513
+          ],
+          "allowed_error_lux": 157.01518137525085,
+          "culled_rgb": [
+            23.36351940950508,
+            16.35446358665357,
+            7.009055822851513
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            23.279788060959017,
+            16.295851642671312,
+            6.983936418287705
+          ],
+          "passed": true,
+          "position": [
+            0.10116271771657512,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 3140.3036275050167,
+          "reference_relative_change": 4.054225925024332E-09,
+          "samples": 1024,
+          "sensor_id": "fixture-8"
+        },
+        {
+          "actual_lux": 1790.6790330667611,
+          "all_ray_rgb": [
+            13.274712677422658,
+            9.292298874195865,
+            3.9824138032267977
+          ],
+          "allowed_error_lux": 89.61989691138831,
+          "culled_rgb": [
+            13.274712677422658,
+            9.292298874195865,
+            3.9824138032267977
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            13.287455313992767,
+            9.301218719794937,
+            3.98623659419783
+          ],
+          "passed": true,
+          "position": [
+            0.10232543543315022,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 1792.3979382277662,
+          "reference_relative_change": 6.3867879762705165E-09,
+          "samples": 1024,
+          "sensor_id": "fixture-9"
+        },
+        {
+          "actual_lux": 662.5501835800931,
+          "all_ray_rgb": [
+            4.911635842597965,
+            3.438145089818576,
+            1.4734907527793921
+          ],
+          "allowed_error_lux": 33.07269909397915,
+          "culled_rgb": [
+            4.911635842597965,
+            3.438145089818576,
+            1.4734907527793921
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            4.90350944901092,
+            3.4324566143076436,
+            1.4710528347032759
+          ],
+          "passed": true,
+          "position": [
+            0.10348815314972533,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 661.453981879583,
+          "reference_relative_change": 9.889145966201477E-09,
+          "samples": 1024,
+          "sensor_id": "fixture-10"
+        },
+        {
+          "actual_lux": 9168.293788259483,
+          "all_ray_rgb": [
+            67.96665596341266,
+            47.57665917438801,
+            20.38999678902341
+          ],
+          "allowed_error_lux": 458.41469788696077,
+          "culled_rgb": [
+            67.96665596341266,
+            47.57665917438801,
+            20.38999678902341
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            67.96665721980384,
+            47.57666005386269,
+            20.389997165941153
+          ],
+          "passed": true,
+          "position": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 9168.293957739215,
+          "reference_relative_change": 1.293836147750159E-07,
+          "samples": 4096,
+          "sensor_id": "fixture-0"
+        },
+        {
+          "actual_lux": 9168.293788259483,
+          "all_ray_rgb": [
+            67.96665596341266,
+            47.57665917438801,
+            20.38999678902341
+          ],
+          "allowed_error_lux": 458.41469788696077,
+          "culled_rgb": [
+            67.96665596341266,
+            47.57665917438801,
+            20.38999678902341
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            67.96665721980384,
+            47.57666005386269,
+            20.389997165941153
+          ],
+          "passed": true,
+          "position": [
+            0.09,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 9168.293957739215,
+          "reference_relative_change": 1.293836147750159E-07,
+          "samples": 4096,
+          "sensor_id": "fixture-1"
+        },
+        {
+          "actual_lux": 4584.146894129732,
+          "all_ray_rgb": [
+            33.98332798170602,
+            23.788329587194045,
+            10.19499839451178
+          ],
+          "allowed_error_lux": 229.20734894348038,
+          "culled_rgb": [
+            33.98332798170602,
+            23.788329587194045,
+            10.19499839451178
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            33.98332860990192,
+            23.788330026931344,
+            10.194998582970577
+          ],
+          "passed": true,
+          "position": [
+            0.1,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 4584.146978869608,
+          "reference_relative_change": 1.293836147750159E-07,
+          "samples": 4096,
+          "sensor_id": "fixture-2"
+        },
+        {
+          "actual_lux": 0.0,
+          "all_ray_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "allowed_error_lux": 5.0,
+          "culled_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": true,
+          "position": [
+            0.11,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 0.0,
+          "reference_relative_change": 0.0,
+          "samples": 4096,
+          "sensor_id": "fixture-3"
+        },
+        {
+          "actual_lux": 0.0,
+          "all_ray_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "allowed_error_lux": 5.0,
+          "culled_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "passed": true,
+          "position": [
+            0.2,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 0.0,
+          "reference_relative_change": 0.0,
+          "samples": 4096,
+          "sensor_id": "fixture-4"
+        },
+        {
+          "actual_lux": 8510.220283769313,
+          "all_ray_rgb": [
+            63.08820676541703,
+            44.16174473579139,
+            18.92646202962498
+          ],
+          "allowed_error_lux": 425.34199879297825,
+          "culled_rgb": [
+            63.08820676541703,
+            44.16174473579139,
+            18.92646202962498
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            63.06314777079243,
+            44.1442034395547,
+            18.91894433123773
+          ],
+          "passed": true,
+          "position": [
+            0.09651184685027468,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 8506.839975859564,
+          "reference_relative_change": 1.4021285742090989E-07,
+          "samples": 4096,
+          "sensor_id": "fixture-5"
+        },
+        {
+          "actual_lux": 7377.6148164819615,
+          "all_ray_rgb": [
+            54.691943740340584,
+            38.28436061823816,
+            16.40758312210205
+          ],
+          "allowed_error_lux": 368.79480097557246,
+          "culled_rgb": [
+            54.691943740340584,
+            38.28436061823816,
+            16.40758312210205
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            54.67920190581107,
+            38.27544133406775,
+            16.40376057174332
+          ],
+          "passed": true,
+          "position": [
+            0.0976745645668498,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 7375.896019511449,
+          "reference_relative_change": 1.623768431035714E-07,
+          "samples": 4096,
+          "sensor_id": "fixture-6"
+        },
+        {
+          "actual_lux": 6034.601931669074,
+          "all_ray_rgb": [
+            44.73588247042386,
+            31.315117729296627,
+            13.420764741127144
+          ],
+          "allowed_error_lux": 301.3995165117107,
+          "culled_rgb": [
+            44.73588247042386,
+            31.315117729296627,
+            13.420764741127144
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            44.68686915884495,
+            31.280808411191465,
+            13.406060747653486
+          ],
+          "passed": true,
+          "position": [
+            0.0988372822834249,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 6027.990330234214,
+          "reference_relative_change": 1.9467442001922675E-07,
+          "samples": 4096,
+          "sensor_id": "fixture-7"
+        },
+        {
+          "actual_lux": 3133.6918565903943,
+          "all_ray_rgb": [
+            23.230773492988018,
+            16.261541445091574,
+            6.969232047896376
+          ],
+          "allowed_error_lux": 157.01518137525085,
+          "culled_rgb": [
+            23.230773492988018,
+            16.261541445091574,
+            6.969232047896376
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            23.279788060959017,
+            16.295851642671312,
+            6.983936418287705
+          ],
+          "passed": true,
+          "position": [
+            0.10116271771657512,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 3140.3036275050167,
+          "reference_relative_change": 4.054225925024332E-09,
+          "samples": 4096,
+          "sensor_id": "fixture-8"
+        },
+        {
+          "actual_lux": 1790.6789717775093,
+          "all_ray_rgb": [
+            13.27471222307142,
+            9.292298556150016,
+            3.9824136669214147
+          ],
+          "allowed_error_lux": 89.61989691138831,
+          "culled_rgb": [
+            13.27471222307142,
+            9.292298556150016,
+            3.9824136669214147
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            13.287455313992767,
+            9.301218719794937,
+            3.98623659419783
+          ],
+          "passed": true,
+          "position": [
+            0.10232543543315022,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 1792.3979382277662,
+          "reference_relative_change": 6.3867879762705165E-09,
+          "samples": 4096,
+          "sensor_id": "fixture-9"
+        },
+        {
+          "actual_lux": 658.0735044901343,
+          "all_ray_rgb": [
+            4.87844919799507,
+            3.414914438596558,
+            1.463534759398525
+          ],
+          "allowed_error_lux": 33.07269909397915,
+          "culled_rgb": [
+            4.87844919799507,
+            3.414914438596558,
+            1.463534759398525
+          ],
+          "culling_equal": true,
+          "expected_rgb": [
+            4.90350944901092,
+            3.4324566143076436,
+            1.4710528347032759
+          ],
+          "passed": true,
+          "position": [
+            0.10348815314972533,
+            0.0,
+            0.0
+          ],
+          "reference_lux": 661.453981879583,
+          "reference_relative_change": 9.889145966201477E-09,
+          "samples": 4096,
+          "sensor_id": "fixture-10"
+        }
+      ],
+      "engine": {
+        "adapter_version": "radiance-static-overcast/1",
+        "executable_sha256": {
+          "gensky.exe": "72745cf8f263d34549d0c01d86a7e04b5cb2558cab483d8f27417c95913409f8",
+          "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9"
+        },
+        "fingerprint": "cb04363f2d28ab2513aa7d2bebf3e7449f01450c4b40cf4d0f0a77a7dead9d09",
+        "library_sha256": {
+          "bin/vcruntime140.dll": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+          "lib/Ashikhmin.cal": "c2dd7480b6e98c65bc483f4d09011bdb7bd9d90ce69c9662d83bb2edcba89931",
+          "lib/LaFortune.cal": "660736799954a4af1496a9f1b8bef4bfdc3caba4334127a5e738de01ea374359",
+          "lib/LaFortune1.cal": "5a3ae2148a065547a156d6e0215f3062fb2fa519d7953f858b1dbdc080450db5",
+          "lib/WGMDaniso.cal": "dbd123d90056016f7d11a48cf15d42d6773582accb89135c99e6f62a67f6630b",
+          "lib/WGMDiso.cal": "c2454a7aab6c1a715706fc72035191e5880de0ab962740638805e101877fc957",
+          "lib/WINDOW6BSDFt.xml": "0472f168bacc3c31689dcb6fef2d468560759c205ad9eb76f634323e97e0c82b",
+          "lib/WalterBSDF.cal": "1d57a684651959fa14f87c322bc020f1abe0e29cba5f2524362bc509d2c343c6",
+          "lib/WalterBTDF.cal": "3656c685268365cef0dfa6808af79c9c6fbac850c26e257cd94dd6f116bfcd30",
+          "lib/ambient.fmt": "10dc09fbb180af9c5f6f187361bd743bd2a2a2c57521052098a71b7c00513371",
+          "lib/ambient1.fmt": "d902e0344c67912e02083e4c61b2a85324149ee2faedbeed77f336448a989547",
+          "lib/ambpos.cal": "cfcb91cee113ca4c7242621d3eeff959b9bc1d2677e8d41e946f89b21568156c",
+          "lib/bezier2.cal": "b2c7cb1ffe6a144ba02ecdeedeb9b4f4fad8f82afd77363348585ca703aab698",
+          "lib/blackbody.cal": "537586ec50439d787336015119d1959adb1d96530f77737f0f60be0bfee52172",
+          "lib/blinds.cal": "712677ea5e0a03209bcee50a531b8c5dc657973e4efd18453a4fcbeb1fcb9df1",
+          "lib/boxw.plt": "5797e870bb91f2b9bf1fe020e1944ba1857c2279c2c8b3584bad8915c30c2c03",
+          "lib/bsdf2rad.cal": "fcb8bc993d8330f08fbef882e41e98e98bf1ad58df3faec8720e590da6097c69",
+          "lib/cartesian.plt": "70e85fa23dc91df4753ff9a2896561675dcfb9a5736ee4e7cdce3c8b08e08ca0",
+          "lib/cct.cal": "9fb152433ed76de81079696d083aef8e32802a199ac8e2eca7053d21e5697d03",
+          "lib/cielab.cal": "bc66f547a12ca9131a0e2d2335ffa0ffbd8c2105dd349517fa7e27710c992cfd",
+          "lib/cieluv.cal": "0112121e3e32ed9732e81eb6624f9b7b0052ff27052ad3769173ec210cc34c3f",
+          "lib/cieresp.cal": "35449311aa2f7cb5b4ea96ffa75c72f6c23ea2dd2f9763f27095b1bfcf3bc958",
+          "lib/circle.cal": "ab7a60e8e464b6fd4c6b38eafdff98a4e97760d850e910387c50c37128adb0c7",
+          "lib/clamp.cal": "3314d55a6e7eac2c421fa3445b14e4ef61c2920400c6b23507fcdd69a087be49",
+          "lib/clockface.hex": "70fc32e7b6de37441b65ad474e994b009f8386c78e53d4a357b6fd97699904e5",
+          "lib/clouds.cal": "00739ef717e0a4f7b402a0cb2b8620eaeb9123f9347b7867213ae6bc3e857f4f",
+          "lib/cmat.fmt": "6eb08904e58069d5889dfe4e2aa8551a3947565d088b03117e6bf82ea1bf0157",
+          "lib/color.fmt": "e8cb057cd49e0b9609ed1a2db7360885ab3653c0f4e49c6b33bb3c2c6bf21dda",
+          "lib/colorcal.csh": "949d3f0c6f0e99a80791f294b8901fc7886e436af18aa8e28e1dc557fcb61206",
+          "lib/conv1.cal": "87b226c35f118c7a28c36b824cbff13718c775424bb9e5c72b28322cf39fffc0",
+          "lib/conv2.cal": "8ac49045054ac5cfba2e17a25c2f0abca49f0bf049fae47ba654d5438159d9c2",
+          "lib/cri.cal": "7a1342854e16954e1751b2b260ddbebc67cd8b0cad384a3b7ff696d83e74088b",
+          "lib/cubic.cal": "953e5815afcf0dd953e2add253de94c96e42a99f46cb1b3dea0f5d12ecfeb20d",
+          "lib/curve.plt": "c0259d95889bb0c2dee05a15a5e28aaff9007027f16c15a824a75c377b10974d",
+          "lib/denom.cal": "55147329326fec27e4f87bb056906049624a25ff6cc8283379a83c60b8a8ec2b",
+          "lib/disk2square.cal": "a7f06dca0fdf3e7b1e970fc9db9a55c5b2a9b08622ab75c74d1ae547fd5c9e33",
+          "lib/equivlum.cal": "4cd7ce39eddbc9233cfa710219f982fa995193b7727a8f65dfaaa8b9168ca8fd",
+          "lib/errfile.fmt": "2c31d5c857cff01bfb1f9a3eee8a3e7c625aef87ddb49d9f03ad31e29a9ba865",
+          "lib/ferwerda.cal": "1b09c833bb86a77356a49ea3a2b1e02813163e54afdbf0eec1d45eff8aa9c18b",
+          "lib/filt.cal": "d6acf7a037022e75b0c34a82a6ddc0746e3eded807a3ae6794d9ef70951ab612",
+          "lib/fisheye_corr.cal": "3eef7fe151868efc85639c78a583eac2f21b2ecb778d6839e9fd544816c08166",
+          "lib/fitSH.cal": "20cd10b7ea8db8f7f02c4f7ef1b264e04044a11c2d2ed2918c44fe664c378bed",
+          "lib/fog.cal": "a83fd250f20c24896d15784b090751ece65e1c58be9e9c23ef29c16b73be300b",
+          "lib/fovsample.cal": "ac7d64a76a0a6491e0a37b329b908f03d80e97ede0c45cea8dd01b9362cdcc80",
+          "lib/function.plt": "201dd99b2dc10f4ddd43f736359f10b24b71b51e2fd3215ce75b18a8fa6687aa",
+          "lib/gauss.cal": "9d769a540273a3b54066aac7b31b222a64ca672606548f79a2868975b66622a3",
+          "lib/gaussian.cal": "45e892f15174580835caa6d76fbed448aa68c9cdc967e614663e7da3a13fe3c2",
+          "lib/genSH.cal": "8a4a973f02956821d3802efdb0368feba9af7904eb54b6203a5645f19aea979f",
+          "lib/gensky+s.fmt": "08b266ee0bb0400976bbcdd96c3b7fc18a07b9b962cd90117977b39d1a4dc679",
+          "lib/gensky-s.fmt": "9913290d618679e02e496ca694ea85da34507eeceee57999d646fa68c85fa4fc",
+          "lib/glass3.cal": "a0a2caac2464a42c3951dbee913ad5d91d28bfcaf333cea2866929eeb9acba7a",
+          "lib/glaze1.cal": "656c90d1dcb7c93701db502e3d607cad1f8b9755795f55fb68b32180b9b4c327",
+          "lib/glaze2.cal": "4c1371dce0f6023c3795da3b94cb544211706352d40578085ac4f103b1859c39",
+          "lib/graypatch.cal": "aa888533a33ed8b83b6c52cf382e7e5133463875d32e1249524f3b943e592990",
+          "lib/helvet.fnt": "917feda8a2a67ce782d72236e62210147080956aa31a32fcd5b6e5798f01af97",
+          "lib/hermite.cal": "9f8122fff62d4a55653c71a7c15ed8b1d1a13eb77f0e87a2f0d9331694ceac8b",
+          "lib/hsv_rgb.cal": "f0a8f5449212b220c900beba67cc6d4977385b8e31ea0eafb91b0f6cf51767a5",
+          "lib/illum.cal": "f23d50b14ec5d79fc509ccfd646280c79780a12f834b3c070420fbb94adba32b",
+          "lib/illum.fmt": "e37f1f3b66cd2c03bfadf4d0228a93444c20cf4fe7f076841c1f927f80a4155e",
+          "lib/illumcal.csh": "d2dd1ef1c1c3cc17eac418f349d91e13e72c3b9ce1592d0c262d3dfa681d4fb7",
+          "lib/klems_ang.cal": "736af6bf3d116571a0e75b903f5df89a9203f02b9834036dfe76b54056c01dd2",
+          "lib/klems_full.cal": "29a61b7f8f2bb15508aff269bb941951beb8346e0839a66fcadcb7e402b31f16",
+          "lib/klems_half.cal": "17be735914758b2ee5e7ae4301f97d55826b48c66d82d75918f6251b7c9efdb4",
+          "lib/klems_quarter.cal": "29ee5170617804c4bb20663059292db28e0cb8f1eae140e42a9e8cdc5c4abf33",
+          "lib/lamp.tab": "e8c980027f76e127679936e2e3ff9dcda15f6b8f361de187edd53ef7245182c0",
+          "lib/landscape.cal": "00f043af683d18d16ca38cd861ef4343493df38d27dfccb5a22f9307ce52ec69",
+          "lib/line.plt": "a3cc0ccfc69ce188ce4fdc7a4bb272b6b29bad84538bdc89e1b85085af879607",
+          "lib/log3G10.cal": "969d4c841f13da521363bc9cc514350cc8c221dd2dd5580eab261b3d745dc8da",
+          "lib/lumdist.cal": "42774f5d75ea4c0f63b4d7e3aa0bd36b5091f1ea84490505f4d4634b8f6f4f8c",
+          "lib/macbeth.cal": "6aecc8e9d348be038876cf829c58ccb2abd67b70804b09a2bfa30682f242ab13",
+          "lib/mat3.cal": "ac76cbccb96d1a9d064e1aad4c4cd1425271fe1197d94a671fcbdad50d076fdb",
+          "lib/metals.cal": "e497c62fedbddbe941a534d1fb55e4417c9188b8376b17f9cbb63bf3111c6130",
+          "lib/mie_ca.dat": "893fd32b7275adc311342ca675e5afec536011661b4338a27ec2cd342d2fc70a",
+          "lib/minimalBSDFt.xml": "1bb64fa37565bd734c5b96ea92a4944c601a9d40b779f9d0178e33abc2675256",
+          "lib/noise.cal": "0d84efb2e349ce247f942bd4218a3b89f43ba2ca3fc252fcb7e44f29179598e8",
+          "lib/noise2.cal": "ccb5b92686b5ee0eff7946e4c2303b7cd9829f3c9d5be31e9a14c9960d02d498",
+          "lib/noise3.cal": "0bbc89b6f335e30b739366d57cd4b1d6a5029974a0e34367db0997f0728aa85d",
+          "lib/noise_con.cal": "5207e8869413471faeb55757bcf5562ab2b437d82712fb31215382bdcfc8c1d9",
+          "lib/norm.cal": "9769a14cb959bb48727711cf65ca2b4d198b92f33fe20b06b6e56ad40cf12466",
+          "lib/normcomp.cal": "8f2d56a0d7e7f55bfd0239a59fb9492759e2ab00be9af438ba80144484f691a9",
+          "lib/patch3w.cal": "3efbf2dbde6f0cba19e4547628205e9337fabf8c6b38ccc5938cbfe463c759f9",
+          "lib/peerless.cal": "857d377306a976a34cc50c5db789b82e4cccc797e13fa6e9dd99b412afe297f6",
+          "lib/perezlum.cal": "d6597d6f0c2df0bfd1c907e54382fed060f23214448aff143513fe64ba0aacf6",
+          "lib/perezlum_c.cal": "ed4b1ecb46f09397921e0cb7cfdfe1990bc9a1d82bd15cc39f8bbaea6cc3bb32",
+          "lib/picdiff.cal": "dc99ca639e31339c1b66eb46a06e7828e252287264cc05221c350d6cca9857ea",
+          "lib/polar.plt": "0f6aac9d09b7d10d4a4b4e8cb4729518ecdd1f884791ee6c898c130382ee01ae",
+          "lib/polynomial.cal": "2d539ec11021a09721108cc5ecdc765d920b417fc4d17149fc8e8002c6728988",
+          "lib/pq.cal": "985b51adc3c034ac90630e336212ae9d3d4b07ce1329b39f2d52cd9330542eb8",
+          "lib/printwarp.cal": "6341ab2692109b99599bb08678e56fe3eab3cdbab8f7f77ea2ce34035430c637",
+          "lib/quadratic.cal": "c571a102557b0ab588b232556c9cb61a07e82f9eca6f278268a4a3712ccbcc53",
+          "lib/rambpos.cal": "9a128fe5846c58b3a5fd58688b128501bf57dadb26373f91f803757ec7cdff24",
+          "lib/rayinit.cal": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+          "lib/reinhard.cal": "f21a783c31775c45ba31405b67b344203e1ab97faa860aaa44f6743cda7a8101",
+          "lib/reinhard.csh": "690f234da4963b8a8f582c88d7d949c75d99629ec69edc4a299e02e382eaebd6",
+          "lib/reinhart.cal": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934",
+          "lib/reinhartb.cal": "c0f79976116dda01d096e3c9cb24aa9ac84e75901c6470439ba8442a8a27e444",
+          "lib/rev.cal": "4131bb875138a71a3138a8fe7f386eb10956f554955e56ecc34803e89cea8674",
+          "lib/rgb.cal": "afb71682c2a72c50a768b1139c6986978553aca21b728378f42127210d026c31",
+          "lib/rgb_ycc.cal": "84903083576e5e2b61a420b3716f6faa02cb3dbc15abe35c5f7c893e25fb063c",
+          "lib/root.cal": "255ff881b73c72c10230efb657fbafec8e343ba76950af30a7615cf7b7a4b7e1",
+          "lib/rskysrc.cal": "55255531ad7697f65d56c9ada2a978f8739358db49a9ff3498aa8afa8b5a1920",
+          "lib/scatter.plt": "1530f394e06ca541e8722c1359fad8e19eb58dcb5b37a2c74bf1bdf7a735f899",
+          "lib/screen.cal": "667f180ee133c10fad9187286318c87c394f2e39002e0cd821e6d1e65b638757",
+          "lib/sf.cal": "ff12c83f71ba1ee4da628052c8586eb76d448551f6dbacac50723206828571bb",
+          "lib/sky2spectra.cal": "7ad3fc1385d85038bb869c148a12f7c2eb1b96d43ff9ba0ac62fa30a37f12516",
+          "lib/skybright.cal": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454",
+          "lib/skyfact.cal": "dff9f42e8322eb1729ff378984e7bdcccdf780f0b2910508c9e9be82e5b7b52a",
+          "lib/source.cal": "0fd0458e011267b90410cf03cec6bed7c31c66e89bef41cb9334d0b79793329f",
+          "lib/spharm.cal": "5e333ac8ec477dc7343ae439c31ea9ff60cab8f63e7bb3f0d9063553d1c41df1",
+          "lib/sphsamp.cal": "e0daee9e349a221f57cb42acbc80e0d58ab70c976f9fa3e3760bb0e893a306e8",
+          "lib/spline.cal": "ab01c18fb22ce8816fab4fbc810f5646fb71499776e8e451f0336cfc8872058f",
+          "lib/standard.plt": "a6d91e43ed91ca47989aeb67695020ec28680cd3932e778a0646d05ccc8b93f7",
+          "lib/stdrefl.cal": "554caba3b5a33582fcf95495da731f3f565552abbf335a9924ddbde5ac34ad53",
+          "lib/sun.cal": "d20009136c0c471d402cd55c9dd68620d06e2f0138d12d38bc4a43503aa0dfce",
+          "lib/sun2.cal": "b3be5729df750a91a2f915500d6eeb709f09da7d7039086ac24dc63edc37735d",
+          "lib/suncal.fmt": "e4513210b57adbc2c997caadf5257c5f31a8f68eb8f3e9d0294e50e9b5ca9dc3",
+          "lib/superellipsoid.cal": "4d0b92947725ed80a9bf423b5d3abd8278648caae6accf80b5513cee188a463b",
+          "lib/surf.cal": "72ed2c5b7c72d3ba66ccd8bccf4c0df7cb718b746121bcc42cc5f1040dc16314",
+          "lib/symbols.met": "be62f219ae1c6009c019c89cb8eec1e8c905a236b3180325f4d427f405356471",
+          "lib/symbols.mta": "26e088fe7fdb22f1546632f4834057599644b170837325dd03fdfd550fcfd1b4",
+          "lib/testimg.cal": "7591da4ca47ed5d4188abcc2fd497f045622a6f9415133a15eb847aed4b7f316",
+          "lib/testsuncal.csh": "9d8811b6fb2afca2497b5ad11ecf7b7db80fde7d404cc570c56141640f231816",
+          "lib/tilt.cal": "d57406e93ca758bff644e5f624968f78f5220889288ac143109243733f7f4311",
+          "lib/tmesh.cal": "ebe094fe1cc67223e0cb8b1b16c5a76a39583bc2d2f4885f30cc1378b7e9d24d",
+          "lib/trans.cal": "61ca07a62967cc604c825f96307084c8abd1f135b304cf61566f4bdb9c7b4c17",
+          "lib/trans2.cal": "fd0fbb6462925f02b527fac0e6a1281278f34163eda109336eeadef3b7fb64c2",
+          "lib/tregenza.cal": "af2d3ed5e48ddbef6af55c03493684cf98488a94979d06171fbfd6b2a5927a94",
+          "lib/tregsamp.dat": "e7c7b249fe51614f9e6bd19c2b2d133ebfbd4fcba6e6d35fc22f8079249d60ad",
+          "lib/tregsrc.cal": "d6faf346e6b387856158c4f0eadd7044a01b9a099d54bedeb7a6216a61ed90c6",
+          "lib/trix.dat": "576232ea1733db5a84ac865eacc5c2d7f33b15364f3b7c764b1df3fc7f4c32e4",
+          "lib/triy.dat": "e772d951fa08f1306fcf942c6ce22794ac7b5aff5ca546c8ea60d1f947488366",
+          "lib/triz.dat": "dee309ba79f4f79ea2b50262a34c9c81fa6433c343acb85605aa250d3b4f5569",
+          "lib/tumblin.cal": "755f66d8056606a81086427d14199bf942d0524bd08548d15977125fb2e0f4fb",
+          "lib/uniq_rgb.cal": "7727f2096c177a22150a18e6e0ab5fb76837e4cce5a552f360bdbca85b9efb39",
+          "lib/vchars.met": "3af1f79441db1511eba48aa68176903fe9865d82a2df5cf3cae503d9d291d904",
+          "lib/vchars.mta": "a861f802b13715835e5798509aa924cfb11fb4a319850559528e10700e605f7a",
+          "lib/veil.cal": "f7358c67c7830e60b863dc8416c1743aada333044ad786cfbe57f58852e9290c",
+          "lib/view.fmt": "249aa7b8129ac1088c2f423e535936866c6b80483df9d6b40d31a114222cb675",
+          "lib/view360stereo.cal": "6d599c7096d4f0cf038040e2fbbd6bcd015cd59e07c1df6cf96a7b6f86933d39",
+          "lib/vl.cal": "0453b917e60f751a8e13cf78ce8bce53c0bc5c1fbe134e365afa7ae6e23233ce",
+          "lib/vonKries.cal": "9564e9883187211fcb34819bf9bd63700cff9e9c5617ec5638d1aab099482b84",
+          "lib/vwcylamb.cal": "ad8eb02f49fe7b373dc6c3e660f720349b57feb981c60defe63a53c29b325d1f",
+          "lib/vwparab.cal": "f9607e3129c0229f243dac93a375812a424d540738a9ca521aa0ec21f7752587",
+          "lib/vwplanis.cal": "04fa3c705003272ae5545f0589ec8d5ce79325a58c5eeb798207ac976a2a5848",
+          "lib/window.cal": "cb2ec0b97b783dbbfa588f577684439ac179bc6e8b6935bc2aee1078d3dd983b",
+          "lib/xyz_rgb.cal": "2f4a3b519f4c01287efd9b100ea48dcfdd1557ef275b452ec988797c241869b5",
+          "lib/xyz_srgb.cal": "b25943fc50e4139da2fb0ac70eb8f5896a128c1968874da7ad5df2bcbdae0b15"
+        },
+        "version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)"
+      },
+      "passed": true,
+      "processes": [
+        {
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "annual-diffuse.oct"
+          ],
+          "elapsed_ms": 338,
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "finished_utc": "2026-10-11T10:27:38.733207700+00:00",
+          "started_utc": "2026-10-11T10:27:38.395102200+00:00",
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "annual-diffuse.oct"
+          ],
+          "elapsed_ms": 256,
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "finished_utc": "2026-10-11T10:27:39.112385800+00:00",
+          "started_utc": "2026-10-11T10:27:38.856317400+00:00",
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "annual-diffuse.oct"
+          ],
+          "elapsed_ms": 638,
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "finished_utc": "2026-10-11T10:27:40.308941600+00:00",
+          "started_utc": "2026-10-11T10:27:39.670798400+00:00",
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "annual-diffuse.oct"
+          ],
+          "elapsed_ms": 586,
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "finished_utc": "2026-10-11T10:27:41.455015700+00:00",
+          "started_utc": "2026-10-11T10:27:40.868422800+00:00",
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        }
+      ],
+      "reference_convergence": 0.001,
+      "reference_slices": [
+        16384,
+        65536
+      ],
+      "schema_version": "greenlens.native-finite-aperture-analytical.v1",
+      "scope": "Actual Rust write_batch/native rtrace/integrate_batch versus independent projected-disc aperture reference and conservative-culling equality; no annual or general-building accuracy claim",
+      "source_radiance_rgb": [
+        1000000.0,
+        700000.0,
+        300000.0
+      ],
+      "tolerance": "max(5.0lx,5% reference) every sensor; per RGB channel max(5/179,5% reference RGB)"
+    },
+    "rust-glass": {
+      "batches": [
+        {
+          "attempted_rays": 3072,
+          "culled_rays": 0,
+          "emitted_rays": 3072,
+          "input_sha256": "b49a2446d6242c204b42475375264f0d846315a6d0f3e7b46cacda58e64be305",
+          "interval_indices": [
+            0,
+            1,
+            2
+          ],
+          "output_sha256": "a8008644e3c1aac1fff0efdc3a135b96f2e7cdded9bbe121fe9e3a64e465145e"
+        },
+        {
+          "attempted_rays": 12288,
+          "culled_rays": 0,
+          "emitted_rays": 12288,
+          "input_sha256": "2556219be8d4d2cb892547d97e1f07fd49f71005d59035e42e7494c63b70fc79",
+          "interval_indices": [
+            0,
+            1,
+            2
+          ],
+          "output_sha256": "4866bd4c0ee4901bae972c257fa7e8ae77ed083385706f134cb230a882904825"
+        }
+      ],
+      "checks": [
+        {
+          "actual_lux": 5500.970714687429,
+          "actual_rgb": [
+            40.77995237333501,
+            28.545966661334443,
+            12.233985712000555
+          ],
+          "allowed_error_lux": 55.00970797039762,
+          "expected_lux": 5500.970797039762,
+          "expected_rgb": [
+            40.779952983831606,
+            28.545967088682126,
+            12.233985895149482
+          ],
+          "incidence_degrees": 0.0,
+          "passed": true,
+          "reference_relative_change": 9.124387345599235E-11,
+          "samples": 1024
+        },
+        {
+          "actual_lux": 4633.103749597717,
+          "actual_rgb": [
+            34.34625633342428,
+            24.04237943339698,
+            10.303876900027266
+          ],
+          "allowed_error_lux": 46.331038596881505,
+          "expected_lux": 4633.103859688151,
+          "expected_rgb": [
+            34.346257149549785,
+            24.04238000468485,
+            10.303877144864936
+          ],
+          "incidence_degrees": 30.0,
+          "passed": true,
+          "reference_relative_change": 9.636679843235778E-11,
+          "samples": 1024
+        },
+        {
+          "actual_lux": 2285.824257245774,
+          "actual_rgb": [
+            16.945337319359457,
+            11.861736123551632,
+            5.08360119580784
+          ],
+          "allowed_error_lux": 22.858243177807786,
+          "expected_lux": 2285.8243177807785,
+          "expected_rgb": [
+            16.94533776811928,
+            11.861736437683497,
+            5.083601330435784
+          ],
+          "incidence_degrees": 60.0,
+          "passed": true,
+          "reference_relative_change": 1.6023134587068056E-10,
+          "samples": 1024
+        },
+        {
+          "actual_lux": 5500.970628734702,
+          "actual_rgb": [
+            40.77995173614817,
+            28.545966215303284,
+            12.233985520844062
+          ],
+          "allowed_error_lux": 55.00970797039762,
+          "expected_lux": 5500.970797039762,
+          "expected_rgb": [
+            40.779952983831606,
+            28.545967088682126,
+            12.233985895149482
+          ],
+          "incidence_degrees": 0.0,
+          "passed": true,
+          "reference_relative_change": 9.124387345599235E-11,
+          "samples": 4096
+        },
+        {
+          "actual_lux": 4633.103762394396,
+          "actual_rgb": [
+            34.346256428288996,
+            24.04237949980227,
+            10.303876928486664
+          ],
+          "allowed_error_lux": 46.331038596881505,
+          "expected_lux": 4633.103859688151,
+          "expected_rgb": [
+            34.346257149549785,
+            24.04238000468485,
+            10.303877144864936
+          ],
+          "incidence_degrees": 30.0,
+          "passed": true,
+          "reference_relative_change": 9.636679843235778E-11,
+          "samples": 4096
+        },
+        {
+          "actual_lux": 2285.8242572419013,
+          "actual_rgb": [
+            16.945337319330765,
+            11.861736123531529,
+            5.083601195799241
+          ],
+          "allowed_error_lux": 22.858243177807786,
+          "expected_lux": 2285.8243177807785,
+          "expected_rgb": [
+            16.94533776811928,
+            11.861736437683497,
+            5.083601330435784
+          ],
+          "incidence_degrees": 60.0,
+          "passed": true,
+          "reference_relative_change": 1.6023134587068056E-10,
+          "samples": 4096
+        }
+      ],
+      "engine": {
+        "adapter_version": "radiance-static-overcast/1",
+        "executable_sha256": {
+          "gensky.exe": "72745cf8f263d34549d0c01d86a7e04b5cb2558cab483d8f27417c95913409f8",
+          "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+          "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9"
+        },
+        "fingerprint": "cb04363f2d28ab2513aa7d2bebf3e7449f01450c4b40cf4d0f0a77a7dead9d09",
+        "library_sha256": {
+          "bin/vcruntime140.dll": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+          "lib/Ashikhmin.cal": "c2dd7480b6e98c65bc483f4d09011bdb7bd9d90ce69c9662d83bb2edcba89931",
+          "lib/LaFortune.cal": "660736799954a4af1496a9f1b8bef4bfdc3caba4334127a5e738de01ea374359",
+          "lib/LaFortune1.cal": "5a3ae2148a065547a156d6e0215f3062fb2fa519d7953f858b1dbdc080450db5",
+          "lib/WGMDaniso.cal": "dbd123d90056016f7d11a48cf15d42d6773582accb89135c99e6f62a67f6630b",
+          "lib/WGMDiso.cal": "c2454a7aab6c1a715706fc72035191e5880de0ab962740638805e101877fc957",
+          "lib/WINDOW6BSDFt.xml": "0472f168bacc3c31689dcb6fef2d468560759c205ad9eb76f634323e97e0c82b",
+          "lib/WalterBSDF.cal": "1d57a684651959fa14f87c322bc020f1abe0e29cba5f2524362bc509d2c343c6",
+          "lib/WalterBTDF.cal": "3656c685268365cef0dfa6808af79c9c6fbac850c26e257cd94dd6f116bfcd30",
+          "lib/ambient.fmt": "10dc09fbb180af9c5f6f187361bd743bd2a2a2c57521052098a71b7c00513371",
+          "lib/ambient1.fmt": "d902e0344c67912e02083e4c61b2a85324149ee2faedbeed77f336448a989547",
+          "lib/ambpos.cal": "cfcb91cee113ca4c7242621d3eeff959b9bc1d2677e8d41e946f89b21568156c",
+          "lib/bezier2.cal": "b2c7cb1ffe6a144ba02ecdeedeb9b4f4fad8f82afd77363348585ca703aab698",
+          "lib/blackbody.cal": "537586ec50439d787336015119d1959adb1d96530f77737f0f60be0bfee52172",
+          "lib/blinds.cal": "712677ea5e0a03209bcee50a531b8c5dc657973e4efd18453a4fcbeb1fcb9df1",
+          "lib/boxw.plt": "5797e870bb91f2b9bf1fe020e1944ba1857c2279c2c8b3584bad8915c30c2c03",
+          "lib/bsdf2rad.cal": "fcb8bc993d8330f08fbef882e41e98e98bf1ad58df3faec8720e590da6097c69",
+          "lib/cartesian.plt": "70e85fa23dc91df4753ff9a2896561675dcfb9a5736ee4e7cdce3c8b08e08ca0",
+          "lib/cct.cal": "9fb152433ed76de81079696d083aef8e32802a199ac8e2eca7053d21e5697d03",
+          "lib/cielab.cal": "bc66f547a12ca9131a0e2d2335ffa0ffbd8c2105dd349517fa7e27710c992cfd",
+          "lib/cieluv.cal": "0112121e3e32ed9732e81eb6624f9b7b0052ff27052ad3769173ec210cc34c3f",
+          "lib/cieresp.cal": "35449311aa2f7cb5b4ea96ffa75c72f6c23ea2dd2f9763f27095b1bfcf3bc958",
+          "lib/circle.cal": "ab7a60e8e464b6fd4c6b38eafdff98a4e97760d850e910387c50c37128adb0c7",
+          "lib/clamp.cal": "3314d55a6e7eac2c421fa3445b14e4ef61c2920400c6b23507fcdd69a087be49",
+          "lib/clockface.hex": "70fc32e7b6de37441b65ad474e994b009f8386c78e53d4a357b6fd97699904e5",
+          "lib/clouds.cal": "00739ef717e0a4f7b402a0cb2b8620eaeb9123f9347b7867213ae6bc3e857f4f",
+          "lib/cmat.fmt": "6eb08904e58069d5889dfe4e2aa8551a3947565d088b03117e6bf82ea1bf0157",
+          "lib/color.fmt": "e8cb057cd49e0b9609ed1a2db7360885ab3653c0f4e49c6b33bb3c2c6bf21dda",
+          "lib/colorcal.csh": "949d3f0c6f0e99a80791f294b8901fc7886e436af18aa8e28e1dc557fcb61206",
+          "lib/conv1.cal": "87b226c35f118c7a28c36b824cbff13718c775424bb9e5c72b28322cf39fffc0",
+          "lib/conv2.cal": "8ac49045054ac5cfba2e17a25c2f0abca49f0bf049fae47ba654d5438159d9c2",
+          "lib/cri.cal": "7a1342854e16954e1751b2b260ddbebc67cd8b0cad384a3b7ff696d83e74088b",
+          "lib/cubic.cal": "953e5815afcf0dd953e2add253de94c96e42a99f46cb1b3dea0f5d12ecfeb20d",
+          "lib/curve.plt": "c0259d95889bb0c2dee05a15a5e28aaff9007027f16c15a824a75c377b10974d",
+          "lib/denom.cal": "55147329326fec27e4f87bb056906049624a25ff6cc8283379a83c60b8a8ec2b",
+          "lib/disk2square.cal": "a7f06dca0fdf3e7b1e970fc9db9a55c5b2a9b08622ab75c74d1ae547fd5c9e33",
+          "lib/equivlum.cal": "4cd7ce39eddbc9233cfa710219f982fa995193b7727a8f65dfaaa8b9168ca8fd",
+          "lib/errfile.fmt": "2c31d5c857cff01bfb1f9a3eee8a3e7c625aef87ddb49d9f03ad31e29a9ba865",
+          "lib/ferwerda.cal": "1b09c833bb86a77356a49ea3a2b1e02813163e54afdbf0eec1d45eff8aa9c18b",
+          "lib/filt.cal": "d6acf7a037022e75b0c34a82a6ddc0746e3eded807a3ae6794d9ef70951ab612",
+          "lib/fisheye_corr.cal": "3eef7fe151868efc85639c78a583eac2f21b2ecb778d6839e9fd544816c08166",
+          "lib/fitSH.cal": "20cd10b7ea8db8f7f02c4f7ef1b264e04044a11c2d2ed2918c44fe664c378bed",
+          "lib/fog.cal": "a83fd250f20c24896d15784b090751ece65e1c58be9e9c23ef29c16b73be300b",
+          "lib/fovsample.cal": "ac7d64a76a0a6491e0a37b329b908f03d80e97ede0c45cea8dd01b9362cdcc80",
+          "lib/function.plt": "201dd99b2dc10f4ddd43f736359f10b24b71b51e2fd3215ce75b18a8fa6687aa",
+          "lib/gauss.cal": "9d769a540273a3b54066aac7b31b222a64ca672606548f79a2868975b66622a3",
+          "lib/gaussian.cal": "45e892f15174580835caa6d76fbed448aa68c9cdc967e614663e7da3a13fe3c2",
+          "lib/genSH.cal": "8a4a973f02956821d3802efdb0368feba9af7904eb54b6203a5645f19aea979f",
+          "lib/gensky+s.fmt": "08b266ee0bb0400976bbcdd96c3b7fc18a07b9b962cd90117977b39d1a4dc679",
+          "lib/gensky-s.fmt": "9913290d618679e02e496ca694ea85da34507eeceee57999d646fa68c85fa4fc",
+          "lib/glass3.cal": "a0a2caac2464a42c3951dbee913ad5d91d28bfcaf333cea2866929eeb9acba7a",
+          "lib/glaze1.cal": "656c90d1dcb7c93701db502e3d607cad1f8b9755795f55fb68b32180b9b4c327",
+          "lib/glaze2.cal": "4c1371dce0f6023c3795da3b94cb544211706352d40578085ac4f103b1859c39",
+          "lib/graypatch.cal": "aa888533a33ed8b83b6c52cf382e7e5133463875d32e1249524f3b943e592990",
+          "lib/helvet.fnt": "917feda8a2a67ce782d72236e62210147080956aa31a32fcd5b6e5798f01af97",
+          "lib/hermite.cal": "9f8122fff62d4a55653c71a7c15ed8b1d1a13eb77f0e87a2f0d9331694ceac8b",
+          "lib/hsv_rgb.cal": "f0a8f5449212b220c900beba67cc6d4977385b8e31ea0eafb91b0f6cf51767a5",
+          "lib/illum.cal": "f23d50b14ec5d79fc509ccfd646280c79780a12f834b3c070420fbb94adba32b",
+          "lib/illum.fmt": "e37f1f3b66cd2c03bfadf4d0228a93444c20cf4fe7f076841c1f927f80a4155e",
+          "lib/illumcal.csh": "d2dd1ef1c1c3cc17eac418f349d91e13e72c3b9ce1592d0c262d3dfa681d4fb7",
+          "lib/klems_ang.cal": "736af6bf3d116571a0e75b903f5df89a9203f02b9834036dfe76b54056c01dd2",
+          "lib/klems_full.cal": "29a61b7f8f2bb15508aff269bb941951beb8346e0839a66fcadcb7e402b31f16",
+          "lib/klems_half.cal": "17be735914758b2ee5e7ae4301f97d55826b48c66d82d75918f6251b7c9efdb4",
+          "lib/klems_quarter.cal": "29ee5170617804c4bb20663059292db28e0cb8f1eae140e42a9e8cdc5c4abf33",
+          "lib/lamp.tab": "e8c980027f76e127679936e2e3ff9dcda15f6b8f361de187edd53ef7245182c0",
+          "lib/landscape.cal": "00f043af683d18d16ca38cd861ef4343493df38d27dfccb5a22f9307ce52ec69",
+          "lib/line.plt": "a3cc0ccfc69ce188ce4fdc7a4bb272b6b29bad84538bdc89e1b85085af879607",
+          "lib/log3G10.cal": "969d4c841f13da521363bc9cc514350cc8c221dd2dd5580eab261b3d745dc8da",
+          "lib/lumdist.cal": "42774f5d75ea4c0f63b4d7e3aa0bd36b5091f1ea84490505f4d4634b8f6f4f8c",
+          "lib/macbeth.cal": "6aecc8e9d348be038876cf829c58ccb2abd67b70804b09a2bfa30682f242ab13",
+          "lib/mat3.cal": "ac76cbccb96d1a9d064e1aad4c4cd1425271fe1197d94a671fcbdad50d076fdb",
+          "lib/metals.cal": "e497c62fedbddbe941a534d1fb55e4417c9188b8376b17f9cbb63bf3111c6130",
+          "lib/mie_ca.dat": "893fd32b7275adc311342ca675e5afec536011661b4338a27ec2cd342d2fc70a",
+          "lib/minimalBSDFt.xml": "1bb64fa37565bd734c5b96ea92a4944c601a9d40b779f9d0178e33abc2675256",
+          "lib/noise.cal": "0d84efb2e349ce247f942bd4218a3b89f43ba2ca3fc252fcb7e44f29179598e8",
+          "lib/noise2.cal": "ccb5b92686b5ee0eff7946e4c2303b7cd9829f3c9d5be31e9a14c9960d02d498",
+          "lib/noise3.cal": "0bbc89b6f335e30b739366d57cd4b1d6a5029974a0e34367db0997f0728aa85d",
+          "lib/noise_con.cal": "5207e8869413471faeb55757bcf5562ab2b437d82712fb31215382bdcfc8c1d9",
+          "lib/norm.cal": "9769a14cb959bb48727711cf65ca2b4d198b92f33fe20b06b6e56ad40cf12466",
+          "lib/normcomp.cal": "8f2d56a0d7e7f55bfd0239a59fb9492759e2ab00be9af438ba80144484f691a9",
+          "lib/patch3w.cal": "3efbf2dbde6f0cba19e4547628205e9337fabf8c6b38ccc5938cbfe463c759f9",
+          "lib/peerless.cal": "857d377306a976a34cc50c5db789b82e4cccc797e13fa6e9dd99b412afe297f6",
+          "lib/perezlum.cal": "d6597d6f0c2df0bfd1c907e54382fed060f23214448aff143513fe64ba0aacf6",
+          "lib/perezlum_c.cal": "ed4b1ecb46f09397921e0cb7cfdfe1990bc9a1d82bd15cc39f8bbaea6cc3bb32",
+          "lib/picdiff.cal": "dc99ca639e31339c1b66eb46a06e7828e252287264cc05221c350d6cca9857ea",
+          "lib/polar.plt": "0f6aac9d09b7d10d4a4b4e8cb4729518ecdd1f884791ee6c898c130382ee01ae",
+          "lib/polynomial.cal": "2d539ec11021a09721108cc5ecdc765d920b417fc4d17149fc8e8002c6728988",
+          "lib/pq.cal": "985b51adc3c034ac90630e336212ae9d3d4b07ce1329b39f2d52cd9330542eb8",
+          "lib/printwarp.cal": "6341ab2692109b99599bb08678e56fe3eab3cdbab8f7f77ea2ce34035430c637",
+          "lib/quadratic.cal": "c571a102557b0ab588b232556c9cb61a07e82f9eca6f278268a4a3712ccbcc53",
+          "lib/rambpos.cal": "9a128fe5846c58b3a5fd58688b128501bf57dadb26373f91f803757ec7cdff24",
+          "lib/rayinit.cal": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+          "lib/reinhard.cal": "f21a783c31775c45ba31405b67b344203e1ab97faa860aaa44f6743cda7a8101",
+          "lib/reinhard.csh": "690f234da4963b8a8f582c88d7d949c75d99629ec69edc4a299e02e382eaebd6",
+          "lib/reinhart.cal": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934",
+          "lib/reinhartb.cal": "c0f79976116dda01d096e3c9cb24aa9ac84e75901c6470439ba8442a8a27e444",
+          "lib/rev.cal": "4131bb875138a71a3138a8fe7f386eb10956f554955e56ecc34803e89cea8674",
+          "lib/rgb.cal": "afb71682c2a72c50a768b1139c6986978553aca21b728378f42127210d026c31",
+          "lib/rgb_ycc.cal": "84903083576e5e2b61a420b3716f6faa02cb3dbc15abe35c5f7c893e25fb063c",
+          "lib/root.cal": "255ff881b73c72c10230efb657fbafec8e343ba76950af30a7615cf7b7a4b7e1",
+          "lib/rskysrc.cal": "55255531ad7697f65d56c9ada2a978f8739358db49a9ff3498aa8afa8b5a1920",
+          "lib/scatter.plt": "1530f394e06ca541e8722c1359fad8e19eb58dcb5b37a2c74bf1bdf7a735f899",
+          "lib/screen.cal": "667f180ee133c10fad9187286318c87c394f2e39002e0cd821e6d1e65b638757",
+          "lib/sf.cal": "ff12c83f71ba1ee4da628052c8586eb76d448551f6dbacac50723206828571bb",
+          "lib/sky2spectra.cal": "7ad3fc1385d85038bb869c148a12f7c2eb1b96d43ff9ba0ac62fa30a37f12516",
+          "lib/skybright.cal": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454",
+          "lib/skyfact.cal": "dff9f42e8322eb1729ff378984e7bdcccdf780f0b2910508c9e9be82e5b7b52a",
+          "lib/source.cal": "0fd0458e011267b90410cf03cec6bed7c31c66e89bef41cb9334d0b79793329f",
+          "lib/spharm.cal": "5e333ac8ec477dc7343ae439c31ea9ff60cab8f63e7bb3f0d9063553d1c41df1",
+          "lib/sphsamp.cal": "e0daee9e349a221f57cb42acbc80e0d58ab70c976f9fa3e3760bb0e893a306e8",
+          "lib/spline.cal": "ab01c18fb22ce8816fab4fbc810f5646fb71499776e8e451f0336cfc8872058f",
+          "lib/standard.plt": "a6d91e43ed91ca47989aeb67695020ec28680cd3932e778a0646d05ccc8b93f7",
+          "lib/stdrefl.cal": "554caba3b5a33582fcf95495da731f3f565552abbf335a9924ddbde5ac34ad53",
+          "lib/sun.cal": "d20009136c0c471d402cd55c9dd68620d06e2f0138d12d38bc4a43503aa0dfce",
+          "lib/sun2.cal": "b3be5729df750a91a2f915500d6eeb709f09da7d7039086ac24dc63edc37735d",
+          "lib/suncal.fmt": "e4513210b57adbc2c997caadf5257c5f31a8f68eb8f3e9d0294e50e9b5ca9dc3",
+          "lib/superellipsoid.cal": "4d0b92947725ed80a9bf423b5d3abd8278648caae6accf80b5513cee188a463b",
+          "lib/surf.cal": "72ed2c5b7c72d3ba66ccd8bccf4c0df7cb718b746121bcc42cc5f1040dc16314",
+          "lib/symbols.met": "be62f219ae1c6009c019c89cb8eec1e8c905a236b3180325f4d427f405356471",
+          "lib/symbols.mta": "26e088fe7fdb22f1546632f4834057599644b170837325dd03fdfd550fcfd1b4",
+          "lib/testimg.cal": "7591da4ca47ed5d4188abcc2fd497f045622a6f9415133a15eb847aed4b7f316",
+          "lib/testsuncal.csh": "9d8811b6fb2afca2497b5ad11ecf7b7db80fde7d404cc570c56141640f231816",
+          "lib/tilt.cal": "d57406e93ca758bff644e5f624968f78f5220889288ac143109243733f7f4311",
+          "lib/tmesh.cal": "ebe094fe1cc67223e0cb8b1b16c5a76a39583bc2d2f4885f30cc1378b7e9d24d",
+          "lib/trans.cal": "61ca07a62967cc604c825f96307084c8abd1f135b304cf61566f4bdb9c7b4c17",
+          "lib/trans2.cal": "fd0fbb6462925f02b527fac0e6a1281278f34163eda109336eeadef3b7fb64c2",
+          "lib/tregenza.cal": "af2d3ed5e48ddbef6af55c03493684cf98488a94979d06171fbfd6b2a5927a94",
+          "lib/tregsamp.dat": "e7c7b249fe51614f9e6bd19c2b2d133ebfbd4fcba6e6d35fc22f8079249d60ad",
+          "lib/tregsrc.cal": "d6faf346e6b387856158c4f0eadd7044a01b9a099d54bedeb7a6216a61ed90c6",
+          "lib/trix.dat": "576232ea1733db5a84ac865eacc5c2d7f33b15364f3b7c764b1df3fc7f4c32e4",
+          "lib/triy.dat": "e772d951fa08f1306fcf942c6ce22794ac7b5aff5ca546c8ea60d1f947488366",
+          "lib/triz.dat": "dee309ba79f4f79ea2b50262a34c9c81fa6433c343acb85605aa250d3b4f5569",
+          "lib/tumblin.cal": "755f66d8056606a81086427d14199bf942d0524bd08548d15977125fb2e0f4fb",
+          "lib/uniq_rgb.cal": "7727f2096c177a22150a18e6e0ab5fb76837e4cce5a552f360bdbca85b9efb39",
+          "lib/vchars.met": "3af1f79441db1511eba48aa68176903fe9865d82a2df5cf3cae503d9d291d904",
+          "lib/vchars.mta": "a861f802b13715835e5798509aa924cfb11fb4a319850559528e10700e605f7a",
+          "lib/veil.cal": "f7358c67c7830e60b863dc8416c1743aada333044ad786cfbe57f58852e9290c",
+          "lib/view.fmt": "249aa7b8129ac1088c2f423e535936866c6b80483df9d6b40d31a114222cb675",
+          "lib/view360stereo.cal": "6d599c7096d4f0cf038040e2fbbd6bcd015cd59e07c1df6cf96a7b6f86933d39",
+          "lib/vl.cal": "0453b917e60f751a8e13cf78ce8bce53c0bc5c1fbe134e365afa7ae6e23233ce",
+          "lib/vonKries.cal": "9564e9883187211fcb34819bf9bd63700cff9e9c5617ec5638d1aab099482b84",
+          "lib/vwcylamb.cal": "ad8eb02f49fe7b373dc6c3e660f720349b57feb981c60defe63a53c29b325d1f",
+          "lib/vwparab.cal": "f9607e3129c0229f243dac93a375812a424d540738a9ca521aa0ec21f7752587",
+          "lib/vwplanis.cal": "04fa3c705003272ae5545f0589ec8d5ce79325a58c5eeb798207ac976a2a5848",
+          "lib/window.cal": "cb2ec0b97b783dbbfa588f577684439ac179bc6e8b6935bc2aee1078d3dd983b",
+          "lib/xyz_rgb.cal": "2f4a3b519f4c01287efd9b100ea48dcfdd1557ef275b452ec988797c241869b5",
+          "lib/xyz_srgb.cal": "b25943fc50e4139da2fb0ac70eb8f5896a128c1968874da7ad5df2bcbdae0b15"
+        },
+        "version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)"
+      },
+      "normal_transmittance": 0.6,
+      "passed": true,
+      "processes": [
+        {
+          "arguments": [
+            "-f",
+            "fixture.rad"
+          ],
+          "elapsed_ms": 169,
+          "executable": "oconv.exe",
+          "exit_code": 0,
+          "finished_utc": "2026-10-11T10:27:43.936079100+00:00",
+          "started_utc": "2026-10-11T10:27:43.766463+00:00",
+          "stderr": ""
+        },
+        {
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "annual-diffuse.oct"
+          ],
+          "elapsed_ms": 232,
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "finished_utc": "2026-10-11T10:27:44.201876400+00:00",
+          "started_utc": "2026-10-11T10:27:43.969059300+00:00",
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "annual-diffuse.oct"
+          ],
+          "elapsed_ms": 366,
+          "executable": "rtrace.exe",
+          "exit_code": 0,
+          "finished_utc": "2026-10-11T10:27:44.788685300+00:00",
+          "started_utc": "2026-10-11T10:27:44.421914200+00:00",
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        }
+      ],
+      "reference_quadrature": "orthographic radial midpoint64x128 and128x256; no production ray directions reused",
+      "reference_source": "https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/rt/glass.c",
+      "refractive_index": 1.52,
+      "schema_version": "greenlens.native-finite-glass-analytical.v1",
+      "scope": "Actual Rust write_batch/native rtrace/integrate_batch against independently integrated equivalent single-pane Fresnel transmission; no measured-glazing or annual-accuracy claim",
+      "source_radiance_rgb": [
+        1000000.0,
+        700000.0,
+        300000.0
+      ],
+      "tolerance": "1% at every RGB channel and lux value; reference convergence0.1%"
+    },
+    "independent-overhang-context": {
+      "finite_source_sha256": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+      "fixture_source_sha256": "e6ac88d68df3556bb32c74d4f6844230b222431be746a813e11308515f368d35",
+      "pass": true,
+      "checks": [
+        {
+          "edge_fraction": -1.25,
+          "actual_lux": 12166.031417450717,
+          "samples": 1024,
+          "sensor_offset_m": -0.005814169999875528,
+          "kind": "overhang",
+          "reference_lux": 12166.031642344886,
+          "sensor_index": 0,
+          "reference_relative_change": 1.2938361454902184E-07,
+          "absolute_error_lux": 0.00022489416915050242,
+          "allowed_error_lux": 608.3015821172443,
+          "pass": true,
+          "coarse_reference_lux": 12166.033216430034
+        },
+        {
+          "edge_fraction": -0.75,
+          "actual_lux": 11286.848601625654,
+          "samples": 1024,
+          "sensor_offset_m": -0.0034885019999253168,
+          "kind": "overhang",
+          "reference_lux": 11288.68768081592,
+          "sensor_index": 1,
+          "reference_relative_change": 1.3925184120296994E-07,
+          "absolute_error_lux": 1.8390791902656929,
+          "allowed_error_lux": 564.434384040796,
+          "pass": true,
+          "coarse_reference_lux": 11288.689252786464
+        },
+        {
+          "edge_fraction": -0.5,
+          "actual_lux": 9789.85784819207,
+          "samples": 1024,
+          "sensor_offset_m": -0.002325667999950211,
+          "kind": "overhang",
+          "reference_lux": 9787.912543287493,
+          "sensor_index": 2,
+          "reference_relative_change": 1.6062711349176442E-07,
+          "absolute_error_lux": 1.9453049045769149,
+          "allowed_error_lux": 489.3956271643747,
+          "pass": true,
+          "coarse_reference_lux": 9787.914115491632
+        },
+        {
+          "edge_fraction": -0.25,
+          "actual_lux": 7983.961443149307,
+          "samples": 1024,
+          "sensor_offset_m": -0.0011628339999751056,
+          "kind": "overhang",
+          "reference_lux": 7999.137076258913,
+          "sensor_index": 3,
+          "reference_relative_change": 1.954086440813784E-07,
+          "absolute_error_lux": 15.17563310960577,
+          "allowed_error_lux": 399.95685381294567,
+          "pass": true,
+          "coarse_reference_lux": 7999.138639359443
+        },
+        {
+          "edge_fraction": 0.0,
+          "actual_lux": 6083.015708725366,
+          "samples": 1024,
+          "sensor_offset_m": 0.0,
+          "kind": "overhang",
+          "reference_lux": 6083.015821172443,
+          "sensor_index": 4,
+          "reference_relative_change": 1.2938361454902184E-07,
+          "absolute_error_lux": 0.0001124470772992936,
+          "allowed_error_lux": 304.15079105862213,
+          "pass": true,
+          "coarse_reference_lux": 6083.016608215017
+        },
+        {
+          "edge_fraction": 0.25,
+          "actual_lux": 4182.069974301409,
+          "samples": 1024,
+          "sensor_offset_m": 0.0011628339999751056,
+          "kind": "overhang",
+          "reference_lux": 4166.894566086032,
+          "sensor_index": 5,
+          "reference_relative_change": 2.6361798004310614E-09,
+          "absolute_error_lux": 15.175408215377502,
+          "allowed_error_lux": 208.3447283043016,
+          "pass": true,
+          "coarse_reference_lux": 4166.894577070715
+        },
+        {
+          "edge_fraction": 0.5,
+          "actual_lux": 2376.173569258655,
+          "samples": 1024,
+          "sensor_offset_m": 0.002325667999950211,
+          "kind": "overhang",
+          "reference_lux": 2378.11909905733,
+          "sensor_index": 6,
+          "reference_relative_change": 7.910136704568729E-10,
+          "absolute_error_lux": 1.9455297986751248,
+          "allowed_error_lux": 118.90595495286651,
+          "pass": true,
+          "coarse_reference_lux": 2378.1191009384547
+        },
+        {
+          "edge_fraction": 0.75,
+          "actual_lux": 879.1828158250357,
+          "samples": 1024,
+          "sensor_offset_m": 0.0034885019999253168,
+          "kind": "overhang",
+          "reference_lux": 877.3439615288399,
+          "sensor_index": 7,
+          "reference_relative_change": 2.4104828401573516E-09,
+          "absolute_error_lux": 1.838854296195791,
+          "allowed_error_lux": 43.867198076442,
+          "pass": true,
+          "coarse_reference_lux": 877.3439636436625
+        },
+        {
+          "edge_fraction": 1.25,
+          "actual_lux": 0.0,
+          "samples": 1024,
+          "sensor_offset_m": 0.005814169999875528,
+          "kind": "overhang",
+          "reference_lux": 0.0,
+          "sensor_index": 8,
+          "reference_relative_change": 0.0,
+          "absolute_error_lux": 0.0,
+          "allowed_error_lux": 5.0,
+          "pass": true,
+          "coarse_reference_lux": 0.0
+        },
+        {
+          "edge_fraction": -1.25,
+          "actual_lux": 12166.031417450828,
+          "samples": 4096,
+          "sensor_offset_m": -0.005814169999875528,
+          "kind": "overhang",
+          "reference_lux": 12166.031642344886,
+          "sensor_index": 0,
+          "reference_relative_change": 1.2938361454902184E-07,
+          "absolute_error_lux": 0.0002248940581921488,
+          "allowed_error_lux": 608.3015821172443,
+          "pass": true,
+          "coarse_reference_lux": 12166.033216430034
+        },
+        {
+          "edge_fraction": -0.75,
+          "actual_lux": 11292.789011009609,
+          "samples": 4096,
+          "sensor_offset_m": -0.0034885019999253168,
+          "kind": "overhang",
+          "reference_lux": 11288.68768081592,
+          "sensor_index": 1,
+          "reference_relative_change": 1.3925184120296994E-07,
+          "absolute_error_lux": 4.101330193689137,
+          "allowed_error_lux": 564.434384040796,
+          "pass": true,
+          "coarse_reference_lux": 11288.689252786464
+        },
+        {
+          "edge_fraction": -0.5,
+          "actual_lux": 9789.857929520926,
+          "samples": 4096,
+          "sensor_offset_m": -0.002325667999950211,
+          "kind": "overhang",
+          "reference_lux": 9787.912543287493,
+          "sensor_index": 2,
+          "reference_relative_change": 1.6062711349176442E-07,
+          "absolute_error_lux": 1.9453862334321457,
+          "allowed_error_lux": 489.3956271643747,
+          "pass": true,
+          "coarse_reference_lux": 9787.914115491632
+        },
+        {
+          "edge_fraction": -0.25,
+          "actual_lux": 8007.722962205872,
+          "samples": 4096,
+          "sensor_offset_m": -0.0011628339999751056,
+          "kind": "overhang",
+          "reference_lux": 7999.137076258913,
+          "sensor_index": 3,
+          "reference_relative_change": 1.954086440813784E-07,
+          "absolute_error_lux": 8.585885946959024,
+          "allowed_error_lux": 399.95685381294567,
+          "pass": true,
+          "coarse_reference_lux": 7999.138639359443
+        },
+        {
+          "edge_fraction": 0.0,
+          "actual_lux": 6083.015708725377,
+          "samples": 4096,
+          "sensor_offset_m": 0.0,
+          "kind": "overhang",
+          "reference_lux": 6083.015821172443,
+          "sensor_index": 4,
+          "reference_relative_change": 1.2938361454902184E-07,
+          "absolute_error_lux": 0.00011244706547586247,
+          "allowed_error_lux": 304.15079105862213,
+          "pass": true,
+          "coarse_reference_lux": 6083.016608215017
+        },
+        {
+          "edge_fraction": 0.25,
+          "actual_lux": 4158.3084552448545,
+          "samples": 4096,
+          "sensor_offset_m": 0.0011628339999751056,
+          "kind": "overhang",
+          "reference_lux": 4166.894566086032,
+          "sensor_index": 5,
+          "reference_relative_change": 2.6361798004310614E-09,
+          "absolute_error_lux": 8.586110841177288,
+          "allowed_error_lux": 208.3447283043016,
+          "pass": true,
+          "coarse_reference_lux": 4166.894577070715
+        },
+        {
+          "edge_fraction": 0.5,
+          "actual_lux": 2376.173487929784,
+          "samples": 4096,
+          "sensor_offset_m": 0.002325667999950211,
+          "kind": "overhang",
+          "reference_lux": 2378.11909905733,
+          "sensor_index": 6,
+          "reference_relative_change": 7.910136704568729E-10,
+          "absolute_error_lux": 1.945611127545817,
+          "allowed_error_lux": 118.90595495286651,
+          "pass": true,
+          "coarse_reference_lux": 2378.1191009384547
+        },
+        {
+          "edge_fraction": 0.75,
+          "actual_lux": 873.2424064411175,
+          "samples": 4096,
+          "sensor_offset_m": 0.0034885019999253168,
+          "kind": "overhang",
+          "reference_lux": 877.3439615288399,
+          "sensor_index": 7,
+          "reference_relative_change": 2.4104828401573516E-09,
+          "absolute_error_lux": 4.101555087722431,
+          "allowed_error_lux": 43.867198076442,
+          "pass": true,
+          "coarse_reference_lux": 877.3439636436625
+        },
+        {
+          "edge_fraction": 1.25,
+          "actual_lux": 0.0,
+          "samples": 4096,
+          "sensor_offset_m": 0.005814169999875528,
+          "kind": "overhang",
+          "reference_lux": 0.0,
+          "sensor_index": 8,
+          "reference_relative_change": 0.0,
+          "absolute_error_lux": 0.0,
+          "allowed_error_lux": 5.0,
+          "pass": true,
+          "coarse_reference_lux": 0.0
+        },
+        {
+          "edge_fraction": -1.25,
+          "actual_lux": 8602.683315407987,
+          "samples": 1024,
+          "sensor_offset_m": -0.008222478067766747,
+          "kind": "context",
+          "reference_lux": 8602.683474432195,
+          "sensor_index": 0,
+          "reference_relative_change": 1.2938362531905172E-07,
+          "absolute_error_lux": 0.00015902420818747487,
+          "allowed_error_lux": 430.1341737216098,
+          "pass": true,
+          "coarse_reference_lux": 8602.68458747857
+        },
+        {
+          "edge_fraction": -0.75,
+          "actual_lux": 7981.0071844354225,
+          "samples": 1024,
+          "sensor_offset_m": -0.0049334868406600485,
+          "kind": "context",
+          "reference_lux": 7982.010815252126,
+          "sensor_index": 1,
+          "reference_relative_change": 1.3909212114734546E-07,
+          "absolute_error_lux": 1.0036308167036623,
+          "allowed_error_lux": 399.10054076260633,
+          "pass": true,
+          "coarse_reference_lux": 7982.011925486941
+        },
+        {
+          "edge_fraction": -0.5,
+          "actual_lux": 6922.474871308961,
+          "samples": 1024,
+          "sensor_offset_m": -0.003288991227106699,
+          "kind": "context",
+          "reference_lux": 6920.84292827768,
+          "sensor_index": 2,
+          "reference_relative_change": 1.6002741256583092E-07,
+          "absolute_error_lux": 1.6319430312814802,
+          "allowed_error_lux": 346.042146413884,
+          "pass": true,
+          "coarse_reference_lux": 6920.844035802266
+        },
+        {
+          "edge_fraction": -0.25,
+          "actual_lux": 5645.51327718282,
+          "samples": 1024,
+          "sensor_offset_m": -0.0016444956135533496,
+          "kind": "context",
+          "reference_lux": 5656.101628673851,
+          "sensor_index": 3,
+          "reference_relative_change": 1.986913898061614E-07,
+          "absolute_error_lux": 10.588351491031062,
+          "allowed_error_lux": 282.8050814336926,
+          "pass": true,
+          "coarse_reference_lux": 5656.102752492545
+        },
+        {
+          "edge_fraction": 0.0,
+          "actual_lux": 4301.3416577040025,
+          "samples": 1024,
+          "sensor_offset_m": 0.0,
+          "kind": "context",
+          "reference_lux": 4301.3417372160975,
+          "sensor_index": 4,
+          "reference_relative_change": 1.2938362531905172E-07,
+          "absolute_error_lux": 7.951209499879042E-05,
+          "allowed_error_lux": 215.0670868608049,
+          "pass": true,
+          "coarse_reference_lux": 4301.342293739285
+        },
+        {
+          "edge_fraction": 0.25,
+          "actual_lux": 2957.170038225177,
+          "samples": 1024,
+          "sensor_offset_m": 0.0016444956135533496,
+          "kind": "context",
+          "reference_lux": 2946.581845758275,
+          "sensor_index": 5,
+          "reference_relative_change": 3.6558547868010258E-09,
+          "absolute_error_lux": 10.588192466902,
+          "allowed_error_lux": 147.32909228791377,
+          "pass": true,
+          "coarse_reference_lux": 2946.5818349859996
+        },
+        {
+          "edge_fraction": 0.5,
+          "actual_lux": 1680.2084440990373,
+          "samples": 1024,
+          "sensor_offset_m": 0.003288991227106699,
+          "kind": "context",
+          "reference_lux": 1681.8405461544592,
+          "sensor_index": 6,
+          "reference_relative_change": 3.2831999641574025E-09,
+          "absolute_error_lux": 1.6321020554219103,
+          "allowed_error_lux": 84.09202730772296,
+          "pass": true,
+          "coarse_reference_lux": 1681.840551676278
+        },
+        {
+          "edge_fraction": 0.75,
+          "actual_lux": 621.6761309725665,
+          "samples": 1024,
+          "sensor_offset_m": 0.0049334868406600485,
+          "kind": "context",
+          "reference_lux": 620.672659180088,
+          "sensor_index": 7,
+          "reference_relative_change": 4.529784074769581E-09,
+          "absolute_error_lux": 1.0034717924785355,
+          "allowed_error_lux": 31.0336329590044,
+          "pass": true,
+          "coarse_reference_lux": 620.6726619916011
+        },
+        {
+          "edge_fraction": 1.25,
+          "actual_lux": 0.0,
+          "samples": 1024,
+          "sensor_offset_m": 0.008222478067766747,
+          "kind": "context",
+          "reference_lux": 0.0,
+          "sensor_index": 8,
+          "reference_relative_change": 0.0,
+          "absolute_error_lux": 0.0,
+          "allowed_error_lux": 5.0,
+          "pass": true,
+          "coarse_reference_lux": 0.0
+        },
+        {
+          "edge_fraction": -1.25,
+          "actual_lux": 8602.683315407994,
+          "samples": 4096,
+          "sensor_offset_m": -0.008222478067766747,
+          "kind": "context",
+          "reference_lux": 8602.683474432195,
+          "sensor_index": 0,
+          "reference_relative_change": 1.2938362531905172E-07,
+          "absolute_error_lux": 0.00015902420091151726,
+          "allowed_error_lux": 430.1341737216098,
+          "pass": true,
+          "coarse_reference_lux": 8602.68458747857
+        },
+        {
+          "edge_fraction": -0.75,
+          "actual_lux": 7985.207688193819,
+          "samples": 4096,
+          "sensor_offset_m": -0.0049334868406600485,
+          "kind": "context",
+          "reference_lux": 7982.010815252126,
+          "sensor_index": 1,
+          "reference_relative_change": 1.3909212114734546E-07,
+          "absolute_error_lux": 3.196872941693073,
+          "allowed_error_lux": 399.10054076260633,
+          "pass": true,
+          "coarse_reference_lux": 7982.011925486941
+        },
+        {
+          "edge_fraction": -0.5,
+          "actual_lux": 6922.461399963468,
+          "samples": 4096,
+          "sensor_offset_m": -0.003288991227106699,
+          "kind": "context",
+          "reference_lux": 6920.84292827768,
+          "sensor_index": 2,
+          "reference_relative_change": 1.6002741256583092E-07,
+          "absolute_error_lux": 1.6184716857878811,
+          "allowed_error_lux": 346.042146413884,
+          "pass": true,
+          "coarse_reference_lux": 6920.844035802266
+        },
+        {
+          "edge_fraction": -0.25,
+          "actual_lux": 5662.315208439016,
+          "samples": 4096,
+          "sensor_offset_m": -0.0016444956135533496,
+          "kind": "context",
+          "reference_lux": 5656.101628673851,
+          "sensor_index": 3,
+          "reference_relative_change": 1.986913898061614E-07,
+          "absolute_error_lux": 6.213579765164468,
+          "allowed_error_lux": 282.8050814336926,
+          "pass": true,
+          "coarse_reference_lux": 5656.102752492545
+        },
+        {
+          "edge_fraction": 0.0,
+          "actual_lux": 4301.341657703999,
+          "samples": 4096,
+          "sensor_offset_m": 0.0,
+          "kind": "context",
+          "reference_lux": 4301.3417372160975,
+          "sensor_index": 4,
+          "reference_relative_change": 1.2938362531905172E-07,
+          "absolute_error_lux": 7.951209863676922E-05,
+          "allowed_error_lux": 215.0670868608049,
+          "pass": true,
+          "coarse_reference_lux": 4301.342293739285
+        },
+        {
+          "edge_fraction": 0.25,
+          "actual_lux": 2940.368106968986,
+          "samples": 4096,
+          "sensor_offset_m": 0.0016444956135533496,
+          "kind": "context",
+          "reference_lux": 2946.581845758275,
+          "sensor_index": 5,
+          "reference_relative_change": 3.6558547868010258E-09,
+          "absolute_error_lux": 6.213738789288982,
+          "allowed_error_lux": 147.32909228791377,
+          "pass": true,
+          "coarse_reference_lux": 2946.5818349859996
+        },
+        {
+          "edge_fraction": 0.5,
+          "actual_lux": 1680.2219154445072,
+          "samples": 4096,
+          "sensor_offset_m": 0.003288991227106699,
+          "kind": "context",
+          "reference_lux": 1681.8405461544592,
+          "sensor_index": 6,
+          "reference_relative_change": 3.2831999641574025E-09,
+          "absolute_error_lux": 1.6186307099519581,
+          "allowed_error_lux": 84.09202730772296,
+          "pass": true,
+          "coarse_reference_lux": 1681.840551676278
+        },
+        {
+          "edge_fraction": 0.75,
+          "actual_lux": 617.4756272141756,
+          "samples": 4096,
+          "sensor_offset_m": 0.0049334868406600485,
+          "kind": "context",
+          "reference_lux": 620.672659180088,
+          "sensor_index": 7,
+          "reference_relative_change": 4.529784074769581E-09,
+          "absolute_error_lux": 3.1970319659124016,
+          "allowed_error_lux": 31.0336329590044,
+          "pass": true,
+          "coarse_reference_lux": 620.6726619916011
+        },
+        {
+          "edge_fraction": 1.25,
+          "actual_lux": 0.0,
+          "samples": 4096,
+          "sensor_offset_m": 0.008222478067766747,
+          "kind": "context",
+          "reference_lux": 0.0,
+          "sensor_index": 8,
+          "reference_relative_change": 0.0,
+          "absolute_error_lux": 0.0,
+          "allowed_error_lux": 5.0,
+          "pass": true,
+          "coarse_reference_lux": 0.0
+        }
+      ],
+      "declaration": {
+        "schema_version": "greenlens.finite-blocker-edge-fixture.v1",
+        "declared_utc": "2026-10-11T10:29:23.4259205Z",
+        "fractions": [
+          -1.25,
+          -0.75,
+          -0.5,
+          -0.25,
+          0.0,
+          0.25,
+          0.5,
+          0.75,
+          1.25
+        ],
+        "samples": [
+          1024,
+          4096
+        ],
+        "reference_slices": [
+          16384,
+          65536
+        ],
+        "reference_convergence_relative": 0.001,
+        "per_sensor_tolerance": "max(5.0 lx, 5% of reference)",
+        "source_radiance_rgb": [
+          1000000.0,
+          1000000.0,
+          1000000.0
+        ],
+        "source_diameter_degrees": 0.533,
+        "effective_sensor_offset_m": 0.0001,
+        "finite_kernel_sha256": "d2c6591da529a7bd005a956e781e0078e51ca01ab5c17871236dddd81192f75b",
+        "scope": "Finite direct visibility through an isolated horizontal overhang edge and a detached vertical context edge. No diffuse transport, glazing, weather or general building validation.",
+        "policy": "No sensor exclusion, no negative clamping, all failed values retained."
+      },
+      "processes": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "overhang.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T10:29:24.0512806Z",
+          "finished_utc": "2026-10-11T10:29:24.2233633Z",
+          "wall_seconds": 0.1645062,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 765,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rtrace.exe",
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "overhang.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "rtrace: warning - no light sources found\r\n",
+          "started_utc": "2026-10-11T10:29:24.3455403Z",
+          "finished_utc": "2026-10-11T10:29:24.5863016Z",
+          "wall_seconds": 0.2405614,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 377856,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rtrace.exe",
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "overhang.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "rtrace: warning - no light sources found\r\n",
+          "started_utc": "2026-10-11T10:29:24.9901860Z",
+          "finished_utc": "2026-10-11T10:29:25.6244018Z",
+          "wall_seconds": 0.6340515,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1511424,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "context.rad"
+          ],
+          "exit_code": 0,
+          "stderr": "",
+          "started_utc": "2026-10-11T10:29:25.8369332Z",
+          "finished_utc": "2026-10-11T10:29:26.0548750Z",
+          "wall_seconds": 0.217774,
+          "sampled_peak_working_set_bytes": 5324800,
+          "output_bytes": 763,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rtrace.exe",
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "context.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "rtrace: warning - no light sources found\r\n",
+          "started_utc": "2026-10-11T10:29:26.1224104Z",
+          "finished_utc": "2026-10-11T10:29:26.4745766Z",
+          "wall_seconds": 0.3520291,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 377856,
+          "timeout_killed_tree": false
+        },
+        {
+          "executable": "rtrace.exe",
+          "arguments": [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "context.oct"
+          ],
+          "exit_code": 0,
+          "stderr": "rtrace: warning - no light sources found\r\n",
+          "started_utc": "2026-10-11T10:29:26.8865325Z",
+          "finished_utc": "2026-10-11T10:29:27.5611800Z",
+          "wall_seconds": 0.6744854,
+          "sampled_peak_working_set_bytes": null,
+          "output_bytes": 1511424,
+          "timeout_killed_tree": false
+        }
+      ]
+    }
+  },
+  "retained_originals": [
+    {
+      "sha256": "299e02d4e7a458625d008e637dcf43b7d121c190ab415588009196b3ef8d3131",
+      "bytes": 33113,
+      "role": "rust-aperture"
+    },
+    {
+      "sha256": "d88b670d862c7856b02147f80f095c31a485d09d0be4624ba0a0c08282dd76f6",
+      "bytes": 20614,
+      "role": "rust-glass"
+    },
+    {
+      "sha256": "21f3be1af92273003ea70a91307b043e5d5b0677b3a5d2de6ee5c3b92bbd53fe",
+      "bytes": 22887,
+      "role": "independent-overhang-context"
+    }
+  ]
+}

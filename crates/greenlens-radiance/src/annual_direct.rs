@@ -342,19 +342,222 @@ pub(crate) fn integrate_batch(
 #[cfg(test)]
 mod tests {
     use super::*;
+    // These references use projected-disc coordinates, not the production
+    // equal-solid-angle samples or aperture-hit implementation.
+    fn aperture_projected_integral(sensor_x: f64, radius: f64, slices: usize) -> f64 {
+        let r = radius.sin();
+        let dy = 2.0 * r / slices as f64;
+        let edge_slope = (0.1 - sensor_x) / (1.0 - 0.0001);
+        (0..slices)
+            .map(|i| {
+                let y = -r + (i as f64 + 0.5) * dy;
+                let half_width = (r * r - y * y).sqrt();
+                // At z=1, the visible side satisfies sensor_x + H*x/z <=0.1.
+                // Solving for projected x gives this exact curved boundary.
+                let edge = edge_slope * ((1.0 - y * y) / (1.0 + edge_slope * edge_slope)).sqrt();
+                (edge.min(half_width) + half_width).max(0.0) * dy
+            })
+            .sum()
+    }
+
+    fn fixture_lux(rgb: [f64; 3]) -> f64 {
+        179.0 * (0.265074126 * rgb[0] + 0.670114631 * rgb[1] + 0.064811243 * rgb[2])
+    }
+
+    // Independent Fresnel + Beer-Lambert law for an incoherent plane-parallel
+    // pane. This tests Radiance's documented equivalent thin-pane model, not
+    // measured glazing or arbitrary laminated/coated glass. n=1.52, normal T=.6.
+    // The internal attenuation is solved directly from the normal-T quadratic;
+    // it does not reuse the production approximate transmissivity conversion.
+    fn independent_glass_transmission(cosine: f64) -> f64 {
+        let n = 1.52_f64;
+        let normal_t = 0.6;
+        let normal_r = ((n - 1.0) / (n + 1.0)).powi(2);
+        let a = (1.0 - normal_r).powi(2);
+        let internal =
+            2.0 * normal_t / (a + (a * a + 4.0 * normal_r * normal_r * normal_t * normal_t).sqrt());
+        let inside_cosine = (1.0 - (1.0 - cosine * cosine) / (n * n)).sqrt();
+        let rs = ((cosine - n * inside_cosine) / (cosine + n * inside_cosine)).powi(2);
+        let rp = ((n * cosine - inside_cosine) / (n * cosine + inside_cosine)).powi(2);
+        let attenuation = internal.powf(1.0 / inside_cosine);
+        let transmitted =
+            |r: f64| (1.0 - r).powi(2) * attenuation / (1.0 - r * r * attenuation * attenuation);
+        (transmitted(rs) + transmitted(rp)) / 2.0
+    }
+
+    fn glass_projected_integral(incidence: f64, radius: f64, rings: usize) -> f64 {
+        let dr = radius.sin() / rings as f64;
+        let sectors = 2 * rings;
+        let dphi = std::f64::consts::TAU / sectors as f64;
+        let mut result = 0.0;
+        for i in 0..rings {
+            let rho = (i as f64 + 0.5) * dr;
+            let z = (1.0 - rho * rho).sqrt();
+            for j in 0..sectors {
+                let phi = (j as f64 + 0.5) * dphi;
+                let world_z = incidence.cos() * z - incidence.sin() * rho * phi.cos();
+                // Orthographic solar-disc coordinates: dOmega=rho dr dphi/z.
+                result += independent_glass_transmission(world_z) * world_z * rho / z * dr * dphi;
+            }
+        }
+        result
+    }
+
+    #[cfg(windows)]
+    fn finite_fixture_directory(label: &str) -> std::path::PathBuf {
+        let root = std::env::var_os("GREENLENS_FINITE_FIXTURE_ROOT")
+            .map(std::path::PathBuf::from)
+            .unwrap_or_else(|| {
+                std::path::PathBuf::from(
+                    std::env::var_os("LOCALAPPDATA").expect("Native local cache"),
+                )
+                .join("GreenLens/verification")
+            });
+        let directory = root.join(format!(
+            "{label} 空間 {}",
+            chrono::Utc::now().timestamp_nanos_opt().unwrap()
+        ));
+        std::fs::create_dir_all(&directory).unwrap();
+        directory
+    }
+
+    #[test]
+    fn independent_finite_references_have_exact_limits_and_converge() {
+        let radius = 0.533_f64.to_radians() / 2.0;
+        let full = std::f64::consts::PI * radius.sin().powi(2);
+        assert!((aperture_projected_integral(0.0, radius, 65536) / full - 1.0).abs() < 1e-6);
+        assert!((aperture_projected_integral(0.1, radius, 65536) / full - 0.5).abs() < 1e-6);
+        assert_eq!(aperture_projected_integral(0.2, radius, 65536), 0.0);
+        assert!((independent_glass_transmission(1.0) - 0.6).abs() < 1e-14);
+        for degrees in [0.0_f64, 30.0, 60.0] {
+            let coarse = glass_projected_integral(degrees.to_radians(), radius, 64);
+            let fine = glass_projected_integral(degrees.to_radians(), radius, 128);
+            assert!((fine - coarse).abs() <= 0.001 * fine);
+        }
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn native_finite_glass_matches_independent_angular_transmission() {
+        let engine =
+            crate::Engine::discover(None).expect("Required native Radiance is unavailable");
+        let scratch = finite_fixture_directory("finite glass analytical");
+        let cancel = AtomicBool::new(false);
+        let tn = greenlens_core::glazing_transmissivity(0.6).unwrap();
+        let scene = format!(
+            "void glass pane\n0\n0\n4 {tn} {tn} {tn} 1.52\npane polygon glass\n0\n0\n12 -100 -100 1 100 -100 1 100 100 1 -100 100 1\nvoid plastic black\n0\n0\n5 0 0 0 0 0\nblack polygon back\n0\n0\n12 -100 -100 -1 -100 100 -1 100 100 -1 100 -100 -1\n{}",
+            super::super::RECEIVER_TEXT
+        );
+        std::fs::write(scratch.join("fixture.rad"), scene).unwrap();
+        let mut processes = vec![crate::process::execute(
+            engine.root(),
+            "oconv",
+            &["-f".into(), "fixture.rad".into()],
+            &scratch,
+            None,
+            &scratch.join("annual-diffuse.oct"),
+            &cancel,
+        )
+        .unwrap()];
+        let aperture = Aperture::new([
+            [-100., -100., 1.],
+            [100., -100., 1.],
+            [100., 100., 1.],
+            [-100., 100., 1.],
+        ])
+        .unwrap();
+        let sensor = Sensor {
+            id: "glass-center".into(),
+            position: [0., 0., 0.],
+            direction: [0., 0., 1.],
+        };
+        let suns: Vec<_> = [0.0_f64, 30.0, 60.0]
+            .into_iter()
+            .enumerate()
+            .map(|(interval, degrees)| {
+                let angle = degrees.to_radians();
+                Sun {
+                    interval,
+                    direction: [angle.sin(), 0., angle.cos()],
+                    radiance: [1e6, 7e5, 3e5],
+                    radius: 0.533_f64.to_radians() / 2.0,
+                }
+            })
+            .collect();
+        let mut checks = Vec::new();
+        let mut batches = Vec::new();
+        for samples in [1024, 4096] {
+            let input = scratch.join(format!("glass-{samples}.pts"));
+            let output = scratch.join(format!("glass-{samples}.rgb"));
+            let mut batch = write_batch(
+                &input,
+                &suns,
+                std::slice::from_ref(&sensor),
+                &aperture,
+                samples,
+                &cancel,
+            )
+            .unwrap();
+            assert_eq!(batch.emitted_rays, suns.len() * samples);
+            processes.push(
+                crate::process::execute(
+                    engine.root(),
+                    "rtrace",
+                    &super::super::AnnualProfile::shipping().transmission_arguments(),
+                    &scratch,
+                    Some(&input),
+                    &output,
+                    &cancel,
+                )
+                .unwrap(),
+            );
+            let values = integrate_batch(
+                &output,
+                &suns,
+                std::slice::from_ref(&sensor),
+                &aperture,
+                samples,
+                batch.emitted_rays,
+                &cancel,
+            )
+            .unwrap();
+            batch.output_sha256 = file_hash(&output).unwrap();
+            batches.push(batch);
+            for (index, degrees) in [0.0_f64, 30.0, 60.0].into_iter().enumerate() {
+                let coarse = glass_projected_integral(degrees.to_radians(), suns[index].radius, 64);
+                let reference =
+                    glass_projected_integral(degrees.to_radians(), suns[index].radius, 128);
+                let expected_rgb = suns[index].radiance.map(|v| v * reference);
+                let expected = fixture_lux(expected_rgb);
+                let actual = fixture_lux(values[index]);
+                let convergence = (coarse - reference).abs() / reference;
+                let channel_pass = (0..3).all(|channel| {
+                    (values[index][channel] - expected_rgb[channel]).abs()
+                        <= 0.01 * expected_rgb[channel]
+                });
+                checks.push(serde_json::json!({"samples":samples,"incidence_degrees":degrees,"actual_rgb":values[index],"expected_rgb":expected_rgb,"actual_lux":actual,"expected_lux":expected,"reference_relative_change":convergence,"allowed_error_lux":0.01*expected,"passed":convergence<=0.001 && (actual-expected).abs()<=0.01*expected && channel_pass}));
+            }
+        }
+        let passed = checks.iter().all(|v| v["passed"] == true);
+        let report = serde_json::json!({"schema_version":"greenlens.native-finite-glass-analytical.v1","scope":"Actual Rust write_batch/native rtrace/integrate_batch against independently integrated equivalent single-pane Fresnel transmission; no measured-glazing or annual-accuracy claim","normal_transmittance":0.6,"refractive_index":1.52,"source_radiance_rgb":[1e6,7e5,3e5],"reference_quadrature":"orthographic radial midpoint64x128 and128x256; no production ray directions reused","tolerance":"1% at every RGB channel and lux value; reference convergence0.1%","reference_source":"https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/rt/glass.c","engine":engine.identity(),"processes":processes,"batches":batches,"checks":checks,"passed":passed});
+        std::fs::write(
+            scratch.join("analytical-glass.json"),
+            serde_json::to_vec_pretty(&report).unwrap(),
+        )
+        .unwrap();
+        assert!(
+            passed,
+            "Finite glass analytical fixture failed; every value is retained in {}",
+            scratch.display()
+        );
+    }
+
     #[cfg(windows)]
     #[test]
     fn native_aperture_culling_matches_all_rays_at_eleven_shadow_points() {
         let engine =
             crate::Engine::discover(None).expect("Required native Radiance is unavailable");
-        let scratch =
-            std::path::PathBuf::from(std::env::var_os("LOCALAPPDATA").expect("Native local cache"))
-                .join("GreenLens/verification")
-                .join(format!(
-                    "finite-disc cull regression 空間 {}",
-                    chrono::Utc::now().timestamp_nanos_opt().unwrap()
-                ));
-        std::fs::create_dir_all(&scratch).unwrap();
+        let scratch = finite_fixture_directory("finite aperture analytical");
         let mut scene = String::from("void plastic black\n0\n0\n5 0 0 0 0 0\n");
         let polygons = [
             [
@@ -404,7 +607,7 @@ mod tests {
         let sun = Sun {
             interval: 0,
             direction: [0., 0., 1.],
-            radiance: [1e6; 3],
+            radiance: [1e6, 7e5, 3e5],
             radius: 0.533_f64.to_radians() / 2.,
         };
         let mut locations = vec![0., 0.09, 0.1, 0.11, 0.2];
@@ -434,55 +637,88 @@ mod tests {
             [-100., 100., 1.],
         ])
         .unwrap();
-        let mut integrals = Vec::new();
-        for (label, aperture) in [("all", all), ("culled", precise)] {
-            let input = scratch.join(format!("{label}.pts"));
-            let output = scratch.join(format!("{label}.rgb"));
-            let batch = write_batch(
-                &input,
-                std::slice::from_ref(&sun),
-                &sensors,
-                &aperture,
-                1024,
-                &cancel,
-            )
-            .unwrap();
-            if label == "all" {
-                assert_eq!(batch.emitted_rays, 11 * 1024);
-            } else {
-                assert!(batch.emitted_rays < batch.attempted_rays);
-            }
-            crate::process::execute(
-                engine.root(),
-                "rtrace",
-                &super::super::AnnualProfile::shipping().transmission_arguments(),
-                &scratch,
-                Some(&input),
-                &output,
-                &cancel,
-            )
-            .unwrap();
-            integrals.push(
-                integrate_batch(
-                    &output,
+        let mut checks = Vec::new();
+        let mut processes: Vec<serde_json::Value> = Vec::new();
+        for samples in [1024, 4096] {
+            let mut integrals = Vec::new();
+            for (label, aperture) in [("all", &all), ("culled", &precise)] {
+                let input = scratch.join(format!("{label}-{samples}.pts"));
+                let output = scratch.join(format!("{label}-{samples}.rgb"));
+                let batch = write_batch(
+                    &input,
                     std::slice::from_ref(&sun),
                     &sensors,
-                    &aperture,
-                    1024,
-                    batch.emitted_rays,
+                    aperture,
+                    samples,
                     &cancel,
                 )
-                .unwrap(),
-            );
-        }
-        for (a, b) in integrals[0].iter().zip(&integrals[1]) {
-            for channel in 0..3 {
-                assert!(
-                    (a[channel] - b[channel]).abs() < 1e-12,
-                    "Conservative culling changed direct irradiance"
+                .unwrap();
+                if label == "all" {
+                    assert_eq!(batch.emitted_rays, 11 * samples);
+                } else {
+                    assert!(batch.emitted_rays < batch.attempted_rays);
+                }
+                crate::process::execute(
+                    engine.root(),
+                    "rtrace",
+                    &super::super::AnnualProfile::shipping().transmission_arguments(),
+                    &scratch,
+                    Some(&input),
+                    &output,
+                    &cancel,
+                )
+                .unwrap();
+                processes.push(
+                    serde_json::from_slice(
+                        &std::fs::read(scratch.join("rtrace.process.json")).unwrap(),
+                    )
+                    .unwrap(),
+                );
+                integrals.push(
+                    integrate_batch(
+                        &output,
+                        std::slice::from_ref(&sun),
+                        &sensors,
+                        aperture,
+                        samples,
+                        batch.emitted_rays,
+                        &cancel,
+                    )
+                    .unwrap(),
                 );
             }
+            for (i, (all, culled)) in integrals[0].iter().zip(&integrals[1]).enumerate() {
+                let coarse = aperture_projected_integral(locations[i], sun.radius, 16384);
+                let fine = aperture_projected_integral(locations[i], sun.radius, 65536);
+                let convergence = if fine == 0.0 {
+                    (coarse - fine).abs()
+                } else {
+                    (coarse - fine).abs() / fine
+                };
+                let expected_rgb = sun.radiance.map(|value| value * fine);
+                let reference = fixture_lux(expected_rgb);
+                let actual = fixture_lux(*culled);
+                let allowed = 5.0_f64.max(0.05 * reference);
+                let culling_equal = (0..3).all(|c| (all[c] - culled[c]).abs() < 1e-12);
+                let channel_pass = (0..3).all(|c| {
+                    (culled[c] - expected_rgb[c]).abs()
+                        <= (5.0_f64 / 179.0).max(0.05 * expected_rgb[c])
+                });
+                checks.push(serde_json::json!({"sensor_id":sensors[i].id,"position":sensors[i].position,"samples":samples,"all_ray_rgb":all,"culled_rgb":culled,"expected_rgb":expected_rgb,"actual_lux":actual,"reference_lux":reference,"reference_relative_change":convergence,"allowed_error_lux":allowed,"culling_equal":culling_equal,"passed":convergence<=0.001 && culling_equal && channel_pass && (actual-reference).abs()<=allowed}));
+            }
         }
+        let passed = checks.iter().all(|v| v["passed"] == true);
+        let report = serde_json::json!({"schema_version":"greenlens.native-finite-aperture-analytical.v1","scope":"Actual Rust write_batch/native rtrace/integrate_batch versus independent projected-disc aperture reference and conservative-culling equality; no annual or general-building accuracy claim","source_radiance_rgb":sun.radiance,"reference_slices":[16384,65536],"reference_convergence":0.001,"tolerance":"max(5.0lx,5% reference) every sensor; per RGB channel max(5/179,5% reference RGB)","engine":engine.identity(),"processes":processes,"checks":checks,"passed":passed});
+        std::fs::write(
+            scratch.join("analytical-aperture.json"),
+            serde_json::to_vec_pretty(&report).unwrap(),
+        )
+        .unwrap();
+        assert!(
+            passed,
+            "Finite aperture analytical fixture failed; every value is retained in {}",
+            scratch.display()
+        );
     }
     #[test]
     fn sun_parser_binds_source_names_order_and_geometry() {

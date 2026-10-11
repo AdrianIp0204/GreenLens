@@ -12,6 +12,10 @@ defaults:
     shell: pwsh
 jobs:
   reference-a8504:
+    # GitHub requires push-level contents access to read this unpublished draft asset.
+    # This trusted single-case job does not publish or modify repository contents.
+    permissions:
+      contents: write
     runs-on: windows-latest
     timeout-minutes: 300
     env:

@@ -1,0 +1,13 @@
+{
+  "schema_version": "greenlens.depth-order-independent-contrasts.v1",
+  "recorded_utc": "2026-10-11T17:58:47.498447+00:00",
+  "scope": "Original synthetic arithmetic; all24 sensors and10 fixed contrasts across5 RGB components, no engine",
+  "sensors": 24,
+  "contrasts_per_sensor": 10,
+  "component_comparisons": 1200,
+  "rgb_scalar_comparisons": 3600,
+  "maximum_lux_arithmetic_error": 0.0,
+  "effects_sha256": "ff0146bf17c6521b40b2c011bd7e6981f3c85ae553d8fc1b241947addd918808",
+  "helper_sha256": "8300e88f01dd090bb34c25b1d98fe83edfdadb3be2eeec443258d2c1320dd53b",
+  "passed": true
+}

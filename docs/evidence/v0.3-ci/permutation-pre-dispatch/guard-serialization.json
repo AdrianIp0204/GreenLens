@@ -1,0 +1,8 @@
+{
+  "schema_version": "greenlens.serialization-lineage.v1",
+  "source_record_sha256": "4b6195d1f27892fd4d3a8b0fbff9cd15d9ebf4445b76b77c00867da1f6f95cf8",
+  "published_file": "independent-guards.json",
+  "published_sha256": "7a9a203c11fb563fd8664602dc4cc6137f55370ca625e1d2874e55bd823cd712",
+  "parsed_semantic_equality": true,
+  "change": "CRLF to LF for checked-in JSON; original external record retained"
+}

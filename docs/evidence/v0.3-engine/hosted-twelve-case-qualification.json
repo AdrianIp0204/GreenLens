@@ -1,0 +1,455 @@
+{
+  "schema_version": "greenlens.hosted-reference-continuation-qualification.v1",
+  "recorded_utc": "2026-10-11T16:20:28.0277927Z",
+  "workflow_run": 38148336251,
+  "workflow_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251",
+  "workflow_commit": "e7405b6383b6b0cecb7c1d7b83c5edfab76aba78",
+  "scope": "Independent retained-artifact qualification of twelve missing fixed baseline cases. Together with seven previously qualified baseline cases, baseline coverage is19/24. Five remaining B cases and six sensitivity variants are pending; no new engine execution or candidate accuracy acceptance here.",
+  "verification_method": [
+    "Match downloaded ZIP SHA-256 and byte count to authenticated GitHub artifact metadata.",
+    "Validate exact paths, member count, regular files and bounded ZIP sizes before extraction.",
+    "Invoke current trusted Initialize-ReferenceCollector and Read-ReferenceBaseline; retained commands and source files are never executed.",
+    "Assert-ReferenceShardIdentity against independently qualified hosted A8504, preserving all other declared scientific identity.",
+    "Recompute all three 24-sensor convergence comparisons and full component assembly from raw output."
+  ],
+  "reader_sources": [
+    {
+      "path": "scripts/annual-collect-reference.ps1",
+      "sha256": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a"
+    },
+    {
+      "path": "scripts/annual-reference-identity.ps1",
+      "sha256": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8"
+    }
+  ],
+  "case_count": 12,
+  "sensor_values": 288,
+  "convergence_checks": 864,
+  "cases": [
+    {
+      "alternative": "A",
+      "interval_index": 1908,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.406978730104319,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127886660,
+        "entry_count": 46,
+        "sha256": "f2a43ebd34693832f5bebd7a18028b1b2b4538535cee3e025ea17830639ee880",
+        "bytes": 17106856,
+        "id": 11706282196,
+        "name": "reference-A-1908-38148336251"
+      },
+      "declaration_sha256": "b340b38c0847917c3ba27f54df9a1f716da1e7e498c885735a5f820d156e90e8",
+      "report_sha256": "d5719d317a4dfe9aba5c9ac83216061c291b1451c0317cef7960d1459036b7c5",
+      "processes_sha256": "2b44a6c2ae3b85d2477bf9871001f6c058db9a46487ce42b3cc248145830369f",
+      "audit_sha256": "b2ace17ca32ae908ed0813e9fdeb125c1b4e19750cbbfb62d94d1a93701652bf",
+      "verified_utc": "2026-10-11T15:20:47.0411901Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1692.4750402
+      ],
+      "max_runner_plus_engine_bytes": 475090944.0,
+      "max_scratch_bytes": 64323874.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 1912,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.3846920764940588,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127887142,
+        "entry_count": 46,
+        "sha256": "f8db82d7843d41aaa42ed4524ad016aa8f24e45e45d4a4258b140b06bcdc9d1c",
+        "bytes": 17107963,
+        "id": 11705552528,
+        "name": "reference-A-1912-38148336251"
+      },
+      "declaration_sha256": "599bf0946ead63198576871db65a3fe27d7ac5dd484843369db46f58a9f695c2",
+      "report_sha256": "06ccb71fc78a60d2e5f8dcdeef20876bfb171196f0180d8f54c92bcd99245dae",
+      "processes_sha256": "9dcc1f48c00c4e8819b320492f1ef10a806b93d679eb9a1d53749724f3ca325c",
+      "audit_sha256": "8f21d581c1ab3c4313dc2554de8c2d202c13679ddeb90f56ad6c3e86b0ddff6a",
+      "verified_utc": "2026-10-11T15:23:40.1519578Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1293.3414718
+      ],
+      "max_runner_plus_engine_bytes": 472920064.0,
+      "max_scratch_bytes": 64323868.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4116,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.4038107386424177,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127886938,
+        "entry_count": 46,
+        "sha256": "799cdce993555cfcf818ed9824ea270e735cad63560d18a214f62bb1fd96f5d4",
+        "bytes": 17067415,
+        "id": 11706072472,
+        "name": "reference-A-4116-38148336251"
+      },
+      "declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a",
+      "report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5",
+      "processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18",
+      "audit_sha256": "9e3bc5ae4d56d49ca9e88d9a533472ff4e249553cdf7e6ef91d4d8e888a7fce7",
+      "verified_utc": "2026-10-11T15:20:55.1211351Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1684.7358897
+      ],
+      "max_runner_plus_engine_bytes": 470667264.0,
+      "max_scratch_bytes": 64323880.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4120,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.6716635721981629,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127887004,
+        "entry_count": 46,
+        "sha256": "d8cf973efdb992848b406236648757b5a6423ba75eb56011c206cbe631955d91",
+        "bytes": 17068287,
+        "id": 11706407529,
+        "name": "reference-A-4120-38148336251"
+      },
+      "declaration_sha256": "852803404ca8df85e13b20d4e2e1e19a4b49f71c93f00e3a4c4c714313051a5d",
+      "report_sha256": "f0ffd8c23d23e1d19d4ec543224c3b88e16800459ecec372afb106457bf4fcd5",
+      "processes_sha256": "3ae4cb6c623760a8d8c1f6bf26c8f5954f227446e280ea75c12612221a22c561",
+      "audit_sha256": "bb6b65a3a8743769dd2fd93503c015ded4db1feeb74ff23934b749fcb3882fdb",
+      "verified_utc": "2026-10-11T15:23:38.6132124Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1275.9244655
+      ],
+      "max_runner_plus_engine_bytes": 470736896.0,
+      "max_scratch_bytes": 64323844.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6320,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.3857161854071939,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127886539,
+        "entry_count": 46,
+        "sha256": "469bf2fc16470a89764bf289de423d66bc760f05317a1dbb7b9110a7d88c37d8",
+        "bytes": 17104004,
+        "id": 11707166102,
+        "name": "reference-A-6320-38148336251"
+      },
+      "declaration_sha256": "aac7f50d2a5b984536dec3d5e90b09821e3fbd5301fe50987b36da2c9b3ca02e",
+      "report_sha256": "1436b608333a2ff801f68c0ed53626d6a35e7708c25b3366f719c6ab6182ef85",
+      "processes_sha256": "9408d407a45388fd7bfc192805123b69fd1a02ae2316ef646f27e169b4719367",
+      "audit_sha256": "d3a1e62728c36dc95c393012f6c38a283d125c93f16560f0e26c8e6af051af7f",
+      "verified_utc": "2026-10-11T15:37:25.2636912Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1684.4523757
+      ],
+      "max_runner_plus_engine_bytes": 471441408.0,
+      "max_scratch_bytes": 64323887.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6324,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.3246779185290449,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127886561,
+        "entry_count": 46,
+        "sha256": "5f8bd68f302d64dad7a3944bcd1e6530f0498d7c7d631d9820c894c0bebb7008",
+        "bytes": 17105739,
+        "id": 11707205904,
+        "name": "reference-A-6324-38148336251"
+      },
+      "declaration_sha256": "4ec473b7aab61ad291c476267c5501ff23497611a5f5435b425b1e64a0dde876",
+      "report_sha256": "49dbd1f278a786adbba9b34f4ae8a80fe139ee685c30aba3ba86c938d3c12276",
+      "processes_sha256": "78a1483cb343e3aba5b32bbb1c19d05019a2c125f42b8eea4d3cad045679675d",
+      "audit_sha256": "38f0e1b1e720ec2df1cffafbfcf9aa46fc39c45e8b324048df428569a9ee70d8",
+      "verified_utc": "2026-10-11T15:37:29.6464398Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1688.4195219
+      ],
+      "max_runner_plus_engine_bytes": 474013696.0,
+      "max_scratch_bytes": 64323881.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6328,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.7546016669635744,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127886958,
+        "entry_count": 46,
+        "sha256": "7cef2ae50d67d9df1c755b47046251489f19a1b6d12b6c3cc3f7abefb965262b",
+        "bytes": 17108530,
+        "id": 11705719556,
+        "name": "reference-A-6328-38148336251"
+      },
+      "declaration_sha256": "c221697f1e63bdc74127711aa70fb84e101af40c33e88630472405cc4166addd",
+      "report_sha256": "7c62c1b2dff885fc8a35db9c67ce86ef1179899a5b3bdddb55e7b30340b9f99f",
+      "processes_sha256": "e594a2bdd7dde1f174c341db6867d28d1227567ede0b349c8038bf4c206b94df",
+      "audit_sha256": "ea17c383df01c2720d3b73c334e8d10c67e0d109266812707628b70bb66b3974",
+      "verified_utc": "2026-10-11T15:39:05.7281553Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1294.6557442
+      ],
+      "max_runner_plus_engine_bytes": 474648576.0,
+      "max_scratch_bytes": 64323924.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 8508,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.3564931718539959,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127888137,
+        "entry_count": 46,
+        "sha256": "70a82f6f696d6e6b7426c7312d666c36d8f54fcd136f50989921e8dbb89d1e96",
+        "bytes": 17190672,
+        "id": 11706752841,
+        "name": "reference-A-8508-38148336251"
+      },
+      "declaration_sha256": "c438518d75a6d9939208c170d31933659fce7e21b5c01d5530d00e54840039f3",
+      "report_sha256": "e9e2b1ed5572bbc5ea495787a87a380cf0a6fb0a4de0683db8d238c2883c7ff5",
+      "processes_sha256": "e3423ea70c4d98675a368bf383d18743d6b616478b0b587ecac572e5d0508a49",
+      "audit_sha256": "bf5161b858cace6d07fea0774262b08731747887fb291e226147e30fbdbe39b9",
+      "verified_utc": "2026-10-11T15:42:43.4900318Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1724.074321
+      ],
+      "max_runner_plus_engine_bytes": 473550848.0,
+      "max_scratch_bytes": 64323928.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "B",
+      "interval_index": 1908,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.498259573338274,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127888964,
+        "entry_count": 46,
+        "sha256": "ab4512c7cf24c56d4113cb5e93f27f8cbeff840d99ab47ac04355cd78eb91614",
+        "bytes": 17109579,
+        "id": 11707416525,
+        "name": "reference-B-1908-38148336251"
+      },
+      "declaration_sha256": "bd6991a472daac23e349ece7fb7f037700034324d6040bf93182880f712eae80",
+      "report_sha256": "15e0526866531449ce9739e05eece45997a85439dbe87f80a4f5bf8ea4248a14",
+      "processes_sha256": "0a2a096753315b0250834ab91d21bdd5d35e6dbb7c21d28257300fddb6f3785f",
+      "audit_sha256": "1223833f4e9b857ab4be33e1503fac786c7cf7c7f41b66a60f7a3238c0e57d7c",
+      "verified_utc": "2026-10-11T15:56:04.0842625Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1049.1916123
+      ],
+      "max_runner_plus_engine_bytes": 472694784.0,
+      "max_scratch_bytes": 64324594.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "B",
+      "interval_index": 1912,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.5612769194681235,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127889005,
+        "entry_count": 46,
+        "sha256": "2edfb1b8406c88e76c42147125070ce2c1758f3df42464774394cc84f40b3c53",
+        "bytes": 17109087,
+        "id": 11707511883,
+        "name": "reference-B-1912-38148336251"
+      },
+      "declaration_sha256": "f255cebb385709379e67dfe8e5fd654ffc35d68abad8b9f091adc33795adc476",
+      "report_sha256": "5c9324af7abacc8bce7e75206b970708b372787553596f67f9eada427da6ca5c",
+      "processes_sha256": "a0d5c4617204ba83134af8a92fbf595e03e903be7506dc67bf779dce9ad6c908",
+      "audit_sha256": "afa7669d99390f2f475377aba494e41271ae46f44d2d9c0a360b040f74c54354",
+      "verified_utc": "2026-10-11T16:05:51.4751146Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1332.4726805
+      ],
+      "max_runner_plus_engine_bytes": 479539200.0,
+      "max_scratch_bytes": 64324593.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "B",
+      "interval_index": 4116,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "check_count": 72,
+          "maximum_error_to_tolerance_ratio": 0.4355909020944777,
+          "failed_checks": 0,
+          "rounds": 256
+        }
+      ],
+      "artifact": {
+        "uncompressed_bytes": 127888774,
+        "entry_count": 46,
+        "sha256": "3b84cab9942ae61b08db41e5da20222539c11172d9716d5b843d7aadc470eb1d",
+        "bytes": 17068201,
+        "id": 11707178691,
+        "name": "reference-B-4116-38148336251"
+      },
+      "declaration_sha256": "659b7a1036117bfd474b15933d84e0e55aeb20e7a78c5c4f2c71db64691a6e33",
+      "report_sha256": "3306837ea86801faeda761d18cf12a85b49ff8fbbf0140e8dc0d5d2cb7e67b31",
+      "processes_sha256": "b37d3ad8ddb593d760e2c983cd6c65eb8e963a39aa952a24ca88999472a54b17",
+      "audit_sha256": "529088b72bb913564bbb01b3ebacbc7e005a9f03128c34935928b22f6956cd99",
+      "verified_utc": "2026-10-11T16:05:49.2428712Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1306.6214028
+      ],
+      "max_runner_plus_engine_bytes": 465260544.0,
+      "max_scratch_bytes": 64324600.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "B",
+      "interval_index": 4120,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.47397523387613316
+        }
+      ],
+      "artifact": {
+        "id": 11707692628,
+        "name": "reference-B-4120-38148336251",
+        "bytes": 17069149,
+        "sha256": "999f46eed216fe3f6f0c0cd2d3e4b4ed72eae1354e61b1d14aefdc34c47d2ad2",
+        "entry_count": 46,
+        "uncompressed_bytes": 127888196
+      },
+      "declaration_sha256": "216685e72d8b4e7e26a70b7cccc32d495a61ad53fbfb7d21a8995a9854b37fd1",
+      "report_sha256": "b9f3dcfa030dbf4c91c88948cb79ff06c5c561dd6f6e660a85cdd3a1dd31efc6",
+      "processes_sha256": "6dc8b4b4af43739840ce18b6c13fe46f80b1b4f9d70d218c64fec0e4b1486cea",
+      "audit_sha256": "ebab289b465b9601ad00741146737c8e3a1966eaa577775e22ba4751330958b0",
+      "verified_utc": "2026-10-11T16:14:01.0199094Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1736.9494709
+      ],
+      "max_runner_plus_engine_bytes": 471736320.0,
+      "max_scratch_bytes": 64324570.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    }
+  ],
+  "full_reference_cases_required": 24,
+  "sensitivity_variants_required": 6,
+  "full_reference_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "release_acceptance_complete": false
+}

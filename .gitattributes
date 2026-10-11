@@ -18,6 +18,11 @@ docs/evidence/v0.3-integration/*.json -text -whitespace
 # Candidate05 records retain their original audit bytes and publication seals.
 docs/evidence/v0.3-native/candidate05-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate06-*.json -text -whitespace
+docs/evidence/v0.3-native/candidate07-*.json -text -whitespace
+docs/evidence/v0.3-engine/higher-MF2-MF4-A-all12-summary.json -text -whitespace
+docs/evidence/v0.3-engine/MF8-annual-size-lower-bound.json -text -whitespace
+docs/evidence/v0.3-engine/hosted-twelve-case-qualification.json -text -whitespace
+docs/evidence/v0.3-ci/final-main-596fde6.json -text -whitespace
 docs/evidence/v0.3-ci/method5-*.json -text -whitespace
 docs/evidence/v0.3-engine/method5-selected-hour-independent-audit.json -text -whitespace
 docs/evidence/v0.3-engine/method5-higher-MF2-A-partial-audit.json -text -whitespace

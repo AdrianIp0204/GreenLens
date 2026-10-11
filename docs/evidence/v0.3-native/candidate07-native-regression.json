@@ -1,0 +1,154 @@
+{
+  "schema_version": "greenlens.candidate07-native-regression-independent.v1",
+  "recorded_utc": "2026-10-11T16:14:48.021069+00:00",
+  "passed": true,
+  "verification_scope": "Read-only independent post-workflow artifact audit with visual inspection of retained screenshots; no engine/build/UI input and no project mutation.",
+  "installed_application_source": {
+    "commit": "890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+    "dirty": false,
+    "desktop_sha256": "27bf548bef40cbe40653a1b079259b96f1f0da21966ed039bd972de0264af524",
+    "distributed_cli_sha256": "0b261c835bd49c1c45d7284bc59845d15482ec8cadaccc7521987660d7a660dc"
+  },
+  "preservation": {
+    "compact_project_files": 179,
+    "immutable_evidence_files": 178,
+    "immutable_bytes": 44920485,
+    "count_explanation": "75 files per retained annual run plus23 selected-hour run files plus5 current-weather files =178 immutable evidence files; project.json adds one mutable manifest for179 compact files. Ephemeral .greenlens.lock is excluded.",
+    "all_source_before_and_final_copy_bytes_equal": true,
+    "final_manifest_restored_exactly": true,
+    "manifest_sha256": "45e5696e998134f35a4a79db35ba326fd4560d22cfe2728d2cd96103a5878cfc",
+    "scientific_inputs_and_historical_run_summaries_unchanged": true,
+    "cameras_unchanged": true
+  },
+  "native_failure": {
+    "bytes": 67108865,
+    "sha256": "b78ac37d272ba46722a1af28f0692aee91b4df2f6601adfbf58769cd14f961a9",
+    "reconstructed_original_plus_zero_padding": true,
+    "native_failure_message": "JSON exceeds 64 MiB safety limit",
+    "failure_preservation_scope": "Post-failure oversized-file preservation was recorded contemporaneously by the native operator before restoration; this independent audit verifies retained original/hash/reconstruction, screenshot and final compact evidence, not the removed oversized file.",
+    "observed_record_preserved_external_manifest": true
+  },
+  "retained_runs": [
+    {
+      "id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "alternative_id": "A",
+      "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "source_worktree_dirty": false,
+      "compact_files": 75,
+      "sealed_files": 74,
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "values": 210240,
+      "finite_nonnegative": true,
+      "max_recomputed_RGB_to_lux_error": 0.0,
+      "recipe_logs_process_binding_verified": true,
+      "paired_primary_receipts_verified": true,
+      "results_sha256": "4cd68f3459b7e2a183ed0b626bfd73ac447fcb35c8d8d0775accad161266e387",
+      "manifest_record_sha256": "50b9336ea0f83c6232909f961f33357d91aee0e7307334315d045461ddda5452"
+    },
+    {
+      "id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "alternative_id": "B",
+      "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "source_worktree_dirty": false,
+      "compact_files": 75,
+      "sealed_files": 74,
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "values": 210240,
+      "finite_nonnegative": true,
+      "max_recomputed_RGB_to_lux_error": 0.0,
+      "recipe_logs_process_binding_verified": true,
+      "paired_primary_receipts_verified": true,
+      "results_sha256": "6b9cbc44e1a75f08165d55c1a588c14ddc8ffa4eac54935c793c88245377aa0a",
+      "manifest_record_sha256": "58fe0235610baa2931e9b23fcf529d59aa01f485974638f7c89c0bf756d708c0"
+    },
+    {
+      "id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+      "alternative_id": "A",
+      "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "source_worktree_dirty": false,
+      "compact_files": 23,
+      "sealed_files": 22,
+      "interval_count": 1,
+      "sensor_count": 24,
+      "values": 24,
+      "finite_nonnegative": true,
+      "max_recomputed_RGB_to_lux_error": 0.0,
+      "recipe_logs_process_binding_verified": true,
+      "paired_primary_receipts_verified": true,
+      "results_sha256": "35e9d35064dee8a3cf151b27f5dcd8a4f458905f8732fa4ca75ac18ec733ba08",
+      "manifest_record_sha256": "c98f13aabb72b50a06cce4cda805e7973c3ecad81a8b4e5a43db525f5ba67ff4"
+    }
+  ],
+  "export": {
+    "basename": "three-run-native.zip",
+    "bytes": 6774068,
+    "sha256": "206e786c1e9412504223e247fb9c458507113c4f6bf1f8373531378e04afd8c3",
+    "members": 183,
+    "sealed_members": 182,
+    "uncompressed_bytes": 45263037,
+    "all_shared_limits_satisfied": true,
+    "all_project_members_exact": true
+  },
+  "independent_metric_arithmetic": {
+    "annual_sensor_metrics_recomputed": 240,
+    "annual_comparison_deltas_recomputed": 120,
+    "occupied_interval_denominator": 3650,
+    "maximum_metric_error_percentage_points": 1.4210854715202004e-13,
+    "maximum_delta_error_percentage_points": 2.4158453015843406e-13,
+    "preview_interval": 12,
+    "preview_deltas_and_shared_scale_verified": true
+  },
+  "offline_report": {
+    "sha256": "6009362060d20b1c7f44ef543caa7ca842f7b2fe508ded8ba6fcd854edc91d16",
+    "offline_no_scripts_or_external_assets": true,
+    "svg_count": 13,
+    "all_snapshot_run_ids_present": true,
+    "formulas_thresholds_daily_schedule_denominator_and_no_dst_present": true,
+    "current_vs_historical_labels_present": true,
+    "limitations_present": true,
+    "scope": "Offline HTML source/content verified. No browser rendering performed in this audit."
+  },
+  "screenshots": [
+    {
+      "file": "bounded-manifest-rejected.png",
+      "sha256": "8e579e9864cd3947c5ab0200c8e9237d854a8a32fa6bd7e7bdd487502ba629be",
+      "observed_content": "JSON exceeds64MiB safety limit; interval1908/d2e0 heatmap remains visible."
+    },
+    {
+      "file": "restored-manifest-save.png",
+      "sha256": "77bf377beb611554822f2f5a3d666dfdf7ca550f063272ebff18c0f9ea57eec7",
+      "observed_content": "Project saved. Undo history retained.; same hourly heatmap remains visible."
+    },
+    {
+      "file": "three-run-exported.png",
+      "sha256": "f0373cca0b55363900178f1119e1c271a531ec8cc298c4c66374aaadcd28c76a",
+      "observed_content": "Portable evidence ZIP and offline report exported.; same hourly heatmap remains visible."
+    }
+  ],
+  "replay": {
+    "executed": false,
+    "reason": "No candidate07 ZIP replay authorized in this read-only task; existing candidate06 replay remains separate evidence."
+  },
+  "evidence": [
+    {
+      "file": "audit.json",
+      "sha256": "66aee26e13c9cdcfa97ed8ec7c8c8b0a11ea591a8d1d499ab93eacc502e483cb"
+    },
+    {
+      "file": "export-audit.json",
+      "sha256": "49510cff49cb4b818def97e8aa4871d23647768f2688f3c97ec8121e1f3bca3f"
+    },
+    {
+      "file": "audit.py",
+      "sha256": "a4f588547b91478cbbcd9a456959a54602ed4d64f60cdbd3d94663da78ce5ca7"
+    },
+    {
+      "file": "audit-export.py",
+      "sha256": "18efa5f70eb3690691716dc4b62852fb2806f30f627ec30722091e6aad62475b"
+    }
+  ],
+  "scientific_accuracy_accepted": false,
+  "release_acceptance_complete": false
+}

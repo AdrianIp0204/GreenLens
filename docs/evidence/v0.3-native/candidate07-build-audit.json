@@ -1,0 +1,228 @@
+{
+  "schema_version": "greenlens.candidate07-build-audit.v1",
+  "verified_utc": "2026-10-11T16:00:42.965529+00:00",
+  "passed": true,
+  "source_commit": "890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+  "source_worktree_dirty": false,
+  "source_clean_before_and_after": true,
+  "application_version": "0.3.0",
+  "artifacts": [
+    {
+      "file": "greenlens.exe",
+      "bytes": 4701184,
+      "sha256": "0b261c835bd49c1c45d7284bc59845d15482ec8cadaccc7521987660d7a660dc"
+    },
+    {
+      "file": "greenlens-desktop.exe",
+      "bytes": 14383616,
+      "sha256": "425a55f912866bfa184f4da2755b61389ae9ff861581e09c7e97bf1e0b553869"
+    },
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "bytes": 3528606,
+      "sha256": "d899ae0766e2bfe977f4bf37f1d8949e6bc04c6c21944c020597755ae5aea68b"
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 5115055,
+      "sha256": "89675a22f3dd1958df77d5b531c97b3fba8baa3f81fd85ea92a5df7bda09e5b1"
+    }
+  ],
+  "builds": [
+    {
+      "exit_code": 0,
+      "wall_seconds": 51.332832,
+      "finished_utc": "2026-10-11T15:49:27.5530272Z",
+      "started_utc": "2026-10-11T15:48:36.2202248Z"
+    },
+    {
+      "finished_utc": "2026-10-11T15:54:56.2251776Z",
+      "command": "npm run tauri -- build --ci --bundles nsis -- --locked --offline",
+      "exit_code": 0,
+      "working_directory": "apps/desktop",
+      "source_worktree_dirty": false,
+      "source_commit": "890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+      "wall_seconds": 238.8837563,
+      "started_utc": "2026-10-11T15:50:57.3443312Z"
+    }
+  ],
+  "tools": {
+    "node": "v24.14.0",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "msvc": "14.50.35717",
+    "npm": "11.9.0"
+  },
+  "coff_tool_version": "14.50.35725.0",
+  "concurrency": "One separate owned MF4 solar-basis research worker was running when compilation started",
+  "build_memory_and_cpu_sampling": "Not measured; retained build wall times are workload observations, not benchmarks.",
+  "commands": [
+    "process-local scripts/dev-env.ps1; GREENLENS_EXPECT_SOURCE_COMMIT=890166b6ae64cdd3b416ee65b7b51dc50d66266a; GREENLENS_EXPECT_SOURCE_DIRTY=false",
+    "cargo build --release --locked --offline -p greenlens-cli",
+    "npm run tauri -- build --ci --bundles nsis -- --locked --offline",
+    "node scripts/license-inventory.mjs --strict --check --installer-cache <reviewed NSIS cache>",
+    "scripts/test-package-documents.ps1",
+    "scripts/package-artifacts.ps1 -OutputDirectory <fresh candidate07 release directory>",
+    "dumpbin /dependents <frozen CLI and desktop>",
+    "7z l -slt <installer>; 7z x <installer> -o<fresh audit directory>",
+    "python audit-package.py <checkout> <audit directory> <release directory>",
+    "python audit-installer.py <checkout> <audit directory> <release directory>"
+  ],
+  "licenses": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "strict_committed_inventory": true,
+    "installer_cache_verified": true,
+    "lockfile_identities_verified": true
+  },
+  "package": {
+    "cli_members": 147,
+    "source_files_copied_exactly": 146,
+    "total_uncompressed_bytes": 16149701,
+    "explicit_document_count": 122,
+    "verified_local_links": 150,
+    "installer_resources_exact": 31,
+    "reviewed_embedded_plugins_exact": 4,
+    "installer_payload_desktop": {
+      "bytes": 14383616,
+      "frozen_sha256": "425a55f912866bfa184f4da2755b61389ae9ff861581e09c7e97bf1e0b553869",
+      "embedded_sha256": "27bf548bef40cbe40653a1b079259b96f1f0da21966ed039bd972de0264af524",
+      "differing_bytes": 3,
+      "difference": {
+        "offset": 11519968,
+        "unbundled_ascii": "UNK",
+        "nsis_ascii": "NSS"
+      },
+      "all_other_bytes_identical": true,
+      "tauri_marker_source_sha256": "5e12803d943b7728147c6223fe3e49ba532a0485b122fc47537398160f4092bc"
+    }
+  },
+  "imports": {
+    "cli": [
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "bcryptprimitives.dll",
+      "kernel32.dll",
+      "KERNEL32.dll",
+      "ntdll.dll",
+      "psapi.dll",
+      "VCRUNTIME140.dll"
+    ],
+    "desktop": [
+      "ADVAPI32.dll",
+      "advapi32.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "bcryptprimitives.dll",
+      "combase.dll",
+      "comctl32.dll",
+      "dwmapi.dll",
+      "gdi32.dll",
+      "imm32.dll",
+      "kernel32.dll",
+      "KERNEL32.dll",
+      "ntdll.dll",
+      "ole32.dll",
+      "oleaut32.dll",
+      "psapi.dll",
+      "shell32.dll",
+      "shlwapi.dll",
+      "user32.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll"
+    ]
+  },
+  "authenticode": [
+    {
+      "name": "greenlens.exe",
+      "status": "NotSigned",
+      "signature_type": "None",
+      "is_os_binary": false
+    },
+    {
+      "name": "greenlens-desktop.exe",
+      "status": "NotSigned",
+      "signature_type": "None",
+      "is_os_binary": false
+    },
+    {
+      "name": "GreenLens_0.3.0_x64-setup.exe",
+      "status": "NotSigned",
+      "signature_type": "None",
+      "is_os_binary": false
+    }
+  ],
+  "retained_evidence": [
+    {
+      "file": "cli-build.json",
+      "sha256": "819f332f8ed0c2f09d1ff49e313971792a45491162ee705a3b96689d6673eb71"
+    },
+    {
+      "file": "desktop-build.json",
+      "sha256": "37d221b11e60734abab929ee27ceef5a9cb920f493914ba3d44f0d733123da4b"
+    },
+    {
+      "file": "cli-runner-build-output.txt",
+      "sha256": "f3f610c5f25f74d1ec188ad49768d3dd236a65b48ca9bebab42941bfb90c42a7"
+    },
+    {
+      "file": "desktop-runner-build-output.txt",
+      "sha256": "f3f610c5f25f74d1ec188ad49768d3dd236a65b48ca9bebab42941bfb90c42a7"
+    },
+    {
+      "file": "inventory-check-final.log",
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    },
+    {
+      "file": "document-check.json",
+      "sha256": "b7029fa3c5d6209f753bc805535f108dec624aa65370f554ecd3af1ec38322d1"
+    },
+    {
+      "file": "package-audit.json",
+      "sha256": "d3b91ebffe40ad77fedd1078e8588ff9921fd5d618f787a1bedf8e2e01beb970"
+    },
+    {
+      "file": "installer-audit.json",
+      "sha256": "d184bec6e51be1bd9311dba1b8e4dc0f37922a9e56f5928f26f6df4ad4056606"
+    },
+    {
+      "file": "audit-package.py",
+      "sha256": "359d05ced948ff3e74c6d0b543e41c0062d5d23540aa0a6c935e959f3ca4098f"
+    },
+    {
+      "file": "audit-installer.py",
+      "sha256": "4bad4ae229bd1c97d5391dd4d56018b21588782dc7afa2fbc5e54cca50eabed6"
+    },
+    {
+      "file": "build-inputs.json",
+      "sha256": "f75d551fe460b8d4fa64bf2bcb51296c17807e534d0bc094c52ef8937aaa9355"
+    },
+    {
+      "file": "signatures.json",
+      "sha256": "73b17d01930d9d727a3f02b6bf328b1fc8a63becfb383324d540b7bc0d08fcb6"
+    }
+  ],
+  "scope": "Clean-source CLI and production NSIS build plus offline byte, inventory, notices, imports and payload audit. No installation, desktop launch or engine execution performed.",
+  "warnings": [
+    "Inherited npm msvs-version environment-config deprecation warning; no global setting changed.",
+    "An early document-check wrapper incorrectly used stale LASTEXITCODE after a PowerShell-only test; the retained test record confirms success."
+  ],
+  "installer_launched": false,
+  "desktop_launched": false,
+  "engine_executed": false,
+  "scientific_accuracy_accepted": false,
+  "release_acceptance_complete": false
+}

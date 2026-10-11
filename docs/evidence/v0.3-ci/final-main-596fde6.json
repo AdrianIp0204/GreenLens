@@ -1,0 +1,272 @@
+{
+  "schema_version": "greenlens.ci-final-checkpoint.v1",
+  "recorded_utc": "2026-10-11T16:19:02.6628159Z",
+  "workflow_run": 38148694431,
+  "workflow_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148694431",
+  "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+  "status": "completed",
+  "conclusion": "failure",
+  "scope": "Read-only hosted job/log and digest-verified compact convergence artifact inspection. No repeated engine calculation or independent annual raw-array audit in this checkpoint.",
+  "jobs": [
+    {
+      "job_id": 114497372138,
+      "name": "native",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T14:48:48Z",
+      "completed_utc": "2026-10-11T15:44:21Z"
+    },
+    {
+      "job_id": 114508754920,
+      "name": "annual (A, shipping)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T15:44:22Z",
+      "completed_utc": "2026-10-11T15:48:20Z"
+    },
+    {
+      "job_id": 114508754923,
+      "name": "annual (B, reference)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T15:44:23Z",
+      "completed_utc": "2026-10-11T16:09:52Z"
+    },
+    {
+      "job_id": 114508754997,
+      "name": "selected_hour",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T15:44:23Z",
+      "completed_utc": "2026-10-11T15:55:07Z"
+    },
+    {
+      "job_id": 114508755000,
+      "name": "annual (B, shipping)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T15:44:23Z",
+      "completed_utc": "2026-10-11T15:47:09Z"
+    },
+    {
+      "job_id": 114508755002,
+      "name": "annual (A, reference)",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T15:44:23Z",
+      "completed_utc": "2026-10-11T16:09:25Z"
+    },
+    {
+      "job_id": 114513974930,
+      "name": "annual_convergence",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_utc": "2026-10-11T16:09:54Z",
+      "completed_utc": "2026-10-11T16:10:27Z"
+    },
+    {
+      "job_id": 114514101435,
+      "name": "annual_replay",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_utc": "2026-10-11T16:10:28Z",
+      "completed_utc": "2026-10-11T16:10:27Z"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11708325300,
+      "name": "greenlens-annual-reference-B-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 6797451,
+      "sha256": "5e2e0bcca9d7f675d9a3244930e3b76ba34abde53a68ff399c749f492de8b351",
+      "expired": false
+    },
+    {
+      "id": 11707941734,
+      "name": "greenlens-convergence-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 17985,
+      "sha256": "506ffdd9f63eae04d990c747449b7bca748b5847e35c2451f84a745664276e11",
+      "expired": false
+    },
+    {
+      "id": 11707540622,
+      "name": "greenlens-native-diagnostics-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 4250672,
+      "sha256": "8c1d777657a7c5fa23959068742af4fc4bc56568850ab5b53f489c67ed79bc6c",
+      "expired": false
+    },
+    {
+      "id": 11707511723,
+      "name": "greenlens-selected-hour-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 3669340,
+      "sha256": "a72c6d92954d5d6a1ed76492059d87b4eb807c7440c76ffafe329c967f7af309",
+      "expired": false
+    },
+    {
+      "id": 11707505720,
+      "name": "greenlens-ci-cli-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 4092404,
+      "sha256": "e63bbaf3be5f25929f730a7b5be5935ba55a9c8c28a54116946880759952545e",
+      "expired": false
+    },
+    {
+      "id": 11707456106,
+      "name": "greenlens-annual-shipping-B-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 6702529,
+      "sha256": "aaf9b9bc234d0a8528bd111363a271c709c059b9864e27caaab2eddd3af8a14e",
+      "expired": false
+    },
+    {
+      "id": 11707408055,
+      "name": "greenlens-annual-reference-A-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 6787328,
+      "sha256": "c6d8e01566db750cf9b1bed052d1ea609f78701fbaf93db910f33eda434d94ae",
+      "expired": false
+    },
+    {
+      "id": 11707355964,
+      "name": "greenlens-windows-unsigned-investigation-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 7688829,
+      "sha256": "bfe7c528fd49d1e8ff0848220c4ded6ce9d9a750ad24a529435ba1d174067ec0",
+      "expired": false
+    },
+    {
+      "id": 11707232460,
+      "name": "greenlens-annual-shipping-A-596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "bytes": 6694441,
+      "sha256": "e2c2ce2e3d2ce49be353c5617aaf03aecc5904aef07d66ee03b121569cca5003",
+      "expired": false
+    }
+  ],
+  "convergence": {
+    "artifact_id": 11707941734,
+    "artifact_bytes": 17985,
+    "artifact_sha256": "506ffdd9f63eae04d990c747449b7bca748b5847e35c2451f84a745664276e11",
+    "report_sha256": "e543574107c904272c29a7b7f18831492206adba26b15b695d46a287c20dd995",
+    "started_utc": "2026-10-11T16:10:11.0068430Z",
+    "finished_utc": "2026-10-11T16:10:22.4711346Z",
+    "cli_sha256": "98aeacc8856490711368a252578cafa19c14f718be1e32ecbb2810b26e7e9b74",
+    "cli_version": "greenlens-cli 0.3.0",
+    "pass": false,
+    "failures": 6,
+    "metric_check_count": 240,
+    "partition_check_count": 96,
+    "intervals_per_run": 8760,
+    "sensors_per_run": 24,
+    "failure_details": [
+      {
+        "kind": "metric_convergence",
+        "check": {
+          "alternative": "A",
+          "sensor_id": "s000017",
+          "metric": "da_percent",
+          "shipping": 55.86301369863014,
+          "reference": 53.06849315068494,
+          "absolute_difference_pp": 2.794520547945204,
+          "tolerance_pp": 2,
+          "pass": false
+        }
+      },
+      {
+        "kind": "metric_convergence",
+        "check": {
+          "alternative": "A",
+          "sensor_id": "s000020",
+          "metric": "da_percent",
+          "shipping": 50.95890410958904,
+          "reference": 54.16438356164384,
+          "absolute_difference_pp": 3.205479452054796,
+          "tolerance_pp": 2,
+          "pass": false
+        }
+      },
+      {
+        "kind": "metric_convergence",
+        "check": {
+          "alternative": "A",
+          "sensor_id": "s000022",
+          "metric": "da_percent",
+          "shipping": 33.6986301369863,
+          "reference": 38.24657534246575,
+          "absolute_difference_pp": 4.547945205479451,
+          "tolerance_pp": 2,
+          "pass": false
+        }
+      },
+      {
+        "kind": "metric_convergence",
+        "check": {
+          "alternative": "A",
+          "sensor_id": "s000022",
+          "metric": "cda_percent",
+          "shipping": 76.73727108918551,
+          "reference": 79.07025739284843,
+          "absolute_difference_pp": 2.3329863036629206,
+          "tolerance_pp": 2,
+          "pass": false
+        }
+      },
+      {
+        "kind": "metric_convergence",
+        "check": {
+          "alternative": "A",
+          "sensor_id": "s000023",
+          "metric": "da_percent",
+          "shipping": 34.465753424657535,
+          "reference": 38.657534246575345,
+          "absolute_difference_pp": 4.19178082191781,
+          "tolerance_pp": 2,
+          "pass": false
+        }
+      },
+      {
+        "kind": "metric_convergence",
+        "check": {
+          "alternative": "B",
+          "sensor_id": "s000020",
+          "metric": "da_percent",
+          "shipping": 42.13698630136986,
+          "reference": 40.0,
+          "absolute_difference_pp": 2.136986301369859,
+          "tolerance_pp": 2,
+          "pass": false
+        }
+      }
+    ],
+    "validated_runs": [
+      {
+        "alternative": "A",
+        "profile": "shipping",
+        "run_id": "b3b026cc-704a-41f1-a630-08608637f7d8",
+        "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+        "source_worktree_dirty": false
+      },
+      {
+        "alternative": "B",
+        "profile": "shipping",
+        "run_id": "303df5c1-8709-470f-a457-f0e1d7e248d0",
+        "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+        "source_worktree_dirty": false
+      },
+      {
+        "alternative": "A",
+        "profile": "reference",
+        "run_id": "bc320601-22c7-488c-ab58-585a31f5113a",
+        "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+        "source_worktree_dirty": false
+      },
+      {
+        "alternative": "B",
+        "profile": "reference",
+        "run_id": "741ad8af-212e-4a7e-b335-9f44c9d89a4a",
+        "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+        "source_worktree_dirty": false
+      }
+    ]
+  },
+  "failed_log_reason": "Annual convergence failed 6 checks; every comparison and partition is retained.",
+  "hosted_annual_replay_executed": false,
+  "thresholds_changed": false,
+  "scientific_acceptance_complete": false,
+  "release_acceptance_complete": false
+}

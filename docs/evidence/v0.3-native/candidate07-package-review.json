@@ -1,0 +1,41 @@
+{
+  "schema_version": "greenlens.candidate07-independent-package-review.v1",
+  "recorded_utc": "2026-10-11T16:01:34.042519+00:00",
+  "source_commit": "890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+  "source_dirty": false,
+  "passed": true,
+  "cli_members_verified": 147,
+  "source_copies_verified": 146,
+  "total_cli_uncompressed_bytes": 16149701,
+  "installer_resources_verified": 31,
+  "installer_plugins_verified": 4,
+  "tauri_marker_only_difference": true,
+  "source_build_inputs_verified": true,
+  "both_rust_build_stamps_verified": true,
+  "strict_inventory": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "all_unsigned": true,
+  "reviewed_record_sha256": {
+    "package": "d3b91ebffe40ad77fedd1078e8588ff9921fd5d618f787a1bedf8e2e01beb970",
+    "installer": "d184bec6e51be1bd9311dba1b8e4dc0f37922a9e56f5928f26f6df4ad4056606"
+  },
+  "artifact_checksums": [
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "sha256": "d899ae0766e2bfe977f4bf37f1d8949e6bc04c6c21944c020597755ae5aea68b"
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "sha256": "89675a22f3dd1958df77d5b531c97b3fba8baa3f81fd85ea92a5df7bda09e5b1"
+    }
+  ],
+  "engine_or_app_executed": false,
+  "scientific_acceptance": false,
+  "scope": "Independent read-only current byte and retained build/import/notice audit; no installation, execution or general scientific claim."
+}

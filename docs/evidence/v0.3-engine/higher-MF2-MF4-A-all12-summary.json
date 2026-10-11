@@ -1,0 +1,523 @@
+{
+  "schema_version": "greenlens.higher-MF2-and-MF4-solar-A-all12-summary.v1",
+  "recorded_utc": "2026-10-11T16:14:25.6383004Z",
+  "alternative": "A",
+  "scope": "Compact summary of two completed research diagnostics against all twelve internally converged A baseline cases. Original full reports and raw matrices remain immutable outside the source package.",
+  "overall_reference_family_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "annual_convergence_pass": false,
+  "profile_adopted": false,
+  "release_acceptance_complete": false,
+  "full_acceptance_comparator_invoked": false,
+  "comparison_band": "For every sensor: absolute error <= max(5 lx, 0.05 * reference lux); unchanged.",
+  "fixed_interval_indices": [
+    1904,
+    1908,
+    1912,
+    4112,
+    4116,
+    4120,
+    6320,
+    6324,
+    6328,
+    8504,
+    8508,
+    8512
+  ],
+  "sensor_count": 24,
+  "compared_values_per_diagnostic": 288,
+  "higher_MF2_failure_count": 1,
+  "MF4_solar_failure_count": 2,
+  "higher_MF2_maximum_ratio": 2.015770524555295,
+  "MF4_solar_maximum_ratio": 1.1992345290179691,
+  "physical_binding": {
+    "scene_sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57",
+    "sensors_sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+    "weather_binding": {
+      "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+      "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+      "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+      "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+    },
+    "hosted_A_coverage_snapshot_sha256": "48a25cc9ab2f9adebd18562de42b13d556c231717ded50eb734cf99171ce733a"
+  },
+  "settings": {
+    "primary_count": 65536,
+    "secondary_divisions": 128,
+    "full_bounces": 8,
+    "direct_bounces": 0,
+    "ray_depth": -16,
+    "weight_cutoff": 1E-09,
+    "receiver_scale": 100,
+    "finite_disc_samples": 4096,
+    "primary_rule": "Hammersley cosine hemisphere: radius=sqrt((i+0.5)/N), azimuth=2*pi*base2_radical_inverse(i), z=sqrt(1-radius^2); sensor-major, i=0..N-1; no rotation/scramble; sensor origin+1e-4 upward; identical uninterrupted full/direct streams",
+    "higher_MF2_basis": 2,
+    "MF4_changed_factor": "Solar basis only, MF2 to MF4; exact higher MF2 diffuse/ground and finite-disc outputs retained",
+    "coefficient_conversion": "pi/100 once for each matrix transport term",
+    "coefficient_arguments_MF2": [
+      "-n",
+      "1",
+      "-faa",
+      "-y",
+      "24",
+      "-ad",
+      "128",
+      "-as",
+      "0",
+      "-aa",
+      "0",
+      "-ar",
+      "256",
+      "-av",
+      "0",
+      "0",
+      "0",
+      "-lw",
+      "1e-9",
+      "-lr",
+      "-16",
+      "-dt",
+      "0",
+      "-dc",
+      "1",
+      "-dj",
+      "0",
+      "-ds",
+      "0.05",
+      "-st",
+      "0",
+      "-ss",
+      "0",
+      "-u-",
+      "-V+",
+      "-c",
+      "65536",
+      "-e",
+      "MF:2",
+      "-f",
+      "reinhart.cal",
+      "-b",
+      "rbin",
+      "-bn",
+      "Nrbins",
+      "-m",
+      "sky_glow"
+    ],
+    "coefficient_arguments_MF4": [
+      "-n",
+      "1",
+      "-faa",
+      "-y",
+      "24",
+      "-ad",
+      "128",
+      "-as",
+      "0",
+      "-aa",
+      "0",
+      "-ar",
+      "256",
+      "-av",
+      "0",
+      "0",
+      "0",
+      "-lw",
+      "1e-9",
+      "-lr",
+      "-16",
+      "-dt",
+      "0",
+      "-dc",
+      "1",
+      "-dj",
+      "0",
+      "-ds",
+      "0.05",
+      "-st",
+      "0",
+      "-ss",
+      "0",
+      "-u-",
+      "-V+",
+      "-c",
+      "65536",
+      "-e",
+      "MF:4",
+      "-f",
+      "reinhart.cal",
+      "-b",
+      "rbin",
+      "-bn",
+      "Nrbins",
+      "-m",
+      "sky_glow"
+    ]
+  },
+  "audit_records": {
+    "higher_MF2": {
+      "basename": "higher-available-comparison.json",
+      "bytes": 306056,
+      "sha256": "6719ba19b3f1baed55db84ade6cbef36b4f2ee75ef64e3dc3866249539b2663b",
+      "native_declaration_sha256": "76a49bb33ab45a71eb3669a1a69c698b03162c55e50532e8db8f632529e8f32a",
+      "native_report_sha256": "4818893fe1124469762686d0c9f9c4ee352012756997f89121cc3cdcc33d30fd",
+      "native_processes_sha256": "6d73b32c115d6822c16a4aa83390ecea83887d14af4a22a713e7126b6a330bfa",
+      "readers": {
+        "reference_reader": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+        "paired_reader": "e8f5c66e605d392dc7bbd4c9e5e731f43a9003aef2cd3b069b883ab8e4c9f0c8",
+        "diagnostic": "b13e5225c6d23c0f1e1a5ed6d41d9c0a152bf6b840ebd5119d6d2df62215a7e5"
+      }
+    },
+    "MF4_solar": {
+      "basename": "solar-basis-partial-comparison.json",
+      "bytes": 410478,
+      "sha256": "d50433317d9e8b362b129b0222ab7e07a7f7141af0b0cb20e1b537eab3a5340d",
+      "native_declaration_sha256": "831651193eacd10f84103377030c1459a06a2a4e901783f027ee5c13205e539b",
+      "native_report_sha256": "026220660d0c05e5908ce2b89fcb728c5d00e03d6565cb44f4a088c88a567a71",
+      "native_processes_sha256": "908aef06fd540c7f51e0a98a063dbef48dafc7d561b88fdfa1516b47c74e0249",
+      "readers": {
+        "diagnostic": "e0066919cd95a983662a40a04cdef48c035034336a25d33b22fe6e300d5e5e1e",
+        "paired_reader": "e8f5c66e605d392dc7bbd4c9e5e731f43a9003aef2cd3b069b883ab8e4c9f0c8",
+        "reference_reader": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a"
+      }
+    }
+  },
+  "reference_pins": [
+    {
+      "interval_index": 1904,
+      "declaration_sha256": "b8ed754ed18228c51ea04e82e1791d5018d10d4c1265532f58e0b87ec7a75976",
+      "processes_sha256": "c9898352e40e7ec5ccff7a564a26179c1fcba757272372f1f790024c95b99aac",
+      "report_sha256": "b2fc70873651ca84d7d2b5670f01b36dd68c0d55f92445b7c5361f0abf2978c8"
+    },
+    {
+      "interval_index": 1908,
+      "declaration_sha256": "b340b38c0847917c3ba27f54df9a1f716da1e7e498c885735a5f820d156e90e8",
+      "processes_sha256": "2b44a6c2ae3b85d2477bf9871001f6c058db9a46487ce42b3cc248145830369f",
+      "report_sha256": "d5719d317a4dfe9aba5c9ac83216061c291b1451c0317cef7960d1459036b7c5"
+    },
+    {
+      "interval_index": 1912,
+      "declaration_sha256": "599bf0946ead63198576871db65a3fe27d7ac5dd484843369db46f58a9f695c2",
+      "processes_sha256": "9dcc1f48c00c4e8819b320492f1ef10a806b93d679eb9a1d53749724f3ca325c",
+      "report_sha256": "06ccb71fc78a60d2e5f8dcdeef20876bfb171196f0180d8f54c92bcd99245dae"
+    },
+    {
+      "interval_index": 4112,
+      "declaration_sha256": "3ff67db36fdb57e6be55c2dc08ae7883921d41b595179db67922bb2a55d550e6",
+      "processes_sha256": "b26812677ac78901562239cdb0bb74ba3647fdd3762fc8c2b350a9d5ad00b3d2",
+      "report_sha256": "9a34dca68b9731e0c9dba4f456824f9b0f3271b0705a5a9f56b3041e868e1ae2"
+    },
+    {
+      "interval_index": 4116,
+      "declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a",
+      "processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18",
+      "report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5"
+    },
+    {
+      "interval_index": 4120,
+      "declaration_sha256": "852803404ca8df85e13b20d4e2e1e19a4b49f71c93f00e3a4c4c714313051a5d",
+      "processes_sha256": "3ae4cb6c623760a8d8c1f6bf26c8f5954f227446e280ea75c12612221a22c561",
+      "report_sha256": "f0ffd8c23d23e1d19d4ec543224c3b88e16800459ecec372afb106457bf4fcd5"
+    },
+    {
+      "interval_index": 6320,
+      "declaration_sha256": "aac7f50d2a5b984536dec3d5e90b09821e3fbd5301fe50987b36da2c9b3ca02e",
+      "processes_sha256": "9408d407a45388fd7bfc192805123b69fd1a02ae2316ef646f27e169b4719367",
+      "report_sha256": "1436b608333a2ff801f68c0ed53626d6a35e7708c25b3366f719c6ab6182ef85"
+    },
+    {
+      "interval_index": 6324,
+      "declaration_sha256": "4ec473b7aab61ad291c476267c5501ff23497611a5f5435b425b1e64a0dde876",
+      "processes_sha256": "78a1483cb343e3aba5b32bbb1c19d05019a2c125f42b8eea4d3cad045679675d",
+      "report_sha256": "49dbd1f278a786adbba9b34f4ae8a80fe139ee685c30aba3ba86c938d3c12276"
+    },
+    {
+      "interval_index": 6328,
+      "declaration_sha256": "c221697f1e63bdc74127711aa70fb84e101af40c33e88630472405cc4166addd",
+      "processes_sha256": "e594a2bdd7dde1f174c341db6867d28d1227567ede0b349c8038bf4c206b94df",
+      "report_sha256": "7c62c1b2dff885fc8a35db9c67ce86ef1179899a5b3bdddb55e7b30340b9f99f"
+    },
+    {
+      "interval_index": 8504,
+      "declaration_sha256": "828b03e80eb94155aaff69fe1d1d1ab4978f889992e056e30fde4ab670bffacd",
+      "processes_sha256": "7168b5f0f67855828f932b87887046157370b15f4cc9acec88d2eff84ad0ef45",
+      "report_sha256": "f971fd716e9358b9504cdbae25b41f06604ea0fdaec0a18dac6bb59f6bd517cc"
+    },
+    {
+      "interval_index": 8508,
+      "declaration_sha256": "c438518d75a6d9939208c170d31933659fce7e21b5c01d5530d00e54840039f3",
+      "processes_sha256": "e3423ea70c4d98675a368bf383d18743d6b616478b0b587ecac572e5d0508a49",
+      "report_sha256": "e9e2b1ed5572bbc5ea495787a87a380cf0a6fb0a4de0683db8d238c2883c7ff5"
+    },
+    {
+      "interval_index": 8512,
+      "declaration_sha256": "fea43141ddcb8b62ad67b6bd9cd179c680ef872b562f86a9f8ca498652b845a2",
+      "processes_sha256": "c43802ce5eabf85a4d8b5a1be3d5717e570108d4da957f1e39891885927e6e57",
+      "report_sha256": "eb053299511033a09cde29a6f9b42fefc1609a5500158802edda3178ff14dc49"
+    }
+  ],
+  "per_case": [
+    {
+      "interval_index": 1904,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.4112991371129814,
+      "MF4_solar_maximum_ratio": 0.4283578606496757
+    },
+    {
+      "interval_index": 1908,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.4508638225711427,
+      "MF4_solar_maximum_ratio": 0.45110376617750203
+    },
+    {
+      "interval_index": 1912,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.2962321118802405,
+      "MF4_solar_maximum_ratio": 0.2831591904569633
+    },
+    {
+      "interval_index": 4112,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.31479788436793205,
+      "MF4_solar_maximum_ratio": 0.31479788436793205
+    },
+    {
+      "interval_index": 4116,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.42690100128796354,
+      "MF4_solar_maximum_ratio": 0.42746596672519016
+    },
+    {
+      "interval_index": 4120,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.29312834755100675,
+      "MF4_solar_maximum_ratio": 0.29312834755100675
+    },
+    {
+      "interval_index": 6320,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.6302199808111096,
+      "MF4_solar_maximum_ratio": 0.5766135309330607
+    },
+    {
+      "interval_index": 6324,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.5566460435033822,
+      "MF4_solar_maximum_ratio": 0.44146356099612527
+    },
+    {
+      "interval_index": 6328,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.2818555807831051,
+      "MF4_solar_maximum_ratio": 0.39141379107629515
+    },
+    {
+      "interval_index": 8504,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 1,
+      "MF4_solar_failures": 2,
+      "higher_MF2_maximum_ratio": 2.015770524555295,
+      "MF4_solar_maximum_ratio": 1.1992345290179691
+    },
+    {
+      "interval_index": 8508,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.7050686551297219,
+      "MF4_solar_maximum_ratio": 0.6744620952733089
+    },
+    {
+      "interval_index": 8512,
+      "sensors": 24,
+      "reference_repeat_rung": 256,
+      "reference_case_internally_converged": true,
+      "higher_MF2_failures": 0,
+      "MF4_solar_failures": 0,
+      "higher_MF2_maximum_ratio": 0.9476171656204856,
+      "MF4_solar_maximum_ratio": 0.6488787892448022
+    }
+  ],
+  "every_failed_sensor": [
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000009",
+      "sensor_index_zero_based": 8,
+      "reference_lux": 1243.085247335937,
+      "allowed_error_lux": 62.15426236679686,
+      "higher_MF2": {
+        "tolerance_ratio": 2.015770524555295,
+        "reference_lux": 1243.085247335937,
+        "allowed_error_lux": 62.15426236679686,
+        "absolute_error_lux": 125.28873005446553,
+        "within_diagnostic_band": false,
+        "candidate_lux": 1368.3739773904026
+      },
+      "MF4_solar": {
+        "tolerance_ratio": 1.0597996773395288,
+        "reference_lux": 1243.085247335937,
+        "allowed_error_lux": 62.15426236679686,
+        "absolute_error_lux": 65.87106720160773,
+        "within_diagnostic_band": false,
+        "candidate_lux": 1308.9563145375448
+      },
+      "reference_diffuse_ground_lux": 786.2245255429684,
+      "candidate_diffuse_ground_lux": 800.6410641385157,
+      "reference_reflected_solar_lux": 456.8607217929687,
+      "higher_MF2_reflected_solar_lux": 567.7329132518868,
+      "MF4_reflected_solar_lux": 508.3152503990291,
+      "reference_finite_direct_lux": 0.0,
+      "candidate_finite_direct_lux": 0.0
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000011",
+      "sensor_index_zero_based": 10,
+      "reference_lux": 741.8962439492185,
+      "allowed_error_lux": 37.094812197460925,
+      "higher_MF2": {
+        "tolerance_ratio": 0.9423857683394372,
+        "reference_lux": 741.8962439492185,
+        "allowed_error_lux": 37.094812197460925,
+        "absolute_error_lux": 34.95762309411134,
+        "within_diagnostic_band": true,
+        "candidate_lux": 776.8538670433298
+      },
+      "MF4_solar": {
+        "tolerance_ratio": 1.1992345290179691,
+        "reference_lux": 741.8962439492185,
+        "allowed_error_lux": 37.094812197460925,
+        "absolute_error_lux": 44.48537963463207,
+        "within_diagnostic_band": false,
+        "candidate_lux": 786.3816235838506
+      },
+      "reference_diffuse_ground_lux": 470.0914725312499,
+      "candidate_diffuse_ground_lux": 476.46621793088116,
+      "reference_reflected_solar_lux": 271.80477141796865,
+      "higher_MF2_reflected_solar_lux": 300.38764911244874,
+      "MF4_reflected_solar_lux": 309.9154056529694,
+      "reference_finite_direct_lux": 0.0,
+      "candidate_finite_direct_lux": 0.0
+    }
+  ],
+  "resources": {
+    "higher_MF2": {
+      "process_count": 19,
+      "all_processes_completed_successfully": true,
+      "full_coefficient_started_utc": "2026-10-11T14:21:54.7017378Z",
+      "full_coefficient_finished_utc": "2026-10-11T15:02:56.5257993Z",
+      "full_coefficient_wall_seconds": 2461.8095143,
+      "sum_process_wall_seconds": 2484.5180116999995,
+      "sampled_runner_plus_job_peak_bytes": 530546688,
+      "sampled_scratch_peak_bytes": 145258472,
+      "closed_retained_total_bytes": 145282390,
+      "full_coefficient_output_bytes": 541467,
+      "generated_primary_receipt": {
+        "Bytes": 161415784,
+        "Rays": 1572864,
+        "Sha256": "5e3e7df2ea3c4d8df982d00a19190f77c8e82115ecddb812f86e7d2c3892d4b2"
+      },
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "file_bytes": 536870912,
+        "memory_bytes": 2147483648,
+        "timeout_seconds": 7200.0,
+        "cleanup_seconds": 5
+      }
+    },
+    "MF4_solar": {
+      "process_count": 29,
+      "all_processes_completed_successfully": true,
+      "full_coefficient_started_utc": "2026-10-11T15:16:16.0083078Z",
+      "full_coefficient_finished_utc": "2026-10-11T15:54:56.8518341Z",
+      "full_coefficient_wall_seconds": 2320.8114171,
+      "sum_process_wall_seconds": 2334.9934210000006,
+      "sampled_runner_plus_job_peak_bytes": 464642048,
+      "sampled_scratch_peak_bytes": 58169235,
+      "closed_retained_total_bytes": 58463746,
+      "full_coefficient_output_bytes": 2158876,
+      "generated_primary_receipt": {
+        "Bytes": 161415784,
+        "Rays": 1572864,
+        "Sha256": "5e3e7df2ea3c4d8df982d00a19190f77c8e82115ecddb812f86e7d2c3892d4b2"
+      },
+      "limits": {
+        "file_bytes": 536870912,
+        "timeout_seconds": 7200.0,
+        "scratch_bytes": 2147483648,
+        "memory_bytes": 2147483648,
+        "cleanup_seconds": 5
+      }
+    },
+    "measurement_scope": "Observed native 24-sensor calculations under concurrent verification and some compilation. Sampled working-set and scratch values are not isolated benchmarks or 256-sensor runtime guarantees."
+  },
+  "interpretation": [
+    "The finer solar basis reduced the 8504 s000009 reflected-solar excess but did not eliminate its unchanged error-band failure.",
+    "MF4 worsened 8504 s000011 from within the band to outside it; a finer basis did not give consistent improvement.",
+    "The remaining failed values have zero finite direct contribution in both candidate and reference. This localizes their discrepancy to diffuse/ground and reflected solar, without proving a unique estimator or basis cause.",
+    "Each of the twelve A reference cases meets its own repeat/block checks. Complete A/B reference coverage and both declared sensitivity families remain separate requirements.",
+    "These sampled-hour diagnostics neither establish full-year DA/cDA/UDI convergence nor accept a production profile.",
+    "A 256-sensor higher-profile transport runtime is unmeasured and must fit the unchanged 7,200-second per-process limit. A full-year MF8 native ASCII solar matrix has an independently established minimum of 565,266,196 bytes, exceeding the unchanged 512 MiB single-file cap; a bounded selected-hour MF8 diagnostic does not resolve annual representation."
+  ],
+  "antecedent_evidence": [
+    {
+      "path": "docs/evidence/v0.3-engine/method5-higher-MF2-A-partial-audit.json",
+      "sha256": "02311783033d4d0963d7392d43ef106819e44539a491c8f5c7fa9aa40ca468dd"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-higher-scheduling-cancellation.json",
+      "sha256": "a84d1e56cde1add3e94e3f5be65f4c4e6a20765cccb19b5489b92cf43f908964"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/method4-annual-negative-residuals.json",
+      "sha256": "3cd360c62a6fab446039de44a64aa033142120d037f5d17c8ec590a69dcc6be7"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-quadrature.json",
+      "sha256": "f0ccd70b37eaf384dad8cca1c688f4f0603e575b22bc1af569efa8fead058ef2"
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json",
+      "sha256": "92801299415c6522b0d528438afd008a88b690805fec521eb4e1647adf9f6131"
+    }
+  ]
+}

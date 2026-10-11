@@ -1,0 +1,45 @@
+{
+  "schema_version": "greenlens.native-ascii-MF8-size-lower-bound.v1",
+  "recorded_utc": "2026-10-11T16:05:16.473470+00:00",
+  "scope": "Independent source and closed native byte inspection only; no engine execution.",
+  "source": {
+    "tag": "rad6R0P2",
+    "path": "src/gen/gendaymtx.c",
+    "sha256": "58012917ca35b527ad4a95fbbea9cbb68aabafe2fd8f95626733820932f5bc78",
+    "ascii_output_lines": [
+      629,
+      657
+    ],
+    "description": "Binary mode is set only for non-ASCII formats. Native ASCII uses printf %.3g RGB triples and a blank line per row."
+  },
+  "native_context": {
+    "basename": "mf4-1904-solar.mtx",
+    "sha256": "81fabdeecd9bd2eb384512d35e7915b1cd1334a8c1f92ad8d60d7e88cd37e4f1",
+    "bytes": 53386,
+    "rows": 2306,
+    "columns": 3,
+    "zero_rgb_record_hex": "30203020300d0a",
+    "zero_rgb_record_bytes": 7,
+    "all_payload_newlines_crlf": true
+  },
+  "prior_closed_MF4_annual": {
+    "bytes": 141726966,
+    "sha256": "30728754f4c94b729a008e277a89d46101ec1c85ba0e1fe290201b4063a6ff6c",
+    "scope": "Closed prior MF4 annual solar matrix retained by engine owner; hashed without mutation."
+  },
+  "proposed_full_year": {
+    "basis_mf": 8,
+    "rows": 9218,
+    "columns": 8760,
+    "minimum_zero_rgb_bytes": 565247760,
+    "blank_row_bytes": 18436,
+    "minimum_before_header_bytes": 565266196,
+    "file_cap_bytes": 536870912,
+    "excess_minimum_bytes": 28395284,
+    "fits_current_native_ASCII_file_cap": false
+  },
+  "conclusion": "A single full-year MF8 native ASCII solar matrix cannot fit the existing512MiB cap even with every RGB triple zero. Header and nonzero digits increase size. The bounded three-record/twelve-selected-column diagnostic does not demonstrate a feasible annual representation.",
+  "limits_unchanged": true,
+  "profile_adopted": false,
+  "release_acceptance_complete": false
+}

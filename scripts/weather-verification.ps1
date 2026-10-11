@@ -126,3 +126,7 @@ Invoke-Weather -Arguments @('weather','inspect',$duplicate,'--source-profile','p
     simulation_acceptance = $false
 } | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $OutputDirectory 'summary.json') -Encoding utf8
 Write-Output "Weather provider verification passed. Evidence: $OutputDirectory"
+# Expected rejection probes above are successful checks, although their child
+# commands exit nonzero. Publish success only after every assertion and evidence
+# write succeeds, so a caller's PowerShell/CI epilogue cannot inherit that exit.
+$global:LASTEXITCODE = 0

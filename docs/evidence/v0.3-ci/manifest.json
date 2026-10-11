@@ -1,0 +1,27 @@
+{
+  "schema_version": "greenlens.verification-records.v1",
+  "files": [
+    {
+      "original_sha256": "4acad0f07ffdfd69883cfc52af0c507df87f2a8951ddb67684b88a6038b79923",
+      "retained_sha256": "6f5a6c16da8ef168371706f15d7d6376a58deadbe18f4b35db1dc6fc5b2e0f91",
+      "file": "weather-exit-status.json"
+    },
+    {
+      "original_sha256": "6358bf88c7de00b5b25888c7aa8a668bd60d39fc0ae8f8688f2760ca03848e43",
+      "retained_sha256": "ea6e2f7afc49e0ba677ad569b156ec5af2039fa52757540c0733a1755f96df1b",
+      "file": "weather-provider.json"
+    },
+    {
+      "original_sha256": "5e635cd57fcb5967774d3f8bed035263ecc394cd69f2f56111a39f1fc87475a0",
+      "retained_sha256": "e507153fdc19f8ed7fe281ecca9d5fa291ee8851b4a1b26dad8c589fb653dfb1",
+      "file": "interrupted-method3-resource-trial.json"
+    },
+    {
+      "retained_sha256": "64230c5f0003c09991bc69fe4a1d9a84975fc96353ebaf36f9e9ec5e1cae64e8",
+      "original_sha256": "8b9b1b0ce00da17acca22eb914919a425883155812c16a025e7cc52bf02f3138",
+      "file": "diagnostic-collectors.json"
+    }
+  ],
+  "normalization": "Only UTF-8 BOM removal and CRLF-to-LF text normalization; numeric fields unchanged",
+  "scope": "Actual CLI/weather checks, synthetic bounded diagnostic-collector regressions and interrupted provisional engine experiment; not annual accuracy or release acceptance"
+}

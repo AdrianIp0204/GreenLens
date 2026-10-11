@@ -1,0 +1,27 @@
+{
+  "schema_version": "greenlens.interrupted-resource-trial.v1",
+  "observed_utc": "2026-10-11T08:49:01.3275085Z",
+  "source_commit": "438ff2214c52554b2300eacd9547e905eec95fcd",
+  "source_worktree_dirty": false,
+  "cli_sha256": "0d1167b1e8c24bebbfc93f498a87b9919f57b71b46f5f5ae3a1545a22953a5b6",
+  "job_id": "ba2639da-c9fb-46d2-8d82-8a2e8639d321",
+  "requested_dimensions": [
+    8760,
+    24
+  ],
+  "completed": false,
+  "release_acceptance": false,
+  "reason": "Stopped the provisional high-ad trial after independent uniform-sky diagnostics exposed coefficient cutoff; do not complete expensive solar stages with an inadmissible sampling profile.",
+  "termination": "Ctrl+C to the owned verification command session; shell exited 1; observed CLI and Radiance child processes absent afterward. This is interruption evidence, not a completed native UI cancellation check.",
+  "observed_processes_gone": [
+    3004,
+    34820
+  ],
+  "completed_static_runs": 0,
+  "climate_extension": "climate",
+  "completed_climate_runs": 0,
+  "scratch_bytes_at_interruption": 65656919.0,
+  "peak_memory_measured": false,
+  "partial_coefficient_bytes": 155665,
+  "expected_coefficient_values": 41616
+}

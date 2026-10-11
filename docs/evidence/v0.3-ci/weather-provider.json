@@ -1,0 +1,36 @@
+{
+  "intervals": 8760,
+  "platform": "native Windows",
+  "checks": [
+    "required reviewed full-year EPW",
+    "original/normalized/time-axis hashes and interpretation match reviewed manifest at inspect/import/reopen",
+    "explicit profile inspection",
+    "portable import with attribution",
+    "byte-identical relocation",
+    "reopen with original import paths unavailable",
+    "no engine/network service required",
+    "missing original rejected",
+    "checksum corruption rejected",
+    "unsupported offset rejected",
+    "same-line conflicting offsets rejected"
+  ],
+  "source_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+  "binding": {
+    "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+    "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+    "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+    "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+  },
+  "passed": true,
+  "portable_files_sha256": {
+    "normalized.epw": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+    "asset.json": "34c27c50fad3f370682dad834b645a06ffb6c88164f47e74c37e9402ed35e8ba",
+    "original.epw": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+    "checksums.json": "cda9fc9ff7a7446bf27dc0f99266e09c5f6fdead65e221ba5f02bde1fb3674cd",
+    "weather.json": "19a8ce41b5507d2393372f0743610b6df909dd3add40678b0209534aa7965a6a"
+  },
+  "verified_utc": "2026-10-11T08:45:47.2421690Z",
+  "cli_sha256": "0d1167b1e8c24bebbfc93f498a87b9919f57b71b46f5f5ae3a1545a22953a5b6",
+  "simulation_acceptance": false,
+  "schema_version": "greenlens.weather-cli-verification.v0.3"
+}

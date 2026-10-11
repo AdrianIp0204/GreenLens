@@ -1,0 +1,12 @@
+{
+  "weather_evidence": "weather/summary.json",
+  "checks": [
+    "real provider/rejection suite returns success",
+    "previous nonzero shell status cleared only on success",
+    "missing CLI still throws and creates no success record"
+  ],
+  "cli_sha256": "0d1167b1e8c24bebbfc93f498a87b9919f57b71b46f5f5ae3a1545a22953a5b6",
+  "schema_version": "greenlens.weather-exit-status-test.v1",
+  "completed_utc": "2026-10-11T08:45:47.4050611Z",
+  "passed": true
+}

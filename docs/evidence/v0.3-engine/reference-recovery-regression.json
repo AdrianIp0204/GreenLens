@@ -1,0 +1,227 @@
+{
+  "schema_version": "greenlens.reference-recovery-regression.v1",
+  "scope": "Synthetic evidence and process records only; pinned old harness copied as bytes, never executed; no Radiance, old workers, or scientific acceptance",
+  "passed": true,
+  "checks": [
+    {
+      "passed": true,
+      "records": 6,
+      "fresh_process_calls": 0,
+      "name": "exactly-six-reused-without-engine-or-original-mutation"
+    },
+    {
+      "passed": true,
+      "name": "argv-mismatch",
+      "expected_rejection": "Recovered process order/arguments differ from the current trusted command"
+    },
+    {
+      "passed": true,
+      "name": "output-order-mismatch",
+      "expected_rejection": "Recovered process order/arguments differ from the current trusted command"
+    },
+    {
+      "passed": true,
+      "name": "executable-mismatch",
+      "expected_rejection": "Recovered process order/arguments differ from the current trusted command"
+    },
+    {
+      "passed": true,
+      "name": "output-hash-mismatch",
+      "expected_rejection": "Recovered output bytes differ"
+    },
+    {
+      "passed": true,
+      "name": "original-output-size-mismatch",
+      "expected_rejection": "Recovered output bytes differ"
+    },
+    {
+      "passed": true,
+      "name": "unique-sensor-input-mismatch",
+      "expected_rejection": "Recovered explicit primary input differs"
+    },
+    {
+      "passed": true,
+      "name": "round-major-input-mismatch",
+      "expected_rejection": "Recovered explicit primary input differs"
+    },
+    {
+      "passed": true,
+      "name": "source-input-hash-mismatch",
+      "expected_rejection": "Recovery input bytes changed: scene.rad"
+    },
+    {
+      "passed": true,
+      "name": "current-input-hash-mismatch",
+      "expected_rejection": "Recovery input bytes changed: scene.rad"
+    },
+    {
+      "passed": true,
+      "name": "old-harness-hash-mismatch",
+      "expected_rejection": "Only the explicitly identified reporting-bug harness may be recovered"
+    },
+    {
+      "passed": true,
+      "name": "old-declared-harness-mismatch",
+      "expected_rejection": "Only the explicitly identified reporting-bug harness may be recovered"
+    },
+    {
+      "passed": true,
+      "name": "scientific-declaration-mismatch",
+      "expected_rejection": "Recovery changed declared field ambient_divisions"
+    },
+    {
+      "passed": true,
+      "name": "unknown-declaration-field-mismatch",
+      "expected_rejection": "Recovery declaration field set differs"
+    },
+    {
+      "passed": true,
+      "name": "executed-interval-order-mismatch",
+      "expected_rejection": "Recovery changed declared field executed_interval_indices"
+    },
+    {
+      "passed": true,
+      "name": "fewer-than-six-processes",
+      "expected_rejection": "Recovery requires exactly six completed original engine processes"
+    },
+    {
+      "passed": true,
+      "name": "more-than-six-processes",
+      "expected_rejection": "Recovery requires exactly six completed original engine processes"
+    },
+    {
+      "passed": true,
+      "name": "already-reported-case",
+      "expected_rejection": "This bounded recovery only handles the failure before its first case report"
+    },
+    {
+      "passed": true,
+      "name": "same-source-and-destination",
+      "expected_rejection": "Recovery must use a new isolated directory"
+    },
+    {
+      "passed": true,
+      "name": "unsuccessful-exit",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "incomplete-process",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "string-completed",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "terminated-process",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "negative-wall-time",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "excess-wall-time",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "missing-memory-measurement",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "string-memory-measurement",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "excess-memory",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "negative-scratch",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "excess-scratch",
+      "expected_rejection": "Only successful bounded original processes may be reused"
+    },
+    {
+      "passed": true,
+      "name": "negative-child-memory",
+      "expected_rejection": "Invalid original child memory measurement"
+    },
+    {
+      "passed": true,
+      "name": "non-utc-start",
+      "expected_rejection": "Original process timestamps are invalid"
+    },
+    {
+      "passed": true,
+      "name": "finish-before-start",
+      "expected_rejection": "Original process timestamps are invalid"
+    },
+    {
+      "passed": true,
+      "name": "changed-limit-timeout_seconds",
+      "expected_rejection": "Original process limits differ"
+    },
+    {
+      "passed": true,
+      "name": "changed-limit-memory_bytes",
+      "expected_rejection": "Original process limits differ"
+    },
+    {
+      "passed": true,
+      "name": "changed-limit-scratch_bytes",
+      "expected_rejection": "Original process limits differ"
+    },
+    {
+      "passed": true,
+      "name": "changed-limit-file_bytes",
+      "expected_rejection": "Original process limits differ"
+    },
+    {
+      "passed": true,
+      "name": "truncated-original-primary-output",
+      "expected_rejection": "Exception calling \"Read\" with \"2\" argument(s): \"Truncated primary output\""
+    },
+    {
+      "old_expression_rejected": true,
+      "passed": true,
+      "rungs": [
+        64,
+        128,
+        256
+      ],
+      "name": "trusted-harness-rungs-256"
+    },
+    {
+      "old_expression_rejected": true,
+      "passed": true,
+      "rungs": [
+        128,
+        256,
+        512
+      ],
+      "name": "trusted-harness-rungs-512"
+    }
+  ],
+  "check_count": 40,
+  "fresh_engine_invocations": 0,
+  "historical_harness_sha256": "18646902250606280f96eff3325ff47f669772bb1f9f1f7154401f9429ec017f",
+  "recovery_helper_sha256": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+  "controlled_harness_sha256": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+  "test_sha256": "ddd0b0f29b8e2bd3a20a960f693d47cf9abbdd56a92e9e0ced94a09f164e3d5e",
+  "completed_utc": "2026-10-11T11:12:46.9136421Z",
+  "release_acceptance_complete": false,
+  "source_evidence_sha256": "c58aeec6ed199c148e5d48264517853b927ed5a266597b97a7c5c06d491c2d66"
+}

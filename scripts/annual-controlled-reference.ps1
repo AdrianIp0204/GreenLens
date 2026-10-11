@@ -5,7 +5,8 @@ param(
  [Parameter(Mandatory)][string]$OutputDirectory,
  [Parameter(Mandatory)][ValidateSet('A','B')][string]$Alternative,
  [int[]]$IntervalIndices=@(8512,8504,8508,1904,1908,1912,4112,4116,4120,6320,6324,6328),
- [switch]$PrepareOnly
+ [switch]$PrepareOnly,
+ [string]$RecoverDirectory=''
 )
 $ErrorActionPreference='Stop'
 if(Test-Path -LiteralPath $OutputDirectory){throw 'Use a new retained reference directory.'}
@@ -70,6 +71,13 @@ $declaration.block_tolerance='max(0.1lx,1% complete final mean), applied to the 
 $declaration.sensitivities=[ordered]@{fixed_cases=@('B:8512','A:4116');scope='All24 sensors of each fixed case; limited sensitivity evidence only';repeat_policy='Match qualified baseline final rung';scale_variant=10000;scale_tolerance='1e-5 relative per normalized RGB bin; exact-zero agreement';weight_variant=1e-10;depth_variant=@{ambient_bounces=10;ray_depth=-24};weight_depth_tolerance='max(0.1lx,1% baseline mean)';execution='Separate follow-up harness; required before reference qualification complete'}
 $declaration|ConvertTo-Json -Depth 15|Set-Content -LiteralPath (Join-Path $OutputDirectory 'declaration.json') -Encoding utf8
 if($PrepareOnly){Write-Host 'Prepared declaration only; native reference NOT EXECUTED.';return}
+if($RecoverDirectory){
+ . "$PSScriptRoot/annual-reference-recovery.ps1"
+ Initialize-ReferenceRecovery $RecoverDirectory $declaration
+ function Invoke-Engine([string]$Name,[string[]]$Arguments,[string]$Output,[string]$InputText=''){
+  Invoke-RecoverableReferenceEngine $Name $Arguments $Output $InputText
+ }
+}
 Write-Input 'matched-basis.cal' ("MF:2;`n"+[IO.File]::ReadAllText((Join-Path $EngineRoot 'lib/reinhart.cal')))
 Write-Input 'receiver.rad' "void glow sky_glow`n0`n0`n4 1 1 1 0`nsky_glow source dome`n0`n0`n4 0 0 1 360`n"
 Invoke-Engine 'oconv' @('-f','scene.rad','receiver.rad') 'transmission.oct'
@@ -97,7 +105,7 @@ foreach($index in $IntervalIndices){
   Invoke-Engine 'rcontrib' ($fullOptions+@('-y',"$(24*$rounds)",'-m','sky_glow','-m',$modifier,"$name.oct")) "$name-rounds$rounds.rgb" ($sensors*$rounds)
   $values=[GreenLensReference.Aggregate]::Read((Join-Path $OutputDirectory "$name-rounds$rounds.rgb"),(24*$rounds*6))
   if($null -ne $previous){[GreenLensReference.Aggregate]::EqualPrefix($previous,$values)}
-  $rungs=@();foreach($n in @($rounds/4,$rounds/2,$rounds)){$rungs+=[GreenLensReference.Aggregate]::Calculate($values,24,0,[int]$n,100,$direct,$finite)}
+  $rungs=@();foreach($n in @(($rounds/4),($rounds/2),$rounds)){$rungs+=[GreenLensReference.Aggregate]::Calculate($values,24,0,[int]$n,100,$direct,$finite)}
   $first=[GreenLensReference.Aggregate]::Compare($rungs[0],$rungs[1]);$second=[GreenLensReference.Aggregate]::Compare($rungs[1],$rungs[2])
   $block1=[GreenLensReference.Aggregate]::Calculate($values,24,0,($rounds/2),100,$direct,$finite)
   $block2=[GreenLensReference.Aggregate]::Calculate($values,24,($rounds/2),($rounds/2),100,$direct,$finite)

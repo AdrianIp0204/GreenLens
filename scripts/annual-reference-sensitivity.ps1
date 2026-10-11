@@ -3,6 +3,11 @@
 # This reads numeric evidence, never commands or code from the evidence directory.
 param([Parameter(Mandatory)][string]$BaselineDirectory,[Parameter(Mandatory)][string]$OutputDirectory,[Parameter(Mandatory)][int]$IntervalIndex,[switch]$PrepareOnly)
 $ErrorActionPreference='Stop'
+function Read-SensitivityJson([string]$Path) {
+ $options=@{InputObject=[IO.File]::ReadAllText($Path);Depth=100}
+ if((Get-Command ConvertFrom-Json).Parameters.ContainsKey('DateKind')){$options.DateKind='String'}
+ ConvertFrom-Json @options
+}
 function New-SensitivitySky([string]$SkyText) {
  $pattern='(?s)(void light (solar\d+)\s+0\s+0\s+3)\s+([\d.eE+\-]+)\s+([\d.eE+\-]+)\s+([\d.eE+\-]+)'
  if([regex]::Matches($SkyText,'4 100 100 100 0').Count -ne 1 -or [regex]::Matches($SkyText,$pattern).Count -ne 1){throw 'Expected one scaled neutral sky and one solar source.'}
@@ -35,9 +40,9 @@ function Compare-SensitivityBins($VariantMean,$BaselineMean) {
  return $checks
 }
 if(Test-Path -LiteralPath $OutputDirectory){throw 'Use a new retained sensitivity directory.'}
-$baseline=Get-Content -LiteralPath (Join-Path $BaselineDirectory 'controlled-reference.json') -Raw|ConvertFrom-Json
+$baseline=Read-SensitivityJson (Join-Path $BaselineDirectory 'controlled-reference.json')
 $decl=$baseline.declaration
-$originalDeclaration=Get-Content -LiteralPath (Join-Path $BaselineDirectory 'declaration.json') -Raw|ConvertFrom-Json
+$originalDeclaration=Read-SensitivityJson (Join-Path $BaselineDirectory 'declaration.json')
 if(($decl|ConvertTo-Json -Depth 25 -Compress) -cne ($originalDeclaration|ConvertTo-Json -Depth 25 -Compress)){throw 'Embedded and retained baseline declarations differ.'}
 if($decl.schema_version -ne 'greenlens.controlled-reference.v1' -or $decl.sensor_count -ne 24 -or $decl.sky_basis_mf -ne 2 -or $decl.ambient_divisions -ne 8192 -or $decl.ambient_bounces -ne 9 -or $decl.ray_depth -ne -16 -or $decl.ambient_weight -ne 1e-9 -or $decl.source_scale -ne 100){throw 'Unsupported baseline declaration.'}
 if("$($decl.alternative):$IntervalIndex" -notin @('B:8512','A:4116')){throw 'Outside the predeclared all-sensor sensitivity cases.'}
@@ -99,7 +104,7 @@ if($rounds -eq 512){
  $initialRaw=[GreenLensReference.Aggregate]::Read((Join-Path $OutputDirectory $initialFile),(24*256*6))
  [GreenLensReference.Aggregate]::EqualPrefix($initialRaw,$raw)
 }
-$rungs=@();foreach($n in @($rounds/4,$rounds/2,$rounds)){$rungs+=[GreenLensReference.Aggregate]::Calculate($raw,24,0,[int]$n,100,$direct,$finite)}
+$rungs=@();foreach($n in @(($rounds/4),($rounds/2),$rounds)){$rungs+=[GreenLensReference.Aggregate]::Calculate($raw,24,0,[int]$n,100,$direct,$finite)}
 $first=[GreenLensReference.Aggregate]::Compare($rungs[0],$rungs[1]);$second=[GreenLensReference.Aggregate]::Compare($rungs[1],$rungs[2]);$firstHalf=[GreenLensReference.Aggregate]::Calculate($raw,24,0,($rounds/2),100,$direct,$finite);$secondHalf=[GreenLensReference.Aggregate]::Calculate($raw,24,($rounds/2),($rounds/2),100,$direct,$finite);$blocks=[GreenLensReference.Aggregate]::CompareWithScale($firstHalf,$secondHalf,$rungs[2])
 if(@(@($first)+@($second)+@($blocks)|Where-Object{!$_.passed}).Count){throw 'Recomputed baseline convergence fails.'}
 $reference=$rungs[2]

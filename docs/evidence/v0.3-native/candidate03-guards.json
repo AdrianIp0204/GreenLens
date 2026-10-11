@@ -1,0 +1,53 @@
+{
+  "schema_version": "greenlens.native-guards.v0.3",
+  "recorded_utc": "2026-10-11T10:00:17.1604643Z",
+  "source_commit": "8e7fe4bc95c07856f89ba008fdd4d6cc751b1615",
+  "source_dirty": false,
+  "installed_sha256": "b4d1944bf9470a541f1510a14e37e8a5646b00427f7eafc4e70ac47fccbe3587",
+  "accepted_release": false,
+  "scope": "Installed native UI on an expendable synthetic document with no completed runs. Does not establish pending completed evidence recovery or annual accuracy.",
+  "room_lock": {
+    "redo_enabled_after_rejection": false,
+    "observed_message": "Edit rejected; document and history unchanged. window is locked. This edit changes its parameters or generated geometry. Unlock its object or display layer before editing.",
+    "restored_rotation_degrees": 0,
+    "undo_enabled_after_rejection": false,
+    "layer": "glazing",
+    "attempted_rotation_degrees": 15
+  },
+  "failed_save": {
+    "original_external_name_preserved": true,
+    "retained_saved_floor_reflectance": 0.2,
+    "requested_action": "New",
+    "undo_retained": true,
+    "new_document_blocked": true,
+    "chosen_guard": "Save",
+    "original_manifest_sha256": "4067034331f69ee974d8b7ef21d40a24d5d7c04609bb45f370f6115a6c766f37",
+    "unsaved_floor_reflectance": 0.25
+  },
+  "save_as": {
+    "copied_project_id": "0dd3b555-2822-40a8-970a-bee1c9b4e2ca",
+    "rotation_degrees": 0.0,
+    "copied_manifest_sha256": "76ed1498f56c562ba96048a545e23f7c9aa79a2f57d287787c738c8da4a81a2f",
+    "locked_glazing": true,
+    "undo_retained": true,
+    "floor_reflectance": 0.25,
+    "original_manifest_unchanged": true
+  },
+  "modifier_selection": {
+    "user_observation": "Unable to test now",
+    "automated_controls_not_substituted": true,
+    "status": "unverified"
+  },
+  "screenshots": [
+    {
+      "sha256": "05ccf3b5e8a4d60768fb741c94addfca44cb8772745391d72b1e5658254a9616",
+      "file": "candidate03-room-rotation-lock.png",
+      "bytes": 140914
+    },
+    {
+      "sha256": "d3902e9f50fcbc79313a5e43e5609014e428bec6e0320cec7c6c12bf2486a57a",
+      "file": "candidate03-failed-save-guard.png",
+      "bytes": 138708
+    }
+  ]
+}

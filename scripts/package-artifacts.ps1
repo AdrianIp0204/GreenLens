@@ -1,6 +1,81 @@
 [CmdletBinding()]
-param([string]$OutputDirectory)
+param([string]$OutputDirectory, [switch]$FunctionsOnly)
 $ErrorActionPreference = 'Stop'
+
+function Get-PackageDocumentPaths {
+    # Explicit compact evidence only: no directory-wide evidence/archive copies.
+    @(
+        'docs/installation.md','docs/replay.md','docs/persistence.md','docs/model-contract.md',
+        'docs/scientific-validation.md','docs/dependencies.md','docs/windows-runtime.md',
+        'docs/windows-installer.md','docs/workspace-guide.md','docs/rhino-interaction-matrix.md',
+        'docs/v0.2-native-verification.md','docs/images/v0.2/README.md','docs/v0.3-spec.md',
+        'docs/v0.3-implementation-plan.md','docs/v0.3-scientific-method.md',
+        'docs/v0.3-weather-sources.md','docs/v0.3-contracts.md','docs/v0.3-usage.md',
+        'docs/v0.3-native-verification.md','docs/progress.md',
+        'docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md',
+        'docs/v0.3-engine-investigation.json','scripts/annual-validation-plan.json',
+        'scripts/annual-high-ad-uniform.ps1',
+        'docs/profile-investigation.json','docs/engine-feasibility.md',
+        'docs/gate-0-evidence.json','docs/science-fixtures-evidence.json','docs/science-evidence.json',
+        'docs/evidence/v0.3-engine/method2-actual-ab-twelve-hours-failed.json',
+        'docs/evidence/v0.3-engine/explicit-actual-ab-diffuse262144-solar8192.json',
+        'docs/evidence/v0.3-engine/explicit-actual-ab-diffuse1048576-solar8192.json',
+        'docs/evidence/v0.3-engine/high-sampling-uniform-diagnostics.json',
+        'docs/evidence/v0.3-engine/accumulation-receiver-point-diagnostics.json',
+        'docs/evidence/v0.3-engine/scaled-reference-point-failed.json',
+        'docs/evidence/v0.3-engine/path-weight-point-diagnostic.json',
+        'docs/evidence/v0.3-engine/moderate-two-sensor-transport-pilot.json',
+        'dependencies/radiance.json','dependencies/weather.json',
+        'third-party/Radiance-LICENSE.txt','third-party/Radiance-gendaymtx-NOTICE.txt'
+    )
+}
+
+function Assert-PackageDocumentLinks([string]$Root) {
+    $packageRoot = [IO.Path]::GetFullPath($Root)
+    $prefix = $packageRoot.TrimEnd([IO.Path]::DirectorySeparatorChar) + [IO.Path]::DirectorySeparatorChar
+    $checked = 0
+    foreach ($file in (Get-PackageDocumentPaths | Where-Object { $_.EndsWith('.md') })) {
+        $path = Join-Path $packageRoot $file
+        foreach ($match in [regex]::Matches([IO.File]::ReadAllText($path), '!?\[[^\]]*\]\((?:<)?([^)>]+)(?:>)?\)')) {
+            $reference = ($match.Groups[1].Value -split '#', 2)[0]
+            if (!$reference) { continue }
+            if ([IO.Path]::IsPathRooted($reference)) { throw "Packaged document has an absolute local path: $file" }
+            if ($reference -match '^[a-zA-Z][a-zA-Z0-9+.-]*:') { continue }
+            $target = [IO.Path]::GetFullPath((Join-Path (Split-Path -Parent $path) $reference))
+            if (!$target.StartsWith($prefix, [StringComparison]::OrdinalIgnoreCase) -or !(Test-Path -LiteralPath $target -PathType Leaf)) {
+                throw "Packaged document link is missing or outside the package: $file -> $reference"
+            }
+            $checked++
+        }
+    }
+    return $checked
+}
+
+function Copy-PackageDocuments([string]$Source, [string]$Destination) {
+    $paths = @(Get-PackageDocumentPaths)
+    $bytes = 0L
+    foreach ($path in $paths) {
+        $file = Get-Item -LiteralPath (Join-Path $Source $path)
+        if ($file.PSIsContainer -or $file.Length -gt 2MB) { throw "Expected a compact documentation file: $path" }
+        $bytes += $file.Length
+    }
+    if ($bytes -gt 8MB) { throw 'Review the explicit documentation selection before exceeding 8 MiB.' }
+    foreach ($path in $paths) {
+        $destinationPath = Join-Path $Destination $path
+        New-Item -ItemType Directory -Path (Split-Path -Parent $destinationPath) -Force | Out-Null
+        Copy-Item -LiteralPath (Join-Path $Source $path) -Destination $destinationPath
+    }
+    $links = Assert-PackageDocumentLinks $Destination
+    @"
+# Packaged documentation
+
+The selected guides, method/reference declarations, data inventories and compact linked numerical records are included for offline reading. Local inline Markdown links in these guides were checked before packaging ($links links).
+
+This is not a source checkout or a complete historical evidence archive. Backtick command examples, source-only verification scripts, historical screenshot filenames, upstream URLs and local build/output paths can require the repository or separately retained artifacts. The linked research script is retained as readable source; its development dependencies are not a runtime requirement or a bundled verification toolchain. Large matrices, octrees, evidence ZIPs and engine binaries are excluded.
+"@ | Set-Content -LiteralPath (Join-Path $Destination 'docs/PACKAGE-CONTENTS.md') -Encoding utf8
+}
+
+if ($FunctionsOnly) { return }
 if (-not $env:CARGO_TARGET_DIR) { throw 'Dot-source scripts/dev-env.ps1 before packaging.' }
 $sourceRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $applicationVersion = (Get-Content -LiteralPath (Join-Path $sourceRoot 'apps/desktop/package.json') -Raw | ConvertFrom-Json).version
@@ -30,11 +105,9 @@ foreach ($file in @('LICENSE','NOTICE')) { Copy-Item -LiteralPath (Join-Path $so
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'third-party') -Destination (Join-Path $cliDirectory 'third-party') -Recurse
 New-Item -ItemType Directory -Path (Join-Path $cliDirectory 'dependencies'),(Join-Path $cliDirectory 'docs') | Out-Null
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'dependencies/resolved-inventory.json') -Destination (Join-Path $cliDirectory 'dependencies/resolved-inventory.json')
-Copy-Item -LiteralPath (Join-Path $sourceRoot 'dependencies/radiance.json') -Destination (Join-Path $cliDirectory 'dependencies/radiance.json')
-Copy-Item -LiteralPath (Join-Path $sourceRoot 'dependencies/weather.json') -Destination (Join-Path $cliDirectory 'dependencies/weather.json')
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'dependencies/license-supplements.json') -Destination (Join-Path $cliDirectory 'dependencies/license-supplements.json')
-foreach ($file in @('installation.md','replay.md','persistence.md','model-contract.md','scientific-validation.md','dependencies.md','windows-runtime.md','windows-installer.md','workspace-guide.md','rhino-interaction-matrix.md','v0.2-native-verification.md','v0.3-spec.md','v0.3-implementation-plan.md','v0.3-scientific-method.md','v0.3-weather-sources.md','v0.3-contracts.md','v0.3-usage.md','v0.3-native-verification.md','progress.md')) { Copy-Item -LiteralPath (Join-Path $sourceRoot "docs/$file") -Destination (Join-Path $cliDirectory "docs/$file") }
 Copy-Item -LiteralPath (Join-Path $sourceRoot 'examples') -Destination (Join-Path $cliDirectory 'examples') -Recurse
+Copy-PackageDocuments -Source $sourceRoot -Destination $cliDirectory
 Compress-Archive -LiteralPath $cliDirectory -DestinationPath (Join-Path $OutputDirectory "GreenLens-CLI-$applicationVersion-windows-x64.zip")
 foreach ($installer in $installers) { Copy-Item -LiteralPath $installer.FullName -Destination (Join-Path $OutputDirectory $installer.Name) }
 $hashes = Get-ChildItem -LiteralPath $OutputDirectory -File | ForEach-Object { @{file=$_.Name; sha256=(Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()} }

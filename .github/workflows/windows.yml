@@ -83,6 +83,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Annual orchestration regressions failed' }
           pwsh -NoProfile -File scripts/test-annual-replay.ps1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'annual-replay-script-tests.json')
           if ($LASTEXITCODE -ne 0) { throw 'Annual replay orchestration regressions failed' }
+          pwsh -NoProfile -File scripts/test-package-documents.ps1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'package-document-tests.txt')
+          if ($LASTEXITCODE -ne 0) { throw 'Offline package documentation regressions failed' }
       - name: Required real-engine scientific suite (missing engine is failure)
         run: |
           . ./scripts/dev-env.ps1

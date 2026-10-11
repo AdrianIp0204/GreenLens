@@ -1,5 +1,13 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — clean method4 package, native guards and historical weather repair
+
+- Built and installed clean `8e7fe4b` candidate03 with bundled frontend and separate frozen CLI. Native launch, room rotation rejection through a locked generated window, failed Save blocking New, and recovery of the dirty edit through native Save As were observed. Original external manifest bytes remained unchanged; one accepted edit retained one undo entry. Exact package identities and the limits of these checks are in `v0.3-native-verification.md`. Strict dependency review again passed with 358 packages, 196 retained notices and zero gaps.
+- Implemented a remaining historical weather-navigation fix: run labels and calendar lookup now use each immutable run's embedded weather rather than requiring its asset to remain attached to the current study. Three targeted Rust regressions passed for methods2/3/4, copied evidence, bounded reads and tampering; all116 frontend checks, TypeScript, strict workspace Clippy and formatting passed. The installed candidate predates this repair, so its native verification is still required.
+- Repaired offline distribution documentation coverage and added tests for exact-byte copies, missing links, escaped paths and machine-absolute paths. The selected compact documents retain the reference protocol, failed investigations and fixed interval plan. No engine or large matrix bundle is added.
+- In progress: clean method4 full-year A/B shipping calculations and the sealed independent same-sky reference ladder. No complete new annual accuracy result is claimed at this checkpoint. Earlier profile/reference failures remain unchanged; current-source Windows CI is running.
+- Unverified: the user is unable to perform the carried physical modifier-click observation now. Preserve that individual gap and continue independent work. Neither explicit Add/Remove controls nor automation establishes that observation.
+
 ## 2026-10-11 — repeated-coefficient candidate and independent reference protocol
 
 - Implemented provisional method4 with scaled contribution coefficients, contiguous repeated sensor primaries and negative-depth Russian roulette. Matrix products receive exactly one double-precision receiver normalization; finite-disc transmission keeps its separate unit receiver. Historical methods2/3 retain their serialized profiles, process arguments, policies and identities. Their failed checks remain failed and do not become current method4 evidence.

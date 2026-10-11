@@ -1,0 +1,50 @@
+{
+  "documentation_limit": "This frozen CLI ZIP predates the linked reference-document closure repair. A later distribution will carry that repair; its bytes are not silently replaced.",
+  "frozen_directory": "releases/0.3.0/native-candidate-03",
+  "cli_sha256": "178c0cd4f530708f9fe6b867df0aec63e2cda1841357a5035148bacb96a60ab5",
+  "build": {
+    "source_commit": "8e7fe4bc95c07856f89ba008fdd4d6cc751b1615",
+    "source_dirty": false,
+    "generated_utc": "2026-10-11T09:49:33.9237662Z",
+    "schema": "greenlens.candidate.v1",
+    "accepted_release": false,
+    "files": [
+      {
+        "file": "checksums.json",
+        "bytes": 465,
+        "sha256": "2bab557d85e65b03d40bb3ad4d6a59130802dbe28fe3decde3c2c1a8d4ebbc4d"
+      },
+      {
+        "file": "GreenLens_0.3.0_x64-setup.exe",
+        "bytes": 3447710,
+        "sha256": "880a063b6c7efbac32fe6415939720c259d481da690603bfca27117ea063ec55"
+      },
+      {
+        "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+        "bytes": 2392838,
+        "sha256": "ddd6a79a519c20816e1a9d2a7edb00c0f54cd39081f595c53708a60bcfcb1b7c"
+      },
+      {
+        "file": "greenlens-desktop.exe",
+        "bytes": 13980672,
+        "sha256": "3bc00107e45abd7ed11316fa2920d5d54d334e68b7d7cd4f74b9a3732046d26a"
+      }
+    ]
+  },
+  "installation": {
+    "schema": "greenlens.candidate-install.v1",
+    "source_dirty": false,
+    "differing_bytes": 3,
+    "normalized_bytes_equal": true,
+    "marker_after": "__TAURI_BUNDLE_TYPE_VAR_NSS",
+    "source_commit": "8e7fe4bc95c07856f89ba008fdd4d6cc751b1615",
+    "installed_utc": "2026-10-11T09:51:33.5475353Z",
+    "marker_before": "__TAURI_BUNDLE_TYPE_VAR_UNK",
+    "unbundled_sha256": "3bc00107e45abd7ed11316fa2920d5d54d334e68b7d7cd4f74b9a3732046d26a",
+    "installed_sha256": "b4d1944bf9470a541f1510a14e37e8a5646b00427f7eafc4e70ac47fccbe3587",
+    "exit_code": 0,
+    "initial_exact_hash_assertion": "failed as expected for NSIS marker; investigated before launch"
+  },
+  "status": "Investigation candidate; annual accuracy and final-source acceptance incomplete",
+  "schema_version": "greenlens.native-candidate-artifacts.v0.3"
+}

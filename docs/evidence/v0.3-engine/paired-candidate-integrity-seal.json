@@ -1,0 +1,12 @@
+{
+  "schema_version": "greenlens.paired-candidate-integrity-seal.v1",
+  "scope": "Compact integrity/arithmetic record only; no physical acceptance",
+  "files": [
+    {
+      "path": "paired-candidate-integrity.json",
+      "bytes": 16931,
+      "sha256": "2cd8c83f291f859de31fce5433521a85d52e51aa1c4580e880d46c815bd04ddf"
+    }
+  ],
+  "release_acceptance_complete": false
+}

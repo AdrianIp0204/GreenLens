@@ -1,5 +1,10 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — both paired research candidates retained
+
+- Both 24-sensor, twelve-hour A/B candidates completed their 19 native processes and all 576 assembled values are finite/nonnegative, with no negative coefficient bins. The compact transport record retains all component/lux arrays, primary receipts, arguments and output identities. Sampled runner-plus-job peaks were 662,732,800 / 694,812,672 bytes; closed scratch footprints were 109,007,860 / 109,006,182 bytes. Timings were measured under concurrent verification load.
+- Separate read-only audits passed all 576 values, 5,184 independent RGB product checks and 38 process records. Root independently rechecked the final RGB-to-lux arithmetic and the audit-to-original identity bindings. These are transport and integrity results; neither candidate has qualified matched-sky accuracy yet. Higher MF2 A/B research, the controlled-reference set and sensitivity families continue. Exact records are in `evidence/v0.3-engine/hammersley-candidate-transport.json` and `paired-candidate-integrity.json`.
+
 ## 2026-10-11 — independently schedulable fixed sensitivities
 
 - Added an explicit single-variant execution option for the already declared source-scale, weight and depth checks. Each shard binds the full original plan, qualified baseline, exact inputs, process settings and unchanged tolerances. The reader rejects duplicate or mixed variants and requires all three variants at both fixed cases. The historical serial schema remains readable.

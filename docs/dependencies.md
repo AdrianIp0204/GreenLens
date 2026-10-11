@@ -74,6 +74,6 @@ The v0.2 workspace adds the Windows-only `rfd` 0.17.2 native dialog wrapper. Its
 
 ## Data and excluded packages
 
-The two bundled room models and analytical fixtures are original synthetic data. No weather file, proprietary assessment manual, copyrighted benchmark model, personal model or regional certification dataset is included. The release requires no Honeybee, IfcOpenShell, EnergyPlus or OpenStudio runtime. Future adapters or assessment modules require their own source, data and redistribution review.
+The two bundled room models and analytical fixtures are original synthetic data. The v0.3 example additionally includes the exact rights-reviewed PVGIS/ERA5 weather file described in `dependencies/weather.json`; that separate dataset inventory, source record and retained notice accompany the code inventory. No proprietary assessment manual, third-party benchmark model, personal model or regional certification dataset is included. The release requires no Honeybee, IfcOpenShell, EnergyPlus or OpenStudio runtime. Future adapters or assessment modules require their own source, data and redistribution review.
 
 The automated inventory reports unresolved facts explicitly. Completion requires review of those gaps and confirmation that the final distributed package retains the required texts; running the generator is not a claim that every legal obligation has already been satisfied.

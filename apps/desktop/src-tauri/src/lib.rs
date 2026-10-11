@@ -1,13 +1,12 @@
 use anyhow::{ensure, Context};
 use greenlens_core::{
-    study::{MetricSettings, Study, StudyMode, WeatherBinding},
-    weather::{WeatherHour, WeatherInterval, WeatherSourceProfile},
+    study::{MetricSettings, Study, StudyMode},
+    weather::WeatherSourceProfile,
     Model, ValidatedModel,
 };
 use greenlens_radiance::Profile;
 use greenlens_runner::{
     climate::{self, ClimateRunSummary},
-    persistence::{read_json, regular_child},
     studies, weather, Application, Comparison, JobStatus, Project, ProjectView, RunRecord,
 };
 use serde::Serialize;
@@ -342,6 +341,28 @@ async fn weather_import(
 }
 
 #[tauri::command]
+async fn weather_import_project(
+    path: String,
+    project: Project,
+    expected_revision: Option<String>,
+    file: String,
+    profile: WeatherSourceProfile,
+    source: weather::WeatherSource,
+) -> CommandResult<ProjectView> {
+    blocking(move || {
+        studies::import_weather_file(
+            Path::new(&path),
+            &project,
+            expected_revision.as_deref(),
+            Path::new(&file),
+            profile,
+            source,
+        )
+    })
+    .await
+}
+
+#[tauri::command]
 async fn weather_attach(
     path: String,
     project: Project,
@@ -359,29 +380,6 @@ async fn weather_attach(
     .await
 }
 
-fn project_weather(
-    root: &Path,
-    weather_id: &str,
-) -> anyhow::Result<(
-    weather::WeatherAsset,
-    greenlens_core::weather::ParsedWeather,
-)> {
-    let project: Project = read_json(&regular_child(root, "project.json")?)?;
-    greenlens_runner::validate_project(&project)?;
-    let reference = project
-        .climate
-        .as_ref()
-        .and_then(|extension| extension.weather.iter().find(|item| item.id == weather_id))
-        .context("Weather asset is not retained in this project")?;
-    regular_child(root, &format!("{}/asset.json", reference.path))?;
-    let (asset, parsed) = weather::open(&root.join(&reference.path))?;
-    ensure!(
-        asset.binding == reference.binding,
-        "Project weather identity differs from retained asset"
-    );
-    Ok((asset, parsed))
-}
-
 #[derive(Serialize)]
 struct WeatherAssetInspection {
     asset: weather::WeatherAsset,
@@ -394,7 +392,7 @@ async fn weather_asset_inspect(
     weather_id: String,
 ) -> CommandResult<WeatherAssetInspection> {
     blocking(move || {
-        let (asset, parsed) = project_weather(Path::new(&path), &weather_id)?;
+        let (asset, parsed) = studies::project_weather(Path::new(&path), &weather_id)?;
         Ok(WeatherAssetInspection {
             asset,
             inspection: weather::WeatherInspection::from(&parsed.data),
@@ -403,29 +401,25 @@ async fn weather_asset_inspect(
     .await
 }
 
-#[derive(Serialize)]
-struct WeatherIntervalView {
-    weather_id: String,
-    binding: WeatherBinding,
-    hour: WeatherHour,
-    interval: WeatherInterval,
-}
-
 #[tauri::command]
 async fn weather_interval(
     path: String,
     weather_id: String,
     interval_index: usize,
-) -> CommandResult<WeatherIntervalView> {
+) -> CommandResult<studies::WeatherIntervalView> {
+    blocking(move || studies::weather_interval(Path::new(&path), &weather_id, interval_index)).await
+}
+
+#[tauri::command]
+async fn weather_find_interval(
+    path: String,
+    weather_id: String,
+    month: u8,
+    day: u8,
+    hour_ending: u8,
+) -> CommandResult<studies::WeatherIntervalView> {
     blocking(move || {
-        let (_, parsed) = project_weather(Path::new(&path), &weather_id)?;
-        let interval = parsed.data.interval(interval_index)?;
-        Ok(WeatherIntervalView {
-            weather_id,
-            binding: parsed.data.binding(),
-            hour: parsed.data.hours[interval_index].clone(),
-            interval,
-        })
+        studies::weather_find_interval(Path::new(&path), &weather_id, month, day, hour_ending)
     })
     .await
 }
@@ -620,9 +614,11 @@ pub fn run() {
             weather_inspect,
             weather_read_source,
             weather_import,
+            weather_import_project,
             weather_attach,
             weather_asset_inspect,
             weather_interval,
+            weather_find_interval,
             study_defaults,
             study_validate,
             study_configure,

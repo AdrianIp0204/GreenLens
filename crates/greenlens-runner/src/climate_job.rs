@@ -132,6 +132,9 @@ pub(crate) fn run(
         "input_hash":validated.normalized_input_hash,"sensor_hash":validated.sensor_hash,
         "physical_input_hash":study.physical_input_hash(&model)?,"time_axis_sha256":asset.binding.time_axis_sha256,
         "child_environment":{"RAYPATH":".;<compatible-engine>/lib"},
+        "recipe_sha256":crate::persistence::bytes_hash(&std::fs::read(scratch.join("annual-recipe.json"))?),
+        "solar_sources_sha256":crate::persistence::bytes_hash(&std::fs::read(scratch.join("annual-suns.rad"))?),
+        "solar_modifiers_sha256":crate::persistence::bytes_hash(&std::fs::read(scratch.join("annual-sun-modifiers.txt"))?),
         "recipe":"Regenerate disposable matrices and octrees through the supported adapter. Never execute imported recipe arguments.",
         "raw_representation":"Parsed ASCII engine RGB retained as float64 little-endian in time/sensor/channel chunks; original large text matrices are regenerable."
     });

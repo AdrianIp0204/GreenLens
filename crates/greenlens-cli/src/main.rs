@@ -98,6 +98,17 @@ impl From<WeatherProfile> for greenlens_core::weather::WeatherSourceProfile {
 }
 #[derive(Subcommand)]
 enum WeatherCommand {
+    /// Find an actual retained local-standard interval; EPW hours end at 1–24.
+    FindHour {
+        project: PathBuf,
+        weather_id: String,
+        #[arg(long)]
+        month: u8,
+        #[arg(long)]
+        day: u8,
+        #[arg(long)]
+        hour_ending: u8,
+    },
     /// Write original deterministic, explicitly non-climatic test weather.
     Synthetic {
         destination: PathBuf,
@@ -332,6 +343,23 @@ fn execute() -> Result<()> {
         }
         Command::Weather { command } => {
             let result = match command {
+                WeatherCommand::FindHour {
+                    project,
+                    weather_id,
+                    month,
+                    day,
+                    hour_ending,
+                } => {
+                    let interval = greenlens_runner::studies::weather_find_interval(
+                        &project,
+                        &weather_id,
+                        month,
+                        day,
+                        hour_ending,
+                    )?;
+                    println!("{}", serde_json::to_string_pretty(&interval)?);
+                    return Ok(());
+                }
                 WeatherCommand::Synthetic { destination } => {
                     use std::io::Write;
                     std::fs::OpenOptions::new()

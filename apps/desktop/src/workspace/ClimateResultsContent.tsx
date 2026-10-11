@@ -1,0 +1,67 @@
+import { useMemo, useState } from 'react';
+import type { ClimateRunRecord, ClimateSensorSeries, ClimateValues, ResultField } from '../climate-types';
+import type { RunRecord, ValidatedModel } from '../types';
+import type { ClimateResultController } from './useClimateResults';
+import { CLIMATE_FIELDS, hourLabel } from './climate-presentation.mjs';
+import { fmt } from './AnalysisContent';
+import { luxColor } from '../presentation.mjs';
+import './climate-results.css';
+import { WeatherCalendarPicker } from './WeatherCalendarPicker';
+
+export function ClimateLegend({scale,units}:{scale:number;units:string}) {
+  return <div className="legend"><div className="legend-strip"/><span>0 {units}</span><span>{fmt(scale)} {units}</span></div>;
+}
+export function ClimateStats({values}:{values:ClimateValues}) {
+  return <><div className="compact-stats">{(['min','mean','max'] as const).map(key=><span key={key}><small>{key}</small><strong>{fmt(values.statistics[key])}</strong></span>)}</div><small>{values.units} · unweighted sensor summary, not floor area</small></>;
+}
+export function ClimateResultControls({controller:c,records,alternative}:{controller:ClimateResultController;records:ClimateRunRecord[];alternative:string}) {
+  return <section className="climate-result-controls" aria-label="Climate result display">
+    <label>Result snapshot<select aria-label="Climate result snapshot" value={c.selectedRunId} onChange={e=>c.selectRun(e.target.value)}><option value="current">Newest matching current study</option>{records.filter(r=>r.alternative_id===alternative).slice().reverse().map(r=><option key={r.id} value={r.id}>{r.id.slice(0,8)} · {r.series.interval_count===8760?'Annual':'Selected hour'}</option>)}</select></label>
+    {c.run&&<><label>Display quantity<select aria-label="Climate display quantity" value={c.field} onChange={e=>c.setField(e.target.value as ResultField)}>{CLIMATE_FIELDS.filter(([field])=>c.annual||field==='illuminance').map(([field,label])=><option key={field} value={field}>{label}</option>)}</select></label>
+      {c.field==='illuminance'&&<ClimateTimeControl controller={c}/>}
+      {c.loading&&<p role="status">Reading verified results…</p>}{c.error&&<p className="warning-line" role="alert">{c.error}</p>}
+      {c.values&&<><ClimateStats values={c.values}/><ClimateLegend scale={c.scale} units={c.values.units}/></>}
+      <p className="panel-note">Snapshot {c.run.id.slice(0,8)}. {c.selectedRunId==='current'?'Metric settings follow the current study and are derived in Rust.':'Historical snapshot uses its saved metric settings.'} {!c.canOverlay&&c.values?'Current-study mismatch: values are inspectable below; the current geometry has no result overlay.':''}</p>
+    </>}
+    {!c.run&&<p className="panel-note">No completed result matches the current scientific inputs. Undo restores matching history; otherwise run this study. Retained snapshots remain selectable.</p>}
+  </section>;
+}
+export function ClimateTimeControl({controller:c}:{controller:Pick<ClimateResultController,'path'|'interval'|'annual'|'setInterval'|'weather'|'weatherError'>}) {
+  return <div className="climate-time"><label>Displayed weather interval <input aria-label="Displayed weather interval" type="number" min={0} max={8759} step={1} value={c.interval} disabled={!c.annual} onChange={e=>{const value=e.currentTarget.valueAsNumber;if(Number.isInteger(value)&&value>=0&&value<8760)c.setInterval(value);}}/></label>{c.annual&&<input aria-label="Hourly result time slider" type="range" min={0} max={8759} step={1} value={c.interval} onChange={e=>c.setInterval(Number(e.target.value))}/>}
+    {c.annual&&<WeatherCalendarPicker path={c.path} weatherId={c.weather?.weather_id??null} current={c.weather} onSelect={c.setInterval}/>}
+    <p>{hourLabel(c.weather)}</p>{c.weather&&<small>DNI {fmt(c.weather.hour.direct_normal_wh_m2)} Wh/m² · DHI {fmt(c.weather.hour.diffuse_horizontal_wh_m2)} Wh/m² per hourly interval. Source-year label {c.weather.hour.source_year} is provenance.</small>}{c.weatherError&&<p role="alert">{c.weatherError}</p>}
+    <small>{c.annual?'Changing the displayed hour reads saved values; it does not calculate again.':'This result contains only the selected weather interval.'} No OS timezone or daylight-saving conversion.</small>
+  </div>;
+}
+function ClimateMap({validated,values,scale,title}:{validated:ValidatedModel;values:ClimateValues;scale:number;title:string}) {
+  const grid=validated.sensor_grid;
+  return <figure className="climate-map"><figcaption>{title} · {values.units}</figcaption><div className="heatmap-grid" style={{gridTemplateColumns:`repeat(${grid.columns},1fr)`,aspectRatio:`${grid.columns*grid.actual_spacing_x_m}/${grid.rows*grid.actual_spacing_y_m}`}}>{Array.from({length:grid.rows},(_,r)=>grid.rows-1-r).flatMap(r=>Array.from({length:grid.columns},(_,col)=>{const index=r*grid.columns+col;return <span key={index} title={`${values.sensor_ids[index]}: ${fmt(values.values[index],3)} ${values.units}`} style={{background:luxColor(values.values[index],scale)}}/>;}))}</div><small>Snapshot local +Y ↑ · window at bottom</small><ClimateStats values={values}/></figure>;
+}
+function SensorChart({series,interval,onInterval}:{series:ClimateSensorSeries;interval:number;onInterval:(index:number)=>void}) {
+  const drawing=useMemo(()=>{
+    const maximum=Math.max(1,...series.values),last=Math.max(1,series.values.length-1);
+    return {maximum,last,points:series.values.map((value,index)=>`${(index/last*1000).toFixed(2)},${(130-value/maximum*125).toFixed(2)}`).join(' ')};
+  },[series]);
+  const cursor=series.values.length===1?0:(interval-series.first_interval_index)/drawing.last*1000;
+  return <div className="climate-series"><b>{series.sensor_id} · {series.values.length.toLocaleString('en')} retained intervals · lx</b><svg viewBox="0 0 1000 140" preserveAspectRatio="none" role="img" aria-label={`Saved hourly illuminance for sensor ${series.sensor_id}`} onClick={e=>{if(series.values.length===1)return;const rect=e.currentTarget.getBoundingClientRect();onInterval(series.first_interval_index+Math.round(Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width))*drawing.last));}}><polyline points={drawing.points} fill="none" stroke="#397c70" strokeWidth="1"/><line x1={cursor} x2={cursor} y1={0} y2={140} stroke="#b58331" strokeWidth="2"/></svg><small>0 to {fmt(drawing.maximum)} lx · interval {series.first_interval_index}–{series.first_interval_index+series.values.length-1}. Click the trace or use the time control. All readings are retained, including zero solar input.</small></div>;
+}
+export function ClimateResultsContent({tab,controller:c,records,selection,onSelect,currentPhysicalHash}:{tab:string;controller:ClimateResultController;records:ClimateRunRecord[];selection:string[];onSelect:(ids:string[])=>void;currentPhysicalHash?:string}) {
+  if(tab==='compare'){
+    const pairA=records.find(r=>r.id===c.a?.id),pairB=records.find(r=>r.id===c.b?.id);
+    return <div className="climate-comparison"><div className="snapshot-selectors">{(['A','B'] as const).map(side=><label className="snapshot-selector" key={side}>{side} climate snapshot<select aria-label={`${side} climate comparison snapshot`} value={(side==='A'?c.a:c.b)?.id??''} onChange={e=>c.selectPair(side,e.target.value)}><option value="" disabled>Choose a completed snapshot</option>{records.filter(r=>r.alternative_id===side).slice().reverse().map(r=><option key={r.id} value={r.id}>{r.id.slice(0,8)} · {r.series.interval_count} intervals</option>)}</select><small>{c.pairRelation(side)}</small></label>)}</div>
+      <label className="snapshot-selector">Comparison quantity<select aria-label="Climate comparison quantity" value={c.pairTime.field} onChange={e=>c.setPairField(e.target.value as ResultField)}>{CLIMATE_FIELDS.filter(([field])=>c.pairTime.annual||field==='illuminance').map(([field,label])=><option key={field} value={field}>{label}</option>)}</select></label><p className="panel-note">Selected pairs retain their original weather, time axis, occupancy and thresholds. Rust rejects incompatible pairs; no resampling. Time and weather below belong to the selected A snapshot.</p>
+      {c.pairTime.field==='illuminance'&&<ClimateTimeControl controller={c.pairTime}/>}{c.comparing&&<p role="status">Checking saved comparison conditions…</p>}{c.comparisonError&&<p className="warning-line" role="alert">{c.comparisonError}</p>}
+      {c.comparison&&pairA&&pairB&&<><div className="climate-map-pair"><ClimateMap title={`A ${pairA.id.slice(0,8)}`} validated={pairA.validated} values={c.comparison.a} scale={c.comparison.scale_maximum||1}/><ClimateMap title={`B ${pairB.id.slice(0,8)}`} validated={pairB.validated} values={c.comparison.b} scale={c.comparison.scale_maximum||1}/><div><b>B − A · {c.comparison.delta_units}</b><p>Sensor minimum {fmt(c.comparison.delta_statistics.min)}, mean {fmt(c.comparison.delta_statistics.mean)}, maximum {fmt(c.comparison.delta_statistics.max)}.</p><ClimateLegend scale={c.comparison.scale_maximum||1} units={c.comparison.a.units}/><p className="panel-note">Same scale for both alternatives. Metrics are temporal percentages per sensor; deltas are percentage points.</p><details><summary>Conditions, source snapshots and design differences</summary><pre>{JSON.stringify({a:pairA.id,b:pairB.id,conditions:c.comparison.conditions,differences:c.comparison.design_differences},null,2)}</pre></details></div></div><table><thead><tr><th>Sensor</th><th>A {c.comparison.a.units}</th><th>B {c.comparison.b.units}</th><th>B − A {c.comparison.delta_units}</th></tr></thead><tbody>{c.comparison.deltas.map((value,index)=><tr key={c.comparison!.a.sensor_ids[index]}><td>{c.comparison!.a.sensor_ids[index]}</td><td>{fmt(c.comparison!.a.values[index],3)}</td><td>{fmt(c.comparison!.b.values[index],3)}</td><td>{fmt(value,3)}</td></tr>)}</tbody></table></>}
+      {!c.a||!c.b?<p>Complete A and B climate studies before choosing a compatible pair.</p>:null}
+    </div>;
+  }
+  if(tab==='evidence')return <div className="evidence-content"><h3>{records.length} immutable climate snapshots</h3><p>Compact evidence retains weather bytes, raw RGB/lux chunks, recipes, metrics, logs and provenance. Matrices and octrees are disposable. Export explicitly selects snapshots.</p>{records.map(run=><details key={run.id}><summary>{run.alternative_id} · {run.id} · {run.series.sensor_ids.length} sensors × {run.series.interval_count} intervals</summary><p>{run.provenance.physical_input_hash===currentPhysicalHash?'Matches current physical inputs.':'Historical physical snapshot; may differ from the current study.'}</p><pre>{JSON.stringify({study:run.study,weather:run.weather_asset,provenance:run.provenance},null,2)}</pre></details>)}</div>;
+  if(!c.run||!c.values)return <p>{c.error||'Choose a completed climate result in Analysis. Current scientific edits never receive a stale heatmap.'}</p>;
+  if(tab==='series')return <div><ClimateTimeControl controller={c}/>{c.sensorSeries?<SensorChart series={c.sensorSeries} interval={c.interval} onInterval={c.setInterval}/>:<p>{c.seriesError||'Select an individual sensor in a viewport or the sensor table to inspect its saved time series.'}</p>}</div>;
+  return <div><p className="panel-note">Snapshot {c.run.id} · {CLIMATE_FIELDS.find(([field])=>field===c.field)?.[1]} · {c.values.units}. {c.canOverlay?'Matches current physical inputs.':'Historical snapshot; geometry below comes from the run.'}</p><div className="table-scroll"><table><thead><tr><th>Sensor</th><th>East X m</th><th>North Y m</th><th>Up Z m</th><th>{c.values.units}</th></tr></thead><tbody>{c.run.validated.sensor_grid.sensors.map((sensor,index)=><tr key={sensor.id} className={selection.includes(`sensor:${sensor.id}`)?'selected-row':''}><td><button onClick={()=>onSelect([`sensor:${sensor.id}`])}>{sensor.id}</button></td>{sensor.position.map((v,i)=><td key={i}>{fmt(v,3)}</td>)}<td>{fmt(c.values!.values[index],3)}</td></tr>)}</tbody></table></div></div>;
+}
+export function ExportRunDialog({records,climateRecords,initial,onExport,onClose}:{records:RunRecord[];climateRecords:ClimateRunRecord[];initial:string[];onExport:(ids:string[])=>void;onClose:()=>void}) {
+  const [selected,setSelected]=useState(initial);
+  const choices=[...records.map(r=>({id:r.id,label:`${r.alternative_id} · ${r.id.slice(0,8)} · static · ${r.lux.length} sensors`})),...climateRecords.map(r=>({id:r.id,label:`${r.alternative_id} · ${r.id.slice(0,8)} · ${r.series.interval_count} intervals × ${r.series.sensor_ids.length} sensors`}))];
+  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="export-title"><h2 id="export-title">Export selected evidence</h2><p>Choose immutable runs. The package includes an offline report, weather, inputs, results, comparisons and replay recipes. The backend checks the 64 MiB entry / 256 MiB package bounds.</p><div className="export-run-list">{choices.map(choice=><label key={choice.id}><input type="checkbox" checked={selected.includes(choice.id)} onChange={e=>setSelected(ids=>e.target.checked?[...ids,choice.id]:ids.filter(id=>id!==choice.id))}/>{choice.label}</label>)}</div>{!choices.length&&<p>No saved completed runs are available.</p>}<div className="button-row"><button disabled={!selected.length} className="primary" onClick={()=>onExport(selected)}>Choose ZIP destination</button><button onClick={onClose}>Cancel</button></div></section></div>;
+}

@@ -159,9 +159,16 @@ export interface ClimateCommands {
     args: { path: string; project: ClimateProjectDocument; expectedRevision: string | null; assetPath: string };
     result: ClimateProjectView;
   };
+  weather_import_project: {
+    args: { path: string; project: ClimateProjectDocument; expectedRevision: string | null; file: string; profile: WeatherSourceProfile; source: WeatherSource };
+    result: ClimateProjectView;
+  };
   weather_asset_inspect: { args: { path: string; weatherId: string }; result: WeatherAssetInspection };
   weather_interval: {
     args: { path: string; weatherId: string; intervalIndex: number }; result: WeatherIntervalView;
+  };
+  weather_find_interval: {
+    args: { path: string; weatherId: string; month: number; day: number; hourEnding: number }; result: WeatherIntervalView;
   };
   study_defaults: { args: Record<string, never>; result: Study };
   study_validate: { args: { model: Model; study: Study }; result: StudyValidation };

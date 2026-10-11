@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import type { Model, RunRecord, ValidatedModel } from '../types';
-import type { ClimateJobStatus as JobStatus, ClimateProjectDocument as Project, ClimateProjectView as ProjectView, ClimateRunRecord, CurrentClimateResult, Study, StudyHistorySnapshot } from '../climate-types';
+import type { ClimateJobStatus as JobStatus, ClimateProjectDocument as Project, ClimateProjectView as ProjectView, ClimateRunRecord, CurrentClimateResult, Study, StudyHistorySnapshot, WeatherSource, WeatherSourceProfile } from '../climate-types';
 import { defaultDisplay, type ViewportDisplayState } from '../viewport/types';
 import { DocumentHistory, completedJobResult, documentSignature, hasPendingEvidence, protectReplacement } from './document.mjs';
 import { activeJob } from '../presentation.mjs';
@@ -193,11 +193,19 @@ export function useDocument() {
     const value=await invoke<ProjectView>('weather_attach',{path:s.path,project:s.project,expectedRevision:s.revision,assetPath});
     acceptProject(value,s.path);setMessage('Portable weather attached and saved with citation, interpretation and original bytes.');
   });
+  const importWeather=async(file:string,profile:WeatherSourceProfile,source:WeatherSource)=>{let imported=false;await runAction(async()=>{
+    if(activeJob(state.current.job))throw new Error('Finish or cancel the calculation before importing weather.');
+    if(!(await save()))return;
+    const s=state.current;
+    const value=await invoke<ProjectView>('weather_import_project',{path:s.path,project:s.project,expectedRevision:s.revision,file,profile,source});
+    acceptProject(value,s.path);setMessage('Weather imported and saved with original bytes, citation and time interpretation.');
+    imported=true;
+  });return imported;};
   const exportEvidence=async(selectedRuns?:string[])=>runAction(async()=>{
     if(!(await save()))return;
     const destination=await invoke<string|null>('dialog_export_evidence',{initialPath:state.current.path||null});if(!destination)return;
     await invoke('export_project',{path:state.current.path,destination,selectedRuns:selectedRuns??null});setMessage('Portable evidence ZIP and offline report exported.');
   });
   return {project,alternative,setAlternative,model,validated,results,climateResults,study,currentClimate,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
-    commit,commitStudy,attachWeather,traverse,replace,save:()=>runAction(async()=>{await save();}),saveAs:()=>runAction(async()=>{await save(true);}),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');}),exportEvidence,runAction};
+    commit,commitStudy,attachWeather,importWeather,traverse,replace,save:()=>runAction(async()=>{await save();}),saveAs:()=>runAction(async()=>{await save(true);}),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');}),exportEvidence,runAction};
 }

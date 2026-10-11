@@ -483,6 +483,7 @@ pub fn replay_climate(
         let reader = SeriesReader::open(&root.join(&summary.path).join("series"))?;
         let mut check = compare_stream(&reader, &output.combined_f64, cancel)?;
         check["run_id"] = json!(record.id);
+        check["resources"] = serde_json::to_value(&output.resources)?;
         check["verification"] =
             json!("same-engine integration, not independent physical validation");
         checks.push(check);

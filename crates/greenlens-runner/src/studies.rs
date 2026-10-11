@@ -2,13 +2,321 @@
 use crate::{climate, persistence::*, weather, Project, ProjectView};
 use anyhow::{ensure, Context, Result};
 use greenlens_core::{
-    study::{MetricSettings, SensorMetrics, Study, StudyMode},
+    study::{MetricSettings, SensorMetrics, Study, StudyMode, WeatherBinding},
+    weather::{ParsedWeather, WeatherHour, WeatherInterval, WeatherSourceProfile},
     Model,
 };
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::path::Path;
 use uuid::Uuid;
+
+/// Read only the selected retained weather asset. No engine or historical run
+/// scan is needed; original weather bytes and their normalized axis are verified.
+pub fn project_weather(
+    root: &Path,
+    weather_id: &str,
+) -> Result<(weather::WeatherAsset, ParsedWeather)> {
+    let project: Project = read_json(&regular_child(root, "project.json")?)?;
+    crate::validate_project(&project)?;
+    let reference = project
+        .climate
+        .as_ref()
+        .and_then(|extension| extension.weather.iter().find(|item| item.id == weather_id))
+        .context("Weather asset is not retained in this project")?;
+    regular_child(root, &format!("{}/asset.json", reference.path))?;
+    let (asset, parsed) = weather::open(&root.join(&reference.path))?;
+    ensure!(
+        asset.binding == reference.binding,
+        "Project weather identity differs from retained asset"
+    );
+    Ok((asset, parsed))
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct WeatherIntervalView {
+    pub weather_id: String,
+    pub binding: WeatherBinding,
+    pub hour: WeatherHour,
+    pub interval: WeatherInterval,
+}
+
+fn weather_interval_view(
+    weather_id: &str,
+    parsed: &ParsedWeather,
+    index: usize,
+) -> Result<WeatherIntervalView> {
+    let interval = parsed.data.interval(index)?;
+    Ok(WeatherIntervalView {
+        weather_id: weather_id.into(),
+        binding: parsed.data.binding(),
+        hour: parsed.data.hours[index].clone(),
+        interval,
+    })
+}
+
+pub fn weather_interval(
+    root: &Path,
+    weather_id: &str,
+    interval_index: usize,
+) -> Result<WeatherIntervalView> {
+    let (_, parsed) = project_weather(root, weather_id)?;
+    weather_interval_view(weather_id, &parsed, interval_index)
+}
+
+/// Month/day and EPW hour-ending labels address the retained local-standard
+/// axis. In particular, December 31 hour 24 is the final interval, not a request
+/// for a new calendar year. UTC and midpoint mapping come from the parsed axis.
+pub fn weather_find_interval(
+    root: &Path,
+    weather_id: &str,
+    month: u8,
+    day: u8,
+    hour_ending: u8,
+) -> Result<WeatherIntervalView> {
+    ensure!(
+        (1..=12).contains(&month) && (1..=31).contains(&day) && (1..=24).contains(&hour_ending),
+        "Weather selection requires month 1–12, day 1–31 and EPW hour ending 1–24 in local standard time"
+    );
+    let (_, parsed) = project_weather(root, weather_id)?;
+    let hour = parsed.data.hours.iter().find(|hour| {
+        hour.month == month && hour.day == day && hour.hour_ending == hour_ending
+    }).context("Date/hour is absent from the retained non-leap weather year; February 29 and invalid month/day combinations are unsupported")?;
+    weather_interval_view(weather_id, &parsed, hour.index)
+}
+
+#[cfg(test)]
+#[path = "weather_navigation_tests.rs"]
+mod weather_navigation_tests;
+
+/// Native import needs only an EPW file selection and its source declaration.
+/// Temporary assets stay outside the synced project; portable attachment uses
+/// the same revision guard and verified evidence copy as the CLI import route.
+pub fn import_weather_file(
+    root: &Path,
+    project: &Project,
+    expected: Option<&str>,
+    file: &Path,
+    profile: WeatherSourceProfile,
+    source: weather::WeatherSource,
+) -> Result<ProjectView> {
+    import_weather_file_in_cache(
+        root,
+        project,
+        expected,
+        file,
+        profile,
+        source,
+        &crate::local_root()?.join("weather-imports"),
+    )
+}
+
+fn import_weather_file_in_cache(
+    root: &Path,
+    project: &Project,
+    expected: Option<&str>,
+    file: &Path,
+    profile: WeatherSourceProfile,
+    source: weather::WeatherSource,
+    cache: &Path,
+) -> Result<ProjectView> {
+    crate::validate_project(project)?;
+    // Fail an existing conflict before doing an unnecessary weather import.
+    check_revision(root, expected)?;
+    // Keep the resolved cache directory stable while its owned temporary child
+    // is created and removed. The importer has its own lock inside that child.
+    let _cache_lock = WriterLock::acquire(cache)?;
+    let mut temporary = WeatherImportTemporary::new(cache)?;
+    let asset = temporary.path.join("asset");
+    let result = (|| {
+        weather::import(file, &asset, profile, source)?;
+        // Rechecks the revision after import; an external edit is never overwritten.
+        import_weather_asset(root, project, expected, &asset)
+    })();
+    let cleanup = temporary.cleanup();
+    match (result, cleanup) {
+        (Ok(view), Ok(())) => Ok(view),
+        (Ok(_), Err(error)) => Err(error.context("Weather was attached, but temporary cache cleanup failed; reopen the project before continuing")),
+        (Err(error), Ok(())) => Err(error),
+        (Err(error), Err(cleanup)) => Err(error.context(format!("Temporary weather cache cleanup also failed: {cleanup:#}"))),
+    }
+}
+
+struct WeatherImportTemporary {
+    cache: std::path::PathBuf,
+    path: std::path::PathBuf,
+    removed: bool,
+}
+impl WeatherImportTemporary {
+    fn new(cache: &Path) -> Result<Self> {
+        let cache = std::fs::canonicalize(cache)?;
+        let path = cache.join(Uuid::new_v4().to_string());
+        std::fs::create_dir(&path)?;
+        Ok(Self {
+            cache,
+            path,
+            removed: false,
+        })
+    }
+
+    fn cleanup(&mut self) -> Result<()> {
+        if self.removed {
+            return Ok(());
+        }
+        // Never remove a substituted path or anything beyond this newly
+        // created UUID directory. remove_dir_all does not follow child links.
+        ensure!(
+            self.path.parent() == Some(self.cache.as_path())
+                && std::fs::canonicalize(&self.path)? == self.path
+                && Uuid::parse_str(
+                    self.path
+                        .file_name()
+                        .and_then(|name| name.to_str())
+                        .context("Temporary cache name is not UTF-8")?
+                )?
+                .to_string()
+                    == self.path.file_name().unwrap().to_str().unwrap(),
+            "Temporary weather cache path changed; automatic cleanup refused"
+        );
+        std::fs::remove_dir_all(&self.path).context("Remove owned temporary weather import")?;
+        self.removed = true;
+        Ok(())
+    }
+}
+impl Drop for WeatherImportTemporary {
+    fn drop(&mut self) {
+        let _ = self.cleanup();
+    }
+}
+
+#[cfg(test)]
+mod weather_file_tests {
+    use super::*;
+    use greenlens_core::weather::synthetic_epw;
+    use std::fs;
+
+    fn source() -> weather::WeatherSource {
+        weather::WeatherSource {
+            citation: "Original synthetic test year, not climatic data".into(),
+            source_url: None,
+            license: "Apache-2.0".into(),
+            rights_note: "Original licensed GreenLens fixture".into(),
+            synthetic_non_climatic: true,
+        }
+    }
+
+    #[test]
+    fn direct_file_import_retains_portable_bytes_after_input_and_cache_disappear() {
+        let input = tempfile::tempdir().unwrap();
+        let project = tempfile::tempdir().unwrap();
+        let weather_file = input.path().join("original.epw");
+        let bytes = synthetic_epw();
+        fs::write(&weather_file, &bytes).unwrap();
+        let saved = crate::save_project(project.path(), &crate::example(), None).unwrap();
+        let imported = import_weather_file_in_cache(
+            project.path(),
+            &saved.project,
+            Some(&saved.revision),
+            &weather_file,
+            WeatherSourceProfile::EpwHourEnding,
+            source(),
+            &input.path().join("cache"),
+        )
+        .unwrap();
+        let reference = &imported.project.climate.as_ref().unwrap().weather[0];
+        assert_eq!(
+            fs::read(project.path().join(&reference.path).join("original.epw")).unwrap(),
+            bytes
+        );
+        input.close().unwrap();
+        let reopened = crate::open_project(project.path()).unwrap();
+        assert_eq!(reopened.revision, imported.revision);
+        assert_eq!(reopened.project.climate.as_ref().unwrap().weather.len(), 1);
+    }
+
+    #[test]
+    fn direct_file_import_conflict_or_invalid_weather_preserves_project() {
+        let input = tempfile::tempdir().unwrap();
+        let project = tempfile::tempdir().unwrap();
+        let weather_file = input.path().join("invalid.epw");
+        fs::write(&weather_file, b"not an EPW").unwrap();
+        let saved = crate::save_project(project.path(), &crate::example(), None).unwrap();
+        let before = fs::read(project.path().join("project.json")).unwrap();
+        assert!(import_weather_file_in_cache(
+            project.path(),
+            &saved.project,
+            Some(&saved.revision),
+            &weather_file,
+            WeatherSourceProfile::EpwHourEnding,
+            source(),
+            &input.path().join("cache")
+        )
+        .is_err());
+        assert_eq!(
+            fs::read(project.path().join("project.json")).unwrap(),
+            before
+        );
+        assert!(fs::read_dir(input.path().join("cache"))
+            .unwrap()
+            .all(|entry| entry.unwrap().file_name() == ".greenlens.lock"));
+        let mut external = saved.project.clone();
+        external.name = "External edit retained".into();
+        atomic_json(project.path(), &external).unwrap();
+        let external_bytes = fs::read(project.path().join("project.json")).unwrap();
+        let unused_cache = input.path().join("not-created");
+        let error = import_weather_file_in_cache(
+            project.path(),
+            &saved.project,
+            Some(&saved.revision),
+            &weather_file,
+            WeatherSourceProfile::EpwHourEnding,
+            source(),
+            &unused_cache,
+        )
+        .unwrap_err();
+        assert!(error.to_string().contains("changed externally"));
+        assert!(!unused_cache.exists());
+        assert_eq!(
+            fs::read(project.path().join("project.json")).unwrap(),
+            external_bytes
+        );
+    }
+
+    #[test]
+    fn repeated_imports_remove_only_their_temporary_assets() {
+        let input = tempfile::tempdir().unwrap();
+        let project = tempfile::tempdir().unwrap();
+        let cache = input.path().join("cache");
+        let unrelated = cache.join("unrelated");
+        fs::create_dir_all(&unrelated).unwrap();
+        fs::write(unrelated.join("keep.txt"), "not owned by import").unwrap();
+        let weather_file = input.path().join("source.epw");
+        fs::write(&weather_file, synthetic_epw()).unwrap();
+        let mut saved = crate::save_project(project.path(), &crate::example(), None).unwrap();
+        for _ in 0..2 {
+            saved = import_weather_file_in_cache(
+                project.path(),
+                &saved.project,
+                Some(&saved.revision),
+                &weather_file,
+                WeatherSourceProfile::EpwHourEnding,
+                source(),
+                &cache,
+            )
+            .unwrap();
+            assert_eq!(saved.project.climate.as_ref().unwrap().weather.len(), 1);
+            assert!(fs::read_dir(&cache).unwrap().all(|entry| {
+                let name = entry.unwrap().file_name();
+                name == ".greenlens.lock" || name == "unrelated"
+            }));
+            assert_eq!(
+                fs::read_to_string(unrelated.join("keep.txt")).unwrap(),
+                "not owned by import"
+            );
+        }
+    }
+}
 
 pub fn import_weather_asset(
     root: &Path,
@@ -480,6 +788,73 @@ mod current_result_tests {
             revised.requested_metric_identity
         );
         assert!(!revised.metrics_current);
+    }
+
+    #[test]
+    fn explicit_older_series_has_its_own_current_metric_identity() {
+        // Synthetic output checks identity selection only, never engine accuracy.
+        let tmp = tempfile::tempdir().unwrap();
+        let old = crate::climate::tests::fixture(tmp.path(), true);
+        let newer_series = tempfile::tempdir().unwrap();
+        let series_path = newer_series.path().join("series");
+        let mut writer = crate::timeseries::SeriesWriter::create(
+            &series_path,
+            old.validated
+                .sensor_grid
+                .sensors
+                .iter()
+                .map(|sensor| sensor.id.clone())
+                .collect(),
+            greenlens_core::study::HOURS_PER_YEAR,
+        )
+        .unwrap();
+        for index in 0..greenlens_core::study::HOURS_PER_YEAR {
+            let rgb = if index == 8 { [1.0; 3] } else { [0.0; 3] };
+            writer
+                .push_hour(&vec![rgb; old.validated.sensor_grid.sensors.len()])
+                .unwrap();
+        }
+        let mut newer = old.clone();
+        newer.id = Uuid::new_v4().to_string();
+        newer.series = writer.finish().unwrap();
+        newer.metrics = Some(
+            crate::timeseries::SeriesReader::open(&series_path)
+                .unwrap()
+                .metrics(&newer.study.metrics)
+                .unwrap(),
+        );
+        newer.provenance["finished_utc"] = json!("2026-01-01T03:00:00Z");
+        let physical = climate::physical_result_fingerprint(&newer).unwrap();
+        newer.provenance["physical_result_fingerprint"] = json!(physical);
+        newer.provenance["metric_identity"] =
+            json!(newer.study.metrics.identity(&physical).unwrap());
+        assert_ne!(
+            old.series.identity().unwrap(),
+            newer.series.identity().unwrap()
+        );
+        let latest =
+            current_from_records(&old.model, "A", &old.study, &[old.clone(), newer.clone()])
+                .unwrap();
+        let selected =
+            current_from_records(&old.model, "A", &old.study, std::slice::from_ref(&old)).unwrap();
+        assert_eq!(latest.run.unwrap().id, newer.id);
+        assert_eq!(selected.run.unwrap().id, old.id);
+        assert_eq!(latest.physical_input_hash, selected.physical_input_hash);
+        assert!(latest.metrics_current && selected.metrics_current);
+        assert_ne!(
+            latest.requested_metric_identity,
+            selected.requested_metric_identity
+        );
+        let mut edited = old.study.clone();
+        edited.metrics.da_threshold_lux = 500.0;
+        let selected_edited =
+            current_from_records(&old.model, "A", &edited, std::slice::from_ref(&old)).unwrap();
+        assert_eq!(selected_edited.run.unwrap().id, old.id);
+        assert!(!selected_edited.metrics_current);
+        assert_eq!(
+            selected_edited.stored_metric_identity,
+            selected.stored_metric_identity
+        );
     }
 
     #[test]

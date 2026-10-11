@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Model, RunRecord, ValidatedModel } from '../types';
+import type { ClimateValues } from '../climate-types';
 import { parseQuantity, setParameter } from './commands.mjs';
 
 export function ParameterField({label,value,unit='m',onCommit,disabled=false}:{label:string;value:number;unit?:string;onCommit:(value:number)=>Promise<boolean>;disabled?:boolean}) {
@@ -16,12 +17,13 @@ export function ParameterField({label,value,unit='m',onCommit,disabled=false}:{l
   return <label className="parameter"><span>{label}</span><span className="parameter-input"><input aria-label={`${label} (${unit})`} value={text} disabled={disabled||pending} inputMode="decimal" onChange={e=>setText(e.target.value)} onBlur={()=>void accept()} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();void accept();}if(e.key==='Escape'){e.stopPropagation();escaping.current=true;setText(String(value));setError('');e.currentTarget.blur();}}}/><small>{unit}</small></span>{error&&<span className="field-error">{error}</span>}</label>;
 }
 type Field=[string,string,number,string?];
-export default function PropertiesPanel({model,validated,selection,result,locked,disabled,commit,select}:{model:Model;validated:ValidatedModel|null;selection:string[];result:RunRecord|null;locked:boolean;disabled:boolean;commit:(candidate:Model,label:string)=>Promise<boolean>;select:(ids:string[])=>void}){
+export default function PropertiesPanel({model,validated,selection,result,sensorValues,locked,disabled,commit,select}:{model:Model;validated:ValidatedModel|null;selection:string[];result:RunRecord|null;sensorValues?:ClimateValues|null;locked:boolean;disabled:boolean;commit:(candidate:Model,label:string)=>Promise<boolean>;select:(ids:string[])=>void}){
   if(!selection.length)return <div className="panel-empty"><h3>Object properties</h3><p>Select geometry or a sensor in a viewport or the Layers list.</p><button onClick={()=>select(['room'])}>Inspect room</button><button onClick={()=>select(['window'])}>Inspect window</button><p>Use Add or Remove above the viewports, then click an object. Or hold Shift and click to add; hold Ctrl and click to remove. Drag left to right for containment; right to left for crossing.</p></div>;
   if(selection.length>1)return <div className="panel-empty"><h3>{selection.length} selected</h3><p>Mixed selections are inspectable together. Select one parametric entity for an unambiguous edit.</p><ul>{selection.slice(0,20).map(id=><li key={id}>{id}</li>)}</ul></div>;
   const id=selection[0];
   if(id.startsWith('sensor:')){
     const sensor=validated?.sensor_grid.sensors.find(s=>s.id===id.slice(7));const index=validated?.sensor_grid.sensors.findIndex(s=>s.id===id.slice(7))??-1;
+    if(sensorValues&&index>=0&&sensorValues.sensor_ids[index]===sensor?.id)return <div className="panel-empty"><h3>{sensor.id}</h3><p>Scientific sensor · read only</p><p>{sensor.position.map(v=>v.toFixed(4)).join(', ')} m · world east/north/up</p><p><b>{sensorValues.values[index].toFixed(3)} {sensorValues.units}</b> · {sensorValues.field}</p><p>Snapshot {sensorValues.run_id.slice(0,8)}. Use Time series for hourly inspection.</p><button onClick={()=>select(['sensor-plane'])}>Edit sensor plane</button></div>;
     return <div className="panel-empty"><h3>{id.slice(7)}</h3><p>Scientific sensor · read only</p><dl className="key-values">{sensor?.position.map((v,i)=><div key={i}><dt>{['East X','North Y','Up Z'][i]}</dt><dd>{v.toFixed(4)} m</dd></div>)}<div><dt>Direction</dt><dd>+Z</dd></div><div><dt>Illuminance</dt><dd>{result&&index>=0?`${result.lux[index].toFixed(3)} lx`:'No current result'}</dd></div></dl><button onClick={()=>select(['sensor-plane'])}>Edit sensor plane</button></div>;
   }
   if(id.startsWith('surface:')){

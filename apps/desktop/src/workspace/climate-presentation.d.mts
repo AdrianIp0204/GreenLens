@@ -1,0 +1,10 @@
+import type { ClimateRunSummary, ClimateValues, CurrentClimateResult, MetricSettings, ResultField, WeatherIntervalView } from '../climate-types';
+import type { ValidatedModel } from '../types';
+export const CLIMATE_FIELDS: [ResultField,string,string][];
+export function climateRequestKey(path:string, summary:ClimateRunSummary|null, field:ResultField, interval:number, settings:MetricSettings|null):string;
+export function climateOverlayMatches(summary:ClimateRunSummary|null,current:CurrentClimateResult|null,values:ClimateValues|null,validated:ValidatedModel|null):boolean;
+export class ClimateRequestGate {
+  cancel():void;
+  read<T>(request:()=>Promise<T>,expected?:(value:T)=>boolean):Promise<{value:T|null;error:string}|null>;
+}
+export function hourLabel(view:WeatherIntervalView|null):string;

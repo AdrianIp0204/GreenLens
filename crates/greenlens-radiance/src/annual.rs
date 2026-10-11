@@ -1,8 +1,11 @@
 //! Native fixed-geometry daylight coefficients and explicit solar transport.
 //! The ground is a luminous boundary only in the diffuse/ground coefficient
 //! path. The solar octree has no external ground surface or luminous dome.
+#[path = "annual_direct.rs"]
+mod direct;
 #[path = "annual_matrix.rs"]
 mod matrix;
+pub use direct::{DirectBatch, DIRECT_POLICY, MAX_DIRECT_BATCH_RAYS};
 
 pub use crate::process::AnnualProcessResources;
 use crate::{digest, process, scene_text, Engine, ProcessRecord, ENGINE_VERSION};
@@ -20,8 +23,8 @@ use std::{
     time::Instant,
 };
 
-pub const ADAPTER_VERSION: &str = "radiance-climate-explicit-sun/1";
-pub const METHOD_VERSION: &str = "perez-epw-midpoint-dewpoint3-reinhart-explicit-full-sun/1";
+pub const ADAPTER_VERSION: &str = "radiance-climate-direct-corrected/2";
+pub const METHOD_VERSION: &str = "perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2";
 pub const MAX_SENSORS: usize = 256;
 pub const HOURS: usize = 8760;
 pub const MAX_SCRATCH_BYTES: u64 = 2 * 1024 * 1024 * 1024;
@@ -29,9 +32,13 @@ pub const RECEIVER_TEXT: &str = "void glow sky_glow\n0\n0\n4 1 1 1 0\nsky_glow s
 pub const RESULT_ORDERING: &str = "time_sensor_RGB; engine matrices sensor_rows_time_columns_RGB; sky patch_rows_time_columns_RGB";
 pub const RESULT_UNITS: &str = "visible Radiance RGB irradiance W/m2; illuminance=179*(0.265074126R+0.670114631G+0.064811243B) lx";
 pub const TIME_POLICY: &str = "EPW hourly midpoint hour-0.5, fixed standard time; no -u night removal or -i horizon adjustment; selected hour retains preceding two dew-point records; sun exported when any part of0.533-degree disc is above horizon";
-pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in sky matrix only; solar octree contains geometry/materials and explicit solar sources only, no external ground";
+pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry.";
 pub const RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
-const EXECUTABLES: [(&str, &str); 4] = [
+const EXECUTABLES: [(&str, &str); 5] = [
+    (
+        "rtrace.exe",
+        "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+    ),
     (
         "gendaymtx.exe",
         "07a022f4569c7815bba868148add3706aa0e120622f0e8e7c7029e7947af527d",
@@ -72,7 +79,8 @@ pub struct AnnualProfile {
     pub sky_basis_mf: usize,
     pub ambient_bounces: u32,
     pub ambient_divisions: u32,
-    pub solar_ambient_divisions: u32,
+    pub direct_ambient_divisions: u32,
+    pub direct_solar_samples: usize,
     pub ambient_supersamples: u32,
     pub ambient_accuracy: f64,
     pub ambient_resolution: u32,
@@ -95,8 +103,9 @@ impl AnnualProfile {
             name: "shipping".into(),
             sky_basis_mf: 2,
             ambient_bounces: 8,
-            ambient_divisions: 65536,
-            solar_ambient_divisions: 8192,
+            ambient_divisions: 131072,
+            direct_ambient_divisions: 131072,
+            direct_solar_samples: 1024,
             ambient_supersamples: 0,
             ambient_accuracy: 0.0,
             ambient_resolution: 256,
@@ -118,8 +127,9 @@ impl AnnualProfile {
             name: "reference".into(),
             sky_basis_mf: 4,
             ambient_bounces: 9,
-            ambient_divisions: 131072,
-            solar_ambient_divisions: 32768,
+            ambient_divisions: 262144,
+            direct_ambient_divisions: 262144,
+            direct_solar_samples: 4096,
             ..Self::shipping()
         }
     }
@@ -176,14 +186,60 @@ impl AnnualProfile {
         ]
         .to_vec()
     }
-    pub fn solar_arguments(&self, sensors: usize) -> Vec<String> {
+    pub fn direct_arguments(&self, sensors: usize) -> Vec<String> {
         let mut arguments = self.arguments(sensors);
         let position = arguments
             .iter()
             .position(|argument| argument == "-ad")
             .expect("complete profile includes -ad");
-        arguments[position + 1] = self.solar_ambient_divisions.to_string();
+        arguments[position + 1] = self.direct_ambient_divisions.to_string();
+        let position = arguments
+            .iter()
+            .position(|argument| argument == "-ab")
+            .expect("complete profile includes -ab");
+        arguments[position + 1] = "1".into();
         arguments
+    }
+    pub fn transmission_arguments(&self) -> Vec<String> {
+        [
+            "-h",
+            "-faa",
+            "-ov",
+            "-n",
+            "1",
+            "-ab",
+            "0",
+            "-ad",
+            "1",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "annual-diffuse.oct",
+        ]
+        .map(String::from)
+        .to_vec()
     }
 }
 
@@ -296,6 +352,8 @@ pub struct AnnualRecipe {
     pub units: String,
     pub time_policy: String,
     pub ground_policy: String,
+    pub direct_policy: String,
+    pub direct_batches: Vec<DirectBatch>,
     pub child_environment: BTreeMap<String, String>,
     pub processes: Vec<ProcessRecord>,
 }
@@ -339,7 +397,7 @@ impl AnnualResources {
             "Invalid annual resource UTC timestamps"
         );
         ensure!(
-            (5..=7).contains(&self.processes.len()),
+            (5..=8 + HOURS).contains(&self.processes.len()),
             "Incomplete annual process resource measurements"
         );
         let mut child_peak = 0;
@@ -538,6 +596,12 @@ fn solar_indices(text: &str, weather_indices: &[usize]) -> Result<Vec<usize>> {
     Ok(indices)
 }
 
+/// Check compact generated solar primitives without loading or executing an
+/// engine. Retained evidence accepts only the pinned generator's bounded form.
+pub fn validate_solar_definitions(text: &str, expected: &[usize]) -> Result<()> {
+    direct::parse_suns(text, expected).map(|_| ())
+}
+
 fn check_scratch(scratch: &Path) -> Result<u64> {
     let (sum, largest) = process::scratch_sizes(scratch)?;
     ensure!(
@@ -626,6 +690,12 @@ pub fn simulate(
         |name: &str, args: Vec<String>, input: Option<&str>, output: &str| -> Result<()> {
             cancelled(cancel)?;
             let input = input.map(|file| scratch.join(file));
+            for suffix in ["resources.json", "process.json"] {
+                let path = scratch.join(format!("{name}.{suffix}"));
+                if path.exists() {
+                    fs::remove_file(path)?;
+                }
+            }
             let result = process::execute_annual(
                 engine.root(),
                 name,
@@ -688,25 +758,30 @@ pub fn simulate(
     )?;
     execute(
         "gendaymtx",
-        [
-            "-O0",
-            "-n",
-            "-D",
-            "annual-suns.rad",
-            "-M",
-            "annual-sun-modifiers.txt",
-            "annual-weather.epw",
-        ]
-        .map(String::from)
-        .to_vec(),
+        vec![
+            "-O0".into(),
+            "-m".into(),
+            profile.sky_basis_mf.to_string(),
+            "-d".into(),
+            "-D".into(),
+            "annual-suns.rad".into(),
+            "-M".into(),
+            "annual-sun-modifiers.txt".into(),
+            "annual-weather.epw".into(),
+        ],
         None,
-        "annual-sun-generation.txt",
+        "annual-solar-sky.mtx",
     )?;
     let sun_indices = solar_indices(
         &fs::read_to_string(scratch.join("annual-sun-modifiers.txt"))?,
         &weather_indices,
     )?;
+    let solar_sources = direct::parse_suns(
+        &fs::read_to_string(scratch.join("annual-suns.rad"))?,
+        &sun_indices,
+    )?;
     MatrixReader::open(&scratch.join("annual-sky.mtx"), sky_rows, time_count)?.finish()?;
+    MatrixReader::open(&scratch.join("annual-solar-sky.mtx"), sky_rows, time_count)?.finish()?;
     on_log("Compiling unchanged geometry with diffuse/ground coefficient receiver");
     execute(
         "oconv",
@@ -754,28 +829,55 @@ pub fn simulate(
         "annual-diffuse-rgb.mtx",
     )?;
     if !sun_indices.is_empty() {
-        on_log("Compiling explicit hourly solar discs without external ground; includes reflected solar transport");
-        execute(
-            "oconv",
-            ["-f", "annual-scene.rad", "annual-suns.rad"]
-                .map(String::from)
-                .to_vec(),
-            None,
-            "annual-solar.oct",
-        )?;
-        let mut args = profile.solar_arguments(sensor_count);
-        args.extend(
-            ["-V+", "-M", "annual-sun-modifiers.txt", "annual-solar.oct"].map(String::from),
-        );
-        on_log("Tracing source-separated direct and indirect sunlight; this is the longest stage");
+        on_log("Tracing direct-only sky-patch coefficients for solar correction");
+        let mut args = profile.direct_arguments(sensor_count);
+        args.extend([
+            "-V-".into(),
+            "-e".into(),
+            format!("MF:{}", profile.sky_basis_mf),
+            "-f".into(),
+            "reinhart.cal".into(),
+            "-b".into(),
+            "rbin".into(),
+            "-bn".into(),
+            "Nrbins".into(),
+            "-m".into(),
+            "sky_glow".into(),
+            "annual-diffuse.oct".into(),
+        ]);
         execute(
             "rcontrib",
             args,
             Some("annual-sensors.pts"),
-            "annual-solar-rgb.mtx",
+            "annual-direct-coefficients.mtx",
+        )?;
+        MatrixReader::open(
+            &scratch.join("annual-direct-coefficients.mtx"),
+            sensor_count,
+            sky_rows,
+        )?
+        .finish()?;
+        execute(
+            "dctimestep",
+            ["-oa", "annual-coefficients.mtx", "annual-solar-sky.mtx"]
+                .map(String::from)
+                .to_vec(),
+            None,
+            "annual-solar-patch-rgb.mtx",
+        )?;
+        execute(
+            "dctimestep",
+            [
+                "-oa",
+                "annual-direct-coefficients.mtx",
+                "annual-solar-sky.mtx",
+            ]
+            .map(String::from)
+            .to_vec(),
+            None,
+            "annual-direct-patch-rgb.mtx",
         )?;
     }
-    drop(execute);
     cancelled(cancel)?;
     on_log("Validating every RGB value and assembling complete ordered time series");
     // <=256*8760*24 = 53,821,440 bytes. Large sky matrices are streamed and are
@@ -800,24 +902,107 @@ pub fn simulate(
     ensure!(diffuse.next_rgb()?.is_none(), "Excess diffuse output");
     if !sun_indices.is_empty() {
         let mut solar = MatrixReader::open(
-            &scratch.join("annual-solar-rgb.mtx"),
+            &scratch.join("annual-solar-patch-rgb.mtx"),
             sensor_count,
-            sun_indices.len(),
+            time_count,
+        )?;
+        let mut direct_patch = MatrixReader::open(
+            &scratch.join("annual-direct-patch-rgb.mtx"),
+            sensor_count,
+            time_count,
         )?;
         for sensor in 0..sensor_count {
-            for &index in &sun_indices {
+            for &index in &weather_indices {
                 let rgb = solar
                     .next_rgb()?
-                    .context("Incomplete solar sensor/time matrix")?;
+                    .context("Incomplete full solar patch matrix")?;
+                let direct = direct_patch
+                    .next_rgb()?
+                    .context("Incomplete direct solar patch matrix")?;
+                // The pinned generator may populate low-altitude solar patches
+                // even when it emits no finite solar source. Apply one explicit
+                // source-emission horizon policy to both direct and indirect sun.
                 if let Ok(position) = output_indices.binary_search(&index) {
+                    if sun_indices.binary_search(&index).is_err() {
+                        continue;
+                    }
                     for channel in 0..3 {
-                        combined[position * sensor_count + sensor][channel] += rgb[channel];
+                        combined[position * sensor_count + sensor][channel] +=
+                            rgb[channel] - direct[channel];
                     }
                 }
             }
             cancelled(cancel)?;
         }
-        ensure!(solar.next_rgb()?.is_none(), "Excess solar output");
+        ensure!(
+            solar.next_rgb()?.is_none() && direct_patch.next_rgb()?.is_none(),
+            "Excess solar patch output"
+        );
+    }
+    let aperture = direct::Aperture::from_model(&model)?;
+    let selected_sources: Vec<_> = solar_sources
+        .into_iter()
+        .filter(|sun| output_indices.binary_search(&sun.interval).is_ok())
+        .collect();
+    let sources_per_batch = MAX_DIRECT_BATCH_RAYS / (sensor_count * profile.direct_solar_samples);
+    let mut direct_batches = Vec::new();
+    for (batch_number, suns) in selected_sources.chunks(sources_per_batch).enumerate() {
+        cancelled(cancel)?;
+        let mut batch = direct::write_batch(
+            &scratch.join("annual-direct-rays.pts"),
+            suns,
+            &model.sensor_grid.sensors,
+            &aperture,
+            profile.direct_solar_samples,
+            cancel,
+        )?;
+        on_log(&format!(
+            "Finite solar batch {}: tracing {} of {} directions after exact aperture culling",
+            batch_number + 1,
+            batch.emitted_rays,
+            batch.attempted_rays
+        ));
+        if batch.emitted_rays > 0 {
+            execute(
+                "rtrace",
+                profile.transmission_arguments(),
+                Some("annual-direct-rays.pts"),
+                "annual-direct-rgb.txt",
+            )?;
+        } else {
+            fs::write(scratch.join("annual-direct-rgb.txt"), b"")?;
+        }
+        let direct_values = direct::integrate_batch(
+            &scratch.join("annual-direct-rgb.txt"),
+            suns,
+            &model.sensor_grid.sensors,
+            &aperture,
+            profile.direct_solar_samples,
+            batch.emitted_rays,
+            cancel,
+        )?;
+        batch.output_sha256 = direct::file_hash(&scratch.join("annual-direct-rgb.txt"))?;
+        for (source_position, sun) in suns.iter().enumerate() {
+            let position = output_indices
+                .binary_search(&sun.interval)
+                .expect("selected source mapping");
+            for sensor in 0..sensor_count {
+                for channel in 0..3 {
+                    combined[position * sensor_count + sensor][channel] +=
+                        direct_values[source_position * sensor_count + sensor][channel];
+                }
+            }
+        }
+        direct_batches.push(batch);
+    }
+    drop(execute);
+    // Only regenerable batch files are removed. Their hashes, exact ordering,
+    // ray counts and generation policy remain in the compact immutable recipe.
+    for name in ["annual-direct-rays.pts", "annual-direct-rgb.txt"] {
+        let path = scratch.join(name);
+        if path.exists() {
+            fs::remove_file(path)?;
+        }
     }
     let combined_f64 = scratch.join("annual-combined.f64");
     let mut writer = BufWriter::new(File::create(&combined_f64)?);
@@ -830,7 +1015,7 @@ pub fn simulate(
     writer.flush()?;
     writer.get_ref().sync_all()?;
     let recipe = AnnualRecipe {
-        schema_version: "greenlens.annual-recipe.v1".into(),
+        schema_version: "greenlens.annual-recipe.v2".into(),
         method_version: METHOD_VERSION.into(),
         engine: identity.clone(),
         profile: profile.clone(),
@@ -847,6 +1032,8 @@ pub fn simulate(
         units: RESULT_UNITS.into(),
         time_policy: TIME_POLICY.into(),
         ground_policy: GROUND_POLICY.into(),
+        direct_policy: DIRECT_POLICY.into(),
+        direct_batches,
         child_environment: BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
         processes: processes.clone(),
     };

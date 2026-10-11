@@ -304,6 +304,16 @@ pub fn validate_record(record: &ClimateRunRecord) -> Result<()> {
             && p["adapter_version"] == annual::ADAPTER_VERSION,
         "Missing application/adapter version provenance"
     );
+    for name in [
+        "recipe_sha256",
+        "solar_sources_sha256",
+        "solar_modifiers_sha256",
+    ] {
+        ensure!(
+            p[name].as_str().is_some_and(hash),
+            "Missing or invalid immutable annual provenance digest: {name}"
+        );
+    }
     ensure!(
         p["child_environment"] == json!({"RAYPATH":".;<compatible-engine>/lib"}),
         "Missing or unsupported portable child environment provenance"
@@ -466,15 +476,17 @@ fn expected_processes(
         ),
         (
             "gendaymtx.exe".into(),
-            strings(&[
-                "-O0",
-                "-n",
-                "-D",
-                "annual-suns.rad",
-                "-M",
-                "annual-sun-modifiers.txt",
-                "annual-weather.epw",
-            ]),
+            vec![
+                "-O0".into(),
+                "-m".into(),
+                recipe.profile.sky_basis_mf.to_string(),
+                "-d".into(),
+                "-D".into(),
+                "annual-suns.rad".into(),
+                "-M".into(),
+                "annual-sun-modifiers.txt".into(),
+                "annual-weather.epw".into(),
+            ],
         ),
         (
             "oconv.exe".into(),
@@ -502,20 +514,106 @@ fn expected_processes(
         strings(&["-oa", "annual-coefficients.mtx", "annual-sky.mtx"]),
     ));
     if !recipe.solar_interval_indices.is_empty() {
+        let mut direct = recipe.profile.direct_arguments(recipe.sensor_count);
+        direct.extend([
+            "-V-".into(),
+            "-e".into(),
+            format!("MF:{}", recipe.profile.sky_basis_mf),
+            "-f".into(),
+            "reinhart.cal".into(),
+            "-b".into(),
+            "rbin".into(),
+            "-bn".into(),
+            "Nrbins".into(),
+            "-m".into(),
+            "sky_glow".into(),
+            "annual-diffuse.oct".into(),
+        ]);
+        result.push(("rcontrib.exe".into(), direct));
         result.push((
-            "oconv.exe".into(),
-            strings(&["-f", "annual-scene.rad", "annual-suns.rad"]),
+            "dctimestep.exe".into(),
+            strings(&["-oa", "annual-coefficients.mtx", "annual-solar-sky.mtx"]),
         ));
-        let mut solar = recipe.profile.solar_arguments(recipe.sensor_count);
-        solar.extend(strings(&[
-            "-V+",
-            "-M",
-            "annual-sun-modifiers.txt",
-            "annual-solar.oct",
-        ]));
-        result.push(("rcontrib.exe".into(), solar));
+        result.push((
+            "dctimestep.exe".into(),
+            strings(&[
+                "-oa",
+                "annual-direct-coefficients.mtx",
+                "annual-solar-sky.mtx",
+            ]),
+        ));
+    }
+    for batch in &recipe.direct_batches {
+        if batch.emitted_rays > 0 {
+            result.push(("rtrace.exe".into(), recipe.profile.transmission_arguments()));
+        }
     }
     result
+}
+
+/// The retained recipe pins every regenerated batch's order, shape and digests.
+/// Reading evidence does not retrace rays or execute its recorded commands.
+fn validate_direct_batches(recipe: &annual::AnnualRecipe) -> Result<()> {
+    recipe.profile.validate()?;
+    ensure!(
+        recipe.direct_policy == annual::DIRECT_POLICY,
+        "Unsupported direct solar policy"
+    );
+    ensure!(
+        (1..=annual::MAX_SENSORS).contains(&recipe.sensor_count),
+        "Invalid direct batch sensor count"
+    );
+    let rays_per_sun = recipe
+        .sensor_count
+        .checked_mul(recipe.profile.direct_solar_samples)
+        .context("Direct sample count overflow")?;
+    ensure!(
+        rays_per_sun > 0 && rays_per_sun <= annual::MAX_DIRECT_BATCH_RAYS,
+        "Direct sample count exceeds batch bound"
+    );
+    let suns_per_batch = annual::MAX_DIRECT_BATCH_RAYS / rays_per_sun;
+    let selected = recipe
+        .solar_interval_indices
+        .iter()
+        .copied()
+        .filter(|index| recipe.interval_indices.binary_search(index).is_ok())
+        .collect::<Vec<_>>();
+    ensure!(
+        recipe.direct_batches.len() == selected.len().div_ceil(suns_per_batch),
+        "Direct batch coverage differs from selected solar intervals"
+    );
+    let empty_hash = bytes_hash(b"");
+    for (batch, indices) in recipe
+        .direct_batches
+        .iter()
+        .zip(selected.chunks(suns_per_batch))
+    {
+        let attempted = indices
+            .len()
+            .checked_mul(rays_per_sun)
+            .context("Direct batch size overflow")?;
+        ensure!(
+            batch.interval_indices == indices
+                && batch.attempted_rays == attempted
+                && attempted <= annual::MAX_DIRECT_BATCH_RAYS
+                && batch.emitted_rays <= attempted
+                && batch.emitted_rays.checked_add(batch.culled_rays) == Some(attempted),
+            "Direct batch interval order, count or culling partition differs"
+        );
+        ensure!(
+            hash(&batch.input_sha256) && hash(&batch.output_sha256),
+            "Invalid direct ray input/output digest"
+        );
+        ensure!(
+            if batch.emitted_rays == 0 {
+                batch.input_sha256 == empty_hash && batch.output_sha256 == empty_hash
+            } else {
+                batch.input_sha256 != empty_hash && batch.output_sha256 != empty_hash
+            },
+            "Direct ray digest does not match empty/nonempty batch state"
+        );
+    }
+    Ok(())
 }
 
 /// Zero retained DNI and DHI must produce exact zero in this passive daylight
@@ -599,9 +697,14 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
             );
         }
     }
-    let recipe: annual::AnnualRecipe = read_json(&regular_child(dir, "annual-recipe.json")?)?;
+    let recipe_bytes = bytes(dir, "annual-recipe.json")?;
     ensure!(
-        recipe.schema_version == "greenlens.annual-recipe.v1"
+        record.provenance["recipe_sha256"] == bytes_hash(&recipe_bytes),
+        "Annual recipe differs from immutable run provenance"
+    );
+    let recipe: annual::AnnualRecipe = serde_json::from_slice(&recipe_bytes)?;
+    ensure!(
+        recipe.schema_version == "greenlens.annual-recipe.v2"
             && recipe.method_version == annual::METHOD_VERSION,
         "Unsupported annual recipe"
     );
@@ -610,8 +713,9 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
             && recipe.units == annual::RESULT_UNITS
             && recipe.time_policy == annual::TIME_POLICY
             && recipe.ground_policy == annual::GROUND_POLICY
+            && recipe.direct_policy == annual::DIRECT_POLICY
             && bytes(dir, "annual-receiver.rad")? == annual::RECEIVER_TEXT.as_bytes(),
-        "Unsupported receiver, units, ordering or climate time/ground policy"
+        "Unsupported receiver, units, ordering or climate time/ground/direct policy"
     );
     ensure!(
         serde_json::to_value(&recipe.engine)? == record.provenance["engine"]
@@ -667,6 +771,12 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
         "Scene/sensors differ from authoritative geometry"
     );
     let modifier_bytes = bytes(dir, "annual-sun-modifiers.txt")?;
+    let source_bytes = bytes(dir, "annual-suns.rad")?;
+    ensure!(
+        record.provenance["solar_sources_sha256"] == bytes_hash(&source_bytes)
+            && record.provenance["solar_modifiers_sha256"] == bytes_hash(&modifier_bytes),
+        "Solar definitions differ from immutable run provenance"
+    );
     let mut sun_indices = Vec::new();
     for name in std::str::from_utf8(&modifier_bytes)?
         .lines()
@@ -693,6 +803,8 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
         sun_indices == recipe.solar_interval_indices,
         "Solar modifier mapping differs from recipe"
     );
+    annual::validate_solar_definitions(std::str::from_utf8(&source_bytes)?, &sun_indices)?;
+    validate_direct_batches(&recipe)?;
     let expected = expected_processes(&record, &recipe);
     ensure!(
         recipe.processes.len() == expected.len()

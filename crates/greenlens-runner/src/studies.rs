@@ -393,7 +393,53 @@ pub fn weather_path(
     Ok(Some(root.join(&reference.path)))
 }
 pub fn is_stale(record: &climate::ClimateRunRecord, model: &Model, study: &Study) -> Result<bool> {
-    Ok(record.study.physical_input_hash(&record.model)? != study.physical_input_hash(model)?)
+    climate::validate_record(record)?;
+    Ok(!matches_current_physics(record, model, study)?)
+}
+
+/// The study's Shipping/Reference role is not a complete numerical identity.
+/// Historical profile validation may expand without changing what a new run
+/// requests. Keep that distinction outside immutable stored fingerprints.
+fn matches_current_physics(
+    record: &climate::ClimateRunRecord,
+    model: &Model,
+    study: &Study,
+) -> Result<bool> {
+    if record.study.physical_input_hash(&record.model)? != study.physical_input_hash(model)? {
+        return Ok(false);
+    }
+    let profile = match study.calculation {
+        StudyMode::WeatherHour { profile, .. } | StudyMode::Annual { profile, .. } => profile,
+        StudyMode::StaticOvercast => return Ok(false),
+    };
+    let requested = match profile {
+        greenlens_core::study::NumericalProfile::Shipping => {
+            greenlens_radiance::annual::AnnualProfile::shipping()
+        }
+        greenlens_core::study::NumericalProfile::Reference => {
+            greenlens_radiance::annual::AnnualProfile::reference()
+        }
+    };
+    matches_requested_numerics(record, &requested)
+}
+
+/// Call only after validate_record has checked the retained engine's pinned
+/// package, executable/library policy and fingerprints. Inspection does not
+/// require an installed engine; replay separately checks its complete live map.
+fn matches_requested_numerics(
+    record: &climate::ClimateRunRecord,
+    requested: &greenlens_radiance::annual::AnnualProfile,
+) -> Result<bool> {
+    use greenlens_radiance::{annual, ENGINE_VERSION};
+    let engine: annual::AnnualEngineIdentity =
+        serde_json::from_value(record.provenance["engine"].clone())?;
+    let retained: annual::AnnualProfile =
+        serde_json::from_value(record.provenance["profile"].clone())?;
+    Ok(engine.version == ENGINE_VERSION
+        && engine.adapter_version == annual::ADAPTER_VERSION
+        && engine.method_version == annual::METHOD_VERSION
+        && record.provenance["adapter_version"] == annual::ADAPTER_VERSION
+        && greenlens_core::canonical_hash(&retained)? == greenlens_core::canonical_hash(requested)?)
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -661,9 +707,7 @@ pub fn current_from_records(
     let mut latest = None;
     for (index, record) in records.iter().enumerate() {
         climate::validate_record(record)?;
-        if record.alternative_id != alternative
-            || record.study.physical_input_hash(&record.model)? != result.physical_input_hash
-        {
+        if record.alternative_id != alternative || !matches_current_physics(record, model, study)? {
             continue;
         }
         let finished = chrono::DateTime::parse_from_rfc3339(
@@ -866,6 +910,49 @@ mod current_result_tests {
             forged.provenance["finished_utc"] = json!(timestamp);
             assert!(current_from_records(&record.model, "A", &record.study, &[forged]).is_err());
         }
+    }
+
+    #[test]
+    fn unsupported_numerics_cannot_be_labeled_current() {
+        let tmp = tempfile::tempdir().unwrap();
+        let record = crate::climate::tests::fixture(tmp.path(), false);
+        let mut changed_profile = record.clone();
+        changed_profile.provenance["profile"]["ambient_divisions"] = json!(262144);
+        let mut changed_method = record.clone();
+        changed_method.provenance["engine"]["method_version"] = json!("unsupported-method/999");
+        for unsupported in [changed_profile, changed_method] {
+            assert!(is_stale(&unsupported, &record.model, &record.study).is_err());
+            assert!(
+                current_from_records(&record.model, "A", &record.study, &[unsupported],).is_err()
+            );
+        }
+    }
+
+    #[test]
+    fn same_role_does_not_hide_changed_complete_sampling_or_method() {
+        let tmp = tempfile::tempdir().unwrap();
+        let record = crate::climate::tests::fixture(tmp.path(), false);
+        climate::validate_record(&record).unwrap();
+        let stored_bytes = serde_json::to_vec(&record).unwrap();
+        let profile = greenlens_radiance::annual::AnnualProfile::shipping();
+        assert!(matches_requested_numerics(&record, &profile).unwrap());
+        // Model a future application's numerical request without registering
+        // experimental settings or rewriting this valid historical fixture.
+        let mut next_request = profile.clone();
+        next_request.ambient_divisions *= 2;
+        assert_eq!(next_request.name, profile.name);
+        assert!(!matches_requested_numerics(&record, &next_request).unwrap());
+        next_request = profile.clone();
+        next_request.direct_ambient_divisions *= 2;
+        assert!(!matches_requested_numerics(&record, &next_request).unwrap());
+        next_request = profile.clone();
+        next_request.direct_solar_samples *= 4;
+        assert!(!matches_requested_numerics(&record, &next_request).unwrap());
+        let mut other_method = record.clone();
+        other_method.provenance["engine"]["method_version"] = json!("historical-method/0");
+        assert!(!matches_requested_numerics(&other_method, &profile).unwrap());
+        assert_eq!(serde_json::to_vec(&record).unwrap(), stored_bytes);
+        assert!(!is_stale(&record, &record.model, &record.study).unwrap());
     }
 }
 

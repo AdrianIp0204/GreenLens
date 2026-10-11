@@ -317,8 +317,7 @@ fn render_report(root: &Path, view: &ProjectView, comparisons: &[Value]) -> Resu
             .as_ref()
             .context("Missing climate project")?
             .studies[&run.alternative_id];
-        let physical_current = current_study.physical_input_hash(&current_model.model)?
-            == run.study.physical_input_hash(&run.model)?;
+        let physical_current = !crate::studies::is_stale(run, &current_model.model, current_study)?;
         let metric_current =
             canonical_hash(&current_study.metrics)? == canonical_hash(&run.study.metrics)?;
         write!(html,"<h2>{} · run {}</h2><p><strong>{}</strong></p><p>Physical inputs match current document: {}. Metric settings match: {}. {} sensors; {} retained intervals. UTC run timestamps: {} to {}.</p><p>Weather: {}. Fixed UTC offset {} minutes; source-year labels do not define a real calendar or weekdays.</p><details><summary>Weather attribution, assumptions and warnings</summary><pre>{}</pre><pre>{}</pre></details>",escape(&run.alternative_id),escape(&run.id),escape(run.provenance["calculation_label"].as_str().unwrap_or("")),physical_current,metric_current,run.series.sensor_ids.len(),run.series.interval_count,escape(run.provenance["started_utc"].as_str().unwrap_or("")),escape(run.provenance["finished_utc"].as_str().unwrap_or("")),escape(&run.weather_asset.source.citation),weather.data.location.utc_offset_minutes,escape(&run.weather_asset.source.rights_note),escape(&serde_json::to_string_pretty(&weather.data.warnings)?))?;

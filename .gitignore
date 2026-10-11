@@ -9,6 +9,7 @@
 *.oct
 *.amb
 *.zip
+!tests/fixtures/legacy-static-v0.1.zip
 *.exe
 *.msi
 .env*

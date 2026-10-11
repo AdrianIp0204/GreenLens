@@ -1,9 +1,21 @@
 # Required, entirely local provider/portable-storage verification. No network or
 # Radiance process is started. Missing reviewed input or CLI is a hard failure.
 [CmdletBinding()]
-param([string]$Cli, [string]$OutputDirectory)
+param([string]$Cli, [string]$OutputDirectory, [switch]$FunctionsOnly)
 $ErrorActionPreference = 'Stop'
 $PSNativeCommandUseErrorActionPreference = $false
+function Assert-ReviewedWeatherBinding($Binding, $Dataset) {
+    foreach ($field in @('original_sha256','normalized_sha256','time_axis_sha256')) {
+        $expected = $Dataset.$field
+        $actual = $Binding.$field
+        if ($expected -isnot [string] -or $expected -cnotmatch '^[0-9a-f]{64}$') { throw "Reviewed weather inventory has no valid $field." }
+        if ($actual -isnot [string] -or $actual -cne $expected) { throw "Required weather $field differs from the reviewed dependency inventory." }
+    }
+    if ($Binding.interpretation -cne $Dataset.interpretation) { throw 'Required weather interpretation differs from the reviewed dependency inventory.' }
+}
+# Only the explicit script regression uses this entry point. It produces no
+# acceptance summary and does not count as a provider verification run.
+if ($FunctionsOnly) { return }
 if (-not $Cli) {
     if (-not $env:CARGO_TARGET_DIR) { throw 'Supply -Cli or dot-source scripts/dev-env.ps1 first.' }
     $Cli = Join-Path $env:CARGO_TARGET_DIR 'debug/greenlens.exe'
@@ -63,8 +75,10 @@ $hiddenInput = Assert-OwnedPath (Join-Path $OutputDirectory 'unavailable-origina
 $hiddenAsset = Assert-OwnedPath (Join-Path $OutputDirectory 'unavailable-original-asset')
 Copy-Item -LiteralPath $source -Destination $inputCopy
 $inspection = Invoke-Weather -Arguments @('weather','inspect',$inputCopy,'--source-profile','pvgis-tmy') -Name 'inspect'
+Assert-ReviewedWeatherBinding $inspection.binding $inventory.datasets[0]
 if ($inspection.summary.intervals -ne 8760 -or $inspection.binding.original_sha256 -ne $expectedHash) { throw 'Inspection did not retain the reviewed full-year source identity.' }
 $imported = Invoke-Weather -Arguments @('weather','import',$inputCopy,$asset,'--source-profile','pvgis-tmy','--source-record',$sourceRecord) -Name 'import'
+Assert-ReviewedWeatherBinding $imported.binding $inventory.datasets[0]
 if ($inspection.binding.normalized_sha256 -ne $imported.binding.normalized_sha256) { throw 'Import differs from inspected normalization.' }
 $before = File-Map $asset
 Copy-Item -LiteralPath $asset -Destination $relocated -Recurse
@@ -76,6 +90,7 @@ Move-Item -LiteralPath $asset -Destination $hiddenAsset
 try {
     if ((Test-Path -LiteralPath $inputCopy) -or (Test-Path -LiteralPath $asset)) { throw 'Original import paths remained available.' }
     $reopened = Invoke-Weather -Arguments @('weather','verify',$relocated) -Name 'relocated-verify'
+    Assert-ReviewedWeatherBinding $reopened.binding $inventory.datasets[0]
     if (($reopened | ConvertTo-Json -Depth 50 -Compress) -ne ($imported | ConvertTo-Json -Depth 50 -Compress)) { throw 'Relocated inspection/identity differs.' }
     Assert-SameFiles $before (File-Map $relocated)
     $assetRecord = Get-Content -Raw -LiteralPath (Join-Path $relocated 'asset.json') | ConvertFrom-Json
@@ -107,7 +122,7 @@ Invoke-Weather -Arguments @('weather','inspect',$duplicate,'--source-profile','p
     intervals = 8760
     binding = $reopened.binding
     portable_files_sha256 = $before
-    checks = @('required reviewed full-year EPW', 'explicit profile inspection', 'portable import with attribution', 'byte-identical relocation', 'reopen with original import paths unavailable', 'no engine/network service required', 'missing original rejected', 'checksum corruption rejected', 'unsupported offset rejected', 'same-line conflicting offsets rejected')
+    checks = @('required reviewed full-year EPW', 'original/normalized/time-axis hashes and interpretation match reviewed manifest at inspect/import/reopen', 'explicit profile inspection', 'portable import with attribution', 'byte-identical relocation', 'reopen with original import paths unavailable', 'no engine/network service required', 'missing original rejected', 'checksum corruption rejected', 'unsupported offset rejected', 'same-line conflicting offsets rejected')
     simulation_acceptance = $false
 } | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath (Join-Path $OutputDirectory 'summary.json') -Encoding utf8
 Write-Output "Weather provider verification passed. Evidence: $OutputDirectory"

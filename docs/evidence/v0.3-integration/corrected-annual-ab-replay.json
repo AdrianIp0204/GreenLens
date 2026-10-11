@@ -1,0 +1,70 @@
+{
+  "schema_version": "greenlens.v0.3.annual-replay-evidence.v1",
+  "scope": "Actual same-recipe full-year native integration, not independent physical validation or accepted profiles",
+  "command": "greenlens replay <selected-single-annual-export.zip>",
+  "resources_note": "This frozen executable predates replay resource reporting. Wall time was measured by a caller stopwatch; no replay peak-memory or scratch claim is made.",
+  "records": [
+    {
+      "alternative": "A",
+      "execution": {
+        "package_bytes": 3352066,
+        "started_utc": "2026-10-11T06:54:44.9422701Z",
+        "finished_utc": "2026-10-11T07:00:26.4983869Z",
+        "wall_seconds": 341.5388712,
+        "cli_sha256": "b0b46d98b14057754399f755477ddc853794d9c20048d266b21bdfbcb73a675c",
+        "exit_code": 0,
+        "package_sha256": "9868cc2b3d2e9d65bf25aaf4f28b41e2695ae4f68ea1eea01905e5540feef8cd"
+      },
+      "result": {
+        "checks": [
+          {
+            "intervals": 8760,
+            "max_absolute_error_lux": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "passed": true,
+            "run_id": "78492b5e-35d7-4792-8278-b8f0e436650f",
+            "sensors": 24,
+            "stage": "complete interval/sensor integration comparison",
+            "tolerance": "max(0.5 lx, 0.5% of reference)",
+            "values_checked": 210240,
+            "verification": "same-engine integration, not independent physical validation"
+          }
+        ],
+        "passed": true,
+        "verification": "same-engine integration, not independent physical validation"
+      }
+    },
+    {
+      "alternative": "B",
+      "execution": {
+        "started_utc": "2026-10-11T06:54:55.0708754Z",
+        "cli_sha256": "b0b46d98b14057754399f755477ddc853794d9c20048d266b21bdfbcb73a675c",
+        "package_bytes": 3356780,
+        "wall_seconds": 343.2166079,
+        "exit_code": 0,
+        "finished_utc": "2026-10-11T07:00:38.2998445Z",
+        "package_sha256": "732e8081c15213241312429e61e160b2a7fa1db621879c3efa1589e19e1bee01"
+      },
+      "result": {
+        "checks": [
+          {
+            "intervals": 8760,
+            "max_absolute_error_lux": 0.0,
+            "max_tolerance_ratio": 0.0,
+            "passed": true,
+            "run_id": "95056251-4b38-4152-90c7-9f9c4b740d3c",
+            "sensors": 24,
+            "stage": "complete interval/sensor integration comparison",
+            "tolerance": "max(0.5 lx, 0.5% of reference)",
+            "values_checked": 210240,
+            "verification": "same-engine integration, not independent physical validation"
+          }
+        ],
+        "passed": true,
+        "verification": "same-engine integration, not independent physical validation"
+      }
+    }
+  ],
+  "source_worktree_dirty": true,
+  "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738"
+}

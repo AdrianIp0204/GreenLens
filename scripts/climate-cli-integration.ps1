@@ -1,4 +1,4 @@
-#Requires -Version 7.2
+#Requires -Version 7.5
 # Native real-engine integration, with explicit whole-year mode. No optional engine skip.
 param(
     [ValidateSet('WeatherHour','Annual')][string]$Mode = 'WeatherHour',

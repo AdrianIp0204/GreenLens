@@ -13,5 +13,8 @@
 third-party/** -text -whitespace
 # Preserve reviewed original EPW bytes and their source SHA-256 identities.
 examples/weather/*.epw -text whitespace=cr-at-eol
+# Preserve sealed native evidence bytes, including historical CRLF records.
+docs/evidence/v0.3-integration/*.json -text -whitespace
+tests/fixtures/legacy-static-v0.1.zip binary
 *.png binary
 *.ico binary

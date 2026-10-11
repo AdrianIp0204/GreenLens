@@ -1,0 +1,13 @@
+{
+  "schema_version": "greenlens.legacy-evidence-fixture.v1",
+  "file": "legacy-static-v0.1.zip",
+  "sha256": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec",
+  "bytes": 94116,
+  "source": "GreenLens v0.1 synthetic A/B native evidence export, copied byte-for-byte from the retained release artifact",
+  "application_source_commit": "2c3de39e05271353a3818a2fd10e81c423c27b78",
+  "license": "Apache-2.0 original synthetic model and GreenLens evidence; Radiance binaries are not included",
+  "purpose": "Required legacy reader and real-engine replay compatibility; not annual or measured-building validation",
+  "expected_runs": 2,
+  "expected_sensors_per_run": 77,
+  "record": "docs/release-artifacts.json"
+}

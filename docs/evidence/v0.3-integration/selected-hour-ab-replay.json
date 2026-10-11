@@ -1,0 +1,30 @@
+{
+  "checks": [
+    {
+      "intervals": 1,
+      "max_absolute_error_lux": 0.0,
+      "max_tolerance_ratio": 0.0,
+      "passed": true,
+      "run_id": "194d0693-79fe-42b0-879b-0ca439573617",
+      "sensors": 24,
+      "stage": "complete interval/sensor integration comparison",
+      "tolerance": "max(0.5 lx, 0.5% of reference)",
+      "values_checked": 24,
+      "verification": "same-engine integration, not independent physical validation"
+    },
+    {
+      "intervals": 1,
+      "max_absolute_error_lux": 0.0,
+      "max_tolerance_ratio": 0.0,
+      "passed": true,
+      "run_id": "ca9fc3ca-873a-46dc-80db-d76e48b438aa",
+      "sensors": 24,
+      "stage": "complete interval/sensor integration comparison",
+      "tolerance": "max(0.5 lx, 0.5% of reference)",
+      "values_checked": 24,
+      "verification": "same-engine integration, not independent physical validation"
+    }
+  ],
+  "passed": true,
+  "verification": "same-engine integration, not independent physical validation"
+}

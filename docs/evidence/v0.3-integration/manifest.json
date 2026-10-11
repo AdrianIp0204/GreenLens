@@ -1,0 +1,48 @@
+{
+  "schema_version": "greenlens.v0.3.integration-evidence.v1",
+  "recorded_utc": "2026-10-11T06:14:29.7301834Z",
+  "scope": "Native selected-hour A/B integration and unchanged legacy science; four complete 8760-interval annual A/B shipping/reference runs, retained failed metric convergence, and two actual full-year shipping replays. Same-engine replay is integration verification, not accepted numerical profiles, independent physical validation, final-source CI or installed-desktop acceptance.",
+  "source_note": "Climate CLI source and dirty state are embedded in each real run. The older legacy scientific test harness does not embed a source commit; this record binds the observed test executable and complete report, not a final-source CI claim.",
+  "legacy_test": {
+    "command": "cargo test -p greenlens-core -p greenlens-radiance -p greenlens-runner --lib --tests -- --nocapture",
+    "elapsed_seconds": 2936.29,
+    "binary": "scientific-06b49616627934fb.exe",
+    "binary_sha256": "f65dcbb45c8880cde419be2036575a8bb0e0d2c69aab6295ab14f979c9dbdd84",
+    "passed": true
+  },
+  "climate_command": "./scripts/climate-cli-integration.ps1 -Mode WeatherHour -IntervalIndex 1908 -Replay -Cli <frozen-candidate-cli> -OutputDirectory <new-verification-directory>",
+  "climate_export_sha256": "a6f4949e040c8cb94b65e3828a14a7d265afa45ec9807ba9f7f6060d731d0806",
+  "records": [
+    {
+      "sha256": "5a86efdf026c70ccdeedff3dc72ead548bfda3cfaf22ef8518b21ca1ff54ddae",
+      "file": "legacy-science.json",
+      "bytes": 27409
+    },
+    {
+      "sha256": "f4a25d9fd75708f929153d6ae6ef7bcf48734a8f085a464d9d76995d9d6ae7cb",
+      "file": "selected-hour-ab-replay.json",
+      "bytes": 995
+    },
+    {
+      "sha256": "3e06bf5d9da6b73ecc41f5b8bc4556263c2cab0d8cd6290feba73e00659c61d8",
+      "file": "selected-hour-ab-summary.json",
+      "bytes": 47612
+    },
+    {
+      "file": "legacy-v0.1-replay.json",
+      "sha256": "5c558661953ac1f9f1fd7b7cb5f8eff70758dc5fb369c16aac5cc7b1ca96a644",
+      "bytes": 1488
+    },
+    {
+      "file": "corrected-four-run-convergence-failed.json",
+      "bytes": 156547,
+      "sha256": "8fb4a4b56b0de0b300f50a58496b351b633a592842e015f3aadbac976ee5182e"
+    },
+    {
+      "file": "corrected-annual-ab-replay.json",
+      "sha256": "0d3d4b76887f03bc883d1aa4c4d24671689ad648235b593e3eef88c11dc31015",
+      "bytes": 2899
+    }
+  ],
+  "release_acceptance_complete": false
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": "greenlens.v0.3.legacy-replay-evidence.v1",
+  "candidate": {
+    "created_utc": "2026-10-11T06:16:34.4777627Z",
+    "scope": "Fresh native v0.1 replay with only the three legacy executables and original library bytes",
+    "cli_sha256": "32797f7ce2c6b106a485d6ff010d0c44ca254ac4b59624833ff4c0f8dfd1e73c",
+    "annual_executables_present": false,
+    "engine_executables": [
+      "gensky.exe",
+      "oconv.exe",
+      "rtrace.exe"
+    ],
+    "legacy_package_sha256": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec"
+  },
+  "completed_utc": "2026-10-11T06:29:04.5784020Z",
+  "command": "greenlens replay tests/fixtures/legacy-static-v0.1.zip --engine-dir <static-only-engine-copy>",
+  "fixture_unchanged": true,
+  "fixture_bytes": 94116,
+  "replay": {
+    "checks": [
+      {
+        "max_absolute_error_lux": 0.0,
+        "passed": true,
+        "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+        "sensors": 77
+      },
+      {
+        "max_absolute_error_lux": 0.0,
+        "passed": true,
+        "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+        "sensors": 77
+      }
+    ],
+    "passed": true,
+    "verification": "same-engine integration, not independent physical validation"
+  },
+  "scope": "Actual original v0.1 same-engine replay with only gensky/oconv/rtrace present; no annual engines. The reusable legacy-replay.ps1 wrapper was prepared afterward, not executed for this record.",
+  "release_acceptance_complete": false
+}

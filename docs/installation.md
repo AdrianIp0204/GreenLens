@@ -1,13 +1,13 @@
 # Installation and launch
 
-The per-user NSIS installation and production desktop A/B run, save, reopen and export workflow have been exercised on native Windows with no development server. See [native verification](native-verification.md) and [release progress](progress.md) for build identities and acceptance status. The following clean-machine installation route is documented; a separate clean Windows installation has not been tested.
+The historical v0.1 package was exercised on native Windows with no development server. Fresh v0.2 package and interaction outcomes are recorded separately in [v0.2 native verification](v0.2-native-verification.md) and [release progress](progress.md); consult these for actual acceptance status. The following clean-machine installation route is documented; a separate clean Windows installation has not been tested.
 
 ## Windows users
 
 1. Use a supported x64 Windows installation with the [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) and [Microsoft Visual C++ v14 x64 Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist). Use the latest supported redistributable, at least as recent as the release's MSVC toolset. GreenLens uses the installed Evergreen WebView2 Runtime. Its installer does not silently acquire either Microsoft prerequisite. See [runtime requirements and observed imports](windows-runtime.md).
 2. Obtain the unsigned GreenLens per-user NSIS setup package from the project build/release artifacts. Signing and SmartScreen reputation are not claimed. The application installs for the current user.
 3. Acquire the separately licensed pinned Radiance engine. In PowerShell 7.2 or newer, from a source checkout, run `./scripts/install-radiance.ps1`. It verifies the official release asset and SHA-256 before extraction into `%LOCALAPPDATA%/GreenLens/engines/radiance-6.0.2/package`. There is no engine binary inside the GreenLens evidence ZIP or desktop installer.
-4. Launch GreenLens from its installed shortcut. Use the synthetic A/B example, enter a project directory and run the calculation. Save the completed result, run the second alternative, compare, then export to a new ZIP filename.
+4. Launch GreenLens from its installed shortcut. The synthetic A/B document opens in the four-view workspace. Use **Save** and select a project folder in the native dialog, then **Run**. Switch designs, run the second alternative, use **A/B compare**, then **Export** to a new ZIP filename. See the [workspace guide](workspace-guide.md) for editing and document protection.
 
 For a default installation, the exact PowerShell launch command is:
 
@@ -15,7 +15,7 @@ For a default installation, the exact PowerShell launch command is:
 & "$env:LOCALAPPDATA/Programs/GreenLens/greenlens-desktop.exe"
 ```
 
-The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and retained notices. Extract the entire directory before use. From the extracted `GreenLens-CLI-0.1.0-windows-x64` directory:
+The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and retained notices. Extract the entire directory before use. From the extracted `GreenLens-CLI-0.2.0-windows-x64` directory:
 
 ```powershell
 ./greenlens.exe doctor
@@ -27,7 +27,7 @@ The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and r
 ./greenlens.exe replay "$env:LOCALAPPDATA/GreenLens/projects/example-evidence.zip"
 ```
 
-For an engine installed elsewhere, select the directory containing `bin` and `lib` in the app. CLI commands accept `--engine-dir <directory>`. Initial acquisition needs internet; ordinary calculation, reopening, report viewing and exporting operate locally without it.
+For an engine installed elsewhere, enter the directory containing `bin` and `lib` under **Analysis → Project and engine**. CLI commands accept `--engine-dir <directory>`. Initial acquisition needs internet; ordinary calculation, reopening, report viewing and exporting operate locally without it.
 
 ## Build from source
 

@@ -250,11 +250,24 @@ fn legacy_project_display_roundtrip_never_changes_scientific_inputs_or_scene() {
     })
     .collect::<serde_json::Map<_, _>>();
     project.display_state = Some(serde_json::from_value(json!({"schema_version":display::DISPLAY_SCHEMA_VERSION,"active_view":"top","maximized_view":"top","mode":"wireframe","cameras":{},"layers":layers,"objects":{"window":{"visible":false,"locked":true},"sensor:s000001":{"visible":false}},"grid_visible":true,"grid_snap":true,"object_snap":true,"ortho":true,"gumball":false})).unwrap());
+    assert!(project.display_state.as_ref().unwrap().cutaway);
     let saved = save_project(directory.path(), &project, None).unwrap();
     assert_eq!(saved.project.display_state, project.display_state);
     let after = validate_model(&saved.project.alternatives[0].model).unwrap();
     assert_eq!(before.scientific_input_hash, after.scientific_input_hash);
     assert_eq!(scene, greenlens_radiance::scene_text(&after).unwrap());
+    project.display_state.as_mut().unwrap().cutaway = false;
+    let opaque = save_project(directory.path(), &project, Some(&saved.revision)).unwrap();
+    assert!(!opaque.project.display_state.as_ref().unwrap().cutaway);
+    let after_cutaway = validate_model(&opaque.project.alternatives[0].model).unwrap();
+    assert_eq!(
+        before.scientific_input_hash,
+        after_cutaway.scientific_input_hash
+    );
+    assert_eq!(
+        scene,
+        greenlens_radiance::scene_text(&after_cutaway).unwrap()
+    );
     let state = project.display_state.as_mut().unwrap();
     state.objects.insert(
         "arbitrary-mesh:1".into(),

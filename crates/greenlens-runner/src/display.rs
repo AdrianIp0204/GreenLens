@@ -5,6 +5,10 @@ use std::collections::BTreeMap;
 
 pub const DISPLAY_SCHEMA_VERSION: &str = "greenlens.display.v0.2";
 
+fn default_cutaway() -> bool {
+    true
+}
+
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq, PartialOrd, Ord)]
 #[serde(rename_all = "snake_case")]
 pub enum ViewId {
@@ -53,6 +57,8 @@ pub struct DisplayState {
     pub active_view: ViewId,
     pub maximized_view: Option<ViewId>,
     pub mode: DisplayMode,
+    #[serde(default = "default_cutaway")]
+    pub cutaway: bool,
     pub cameras: BTreeMap<ViewId, CameraState>,
     pub layers: BTreeMap<String, LayerState>,
     #[serde(default)]

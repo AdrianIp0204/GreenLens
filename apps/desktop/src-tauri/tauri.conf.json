@@ -11,7 +11,7 @@
     "windows": { "staticVCRuntime": false }
   },
   "app": {
-    "windows": [{ "title": "GreenLens", "width": 1440, "height": 900, "minWidth": 900, "minHeight": 560 }],
+    "windows": [{ "title": "GreenLens", "width": 1440, "height": 900, "minWidth": 900, "minHeight": 500 }],
     "security": {
       "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'",
       "capabilities": ["main-window"]

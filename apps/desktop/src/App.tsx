@@ -1,172 +1,120 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { invoke, isTauri } from '@tauri-apps/api/core';
-import type { Comparison, JobStatus, Model, Project, ProjectView, RunRecord, Statistics, ValidatedModel } from './types';
-import ModelEditor from './ModelEditor';
-import { activeJob, luxColor, visibleResult } from './presentation.mjs';
+import { getCurrentWindow } from '@tauri-apps/api/window';
+import type { Comparison, Model, RunRecord, ValidatedModel } from './types';
+import { visibleResult } from './presentation.mjs';
+import { semanticObjects, objectLabel, objectVisibility } from './viewport/entities';
+import type { LayerId, NumericHandleRequest, PointerStatus, ToolId, ViewCommand, ViewId } from './viewport/types';
+import { useDocument, errorText } from './workspace/useDocument';
+import { COMMANDS, modelCommand, parseCommand, parseQuantity, repeatable, setParameter, suggestions } from './workspace/commands.mjs';
+import { isTextTarget } from './workspace/document.mjs';
+import PropertiesPanel, { ParameterField } from './workspace/PropertiesPanel';
+import AnalysisContent, { fmt, Legend, METHOD, Stats } from './workspace/AnalysisContent';
 
-const SceneView = lazy(() => import('./SceneView'));
+const SceneView=lazy(()=>import('./SceneView'));
+const layers:Record<LayerId,string>={room:'Room',window:'Glazing',overhang:'Shading',obstruction:'Context',sensors:'Sensors',analysis:'Results'};
+const toolNames:Record<ToolId,string>={select:'Select',move:'Move',resize:'Resize',rotate:'Rotate'};
+function ToolIcon({name}:{name:string}){const paths:Record<string,string>={select:'M5 3v16l4-5 5 5 3-3-5-5 6-2Z',move:'M12 2v20M2 12h20M8 6l4-4 4 4M8 18l4 4 4-4M6 8l-4 4 4 4M18 8l4 4-4 4',resize:'M4 9V4h5M15 20h5v-5M4 4l16 16M4 15v5h5M15 4h5v5',rotate:'M19 8a8 8 0 1 0 1 8M19 3v6h-6',shade:'M3 7h18v3H3ZM6 10v10M18 10v10',box:'M3 7l9-4 9 4v11l-9 4-9-4ZM3 7l9 4 9-4M12 11v11',remove:'M5 6h14M9 3h6M7 6v15h10V6M10 10v7M14 10v7'};return <svg viewBox="0 0 24 24" aria-hidden="true"><path d={paths[name]??paths.select} fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/></svg>;}
 
-const method = 'Static daylight illuminance under a prescribed CIE standard overcast sky.';
-const number = (value: number, places = 1) => Number.isFinite(value) ? value.toLocaleString('en', { maximumFractionDigits: places, minimumFractionDigits: places }) : '—';
-const errorText = (error: unknown) => typeof error === 'string' ? error : error instanceof Error ? error.message : JSON.stringify(error);
-const json = (value: unknown) => JSON.stringify(value, null, 2);
-
-function Stats({ statistics, prefix = '' }: { statistics: Statistics; prefix?: string }) {
-  return <dl className="stats">{(['min', 'mean', 'max'] as const).map(key => <div key={key}><dt>{prefix}{key}</dt><dd>{number(statistics[key])}<small> lx</small></dd></div>)}</dl>;
-}
-function Legend({ maximum }: { maximum: number }) {
-  return <div className="legend"><div className="legend-strip" /><div><span>0 lx</span><span>{number(maximum / 2)} lx</span><span>{number(maximum)} lx</span></div></div>;
-}
-function Heatmap({ run, maximum, caption }: { run: RunRecord; maximum: number; caption: string }) {
-  const { rows, columns, actual_spacing_x_m, actual_spacing_y_m } = run.validated.sensor_grid;
-  return <figure className="heatmap"><figcaption>{caption}</figcaption><div className="heatmap-grid" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)`, aspectRatio: `${columns * actual_spacing_x_m}/${rows * actual_spacing_y_m}` }}>
-    {Array.from({ length: rows }, (_, y) => rows - 1 - y).flatMap(y => Array.from({ length: columns }, (_, x) => {
-      const i = y * columns + x;
-      return <span key={i} style={{ backgroundColor: luxColor(run.lux[i], maximum) }} title={`${run.validated.sensor_grid.sensors[i].id}: ${number(run.lux[i])} lx`} />;
-    }))}
-  </div><p className="hint">Local +Y ↑ · window at bottom · {run.lux.length} sensors</p></figure>;
-}
-
-export default function App() {
-  const [project, setProject] = useState<Project | null>(null);
-  const [revision, setRevision] = useState<string | null>(null);
-  const [results, setResults] = useState<RunRecord[]>([]);
-  const [alternative, setAlternative] = useState('A');
-  const [validated, setValidated] = useState<ValidatedModel | null>(null);
-  const [validationError, setValidationError] = useState('');
-  const [validating, setValidating] = useState(false);
-  const [job, setJob] = useState<JobStatus | null>(null);
-  const [engineDir, setEngineDir] = useState('');
-  const [engineInfo, setEngineInfo] = useState<unknown>(null);
-  const [directory, setDirectory] = useState('');
-  const [savedDirectory, setSavedDirectory] = useState('');
-  const [destination, setDestination] = useState('');
-  const [busy, setBusy] = useState(false);
-  const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
-  const [view, setView] = useState<'model' | 'compare' | 'evidence'>('model');
-  const [comparison, setComparison] = useState<Comparison | null>(null);
-  const [comparisonError, setComparisonError] = useState('');
-  const [selectedSensor, setSelectedSensor] = useState<number | null>(null);
-  const [historicalId, setHistoricalId] = useState('');
-  const [dirty, setDirty] = useState(false);
-  const collecting = useRef<string | null>(null);
-  const attemptedCollection = useRef<string | null>(null);
-  const projectRef = useRef(project); const revisionRef = useRef(revision); const directoryRef = useRef(savedDirectory);
-  useEffect(() => { projectRef.current = project; revisionRef.current = revision; directoryRef.current = savedDirectory; }, [project, revision, savedDirectory]);
-
-  const applyView = useCallback((value: ProjectView, path: string) => {
-    setProject(value.project); setRevision(value.revision); setResults(value.results); setSavedDirectory(path); setDirectory(path); setDirty(false);
-    projectRef.current = value.project; revisionRef.current = value.revision; directoryRef.current = path;
-  }, []);
-  const initialize = useCallback(async () => {
-    setError('');
-    if (!isTauri()) { setError('Open the native GreenLens application to use its Rust backend. A browser preview cannot run or verify simulations.'); return; }
-    try {
-      const value = await invoke<Project>('example');
-      setProject(value); setRevision(null); setResults([]); setJob(null); setDirectory(''); setSavedDirectory(''); setAlternative('A'); setHistoricalId(''); setDirty(true); setMessage('Synthetic example ready. Choose a project directory, then run Alternative A.');
-    } catch (e) { setError(errorText(e)); }
-  }, []);
-  useEffect(() => { void initialize(); }, [initialize]);
-  const model = project?.alternatives.find(a => a.id === alternative)?.model ?? null;
-  useEffect(() => {
-    if (!model) return;
-    let live = true; setValidating(true); setValidationError(''); setValidated(null);
-    const timer = window.setTimeout(() => {
-      invoke<ValidatedModel>('validate', { model }).then(value => { if (live) { setValidated(value); setValidationError(''); } }).catch(e => { if (live) setValidationError(errorText(e)); }).finally(() => { if (live) setValidating(false); });
-    }, 180);
-    return () => { live = false; window.clearTimeout(timer); };
-  }, [model]);
-  const running = activeJob(job);
-  useEffect(() => {
-    if (!running) return;
-    let live = true;
-    const timer = window.setInterval(() => { invoke<JobStatus>('job_status').then(value => { if (live) setJob(value); }).catch(e => { if (live) setError(errorText(e)); }); }, 500);
-    return () => { live = false; window.clearInterval(timer); };
-  }, [running]);
-
-  const collect = useCallback(async (status: JobStatus) => {
-    const p = projectRef.current, path = directoryRef.current;
-    if (!p || !path || !status.result || collecting.current === status.id) return;
-    collecting.current = status.id; attemptedCollection.current = status.id; setBusy(true);
-    try {
-      const value = await invoke<ProjectView>('collect_run', { path, project: p, expectedRevision: revisionRef.current });
-      applyView(value, path); setMessage(`Alternative ${status.result.alternative_id} completed and evidence saved.`);
-    } catch (e) { setError(`Calculation completed, but evidence was not saved: ${errorText(e)}. Use Save completed evidence after resolving the conflict.`); }
-    finally { collecting.current = null; setBusy(false); }
-  }, [applyView]);
-  useEffect(() => { if (job?.state === 'completed' && attemptedCollection.current !== job.id) void collect(job); }, [job, collect]);
-
-  const records = useMemo(() => {
-    const all = [...results];
-    if (job?.result && !all.some(run => run.id === job.result?.id)) all.push(job.result);
-    return all;
-  }, [results, job]);
-  const latestA = records.filter(r => r.alternative_id === 'A').at(-1) ?? null;
-  const latestB = records.filter(r => r.alternative_id === 'B').at(-1) ?? null;
-  const latest = alternative === 'A' ? latestA : latestB;
-  const selectedRun = records.find(run => run.id === historicalId && run.alternative_id === alternative) ?? latest;
-  const currentResult = visibleResult(validated, selectedRun, validating) as RunRecord | null;
-  const stale = Boolean(selectedRun && (!validated || selectedRun.validated.scientific_input_hash !== validated.scientific_input_hash));
-  const uncollected = Boolean(job?.result && !results.some(run => run.id === job.result?.id));
-  useEffect(() => {
-    let live = true; setComparison(null); setComparisonError('');
-    if (latestA && latestB) invoke<Comparison>('compare_runs', { a: latestA, b: latestB }).then(value => { if (live) setComparison(value); }).catch(e => { if (live) setComparisonError(errorText(e)); });
-    return () => { live = false; };
-  }, [latestA, latestB]);
-  const scale = comparison?.scale_max_lux ?? currentResult?.statistics.max ?? 0;
-
-  const action = async (body: () => Promise<void>) => { setBusy(true); setError(''); setMessage(''); try { await body(); } catch (e) { setError(errorText(e)); } finally { setBusy(false); } };
-  const save = async () => {
-    if (!project || !directory.trim()) throw new Error('Enter a project directory first.');
-    const value = await invoke<ProjectView>('save_project', { path: directory.trim(), project, expectedRevision: directory.trim() === savedDirectory ? revision : null });
-    applyView(value, directory.trim()); return value;
+export default function App(){
+  const doc=useDocument();
+  const [selection,setSelection]=useState<string[]>([]),[tool,setTool]=useState<ToolId>('select');
+  const [panel,setPanel]=useState('properties'),[panelWidth,setPanelWidth]=useState(324),[panelHidden,setPanelHidden]=useState(false);
+  const [drawer,setDrawer]=useState<string|null>(null),[command,setCommand]=useState(''),[prompt,setPrompt]=useState<{prefix:string;label:string}|null>(null);
+  const [history,setHistory]=useState<string[]>([]),[expanded,setExpanded]=useState(false),[lastRepeat,setLastRepeat]=useState('');
+  const [viewCommand,setViewCommand]=useState<ViewCommand>(),[pointer,setPointer]=useState<PointerStatus>({world:null,snap:null,view:'perspective'});
+  const [preview,setPreview]=useState(''),[numeric,setNumeric]=useState<NumericHandleRequest|null>(null),[numericText,setNumericText]=useState('');
+  const [engineDir,setEngineDir]=useState(''),[engineInfo,setEngineInfo]=useState('');
+  const [comparison,setComparison]=useState<Comparison|null>(null),[comparisonError,setComparisonError]=useState('');
+  const [hashes,setHashes]=useState<Record<string,string>>({}),[metrics,setMetrics]=useState('');
+  const [recoverConfirm,setRecoverConfirm]=useState(false);
+  const commandRef=useRef<HTMLInputElement>(null),seq=useRef(0);
+  const records=useMemo(()=>doc.job?.result&&!doc.results.some(r=>r.id===doc.job?.result?.id)?[...doc.results,doc.job.result]:doc.results,[doc.results,doc.job]);
+  const latest=(id:string):RunRecord|null=>[...records].reverse().find(r=>r.alternative_id===id)??null;
+  const latestA=latest('A'),latestB=latest('B'),run=latest(doc.alternative);
+  const current=visibleResult(doc.validated,run,doc.validating) as RunRecord|null;
+  const stale=Boolean(run&&!current),staleA=Boolean(latestA&&hashes.A!==latestA.validated.scientific_input_hash),staleB=Boolean(latestB&&hashes.B!==latestB.validated.scientific_input_hash);
+  const scale=Math.max(1,current?.statistics.max??0,comparison?.scale_max_lux??0);
+  const objects=useMemo(()=>doc.validated?semanticObjects(doc.validated):[],[doc.validated]);
+  const chosen=objects.find(o=>o.id===selection[0]);
+  const locked=Boolean(chosen&&objectVisibility(chosen.id,chosen.layer,doc.display).locked);
+  const editDisabled=doc.busy||doc.running||Boolean(doc.guard)||Boolean(preview);
+  useEffect(()=>{setSelection([]);setTool('select');setPrompt(null);setNumeric(null);setPreview('');},[doc.documentId,doc.alternative]);
+  useEffect(()=>{setSelection(ids=>{const next=ids.filter(id=>{const object=objects.find(o=>o.id===id);return object&&objectVisibility(id,object.layer,doc.display).visible;});return next.length===ids.length?ids:next;});},[objects,doc.display]);
+  useEffect(()=>{let live=true;if(!doc.project)return;Promise.all(doc.project.alternatives.map(async a=>[a.id,(await invoke<ValidatedModel>('validate',{model:a.model})).scientific_input_hash] as const)).then(entries=>live&&setHashes(Object.fromEntries(entries))).catch(()=>{});return()=>{live=false;};},[doc.project?.alternatives]);
+  useEffect(()=>{let live=true;setComparison(null);setComparisonError('');if(latestA&&latestB)invoke<Comparison>('compare_runs',{a:latestA,b:latestB}).then(value=>live&&setComparison(value)).catch(e=>live&&setComparisonError(errorText(e)));return()=>{live=false;};},[latestA,latestB]);
+  useEffect(()=>{const update=()=>{const css=`${window.innerWidth} × ${window.innerHeight} CSS px · DPR ${window.devicePixelRatio}`;setMetrics(css);if(isTauri())Promise.all([getCurrentWindow().innerSize(),getCurrentWindow().scaleFactor()]).then(([s,d])=>setMetrics(`${css} · native ${s.width} × ${s.height} px · scale ${d}`)).catch(()=>{});};update();window.addEventListener('resize',update);return()=>window.removeEventListener('resize',update);},[]);
+  const log=(text:string)=>setHistory(h=>[...h.slice(-149),text]);
+  const navigate=(kind:ViewCommand['kind'],view?:ViewId)=>setViewCommand({sequence:++seq.current,kind,view});
+  const select=(ids:string[])=>{setSelection(ids);setPanel('properties');};
+  const toggleAid=(key:'grid_visible'|'grid_snap'|'ortho'|'object_snap'|'gumball'|'cutaway')=>doc.setDisplay(d=>({...d,[key]:!d[key]}));
+  const dispatch=async(text:string)=>{
+    try{
+      const parsed=parseCommand(text);if(!parsed)return;const {name,args}=parsed;log(`Command: ${text}`);doc.setError('');setPrompt(null);setCommand('');
+      if(repeatable(name))setLastRepeat(name);else setLastRepeat('');
+      if(['New','Open','Close'].includes(name)){await doc.replace(name as 'New'|'Open'|'Close');return;}
+      if(name==='Save'){await doc.save();return;}if(name==='SaveAs'){await doc.saveAs();return;}
+      if(name==='Undo'||name==='Redo'){await doc.traverse(name.toLowerCase() as 'undo'|'redo');return;}
+      if(name==='Run'){await doc.start(engineDir);return;}
+      if(name==='Cancel'){setNumeric(null);setPreview('');setTool('select');if(doc.running)await doc.cancel();else setSelection([]);return;}
+      if(name==='Export'){await doc.exportEvidence();return;}
+      if(name==='4View'){navigate('four');return;}
+      if(['Perspective','Top','Front','Right'].includes(name)){navigate('maximize',name.toLowerCase() as ViewId);return;}
+      if(name==='ZoomExtents'||name==='ZoomSelected'){navigate(name==='ZoomExtents'?'extents':'selected');return;}
+      if(name==='SelectNone'){setSelection([]);return;}
+      if(name==='SelectAll'){setSelection(objects.filter(o=>!o.id.startsWith('surface:')&&!o.id.startsWith('sensor:')&&objectVisibility(o.id,o.layer,doc.display).visible&&!objectVisibility(o.id,o.layer,doc.display).locked).map(o=>o.id));return;}
+      if(name==='Hide'||name==='Lock'){if(!selection.length)throw new Error('Select objects first.');doc.setDisplay(d=>({...d,objects:{...d.objects,...Object.fromEntries(selection.map(id=>[id,{...d.objects[id],[name==='Hide'?'visible':'locked']:name==='Lock'}]))}}));if(name==='Hide')setSelection([]);return;}
+      if(name==='Show'||name==='Unlock'){const key=name==='Show'?'visible':'locked',value=name==='Show';doc.setDisplay(d=>({...d,layers:Object.fromEntries(Object.entries(d.layers).map(([id,l])=>[id,{...l,[key]:value}])) as typeof d.layers,objects:Object.fromEntries(Object.entries(d.objects).map(([id,l])=>[id,{...l,[key]:value}]))}));return;}
+      if(['Wireframe','Shaded','Analysis'].includes(name)){doc.setDisplay(d=>({...d,mode:name.toLowerCase() as typeof d.mode}));return;}
+      const aids:Record<string,'grid_visible'|'grid_snap'|'ortho'|'object_snap'|'gumball'|'cutaway'>={Cutaway:'cutaway',Grid:'grid_visible',Snap:'grid_snap',Ortho:'ortho',Osnap:'object_snap',Gumball:'gumball'};
+      if(aids[name]){toggleAid(aids[name]);return;}
+      if(!doc.model)throw new Error('Open a document first.');
+      if(editDisabled)throw new Error('Finish the current edit or calculation first.');
+      const result=modelCommand(doc.model,selection,name,args);
+      if(!result.model){setPrompt({prefix:text,label:result.prompt});commandRef.current?.focus();return;}
+      if(await doc.commit(result.model,result.label)){if(result.target)select(result.model[result.target as keyof Model]===null?[]:[result.target]);}
+    }catch(e){doc.setError(errorText(e));log(`Rejected: ${errorText(e)}`);}
   };
-  const run = () => action(async () => {
-    if (!model || !validated || validating) throw new Error('Resolve model validation before running.');
-    if (uncollected) throw new Error('Save the completed evidence before starting another run.');
-    await save();
-    attemptedCollection.current = null;
-    const status = await invoke<JobStatus>('start_run', { model, alternativeId: alternative, engineDir: engineDir.trim() || null });
-    setJob(status); setHistoricalId(''); setMessage(`Alternative ${alternative} queued. One local simulation runs at a time.`);
-  });
-  const updateModel = (value: Model) => { if (!project) return; setProject({ ...project, alternatives: project.alternatives.map(a => a.id === alternative ? { ...a, model: value } : a) }); setDirty(true); setSelectedSensor(null); };
+  const dispatchRef=useRef(dispatch);dispatchRef.current=dispatch;
+  useEffect(()=>{const key=(e:KeyboardEvent)=>{if(isTextTarget(e.target)||doc.guard||numeric||recoverConfirm)return;
+    if(e.key==='Escape'){setPrompt(null);setCommand('');setSelection([]);setTool('select');return;}
+    const shortcuts:Record<string,string>={n:'New',o:'Open',s:e.shiftKey?'SaveAs':'Save',z:e.shiftKey?'Redo':'Undo',y:'Redo',a:'SelectAll'};
+    if((e.ctrlKey||e.metaKey)&&shortcuts[e.key.toLowerCase()]){e.preventDefault();void dispatchRef.current(shortcuts[e.key.toLowerCase()]);return;}
+    if(e.key==='Delete'){e.preventDefault();void dispatchRef.current('Remove');return;}
+    if(e.key==='F8'||e.key==='F9'){e.preventDefault();void dispatchRef.current(e.key==='F8'?'Ortho':'Snap');return;}
+    if(e.key==='Enter'&&lastRepeat&&!(e.target instanceof HTMLButtonElement)){e.preventDefault();void dispatchRef.current(lastRepeat);return;}
+    if(/^[a-z]$/i.test(e.key)&&!e.ctrlKey&&!e.altKey&&!e.metaKey){commandRef.current?.focus();setCommand(e.key);e.preventDefault();}
+  };window.addEventListener('keydown',key);return()=>window.removeEventListener('keydown',key);},[doc.guard,numeric,recoverConfirm,lastRepeat]);
+  const submitCommand=()=>{let text=command.trim();if(prompt&&text){try{parseCommand(text);}catch{text=`${prompt.prefix} ${text}`;}}if(!text&&lastRepeat)text=lastRepeat;if(text)void dispatch(text);};
+  const complete=suggestions(command.split(/\s/)[0]);
+  const button=(name:string,label=name,disabled=false)=><button key={name} disabled={disabled} onClick={()=>void dispatch(name)}>{label}</button>;
+  const menu=(label:string,commands:string[])=><details className="menu" key={label}><summary>{label}</summary><div role="menu">{commands.map(name=><button key={name} role="menuitem" onClick={e=>{e.currentTarget.closest('details')?.removeAttribute('open');void dispatch(name);}}>{name.replace('SaveAs','Save As').replace('Zoom','Zoom ')}<small>{COMMANDS.find(c=>c[0]===name)?.[1]}</small></button>)}</div></details>;
+  const beginResize=(event:React.PointerEvent)=>{const start=event.clientX,width=panelWidth;event.currentTarget.setPointerCapture(event.pointerId);const node=event.currentTarget;const move=(e:PointerEvent)=>setPanelWidth(Math.min(520,Math.max(260,width+start-e.clientX)));const end=()=>{node.removeEventListener('pointermove',move as EventListener);node.removeEventListener('pointerup',end);};node.addEventListener('pointermove',move as EventListener);node.addEventListener('pointerup',end,{once:true});};
+  const inspectEngine=()=>doc.runAction(async()=>{const info=await invoke<unknown>('doctor',{engineDir:engineDir.trim()||null});setEngineInfo(JSON.stringify(info,null,2));});
+  const applyNumeric=async()=>{if(!numeric||!doc.model)return;try{const value=parseQuantity(numericText,numeric.unit==='deg'?'angle':'length');if(await doc.commit(setParameter(doc.model,numeric.parameter,value),`${numeric.label} = ${value} ${numeric.unit}`))setNumeric(null);}catch(e){doc.setError(errorText(e));}};
 
-  return <div className="app">
-    <header className="topbar"><div className="brand"><span className="brand-mark" aria-hidden="true">◉</span><strong>GreenLens</strong><span className="version">v0.1</span></div><span className="project-title">{project?.name ?? 'Local daylight workspace'}{dirty ? ' · unsaved edits' : ''}</span><div className="top-actions"><button disabled={busy || running || uncollected} onClick={() => void action(initialize)}>New example</button><button disabled={busy || running || uncollected || !directory} onClick={() => void action(async () => { const value = await invoke<ProjectView>('open_project', { path: directory.trim() }); applyView(value, directory.trim()); setJob(null); setHistoricalId(''); setMessage('Project and checksummed evidence reopened.'); })}>Open project</button><button disabled={busy || running || !project || !directory || Boolean(validationError)} onClick={() => void action(async () => { await save(); setMessage('Project saved.'); })}>Save project</button></div></header>
-    <div className="method-bar"><span className="status-dot" />{method}<span className="method-note">Local calculation · no annual or certification claim</span></div>
-    <div className="project-paths"><label>Project directory<input aria-label="Project directory" placeholder="Choose a portable project folder, e.g. D:\Daylight study" value={directory} disabled={running || busy} onChange={e => setDirectory(e.target.value)} /></label><details className="engine-settings"><summary>Engine setup</summary><div><label>Radiance directory<input aria-label="Radiance directory" placeholder="Automatic local detection, or installed engine folder" value={engineDir} disabled={running} onChange={e => setEngineDir(e.target.value)} /></label><button disabled={busy || running} onClick={() => void action(async () => { const info = await invoke('doctor', { engineDir: engineDir.trim() || null }); setEngineInfo(info); setMessage('Engine inspection returned. See configuration details.'); })}>Check engine</button><p className="hint">Official Radiance 6.0.2 must be installed separately. The path remains machine configuration.</p>{engineInfo !== null && <pre className="small-pre">{json(engineInfo)}</pre>}</div></details></div>
-    {(error || message) && <div className={`notice ${error ? 'error' : 'success'}`} role={error ? 'alert' : 'status'}>{error || message}<button aria-label="Dismiss message" onClick={() => { setError(''); setMessage(''); }}>×</button></div>}
-    <main className="workspace">
-      <aside className="inspector"><div className="inspector-heading"><span className="eyebrow">DESIGN ALTERNATIVE</span><div className="segmented">{['A', 'B'].map(id => <button key={id} aria-pressed={alternative === id} disabled={running || busy} onClick={() => { setAlternative(id); setHistoricalId(''); setSelectedSensor(null); }}>{id === 'A' ? 'A · Baseline' : 'B · Alternative'}</button>)}</div></div>
-        {model && <ModelEditor model={model} onChange={updateModel} disabled={running || busy} />}
-        <div className="run-panel">{validationError ? <div className="validation-error" role="alert">{validationError}</div> : <p className="validation-state">{validating ? 'Validating geometry…' : validated ? `${validated.sensor_grid.sensors.length} validated sensors · ${number(validated.sensor_grid.actual_spacing_x_m, 3)} × ${number(validated.sensor_grid.actual_spacing_y_m, 3)} m cells` : 'Waiting for the Rust backend.'}</p>}
-          <button className="primary run-button" disabled={busy || running || !validated || validating || !directory.trim() || uncollected} onClick={() => void run()}>Run Alternative {alternative}<span>→</span></button>
-          {!directory.trim() && <p className="hint">Enter a project directory to retain evidence.</p>}
-          {uncollected && <button disabled={busy || collecting.current !== null} onClick={() => job && void collect(job)}>Save completed evidence</button>}
-        </div>
-      </aside>
-      <section className="analysis"><nav className="view-tabs" aria-label="Analysis view"><button aria-current={view === 'model' ? 'page' : undefined} onClick={() => setView('model')}>Model & results</button><button aria-current={view === 'compare' ? 'page' : undefined} onClick={() => setView('compare')}>A/B comparison</button><button aria-current={view === 'evidence' ? 'page' : undefined} onClick={() => setView('evidence')}>Evidence & export</button><span className={`job-state ${job?.state ?? 'idle'}`} aria-live="polite">{job ? `Job ${job.state}` : 'Ready'}</span></nav>
-        <div className="analysis-scroll">
-          {view === 'model' && <>
-            <div className="view-heading"><div><span className="eyebrow">ALTERNATIVE {alternative}</span><h1>{currentResult ? 'Workplane illuminance' : 'Room & sensor model'}</h1></div><div className="view-metadata">{validated && <><span>{number(validated.model.room.width_m)} × {number(validated.model.room.depth_m)} × {number(validated.model.room.height_m)} m</span><span>{number(validated.model.sky.exterior_horizontal_illuminance_lux, 0)} lx exterior</span></>}</div></div>
-            {stale && <div className="stale-banner" role="status">Historical result is stale relative to the current inputs. Its heatmap is hidden on this geometry. Run again, or inspect its immutable snapshot in Evidence.</div>}
-            <Suspense fallback={<div className="scene-shell"><div className="scene-empty">Loading local WebGL2 view…</div></div>}><SceneView validated={validated} lux={currentResult?.lux ?? null} scale={scale} selectedSensor={selectedSensor} onSelect={setSelectedSensor} /></Suspense>
-            {currentResult ? <><div className="result-summary"><Stats statistics={currentResult.statistics} /><div><span className="eyebrow">{comparison ? 'SHARED A/B SCALE' : 'ILLUMINANCE SCALE'}</span><Legend maximum={scale} /></div></div></> : <p className="empty-results">{running ? 'Radiance is calculating. Results appear only after every sensor and process exit passes validation.' : 'Run the native Radiance calculation to populate illuminance values.'}</p>}
-            {validated && <section className="sensor-section"><div className="section-heading"><h2>Sensor table</h2><span>{validated.sensor_grid.sensors.length} equal-area cells · {number(validated.sensor_grid.cell_area_m2, 4)} m² per cell</span></div><div className="table-scroll"><table><thead><tr><th>Sensor</th><th>X (m)</th><th>Y (m)</th><th>Z (m)</th><th>Illuminance (lx)</th></tr></thead><tbody>{validated.sensor_grid.sensors.map((sensor, i) => <tr key={sensor.id} className={selectedSensor === i ? 'selected-row' : ''} onClick={() => setSelectedSensor(i)}><td><button onClick={() => setSelectedSensor(i)}>{sensor.id}</button></td>{sensor.position.map((v, axis) => <td key={axis}>{number(v, 3)}</td>)}<td>{currentResult ? number(currentResult.lux[i], 3) : '—'}</td></tr>)}</tbody></table></div></section>}
-          </>}
-          {view === 'compare' && <><div className="view-heading"><div><span className="eyebrow">MATCHED SENSOR EVIDENCE</span><h1>Alternative A / B</h1></div></div><p className="body-note">Comparison uses the latest immutable completed run for each alternative. Geometry, sky, environment, sensors, engine and numerical settings must meet the Rust comparison rules.</p>
-            {comparisonError && <div className="notice error" role="alert">{comparisonError}</div>}
-            {comparison && latestA && latestB ? <><div className="comparison-maps"><div><Heatmap run={latestA} maximum={comparison.scale_max_lux} caption="A · Baseline" /><Stats statistics={latestA.statistics} /></div><div><Heatmap run={latestB} maximum={comparison.scale_max_lux} caption="B · Alternative" /><Stats statistics={latestB.statistics} /></div></div><div className="shared-legend"><span className="eyebrow">SHARED ILLUMINANCE SCALE</span><Legend maximum={comparison.scale_max_lux} /></div><div className="section-heading"><h2>Absolute difference · B − A</h2><span>Lux · percentage differences omitted</span></div><Stats statistics={comparison.statistics} prefix="Δ " /><p className="hint">Reflective shading can increase some sensor values. A design difference does not imply a uniform reduction.</p><div className="table-scroll"><table><thead><tr><th>Sensor</th><th>A (lx)</th><th>B (lx)</th><th>B − A (lx)</th></tr></thead><tbody>{comparison.deltas_lux.map((delta, i) => <tr key={i}><td>{latestA.validated.sensor_grid.sensors[i].id}</td><td>{number(latestA.lux[i], 3)}</td><td>{number(latestB.lux[i], 3)}</td><td>{number(delta, 3)}</td></tr>)}</tbody></table></div><details className="evidence-details"><summary>Comparison conditions and design differences</summary><pre>{json({ conditions: comparison.conditions, design_differences: comparison.design_differences })}</pre></details></> : !comparisonError && <div className="empty-state"><span>A + B</span><h2>Run both alternatives to compare</h2><p>Only completed real calculations can populate this view.</p></div>}
-          </>}
-          {view === 'evidence' && <><div className="view-heading"><div><span className="eyebrow">PORTABLE & INSPECTABLE</span><h1>Scientific evidence</h1></div><span>{results.length} saved runs</span></div><p className="body-note">Runs retain normalized inputs, generated text files, raw RGB, lux results, process logs, provenance and checksums. Export includes an offline HTML report and replay recipe. Engine binaries are installed separately.</p><div className="export-row"><label>Evidence ZIP destination<input aria-label="Evidence ZIP destination" placeholder="Full path ending in .zip" value={destination} onChange={e => setDestination(e.target.value)} /></label><button className="primary" disabled={busy || running || !savedDirectory || !destination || !results.length || uncollected} onClick={() => void action(async () => { await save(); const output = await invoke<{ path: string }>('export_project', { path: directory.trim(), destination }); setMessage(`Evidence exported to ${output.path}`); })}>Export evidence</button></div>
-            <div className="section-heading"><h2>Immutable run snapshots</h2><span>Alternative {alternative}</span></div><label className="run-select">Saved / completed run<select aria-label="Run snapshot" value={selectedRun?.id ?? ''} onChange={e => setHistoricalId(e.target.value)}>{records.filter(r => r.alternative_id === alternative).map(run => <option value={run.id} key={run.id}>{run.id} · {results.some(r => r.id === run.id) ? 'saved' : 'pending save'}</option>)}</select></label>
-            {selectedRun ? <><Stats statistics={selectedRun.statistics} /><div className="evidence-snapshot"><Heatmap run={selectedRun} maximum={selectedRun.statistics.max} caption={`Historical snapshot · Alternative ${selectedRun.alternative_id}`} /><div><p>Displayed with its original inputs and sensor positions.</p><p className="hash">Input: {selectedRun.validated.scientific_input_hash}</p><p className="hash">Sensors: {selectedRun.validated.sensor_hash}</p><p className="hint">This snapshot remains immutable if you edit the current alternative.</p></div></div><details className="evidence-details"><summary>Input snapshot</summary><pre>{json(selectedRun.model)}</pre></details><details className="evidence-details"><summary>Provenance, engine identity & numerical settings</summary><pre>{json(selectedRun.provenance)}</pre></details></> : <p className="empty-results">No completed run for this alternative.</p>}
-            <div className="limitations"><h2>Method & limits</h2><p>{method} The prescribed sky is azimuth-symmetric and has no simulated date or annual time sequence. Geometry is one rectangular room, one window, one optional overhang and one optional detached obstruction.</p><p>Equivalent single-pane neutral glazing and diffuse surfaces simplify real materials. Analytical fixtures establish limited behavior; agreement with a direct engine invocation verifies integration. Neither establishes accuracy for arbitrary buildings.</p><p>A simulation metric is not a criterion evaluation. A criterion evaluation is not formal certification.</p></div>
-          </>}
-        </div>
-        <section className="job-panel"><div className="job-heading"><strong>Calculation log</strong><span className={`job-state ${job?.state ?? 'idle'}`}>{job?.state ?? 'No active job'}</span>{running && <button className="cancel" onClick={() => void action(async () => { setJob(await invoke<JobStatus>('cancel_run')); setMessage('Cancellation requested. The full engine process tree is being stopped.'); })}>Cancel calculation</button>}</div><pre aria-live="polite">{job ? [...job.log, ...(job.error ? [`ERROR: ${job.error}`] : [])].join('\n') : 'A native Radiance job will record preparation, process execution and validation here.'}</pre></section>
+  return <div className="workspace">
+    <header className="menubar"><div className="brand"><span aria-hidden="true">G</span>GreenLens <small>0.2</small></div><nav aria-label="Application menu">{menu('File',['New','Open','Save','SaveAs','Export','Close'])}{menu('Edit',['Undo','Redo','SelectAll','SelectNone','Hide','Show','Lock','Unlock'])}{menu('View',['4View','Perspective','Top','Front','Right','ZoomExtents','ZoomSelected','Wireframe','Shaded','Analysis','Cutaway'])}{menu('Model',['Room','Window','Overhang','Obstruction','Move','Resize','Rotate','Remove'])}{menu('Calculate',['Run','Cancel','Export'])}<button onClick={()=>setDrawer(drawer==='method'?null:'method')}>Method</button></nav><span className="document-name" title={doc.project?.name}>{doc.project?.name??'Opening…'}{doc.dirty?' *':''}</span></header>
+    <div className="toolbar" aria-label="Workspace toolbar"><div>{button('Open')}{button('Save','Save',doc.busy)}{button('Undo','↶ Undo',!doc.history.past.length||editDisabled)}{button('Redo','↷ Redo',!doc.history.future.length||editDisabled)}</div><div>{button('4View','▦ 4 View')}{button('ZoomExtents','Extents')}{button('ZoomSelected','Selected',!selection.length)}<select aria-label="Display mode" value={doc.display.mode} onChange={e=>void dispatch(e.target.value)}><option value="wireframe">Wireframe</option><option value="shaded">Shaded</option><option value="analysis">Analysis</option></select><button aria-pressed={doc.display.cutaway} onClick={()=>void dispatch('Cutaway')}>Cutaway</button></div><div className="design-switch" role="group" aria-label="Design alternative">{['A','B'].map(id=><button key={id} aria-pressed={doc.alternative===id} disabled={editDisabled} onClick={()=>doc.setAlternative(id)}>Design {id}</button>)}</div><div className="toolbar-end">{button('Run','▶ Run',doc.busy||doc.running||doc.validating||!doc.validated||doc.pending)}{button('Cancel','Cancel',!doc.running&&!preview&&!prompt)}<button aria-pressed={!panelHidden} onClick={()=>setPanelHidden(!panelHidden)}>Panels</button></div></div>
+    <section className="command-area" aria-label="Command line"><div className="command-line"><button title="Expand command history" aria-expanded={expanded} onClick={()=>setExpanded(!expanded)}>{expanded?'▾':'▸'}</button><label htmlFor="command">{prompt?'Input:':'Command:'}</label><input id="command" ref={commandRef} value={command} placeholder={prompt?.label??'Type a command · Tab completes · Enter repeats safe navigation'} autoComplete="off" onChange={e=>setCommand(e.target.value)} onKeyDown={e=>{e.stopPropagation();if(e.key==='Enter'){e.preventDefault();submitCommand();}else if(e.key==='Tab'&&complete.length&&!prompt){e.preventDefault();setCommand(complete[0][0]);}else if(e.key==='Escape'){setPrompt(null);setCommand('');e.currentTarget.blur();}else if(e.key==='ArrowUp'){setCommand(history.filter(h=>h.startsWith('Command:')).at(-1)?.slice(9)??'');}}}/><span className="command-hint">{prompt?.label??'Metres · local model coordinates'}</span></div>{command&&!prompt&&!command.includes(' ')&&<div className="command-suggestions">{complete.slice(0,8).map(([name,description])=><button key={name} title={description} onClick={()=>{setCommand(name);commandRef.current?.focus();}}>{name}</button>)}</div>}{expanded&&<div className="command-history" role="log">{history.length?history.map((h,i)=><div key={i}>{h}</div>):<div>Registered modeling commands only. No shell or arbitrary code.</div>}</div>}</section>
+    {doc.error&&<div className="error-strip" role="alert"><span>{doc.error}</span>{doc.collectionError&&<><button onClick={()=>setRecoverConfirm(true)}>Recover evidence</button><button onClick={()=>void doc.saveAs()}>Save complete copy</button></>}<button aria-label="Dismiss error" onClick={()=>doc.setError('')}>×</button></div>}
+    <main className="modeling-area"><aside className="modeling-tools" aria-label="Modeling tools">{(Object.keys(toolNames) as ToolId[]).map(name=><button key={name} title={`${toolNames[name]}: constrained parametric ${name==='select'?'selection':'handles'}`} aria-label={`${toolNames[name]} tool`} aria-pressed={tool===name} disabled={editDisabled} onClick={()=>setTool(name)}><ToolIcon name={name}/><small>{toolNames[name]}</small></button>)}<hr/><button title="Create overhang" aria-label="Create overhang" disabled={editDisabled} onClick={()=>void dispatch('Overhang')}><ToolIcon name="shade"/><small>Shade</small></button><button title="Create obstruction" aria-label="Create obstruction" disabled={editDisabled} onClick={()=>void dispatch('Obstruction')}><ToolIcon name="box"/><small>Context</small></button><button title="Remove selected optional entity" aria-label="Remove optional entity" disabled={editDisabled} onClick={()=>void dispatch('Remove')}><ToolIcon name="remove"/><small>Remove</small></button></aside>
+      <section className="central-workspace"><div className="viewport-stage"><Suspense fallback={<div className="loading">Preparing WebGL2 viewports…</div>}><SceneView documentId={String(doc.documentId)} validated={doc.validated} lux={current?.lux??null} scale={scale} selection={selection} display={doc.display} tool={tool} disabled={doc.busy||doc.running||Boolean(doc.guard)||Boolean(numeric)} viewCommand={viewCommand} onSelectionChange={setSelection} onDisplayChange={doc.setDisplay} onCommitCandidate={doc.commit} onNumericHandle={request=>{setNumeric(request);setNumericText(String(request.value));}} onPreviewCandidate={(_model,label)=>setPreview(label??'')} onPointerStatus={setPointer} onInteractionError={doc.setError}/></Suspense>{stale&&<div className="stale-banner">Historical result hidden: current design has changed. Undo or calculate again.</div>}</div>
+        <div className="analysis-tabs" aria-label="Analysis views">{[['table','Sensor table'],['compare','A/B compare'],['logs','Job logs'],['evidence','Evidence'],['method','Method']].map(([id,label])=><button key={id} aria-pressed={drawer===id} onClick={()=>setDrawer(drawer===id?null:id)}>{label}</button>)}<span>{doc.validated?.sensor_grid.sensors.length??0} sensors · {selection.length} selected</span></div>
+        {drawer&&<section className="analysis-drawer" aria-label={drawer}><button className="drawer-close" aria-label="Close analysis panel" onClick={()=>setDrawer(null)}>×</button><AnalysisContent tab={drawer} validated={doc.validated} current={current} records={records} comparison={comparison} comparisonError={comparisonError} job={doc.job} selection={selection} onSelect={select} latestA={latestA} latestB={latestB} staleA={staleA} staleB={staleB}/></section>}
       </section>
-    </main><footer><span>GreenLens · local-first daylight analysis</span><span>Metres · lux · UTC provenance · Apache-2.0</span></footer>
+      {!panelHidden&&<><div className="panel-resizer" role="separator" aria-label="Resize properties panel" aria-orientation="vertical" aria-valuemin={260} aria-valuemax={520} aria-valuenow={panelWidth} tabIndex={0} onPointerDown={beginResize} onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();setPanelWidth(w=>Math.max(260,Math.min(520,w+(e.key==='ArrowLeft'?20:-20))));}}}/><aside className="right-panel" style={{width:panelWidth}}><div className="panel-tabs" role="tablist">{['properties','layers','analysis'].map(id=><button role="tab" aria-selected={panel===id} key={id} onClick={()=>setPanel(id)}>{id[0].toUpperCase()+id.slice(1)}</button>)}</div><div className="panel-body">
+        {panel==='properties'&&doc.model&&<PropertiesPanel model={doc.model} validated={doc.validated} selection={selection} result={current} locked={locked} disabled={editDisabled} commit={doc.commit} select={select}/>}
+        {panel==='layers'&&<><div className="panel-section-heading"><h3>Display layers</h3><span>Scientific model unchanged</span></div>{(Object.keys(layers) as LayerId[]).map(id=><div className="layer-row" key={id}><input type="checkbox" aria-label={`Show ${layers[id]} layer`} checked={doc.display.layers[id].visible} onChange={e=>doc.setDisplay(d=>({...d,layers:{...d.layers,[id]:{...d.layers[id],visible:e.target.checked}}}))}/><span className="layer-color" style={{background:doc.display.layers[id].color}}/><span>{layers[id]}</span><button aria-label={`${doc.display.layers[id].locked?'Unlock':'Lock'} ${layers[id]} layer`} aria-pressed={doc.display.layers[id].locked} onClick={()=>doc.setDisplay(d=>({...d,layers:{...d.layers,[id]:{...d.layers[id],locked:!d.layers[id].locked}}}))}>{doc.display.layers[id].locked?'Locked':'Editable'}</button></div>)}<p className="panel-note">Visibility and locks affect display/editing only. Hidden geometry remains in Radiance.</p><div className="panel-section-heading"><h3>Objects</h3><span>Stable semantic IDs</span></div><div className="object-list">{objects.filter(o=>!o.id.startsWith('sensor:')).map(o=>{const state=objectVisibility(o.id,o.layer,doc.display);return <button className={selection.includes(o.id)?'selected-object':''} key={o.id} aria-pressed={selection.includes(o.id)} disabled={!state.visible||state.locked} onClick={e=>setSelection(ids=>e.ctrlKey?ids.filter(id=>id!==o.id):e.shiftKey?[...new Set([...ids,o.id])]:[o.id])}><span>{o.id.startsWith('surface:')?'↳ ':''}{o.label}</span><small>{!state.visible?'Hidden':state.locked?'Locked':o.id.startsWith('surface:')?'Inspect':''}</small></button>;})}</div></>}
+        {panel==='analysis'&&<><div className="panel-section-heading"><h3>Design {doc.alternative}</h3><span className={`job-label ${doc.job?.state??''}`}>{doc.job?.state??'idle'}</span></div><p className="method-label">{METHOD}</p>{current?<><Stats run={current}/><Legend scale={scale}/></>:<p className="panel-note">{stale?'Current inputs differ from the historical result.':'No matching completed calculation.'}</p>}<div className="button-row">{button('Run','Run Radiance',doc.busy||doc.running||doc.pending||doc.validating)}{button('Cancel','Cancel job',!doc.running||doc.busy)}{button('Export','Export ZIP',doc.busy||doc.running)}</div>{doc.pending&&<div className="recovery-panel"><b>Completed evidence awaits saving</b><p>Save retries the current revision. Save As creates a complete independent copy. Reconcile reloads external document edits and retains the run snapshot.</p><div className="button-row"><button onClick={()=>void doc.save()}>Retry save</button><button onClick={()=>void doc.saveAs()}>Save complete copy</button><button onClick={()=>setRecoverConfirm(true)}>Reconcile</button></div></div>}
+          {doc.model&&<fieldset disabled={editDisabled}><h3>Prescribed environment</h3><ParameterField label="Exterior illuminance" value={doc.model.sky.exterior_horizontal_illuminance_lux} unit="lx" onCommit={n=>doc.commit(setParameter(doc.model!,'sky.exterior_horizontal_illuminance_lux',n),'Exterior illuminance')}/><ParameterField label="Ground reflectance" value={doc.model.sky.ground_reflectance} unit="0–1" onCommit={n=>doc.commit(setParameter(doc.model!,'sky.ground_reflectance',n),'Ground reflectance')}/></fieldset>}
+          <details><summary>Project and engine</summary><p className="panel-note">{doc.path?'Project saved locally.':'Unsaved document. Save opens a native folder picker.'}</p><div className="button-row">{button('Open','Open folder')}{button('SaveAs','Save As copy')}</div><label className="engine-field">Engine directory (optional override)<input value={engineDir} onChange={e=>setEngineDir(e.target.value)} placeholder="Automatic per-user discovery"/></label><button onClick={()=>void inspectEngine()} disabled={doc.busy}>Check native engine</button>{engineInfo&&<pre>{engineInfo}</pre>}</details>
+          <details><summary>Document diagnostics</summary><p className="panel-note">{metrics}</p><p className="panel-note">Undo {doc.history.past.length} · Redo {doc.history.future.length} · {doc.dirty?'Unsaved scientific document':'Scientific document saved'}</p><code className="hash-value">{doc.validated?.scientific_input_hash}</code><p className="panel-note">View state is saved with Save/Save As. Camera/display changes alone do not trigger the unsaved scientific-document prompt.</p></details><button onClick={()=>setDrawer('method')}>Method and limitations</button></>}
+      </div></aside></>}
+    </main>
+    <footer className="statusbar"><span className="coordinates">{pointer.world?pointer.world.map(v=>fmt(v,3)).join(', '):'X —   Y —   Z —'} m</span><span className="snap-status">{pointer.snap??pointer.message??'World ENU'}</span>{(['Grid','Snap','Ortho','Osnap','Gumball'] as const).map(name=>{const key={Cutaway:'cutaway',Grid:'grid_visible',Snap:'grid_snap',Ortho:'ortho',Osnap:'object_snap',Gumball:'gumball'}[name] as 'grid_visible'|'grid_snap'|'ortho'|'object_snap'|'gumball'|'cutaway';return <button key={name} aria-pressed={doc.display[key]} onClick={()=>void dispatch(name)}>{name}</button>;})}<span className="status-message" title={doc.message}>{preview||doc.message}</span><span className="job-status">{doc.busy?'Working…':doc.job?.state??'Ready'}</span></footer>
+    {doc.guard&&<div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="guard-title"><h2 id="guard-title">{doc.guard==='Close'?'Close GreenLens?':`${doc.guard} document?`}</h2><p>Save changes and completed evidence before continuing?</p>{doc.running&&<p>The active calculation will be cancelled and its process tree joined before saving or discarding.</p>}{doc.pending&&<p>Completed evidence is pending. Save retains it; Discard explicitly releases it.</p>}<div className="button-row"><button className="primary" autoFocus onClick={()=>doc.resolveGuard('save')}>Save</button><button onClick={()=>doc.resolveGuard('discard')}>Discard</button><button onClick={()=>doc.resolveGuard('cancel')}>Cancel</button></div></section></div>}
+    {recoverConfirm&&<div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true"><h2>Reload and reconcile completed evidence?</h2><p>This replaces the current editable models with the externally saved document and resets edit history. External edits and the completed run’s immutable input snapshot are retained.</p><p>Use Save complete copy to retain your current local edits instead.</p><div className="button-row"><button onClick={()=>{setRecoverConfirm(false);void doc.recover();}}>Reload and reconcile</button><button onClick={()=>{setRecoverConfirm(false);void doc.saveAs();}}>Save complete copy</button><button autoFocus onClick={()=>setRecoverConfirm(false)}>Cancel</button></div></section></div>}
+    {numeric&&<div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true"><h2>{numeric.label}</h2><p>{objectLabel(numeric.entity)} · exact {numeric.operation} parameter</p><label>Value ({numeric.unit})<input autoFocus aria-label="Handle numeric value" value={numericText} onChange={e=>setNumericText(e.target.value)} onKeyDown={e=>{if(e.key==='Enter')void applyNumeric();if(e.key==='Escape'){e.stopPropagation();setNumeric(null);}}}/></label><p className="panel-note">Rust validates this candidate. Unsupported axes remain unavailable.</p><div className="button-row"><button className="primary" disabled={doc.busy} onClick={()=>void applyNumeric()}>Apply</button><button disabled={doc.busy} onClick={()=>setNumeric(null)}>Cancel</button></div>{doc.error&&<p role="alert">{doc.error}</p>}</section></div>}
   </div>;
 }

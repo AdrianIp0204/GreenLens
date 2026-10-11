@@ -20,7 +20,8 @@ export interface ValidatedModel {
 export interface Statistics { min: number; mean: number; max: number; count: number }
 export interface RunRecord { id: string; alternative_id: string; model: Model; validated: ValidatedModel; lux: number[]; statistics: Statistics; provenance: Record<string, unknown> }
 export interface RunSummary { id: string; alternative_id: string; path: string; scientific_input_hash: string; comparison_fingerprint: string }
-export interface Project { schema_version: string; id: string; name: string; alternatives: { id: string; model: Model }[]; runs: RunSummary[] }
+export type DisplayState = import('./viewport/types').ViewportDisplayState;
+export interface Project { schema_version: string; id: string; name: string; alternatives: { id: string; model: Model }[]; runs: RunSummary[]; display_state?: DisplayState | null }
 export interface ProjectView { project: Project; revision: string; results: RunRecord[] }
-export interface JobStatus { id: string; state: 'queued' | 'preparing' | 'running' | 'completed' | 'failed' | 'cancelled'; log: string[]; error: string | null; result: RunRecord | null }
+export interface JobStatus { id: string; state: 'queued' | 'preparing' | 'running' | 'completed' | 'failed' | 'cancelled'; log: string[]; error: string | null; result: RunRecord | null; pending_evidence: boolean }
 export interface Comparison { a_id: string; b_id: string; deltas_lux: number[]; statistics: Statistics; scale_max_lux: number; conditions: unknown; design_differences: unknown }

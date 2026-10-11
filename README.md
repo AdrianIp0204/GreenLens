@@ -4,7 +4,9 @@ Local-first building environmental simulation with Rust, a native Tauri desktop,
 
 **Static daylight illuminance under a prescribed CIE standard overcast sky.**
 
-Version 0.1 implements the bounded daylight workflow and has passed the required native scientific, installed desktop and Windows CI checks. See [the completed implementation plan](docs/implementation-plan.md), [progress record](docs/progress.md), [scientific record](docs/scientific-validation.md) and [native verification](docs/native-verification.md) for measured evidence and its limits. The Windows packages are unsigned; a separate clean-machine test has not been performed.
+Version 0.2 adds a bounded Rhino-inspired modeling workspace: four persistent views, semantic selection, constrained handles, numeric commands, snapping, layers and Rust-validated undo/redo. Document guards, complete-copy Save As and completed-evidence recovery protect local work. See the [workspace guide](docs/workspace-guide.md), [v0.2 acceptance plan](docs/v0.2-implementation-plan.md) and [progress record](docs/progress.md) for current verification status. Windows packages are unsigned; a separate clean-machine test has not been performed.
+
+The completed v0.1 [implementation plan](docs/implementation-plan.md), [scientific record](docs/scientific-validation.md) and [native verification](docs/native-verification.md) remain historical evidence. They are not substitutes for fresh v0.2 acceptance.
 
 The bounded workflow models one rectangular room, a rectangular window, an optional horizontal overhang and a detached opaque obstruction. Inputs and completed runs stay in portable local project directories. Normal calculation requires no internet, cloud account, paid service or Python runtime.
 
@@ -36,6 +38,6 @@ For the desktop, run `npm ci` followed by `npm run tauri -- dev` from `apps/desk
 
 The sky has a prescribed exterior illuminance and no date, weather sequence or annual schedule. Neutral equivalent glass, diffuse surfaces and simplified geometry limit interpretation. A metric is not a criterion evaluation, and a criterion evaluation is not certification. Same-engine replay verifies integration; analytical fixtures test limited behaviors rather than arbitrary building accuracy.
 
-Read [the release specification](docs/v0.1-spec.md), [architecture](docs/architecture.md), [model contract](docs/model-contract.md), [engine feasibility](docs/engine-feasibility.md) and [excluded roadmap](docs/roadmap.md).
+Read [the v0.2 workspace specification](docs/v0.2-spec.md), [historical v0.1 scientific contract](docs/v0.1-spec.md), [architecture](docs/architecture.md), [model contract](docs/model-contract.md), [engine feasibility](docs/engine-feasibility.md) and [excluded roadmap](docs/roadmap.md).
 
 Original code is licensed under Apache-2.0. Third-party components retain their own licenses; see `LICENSE`, `NOTICE`, `dependencies` and `third-party`.

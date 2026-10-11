@@ -1,5 +1,10 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — final hosted method-4 checkpoint
+
+- Hosted run `38134501350` finished with its native and selected-hour jobs passing, but all four complete-year shipping/reference A/B jobs failing on negative reflected-solar residuals. Convergence and annual replay were skipped. Required process exits alone did not promote these failed calculations. The final checkpoint preserves the previous partial records and adds A-reference's failure at sensor 1, interval 873.
+- The selected-hour artifacts contain two 24-sensor, one-interval runs and two successful replays with maximum difference 0 lx. Their saved-file checksums, portable copy and bounded ZIP were independently inspected. The wrapper's reported run time covers A/B calculations; the separately recorded overall interval includes portability, export and replay. This is evidence for clean source `fc0b7c8`, not for the current paired-primary implementation. See `evidence/v0.3-ci/fc0b7c8-final-checkpoint.json`.
+
 ## 2026-10-11 — both paired research candidates retained
 
 - Both 24-sensor, twelve-hour A/B candidates completed their 19 native processes and all 576 assembled values are finite/nonnegative, with no negative coefficient bins. The compact transport record retains all component/lux arrays, primary receipts, arguments and output identities. Sampled runner-plus-job peaks were 662,732,800 / 694,812,672 bytes; closed scratch footprints were 109,007,860 / 109,006,182 bytes. Timings were measured under concurrent verification load.

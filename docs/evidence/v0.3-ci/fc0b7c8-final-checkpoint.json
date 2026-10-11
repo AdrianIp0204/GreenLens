@@ -1,0 +1,1242 @@
+{
+  "schema_version": "greenlens.ci-final-checkpoint.v1",
+  "observed_utc": "2026-10-11T12:51:25.5528659Z",
+  "scope": "Read-only final hosted CI and downloaded artifact inspection. No local simulation, replay, source modification or scientific acceptance.",
+  "run_id": 38134501350,
+  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350",
+  "source_commit": "fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+  "status": "completed",
+  "conclusion": "failure",
+  "created_utc": "2026-10-11T11:08:57Z",
+  "updated_utc": "2026-10-11T12:06:38Z",
+  "method_version": "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4",
+  "adapter_version": "radiance-climate-repeated-direct-corrected/4",
+  "earlier_checkpoints_preserved": [
+    {
+      "path": "fc0b7c8-native-checkpoint.json",
+      "bytes": 8221,
+      "sha256": "f64d06be8566ff60fd0f7e77db96935566308d3c5c707ed0371b69453a90957c"
+    },
+    {
+      "path": "fc0b7c8-annual-failure-checkpoint.json",
+      "bytes": 50583,
+      "sha256": "14b37097bc7b0b6cfe51cb550a9ed5b69c017d367a942f01adefd81bf669cfe1"
+    }
+  ],
+  "jobs": [
+    {
+      "id": 114455494569,
+      "name": "native",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T11:08:59Z",
+      "completed_utc": "2026-10-11T11:40:06Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114455494569",
+      "failed_steps": []
+    },
+    {
+      "id": 114461040022,
+      "name": "annual (A, shipping)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_utc": "2026-10-11T11:40:09Z",
+      "completed_utc": "2026-10-11T11:50:46Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114461040022",
+      "failed_steps": [
+        {
+          "number": 7,
+          "name": "One complete year for the explicit alternative and profile",
+          "startedAt": "2026-10-11T11:40:31Z",
+          "completedAt": "2026-10-11T11:50:40Z"
+        }
+      ]
+    },
+    {
+      "id": 114461040024,
+      "name": "selected_hour",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T11:40:07Z",
+      "completed_utc": "2026-10-11T12:06:37Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114461040024",
+      "failed_steps": []
+    },
+    {
+      "id": 114461040088,
+      "name": "annual (B, reference)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_utc": "2026-10-11T11:40:08Z",
+      "completed_utc": "2026-10-11T11:55:51Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114461040088",
+      "failed_steps": [
+        {
+          "number": 7,
+          "name": "One complete year for the explicit alternative and profile",
+          "startedAt": "2026-10-11T11:40:22Z",
+          "completedAt": "2026-10-11T11:55:46Z"
+        }
+      ]
+    },
+    {
+      "id": 114461040111,
+      "name": "annual (B, shipping)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_utc": "2026-10-11T11:40:08Z",
+      "completed_utc": "2026-10-11T11:50:49Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114461040111",
+      "failed_steps": [
+        {
+          "number": 7,
+          "name": "One complete year for the explicit alternative and profile",
+          "startedAt": "2026-10-11T11:40:27Z",
+          "completedAt": "2026-10-11T11:50:43Z"
+        }
+      ]
+    },
+    {
+      "id": 114461040134,
+      "name": "annual (A, reference)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_utc": "2026-10-11T11:40:09Z",
+      "completed_utc": "2026-10-11T12:04:32Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114461040134",
+      "failed_steps": [
+        {
+          "number": 7,
+          "name": "One complete year for the explicit alternative and profile",
+          "startedAt": "2026-10-11T11:40:25Z",
+          "completedAt": "2026-10-11T12:04:26Z"
+        }
+      ]
+    },
+    {
+      "id": 114465836522,
+      "name": "annual_replay",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_utc": "2026-10-11T12:06:37Z",
+      "completed_utc": "2026-10-11T12:06:37Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114465836522",
+      "failed_steps": []
+    },
+    {
+      "id": 114465836544,
+      "name": "annual_convergence",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_utc": "2026-10-11T12:06:37Z",
+      "completed_utc": "2026-10-11T12:06:37Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38134501350/job/114465836544",
+      "failed_steps": []
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 11701932223,
+      "name": "greenlens-selected-hour-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 3665705,
+      "github_reported_digest": "sha256:563ecc427e3da7c43d257d28679136b1dd599535c41be23e9a35b661263afb6e",
+      "expired": false
+    },
+    {
+      "id": 11701912066,
+      "name": "greenlens-annual-reference-A-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 596248,
+      "github_reported_digest": "sha256:8504bd0758c180864325c74681184de72c46c8e391ca02a21ab8e7db4f115e6d",
+      "expired": false
+    },
+    {
+      "id": 11701695418,
+      "name": "greenlens-annual-shipping-A-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 596205,
+      "github_reported_digest": "sha256:21401108060657e8cc68a2ba32bcc477717db3022d982b64269f3c6c35dc8d4b",
+      "expired": false
+    },
+    {
+      "id": 11701596902,
+      "name": "greenlens-annual-reference-B-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 596237,
+      "github_reported_digest": "sha256:1375bbfc6602613cc432d25d90fde7e885d0f80037a23c126b6f4a971d8b3cc1",
+      "expired": false
+    },
+    {
+      "id": 11701079497,
+      "name": "greenlens-annual-shipping-B-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 596223,
+      "github_reported_digest": "sha256:9be7511acd270ed092c3df918760d1f41744733d77672802322e6ff5382e1c2d",
+      "expired": false
+    },
+    {
+      "id": 11701028746,
+      "name": "greenlens-windows-unsigned-investigation-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 6091294,
+      "github_reported_digest": "sha256:d18777e8cec0cc82fcf1f8065a5b4a945c5f89bc81ca1259605511167a005cd5",
+      "expired": false
+    },
+    {
+      "id": 11700689364,
+      "name": "greenlens-native-diagnostics-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 4160229,
+      "github_reported_digest": "sha256:52c0df561dd1f85a999fd37dee33fe63cb735a35d5eae867a2457fbf8deffce1",
+      "expired": false
+    },
+    {
+      "id": 11700689345,
+      "name": "greenlens-ci-cli-fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+      "github_compressed_bytes": 2546195,
+      "github_reported_digest": "sha256:e58c7f690ecec0650cf2d55df9c166c5d40fdfcc215da79b65979f8debe80a44",
+      "expired": false
+    }
+  ],
+  "annual_failures": [
+    {
+      "job_id": 114461040022,
+      "alternative": "A",
+      "profile": "shipping",
+      "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 2 interval 949; no negative residual is clamped",
+      "first_reported_sensor_index": 2,
+      "first_reported_interval_index": 949,
+      "details_record": "fc0b7c8-annual-failure-checkpoint.json"
+    },
+    {
+      "job_id": 114461040111,
+      "alternative": "B",
+      "profile": "shipping",
+      "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 5960; no negative residual is clamped",
+      "first_reported_sensor_index": 1,
+      "first_reported_interval_index": 5960,
+      "details_record": "fc0b7c8-annual-failure-checkpoint.json"
+    },
+    {
+      "job_id": 114461040088,
+      "alternative": "B",
+      "profile": "reference",
+      "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 705; no negative residual is clamped",
+      "first_reported_sensor_index": 1,
+      "first_reported_interval_index": 705,
+      "details_record": "fc0b7c8-annual-failure-checkpoint.json"
+    },
+    {
+      "job_id": 114461040134,
+      "alternative": "A",
+      "profile": "reference",
+      "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 873; no negative residual is clamped",
+      "first_reported_sensor_index": 1,
+      "first_reported_interval_index": 873,
+      "details_record": "this record: additional_A_reference_failure"
+    }
+  ],
+  "additional_A_reference_failure": {
+    "job_id": 114461040134,
+    "alternative": "A",
+    "profile": "reference",
+    "first_reported_sensor_index": 1,
+    "first_reported_interval_index": 873,
+    "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 873; no negative residual is clamped",
+    "cli_exit_code": 1,
+    "cli_sha256": "bc31a113993c770006ab57b001d3a8568512c27120daa22da06c0a9fe797dbd9",
+    "cli_version": "greenlens-cli 0.3.0",
+    "wall_seconds": 1440.5155424,
+    "completed": false,
+    "retained_completed_runs": 0,
+    "annual_export_present": false,
+    "required_process_records": 9,
+    "all_process_exits_zero": true,
+    "processes": [
+      {
+        "executable": "gendaymtx.exe",
+        "arguments": [
+          "-O0",
+          "-m",
+          "4",
+          "-c",
+          "1",
+          "1",
+          "1",
+          "-g",
+          "0.2",
+          "0.2",
+          "0.2",
+          "-s",
+          "annual-weather.epw"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T11:40:27.443509+00:00",
+        "finished_utc": "2026-10-11T11:40:41.042884300+00:00",
+        "elapsed_ms": 13599,
+        "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+      },
+      {
+        "executable": "gendaymtx.exe",
+        "arguments": [
+          "-O0",
+          "-m",
+          "4",
+          "-d",
+          "-D",
+          "annual-suns.rad",
+          "-M",
+          "annual-sun-modifiers.txt",
+          "annual-weather.epw"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T11:40:41.045268500+00:00",
+        "finished_utc": "2026-10-11T11:40:50.044920300+00:00",
+        "elapsed_ms": 8999,
+        "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+      },
+      {
+        "executable": "oconv.exe",
+        "arguments": [
+          "-f",
+          "annual-scene.rad",
+          "annual-receiver.rad"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T11:40:53.411012100+00:00",
+        "finished_utc": "2026-10-11T11:40:53.437009100+00:00",
+        "elapsed_ms": 25,
+        "stderr": ""
+      },
+      {
+        "executable": "oconv.exe",
+        "arguments": [
+          "-f",
+          "annual-scene.rad",
+          "annual-coefficient-receiver.rad"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T11:40:53.438703400+00:00",
+        "finished_utc": "2026-10-11T11:40:53.461720500+00:00",
+        "elapsed_ms": 23,
+        "stderr": ""
+      },
+      {
+        "executable": "rcontrib.exe",
+        "arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "24",
+          "-ab",
+          "9",
+          "-ad",
+          "65536",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "0.000000001",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-c",
+          "32",
+          "-V+",
+          "-e",
+          "MF:4",
+          "-f",
+          "reinhart.cal",
+          "-b",
+          "rbin",
+          "-bn",
+          "Nrbins",
+          "-m",
+          "sky_glow",
+          "annual-coefficient.oct"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T11:40:53.463346700+00:00",
+        "finished_utc": "2026-10-11T12:03:18.034708900+00:00",
+        "elapsed_ms": 1344540,
+        "stderr": ""
+      },
+      {
+        "executable": "dctimestep.exe",
+        "arguments": [
+          "-oa",
+          "annual-coefficients.mtx",
+          "annual-sky.mtx"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T12:03:18.047733700+00:00",
+        "finished_utc": "2026-10-11T12:03:29.927934+00:00",
+        "elapsed_ms": 11879,
+        "stderr": ""
+      },
+      {
+        "executable": "rcontrib.exe",
+        "arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "24",
+          "-ab",
+          "1",
+          "-ad",
+          "65536",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "0.000000001",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-c",
+          "32",
+          "-V+",
+          "-e",
+          "MF:4",
+          "-f",
+          "reinhart.cal",
+          "-b",
+          "rbin",
+          "-bn",
+          "Nrbins",
+          "-m",
+          "sky_glow",
+          "annual-coefficient.oct"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T12:03:29.929994+00:00",
+        "finished_utc": "2026-10-11T12:04:06.704575400+00:00",
+        "elapsed_ms": 36773,
+        "stderr": ""
+      },
+      {
+        "executable": "dctimestep.exe",
+        "arguments": [
+          "-oa",
+          "annual-coefficients.mtx",
+          "annual-solar-sky.mtx"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T12:04:06.715288700+00:00",
+        "finished_utc": "2026-10-11T12:04:16.236352500+00:00",
+        "elapsed_ms": 9520,
+        "stderr": ""
+      },
+      {
+        "executable": "dctimestep.exe",
+        "arguments": [
+          "-oa",
+          "annual-direct-coefficients.mtx",
+          "annual-solar-sky.mtx"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T12:04:16.238152200+00:00",
+        "finished_utc": "2026-10-11T12:04:25.683358800+00:00",
+        "elapsed_ms": 9445,
+        "stderr": ""
+      }
+    ],
+    "resource_summary": {
+      "schema_version": "greenlens.annual-resources.v1",
+      "total_wall_ms": 1438216,
+      "peak_engine_working_set_bytes": 249761792,
+      "peak_observed_runner_plus_engine_working_set_bytes": 264454144,
+      "peak_scratch_bytes": 405650617,
+      "max_scratch_bytes": 2147483648,
+      "max_matrix_bytes": 536870912,
+      "max_observed_working_set_bytes": 2147483648
+    },
+    "retained_files": [
+      {
+        "path": "summary.json",
+        "bytes": 950,
+        "sha256": "cdbc80a696749268b967a7be2401df52795905e02f88e6ab4df76eb98d934dc7"
+      },
+      {
+        "path": "completed.stderr.txt",
+        "bytes": 639,
+        "sha256": "d65bd5630e2a520eb36a2d01a980ce1d809123225f438e4a3ff3660c5aec3e78"
+      },
+      {
+        "path": "project/project.json",
+        "bytes": 4116,
+        "sha256": "c26a83ec93340ab362172dd0dad4bd791737fce28db299f00c146fbae8fb47ee"
+      },
+      {
+        "path": "annual-logs.json",
+        "bytes": 5296,
+        "sha256": "61558ffb376346946d219e952a43556f58c954fcb90bb75dda1698ec3f63c3ab"
+      },
+      {
+        "path": "annual-resources.json",
+        "bytes": 4553,
+        "sha256": "0d1428682e5fb0981ee159523fac768d9d390722a6856145669a8c02950cff97"
+      }
+    ]
+  },
+  "selected_hour": {
+    "job_id": 114461040024,
+    "mode": "WeatherHour",
+    "profile": "shipping",
+    "cli_sha256": "bc31a113993c770006ab57b001d3a8568512c27120daa22da06c0a9fe797dbd9",
+    "started_utc": "2026-10-11T11:40:21.8556979Z",
+    "finished_utc": "2026-10-11T12:06:28.6790479Z",
+    "run_count": 2,
+    "total_lux_values": 48,
+    "runs": [
+      {
+        "id": "f00cb660-3264-4d58-8c6e-7ac268b67431",
+        "alternative": "A",
+        "source_commit": "fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+        "source_worktree_dirty": false,
+        "adapter_version": "radiance-climate-repeated-direct-corrected/4",
+        "method_version": "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4",
+        "interval_index": 1908,
+        "intervals": 1,
+        "sensors": 24,
+        "stored_rgb_and_lux_values": 96,
+        "all_finite_nonnegative": true,
+        "hour_query_equals_series": true,
+        "series_sha256": "2c97d9e666515047436399e4b2cbfdf3959b991cc430796cc4e10482c0b5cc5c",
+        "result_sha256": "7e94e00bcb1008332cac02e0cbb6164613e2db9bea379c4de67172fa932f6416",
+        "record_identity_sha256": "e36fb4824e680ede21dade56910c61701c50bb0ed20871fe225fae747baf6b28",
+        "physical_input_hash": "147d4db1c258a8db56765fea8a07c426406dd774824d3f55962fd9284d2649ac",
+        "statistics": {
+          "count": 24,
+          "max": 6839.641910000001,
+          "mean": 1378.0067205825,
+          "min": 300.37848053000005
+        },
+        "profile": {
+          "ambient_accuracy": 0.0,
+          "ambient_bounces": 8,
+          "ambient_divisions": 8192,
+          "ambient_resolution": 256,
+          "ambient_supersamples": 0,
+          "ambient_value": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "coefficient_primary_repetitions": 128,
+          "coefficient_receiver_scale": 100.0,
+          "direct_ambient_divisions": 8192,
+          "direct_certainty": 1.0,
+          "direct_jitter": 0.0,
+          "direct_size": 0.05,
+          "direct_solar_samples": 1024,
+          "direct_threshold": 0.0,
+          "limit_weight": 1E-09,
+          "name": "shipping",
+          "ray_depth": -16,
+          "sky_basis_mf": 2,
+          "specular_sampling": 0.0,
+          "specular_threshold": 0.0,
+          "uncorrelated_random_sampling": false,
+          "workers": 1
+        },
+        "process_count": 9,
+        "processes": [
+          {
+            "executable": "gendaymtx.exe",
+            "arguments": [
+              "-O0",
+              "-m",
+              "2",
+              "-c",
+              "1",
+              "1",
+              "1",
+              "-g",
+              "0.2",
+              "0.2",
+              "0.2",
+              "-s",
+              "annual-weather.epw"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:40:22.420478900+00:00",
+            "finished_utc": "2026-10-11T11:40:22.445290800+00:00",
+            "elapsed_ms": 24,
+            "stderr": ""
+          },
+          {
+            "executable": "gendaymtx.exe",
+            "arguments": [
+              "-O0",
+              "-m",
+              "2",
+              "-d",
+              "-D",
+              "annual-suns.rad",
+              "-M",
+              "annual-sun-modifiers.txt",
+              "annual-weather.epw"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:40:22.446611100+00:00",
+            "finished_utc": "2026-10-11T11:40:22.469364100+00:00",
+            "elapsed_ms": 22,
+            "stderr": ""
+          },
+          {
+            "executable": "oconv.exe",
+            "arguments": [
+              "-f",
+              "annual-scene.rad",
+              "annual-receiver.rad"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:40:22.472161300+00:00",
+            "finished_utc": "2026-10-11T11:40:22.496349300+00:00",
+            "elapsed_ms": 24,
+            "stderr": ""
+          },
+          {
+            "executable": "oconv.exe",
+            "arguments": [
+              "-f",
+              "annual-scene.rad",
+              "annual-coefficient-receiver.rad"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:40:22.497341400+00:00",
+            "finished_utc": "2026-10-11T11:40:22.519853600+00:00",
+            "elapsed_ms": 22,
+            "stderr": ""
+          },
+          {
+            "executable": "rcontrib.exe",
+            "arguments": [
+              "-I+",
+              "-n",
+              "1",
+              "-faa",
+              "-y",
+              "24",
+              "-ab",
+              "8",
+              "-ad",
+              "8192",
+              "-as",
+              "0",
+              "-aa",
+              "0",
+              "-ar",
+              "256",
+              "-av",
+              "0",
+              "0",
+              "0",
+              "-lw",
+              "0.000000001",
+              "-lr",
+              "-16",
+              "-dt",
+              "0",
+              "-dc",
+              "1",
+              "-dj",
+              "0",
+              "-ds",
+              "0.05",
+              "-st",
+              "0",
+              "-ss",
+              "0",
+              "-u-",
+              "-c",
+              "128",
+              "-V+",
+              "-e",
+              "MF:2",
+              "-f",
+              "reinhart.cal",
+              "-b",
+              "rbin",
+              "-bn",
+              "Nrbins",
+              "-m",
+              "sky_glow",
+              "annual-coefficient.oct"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:40:22.521032+00:00",
+            "finished_utc": "2026-10-11T11:46:27.723372200+00:00",
+            "elapsed_ms": 365200,
+            "stderr": ""
+          },
+          {
+            "executable": "dctimestep.exe",
+            "arguments": [
+              "-oa",
+              "annual-coefficients.mtx",
+              "annual-sky.mtx"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:27.727806700+00:00",
+            "finished_utc": "2026-10-11T11:46:27.773466400+00:00",
+            "elapsed_ms": 45,
+            "stderr": ""
+          },
+          {
+            "executable": "rcontrib.exe",
+            "arguments": [
+              "-I+",
+              "-n",
+              "1",
+              "-faa",
+              "-y",
+              "24",
+              "-ab",
+              "1",
+              "-ad",
+              "8192",
+              "-as",
+              "0",
+              "-aa",
+              "0",
+              "-ar",
+              "256",
+              "-av",
+              "0",
+              "0",
+              "0",
+              "-lw",
+              "0.000000001",
+              "-lr",
+              "-16",
+              "-dt",
+              "0",
+              "-dc",
+              "1",
+              "-dj",
+              "0",
+              "-ds",
+              "0.05",
+              "-st",
+              "0",
+              "-ss",
+              "0",
+              "-u-",
+              "-c",
+              "128",
+              "-V+",
+              "-e",
+              "MF:2",
+              "-f",
+              "reinhart.cal",
+              "-b",
+              "rbin",
+              "-bn",
+              "Nrbins",
+              "-m",
+              "sky_glow",
+              "annual-coefficient.oct"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:27.774716100+00:00",
+            "finished_utc": "2026-10-11T11:46:39.366321+00:00",
+            "elapsed_ms": 11591,
+            "stderr": ""
+          },
+          {
+            "executable": "dctimestep.exe",
+            "arguments": [
+              "-oa",
+              "annual-coefficients.mtx",
+              "annual-solar-sky.mtx"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:39.368776700+00:00",
+            "finished_utc": "2026-10-11T11:46:39.391488800+00:00",
+            "elapsed_ms": 22,
+            "stderr": ""
+          },
+          {
+            "executable": "dctimestep.exe",
+            "arguments": [
+              "-oa",
+              "annual-direct-coefficients.mtx",
+              "annual-solar-sky.mtx"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:39.392618800+00:00",
+            "finished_utc": "2026-10-11T11:46:39.414626400+00:00",
+            "elapsed_ms": 22,
+            "stderr": ""
+          }
+        ],
+        "resource_summary": {
+          "schema_version": "greenlens.annual-resources.v1",
+          "total_wall_ms": 377012,
+          "peak_engine_working_set_bytes": 6369280,
+          "peak_observed_runner_plus_engine_working_set_bytes": 19062784,
+          "peak_scratch_bytes": 7594758
+        },
+        "replay": {
+          "run_id": "f00cb660-3264-4d58-8c6e-7ac268b67431",
+          "passed": true,
+          "intervals": 1,
+          "sensors": 24,
+          "values_checked": 24,
+          "max_absolute_error_lux": 0.0,
+          "max_tolerance_ratio": 0.0,
+          "tolerance": "max(0.5 lx, 0.5% of reference)",
+          "verification": "same-engine integration, not independent physical validation"
+        },
+        "replay_resource_summary": {
+          "schema_version": "greenlens.annual-resources.v1",
+          "started_utc": "2026-10-11T11:53:21.586042400+00:00",
+          "finished_utc": "2026-10-11T11:59:45.055044+00:00",
+          "total_wall_ms": 383466,
+          "peak_engine_working_set_bytes": 5910528,
+          "peak_observed_runner_plus_engine_working_set_bytes": 16244736,
+          "peak_scratch_bytes": 1273280
+        },
+        "replay_resource_process_records": 9
+      },
+      {
+        "id": "ff4f6bd6-bbca-4e08-a86c-8842c460474f",
+        "alternative": "B",
+        "source_commit": "fc0b7c8c299fe661f9d9d7d427561dbbdee84084",
+        "source_worktree_dirty": false,
+        "adapter_version": "radiance-climate-repeated-direct-corrected/4",
+        "method_version": "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4",
+        "interval_index": 1908,
+        "intervals": 1,
+        "sensors": 24,
+        "stored_rgb_and_lux_values": 96,
+        "all_finite_nonnegative": true,
+        "hour_query_equals_series": true,
+        "series_sha256": "f27060923ac9c0b7f57e95bbf39fcebe256115ed3c0943d022396f4be84f082c",
+        "result_sha256": "c2198f766f6b411bf95a2184ba383e292156a25f3ac71bee1ad5a47fbbec3f99",
+        "record_identity_sha256": "0fc675a6f701c2c03f28bac3da4c757cc36668d840b7b24d39f4ebe15ddaa642",
+        "physical_input_hash": "9ab34224e063408dc56b5c412f967ea8318e877e840cfe55d9ae3a82f933d869",
+        "statistics": {
+          "count": 24,
+          "max": 4236.489434460001,
+          "mean": 943.0811755084584,
+          "min": 255.02168843000004
+        },
+        "profile": {
+          "ambient_accuracy": 0.0,
+          "ambient_bounces": 8,
+          "ambient_divisions": 8192,
+          "ambient_resolution": 256,
+          "ambient_supersamples": 0,
+          "ambient_value": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "coefficient_primary_repetitions": 128,
+          "coefficient_receiver_scale": 100.0,
+          "direct_ambient_divisions": 8192,
+          "direct_certainty": 1.0,
+          "direct_jitter": 0.0,
+          "direct_size": 0.05,
+          "direct_solar_samples": 1024,
+          "direct_threshold": 0.0,
+          "limit_weight": 1E-09,
+          "name": "shipping",
+          "ray_depth": -16,
+          "sky_basis_mf": 2,
+          "specular_sampling": 0.0,
+          "specular_threshold": 0.0,
+          "uncorrelated_random_sampling": false,
+          "workers": 1
+        },
+        "process_count": 9,
+        "processes": [
+          {
+            "executable": "gendaymtx.exe",
+            "arguments": [
+              "-O0",
+              "-m",
+              "2",
+              "-c",
+              "1",
+              "1",
+              "1",
+              "-g",
+              "0.2",
+              "0.2",
+              "0.2",
+              "-s",
+              "annual-weather.epw"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:41.293213400+00:00",
+            "finished_utc": "2026-10-11T11:46:41.316501300+00:00",
+            "elapsed_ms": 23,
+            "stderr": ""
+          },
+          {
+            "executable": "gendaymtx.exe",
+            "arguments": [
+              "-O0",
+              "-m",
+              "2",
+              "-d",
+              "-D",
+              "annual-suns.rad",
+              "-M",
+              "annual-sun-modifiers.txt",
+              "annual-weather.epw"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:41.317867800+00:00",
+            "finished_utc": "2026-10-11T11:46:41.340564+00:00",
+            "elapsed_ms": 22,
+            "stderr": ""
+          },
+          {
+            "executable": "oconv.exe",
+            "arguments": [
+              "-f",
+              "annual-scene.rad",
+              "annual-receiver.rad"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:41.343874100+00:00",
+            "finished_utc": "2026-10-11T11:46:41.366354100+00:00",
+            "elapsed_ms": 22,
+            "stderr": ""
+          },
+          {
+            "executable": "oconv.exe",
+            "arguments": [
+              "-f",
+              "annual-scene.rad",
+              "annual-coefficient-receiver.rad"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:41.367732400+00:00",
+            "finished_utc": "2026-10-11T11:46:41.390032400+00:00",
+            "elapsed_ms": 22,
+            "stderr": ""
+          },
+          {
+            "executable": "rcontrib.exe",
+            "arguments": [
+              "-I+",
+              "-n",
+              "1",
+              "-faa",
+              "-y",
+              "24",
+              "-ab",
+              "8",
+              "-ad",
+              "8192",
+              "-as",
+              "0",
+              "-aa",
+              "0",
+              "-ar",
+              "256",
+              "-av",
+              "0",
+              "0",
+              "0",
+              "-lw",
+              "0.000000001",
+              "-lr",
+              "-16",
+              "-dt",
+              "0",
+              "-dc",
+              "1",
+              "-dj",
+              "0",
+              "-ds",
+              "0.05",
+              "-st",
+              "0",
+              "-ss",
+              "0",
+              "-u-",
+              "-c",
+              "128",
+              "-V+",
+              "-e",
+              "MF:2",
+              "-f",
+              "reinhart.cal",
+              "-b",
+              "rbin",
+              "-bn",
+              "Nrbins",
+              "-m",
+              "sky_glow",
+              "annual-coefficient.oct"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:46:41.391602100+00:00",
+            "finished_utc": "2026-10-11T11:53:02.398535100+00:00",
+            "elapsed_ms": 381004,
+            "stderr": ""
+          },
+          {
+            "executable": "dctimestep.exe",
+            "arguments": [
+              "-oa",
+              "annual-coefficients.mtx",
+              "annual-sky.mtx"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:53:02.404668800+00:00",
+            "finished_utc": "2026-10-11T11:53:02.447765900+00:00",
+            "elapsed_ms": 43,
+            "stderr": ""
+          },
+          {
+            "executable": "rcontrib.exe",
+            "arguments": [
+              "-I+",
+              "-n",
+              "1",
+              "-faa",
+              "-y",
+              "24",
+              "-ab",
+              "1",
+              "-ad",
+              "8192",
+              "-as",
+              "0",
+              "-aa",
+              "0",
+              "-ar",
+              "256",
+              "-av",
+              "0",
+              "0",
+              "0",
+              "-lw",
+              "0.000000001",
+              "-lr",
+              "-16",
+              "-dt",
+              "0",
+              "-dc",
+              "1",
+              "-dj",
+              "0",
+              "-ds",
+              "0.05",
+              "-st",
+              "0",
+              "-ss",
+              "0",
+              "-u-",
+              "-c",
+              "128",
+              "-V+",
+              "-e",
+              "MF:2",
+              "-f",
+              "reinhart.cal",
+              "-b",
+              "rbin",
+              "-bn",
+              "Nrbins",
+              "-m",
+              "sky_glow",
+              "annual-coefficient.oct"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:53:02.448865900+00:00",
+            "finished_utc": "2026-10-11T11:53:14.167235800+00:00",
+            "elapsed_ms": 11718,
+            "stderr": ""
+          },
+          {
+            "executable": "dctimestep.exe",
+            "arguments": [
+              "-oa",
+              "annual-coefficients.mtx",
+              "annual-solar-sky.mtx"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:53:14.170779900+00:00",
+            "finished_utc": "2026-10-11T11:53:14.214485300+00:00",
+            "elapsed_ms": 43,
+            "stderr": ""
+          },
+          {
+            "executable": "dctimestep.exe",
+            "arguments": [
+              "-oa",
+              "annual-direct-coefficients.mtx",
+              "annual-solar-sky.mtx"
+            ],
+            "exit_code": 0,
+            "started_utc": "2026-10-11T11:53:14.216118900+00:00",
+            "finished_utc": "2026-10-11T11:53:14.259659700+00:00",
+            "elapsed_ms": 43,
+            "stderr": ""
+          }
+        ],
+        "resource_summary": {
+          "schema_version": "greenlens.annual-resources.v1",
+          "total_wall_ms": 392995,
+          "peak_engine_working_set_bytes": 5910528,
+          "peak_observed_runner_plus_engine_working_set_bytes": 19038208,
+          "peak_scratch_bytes": 7595936
+        },
+        "replay": {
+          "run_id": "ff4f6bd6-bbca-4e08-a86c-8842c460474f",
+          "passed": true,
+          "intervals": 1,
+          "sensors": 24,
+          "values_checked": 24,
+          "max_absolute_error_lux": 0.0,
+          "max_tolerance_ratio": 0.0,
+          "tolerance": "max(0.5 lx, 0.5% of reference)",
+          "verification": "same-engine integration, not independent physical validation"
+        },
+        "replay_resource_summary": {
+          "schema_version": "greenlens.annual-resources.v1",
+          "started_utc": "2026-10-11T11:59:45.255736100+00:00",
+          "finished_utc": "2026-10-11T12:06:28.458121700+00:00",
+          "total_wall_ms": 403200,
+          "peak_engine_working_set_bytes": 5914624,
+          "peak_observed_runner_plus_engine_working_set_bytes": 17293312,
+          "peak_scratch_bytes": 1273674
+        },
+        "replay_resource_process_records": 9
+      }
+    ],
+    "verified_run_seal_entries": 44,
+    "portability": {
+      "original_project_unavailable": true,
+      "original_weather_path_unavailable": true,
+      "original_scratch_unavailable": true,
+      "hosted_report_byte_identical_files": 46,
+      "downloaded_copy_hashes_rechecked": 46
+    },
+    "package": {
+      "sha256": "7a66ddd75100c13aabd92c9a78cc5e2a8cb32882c024089f590f7b1cfe784565",
+      "compressed_bytes": 1809009,
+      "entries": 56,
+      "uncompressed_bytes": 19271019,
+      "largest_entry_bytes": 2527669,
+      "sealed_entries": 55,
+      "all_hashes_valid": true,
+      "safe_paths": true,
+      "shared_size_limits_satisfied": true
+    },
+    "retained_files": [
+      {
+        "path": "summary.json",
+        "bytes": 51268,
+        "sha256": "9d1f7334d9da0e620384149e46eb6c91cc6017bc8613ec64200e0fe800922892"
+      },
+      {
+        "path": "replay.json",
+        "bytes": 11593,
+        "sha256": "bb437cc593da031bc10d89556423a41e04d12b5d44f2218413f0e5cb4c34db79"
+      },
+      {
+        "path": "hourly-comparison.json",
+        "bytes": 4444,
+        "sha256": "4bcaac34bd22b3ca008496952649155da19cc0e4393933b97d1242d716eab4f9"
+      },
+      {
+        "path": "capture.json",
+        "bytes": 664,
+        "sha256": "a0e3f4b84b64a9bee7e240dbfb38a39ee533f210f88f0e3d88ed2aea48a10548"
+      }
+    ],
+    "replay_passed": true,
+    "integration_only": true,
+    "accuracy_acceptance": false,
+    "native_desktop_acceptance": false,
+    "reported_run_wall_seconds": 774.133651,
+    "start_to_finish_seconds": 1566.82335,
+    "timing_scope": "Original wrapper stops its stopwatch after the A/B runs, before portability/export/replay; the reported run wall time is not the complete job duration. Start/finish timestamps span the later checks."
+  },
+  "raw_inspection_sources": [
+    {
+      "path": "run.json",
+      "bytes": 17037,
+      "sha256": "390952f19e247c7869152c7e2cbb32ac1bbb0d9cba272f35f401a1ec4cd60fbf"
+    },
+    {
+      "path": "artifacts.json",
+      "bytes": 6148,
+      "sha256": "a01ec2e008510543dd48407bc580f0b9d3ded8786b4e1f4485ce9261a4c5f9f2"
+    },
+    {
+      "path": "A-reference.log",
+      "bytes": 43163,
+      "sha256": "e4b1aa9662d6e231221670295cc97e88abcaac3fed587304fcaf34410499d02f"
+    },
+    {
+      "path": "selected-hour.log",
+      "bytes": 42053,
+      "sha256": "5a356cf177b6a7928a82d824d59a0ffce59a27919ab69a43fe50ec7756d64822"
+    },
+    {
+      "path": "audit-final.ps1",
+      "bytes": 13303,
+      "sha256": "51b5c6c44b67d2d1d532883fe765670df54ae3887b7a2eb2ec48fbb0f8f84d33"
+    }
+  ],
+  "commands": [
+    "gh run view 38134501350 --json databaseId,headSha,headBranch,status,conclusion,createdAt,updatedAt,url,jobs",
+    "gh api repos/AdrianIp0204/GreenLens/actions/runs/38134501350/artifacts?per_page=100",
+    "gh run view 38134501350 --job 114461040134 --log",
+    "gh run view 38134501350 --job 114461040024 --log",
+    "gh run download 38134501350 --name <recorded artifact name> --dir <new local audit directory>"
+  ],
+  "limitations": [
+    "All four full-year method4 runs failed numerical residual validation; selected-hour integration success does not qualify their annual results.",
+    "Annual convergence and annual replay were skipped because required upstream annual jobs failed.",
+    "Matched-sky qualification, complete controlled-reference sensitivities, method5 production acceptance and installed native desktop verification are not established by this historical CI run.",
+    "Resource fields preserve the original method4 measurement policy; they do not claim later supervisor remedies ran in this source."
+  ],
+  "release_acceptance_complete": false
+}

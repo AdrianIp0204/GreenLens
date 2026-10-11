@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — compact native layout and bounded reference supervision
+
+- Verified installed candidate03 at 900×500 CSS / 1125×625 native inner pixels and maximized 1536×794 CSS / 1920×991 native inner pixels, both at125% scale. Expanded command history, four views, Evidence drawer and main controls remained available; scientific saved state and Undo1/Redo0 stayed unchanged. Exact second-monitor resolution and the physical modifier observation remain unverified. The native ledger retains actual dimensions and unmodified screenshots.
+- Added independently reviewed, bounded research tooling for the predeclared reference scale/weight/depth sensitivity cases and scheduling interruption after three completed winter cases. Ten synthetic sensitivity checks and four native synthetic process-lifecycle checks passed. Worker identity is bound to PID, creation time, exact command and output directory; completed IDs and digest bind the same retained report bytes. This only supervises owned verification workers and establishes no scientific qualification.
+- Source freeze follows the historical-weather repair and documentation packaging regression. Full method4 shipping A/B and qualified same-sky references are still executing; neither output in progress nor a successful synthetic supervisor test satisfies numerical release acceptance.
+
 ## 2026-10-11 — clean method4 package, native guards and historical weather repair
 
 - Built and installed clean `8e7fe4b` candidate03 with bundled frontend and separate frozen CLI. Native launch, room rotation rejection through a locked generated window, failed Save blocking New, and recovery of the dirty edit through native Save As were observed. Original external manifest bytes remained unchanged; one accepted edit retained one undo entry. Exact package identities and the limits of these checks are in `v0.3-native-verification.md`. Strict dependency review again passed with 358 packages, 196 retained notices and zero gaps.

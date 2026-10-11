@@ -1,0 +1,42 @@
+{
+  "schema_version": "greenlens.native-layout.v0.3",
+  "recorded_utc": "2026-10-11T10:13:33.7663647Z",
+  "source_commit": "8e7fe4bc95c07856f89ba008fdd4d6cc751b1615",
+  "source_dirty": false,
+  "installed_sha256": "b4d1944bf9470a541f1510a14e37e8a5646b00427f7eafc4e70ac47fccbe3587",
+  "accepted_release": false,
+  "compact": {
+    "css_height": 500,
+    "native_inner_height": 625,
+    "native_inner_width": 1125,
+    "scale": 1.25,
+    "css_width": 900
+  },
+  "maximized": {
+    "css_height": 794,
+    "native_inner_height": 991,
+    "native_inner_width": 1920,
+    "scale": 1.25,
+    "css_width": 1536
+  },
+  "observations": [
+    "Expanded command history, four viewports and Evidence drawer coexist",
+    "Main Run, modeling strip and status bar remain accessible",
+    "Right panel and Evidence drawer have independent scrolling",
+    "Scientific saved state, Undo1 and Redo0 unchanged"
+  ],
+  "exact_1366x768_display_tested": false,
+  "second_physical_monitor_tested": false,
+  "screenshots": [
+    {
+      "file": "candidate03-compact.png",
+      "bytes": 85781,
+      "sha256": "16a8bd4ea4de1c7abf28b64a24f2e16482205a8769d4235a679910f4118cc82d"
+    },
+    {
+      "file": "candidate03-maximized.png",
+      "bytes": 131115,
+      "sha256": "c81f86b9a018e0c8562d554d338c2136621fc38f70b7dd0f18b67df9fa4ccf08"
+    }
+  ]
+}

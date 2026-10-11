@@ -328,11 +328,7 @@ fn read_run(root: &Path, summary: &RunSummary) -> Result<RunRecord> {
 }
 pub fn open_project(path: &Path) -> Result<ProjectView> {
     let manifest = regular_child(path, "project.json")?;
-    ensure!(
-        fs::metadata(&manifest)?.len() <= 64 * 1024 * 1024,
-        "Project manifest too large"
-    );
-    let bytes = fs::read(manifest)?;
+    let bytes = read_json_bytes(&manifest)?;
     let revision = bytes_hash(&bytes);
     let project: Project = serde_json::from_slice(&bytes)?;
     validate_project(&project)?;

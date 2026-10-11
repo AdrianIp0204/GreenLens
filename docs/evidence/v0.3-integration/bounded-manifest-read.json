@@ -1,0 +1,83 @@
+{
+  "schema_version": "greenlens.bounded-manifest-read-verification.v1",
+  "recorded_utc": "2026-10-11T15:26:02.4300857Z",
+  "base_source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+  "source_worktree_dirty": true,
+  "scope": "Shared bounded JSON byte reads for manifest revisions and project opening; no scientific recipe, schema, engine or installed package change.",
+  "sources": [
+    {
+      "path": "crates/greenlens-runner/src/persistence.rs",
+      "sha256": "ee62e47405c725dc392fda4f8f696baae5cda068137b51cbe3b6088e1e272374"
+    },
+    {
+      "path": "crates/greenlens-runner/src/lib.rs",
+      "sha256": "f187057d39c43a554ec836b585b9f3789c458f20369e45e79fdd31ba6a42cbdd"
+    }
+  ],
+  "regressions": [
+    "Sparse externally expanded manifest rejects before hashing; saved project, pending completed climate evidence and scratch seal remain available with no promotion.",
+    "Owned local Windows OFFLINE attribute rejects revision and open before read; restored file remains readable.",
+    "Missing manifest yields None; directory manifest is rejected.",
+    "Actual read accepts exact limit and consumes at most limit+1 bytes when input grows."
+  ],
+  "before_fix": {
+    "command": "cargo test -p greenlens-runner --lib persistence::tests::oversized_external_revision_preserves_pending_climate_evidence --locked --offline",
+    "exit_code": 101,
+    "expected_failure": true,
+    "observation": "Old revision path read and hashed oversized manifest, returning generic external conflict instead of early bounded-read rejection."
+  },
+  "verification": [
+    {
+      "command": "cargo test -p greenlens-runner --lib --locked --offline",
+      "exit_code": 0,
+      "passed": 86,
+      "failed": 0,
+      "ignored": 0,
+      "seconds": 306.71
+    },
+    {
+      "command": "cargo clippy -p greenlens-runner --all-targets --locked --offline -- -D warnings",
+      "exit_code": 0,
+      "seconds": 14.58
+    },
+    {
+      "command": "rustfmt --check --edition 2021 crates/greenlens-runner/src/persistence.rs crates/greenlens-runner/src/lib.rs",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check -- crates/greenlens-runner/src/persistence.rs crates/greenlens-runner/src/lib.rs",
+      "exit_code": 0
+    }
+  ],
+  "independent_review": "A second agent reviewed opened-file policy, race bounds and preservation tests; no concrete blocker found.",
+  "logs": [
+    {
+      "path": "before-fix.log",
+      "bytes": 1053,
+      "sha256": "d8beed33b9c6d30f397852898fe54cda2211eae90852ecec0e0a29711a8466dc"
+    },
+    {
+      "path": "after-fix.log",
+      "bytes": 1468,
+      "sha256": "03f561adf8606ca0dafb4f4d21df9a314715076d7d3c9f950c1cf8ba807fb80d"
+    },
+    {
+      "path": "full-runner-after-fix.log",
+      "bytes": 11343,
+      "sha256": "de6766eed721b3ac67d31cb85163d90b76451883fb7ffaccf8fc02d1c4fe3b58"
+    },
+    {
+      "path": "clippy.log",
+      "bytes": 292,
+      "sha256": "105c15c2da0ccef7a300135dd8ec0f0892c9d79330867ef7a3681a058e6e6b4a"
+    },
+    {
+      "path": "reviewed.patch",
+      "bytes": 10469,
+      "sha256": "4716f40264f8489f9700ceca41d08680c2cc2e63317313114a1c3272839a3bf3"
+    }
+  ],
+  "native_engine_executed": false,
+  "installed_package_rebuilt": false,
+  "release_acceptance_complete": false
+}

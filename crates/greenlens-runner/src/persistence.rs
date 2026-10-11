@@ -193,7 +193,19 @@ fn create_checked_directories(
     Ok((current, guards))
 }
 
-pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<T> {
+fn read_limited(mut source: impl Read, limit: u64) -> Result<Vec<u8>> {
+    let mut bytes = Vec::new();
+    source.by_ref().take(limit + 1).read_to_end(&mut bytes)?;
+    ensure!(
+        bytes.len() as u64 <= limit,
+        "JSON exceeds 64 MiB safety limit"
+    );
+    Ok(bytes)
+}
+
+/// Check availability before opening, then bind the size/policy checks to the
+/// opened file. The actual read stays bounded if an external writer grows it.
+pub(crate) fn read_json_bytes(path: &Path) -> Result<Vec<u8>> {
     let meta = checked_metadata(path)?;
     ensure!(
         !meta.file_type().is_symlink() && meta.is_file(),
@@ -203,7 +215,29 @@ pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<T> {
         meta.len() <= MAX_EVIDENCE_FILE_BYTES,
         "JSON exceeds 64 MiB safety limit"
     );
-    Ok(serde_json::from_slice(&fs::read(path)?)?)
+    let mut options = OpenOptions::new();
+    options.read(true);
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        use windows_sys::Win32::Storage::FileSystem::FILE_FLAG_OPEN_REPARSE_POINT;
+        options.custom_flags(FILE_FLAG_OPEN_REPARSE_POINT);
+    }
+    let file = options.open(path)?;
+    #[cfg(windows)]
+    let opened = inspect_windows_handle(&file)?;
+    #[cfg(not(windows))]
+    let opened = file.metadata()?;
+    ensure!(opened.is_file(), "Expected a regular file");
+    ensure!(
+        opened.len() <= MAX_EVIDENCE_FILE_BYTES,
+        "JSON exceeds 64 MiB safety limit"
+    );
+    read_limited(file, MAX_EVIDENCE_FILE_BYTES)
+}
+
+pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<T> {
+    Ok(serde_json::from_slice(&read_json_bytes(path)?)?)
 }
 pub fn write_json(path: &Path, value: &impl Serialize) -> Result<()> {
     let mut data = serde_json::to_vec_pretty(value)?;
@@ -299,10 +333,13 @@ impl Drop for WriterLock {
 
 pub fn revision(root: &Path) -> Result<Option<String>> {
     let path = root.join("project.json");
-    if path.exists() {
-        Ok(Some(bytes_hash(&fs::read(path)?)))
-    } else {
-        Ok(None)
+    match fs::symlink_metadata(&path) {
+        Ok(_) => {
+            let path = regular_child(root, "project.json")?;
+            Ok(Some(bytes_hash(&read_json_bytes(&path)?)))
+        }
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => Ok(None),
+        Err(error) => Err(error.into()),
     }
 }
 pub fn check_revision(root: &Path, expected: Option<&str>) -> Result<()> {
@@ -551,6 +588,163 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn oversized_external_revision_preserves_pending_climate_evidence() {
+        use crate::{ActiveJob, Application, JobState, JobStatus};
+        use std::sync::{atomic::AtomicBool, Arc, Mutex};
+
+        let directory = tempfile::tempdir().unwrap();
+        let scratch = tempfile::tempdir().unwrap();
+        let saved = crate::save_project(directory.path(), &crate::example(), None).unwrap();
+        let record = crate::climate::tests::fixture(scratch.path(), false);
+        let original_record = serde_json::to_value(&record).unwrap();
+        let original_project = serde_json::to_value(&saved.project).unwrap();
+        let original_seal = fs::read(scratch.path().join("checksums.json")).unwrap();
+        let app = Application {
+            active: Mutex::new(Some(ActiveJob {
+                status: Arc::new(Mutex::new(JobStatus {
+                    id: record.id.clone(),
+                    state: JobState::Completed,
+                    log: vec!["Synthetic pending evidence; no engine executed".into()],
+                    error: None,
+                    result: None,
+                    climate_result: Some(record),
+                    pending_evidence: true,
+                })),
+                cancel: Arc::new(AtomicBool::new(false)),
+                handle: None,
+                scratch: scratch.path().to_owned(),
+                project_id: Some(saved.project.id.clone()),
+            })),
+        };
+        let manifest = directory.path().join("project.json");
+        let external = OpenOptions::new().write(true).open(&manifest).unwrap();
+        #[cfg(windows)]
+        {
+            use std::{ffi::c_void, os::windows::io::AsRawHandle};
+            #[link(name = "kernel32")]
+            unsafe extern "system" {
+                fn DeviceIoControl(
+                    handle: *mut c_void,
+                    code: u32,
+                    input: *const c_void,
+                    input_size: u32,
+                    output: *mut c_void,
+                    output_size: u32,
+                    returned: *mut u32,
+                    overlapped: *mut c_void,
+                ) -> i32;
+            }
+            let mut returned = 0;
+            // Mark only this owned temporary fixture sparse before extending
+            // its logical length. No large output or engine process is needed.
+            let ok = unsafe {
+                DeviceIoControl(
+                    external.as_raw_handle(),
+                    0x0009_00c4, // FSCTL_SET_SPARSE
+                    std::ptr::null(),
+                    0,
+                    std::ptr::null_mut(),
+                    0,
+                    &mut returned,
+                    std::ptr::null_mut(),
+                )
+            };
+            assert_ne!(ok, 0, "Sparse fixture requires a supporting filesystem");
+        }
+        external.set_len(MAX_EVIDENCE_FILE_BYTES + 1).unwrap();
+        drop(external);
+
+        let failure = app
+            .collect(directory.path(), &saved.project, Some(&saved.revision))
+            .unwrap_err();
+        assert!(failure.to_string().contains("64 MiB"), "{failure:#}");
+        assert!(
+            crate::save_project(directory.path(), &saved.project, Some(&saved.revision))
+                .unwrap_err()
+                .to_string()
+                .contains("64 MiB")
+        );
+        assert!(crate::open_project(directory.path())
+            .unwrap_err()
+            .to_string()
+            .contains("64 MiB"));
+        assert_eq!(
+            fs::metadata(&manifest).unwrap().len(),
+            MAX_EVIDENCE_FILE_BYTES + 1
+        );
+        assert_eq!(
+            serde_json::to_value(&saved.project).unwrap(),
+            original_project
+        );
+        assert!(!directory.path().join("runs").exists());
+        assert!(!directory.path().join("weather").exists());
+        let status = app.status().unwrap();
+        assert!(status.pending_evidence);
+        assert_eq!(
+            serde_json::to_value(status.climate_result.unwrap()).unwrap(),
+            original_record
+        );
+        assert_eq!(
+            fs::read(scratch.path().join("checksums.json")).unwrap(),
+            original_seal
+        );
+        assert!(app.prepare_close(false).is_err());
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn offline_manifest_revision_is_rejected_before_hashing() {
+        use std::os::windows::ffi::OsStrExt;
+        use windows_sys::Win32::Storage::FileSystem::{
+            SetFileAttributesW, FILE_ATTRIBUTE_NORMAL, FILE_ATTRIBUTE_OFFLINE,
+        };
+        let directory = tempfile::tempdir().unwrap();
+        let manifest = directory.path().join("project.json");
+        fs::write(&manifest, b"{\"synthetic\":true}\n").unwrap();
+        let path: Vec<u16> = manifest.as_os_str().encode_wide().chain(Some(0)).collect();
+        // This sets the offline attribute on an owned local test file only.
+        // It does not create a cloud file, use OneDrive or access the network.
+        assert_ne!(
+            unsafe { SetFileAttributesW(path.as_ptr(), FILE_ATTRIBUTE_OFFLINE) },
+            0
+        );
+        let result = revision(directory.path());
+        let open_result = crate::open_project(directory.path());
+        assert_ne!(
+            unsafe { SetFileAttributesW(path.as_ptr(), FILE_ATTRIBUTE_NORMAL) },
+            0
+        );
+        assert!(result
+            .unwrap_err()
+            .to_string()
+            .contains("not fully available locally"));
+        assert!(open_result
+            .unwrap_err()
+            .to_string()
+            .contains("not fully available locally"));
+        assert!(revision(directory.path()).unwrap().is_some());
+    }
+
+    #[test]
+    fn manifest_revision_distinguishes_absent_from_nonregular() {
+        let directory = tempfile::tempdir().unwrap();
+        assert!(revision(directory.path()).unwrap().is_none());
+        fs::create_dir(directory.path().join("project.json")).unwrap();
+        assert!(revision(directory.path()).is_err());
+    }
+
+    #[test]
+    fn bounded_bytes_accept_exact_limit_and_stop_after_one_extra_byte() {
+        use std::io::Cursor;
+        let expected = vec![b'x'; 32];
+        assert_eq!(read_limited(Cursor::new(&expected), 32).unwrap(), expected);
+        let mut growing_source = Cursor::new(vec![b'x'; 1_024]);
+        assert!(read_limited(&mut growing_source, 32).is_err());
+        assert_eq!(growing_source.position(), 33);
+    }
+
     #[test]
     fn oversized_manifest_preserves_previous_file_without_temporary_write() {
         let project = tempfile::tempdir().unwrap();

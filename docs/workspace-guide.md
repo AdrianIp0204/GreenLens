@@ -10,6 +10,10 @@ Scientific coordinates are metres, +X east, +Y north and +Z up. The model-local 
 
 Click geometry or a sensor to select. Shift adds; Ctrl removes. Left-to-right rectangular selection includes fully contained objects; right-to-left crossing includes intersecting objects. The overlap chooser disambiguates coincident surfaces, envelope and sensors. Escape cancels a provisional operation or clears selection. Layers and Properties use the same semantic IDs; generated faces are inspectable parts of the envelope, not independently editable CAD objects. Hidden or locked objects cannot be newly selected. An already-selected object remains inspectable but read-only when locked, with no manipulation handles; unlock it through Layers or **Unlock**.
 
+The **Selection** strip above the viewports always shows the count and names selected. **Replace**, **Add** and **Remove** set what the next object click does, in either the viewport or the Objects list. Remove only changes selection; it does not delete geometry. **Objects** opens the named list in Layers, which avoids overlapping geometry. Add/Remove remain active until you choose Replace, select a manipulation tool or press Escape outside a text field. Handles are hidden while Add/Remove is active.
+
+To try selection without keyboard modifiers: click **Objects**, choose **Replace**, click **Window**, choose **Add**, then click **Room envelope**. The strip should show two selected objects. Choose **Remove**, then click **Window**; Room envelope should remain. Return to Replace afterward. For keyboard selection, hold **only Shift** while clicking another object's name to add it, or hold **only Ctrl** while clicking a selected object's name to remove it. Pressing a modifier alone does not select anything. Ctrl takes precedence if both are held. A modifier temporarily overrides the active selection mode.
+
 Shift/Ctrl clicks select even over a manipulation handle. Ctrl removes a unique selected hit directly; Shift offers only new hits. If several eligible objects overlap, the chooser says **Add to selection** or **Remove from selection** and remembers the modifier after you release it. Escape during a held drag cancels the preview and releases pointer capture; releasing the mouse afterward cannot commit that cancelled edit. Losing capture or switching away from the app also cancels a provisional edit.
 
 Rectangular selection operates on the inspectable room surfaces, window, optional objects and sensors. Select the aggregate **Room envelope** through the overlap chooser or object list for room parameter editing; the aggregate is omitted from rectangular selection to avoid duplicating its child surfaces.
@@ -53,7 +57,7 @@ Cancel
 Export
 ```
 
-Other commands include New, Open, Save, SaveAs, Close, Perspective/Top/Front/Right, ZoomSelected, SelectAll/SelectNone, Hide/Show, Lock/Unlock, Wireframe/Shaded/Analysis, Cutaway and Grid/Snap/Ortho/Osnap/Gumball. Cutaway makes walls and ceiling translucent for interior inspection; the floor stays opaque and no scientific surface is removed. Menu items and command entry dispatch the same application actions. The tool strip selects a manipulation mode; it never runs a shell or arbitrary code.
+Other commands include New, Open, Save, SaveAs, Close, Perspective/Top/Front/Right, ZoomSelected, SelectAll/SelectNone, SelectReplace/SelectAdd/SelectRemove, Hide/Show, Lock/Unlock, Wireframe/Shaded/Analysis, Cutaway and Grid/Snap/Ortho/Osnap/Gumball. Cutaway makes walls and ceiling translucent for interior inspection; the floor stays opaque and no scientific surface is removed. Menu items and command entry dispatch the same application actions. The tool strip selects a manipulation mode; it never runs a shell or arbitrary code.
 
 ## Documents and evidence
 

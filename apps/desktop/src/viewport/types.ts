@@ -4,6 +4,7 @@ export type ViewId = 'perspective' | 'top' | 'front' | 'right';
 export type DisplayMode = 'wireframe' | 'shaded' | 'analysis';
 export type LayerId = 'room' | 'window' | 'overhang' | 'obstruction' | 'sensors' | 'analysis';
 export type ToolId = 'select' | 'move' | 'resize' | 'rotate';
+export type SelectionMode = 'replace' | 'add' | 'remove';
 export interface LayerState { visible: boolean; locked: boolean; color: string }
 export interface ObjectDisplayState { visible?: boolean; locked?: boolean; color?: string }
 export type LayerStates = Record<LayerId, LayerState>;
@@ -33,11 +34,13 @@ export interface SceneViewProps {
   lux: number[] | null;
   scale: number;
   selection: string[];
+  selectionMode?: SelectionMode;
   display: ViewportDisplayState;
   tool: ToolId;
   disabled?: boolean;
   viewCommand?: ViewCommand;
   onSelectionChange: (ids: string[]) => void;
+  onSelectionModeChange?: (mode: SelectionMode) => void;
   onDisplayChange: (display: ViewportDisplayState) => void;
   onCommitCandidate: (model: Model, label: string) => Promise<boolean>;
   onNumericHandle?: (request: NumericHandleRequest) => void;

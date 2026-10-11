@@ -6,7 +6,10 @@ import { createRoot } from 'react-dom/client';
 import { flushSync } from 'react-dom';
 import * as THREE from 'three';
 import SceneView from '../src/SceneView';
-import { defaultDisplay, type NumericHandleRequest } from '../src/viewport/types';
+import SelectionBar from '../src/workspace/SelectionBar';
+import { defaultDisplay, type NumericHandleRequest, type SelectionMode } from '../src/viewport/types';
+import { objectLabel } from '../src/viewport/entities';
+import '../src/styles.css';
 import type { Model, ValidatedModel } from '../src/types';
 import fixture from './viewport-fixture.json';
 import fixtureB from './viewport-fixture-b.json';
@@ -16,6 +19,7 @@ const tick = () => new Promise<void>(resolve => requestAnimationFrame(() => reso
 
 function Harness() {
   const [display, setDisplay] = useState(defaultDisplay()), [selection, setSelection] = useState<string[]>([]), [result, setResult] = useState(false), [command, setCommand] = useState({ sequence: 0, kind: 'extents' as const });
+  const [selectionMode, setSelectionMode] = useState<SelectionMode>('replace');
   const [candidate, setCandidate] = useState<Model | null>(null), [commits, setCommits] = useState<Model[]>([]), [numeric, setNumeric] = useState<NumericHandleRequest | null>(null), [message, setMessage] = useState('');
   const [alternative, setAlternative] = useState(false), [synthetic, setSynthetic] = useState<unknown>(null), candidateRef = useRef<Model | null>(null);
   const validated = (alternative ? fixtureB : fixture) as ValidatedModel;
@@ -48,8 +52,9 @@ function Harness() {
     <header style={{ display: 'flex', alignItems: 'center', gap: 8, height: 40, padding: '0 12px' }}><strong>TEST FIXTURE · no calculation</strong><button onClick={() => setSelection(['window'])}>Select window</button><button onClick={() => setSelection(['room'])}>Select room</button><button onClick={() => setSelection([])}>Clear selection</button><button onClick={() => setResult(!result)}>Toggle fixture result</button><button onClick={() => setDisplay({ ...display, mode: display.mode === 'analysis' ? 'wireframe' : 'analysis' })}>Toggle mode</button><button onClick={() => setDisplay({ ...display, grid_snap: !display.grid_snap, ortho: !display.ortho, object_snap: false })}>Toggle GridSnap Ortho</button><button onClick={() => setCommand({ sequence: command.sequence + 1, kind: 'extents' })}>Extents</button></header>
     <nav style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: 4 }}><button onClick={() => setAlternative(!alternative)}>Toggle validated A/B geometry</button><button onClick={() => setDisplay({ ...display, cutaway: !display.cutaway })}>Toggle cutaway</button><button onClick={() => setDisplay({ ...display, objects: { ...display.objects, window: { ...display.objects.window, locked: !display.objects.window?.locked } } })}>Toggle window lock</button><button onClick={() => setDisplay({ ...display, objects: { ...display.objects, window: { ...display.objects.window, visible: display.objects.window?.visible === false } } })}>Toggle window visibility</button><button onPointerDown={e => void syntheticPointer(e, 'perspective', 'orbit')}>Synthetic RMB orbit</button><button onPointerDown={e => void syntheticPointer(e, 'perspective', 'pan')}>Synthetic Shift RMB pan</button><button onPointerDown={e => void syntheticPointer(e, 'top', 'orbit')}>Synthetic Top RMB</button><button disabled={display.maximized_view !== 'front' || selection.join() !== 'window'} onPointerDown={e => void syntheticPointer(e, 'front', 'escape')}>Synthetic preview Escape</button></nav>
     <div><input id="escape-focus-fixture" aria-label="Native text Escape fixture" defaultValue="unchanged"/><button disabled={display.maximized_view !== 'front' || selection.join() !== 'window'} onPointerDown={e => void syntheticPointer(e, 'front', 'escape-focus')}>Synthetic held-drag input-focus Escape</button></div>
-    <div style={{ flex: 1, minHeight: 0 }}><SceneView documentId="test-fixture" validated={validated} lux={result ? fixture.sensor_grid.sensors.map((_, i) => i + 1) : null} scale={77} selection={selection} display={display} tool="select" viewCommand={command} onDisplayChange={setDisplay} onSelectionChange={setSelection} onPreviewCandidate={model => { candidateRef.current = model; setCandidate(model); }} onCommitCandidate={async model => { setCommits(previous => [...previous, model]); return false; }} onNumericHandle={setNumeric} onInteractionError={setMessage} /></div>
-    <output id="test-state" style={{ height: 100, overflow: 'auto', whiteSpace: 'pre-wrap', font: '10px Consolas' }}>{JSON.stringify({ selection, display, alternative, candidate, commits, numeric, message, synthetic })}</output>
+    <SelectionBar mode={selectionMode} names={selection.map(objectLabel)} disabled={Boolean(candidate)} onMode={setSelectionMode} onObjects={() => setMessage('Test harness: object-list navigation belongs to the full app.')} />
+    <div style={{ flex: 1, minHeight: 0 }}><SceneView documentId="test-fixture" validated={validated} lux={result ? fixture.sensor_grid.sensors.map((_, i) => i + 1) : null} scale={77} selection={selection} selectionMode={selectionMode} display={display} tool="select" viewCommand={command} onDisplayChange={setDisplay} onSelectionChange={setSelection} onSelectionModeChange={setSelectionMode} onPreviewCandidate={model => { candidateRef.current = model; setCandidate(model); }} onCommitCandidate={async model => { setCommits(previous => [...previous, model]); return false; }} onNumericHandle={setNumeric} onInteractionError={setMessage} /></div>
+    <output id="test-state" style={{ height: 100, overflow: 'auto', whiteSpace: 'pre-wrap', font: '10px Consolas' }}>{JSON.stringify({ selection, selectionMode, display, alternative, candidate, commits, numeric, message, synthetic })}</output>
   </main>;
 }
 const reactRoot = createRoot(document.getElementById('root')!); reactRoot.render(<Harness />);

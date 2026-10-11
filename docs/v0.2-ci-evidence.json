@@ -1,19 +1,22 @@
 {
   "schema_version": "greenlens.ci-evidence.v0.2",
-  "recorded_utc": "2026-10-11T02:37:55.880815+00:00",
-  "source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+  "recorded_utc": "2026-10-11T03:28:30.741683+00:00",
+  "source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
   "source_branch": "codex/v0.2-workspace",
-  "candidate_status": "superseded_after_native_feedback",
+  "historical_ci_record": "v0.2-ci-evidence-bb0456c.json",
+  "documentation_only_revision_after_build": "b6c2b3e9e0c61c6b7358c8dd2acb1576f2225071",
+  "source_identity_note": "Artifacts and retained-file checks bind to c6feb7b. Later b6c2b3e changed documentation only; later selection-usability code is outside this run.",
+  "candidate_status": "ci_passed_before_selection_usability_followup",
   "release_acceptance_complete": false,
-  "candidate_note": "This passing run covers the bb0456c candidate only. Subsequent human native checks reported Shift/Ctrl selection and held-drag Escape failures; corrective source work and fresh native/CI verification are separate.",
+  "candidate_note": "This passing run covers the c6feb7b candidate before the subsequent selection-usability followup. Candidate04 native Escape and right-button navigation were later reported passing; modifier interaction acceptance remains unverified. CI does not establish native interaction acceptance.",
   "repository": "https://github.com/AdrianIp0204/GreenLens",
   "workflow": "Native Windows verification",
-  "run_id": 38103259502,
-  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38103259502",
+  "run_id": 38106215182,
+  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182",
   "status": "completed",
   "conclusion": "success",
-  "created_utc": "2026-10-11T01:51:55Z",
-  "updated_utc": "2026-10-11T02:33:41Z",
+  "created_utc": "2026-10-11T02:46:10Z",
+  "updated_utc": "2026-10-11T03:26:21Z",
   "platform": {
     "requested_runner": "windows-latest",
     "runner_version": "2.337.0",
@@ -27,147 +30,147 @@
     "npm": "11.19.0"
   },
   "source_identity_assertion": {
-    "expected_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+    "expected_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
     "expected_worktree_dirty": false,
     "build_checks_passed": true
   },
   "jobs": [
     {
-      "id": 114363390531,
+      "id": 114372194457,
       "name": "native",
-      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38103259502/job/114363390531",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182/job/114372194457",
       "status": "completed",
       "conclusion": "success",
-      "started_utc": "2026-10-11T01:51:57Z",
-      "completed_utc": "2026-10-11T02:33:40Z",
+      "started_utc": "2026-10-11T02:46:14Z",
+      "completed_utc": "2026-10-11T03:26:20Z",
       "steps": [
         {
           "number": 1,
           "name": "Set up job",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:51:58Z",
-          "completed_utc": "2026-10-11T01:51:59Z"
+          "started_utc": "2026-10-11T02:46:15Z",
+          "completed_utc": "2026-10-11T02:46:16Z"
         },
         {
           "number": 2,
           "name": "Run actions/checkout@v4",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:51:59Z",
-          "completed_utc": "2026-10-11T01:52:04Z"
+          "started_utc": "2026-10-11T02:46:16Z",
+          "completed_utc": "2026-10-11T02:46:27Z"
         },
         {
           "number": 3,
           "name": "Run actions/setup-node@v4",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:52:04Z",
-          "completed_utc": "2026-10-11T01:52:09Z"
+          "started_utc": "2026-10-11T02:46:27Z",
+          "completed_utc": "2026-10-11T02:46:36Z"
         },
         {
           "number": 4,
           "name": "Native development environment and pinned toolchain",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:52:09Z",
-          "completed_utc": "2026-10-11T01:52:23Z"
+          "started_utc": "2026-10-11T02:46:36Z",
+          "completed_utc": "2026-10-11T02:46:48Z"
         },
         {
           "number": 5,
           "name": "Build identity changes and explicit CI assertions",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:52:23Z",
-          "completed_utc": "2026-10-11T01:52:33Z"
+          "started_utc": "2026-10-11T02:46:48Z",
+          "completed_utc": "2026-10-11T02:47:01Z"
         },
         {
           "number": 6,
           "name": "Acquire and verify pinned native engine",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:52:33Z",
-          "completed_utc": "2026-10-11T01:52:36Z"
+          "started_utc": "2026-10-11T02:47:01Z",
+          "completed_utc": "2026-10-11T02:47:05Z"
         },
         {
           "number": 7,
           "name": "Engine feasibility in spaces and non-ASCII path",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:52:36Z",
-          "completed_utc": "2026-10-11T01:52:37Z"
+          "started_utc": "2026-10-11T02:47:05Z",
+          "completed_utc": "2026-10-11T02:47:06Z"
         },
         {
           "number": 8,
           "name": "Frontend install, types, tests and production assets",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:52:37Z",
-          "completed_utc": "2026-10-11T01:52:48Z"
+          "started_utc": "2026-10-11T02:47:06Z",
+          "completed_utc": "2026-10-11T02:47:16Z"
         },
         {
           "number": 9,
           "name": "Rust format, lint and unit/integration checks",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:52:48Z",
-          "completed_utc": "2026-10-11T01:57:25Z"
+          "started_utc": "2026-10-11T02:47:16Z",
+          "completed_utc": "2026-10-11T02:51:38Z"
         },
         {
           "number": 10,
           "name": "Required real-engine scientific suite (missing engine is failure)",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T01:57:25Z",
-          "completed_utc": "2026-10-11T02:16:54Z"
+          "started_utc": "2026-10-11T02:51:38Z",
+          "completed_utc": "2026-10-11T03:10:24Z"
         },
         {
           "number": 11,
           "name": "Real CLI A/B, portable save/export and replay",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T02:16:54Z",
-          "completed_utc": "2026-10-11T02:26:50Z"
+          "started_utc": "2026-10-11T03:10:24Z",
+          "completed_utc": "2026-10-11T03:20:07Z"
         },
         {
           "number": 12,
           "name": "Production per-user Windows package and CLI",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T02:26:50Z",
-          "completed_utc": "2026-10-11T02:33:31Z"
+          "started_utc": "2026-10-11T03:20:07Z",
+          "completed_utc": "2026-10-11T03:26:13Z"
         },
         {
           "number": 13,
           "name": "Run actions/upload-artifact@v4",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T02:33:31Z",
-          "completed_utc": "2026-10-11T02:33:33Z"
+          "started_utc": "2026-10-11T03:26:13Z",
+          "completed_utc": "2026-10-11T03:26:16Z"
         },
         {
           "number": 25,
           "name": "Post Run actions/setup-node@v4",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T02:33:33Z",
-          "completed_utc": "2026-10-11T02:33:37Z"
+          "started_utc": "2026-10-11T03:26:16Z",
+          "completed_utc": "2026-10-11T03:26:16Z"
         },
         {
           "number": 26,
           "name": "Post Run actions/checkout@v4",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T02:33:37Z",
-          "completed_utc": "2026-10-11T02:33:39Z"
+          "started_utc": "2026-10-11T03:26:16Z",
+          "completed_utc": "2026-10-11T03:26:18Z"
         },
         {
           "number": 27,
           "name": "Complete job",
           "status": "completed",
           "conclusion": "success",
-          "started_utc": "2026-10-11T02:33:39Z",
-          "completed_utc": "2026-10-11T02:33:39Z"
+          "started_utc": "2026-10-11T03:26:18Z",
+          "completed_utc": "2026-10-11T03:26:18Z"
         }
       ]
     }
@@ -178,7 +181,7 @@
       "failed": 0
     },
     "frontend": {
-      "passed": 39,
+      "passed": 47,
       "failed": 0,
       "skipped": 0,
       "coverage": "Node test runner; native desktop gestures are not tested by this suite"
@@ -209,7 +212,7 @@
       "passed": 1,
       "failed": 0,
       "ignored": 0,
-      "elapsed_seconds": 1164.33,
+      "elapsed_seconds": 1122.74,
       "checks": [
         {
           "id": "B",
@@ -287,34 +290,34 @@
   },
   "artifacts": [
     {
-      "id": 11690065564,
+      "id": 11690635582,
       "name": "greenlens-windows-unsigned",
-      "created_at": "2026-10-11T02:33:32Z",
-      "expires_at": "2027-01-09T01:51:55Z",
+      "created_at": "2026-10-11T03:26:15Z",
+      "expires_at": "2027-01-09T02:46:10Z",
       "expired": false,
-      "size_in_bytes": 5414288,
-      "digest": "sha256:d4376ba6386659347dc6bf8a5673506499bed8b9e58f879573352b6d0250743a",
-      "download_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38103259502/artifacts/11690065564"
+      "size_in_bytes": 5469494,
+      "digest": "sha256:b5e51cfa9ea8e82471ed81403517e5e9ef6643483f6dde0cbbab2ca442ac6697",
+      "download_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182/artifacts/11690635582"
     }
   ],
   "downloaded_artifact_verification": {
     "package_files": [
       {
         "file": "GreenLens_0.2.0_x64-setup.exe",
-        "sha256": "51dca7df3ac3c4a39752dea5410564ab8992d64ff84b80f9d2d47865f0fa61d8",
-        "bytes": 2674042,
+        "sha256": "452cb289f7a4fb4cf11f2ac02db140194639a1514dae086a22cd6f38bd99a6bd",
+        "bytes": 2674476,
         "checksum_verified": true
       },
       {
         "file": "GreenLens-CLI-0.2.0-windows-x64.zip",
-        "sha256": "7e863e124bd56c0b87bd5b813689479571c049d59d6c4d124564f804a58dd5f4",
-        "bytes": 1434357,
+        "sha256": "c8befba4eeae5c50566828172fc416531e1a21a8c8509dd18d9dc5e2fd102792",
+        "bytes": 1462046,
         "checksum_verified": true
       }
     ],
     "cli_zip": {
-      "entries": 28,
-      "files": 28,
+      "entries": 32,
+      "files": 32,
       "all_entries_match_expanded_files": true
     },
     "retained_source_files": [
@@ -351,12 +354,24 @@
         "sha256": "2e47baeb486e208033b6fa4d379d29a117b4c7a2eeac0e31de11d62792aa5865"
       },
       {
+        "path": "docs/progress.md",
+        "sha256": "343637371dc6dfd06f30f3171478c48c833277fb40213a470aa682818249b0c3"
+      },
+      {
         "path": "docs/replay.md",
         "sha256": "3319bb17cbb58d44c87025f4096504efd17efe4a220e347f34b778f5858ce13c"
       },
       {
+        "path": "docs/rhino-interaction-matrix.md",
+        "sha256": "9081bc8652fa227c7d85514d59a2b7f5064d405be4a28676136c19509bef96e8"
+      },
+      {
         "path": "docs/scientific-validation.md",
         "sha256": "59d5ce369533f69762e1572fa9e52ea2b3d7cc664f90f4af1b4f6e87bde859a5"
+      },
+      {
+        "path": "docs/v0.2-native-verification.md",
+        "sha256": "ef659dcbc77f625ae0c3d4c65c2eda1aa6c2b7c980577fbccb7a1f21156cddf7"
       },
       {
         "path": "docs/windows-installer.md",
@@ -364,7 +379,11 @@
       },
       {
         "path": "docs/windows-runtime.md",
-        "sha256": "57a4d762282c812b3f23970a21619e6f712979ec8c44e6d41a36f47cc308673c"
+        "sha256": "bfe4d341dbb078b161e50b92c18fdecb8c9420bee997d9347883694cdfa7ed6c"
+      },
+      {
+        "path": "docs/workspace-guide.md",
+        "sha256": "6799cb3ccaacf691d2d011ee92a10fc0211aa23b354141297113568be57f054f"
       },
       {
         "path": "examples/synthetic-a.json",
@@ -427,18 +446,18 @@
         "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
       }
     ],
-    "retained_source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
+    "retained_source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
     "all_retained_files_match_source_commit": true,
-    "verified_utc": "2026-10-11T02:37:55.880779+00:00",
+    "verified_utc": "2026-10-11T03:28:30.741617+00:00",
     "installer_signature": "NotSigned",
-    "outer_artifact_sha256": "d4376ba6386659347dc6bf8a5673506499bed8b9e58f879573352b6d0250743a",
+    "outer_artifact_sha256": "b5e51cfa9ea8e82471ed81403517e5e9ef6643483f6dde0cbbab2ca442ac6697",
     "outer_artifact_digest_verified": true,
     "artifact_installed_during_review": false
   },
   "raw_evidence": {
-    "directory": "%LOCALAPPDATA%/GreenLens/verification/ci-v0.2-38103259502",
+    "directory": "%LOCALAPPDATA%/GreenLens/verification/ci-v0.2-38106215182",
     "log_file": "run.log",
-    "log_sha256": "2bb0f1ec4d5cdef5708f926c17b7005f006f3a43f1ea05b0dbfed9698f6a84c8",
+    "log_sha256": "1a6e3e860777e1134e1c70ffeaadeb2fc799ddabe6f75a81952cf84f5af969dd",
     "artifact_api_file": "artifacts-api.json",
     "run_api_file": "run.json"
   },
@@ -447,7 +466,7 @@
   ],
   "limitations": [
     "This candidate CI verifies Windows headless science, CLI persistence/export/replay and production builds. Installed desktop interaction is separate and is not inferred from CI.",
-    "Human native feedback reported failed modifier selection and held-drag Escape after this candidate; this record does not claim those behaviors passed or that the release is complete.",
+    "Native modifier interaction acceptance remains unverified; later selection-usability work and its package/CI checks are separate. This record does not claim release completion.",
     "The downloaded CI installer was verified against checksums and confirmed unsigned; it was not installed during this review.",
     "GitHub Actions artifacts expire according to the recorded expiry; retain important artifacts separately.",
     "Same-engine integration and limited analytical fixtures are not general measured-building validation or certification."

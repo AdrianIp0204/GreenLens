@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import type { Model, Vec3 } from '../types';
 import { luxColor } from '../presentation.mjs';
-import { candidateForHandle, candidateForPlanarMove, convexHull, handleDefinitions, localToWorld, mergeSelection, nearestSnap, previewWireSegments, rectangleSelect, renderToWorld, snapCandidates, snapScalar, worldToLocal, worldToRender } from './interaction.mjs';
+import { candidateForHandle, candidateForPlanarMove, convexHull, handleDefinitions, localToWorld, mergeSelection, nearestSnap, previewWireSegments, rectangleSelect, renderToWorld, selectionIntent, snapCandidates, snapScalar, worldToLocal, worldToRender } from './interaction.mjs';
 import { objectLabel, objectVisibility, semanticObjects, surfaceEntityId, surfaceLayer } from './entities';
 import type { CameraState, SceneViewProps, SemanticObject, ViewId } from './types';
 
@@ -104,10 +104,11 @@ export class ViewportEngine {
       if (e.key !== 'Escape') return;
       // An active viewport gesture owns cancellation even if focus moves to an
       // input during the held pointer. With no gesture, text Escape stays native.
-      if (this.drag) { e.preventDefault(); e.stopImmediatePropagation(); this.cancel(); return; }
+      if (this.drag) { e.preventDefault(); e.stopImmediatePropagation(); this.cancel(); this.resetSelectionMode(); return; }
       const target = e.target as HTMLElement | null;
       if (target?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName ?? '') || target?.closest?.('[contenteditable="true"]')) return;
-      if (this.overlay.chooser) { e.preventDefault(); e.stopImmediatePropagation(); this.cancel(); return; }
+      if (this.overlay.chooser) { e.preventDefault(); e.stopImmediatePropagation(); this.cancel(); this.resetSelectionMode(); return; }
+      this.resetSelectionMode();
       this.props.onSelectionChange([]);
     };
     window.addEventListener('keydown', key, true); this.disposers.push(() => window.removeEventListener('keydown', key, true));
@@ -115,6 +116,7 @@ export class ViewportEngine {
     window.addEventListener('blur', blur); this.disposers.push(() => window.removeEventListener('blur', blur));
   }
   private emit(patch: Partial<ViewportOverlay>) { this.overlay = { ...this.overlay, ...patch }; this.onOverlay(this.overlay); }
+  private resetSelectionMode() { if (this.props.selectionMode && this.props.selectionMode !== 'replace') { this.props = { ...this.props, selectionMode: 'replace' }; this.props.onSelectionModeChange?.('replace'); } }
   private activate(id: ViewId) { if (this.props.display.active_view !== id) { this.props = { ...this.props, display: { ...this.props.display, active_view: id } }; this.props.onDisplayChange(this.props.display); } }
   private resize() { this.renderer.setSize(Math.max(1, this.root.clientWidth), Math.max(1, this.root.clientHeight), false); }
   private makeGrid() {
@@ -128,8 +130,10 @@ export class ViewportEngine {
   }
   update(props: SceneViewProps) {
     const changedDocument = this.documentId !== props.documentId;
-    const changedEditContext = this.props.validated?.scientific_input_hash !== props.validated?.scientific_input_hash || this.props.selection.join('|') !== props.selection.join('|') || this.props.tool !== props.tool;
+    const changedSelectionMode = (this.props.selectionMode ?? 'replace') !== (props.selectionMode ?? 'replace');
+    const changedEditContext = this.props.validated?.scientific_input_hash !== props.validated?.scientific_input_hash || this.props.selection.join('|') !== props.selection.join('|') || this.props.tool !== props.tool || changedSelectionMode;
     this.props = props;
+    if (changedSelectionMode && this.overlay.chooser) this.emit({ chooser: null, hover: null });
     if (changedDocument) { this.cancel(); this.documentId = props.documentId; this.awaitingFrame = true; for (const view of this.views.values()) if (props.display.cameras[view.id]) this.restoreCamera(view, props.display.cameras[view.id]!); }
     else if (this.drag?.handle && (changedEditContext || props.disabled || !this.state(props.selection[0]).visible || this.state(props.selection[0]).locked)) this.cancel();
     if (props.validated && this.signature !== props.validated.scientific_input_hash) { this.syncGeometry(); this.signature = props.validated.scientific_input_hash; }
@@ -262,9 +266,10 @@ export class ViewportEngine {
     e.preventDefault(); view.element.focus(); view.element.setPointerCapture(e.pointerId); this.activate(view.id);
     const p = this.point(e, view); this.emit({ chooser: null, rectangle: null, snap: null });
     // Selection modifiers take precedence over overlapping manipulation grips.
-    const modifiedSelection = e.shiftKey || e.ctrlKey || e.metaKey;
+    const intent = selectionIntent(this.props.selectionMode, e.shiftKey, e.ctrlKey || e.metaKey);
+    const modifiedSelection = intent !== 'replace';
     const handle = e.button === 0 && !modifiedSelection && !this.props.disabled && !this.pending ? this.handleHit(view, p) : undefined;
-    this.drag = { view: view.id, pointerId: e.pointerId, start: p.clone(), last: p.clone(), button: e.button, shift: e.shiftKey, ctrl: e.ctrlKey || e.metaKey, moved: false };
+    this.drag = { view: view.id, pointerId: e.pointerId, start: p.clone(), last: p.clone(), button: e.button, shift: intent === 'add', ctrl: intent === 'remove', moved: false };
     if (handle && this.props.validated) {
       const origin = this.handles.position.clone(), model = this.props.validated.model;
       if (handle.kind === 'rotate') {
@@ -404,17 +409,24 @@ export class ViewportEngine {
       else this.props.onSelectionChange(mergeSelection(this.props.selection, ids, drag.shift, drag.ctrl));
     }
   }
-  choose(id: string, shift: boolean, ctrl: boolean) { if (this.state(id).visible && !this.state(id).locked) this.props.onSelectionChange(mergeSelection(this.props.selection, [id], shift || this.overlay.chooser?.shift, ctrl || this.overlay.chooser?.ctrl)); this.emit({ chooser: null, hover: null }); this.syncAppearance(); }
+  choose(id: string, shift: boolean, ctrl: boolean) {
+    const chooser = this.overlay.chooser;
+    if (!chooser?.ids.includes(id)) return;
+    const baseMode = chooser.ctrl ? 'remove' : chooser.shift ? 'add' : 'replace';
+    const intent = selectionIntent(baseMode, shift, ctrl);
+    if (this.state(id).visible && !this.state(id).locked) this.props.onSelectionChange(mergeSelection(this.props.selection, [id], intent === 'add', intent === 'remove'));
+    this.emit({ chooser: null, hover: null }); this.syncAppearance();
+  }
   hover(id: string | null) { this.emit({ hover: id }); this.syncAppearance(); }
   private releaseCapture(drag: Drag | null) { const element = drag && this.views.get(drag.view)?.element; if (drag && element?.hasPointerCapture(drag.pointerId)) element.releasePointerCapture(drag.pointerId); }
   cancel() { const drag = this.drag; this.drag = null; this.releaseCapture(drag); this.clearPreview(); this.emit({ rectangle: null, chooser: null, preview: null, snap: null }); this.syncAppearance(); }
   private clearPreview() { for (const child of [...this.ghost.children]) release(child); this.ghost.rotation.set(0, 0, 0); this.ghost.position.set(0, 0, 0); this.props.onPreviewCandidate?.(null); }
   private syncHandles() {
-    const { validated, selection, display, tool, disabled } = this.props;
-    const key = `${this.signature}|${selection.join(',')}|${display.gumball}|${tool}|${disabled}|${JSON.stringify(display.layers)}|${JSON.stringify(display.objects)}`;
+    const { validated, selection, display, tool, disabled, selectionMode = 'replace' } = this.props;
+    const key = `${this.signature}|${selection.join(',')}|${selectionMode}|${display.gumball}|${tool}|${disabled}|${JSON.stringify(display.layers)}|${JSON.stringify(display.objects)}`;
     if (key === this.handleKey) return; this.handleKey = key;
     for (const child of [...this.handles.children]) release(child);
-    if (!validated || selection.length !== 1 || !display.gumball || disabled || !this.state(selection[0]).visible || this.state(selection[0]).locked) return;
+    if (!validated || selection.length !== 1 || selectionMode !== 'replace' || !display.gumball || disabled || !this.state(selection[0]).visible || this.state(selection[0]).locked) return;
     const object = this.objects.get(selection[0]); if (!object) return;
     const handles = handleDefinitions(validated.model, selection[0], tool) as Handle[];
     if (!handles.length) return;

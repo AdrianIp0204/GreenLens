@@ -3,6 +3,7 @@ export const COMMANDS = [
   ['Undo','Undo accepted edit'], ['Redo','Redo accepted edit'], ['4View','Restore four views'],
   ['Perspective','Maximize perspective'], ['Top','Maximize top'], ['Front','Maximize front'], ['Right','Maximize right'],
   ['ZoomExtents','Frame all visible geometry'], ['ZoomSelected','Frame selection'], ['SelectAll','Select visible unlocked entities'], ['SelectNone','Clear selection'],
+  ['SelectReplace','Click to replace selection'], ['SelectAdd','Click to add objects to selection'], ['SelectRemove','Click to remove objects from selection; keep geometry'],
   ['Hide','Hide selected entities'], ['Show','Show all entities and layers'], ['Lock','Lock selected entities'], ['Unlock','Unlock all entities and layers'],
   ['Move','Move window or obstruction by local offsets'], ['Resize','Set supported entity dimensions'], ['Rotate','Set room clockwise rotation'],
   ['Room','Configure width depth height [rotation]'], ['Window','Configure width height sill center-x'],

@@ -105,6 +105,7 @@ test('display state does not alter scientific dirty signature or edit stacks',()
 test('bounded commands are case-insensitive, prompted, autocompleted and never shell-evaluated',()=>{
   assert.deepEqual(parseCommand('  ReSiZe WINDOW 1800mm 150cm '),{name:'Resize',args:['WINDOW','1800mm','150cm']});
   assert.deepEqual(parseCommand('Zoom Extents'),{name:'ZoomExtents',args:[]});assert.deepEqual(parseCommand('Save As'),{name:'SaveAs',args:[]});
+  for(const mode of ['Replace','Add','Remove'])assert.deepEqual(parseCommand('SELECT '+mode.toLowerCase()),{name:'Select'+mode,args:[]});
   assert.equal(parseCommand('   '),null);assert.throws(()=>parseCommand('powershell rm *'),/Unknown command/);
   assert.equal(suggestions('zoom').length,2);assert.equal(repeatable('Run'),false);assert.equal(repeatable('Remove'),false);assert.equal(repeatable('ZoomExtents'),true);
   assert.match(modelCommand(model,['window'],'Resize',[]).prompt,/Resize window/);

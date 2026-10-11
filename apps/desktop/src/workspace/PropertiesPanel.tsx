@@ -17,7 +17,7 @@ export function ParameterField({label,value,unit='m',onCommit,disabled=false}:{l
 }
 type Field=[string,string,number,string?];
 export default function PropertiesPanel({model,validated,selection,result,locked,disabled,commit,select}:{model:Model;validated:ValidatedModel|null;selection:string[];result:RunRecord|null;locked:boolean;disabled:boolean;commit:(candidate:Model,label:string)=>Promise<boolean>;select:(ids:string[])=>void}){
-  if(!selection.length)return <div className="panel-empty"><h3>Object properties</h3><p>Select geometry or a sensor in a viewport or the Layers list.</p><button onClick={()=>select(['room'])}>Inspect room</button><button onClick={()=>select(['window'])}>Inspect window</button><p>Use Shift to add, Ctrl to remove. Drag left to right for a contained window; right to left for crossing.</p></div>;
+  if(!selection.length)return <div className="panel-empty"><h3>Object properties</h3><p>Select geometry or a sensor in a viewport or the Layers list.</p><button onClick={()=>select(['room'])}>Inspect room</button><button onClick={()=>select(['window'])}>Inspect window</button><p>Use Add or Remove above the viewports, then click an object. Or hold Shift and click to add; hold Ctrl and click to remove. Drag left to right for containment; right to left for crossing.</p></div>;
   if(selection.length>1)return <div className="panel-empty"><h3>{selection.length} selected</h3><p>Mixed selections are inspectable together. Select one parametric entity for an unambiguous edit.</p><ul>{selection.slice(0,20).map(id=><li key={id}>{id}</li>)}</ul></div>;
   const id=selection[0];
   if(id.startsWith('sensor:')){

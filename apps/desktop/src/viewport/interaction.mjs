@@ -7,6 +7,10 @@ export function localToWorld([x, y, z], degrees) {
   return [c * x + s * y, -s * x + c * y, z];
 }
 export function worldToLocal(point, degrees) { return localToWorld(point, -degrees); }
+/** @param {'replace'|'add'|'remove'} [mode] */
+export function selectionIntent(mode = 'replace', shift = false, control = false) {
+  return control ? 'remove' : shift ? 'add' : mode;
+}
 export function mergeSelection(current, picked, shift = false, control = false) {
   if (control) return current.filter(id => !picked.includes(id));
   return shift ? [...new Set([...current, ...picked])] : [...new Set(picked)];

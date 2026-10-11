@@ -40,19 +40,19 @@ class Pane extends EventTarget {
     if (this.captures.delete(id)) this.dispatchEvent(event('lostpointercapture', { pointerId: id }));
   }
 }
-function harness() {
+function harness(selectionMode = 'replace', viewId = 'front') {
   const pane = new Pane(), host = new EventTarget(), priorWindow = globalThis.window;
   globalThis.window = host;
-  const camera = new THREE.OrthographicCamera(-6, 6, 4.5, -4.5, -5000, 5000);
+  const camera = viewId === 'perspective' ? new THREE.PerspectiveCamera(40, 4 / 3, 0.01, 10000) : new THREE.OrthographicCamera(-6, 6, 4.5, -4.5, -5000, 5000);
   camera.position.set(2, 1.5, 20); camera.lookAt(2, 1.5, 0); camera.updateProjectionMatrix(); camera.updateMatrixWorld();
-  const view = { id: 'front', camera, target: new THREE.Vector3(2, 1.5, 0), element: pane };
-  const display = defaultDisplay(); display.active_view = 'front'; display.maximized_view = 'front';
+  const view = { id: viewId, camera, target: new THREE.Vector3(2, 1.5, 0), element: pane };
+  const display = defaultDisplay(); display.active_view = viewId; display.maximized_view = viewId;
   display.object_snap = false; display.grid_snap = false;
-  const state = { selection: ['window'], candidate: null, commits: [], numeric: [], overlay: null };
+  const state = { selection: ['window'], selectionMode, candidate: null, commits: [], numeric: [], overlay: null };
   // Skip only the WebGL renderer constructor. Attach the same listener methods
   // used by the live constructor and run actual picking/preview/commit paths.
   const engine = Object.assign(Object.create(ViewportEngine.prototype), {
-    scene: new THREE.Scene(), surfaces: new Map(), objects: new Map(), views: new Map([['front', view]]),
+    scene: new THREE.Scene(), surfaces: new Map(), objects: new Map(), views: new Map([[viewId, view]]),
     grid: new THREE.Group(), handles: new THREE.Group(), ghost: new THREE.Group(), sensors: null, cells: null,
     plane: new THREE.Mesh(new THREE.BufferGeometry(), new THREE.MeshBasicMaterial()), raycaster: new THREE.Raycaster(),
     disposers: [], drag: null, pending: false, signature: fixture.scientific_input_hash, documentId: 'fixture', awaitingFrame: false,
@@ -62,8 +62,9 @@ function harness() {
   engine.plane.userData.entityId = 'sensor-plane';
   engine.scene.add(engine.plane, engine.handles, engine.ghost);
   engine.props = {
-    documentId: 'fixture', validated: fixture, lux: null, scale: 1, selection: state.selection, display, tool: 'move',
+    documentId: 'fixture', validated: fixture, lux: null, scale: 1, selection: state.selection, selectionMode, display, tool: 'move',
     onSelectionChange: ids => { state.selection = ids; engine.update({ ...engine.props, selection: ids }); },
+    onSelectionModeChange: mode => { state.selectionMode = mode; engine.update({ ...engine.props, selectionMode: mode }); },
     onDisplayChange: next => { engine.update({ ...engine.props, display: next }); },
     onPreviewCandidate: candidate => { state.candidate = candidate; },
     onCommitCandidate: async candidate => { state.commits.push(candidate); return true; },
@@ -103,6 +104,107 @@ test('Shift-click over a selected grip retains selection and adds the chosen ove
     assert.ok(h.state.overlay.chooser?.ids.includes('room'));
     h.engine.choose('room', false, false);
     assert.deepEqual(h.state.selection, ['window', 'room']); assert.equal(h.state.commits.length, 0);
+  } finally { h.close(); }
+});
+test('explicit Add and Remove modes select without a modifier and bypass manipulation grips', () => {
+  const add = harness('add');
+  try {
+    add.pointer('pointerdown'); add.pointer('pointerup');
+    assert.equal(add.state.overlay.chooser?.shift, true);
+    add.engine.choose('room', false, false);
+    assert.deepEqual(add.state.selection, ['window', 'room']);
+    assert.equal(add.state.commits.length, 0); assert.equal(add.state.numeric.length, 0);
+  } finally { add.close(); }
+  const remove = harness('remove');
+  try {
+    remove.pointer('pointerdown'); remove.pointer('pointerup');
+    assert.deepEqual(remove.state.selection, []);
+    assert.equal(remove.state.commits.length, 0); assert.equal(remove.state.numeric.length, 0);
+  } finally { remove.close(); }
+});
+test('pointer modifiers override explicit selection modes with Ctrl taking priority', () => {
+  for (const selectionMode of ['replace', 'add', 'remove']) {
+    const h = harness(selectionMode);
+    try {
+      h.pointer('pointerdown', { shiftKey: true, ctrlKey: true }); h.pointer('pointerup');
+      assert.deepEqual(h.state.selection, [], `${selectionMode}: Ctrl removes despite Shift or base mode`);
+    } finally { h.close(); }
+  }
+  const h = harness('remove');
+  try {
+    h.pointer('pointerdown', { shiftKey: true }); h.pointer('pointerup');
+    assert.equal(h.state.overlay.chooser?.shift, true);
+    h.engine.choose('room', false, false);
+    assert.deepEqual(h.state.selection, ['window', 'room']);
+  } finally { h.close(); }
+});
+test('explicit mode is captured for the overlap chooser, with a later modifier able to override it', () => {
+  const h = harness('remove');
+  try {
+    h.engine.update({ ...h.engine.props, selection: ['window', 'room'] });
+    h.pointer('pointerdown'); h.pointer('pointerup');
+    assert.equal(h.state.overlay.chooser?.ctrl, true);
+    h.engine.choose('window', true, false);
+    assert.deepEqual(h.state.selection, ['window', 'room'], 'Shift overrides stored Remove rather than combining intents');
+    h.pointer('pointerdown'); h.pointer('pointerup');
+    h.engine.choose('window', false, false);
+    assert.deepEqual(h.state.selection, ['room'], 'unmodified choice retains the mode from the original pick');
+  } finally { h.close(); }
+});
+test('changing the visible selection mode dismisses a stale chooser without selecting or editing', () => {
+  const h = harness('add');
+  try {
+    h.pointer('pointerdown'); h.pointer('pointerup');
+    assert.ok(h.state.overlay.chooser);
+    h.engine.update({ ...h.engine.props, selectionMode: 'remove' });
+    assert.equal(h.state.overlay.chooser, null); assert.deepEqual(h.state.selection, ['window']);
+    h.engine.choose('room', false, false);
+    assert.deepEqual(h.state.selection, ['window'], 'a late stale-menu click cannot apply the old intent');
+    assert.equal(h.state.commits.length, 0);
+  } finally { h.close(); }
+});
+test('explicit Add and Remove modes apply to crossing rectangles', () => {
+  for (const mode of ['add', 'remove']) {
+    const h = harness(mode);
+    try {
+      const initial = ['window', 'room']; h.engine.update({ ...h.engine.props, selection: initial });
+      h.pointer('pointerdown', { clientX: h.center[0] + 15, clientY: h.center[1] + 15 });
+      h.pointer('pointermove', { clientX: h.center[0] - 15, clientY: h.center[1] - 15 });
+      h.pointer('pointerup', { clientX: h.center[0] - 15, clientY: h.center[1] - 15 });
+      assert.equal(h.state.selection.includes('room'), true, 'room envelope is not a rectangle target and must survive');
+      assert.equal(h.state.selection.includes('window'), mode === 'add');
+      assert.equal(h.state.commits.length, 0);
+    } finally { h.close(); }
+  }
+});
+test('selection mode does not replace physical Shift when navigating with the right mouse button', () => {
+  for (const mode of ['replace', 'add', 'remove']) for (const shift of [false, true]) {
+    const h = harness(mode, 'perspective');
+    try {
+      const view = h.engine.views.get('perspective'), beforeTarget = view.target.clone(), beforePosition = view.camera.position.clone();
+      h.pointer('pointerdown', { button: 2, buttons: 2, shiftKey: shift, ctrlKey: true });
+      h.pointer('pointermove', { button: 2, buttons: 2, shiftKey: shift, ctrlKey: true, clientX: h.center[0] + 30, clientY: h.center[1] - 20 });
+      h.pointer('pointerup', { button: 2, clientX: h.center[0] + 30, clientY: h.center[1] - 20 });
+      assert.notDeepEqual(view.camera.position.toArray(), beforePosition.toArray());
+      assert.equal(view.target.equals(beforeTarget), !shift, `${mode}: physical Shift pans; no Shift orbits`);
+      assert.deepEqual(h.state.selection, ['window']); assert.equal(h.state.commits.length, 0);
+    } finally { h.close(); }
+  }
+});
+test('Escape resets selection mode except in idle text fields, including when a chooser is open', () => {
+  const h = harness('add');
+  try {
+    h.pointer('pointerdown'); h.pointer('pointerup');
+    const inputEscape = event('keydown', { key: 'Escape', target: { tagName: 'INPUT' } });
+    h.host.dispatchEvent(inputEscape);
+    assert.equal(inputEscape.defaultPrevented, false); assert.equal(h.state.selectionMode, 'add');
+    assert.ok(h.state.overlay.chooser);
+    h.host.dispatchEvent(event('keydown', { key: 'Escape', target: h.pane }));
+    assert.equal(h.state.selectionMode, 'replace'); assert.equal(h.state.overlay.chooser, null);
+    assert.deepEqual(h.state.selection, ['window']);
+    h.engine.update({ ...h.engine.props, selectionMode: 'remove' }); h.state.selectionMode = 'remove';
+    h.host.dispatchEvent(event('keydown', { key: 'Escape', target: h.pane }));
+    assert.equal(h.state.selectionMode, 'replace'); assert.deepEqual(h.state.selection, []);
   } finally { h.close(); }
 });
 test('Escape during a held Move drag clears preview, releases capture and cannot commit on later release', () => {

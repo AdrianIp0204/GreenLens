@@ -1,7 +1,7 @@
 {
   "schema_version": "greenlens.native-verification.v0.2",
   "observed_date_utc": "2026-10-11",
-  "acceptance_status": "repaired_candidate04_installed_native_retest_pending",
+  "acceptance_status": "candidate04_modifier_interaction_unverified_visible_controls_pending",
   "method": "Installed per-user production Tauri application, embedded frontend, actual shared Rust backend and native Radiance; no development server",
   "environment": {
     "os": "Windows 11 Home",
@@ -142,9 +142,7 @@
     }
   ],
   "required_native_gesture_gaps": [
-    "Perspective right-button orbit and Shift+right-button pan; orthographic right-button pan",
-    "Shift-add and Ctrl-remove selection clicks",
-    "Escape while a moved handle drag is still held"
+    "Candidate04 modifier failure report retained; later clarification shows the operation was unclear, without a reproduced exact failing sequence. Demonstrate visible selection controls and retest modifier selection in the next installed package."
   ],
   "coverage_limits": [
     "Sky supplies completed left drags but no documented held-modifier/right-button drag or mid-drag interruption",
@@ -169,7 +167,8 @@
     "24-manual-gesture-handoff.png",
     "25-before-candidate04-preserved-work.png",
     "26-candidate04-text-escape-chooser-preserved.png",
-    "27-candidate04-gesture-retest-ready.png"
+    "27-candidate04-gesture-retest-ready.png",
+    "28-before-candidate05-human-work-saved.png"
   ],
   "human_observation": {
     "status": "investigation and native retest required",
@@ -213,7 +212,7 @@
     "signed": false,
     "frontend_tests_passed": 47,
     "native_chooser_text_escape": "passed: chooser and selected window retained, width1.8m unchanged, Undo disabled",
-    "fresh_native_ab": "not started; waiting for required gesture retest",
+    "fresh_native_ab": "not started; human-edited document saved and backed up before the next package",
     "preserved_prior_work": {
       "files": 35,
       "all_copy_sha256_equal": true,
@@ -232,15 +231,69 @@
       "active_job": false,
       "modal_open": false,
       "native_input_paused": true
+    },
+    "post_report_read_only_inspection": {
+      "installed_binary_sha256_verified": true,
+      "document_dirty": true,
+      "selected_count": 1,
+      "selected_entity": "obstruction",
+      "obstruction": {
+        "center_x_m": 2,
+        "distance_m": 2.4684079205443705,
+        "width_m": 6,
+        "depth_m": 2,
+        "height_m": 4,
+        "reflectance": 0.2
+      },
+      "undo_enabled": true,
+      "redo_enabled": false,
+      "display_mode": "shaded",
+      "view_layout": "four",
+      "chooser_or_modal_listed": false,
+      "active_job": false,
+      "active_tool": "not reliably exposed by target accessibility state",
+      "native_input_issued": false,
+      "screenshot": "not retained: capture did not contain the target application"
     }
   },
   "human_retest_candidate04": {
-    "status": "pending",
-    "groups": [
-      "Perspective RMB orbit, Shift+RMB pan and orthographic RMB pan",
-      "Shift-add and Ctrl-remove selection",
-      "Escape during held handle drag"
-    ]
+    "status": "modifier selection failed; remaining two groups human-reported passed",
+    "date_utc": "2026-10-11",
+    "basis": "User said only group1 did not work in the candidate04 three-group retest",
+    "numbered_groups": [
+      {
+        "number": 1,
+        "check": "Shift-add and Ctrl-remove selection",
+        "status": "failed"
+      },
+      {
+        "number": 2,
+        "check": "Escape during held handle drag",
+        "status": "passed per human report"
+      },
+      {
+        "number": 3,
+        "check": "Perspective RMB orbit, Shift+RMB pan and orthographic RMB pan",
+        "status": "passed per human report"
+      }
+    ],
+    "automated_mouse_gesture_claim": false,
+    "later_clarification": {
+      "observation": "User was unsure what actions were possible and reported pressing both with no apparent effect",
+      "exact_failing_mouse_key_sequence_established": false,
+      "remaining_implementation_defect_independently_reproduced": false,
+      "interpretation": "Selection interaction discovery and feedback need improvement; prior failure report retained and modifier acceptance remains unverified",
+      "next_candidate": "05",
+      "planned_controls": [
+        "Replace",
+        "Add",
+        "Remove",
+        "always-visible selected count",
+        "persistent selection hint"
+      ],
+      "native_verification_of_planned_controls": "not yet performed",
+      "current_dirty_obstruction_document": "subsequently saved through native UI and independently backed up; no further editing during candidate05 preparation"
+    }
   },
   "native_checks_scope": "Unless explicitly candidate04, these observations belong to historical installed candidates01-03. Candidate03 reported modifier/held-Escape failures are retained separately.",
   "candidate04_cli_v01_replay": {
@@ -266,5 +319,22 @@
     ],
     "verification": "same-engine integration, not independent physical validation",
     "scope": "Candidate04 CLI compatibility replay only; repaired desktop gestures and fresh installed A/B remain pending"
+  },
+  "candidate05_preparation": {
+    "status": "source/package pending; no installed candidate05 claims",
+    "human_work_saved_through_native_ui": true,
+    "saved_utc": "2026-10-11T03:29:20Z",
+    "native_status": "Project saved. Undo history retained.",
+    "backup_file_count": 2,
+    "backup_all_sha256_equal": true,
+    "project_manifest_sha256": "8fc3589a31aa580fb44c23870abbeed272849111c9df8418d07e5d6440f9b368",
+    "backup_proof": "candidate05-preservation.json",
+    "screenshot": "28-before-candidate05-human-work-saved.png",
+    "saved_model": {
+      "alternative": "A",
+      "overhang_projection_m": 0.6,
+      "obstruction_distance_m": 2.4684079205443705
+    },
+    "native_input_after_preservation": "paused pending package readiness"
   }
 }

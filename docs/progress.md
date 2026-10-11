@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — retained paired-candidate arithmetic verification
+
+- Added a bounded, read-only comparator for the declared paired-primary research tuples. It requires all 24 qualified reference cases, all 576 sensor values and both sensitivity families before comparing accuracy. It regenerates primary receipts, checks the retained process/input identities, independently multiplies all three RGB matrix products and rederives finite-disc and lux values. Incomplete reference sets cannot pass.
+- All 56 synthetic regression checks passed. A separate read of the completed native A candidate passed its 12 cases, 288 sensor values, 19 process records and three 864-component matrix products, with no negative coefficient bins. The reader launched no engine; this establishes retained-data integrity and arithmetic, not matched-sky accuracy. Exact source and evidence identities are in `v0.3-paired-reference-comparison.md`.
+- The B candidate, complete controlled-reference set and sensitivity checks remain in progress. Production paired-primary integration, full-year convergence and a fresh installed workflow remain required. Numerical tolerances and historical failed results are unchanged.
+
 ## 2026-10-11 — frozen method-4 compatibility boundary
 
 - Captured method-4 shipping/reference profiles, policies, generated receiver/repeated-sensor identities, required compact member set and command order before integrating a new transport method. The first nine commands per profile come from retained failed native CI jobs; the final finite-direct command and serialization contract come from the pinned source. The fixture is explicitly compatibility evidence, not a completed simulation.

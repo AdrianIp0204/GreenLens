@@ -1,0 +1,149 @@
+{
+  "schema_version": "greenlens.method2-component-recovery-audit.v1",
+  "recorded_utc": "2026-10-11T17:31:18.151291+00:00",
+  "scope": "Read-only retained-file integrity and recoverability audit; no engine execution, no recreated component accepted as historical evidence.",
+  "runs": [
+    {
+      "alternative": "A",
+      "run_id": "c3977b72-53d7-4705-9cee-f63f4c1c4115",
+      "method": "perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2",
+      "profile": "reference",
+      "sky_basis_mf": 4,
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "source_worktree_dirty": true,
+      "package_sha256": "9a5f0a31cf071d8e6f22841f0aaac1d853885b67551f2a77f2081b8298a9a7fa",
+      "package_bytes": 3392085,
+      "package_members": 83,
+      "all_sealed_files_verified": 72,
+      "checksum_manifest_sha256": "efa5d73910dc703cf77740011f873e238ce1a010368c650d0b0b4dc07d3a6801",
+      "recipe_sha256": "23df299ec8706e91467fe561dafa70774b1dd78c02789e9d973e7f622fbfcab1",
+      "series_manifest_sha256": "fd3232c510260a706742a7c19ceb23ab2fdc4d6d2c1d5ae327d96a989d261067",
+      "combined_rgb_recovery": {
+        "from_sealed_series_bytes": true,
+        "matches_historical_scratch_byte_for_byte": true,
+        "sha256": "b69d97842f93fc38b34ff9e85a3c6a3d127c7e5661a1790a62828d9ab0700f5c",
+        "bytes": 5045760,
+        "values": 630720
+      },
+      "unbound_component_products": [
+        {
+          "file": "annual-diffuse-rgb.mtx",
+          "bytes": 8199554,
+          "observed_now_sha256": "bd3239f529aa8fd4956ffa37a78322ea8b2a83e69137d92878fbc6330a45f2fe",
+          "prior_binding_found": false
+        },
+        {
+          "file": "annual-solar-patch-rgb.mtx",
+          "bytes": 8199560,
+          "observed_now_sha256": "c0de2a552969ed9f925eee601be25d1d3af1de2050fdfa6dabb76d511c009c46",
+          "prior_binding_found": false
+        },
+        {
+          "file": "annual-direct-patch-rgb.mtx",
+          "bytes": 8199567,
+          "observed_now_sha256": "7a9bf316a8f8f349c43cb9f18cde711e2a101e6844b8968192f076ef7a7c6a19",
+          "prior_binding_found": false
+        }
+      ],
+      "generic_process_record_fields": [
+        "arguments",
+        "elapsed_ms",
+        "executable",
+        "exit_code",
+        "finished_utc",
+        "started_utc",
+        "stderr"
+      ],
+      "finite_batches": {
+        "count": 442,
+        "all_input_and_output_hashes_retained": true,
+        "original_reused_input_file_present": false,
+        "original_reused_output_file_present": false,
+        "hashes_supply_original_values": false
+      }
+    },
+    {
+      "alternative": "B",
+      "run_id": "e9b86f5e-0763-4c20-aa27-54fd8552e6ce",
+      "method": "perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2",
+      "profile": "reference",
+      "sky_basis_mf": 4,
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "source_worktree_dirty": true,
+      "package_sha256": "c9c33d6d4f48bc371b45a488949f11a05964e5793a8687ff4f8b00b58a31cc47",
+      "package_bytes": 3396531,
+      "package_members": 83,
+      "all_sealed_files_verified": 72,
+      "checksum_manifest_sha256": "8d8153a5831b2b7398f683686eae47bc692c24d42a4c6ceddbc3571fcdb9d9ac",
+      "recipe_sha256": "cc31da234d8dc677df495d0724080530f1cca819a4addc275382dca154026cb7",
+      "series_manifest_sha256": "60eb04e9593e8b75d4e4abfd3e5ba8b3d794fc211980cb904648037515f27827",
+      "combined_rgb_recovery": {
+        "from_sealed_series_bytes": true,
+        "matches_historical_scratch_byte_for_byte": true,
+        "sha256": "751bcee6c45add0efd897c6374749faa9af620229ccc73d10faa3c8fe0e17a24",
+        "bytes": 5045760,
+        "values": 630720
+      },
+      "unbound_component_products": [
+        {
+          "file": "annual-diffuse-rgb.mtx",
+          "bytes": 8199554,
+          "observed_now_sha256": "f86149f3af3d40e612ca56ec34c6f0f1b57837d3ff276e0489fdd63e8e8d5e31",
+          "prior_binding_found": false
+        },
+        {
+          "file": "annual-solar-patch-rgb.mtx",
+          "bytes": 8199560,
+          "observed_now_sha256": "e013de4774c78600c14759d12090367e0f9dcf3abd1eaa01c9425aedfd8a208c",
+          "prior_binding_found": false
+        },
+        {
+          "file": "annual-direct-patch-rgb.mtx",
+          "bytes": 8199567,
+          "observed_now_sha256": "bc84df92e3caaffcf0906a13d875a2a9df5954b21baedc6c067ab51cb8412b6e",
+          "prior_binding_found": false
+        }
+      ],
+      "generic_process_record_fields": [
+        "arguments",
+        "elapsed_ms",
+        "executable",
+        "exit_code",
+        "finished_utc",
+        "started_utc",
+        "stderr"
+      ],
+      "finite_batches": {
+        "count": 442,
+        "all_input_and_output_hashes_retained": true,
+        "original_reused_input_file_present": false,
+        "original_reused_output_file_present": false,
+        "hashes_supply_original_values": false
+      }
+    }
+  ],
+  "bounded_prior_digest_search": {
+    "patterns": "Eight observed current combined/product SHA256 values",
+    "searched_roots": [
+      "verification",
+      "research-drafts",
+      "repository docs"
+    ],
+    "file_types": [
+      "json",
+      "md",
+      "txt"
+    ],
+    "maximum_file_bytes": 10485760,
+    "only_matches": "New files made for this audit itself",
+    "limitation": "This does not prove no record exists outside the stated locations/formats/size bound; original sealed packages were independently inspected."
+  },
+  "conclusion": {
+    "exact_combined_rgb_recoverable": true,
+    "component_subtraction_provenance_safe": false,
+    "exact_finite_direct_recoverable_from_final_sum_guaranteed": false,
+    "reason": "D/S/S0 product values have no prior hash binding located, so matching geometry and process arguments do not authenticate those mutable scratch arrays. Additionally, IEEE-754 addition is not injective: subtraction from final rounded RGB cannot in general recover exact original finite-direct doubles. Finite batch output hashes are retained but deleted output values are not; a digest alone does not recover them.",
+    "permitted_use": "Any newly calculated residual must be labeled an unverified diagnostic from currently observed scratch, not reused as immutable historical finite-direct evidence.",
+    "simulation_or_acceptance_claim": false
+  }
+}

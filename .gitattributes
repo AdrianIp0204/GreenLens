@@ -25,9 +25,17 @@ docs/evidence/v0.3-engine/MF8-A-all12-and-bins-summary.json -text -whitespace
 docs/evidence/v0.3-engine/final24-baseline-qualification.json -text -whitespace
 docs/evidence/v0.3-engine/reference-A-depth-components.json -text -whitespace
 docs/evidence/v0.3-engine/reference-A-depth-prefix-diagnostic.json -text -whitespace
+docs/evidence/v0.3-engine/final-six-reference-sensitivities.json -text -whitespace
+docs/evidence/v0.3-engine/reference-B-depth-components.json -text -whitespace
+docs/evidence/v0.3-engine/reference-B-depth-prefix-diagnostic.json -text -whitespace
+docs/evidence/v0.3-engine/historical-finite-recovery-audit.json -text -whitespace
 docs/evidence/v0.3-engine/MF8-annual-size-lower-bound.json -text -whitespace
 docs/evidence/v0.3-engine/hosted-twelve-case-qualification.json -text -whitespace
 docs/evidence/v0.3-ci/final-main-596fde6.json -text -whitespace
+docs/evidence/v0.3-ci/final-main-082ce64.json -text -whitespace
+docs/evidence/v0.3-ci/final-main-890166b.json -text -whitespace
+docs/evidence/v0.3-engine/reference-prefix-identity-regression.json -text -whitespace
+docs/evidence/v0.3-engine/historical-explicit-hybrid-summary.json -text -whitespace
 docs/evidence/v0.3-ci/method5-*.json -text -whitespace
 docs/evidence/v0.3-engine/method5-selected-hour-independent-audit.json -text -whitespace
 docs/evidence/v0.3-engine/method5-higher-MF2-A-partial-audit.json -text -whitespace

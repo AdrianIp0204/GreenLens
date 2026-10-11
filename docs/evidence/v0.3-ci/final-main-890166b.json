@@ -1,0 +1,152 @@
+{
+  "schema_version": "greenlens.hosted-ci-final-checkpoint.v1",
+  "recorded_utc": "2026-10-11T17:23:20.284495+00:00",
+  "run_id": 38152676894,
+  "source_commit": "890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+  "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38152676894",
+  "status": "completed",
+  "conclusion": "failure",
+  "jobs": [
+    {
+      "name": "native",
+      "id": 114509173044,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T15:46:22Z",
+      "completed_utc": "2026-10-11T16:45:42Z"
+    },
+    {
+      "name": "selected_hour",
+      "id": 114521339354,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T16:45:45Z",
+      "completed_utc": "2026-10-11T16:55:10Z"
+    },
+    {
+      "name": "annual (A, reference)",
+      "id": 114521339395,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T16:45:44Z",
+      "completed_utc": "2026-10-11T17:10:55Z"
+    },
+    {
+      "name": "annual (B, shipping)",
+      "id": 114521339398,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T16:45:44Z",
+      "completed_utc": "2026-10-11T16:49:54Z"
+    },
+    {
+      "name": "annual (A, shipping)",
+      "id": 114521339461,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T16:45:45Z",
+      "completed_utc": "2026-10-11T16:49:41Z"
+    },
+    {
+      "name": "annual (B, reference)",
+      "id": 114521339479,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T16:45:45Z",
+      "completed_utc": "2026-10-11T17:11:37Z"
+    },
+    {
+      "name": "annual_convergence",
+      "id": 114526638345,
+      "status": "completed",
+      "conclusion": "failure",
+      "started_utc": "2026-10-11T17:11:40Z",
+      "completed_utc": "2026-10-11T17:12:19Z"
+    },
+    {
+      "name": "annual_replay",
+      "id": 114526781100,
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_utc": "2026-10-11T17:12:20Z",
+      "completed_utc": "2026-10-11T17:12:19Z"
+    }
+  ],
+  "convergence_artifact": {
+    "id": 11709827039,
+    "name": "greenlens-convergence-890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+    "size_in_bytes": 17984,
+    "digest": "sha256:6f6babd8e50383770b7aaa572ed2e9b3861e4be04b6879b908d49b28cd61febb"
+  },
+  "convergence_report_sha256": "1bb0df69be15d3fc0be35928623403ec03da49ab9b0ed20803bbc2c35050d7bb",
+  "metric_checks": 240,
+  "partition_checks": 96,
+  "failed_checks": [
+    {
+      "alternative": "A",
+      "sensor_id": "s000017",
+      "metric": "da_percent",
+      "shipping": 55.86301369863014,
+      "reference": 53.06849315068494,
+      "absolute_difference_pp": 2.794520547945204,
+      "tolerance_pp": 2,
+      "pass": false
+    },
+    {
+      "alternative": "A",
+      "sensor_id": "s000020",
+      "metric": "da_percent",
+      "shipping": 50.95890410958904,
+      "reference": 54.16438356164384,
+      "absolute_difference_pp": 3.205479452054796,
+      "tolerance_pp": 2,
+      "pass": false
+    },
+    {
+      "alternative": "A",
+      "sensor_id": "s000022",
+      "metric": "da_percent",
+      "shipping": 33.6986301369863,
+      "reference": 38.24657534246575,
+      "absolute_difference_pp": 4.547945205479451,
+      "tolerance_pp": 2,
+      "pass": false
+    },
+    {
+      "alternative": "A",
+      "sensor_id": "s000022",
+      "metric": "cda_percent",
+      "shipping": 76.73727108918551,
+      "reference": 79.07025739284843,
+      "absolute_difference_pp": 2.3329863036629206,
+      "tolerance_pp": 2,
+      "pass": false
+    },
+    {
+      "alternative": "A",
+      "sensor_id": "s000023",
+      "metric": "da_percent",
+      "shipping": 34.465753424657535,
+      "reference": 38.657534246575345,
+      "absolute_difference_pp": 4.19178082191781,
+      "tolerance_pp": 2,
+      "pass": false
+    },
+    {
+      "alternative": "B",
+      "sensor_id": "s000020",
+      "metric": "da_percent",
+      "shipping": 42.13698630136986,
+      "reference": 40.0,
+      "absolute_difference_pp": 2.136986301369859,
+      "tolerance_pp": 2,
+      "pass": false
+    }
+  ],
+  "all_336_report_rows_exactly_equal_prior_596fde6_report": true,
+  "prior_report_sha256": "e543574107c904272c29a7b7f18831492206adba26b15b695d46a287c20dd995",
+  "source_identity": "Not inferred from checkout; executable hash/version recorded, embedded simulation source identity retained per validated run.",
+  "scope": "Exact-source hosted final failure and retained report arithmetic identity only; no duplicate download/independent audit of the four large raw arrays, no engine reruns. Earlier raw-array audit remains separate. Annual replay jobs skipped after failed convergence.",
+  "release_accepted": false,
+  "same_336_rows_as_082_report_sha256": "ef783e3a6ddd845e6c1f0c0e45d8271f608482a8f5fbac299a1eab9a6e83d60d"
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "greenlens.prefix-identity-regression.v1",
+  "recorded_utc": "2026-10-11T17:39:55.581006+00:00",
+  "scope": "Read-only original A/B identity derivation and deliberately mutated copies; no engine",
+  "passed": 15,
+  "checks": [
+    "A derives actual identity",
+    "B derives actual identity",
+    "A label with B records",
+    "A baseline substituted",
+    "A strict variant substituted",
+    "A retained declaration substituted",
+    "Wrong case key",
+    "Wrong declaration hash",
+    "String interval",
+    "Wrong interval row",
+    "Wrong round count",
+    "Duplicate baseline case",
+    "Variant reports qualified",
+    "Wrong baseline sensor order",
+    "Wrong variant name"
+  ],
+  "generator_sha256": "42f29eb7624f6ce278ae65ed508c608e36c4a17a5f672a5bd1d1d250fbd5b1e5",
+  "test_sha256": "dfcf1112fc11b7a38e0459a99abc85db9136e74fbb6f62082193830fb24c0e5c"
+}

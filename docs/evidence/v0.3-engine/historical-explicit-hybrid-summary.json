@@ -1,0 +1,669 @@
+{
+  "schema_version": "greenlens.fixed-historical-explicit-hybrid-summary.v1",
+  "recorded_utc": "2026-10-11T17:42:59.3814914Z",
+  "scope": "All576 values of one predeclared hybrid, read-only retained data. Band counts are descriptive only. Both reference depth sensitivity checks failed; no reference family, method, profile or release acceptance.",
+  "formula_rgb": "(higher_MF2_diffuse + (historical_explicit8192_full - historical_explicit8192_own_ab0)) + higher_finite4096",
+  "normalization": "Explicit -I+ -V+ solar matrices already contain irradiance; no pi/100. Higher retained diffuse and finite are already normalized.",
+  "source_record_sha256": "fcd631913f68d92ff9e43d7858ac0c736c13df86c9de53a6401a5ca43a39b972",
+  "declaration_sha256": "c0a0b02c36c2b0376b24bdf55af6884e10dfa3ff78c9b4b0b737413ae8b66000",
+  "feasibility_sha256": "f49726d6b4cbaa3edfa00f6145943427c99d6b3eef468976590e016eb91f8596",
+  "reader_sha256": "65199d0663913f553d33d78a4c9a0d1e0fc9b383a0292ddc97fc811996505cea",
+  "reference_snapshot_sha256": "0c9b7f43e69cc440d24973521cf3771af9eb98fb1a639378f638cb5a0667cabe",
+  "comparison_band": "max(5 lx,5% original baseline), unchanged and diagnostic only",
+  "summary": [
+    {
+      "alternative": "A",
+      "values": 288,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.6349677051668333
+    },
+    {
+      "alternative": "B",
+      "values": 288,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.66315637126605
+    }
+  ],
+  "cases": [
+    {
+      "alternative": "A",
+      "interval_index": 1904,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.39795349383264345,
+      "baseline_declaration_sha256": "b8ed754ed18228c51ea04e82e1791d5018d10d4c1265532f58e0b87ec7a75976",
+      "baseline_report_sha256": "b2fc70873651ca84d7d2b5670f01b36dd68c0d55f92445b7c5361f0abf2978c8",
+      "baseline_processes_sha256": "c9898352e40e7ec5ccff7a564a26179c1fcba757272372f1f790024c95b99aac",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 147.12241860752818,
+        "reference_lux": 150.109243502957,
+        "signed_difference_lux": -2.986824895428839,
+        "allowed_difference_lux": 7.505462175147851,
+        "diagnostic_tolerance_ratio": 0.39795349383264345,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -3.0991162780967727,
+          "reflected_solar_rgb": 0.11229138266796901,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 1908,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.45742669584672196,
+      "baseline_declaration_sha256": "b340b38c0847917c3ba27f54df9a1f716da1e7e498c885735a5f820d156e90e8",
+      "baseline_report_sha256": "d5719d317a4dfe9aba5c9ac83216061c291b1451c0317cef7960d1459036b7c5",
+      "baseline_processes_sha256": "2b44a6c2ae3b85d2477bf9871001f6c058db9a46487ce42b3cc248145830369f",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 322.91622345940084,
+        "reference_lux": 330.4746191135158,
+        "signed_difference_lux": -7.558395654114975,
+        "allowed_difference_lux": 16.52373095567579,
+        "diagnostic_tolerance_ratio": 0.45742669584672196,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -6.929277401536865,
+          "reflected_solar_rgb": -0.6291182525781274,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 1912,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.31109085546871384,
+      "baseline_declaration_sha256": "599bf0946ead63198576871db65a3fe27d7ac5dd484843369db46f58a9f695c2",
+      "baseline_report_sha256": "06ccb71fc78a60d2e5f8dcdeef20876bfb171196f0180d8f54c92bcd99245dae",
+      "baseline_processes_sha256": "9dcc1f48c00c4e8819b320492f1ef10a806b93d679eb9a1d53749724f3ca325c",
+      "worst_value": {
+        "sensor_id": "s000022",
+        "sensor_index_zero_based": 21,
+        "hybrid_lux": 192.79098106224006,
+        "reference_lux": 195.8371382050782,
+        "signed_difference_lux": -3.046157142838126,
+        "allowed_difference_lux": 9.79185691025391,
+        "diagnostic_tolerance_ratio": 0.31109085546871384,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -2.4695092581505946,
+          "reflected_solar_rgb": -0.5766478846875005,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4112,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.31479788436793205,
+      "baseline_declaration_sha256": "3ff67db36fdb57e6be55c2dc08ae7883921d41b595179db67922bb2a55d550e6",
+      "baseline_report_sha256": "9a34dca68b9731e0c9dba4f456824f9b0f3271b0705a5a9f56b3041e868e1ae2",
+      "baseline_processes_sha256": "b26812677ac78901562239cdb0bb74ba3647fdd3762fc8c2b350a9d5ad00b3d2",
+      "worst_value": {
+        "sensor_id": "s000009",
+        "sensor_index_zero_based": 8,
+        "hybrid_lux": 477.98100688632564,
+        "reference_lux": 470.5742184657698,
+        "signed_difference_lux": 7.40678842055587,
+        "allowed_difference_lux": 23.52871092328849,
+        "diagnostic_tolerance_ratio": 0.31479788436793205,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": 7.407766343356911,
+          "reflected_solar_rgb": -0.0009779228009257816,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4116,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.4274963388558181,
+      "baseline_declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a",
+      "baseline_report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5",
+      "baseline_processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18",
+      "worst_value": {
+        "sensor_id": "s000016",
+        "sensor_index_zero_based": 15,
+        "hybrid_lux": 364.5088787252013,
+        "reference_lux": 372.47036458481637,
+        "signed_difference_lux": -7.961485859615038,
+        "allowed_difference_lux": 18.62351822924082,
+        "diagnostic_tolerance_ratio": 0.4274963388558181,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -7.96146868886126,
+          "reflected_solar_rgb": -1.7170753783242184E-05,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4120,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.29312834755100675,
+      "baseline_declaration_sha256": "852803404ca8df85e13b20d4e2e1e19a4b49f71c93f00e3a4c4c714313051a5d",
+      "baseline_report_sha256": "f0ffd8c23d23e1d19d4ec543224c3b88e16800459ecec372afb106457bf4fcd5",
+      "baseline_processes_sha256": "3ae4cb6c623760a8d8c1f6bf26c8f5954f227446e280ea75c12612221a22c561",
+      "worst_value": {
+        "sensor_id": "s000016",
+        "sensor_index_zero_based": 15,
+        "hybrid_lux": 319.19066925032837,
+        "reference_lux": 323.9384463242924,
+        "signed_difference_lux": -4.747777073964016,
+        "allowed_difference_lux": 16.19692231621462,
+        "diagnostic_tolerance_ratio": 0.29312834755100675,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -4.747403968421452,
+          "reflected_solar_rgb": -0.0003731055424789063,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6320,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.3783729995425182,
+      "baseline_declaration_sha256": "aac7f50d2a5b984536dec3d5e90b09821e3fbd5301fe50987b36da2c9b3ca02e",
+      "baseline_report_sha256": "1436b608333a2ff801f68c0ed53626d6a35e7708c25b3366f719c6ab6182ef85",
+      "baseline_processes_sha256": "9408d407a45388fd7bfc192805123b69fd1a02ae2316ef646f27e169b4719367",
+      "worst_value": {
+        "sensor_id": "s000008",
+        "sensor_index_zero_based": 7,
+        "hybrid_lux": 636.5790768413553,
+        "reference_lux": 648.854528553125,
+        "signed_difference_lux": -12.27545171176962,
+        "allowed_difference_lux": 32.44272642765625,
+        "diagnostic_tolerance_ratio": 0.3783729995425182,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -9.994467857081986,
+          "reflected_solar_rgb": -2.2809838546874985,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6324,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.5556384548334838,
+      "baseline_declaration_sha256": "4ec473b7aab61ad291c476267c5501ff23497611a5f5435b425b1e64a0dde876",
+      "baseline_report_sha256": "49dbd1f278a786adbba9b34f4ae8a80fe139ee685c30aba3ba86c938d3c12276",
+      "baseline_processes_sha256": "78a1483cb343e3aba5b32bbb1c19d05019a2c125f42b8eea4d3cad045679675d",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 364.39962401556323,
+        "reference_lux": 374.81263981757814,
+        "signed_difference_lux": -10.413015802014911,
+        "allowed_difference_lux": 18.740631990878907,
+        "diagnostic_tolerance_ratio": 0.5556384548334838,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -9.101173397718014,
+          "reflected_solar_rgb": -1.3118424042968861,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6328,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.3685990170674194,
+      "baseline_declaration_sha256": "c221697f1e63bdc74127711aa70fb84e101af40c33e88630472405cc4166addd",
+      "baseline_report_sha256": "7c62c1b2dff885fc8a35db9c67ce86ef1179899a5b3bdddb55e7b30340b9f99f",
+      "baseline_processes_sha256": "e594a2bdd7dde1f174c341db6867d28d1227567ede0b349c8038bf4c206b94df",
+      "worst_value": {
+        "sensor_id": "s000022",
+        "sensor_index_zero_based": 21,
+        "hybrid_lux": 178.93481594960414,
+        "reference_lux": 182.29449452453136,
+        "signed_difference_lux": -3.3596785749272158,
+        "allowed_difference_lux": 9.114724726226568,
+        "diagnostic_tolerance_ratio": 0.3685990170674194,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -2.5687349388334155,
+          "reflected_solar_rgb": -0.790943636093747,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 8504,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.6349677051668333,
+      "baseline_declaration_sha256": "828b03e80eb94155aaff69fe1d1d1ab4978f889992e056e30fde4ab670bffacd",
+      "baseline_report_sha256": "f971fd716e9358b9504cdbae25b41f06604ea0fdaec0a18dac6bb59f6bd517cc",
+      "baseline_processes_sha256": "7168b5f0f67855828f932b87887046157370b15f4cc9acec88d2eff84ad0ef45",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 323.9432887859968,
+        "reference_lux": 334.56519344140617,
+        "signed_difference_lux": -10.621904655409367,
+        "allowed_difference_lux": 16.72825967207031,
+        "diagnostic_tolerance_ratio": 0.6349677051668333,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -2.922577235878265,
+          "reflected_solar_rgb": -7.699327419531173,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 8508,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.3226766558895094,
+      "baseline_declaration_sha256": "c438518d75a6d9939208c170d31933659fce7e21b5c01d5530d00e54840039f3",
+      "baseline_report_sha256": "e9e2b1ed5572bbc5ea495787a87a380cf0a6fb0a4de0683db8d238c2883c7ff5",
+      "baseline_processes_sha256": "e3423ea70c4d98675a368bf383d18743d6b616478b0b587ecac572e5d0508a49",
+      "worst_value": {
+        "sensor_id": "s000013",
+        "sensor_index_zero_based": 12,
+        "hybrid_lux": 866.8856805547708,
+        "reference_lux": 853.121559953125,
+        "signed_difference_lux": 13.7641206016458,
+        "allowed_difference_lux": 42.656077997656254,
+        "diagnostic_tolerance_ratio": 0.3226766558895094,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": 4.867575875083048,
+          "reflected_solar_rgb": 8.896544726562496,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "A",
+      "interval_index": 8512,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.409554041608205,
+      "baseline_declaration_sha256": "fea43141ddcb8b62ad67b6bd9cd179c680ef872b562f86a9f8ca498652b845a2",
+      "baseline_report_sha256": "eb053299511033a09cde29a6f9b42fefc1609a5500158802edda3178ff14dc49",
+      "baseline_processes_sha256": "c43802ce5eabf85a4d8b5a1be3d5717e570108d4da957f1e39891885927e6e57",
+      "worst_value": {
+        "sensor_id": "s000018",
+        "sensor_index_zero_based": 17,
+        "hybrid_lux": 239.97369632099597,
+        "reference_lux": 244.9905396035157,
+        "signed_difference_lux": -5.016843282519744,
+        "allowed_difference_lux": 12.249526980175787,
+        "diagnostic_tolerance_ratio": 0.409554041608205,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -1.8382362387696958,
+          "reflected_solar_rgb": -3.178607043750027,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 1904,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.5212333879890386,
+      "baseline_declaration_sha256": "931fae7924adc14312021730497209d43b68589198e586bfaa3d879124d760fe",
+      "baseline_report_sha256": "635eb2c488c7ab5a358944e4435ddd529823c5646425f0ac8cdb2696aaeb120f",
+      "baseline_processes_sha256": "036a35d9932a5246aa0fe5849e3641a41ab110eaef935157f3823fd1e91722e5",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 129.1195283214524,
+        "reference_lux": 132.57464488725375,
+        "signed_difference_lux": -3.4551165658013474,
+        "allowed_difference_lux": 6.628732244362688,
+        "diagnostic_tolerance_ratio": 0.5212333879890386,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -3.516816543578713,
+          "reflected_solar_rgb": 0.06169997777734393,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 1908,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.66315637126605,
+      "baseline_declaration_sha256": "bd6991a472daac23e349ece7fb7f037700034324d6040bf93182880f712eae80",
+      "baseline_report_sha256": "15e0526866531449ce9739e05eece45997a85439dbe87f80a4f5bf8ea4248a14",
+      "baseline_processes_sha256": "0a2a096753315b0250834ab91d21bdd5d35e6dbb7c21d28257300fddb6f3785f",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 270.60979560643705,
+        "reference_lux": 279.890349016754,
+        "signed_difference_lux": -9.28055341031694,
+        "allowed_difference_lux": 13.9945174508377,
+        "diagnostic_tolerance_ratio": 0.66315637126605,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -9.13915012631304,
+          "reflected_solar_rgb": -0.14140328400390567,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 1912,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.39342829769870646,
+      "baseline_declaration_sha256": "f255cebb385709379e67dfe8e5fd654ffc35d68abad8b9f091adc33795adc476",
+      "baseline_report_sha256": "5c9324af7abacc8bce7e75206b970708b372787553596f67f9eada427da6ca5c",
+      "baseline_processes_sha256": "a0d5c4617204ba83134af8a92fbf595e03e903be7506dc67bf779dce9ad6c908",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 175.65523936788983,
+        "reference_lux": 179.17996275429687,
+        "signed_difference_lux": -3.5247233864070324,
+        "allowed_difference_lux": 8.958998137714843,
+        "diagnostic_tolerance_ratio": 0.39342829769870646,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -3.8732473361726534,
+          "reflected_solar_rgb": 0.3485239497656245,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 4112,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.4670638091034003,
+      "baseline_declaration_sha256": "a15bce4a1b1f5611ee81c48292a913b42dcd4ae2529994df38ac1ba43736f808",
+      "baseline_report_sha256": "defcc1be258c59094e8462ce6a15d162a1f3298a2c93c3168f50458314f9e4c0",
+      "baseline_processes_sha256": "058358d5b1f73415bf3f7a50ee3477974acaaab65f36f1d76803dfe802bed0a7",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 171.4662144313234,
+        "reference_lux": 175.5662464215041,
+        "signed_difference_lux": -4.100031990180696,
+        "allowed_difference_lux": 8.778312321075205,
+        "diagnostic_tolerance_ratio": 0.4670638091034003,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -4.099568552661168,
+          "reflected_solar_rgb": -0.00046343751951562505,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 4116,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.5153459622674323,
+      "baseline_declaration_sha256": "659b7a1036117bfd474b15933d84e0e55aeb20e7a78c5c4f2c71db64691a6e33",
+      "baseline_report_sha256": "3306837ea86801faeda761d18cf12a85b49ff8fbbf0140e8dc0d5d2cb7e67b31",
+      "baseline_processes_sha256": "b37d3ad8ddb593d760e2c983cd6c65eb8e963a39aa952a24ca88999472a54b17",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 211.46272742887766,
+        "reference_lux": 217.05566546819284,
+        "signed_difference_lux": -5.592938039315186,
+        "allowed_difference_lux": 10.852783273409642,
+        "diagnostic_tolerance_ratio": 0.5153459622674323,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -5.590941305497324,
+          "reflected_solar_rgb": -0.001996733817808469,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 4120,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.47830567527436685,
+      "baseline_declaration_sha256": "216685e72d8b4e7e26a70b7cccc32d495a61ad53fbfb7d21a8995a9854b37fd1",
+      "baseline_report_sha256": "b9f3dcfa030dbf4c91c88948cb79ff06c5c561dd6f6e660a85cdd3a1dd31efc6",
+      "baseline_processes_sha256": "6dc8b4b4af43739840ce18b6c13fe46f80b1b4f9d70d218c64fec0e4b1486cea",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 175.4197815513637,
+        "reference_lux": 179.71778333726076,
+        "signed_difference_lux": -4.298001785897043,
+        "allowed_difference_lux": 8.985889166863037,
+        "diagnostic_tolerance_ratio": 0.47830567527436685,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -4.297579687698743,
+          "reflected_solar_rgb": -0.0004220981983113281,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 6320,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.5827642057643726,
+      "baseline_declaration_sha256": "556ce6136b4575d6de777e4734870aa9cf0e94613cdedf0bcbd9da1ee48d5a5d",
+      "baseline_report_sha256": "013482e2335e3446736d42740ead55e0efe814e0c93c8104bd8799b2458e8cad",
+      "baseline_processes_sha256": "a3855cb5998be01a209b946729c0244066821ce035cf1df70afd0db1370f6926",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 212.58389033383372,
+        "reference_lux": 218.96411269511725,
+        "signed_difference_lux": -6.380222361283529,
+        "allowed_difference_lux": 10.948205634755864,
+        "diagnostic_tolerance_ratio": 0.5827642057643726,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -6.715137563353807,
+          "reflected_solar_rgb": 0.33491520207032366,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 6324,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.6151240380026698,
+      "baseline_declaration_sha256": "9a82a0f7824d54307d5367a9020186b1b0638ed5be0350f27f7bee492df51dd3",
+      "baseline_report_sha256": "34f7965510eccef3bcdd86f4831f29a53d10e913fff868cb7fe8ce3eda0cccc4",
+      "baseline_processes_sha256": "c3e890c289275929a6beb955c6e3a886c56956da079e8c5a2fa928f017697d1b",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 304.3364512181922,
+        "reference_lux": 313.99370500468734,
+        "signed_difference_lux": -9.657253786495119,
+        "allowed_difference_lux": 15.699685250234367,
+        "diagnostic_tolerance_ratio": 0.6151240380026698,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -9.379511541026375,
+          "reflected_solar_rgb": -0.2777422454687497,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 6328,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.38130837049138344,
+      "baseline_declaration_sha256": "42ba3f2b5174c497a47fd4a3899721691a5e00246e49d190303a05402bca4017",
+      "baseline_report_sha256": "0cb12207da5cb73a238a5ce7ca0e606cd9a370fe562f476ca9ada6629ce72a8f",
+      "baseline_processes_sha256": "ec7f67ad0064600f22c1cc8054961a85b97de0f7e3f3c2fc7233947c0ad426f7",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 164.73285930040734,
+        "reference_lux": 167.93460278730458,
+        "signed_difference_lux": -3.201743486897243,
+        "allowed_difference_lux": 8.39673013936523,
+        "diagnostic_tolerance_ratio": 0.38130837049138344,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -3.4957748232644406,
+          "reflected_solar_rgb": 0.2940313363671905,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 8504,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.477175384099421,
+      "baseline_declaration_sha256": "33c4ab616078ce659e54de07350021966a35ffe249256b2e6a72100fabef1450",
+      "baseline_report_sha256": "6c934dd7f9dab999b91a2537f8f90d04d2f090ce259a1d187e63453b5645373b",
+      "baseline_processes_sha256": "68ec92ef6bc4e7b86cc88b50bfeb5d59f4a8c6369f0a222d383b7a2b5bad7305",
+      "worst_value": {
+        "sensor_id": "s000020",
+        "sensor_index_zero_based": 19,
+        "hybrid_lux": 308.1004372192341,
+        "reference_lux": 315.6310045097658,
+        "signed_difference_lux": -7.530567290531678,
+        "allowed_difference_lux": 15.781550225488289,
+        "diagnostic_tolerance_ratio": 0.477175384099421,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -3.2156014713910395,
+          "reflected_solar_rgb": -4.314965819140653,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 8508,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.48782991779669327,
+      "baseline_declaration_sha256": "7b6b034fab1c52f876d17457be76adbdbc447c41a242051e35b44485fe52977a",
+      "baseline_report_sha256": "2316912f269ab0c00f0d9069b4142c1cb8220ac79cccb278e7d0a2649c1d3542",
+      "baseline_processes_sha256": "b187e3b9977f3fa86c1d7b02ea535e2a9027d0c957c0e9f2eb9be6dbae90a7d8",
+      "worst_value": {
+        "sensor_id": "s000024",
+        "sensor_index_zero_based": 23,
+        "hybrid_lux": 426.029669242056,
+        "reference_lux": 436.68097136015626,
+        "signed_difference_lux": -10.651302118100261,
+        "allowed_difference_lux": 21.834048568007816,
+        "diagnostic_tolerance_ratio": 0.48782991779669327,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -5.973461695443859,
+          "reflected_solar_rgb": -4.67784042265626,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    },
+    {
+      "alternative": "B",
+      "interval_index": 8512,
+      "value_count": 24,
+      "outside_diagnostic_band_count": 0,
+      "maximum_tolerance_ratio": 0.470384002609343,
+      "baseline_declaration_sha256": "e573d1b33014a8db3ac52e12902d6f92729918ed9696f6aa7f09057cb47b136f",
+      "baseline_report_sha256": "51b35ed0bab20d9a236374bbd18e9c49855ba81dd58eab695fdb1599f7ac1d42",
+      "baseline_processes_sha256": "7564d3ddbc48d2e5ee5136c9de3af4aa0cff7664cb7deb8bbc34464614b53c3f",
+      "worst_value": {
+        "sensor_id": "s000023",
+        "sensor_index_zero_based": 22,
+        "hybrid_lux": 187.63652747298138,
+        "reference_lux": 192.15588007265623,
+        "signed_difference_lux": -4.519352599674846,
+        "allowed_difference_lux": 9.607794003632812,
+        "diagnostic_tolerance_ratio": 0.470384002609343,
+        "component_signed_difference_lux": {
+          "diffuse_ground_rgb": -3.014157402018583,
+          "reflected_solar_rgb": -1.5051951976562705,
+          "finite_direct_rgb": 0.0
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Historical solar uses implicit I+ primaries, ad8192, ab8, positive lr16 and actual solar source brightness; higher coefficients use explicit Hammersley65536, ad128, ab8, negative lr16 and receiver scale100. These are different estimators and path-weight behavior.",
+    "Historical transport seals were captured after execution; public historical result and exact output hashes independently retain their earlier identity.",
+    "Old high-ad diffuse and old finite1024 are excluded; this does not rehabilitate their failed tests.",
+    "A possible new hybrid is not a completed production method, accuracy acceptance, or profile adoption. All fixed cases must be retained.",
+    "The controlled reference family remains unqualified due its predeclared A4116 depth sensitivity failure.",
+    "All12 selected sources are available, but no full-year explicit-source resource or accuracy inference follows."
+  ],
+  "all_576_rows_and_rgb_components_retained_in_hashed_external_source": true,
+  "summary_contains_only_each_case_worst_value": true,
+  "engine_processes_started": 0,
+  "reference_family_qualified": false,
+  "accuracy_accepted": false,
+  "profile_adopted": false,
+  "release_acceptance_complete": false,
+  "separate_failed_depth_comparison_summary": [
+    {
+      "alternative": "A",
+      "interval_index": 4116,
+      "values": 24,
+      "scope": "Separate deeper endpoint, not replacement of original baseline",
+      "outside_5percent_5lx_diagnostic_band_count": 0,
+      "maximum_diagnostic_ratio": 0.3458882133073966,
+      "original_1percent_0_1lx_depth_sensitivity_failure_count": 10,
+      "original_depth_failure_sensor_ids": [
+        "s000008",
+        "s000012",
+        "s000013",
+        "s000015",
+        "s000016",
+        "s000018",
+        "s000019",
+        "s000020",
+        "s000022",
+        "s000023"
+      ],
+      "reference_family_qualified": false,
+      "accuracy_accepted": false
+    },
+    {
+      "alternative": "B",
+      "interval_index": 8512,
+      "values": 24,
+      "scope": "Separate deeper endpoint, not replacement of original baseline",
+      "outside_5percent_5lx_diagnostic_band_count": 0,
+      "maximum_diagnostic_ratio": 0.6122222325379792,
+      "original_1percent_0_1lx_depth_sensitivity_failure_count": 10,
+      "original_depth_failure_sensor_ids": [
+        "s000012",
+        "s000014",
+        "s000015",
+        "s000016",
+        "s000017",
+        "s000018",
+        "s000019",
+        "s000020",
+        "s000022",
+        "s000023"
+      ],
+      "reference_family_qualified": false,
+      "accuracy_accepted": false
+    }
+  ],
+  "all_48_depth_rows_retained_in_hashed_external_source": true
+}

@@ -39,6 +39,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Locked dependency acquisition failed' }
       - name: Build identity changes and explicit CI assertions
         run: |
+          ./scripts/test-dev-env.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'dev-env')
           . ./scripts/dev-env.ps1
           ./scripts/test-build-provenance.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'provenance')
       - name: Acquire and verify pinned native engine

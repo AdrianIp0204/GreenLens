@@ -23,8 +23,8 @@ if (-not $SkipVisualStudio -and -not $env:VSCMD_VER) {
     if (-not (Test-Path -LiteralPath $greenLensVsWhere)) { throw 'Visual Studio C++ Build Tools are required; see docs/toolchain.md.' }
     $greenLensVsPath = & $greenLensVsWhere -latest -products '*' -requires Microsoft.VisualStudio.Component.VC.Tools.x86.x64 -property installationPath
     if (-not $greenLensVsPath) { throw 'Install Visual Studio Desktop development with C++ and a Windows SDK.' }
-    $greenLensDevShell = Join-Path $greenLensVsPath 'Common7\Tools\Launch-VsDevShell.ps1'
-    & $greenLensDevShell -Arch amd64 -HostArch amd64 -SkipAutomaticLocation | Out-Null
+    $greenLensDevCmd = Join-Path $greenLensVsPath 'Common7\Tools\VsDevCmd.bat'
+    & (Join-Path $PSScriptRoot 'import-msvc-env.ps1') -VsDevCmdPath $greenLensDevCmd
 }
 if (-not (Get-Command cargo -ErrorAction SilentlyContinue)) { throw 'Rust is missing; follow docs/toolchain.md to install the pinned native toolchain.' }
 # Build identity is queried by the Rust build script for every Cargo invocation.

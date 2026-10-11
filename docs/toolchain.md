@@ -36,6 +36,8 @@ cargo test --workspace
 
 The script locates C++ Build Tools using Microsoft's `vswhere`, imports the native x64 developer environment, prepends the existing per-user Cargo binaries, sets `CARGO_TARGET_DIR` to `%LOCALAPPDATA%\GreenLens\build\<workspace-id>` and sets npm's download cache to `%LOCALAPPDATA%\GreenLens\npm-cache`. All settings apply only to the current process and children. Different checkout paths receive distinct workspace IDs. No persistent environment or unrelated global configuration is changed.
 
+The environment import uses the installed `VsDevCmd.bat` with Unicode output in a child process. This avoids an observed `Launch-VsDevShell.ps1` round-trip that replaced non-ASCII caller paths with question marks. A failed or non-x64 initialization is rejected before importing its values; environment contents are never logged. Run `pwsh -NoProfile -File scripts/test-dev-env.ps1` for the bounded native Unicode/PATH/inheritance and failure-handling regression. It writes its report outside the checkout and does not build the application. See the [v0.3 CI record](v0.3-ci-package-validation.md) for the original hosted failure and verification limits.
+
 `node_modules` remains inside the source checkout so npm, Vite and Tauri resolve packages normally. **`.gitignore` does not disable OneDrive synchronization**; dependency installation may therefore create synchronization overhead. The source is not silently relocated.
 
 ## Verification record

@@ -85,6 +85,8 @@ jobs:
           . ./scripts/dev-env.ps1
           cargo test -p greenlens-radiance --test scientific --locked --offline -- --nocapture
           if ($LASTEXITCODE -ne 0) { throw 'Scientific acceptance failed' }
+      - name: Required independent native matrix arithmetic
+        run: ./scripts/test-matrix-multiplication.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'matrix arithmetic 空間')
       - name: Required native solar-direction and clock fixture
         run: ./scripts/annual-solar-directions.ps1 -SolarOutputDirectory (Join-Path $env:CI_EVIDENCE 'solar-directions 空間')
       - name: Real CLI A/B, portable save/export and replay

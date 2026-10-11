@@ -41,6 +41,10 @@ pub(crate) const ANNUAL_MAX_FILE_BYTES: u64 = 512 * 1024 * 1024;
 pub(crate) const ANNUAL_MAX_SCRATCH_BYTES: u64 = 2 * 1024 * 1024 * 1024;
 pub(crate) const ANNUAL_MAX_OBSERVED_WORKING_SET_BYTES: u64 = 2 * 1024 * 1024 * 1024;
 
+#[cfg(all(test, windows))]
+#[path = "process_resource_tests.rs"]
+mod resource_tests;
+
 pub(crate) fn scratch_sizes(directory: &Path) -> Result<(u64, u64)> {
     fn visit(
         directory: &Path,

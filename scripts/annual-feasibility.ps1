@@ -15,6 +15,7 @@ param(
     [switch]$FunctionsOnly
 )
 $ErrorActionPreference = 'Stop'
+. "$PSScriptRoot/verify-matrix-multiplication.ps1"
 $culture = [Globalization.CultureInfo]::InvariantCulture
 $utf8 = [Text.UTF8Encoding]::new($false)
 New-Item -ItemType Directory -Path $OutputDirectory -Force | Out-Null
@@ -189,16 +190,7 @@ for ($index=0; $index -lt $modifiers.Length; $index++) {
     $mapping[$index] = [int](($minute-30)/60)
     if ($mapping[$index] -lt 0 -or $mapping[$index] -ge $sky.columns -or ($index -gt 0 -and $mapping[$index] -le $mapping[$index-1])) { throw 'Nonmonotonic or out-of-range solar mapping' }
 }
-$maximumMultiplicationError = 0.0
-for ($sensor=0; $sensor -lt $sensorCount; $sensor++) {
-    for ($time=0; $time -lt [Math]::Min(48,$sky.columns); $time++) {
-        for ($component=0; $component -lt 3; $component++) {
-            $expected = 0.0
-            for ($patch=0; $patch -lt $sky.rows; $patch++) { $expected += $coefficients.values[($sensor*$sky.rows+$patch)*3+$component] * $sky.values[($patch*$sky.columns+$time)*3+$component] }
-            $maximumMultiplicationError = [Math]::Max($maximumMultiplicationError, [Math]::Abs($expected-$diffuse.values[($sensor*$sky.columns+$time)*3+$component]))
-        }
-    }
-}
+$multiplication = Assert-IndependentRgbProduct -Coefficients $coefficients -Sky $sky -Product $diffuse -MaximumColumns 48 -EvidencePath (Join-Path $OutputDirectory 'independent-multiplication.json')
 $total = [double[]]$diffuse.values.Clone()
 for ($sensor=0; $sensor -lt $sensorCount; $sensor++) {
     for ($sun=0; $sun -lt $mapping.Length; $sun++) {
@@ -221,7 +213,8 @@ $result = [ordered]@{
     ordering='sensor-major RGB result; sky patch-major / time columns; solar minute ID -> canonical midpoint index';
     method='diffuse+uniform luminous-ground coefficients; separate explicit suns with black exterior ground and unchanged scene reflectances; no coarse direct sky component';
     profile=@{ambient_bounces=$Bounces;ambient_divisions=$Samples;ambient_accuracy=0;ambient_weight=0.00001;deterministic_sampling=$true;workers=1};
-    independent_multiplication_max_absolute_rgb_error=$maximumMultiplicationError;
+    independent_multiplication_max_absolute_rgb_error=$multiplication.maximum_absolute_rgb_error;
+    independent_multiplication=$multiplication;
     illuminance_min_lux=($lux | Measure-Object -Minimum).Minimum; illuminance_max_lux=($lux | Measure-Object -Maximum).Maximum;
     scratch_bytes=(Get-ChildItem -LiteralPath $OutputDirectory -File | Measure-Object Length -Sum).Sum;
     processes=$records

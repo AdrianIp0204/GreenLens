@@ -1,6 +1,6 @@
 {
   "schema_version": "greenlens.v0.3-engine-investigation.v1",
-  "snapshot_utc": "2026-10-11T09:34:24.6535791Z",
+  "snapshot_utc": "2026-10-11T10:36:48.5917417Z",
   "release_complete": false,
   "profile_frozen": false,
   "native_platform": "Windows x64 / pinned Radiance 6.0.2",
@@ -30,7 +30,8 @@
     "An exploratory explicit-solar A candidate with MF2 diffuse sampling of 262,144, solar sampling of 4,096 and 1,024 finite-disc rays passes all 12 retained hours and all 288 sensor values against older ab9/ad131072 matched references with 4,096 finite rays; maximum error/tolerance is 0.797649. The lower solar2,048 candidate fails one winter value. New actual-grid A/B references and annual convergence remain required.",
     "A non-gray east half-hemisphere test validates two groups of 64 repeated primary records: analytical maximum relative error 0.00012457 and -c64 versus f64 average maximum relative error 2.09e-7; each group contains 13 distinct native RGB results. At B interval 8512 sensor s000023, repeated ad 8,192 × 256 rcontrib and f64-averaged rtrace agree within 0.000087 lx, while receiver scales 100 and 10,000 agree at the tested point. These establish limited accumulation/scale behavior, not full-grid or annual acceptance.",
     "At B interval 8512 sensor s000023, scaled contribution bins with negative ray depth -16 gave 190.4150985 lx at 1,048,576 divisions and 189.5414353 lx at 4,194,304 divisions: 0.460935% relative change, within the predeclared one-point 1% diagnostic bound. Moderate-ad repetitions gave 190.9145801 lx. This is a path-weight diagnostic only; the full-grid reference protocol and production profiles remain unaccepted.",
-    "A two-sensor B pilot completed all twelve fixed hours with moderate repeated, scaled, negative-depth diffuse coefficients and both explicit and patch-indirect solar transport. Coefficient stages took116.337 and247.160 seconds; all retained residuals were finite/nonnegative. The component comparisons are against an unqualified higher tuple and do not establish reference, full-grid or annual acceptance."
+    "A two-sensor B pilot completed all twelve fixed hours with moderate repeated, scaled, negative-depth diffuse coefficients and both explicit and patch-indirect solar transport. Coefficient stages took116.337 and247.160 seconds; all retained residuals were finite/nonnegative. The component comparisons are against an unqualified higher tuple and do not establish reference, full-grid or annual acceptance.",
+    "External identical cosine-weighted primary directions passed eight bounded coupling fixtures: uniform, black opaque room with glass and actual A/B, at 1,024 and 4,096 rays on s000003/s000023. All full-minus-direct coefficient channels were nonnegative; black and uniform coefficient pairs were exactly equal. Uniform pi L was within 1%. Low secondary divisions of 64 test coupling only, not an accuracy profile."
   ],
   "unresolved": [
     "The finite-disc corrected adapter and same-recipe full-year A/B replay have completed native execution. Independent matched-sky and final numerical profile acceptance remain outstanding.",
@@ -41,14 +42,16 @@
     "Explicit solar sampling of 8,192 with diffuse sampling of 262,144 passes all 288 A values but fails B zero-based sensor index 15 (stable ID s000016) at interval 8512, with 19.022688 lx error versus 17.929929 lx allowance. Its complete failed record is retained.",
     "Full-grid diffuse sampling of 1,048,576 with explicit solar sampling of 8,192 passes all 288 A values, but B fails one value at interval 8512: stable sensor s000023 (zero-based index 22), 183.72413220000004 lx versus 193.500432 lx, with tolerance 9.6750216 lx. The earlier index 15 (s000016) failure now passes. Reference convergence at the remaining point is being investigated; no failure is rounded away.",
     "Independent uniform-hemisphere diagnostics expose high-sampling numerical failures: rtrace errors exceed 1% at 1M, 4M and 8M ambient divisions; rcontrib unit-radiance contribution is zero at 4M/8M. At ad8192, a dimmed 0.001 sky also returns zero. Repeated moderate sampling and normalized receiver scaling are exploratory remedies; no new profile is accepted.",
-    "Scaled same-sky contribution reference at B interval 8512 sensor s000023 remains unconverged: 1,048,576 versus 4,194,304 divisions gives 188.8691113 versus 184.1996994 lx, a 2.53497% change exceeding the diagnostic 1% bound. Scales 100 and 10,000 at identical sampling give exactly the same normalized result. The residual is therefore not explained by the receiver contribution cutoff or float accumulation alone; cumulative path-weight termination is under isolated investigation."
+    "Scaled same-sky contribution reference at B interval 8512 sensor s000023 remains unconverged: 1,048,576 versus 4,194,304 divisions gives 188.8691113 versus 184.1996994 lx, a 2.53497% change exceeding the diagnostic 1% bound. Scales 100 and 10,000 at identical sampling give exactly the same normalized result. The residual is therefore not explained by the receiver contribution cutoff or float accumulation alone; cumulative path-weight termination is under isolated investigation.",
+    "The complete method 4 annual shipping A/B candidates both failed assembly because independently sampled full-minus-direct patch terms became negative. A has 148 negative sensor/hour residuals (worst -187.9142 lx), B has 39 (worst -51.30498 lx); no result was promoted. These material residuals are not clamped, and no annual acceptance is claimed."
   ],
   "failed_checks_retained": [
     "Four completed matched-sky candidate profiles fail. The first ab5 failure file uses integer-rounded diagnostic allowed_error_lux; the corrected script uses the exact max(5.0 lx, 5%) threshold.",
     "The centroid-sun half-disc aperture check reports 0 instead of 60.830157 lx. Changing -ds cannot correct the distant-source nopart behavior.",
     "Radiance dj1 approximate square-to-disc jitter has off-centre bias and is not selected for correction.",
     "Equal-solid-angle 256-ray sampling fails an offset edge. The 1,024/4,096-ray passes do not alone freeze a production profile.",
-    "Complete actual-grid method2 matched references now cover twelve hours for each alternative: A and B each fail 13 of 288 sensor values, with all values retained."
+    "Complete actual-grid method2 matched references now cover twelve hours for each alternative: A and B each fail 13 of 288 sensor values, with all values retained.",
+    "Method 4 annual negative reflected residuals: all 148 A and 39 B rows and 67/61 coefficient cells retained with input hashes; numerical acceptance remains open."
   ],
   "evidence": [
     {
@@ -170,6 +173,14 @@
     {
       "file": "evidence/v0.3-engine/moderate-two-sensor-transport-pilot.json",
       "sha256": "c9b58792881de8bc306199e5268a93996e058c6455ca4d4cb797829beeb4d5bd"
+    },
+    {
+      "sha256": "3cd360c62a6fab446039de44a64aa033142120d037f5d17c8ec590a69dcc6be7",
+      "file": "evidence/v0.3-engine/method4-annual-negative-residuals.json"
+    },
+    {
+      "sha256": "a40efd380b1977f8ac9beb3508d87528cdfe858719bbd9155218df2dd063e3ba",
+      "file": "evidence/v0.3-engine/paired-primary-coupling.json"
     }
   ],
   "native_resource_feasibility": true

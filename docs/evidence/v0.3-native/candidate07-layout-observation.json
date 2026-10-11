@@ -1,0 +1,63 @@
+{
+  "schema_version": "greenlens.candidate07-native-layout-observation.v1",
+  "recorded_utc": "2026-10-11T16:37:58.362435+00:00",
+  "application_source": "890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+  "source_dirty": false,
+  "installed_binary_sha256": "27bf548bef40cbe40653a1b079259b96f1f0da21966ed039bd972de0264af524",
+  "native_user_interface": true,
+  "development_server": false,
+  "display_scale": 1.25,
+  "maximized": {
+    "css": [
+      1536,
+      794
+    ],
+    "native_inner_pixels": [
+      1920,
+      991
+    ]
+  },
+  "compact": {
+    "css": [
+      1094,
+      500
+    ],
+    "native_inner_pixels": [
+      1367,
+      625
+    ],
+    "sensor_table_visible": true,
+    "sensor": "s000001",
+    "displayed_lux": 1865.219,
+    "interval_index": 1908,
+    "run_snapshot": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+    "four_viewports_visible": true,
+    "analysis_panel_scrolls_independently": true,
+    "toolbar_run_and_document_actions_accessible": true,
+    "undo": 0,
+    "redo": 0
+  },
+  "all_compact_files_unchanged": 179,
+  "new_simulation": false,
+  "screenshots": [
+    {
+      "file": "maximized-diagnostics.png",
+      "bytes": 155836,
+      "sha256": "d0559bfb43a36e16d83474cec0ca7c1bda3595f05528c6768b28c4367873d5f0",
+      "tree_sha256": "8ef37b1d49bc5c06a1cdf3841457d52e3166cba20cd3f3b78ca52baa39db372c"
+    },
+    {
+      "file": "compact-table-diagnostics.png",
+      "bytes": 95911,
+      "sha256": "c5a4420f95a53dcf1d3b5b5166ca59414bf9ef265a57a1e35416e5c59e242035",
+      "tree_sha256": "beb5ab471351c29eb27bd228dc63ec6450decbad68697bde51fc0ee24f6522f5"
+    }
+  ],
+  "limitations": [
+    "Native resize attempts did not establish exact1366x768 dimensions; actual dimensions are recorded without substitution.",
+    "Both sizes used the existing physical display at125percent; no secondphysicalmonitor or OSdisplaymode change.",
+    "Physical Shift-add/Ctrl-remove remains unverified.",
+    "No offline browserreport rendering or scientific accuracy claim."
+  ],
+  "release_acceptance_complete": false
+}

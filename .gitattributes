@@ -38,6 +38,7 @@ docs/evidence/v0.3-ci/final-main-19f0bbe.json -text -whitespace
 docs/evidence/v0.3-engine/fixed-phase-control-summary.json -text -whitespace
 docs/evidence/v0.3-engine/explicit-source-control-summary.json -text -whitespace
 docs/evidence/v0.3-engine/sky-time-block-four-case-summary.json -text -whitespace
+docs/evidence/v0.3-engine/overlap-horizon-controls.json -text -whitespace
 docs/evidence/v0.3-engine/reference-prefix-identity-regression.json -text -whitespace
 docs/evidence/v0.3-engine/historical-explicit-hybrid-summary.json -text -whitespace
 docs/evidence/v0.3-ci/method5-*.json -text -whitespace

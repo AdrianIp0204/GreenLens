@@ -59,6 +59,8 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-engine/fixed-phase-control-summary.json',
         'docs/evidence/v0.3-engine/explicit-source-control-summary.json',
         'docs/evidence/v0.3-engine/sky-time-block-four-case-summary.json',
+        'docs/evidence/v0.3-engine/overlap-horizon-controls.json',
+        'docs/v0.3-depth-order-diagnostic.md',
         'docs/evidence/v0.3-engine/historical-finite-recovery-audit.json',
         'docs/evidence/v0.3-engine/MF8-annual-size-lower-bound.json',
         'docs/evidence/v0.3-engine/hosted-twelve-case-qualification.json',

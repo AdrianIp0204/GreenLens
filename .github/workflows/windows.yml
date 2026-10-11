@@ -69,6 +69,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Lint failed' }
           cargo test --workspace --exclude greenlens-radiance --locked --offline
           if ($LASTEXITCODE -ne 0) { throw 'Workspace tests failed' }
+          $env:GREENLENS_FINITE_FIXTURE_ROOT = Join-Path $env:CI_EVIDENCE 'finite-rust'
           cargo test -p greenlens-radiance --lib --locked --offline
           if ($LASTEXITCODE -ne 0) { throw 'Adapter tests failed' }
       - name: Mandatory reviewed real weather and script regressions
@@ -85,6 +86,19 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Annual replay orchestration regressions failed' }
           pwsh -NoProfile -File scripts/test-package-documents.ps1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'package-document-tests.txt')
           if ($LASTEXITCODE -ne 0) { throw 'Offline package documentation regressions failed' }
+      - name: Required bounded reference-harness regressions
+        run: |
+          $scripts = @('test-annual-matched-evidence','test-annual-reference','test-annual-reference-process','test-annual-reference-sensitivity','test-annual-reference-boundary-stop')
+          foreach ($name in $scripts) {
+            pwsh -NoProfile -File "scripts/$name.ps1" 2>&1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE "$name.txt")
+            if ($LASTEXITCODE -ne 0) { throw "Required bounded harness regression failed: $name" }
+          }
+          'Harness arithmetic, identity and synthetic lifecycle checks are not full scientific reference qualification.' >> $env:GITHUB_STEP_SUMMARY
+      - name: Required independent finite overhang and context edges
+        run: |
+          ./scripts/annual-shadow-corrected.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'finite independent edges 空間')
+          $report = Get-Content (Join-Path $env:CI_EVIDENCE 'finite independent edges 空間/shadow-edges.json') -Raw | ConvertFrom-Json -DateKind String -Depth 30
+          if (!$report.pass -or @($report.checks).Count -ne 36 -or @($report.checks | Where-Object { !$_.pass }).Count) { throw 'Finite shadow fixture lacks all 36 required passing checks' }
       - name: Required real-engine scientific suite (missing engine is failure)
         run: |
           . ./scripts/dev-env.ps1
@@ -132,7 +146,9 @@ jobs:
           $weather = Join-Path $env:CI_EVIDENCE 'weather-exit/weather/Relocated weather 空間/normalized.epw'
           ./scripts/annual-weather-context.ps1 -WeatherFile $weather -OutputDirectory (Join-Path $env:CI_EVIDENCE 'weather-context 空間')
       - name: Release CLI immutable v0.1 replay without annual executables
-        run: ./scripts/legacy-replay.ps1 -Cli $env:CI_CLI -OutputDirectory (Join-Path $env:CI_EVIDENCE 'legacy-replay')
+        run: |
+          ./scripts/test-legacy-engine-fixture.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'legacy-engine-fixture')
+          ./scripts/legacy-replay.ps1 -Cli $env:CI_CLI -OutputDirectory (Join-Path $env:CI_EVIDENCE 'legacy-replay')
       - name: Upload exact release CLI with notices for annual jobs
         uses: actions/upload-artifact@v4
         with:
@@ -159,6 +175,15 @@ jobs:
           New-Item -ItemType Directory -Path $stage -Force | Out-Null
           "CI_DIAGNOSTICS=$stage" >> $env:GITHUB_ENV
           $roots = @((Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-native 空間'),(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/required-scientific-suite'))
+          # Only these owned helper fixtures, created during this job, are added.
+          # The same file/count/total caps and extension filters below still apply.
+          $prefixes = @('matched evidence regression ','reference supervisor ','reference process regression ','reference scheduling regression ')
+          if ($env:CI_JOB_STARTED_UTC) {
+            $began = [DateTimeOffset]::Parse($env:CI_JOB_STARTED_UTC).UtcDateTime
+            foreach ($directory in Get-ChildItem (Join-Path $env:LOCALAPPDATA 'GreenLens/verification') -Directory -ErrorAction SilentlyContinue) {
+              if ($directory.CreationTimeUtc -ge $began -and @($prefixes | Where-Object { $directory.Name.StartsWith($_,[StringComparison]::Ordinal) }).Count) { $roots += $directory.FullName }
+            }
+          }
           $omitted = [Collections.Generic.List[object]]::new()
           [long]$total=0; $count=0
           foreach ($index in 0..($roots.Count-1)) {

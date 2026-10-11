@@ -29,6 +29,8 @@ The CLI ZIP includes `greenlens.exe`, synthetic room inputs, the reviewed weathe
 
 For an engine installed elsewhere, enter the directory containing `bin` and `lib` under **Analysis → Project and engine**. The CLI `doctor`, `run`, `study run` and `replay` commands accept `--engine-dir <directory>`. Initial acquisition needs internet; ordinary calculation, reopening, report viewing and exporting operate locally without it.
 
+The pinned Windows Radiance package requires an **ASCII-only engine installation path**, including its parent directories, for CAL-library lookup. Spaces are supported. A non-ASCII engine path can fail with `cannot find function file "rayinit.cal": Invalid argument` even when the file exists. Choose a separate local ASCII path with `./scripts/install-radiance.ps1 -InstallDirectory <path>` and configure its `package` subdirectory in GreenLens. This limitation concerns the engine and its libraries; tested project and working directories contain spaces and Chinese characters. If the Windows user profile itself has non-ASCII characters, select a writable ASCII engine location explicitly.
+
 For climate studies, follow the [weather import, annual desktop and CLI guide](v0.3-usage.md). The real-weather example retains PVGIS/ERA5 attribution and source-specific time conventions. Climate verification scripts require PowerShell 7.5 or newer. Annual numerical accuracy and installed workflow checks are still in progress; the candidate must not be represented as a verified release.
 
 ## Build from source

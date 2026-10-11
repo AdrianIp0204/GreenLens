@@ -1,0 +1,93 @@
+{
+  "schema_version": "greenlens.legacy-library-path-repair.v1",
+  "recorded_utc": "2026-10-11T10:52:05.1703050Z",
+  "hosted_failure": {
+    "step": "Release CLI immutable v0.1 replay without annual executables",
+    "full_log_sha256": "a267655da2920e4cecc0bc8371d04089513a7e829d0d47ada4f2b6d154754693",
+    "run_id": 38129251731,
+    "rtrace_exit_code": 2,
+    "source_commit_prefix": "8e7",
+    "stderr": "rtrace: system - cannot find function file \"rayinit.cal\": Invalid argument"
+  },
+  "native_counterexample": {
+    "schema_version": "greenlens.legacy-library-path-diagnostic.v1",
+    "scope": "Native cal-library initialization only; no replay or simulation accuracy acceptance",
+    "cases": [
+      {
+        "working_path_kind": "Unicode with spaces",
+        "stdout": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)\r\n",
+        "library_path_kind": "ASCII engine with spaces",
+        "stderr": "",
+        "exit_code": 0,
+        "rayinit_sha256": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60"
+      },
+      {
+        "working_path_kind": "Unicode with spaces",
+        "stdout": "",
+        "library_path_kind": "Unicode engine 空間",
+        "stderr": "rtrace: system - cannot find function file \"rayinit.cal\": Invalid argument\r\n",
+        "exit_code": 2,
+        "rayinit_sha256": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60"
+      }
+    ],
+    "engine_executable": "rtrace.exe",
+    "engine_sha256": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+    "arguments": [
+      "-version"
+    ],
+    "finished_utc": "2026-10-11T10:44:24.2952396Z"
+  },
+  "repair_regression": {
+    "schema_version": "greenlens.legacy-engine-fixture-test.v1",
+    "checks": [
+      "Pinned three-executable fixture and every copied library/DLL byte match the source; annual executables absent",
+      "Existing fixture rejected without overwriting its CAL library",
+      "Unicode engine-library destination rejected before writes with an actionable override",
+      "Unavailable source engine fails instead of skipping",
+      "Real pinned rtrace initializes rayinit.cal from an ASCII library path inside a Unicode working directory",
+      "Altered critical CAL library rejected before destination creation"
+    ],
+    "completed_utc": "2026-10-11T10:51:46.6828900Z",
+    "native_process": {
+      "wall_seconds": 0.8624572,
+      "exit_code": 0,
+      "working_path_kind": "Unicode and spaces",
+      "stderr": "",
+      "executable_sha256": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+      "started_utc": "2026-10-11T10:51:45.3757080Z",
+      "library_path_kind": "ASCII",
+      "finished_utc": "2026-10-11T10:51:46.2534486Z",
+      "arguments": [
+        "-version"
+      ],
+      "stdout": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)\r\n",
+      "executable": "rtrace.exe",
+      "timed_out": false
+    },
+    "disposable_fixture_corrupted_after_probe": true,
+    "engine_fixture": {
+      "schema_version": "greenlens.legacy-engine-fixture.v1",
+      "engine_release": "6.0.2",
+      "file_count": 150,
+      "copied_files_sha256": "2a1b108d6c5401b86e232f11cbab338dcc566a3923f4accbfe8a6cdd33df5826",
+      "source_and_copy_identical": true,
+      "library_path_ascii": true,
+      "engine_executables": [
+        "gensky.exe",
+        "oconv.exe",
+        "rtrace.exe"
+      ],
+      "annual_executables_present": false
+    },
+    "scope": "Fixture byte identity and native CAL-loader regression only; complete legacy replay is a separate mandatory CI step",
+    "passed": true
+  },
+  "source_sha256": {
+    "scripts/legacy-engine-fixture.ps1": "b27e2b7a3bfaea9959aa1262f6441e05c63c6ddd33cfe5374fda9485134bcc0c",
+    "scripts/legacy-replay.ps1": "2178f841251e37087e1446f48ea9b609bd88f00e2290fbfcc3119bcce6067506",
+    "scripts/test-legacy-engine-fixture.ps1": "3d4cd03f2043e2ebb6d8f64855ec3f43c816c8bb0a71c5aa8803901403f06b31"
+  },
+  "full_repaired_legacy_replay": "not executed locally; still mandatory on the next hosted CI run",
+  "scope": "Native Windows CAL-library-path limitation and byte-preserving fixture repair; no altered engine, annual executable requirement, numerical tolerance or simulation algorithm",
+  "private_paths_or_binaries_retained_in_public_record": false
+}

@@ -91,7 +91,7 @@ export function handleDefinitions(model, objectId, tool = 'select') {
     add(0, 'move', 'Window center X', ['window', 'center_x_m']); add(2, 'move', 'Window sill', ['window', 'sill_m']);
     add(0, 'resize', 'Window width', ['window', 'width_m'], 2); add(2, 'resize', 'Window height', ['window', 'height_m']);
   } else if (objectId === 'overhang' && model.overhang) {
-    add(1, 'move', 'Overhang projection', ['overhang', 'projection_m'], -1); add(2, 'move', 'Gap above window', ['overhang', 'gap_above_window_m']);
+    add(1, 'resize', 'Overhang projection', ['overhang', 'projection_m'], -1); add(2, 'move', 'Gap above window', ['overhang', 'gap_above_window_m']);
     add(0, 'resize', 'Overhang side extension', ['overhang', 'side_extension_m']);
   } else if (objectId === 'obstruction' && model.obstruction) {
     add(0, 'move', 'Obstruction center X', ['obstruction', 'center_x_m']); add(1, 'move', 'Facade clearance', ['obstruction', 'distance_m'], -1);

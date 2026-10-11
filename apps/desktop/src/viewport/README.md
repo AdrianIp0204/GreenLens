@@ -18,7 +18,7 @@ Official McNeel documentation supplied behavioral references only: [navigation](
 
 ## Supported edits and aids
 
-The center grip moves a window in its facade X/Z plane or context in model X/Y. Colored arrow handles move supported scalar parameters; square handles resize supported dimensions. The room has a clockwise Z rotation ring, used from Top/Perspective. Clicking an individual handle requests numeric entry. A mixed/inspect-only selection offers no ambiguous transform.
+The center grip moves a window in its facade X/Z plane or context in model X/Y. Colored arrow handles move supported scalar parameters; square handles resize supported dimensions. Overhang projection and side extension use Resize; its gap translates the whole shading plane and uses Move. The room has a clockwise Z rotation ring, used from Top/Perspective. Clicking an individual handle requests numeric entry. A mixed/inspect-only selection offers no ambiguous transform.
 
 The visible construction grid is 1 m. Grid Snap quantizes edited scalar coordinates to 0.1 m; it is independent of the scientific sensor grid. Ortho restricts a planar drag to its dominant local axis (and room rotation to 90° steps). Object snaps apply to Move operations: the movable center reference aligns to the chosen point in its constrained plane/axis. Resize uses Grid Snap or numeric dimensions; Rotate uses angular steps or numeric entry. These operations suppress object-snap markers and do not imply snapping a resized boundary to a point.
 

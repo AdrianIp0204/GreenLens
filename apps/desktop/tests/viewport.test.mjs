@@ -71,6 +71,18 @@ test('planar window movement uses facade X/Z; Ortho and Grid Snap demonstrably c
   const vertical = candidateForPlanarMove(model, 'window', [.04, 0, .23], true, true);
   assert.equal(vertical.window.center_x_m, 2); assert.ok(Math.abs(vertical.window.sill_m - 1.1) < 1e-12);
 });
+test('overhang projection is a dimension edit, so only its translated gap accepts Move object snaps', () => {
+  const handles = handleDefinitions(model, 'overhang');
+  const projection = handles.find(h => h.path[1] === 'projection_m');
+  assert.equal(projection.kind, 'resize');
+  assert.equal(handles.find(h => h.path[1] === 'side_extension_m').kind, 'resize');
+  assert.equal(handles.find(h => h.path[1] === 'gap_above_window_m').kind, 'move');
+  assert.deepEqual(handleDefinitions(model, 'overhang', 'move').map(h => h.path[1]), ['gap_above_window_m']);
+  assert.deepEqual(handleDefinitions(model, 'overhang', 'resize').map(h => h.path[1]), ['projection_m', 'side_extension_m']);
+  const candidate = candidateForHandle(model, projection, -.2);
+  assert.equal(candidate.overhang.projection_m, model.overhang.projection_m + .2);
+  assert.equal(candidate.overhang.gap_above_window_m, model.overhang.gap_above_window_m);
+});
 test('context facade-distance sign and room clockwise angle remain bounded-schema operations', () => {
   const context = { ...model, obstruction: { center_x_m: 2, distance_m: 5, width_m: 2, depth_m: 1, height_m: 4, reflectance: .2 } };
   assert.equal(candidateForPlanarMove(context, 'obstruction', [0, .3, 0]).obstruction.distance_m, 4.7);

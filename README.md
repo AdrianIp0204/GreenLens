@@ -10,7 +10,7 @@ The completed v0.1 [implementation plan](docs/implementation-plan.md), [scientif
 
 The bounded workflow models one rectangular room, a rectangular window, an optional horizontal overhang and a detached opaque obstruction. Inputs and completed runs stay in portable local project directories. Normal calculation requires no internet, cloud account, paid service or Python runtime.
 
-Start with the [installation and launch guide](docs/installation.md). Verified package and synthetic evidence hashes are recorded in [release-artifacts.json](docs/release-artifacts.json); the native CI build is recorded in [ci-evidence.json](docs/ci-evidence.json).
+Start with the [installation and launch guide](docs/installation.md). Fresh v0.2 checks are recorded in [scientific and CLI verification](docs/v0.2-scientific-verification.md) and [installed workspace verification](docs/v0.2-native-verification.md). The [v0.1 package hashes](docs/release-artifacts.json) and [v0.1 CI record](docs/ci-evidence.json) describe the historical release only.
 
 ## Native Windows development
 

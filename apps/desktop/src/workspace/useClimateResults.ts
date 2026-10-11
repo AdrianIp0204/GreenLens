@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
 import type { ClimateComparison, ClimateProjectDocument, ClimateRunRecord, ClimateSensorSeries, ClimateValues, CurrentClimateResult, ResultField, Study, WeatherIntervalView } from '../climate-types';
 import type { ValidatedModel } from '../types';
-import { climateOverlayMatches, climateRequestKey, ClimateRequestGate } from './climate-presentation.mjs';
+import { climateOverlayMatches, climateRequestKey, ClimateRequestGate, climateSeriesSensor } from './climate-presentation.mjs';
 import { climateRelationKey, selectedRecordProject, selectedPairProject, selectedPairRelation, snapshotDisplayContext, snapshotDisplayScale } from './climate-pair-context.mjs';
 
 interface Options {
@@ -58,7 +58,9 @@ export function useClimateResults(options:Options) {
   const selectedRelation=selectedPairRelation(summary,selectedCondition??undefined,selectedResponse?.error);
   const canOverlay=climateOverlayMatches(summary,selectedCondition,values,validated);
   const weatherView=useWeatherView(path,project,run,interval);
-  const sensorId=selection.find(id=>id.startsWith('sensor:'))?.slice(7)??null;
+  const [historicalSensor,setHistoricalSensor]=useState<{key:string;id:string|null}|null>(null);
+  const historicalSensorKey=JSON.stringify([context,summary?.id,summary?.record_sha256]);
+  const sensorId=climateSeriesSensor(canOverlay,selection,historicalSensor?.key===historicalSensorKey?historicalSensor.id:null,run?.series.sensor_ids??[]);
   const seriesKey=JSON.stringify([path,summary?.id,summary?.record_sha256,sensorId]);
   const [series,setSeries]=useState<{key:string;value:ClimateSensorSeries|null;error:string}|null>(null);
   useEffect(()=>{let live=true;if(!path||!summary||!sensorId||!run?.series.sensor_ids.includes(sensorId))return;
@@ -103,6 +105,7 @@ export function useClimateResults(options:Options) {
     interval,setInterval:(interval:number)=>update({interval}),annual,values,canOverlay,selectedRelation,loading:Boolean(key&&!result),error:result?.error??'',
     scale:snapshotDisplayScale(field,values),
     weather:weatherView?.value??null,weatherError:weatherView?.error??'',sensorSeries:sensorSeries?.value??null,seriesError:sensorSeries?.error??'',sensorId,
+    selectHistoricalSensor:(id:string|null)=>setHistoricalSensor({key:historicalSensorKey,id}),
     pairTime:{path,annual:pairAnnual,field:pairField,interval:pairInterval,setInterval:(interval:number)=>setPairDisplay({...pairView,documentId,interval}),weather:pairWeather?.value??null,weatherError:pairWeather?.error??''},
     setPairField:(field:ResultField)=>setPairDisplay({...pairView,documentId,field}),pairRelation,
     comparison:pairResponse?.value??null,comparisonError:pairResponse?.error??'',comparing:Boolean(a&&b&&!pairResponse),a,b,selectPair};

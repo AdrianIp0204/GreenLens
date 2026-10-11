@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ClimateRequestGate, climateRequestKey, climateOverlayMatches, hourLabel } from '../src/workspace/climate-presentation.mjs';
+import { ClimateRequestGate, climateRequestKey, climateOverlayMatches, climateSeriesSensor, hourLabel } from '../src/workspace/climate-presentation.mjs';
 const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};};
 test('hour scrubbing discards obsolete reads and failures',async()=>{
   const gate=new ClimateRequestGate(),old=deferred(),fresh=deferred();
@@ -39,4 +39,13 @@ test('selected older snapshot overlays only when Rust confirms that exact record
   assert.equal(climateOverlayMatches(summary,{...rejected,summary:newest,run:{id:'newest'}},values,validated),false);
   assert.equal(climateOverlayMatches(summary,{...rejected,summary,run:{id:'older'}},values,validated),true);
   assert.equal(climateOverlayMatches(summary,{...rejected,summary:{...summary,record_sha256:'modified'},run:{id:'older'}},values,validated),false);
+});
+
+test('historical series never inherits a same-ID sensor at a different current geometry position',()=>{
+  const ids=['s000001','s000002'];
+  assert.equal(climateSeriesSensor(false,['sensor:s000001'],null,ids),null);
+  assert.equal(climateSeriesSensor(false,['sensor:s000001'],'s000002',ids),'s000002');
+  assert.equal(climateSeriesSensor(true,['sensor:s000001'],'s000002',ids),'s000001');
+  assert.equal(climateSeriesSensor(false,['sensor:s000001'],'missing',ids),null);
+  assert.equal(climateSeriesSensor(true,['sensor:missing'],'s000002',ids),null);
 });

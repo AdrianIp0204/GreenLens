@@ -15,6 +15,11 @@ export function climateOverlayMatches(summary, current, values, validated) {
     values.sensor_ids.length === validated.sensor_grid.sensors.length &&
     values.sensor_ids.every((id, i) => id === validated.sensor_grid.sensors[i].id));
 }
+/** A stable ID does not establish matching sensor positions across snapshots. */
+export function climateSeriesSensor(canOverlay, viewportSelection, historicalId, sensorIds) {
+  const id=canOverlay?viewportSelection.find(value=>value.startsWith('sensor:'))?.slice(7):historicalId;
+  return id&&sensorIds.includes(id)?id:null;
+}
 /** Debounced requests may finish out of order; obsolete data never becomes visible. */
 export class ClimateRequestGate {
   sequence = 0;

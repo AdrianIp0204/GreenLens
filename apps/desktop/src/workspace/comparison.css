@@ -3,3 +3,6 @@
 .snapshot-selector select{width:100%;min-width:0;font-size:11px}
 .snapshot-selector small{font-size:10px;color:#65767b;overflow-wrap:anywhere}
 .snapshot-selector code{font-size:9px}
+.analysis-tabs{overflow-x:auto}
+.analysis-tabs>select{flex:none;width:150px;font-size:10px;min-height:22px;padding:1px 4px}
+.analysis-tabs>button{flex-shrink:0}

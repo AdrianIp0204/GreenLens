@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — study-independent historical inspection
+
+- Repaired a further inspection defect: changing the accepted study to Static previously hid retained climate selectors/tables/comparisons. An explicit display-only result-family selector now preserves access to static and climate snapshots independently of the study used by Run. Single static snapshots show their own sensor positions and values with current-study/design mismatch labels.
+- Repaired historical sensor routing: a saved sensor ID alone cannot select or highlight a different current-geometry position. Mismatched table buttons explain why viewport selection is unavailable; historical climate series use a separate saved-coordinate selector. Following the current study from annual to static immediately converts an open series drawer to the table, including after undo.
+- Verified supplementary regression/build evidence: all 110 frontend tests passed with zero skipped/failed, TypeScript passed and the Vite production build passed. New production-App/handler tests use explicitly identified hook/service mocks for routing and non-mutation; they are not native or simulation evidence. Installed verification of these changes remains pending. No scientific model, metric equation, engine profile or tolerance changed.
+
 ## 2026-10-11 — current CLI historical replay and CI diagnostics
 
 - Verified native historical compatibility with the clean `438ff22` CLI: a complete historical method2 A run replayed all 210,240 values with maximum error 0 lx; the original published v0.1 A/B fixture replayed both 77-sensor arrays with maximum error 0 lx. Annual/static wrapper times were 301.384/798.118 seconds under concurrent workload. All 152 original project files, 151 copied immutable evidence files, both archives and the CLI remained unchanged. The retained record and reproduction commands are in `v0.3-historical-method-verification.md`. These are same-engine compatibility checks, not acceptance of method2 accuracy or method3 science.

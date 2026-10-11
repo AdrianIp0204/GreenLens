@@ -1,0 +1,97 @@
+name: Fixed A4116 depth and sensor-order diagnostic
+on:
+  push:
+    branches: [codex/v0.3-depth-order-diagnostic]
+permissions:
+  contents: read
+concurrency:
+  group: greenlens-depth-order-fixed-four
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  diagnostic:
+    permissions:
+      # Read the two explicitly reviewed unpublished data-only assets.
+      contents: write
+    runs-on: windows-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [ab10-original, lr24-original, baseline-reversed, depth-reversed]
+    env:
+      DIAGNOSTIC_CASE: '${{ matrix.case }}'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Pure fixed-plan, row-mapping and component arithmetic guards
+        run: |
+          ./scripts/test-depth-order.ps1
+      - name: Download exact reviewed baseline and failed endpoint
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: '${{ github.token }}'
+        run: |
+          . ./scripts/depth-order-helpers.ps1
+          $plan = Get-Content ./scripts/depth-order-plan.json -Raw | ConvertFrom-Json -Depth 60 -DateKind String
+          Assert-DepthPlan $plan
+          if (!$plan.execution_authorized) { throw 'Reviewed diagnostic dispatch is disabled' }
+          foreach ($role in @('baseline','endpoint')) {
+            $pin = $plan.($role+'_archive')
+            if ($pin.asset_id -notmatch '^[0-9]+$') { throw 'Reviewed asset ID is not fixed' }
+            $url = "repos/$env:GITHUB_REPOSITORY/releases/assets/$($pin.asset_id)"
+            $meta = & gh api $url | ConvertFrom-Json
+            if ($LASTEXITCODE -ne 0 -or $meta.name -cne $pin.name -or $meta.size -ne $pin.bytes -or $meta.digest -cne ('sha256:'+$pin.sha256)) { throw 'Draft asset metadata differs' }
+            $file = Join-Path $env:RUNNER_TEMP $pin.name
+            & gh api $url -H 'Accept: application/octet-stream' > $file
+            if ($LASTEXITCODE -ne 0 -or (Get-Item $file).Length -ne $pin.bytes -or (Get-FileHash $file).Hash.ToLowerInvariant() -cne $pin.sha256) { throw 'Asset bytes differ' }
+            ("DIAGNOSTIC_"+$role.ToUpperInvariant()+"_ARCHIVE=$file") >> $env:GITHUB_ENV
+          }
+          "DIAGNOSTIC_OUTPUT=$(Join-Path $env:RUNNER_TEMP ('depth-order-'+$env:DIAGNOSTIC_CASE))" >> $env:GITHUB_ENV
+      - name: Acquire the separately pinned native engine
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        run: ./scripts/install-radiance.ps1
+      - name: One fixed stream under original resource limits
+        run: |
+          ./scripts/run-hosted-depth-order.ps1 -Case $env:DIAGNOSTIC_CASE -BaselineArchive $env:DIAGNOSTIC_BASELINE_ARCHIVE -EndpointArchive $env:DIAGNOSTIC_ENDPOINT_ARCHIVE -OutputDirectory $env:DIAGNOSTIC_OUTPUT -SourceRoot $PWD
+      - name: Retain complete or failed bounded data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: depth-order-${{ matrix.case }}-${{ github.run_id }}
+          path: '${{ runner.temp }}/depth-order-${{ matrix.case }}/'
+          if-no-files-found: warn
+          retention-days: 30
+  descriptive_aggregate:
+    needs: diagnostic
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: depth-order-*-${{ github.run_id }}
+          path: '${{ runner.temp }}/depth-order-inputs'
+      - name: Re-read all four raw streams and compute descriptive effects
+        run: |
+          $plan = Get-Content ./scripts/depth-order-plan.json -Raw | ConvertFrom-Json -Depth 60 -DateKind String
+          . ./scripts/prepare-sensitivity-sources.ps1
+          $null = Prepare-SensitivitySources $PWD $plan.legacy_source_sha256
+          $root = Join-Path $env:RUNNER_TEMP 'depth-order-inputs'
+          $cases = @($plan.cases | ForEach-Object { Join-Path $root ("depth-order-$($_.id)-$env:GITHUB_RUN_ID/diagnostic") })
+          $first = Join-Path $root ("depth-order-ab10-original-$env:GITHUB_RUN_ID")
+          ./scripts/collect-depth-order.ps1 -CaseDirectories $cases -BaselineDirectory (Join-Path $first 'baseline-inputs/baseline') -EndpointDirectory (Join-Path $first 'endpoint-inputs') -TrustedSourceRoot $PWD -OutputFile (Join-Path $env:RUNNER_TEMP 'depth-order-effects.json')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: depth-order-effects-${{ github.run_id }}
+          path: '${{ runner.temp }}/depth-order-effects.json'
+          if-no-files-found: warn
+          retention-days: 30

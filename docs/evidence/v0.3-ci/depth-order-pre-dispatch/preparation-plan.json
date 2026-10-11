@@ -1,0 +1,130 @@
+{
+  "schema_version": "greenlens.depth-order-plan.v1",
+  "declared_utc": "2026-10-11T17:56:19.316697+00:00",
+  "execution_authorized": false,
+  "scope": "Exactly four diagnostic streams; not reference qualification, not an adaptive parameter search",
+  "alternative": "A",
+  "interval_index": 4116,
+  "sensors": 24,
+  "rounds": 256,
+  "ambient_divisions": 8192,
+  "source_scale": 100,
+  "ambient_weight": "1e-9",
+  "sampling_mode": "-u-",
+  "accumulation": "-c 1",
+  "maximum_parallel_jobs": 2,
+  "engine_workers_per_job": 1,
+  "job_minutes": 150,
+  "process_seconds": 7200,
+  "maximum_file_bytes": 536870912,
+  "maximum_scratch_bytes": 2147483648,
+  "maximum_memory_bytes": 2147483648,
+  "cases": [
+    {
+      "id": "ab10-original",
+      "ab": 10,
+      "lr": -16,
+      "order": "original"
+    },
+    {
+      "id": "lr24-original",
+      "ab": 9,
+      "lr": -24,
+      "order": "original"
+    },
+    {
+      "id": "baseline-reversed",
+      "ab": 9,
+      "lr": -16,
+      "order": "reversed"
+    },
+    {
+      "id": "depth-reversed",
+      "ab": 10,
+      "lr": -24,
+      "order": "reversed"
+    }
+  ],
+  "baseline": {
+    "declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a",
+    "report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5",
+    "processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18"
+  },
+  "endpoint": {
+    "declaration_sha256": "63dc845432e61ab38d6088e9f7ce1a1aa003eee48de4ad464931ccbef7a257d3",
+    "report_sha256": "48f9f841c823a5eb886a037edad5fc3545da3ec9fb9b671b87fab19faee9ceff",
+    "processes_sha256": "2063255589857d1ed6ee0e6d1a882046d78039937ad62558ef26944913536929"
+  },
+  "baseline_archive": {
+    "name": "GreenLens-sensitivity-A4116-baseline.zip",
+    "manifest_sha256": "50f9b846fcfa60dd76f6f1addec8d9648cf1b8868eaf4142ef98fdaabf402833",
+    "baseline_report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5",
+    "baseline_strict_reader_verified": true,
+    "member_count": 33,
+    "interval_index": 4116,
+    "baseline_processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18",
+    "bytes": 8371685,
+    "sha256": "4f1dc61244890bc8d7a726ef032429de8213948dad0cff08f1236ce91838c59c",
+    "privacy_matches": 0,
+    "uncompressed_bytes": 64602523,
+    "alternative": "A",
+    "asset_id": "631152052",
+    "baseline_declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a"
+  },
+  "endpoint_archive": {
+    "name": "GreenLens-A4116-failed-depth-inputs.zip",
+    "bytes": 139937,
+    "sha256": "dc263dc3bbbc706b56e8638c476c5350f6ac8aea7bef00ed63e91a5959778907",
+    "manifest_sha256": "fc88eef482922f76c99fdb449aceb3563c65ca09b9cf741d89c5ad00d6d7d6c9",
+    "member_count": 20,
+    "uncompressed_bytes": 5105802,
+    "asset_id": null
+  },
+  "legacy_source_sha256": {
+    "scripts/annual-reference-sensitivity.ps1": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566",
+    "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+    "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+    "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+    "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+    "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+    "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+    "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+    "scripts/annual-collect-reference.ps1": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+    "scripts/annual-reference-identity.ps1": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8",
+    "scripts/annual-reference-recovery.ps1": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+    "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+    "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+    "examples/synthetic-a.json": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+    "examples/synthetic-b.json": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf"
+  },
+  "trusted_source_sha256": {
+    "scripts/annual-reference-sensitivity.ps1": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566",
+    "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+    "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+    "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+    "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+    "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+    "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+    "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+    "scripts/annual-collect-reference.ps1": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+    "scripts/annual-reference-identity.ps1": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8",
+    "scripts/annual-reference-recovery.ps1": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+    "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+    "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+    "examples/synthetic-a.json": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+    "examples/synthetic-b.json": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf",
+    "scripts/annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "scripts/annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "scripts/run-hosted-sensitivity-case.ps1": "78f882cadd0c4eb89bed9c7dfc1f6d21c84ca061da4163ceb20ebd4ef62a68b8",
+    "scripts/prepare-sensitivity-sources.ps1": "839c155b8fc392462c5a2d04e8344faf973b4c209c09d5b941e8edc19bed695e"
+  },
+  "diagnostic_source_sha256": {
+    "collect-depth-order.ps1": "6aded5900741b9664627167383f14506bd979eae9dde4b256f023d2ab57bf588",
+    "depth-order-helpers.ps1": "8300e88f01dd090bb34c25b1d98fe83edfdadb3be2eeec443258d2c1320dd53b",
+    "run-depth-order-case.ps1": "8bf11c9aa583c073280c8b4db6aa9b25c7bdea85f049b5cc2cb4b63367b6d3e1",
+    "run-hosted-depth-order.ps1": "35166bfac5e6b6ca16cc23f0f924ae1f4dbe7c069bedaf20ea9e8cd33f553a95",
+    "test-depth-order.ps1": "2425242eaad5a8c34439951b20f731a29e785c21e12e258cf8f7be10afbd958c"
+  },
+  "reference_family_qualified": false,
+  "release_accepted": false
+}

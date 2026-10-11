@@ -1,0 +1,116 @@
+{
+  "schema_version": "greenlens.depth-order-endpoint-upload-review.v1",
+  "recorded_utc": "2026-10-11T18:00:31.558784+00:00",
+  "scope": "Byte and path/privacy review of original failed A4116 endpoint data; stored source files remain inert",
+  "archive_sha256": "dc263dc3bbbc706b56e8638c476c5350f6ac8aea7bef00ed63e91a5959778907",
+  "archive_bytes": 139937,
+  "entry_count": 20,
+  "uncompressed_bytes": 5105802,
+  "entries": [
+    {
+      "name": "input-manifest.json",
+      "bytes": 3396,
+      "sha256": "fc88eef482922f76c99fdb449aceb3563c65ca09b9cf741d89c5ad00d6d7d6c9"
+    },
+    {
+      "name": "aggregation-source.cs",
+      "bytes": 4806,
+      "sha256": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84"
+    },
+    {
+      "name": "declaration.json",
+      "bytes": 10142,
+      "sha256": "63dc845432e61ab38d6088e9f7ce1a1aa003eee48de4ad464931ccbef7a257d3"
+    },
+    {
+      "name": "depth10-24.oct",
+      "bytes": 2205,
+      "sha256": "b37a9dbdd4ccc04c8d0fd280fa414c556f485729f53140bab5867d331b9408c8"
+    },
+    {
+      "name": "depth10-24.rad",
+      "bytes": 290,
+      "sha256": "42571f27ae2e1d66fae7adf3ac945bc8f551d85a9a4917d950b2ce68f4d2f1bc"
+    },
+    {
+      "name": "depth10-24.rgb",
+      "bytes": 491520,
+      "sha256": "9b4a1439e1f3f659cee70629a4b250356e0320268f352c918d2796e175c2b7ce"
+    },
+    {
+      "name": "finite-kernel.cs",
+      "bytes": 3819,
+      "sha256": "8977539ebc1a918dfa6cbefc4aa522992b6d7d50e17e39e4e6d48b72189a0fbe"
+    },
+    {
+      "name": "harness-source.ps1",
+      "bytes": 15850,
+      "sha256": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566"
+    },
+    {
+      "name": "hour-4116-direct.rgb",
+      "bytes": 984,
+      "sha256": "99c5edda99d9268de46aa533925b1cc01a8e8ed50e721845c2f98d3e3c88a5d5"
+    },
+    {
+      "name": "hour-4116-finite.rgb",
+      "bytes": 4030464,
+      "sha256": "7f2523865d4f2d707c5117f020231f53e0f5e3f91f3f57fd51e3e8671107e2c6"
+    },
+    {
+      "name": "hour-4116-rounds256.rgb",
+      "bytes": 491520,
+      "sha256": "ef51455ae31d9e156d89f8ebb3932f3a3ef02a18ce515ec7ae4333a35d9520e6"
+    },
+    {
+      "name": "hour-4116-scaled.rad",
+      "bytes": 290,
+      "sha256": "42571f27ae2e1d66fae7adf3ac945bc8f551d85a9a4917d950b2ce68f4d2f1bc"
+    },
+    {
+      "name": "hour-4116-sun.rad",
+      "bytes": 129,
+      "sha256": "c0713edbd38d45a9b174e79f38550b76887801a231fa0b347e09fd937e81db3c"
+    },
+    {
+      "name": "hour-4116.dat",
+      "bytes": 2731,
+      "sha256": "5f4c3e459f94ca8ec93e78827b4b2b7dc5d381ca4b2b0ca5c15012e31e32c7dd"
+    },
+    {
+      "name": "matched-basis.cal",
+      "bytes": 949,
+      "sha256": "a8140c3043ffc1a26da5a0527db11d8a0e56298d394a3df6b42819f38f861415"
+    },
+    {
+      "name": "process-source.ps1",
+      "bytes": 5057,
+      "sha256": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb"
+    },
+    {
+      "name": "processes.json",
+      "bytes": 1997,
+      "sha256": "2063255589857d1ed6ee0e6d1a882046d78039937ad62558ef26944913536929"
+    },
+    {
+      "name": "scene.rad",
+      "bytes": 1221,
+      "sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57"
+    },
+    {
+      "name": "sensitivity.json",
+      "bytes": 37680,
+      "sha256": "48f9f841c823a5eb886a037edad5fc3545da3ec9fb9b671b87fab19faee9ceff"
+    },
+    {
+      "name": "sensors.pts",
+      "bytes": 752,
+      "sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446"
+    }
+  ],
+  "private_path_or_credential_hits": [],
+  "all_member_seals_verified": true,
+  "contains_executable_engine_binaries": false,
+  "contains_generated_scene_octree_data": true,
+  "numerical_acceptance": false
+}

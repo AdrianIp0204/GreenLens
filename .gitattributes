@@ -52,3 +52,12 @@ scripts/prepare-sensitivity-sources.ps1 -text -whitespace
 scripts/test-hosted-sensitivity-case.ps1 -text -whitespace
 scripts/test-prepare-sensitivity-sources.ps1 -text -whitespace
 docs/evidence/v0.3-ci/sensitivity-pre-dispatch/*.json -text -whitespace
+
+# Preserve reviewed fixed diagnostic source and pre-dispatch evidence seals.
+scripts/depth-order-helpers.ps1 -text -whitespace
+scripts/run-depth-order-case.ps1 -text -whitespace
+scripts/run-hosted-depth-order.ps1 -text -whitespace
+scripts/collect-depth-order.ps1 -text -whitespace
+scripts/test-depth-order.ps1 -text -whitespace
+scripts/depth-order-plan.json -text -whitespace
+docs/evidence/v0.3-ci/depth-order-pre-dispatch/*.json -text -whitespace

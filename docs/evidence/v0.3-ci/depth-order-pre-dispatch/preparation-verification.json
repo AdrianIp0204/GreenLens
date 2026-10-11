@@ -1,0 +1,83 @@
+{
+  "schema_version": "greenlens.depth-order-proposal-verification.v1",
+  "recorded_utc": "2026-10-11T17:58:47.670038+00:00",
+  "scope": "External preparation and synthetic verification only; four streams are proposed, not executed; reference family remains unqualified",
+  "plan_sha256": "e31bcab81acb80a71eec881252babfa276d7b4183f317ebf3a65d4ff997a1d5f",
+  "execution_authorized": false,
+  "synthetic_checks": 100,
+  "synthetic_record_sha256": "5a40345f2da6bc4da2e67f6363091b95157e9bb1064282c683f372b3b6fe0453",
+  "independent_arithmetic": {
+    "schema_version": "greenlens.depth-order-independent-contrasts.v1",
+    "recorded_utc": "2026-10-11T17:58:47.498447+00:00",
+    "scope": "Original synthetic arithmetic; all24 sensors and10 fixed contrasts across5 RGB components, no engine",
+    "sensors": 24,
+    "contrasts_per_sensor": 10,
+    "component_comparisons": 1200,
+    "rgb_scalar_comparisons": 3600,
+    "maximum_lux_arithmetic_error": 0.0,
+    "effects_sha256": "ff0146bf17c6521b40b2c011bd7e6981f3c85ae553d8fc1b241947addd918808",
+    "helper_sha256": "8300e88f01dd090bb34c25b1d98fe83edfdadb3be2eeec443258d2c1320dd53b",
+    "passed": true
+  },
+  "prepare_only": [
+    {
+      "case": "ab10-original",
+      "prepared": true,
+      "scientific_processes_executed": 0,
+      "sensor_count": 24,
+      "rounds": 256,
+      "primary_records": 6144,
+      "expected_output_scalars": 36864,
+      "stream_bytes": 192512,
+      "stream_sha256": "437433d73bffb1350986f8000356c41af0940b5db6449c566965c1693d1ef101",
+      "declaration_sha256": "7079588c6cb65faefc0dfc77a50decec0e9939f3747c17877da47595787b1239",
+      "case_receipt_sha256": "fae6143d82bc9821eca4d65ddd1e9f3ff9c14aee486128553ddbab2b324b16aa",
+      "started_utc": "2026-10-11T17:56:58.5028888Z",
+      "finished_utc": "2026-10-11T17:57:14.4565944Z"
+    },
+    {
+      "case": "depth-reversed",
+      "prepared": true,
+      "scientific_processes_executed": 0,
+      "sensor_count": 24,
+      "rounds": 256,
+      "primary_records": 6144,
+      "expected_output_scalars": 36864,
+      "stream_bytes": 192512,
+      "stream_sha256": "9a393e124610e86dc519d1fe03caf1f771df7f10ddf886c9359a26c9883e4219",
+      "declaration_sha256": "8cd846ae399fe7c5ae062b11da67d1bfbd3c33f32d2d77f081905a66e607dafc",
+      "case_receipt_sha256": "9cedd2cc10a56abca9506632958256cc763da49438701b8d959b3ff9d9fe3314",
+      "started_utc": "2026-10-11T17:57:18.8045926Z",
+      "finished_utc": "2026-10-11T17:57:37.2613296Z"
+    }
+  ],
+  "fixed_total_new_streams": 4,
+  "raw_shape_per_stream": [
+    256,
+    24,
+    6
+  ],
+  "raw_scalars_per_stream": 36864,
+  "all_stream_raw_scalars": 147456,
+  "contrast_sensor_rows": 240,
+  "new_endpoint_archive": {
+    "name": "GreenLens-A4116-failed-depth-inputs.zip",
+    "bytes": 139937,
+    "sha256": "dc263dc3bbbc706b56e8638c476c5350f6ac8aea7bef00ed63e91a5959778907",
+    "manifest_sha256": "fc88eef482922f76c99fdb449aceb3563c65ca09b9cf741d89c5ad00d6d7d6c9",
+    "member_count": 20,
+    "uncompressed_bytes": 5105802,
+    "asset_id": null
+  },
+  "source_sha256": {
+    "depth-order-helpers.ps1": "8300e88f01dd090bb34c25b1d98fe83edfdadb3be2eeec443258d2c1320dd53b",
+    "run-depth-order-case.ps1": "8bf11c9aa583c073280c8b4db6aa9b25c7bdea85f049b5cc2cb4b63367b6d3e1",
+    "run-hosted-depth-order.ps1": "35166bfac5e6b6ca16cc23f0f924ae1f4dbe7c069bedaf20ea9e8cd33f553a95",
+    "collect-depth-order.ps1": "6aded5900741b9664627167383f14506bd979eae9dde4b256f023d2ab57bf588",
+    "test-depth-order.ps1": "2425242eaad5a8c34439951b20f731a29e785c21e12e258cf8f7be10afbd958c",
+    "reference-depth-order.yml": "11db4a9727d14df64847c35a0f79b8771f98911f5daefe2dbbcd00d3ad63de55",
+    "README.md": "7fd1516120fcd14ea41724f31efa01cd08987108ba070c320874e79e1675c4a9"
+  },
+  "reference_family_qualified": false,
+  "release_accepted": false
+}

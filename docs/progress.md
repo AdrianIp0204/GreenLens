@@ -1,5 +1,12 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — complete-year failure retained; historical desktop inspection verified
+
+- Method4 shipping A/B both failed before result promotion because the independently sampled full/direct coefficient difference produced negative reflected-solar terms. The retained audit identifies 148 affected A sensor/hours and 39 B sensor/hours, with worst residuals −187.9142/−51.30498 lx. Required coefficient/multiplication processes exited successfully, but neither run is completed evidence. No negative value was clamped and no tolerance changed. Identical external primary directions passed a bounded coupling/positivity proof; full-grid accuracy and resources remain under investigation.
+- Clean `f5d2541` candidate04 built, packaged and installed successfully without a development server. Native historical inspection passed with static current studies, no attached weather and no top-level weather directory: calendar navigation including hour 24, all five metric fields, A/B hourly and DA comparison, and a saved sensor's 8,760-value series. Current-study mismatch labels and suppressed geometry overlays remained visible. All 146 immutable run files (32,290,311 bytes) stayed unchanged. Exact binary identities, observations and screenshots are in the native ledger.
+- Native completed-evidence conflict recovery is being exercised separately with a real static calculation and a deliberately external manifest revision. This historical-inspection checkpoint does not claim that recovery passed. Physical Shift-click/Ctrl-click remains unverified because the user is unable to test now.
+- Hosted `38129251731` passed static science, matrix/sky/solar checks, static CLI portability, production packaging and weather verification, then failed its static-only legacy replay with a `rayinit.cal` library lookup error. The exact Unicode-library-path cause and remedy are being investigated. Current-source hosted CI remains incomplete; skipped downstream annual jobs are not passes.
+
 ## 2026-10-11 — compact native layout and bounded reference supervision
 
 - Verified installed candidate03 at 900×500 CSS / 1125×625 native inner pixels and maximized 1536×794 CSS / 1920×991 native inner pixels, both at125% scale. Expanded command history, four views, Evidence drawer and main controls remained available; scientific saved state and Undo1/Redo0 stayed unchanged. Exact second-monitor resolution and the physical modifier observation remain unverified. The native ledger retains actual dimensions and unmodified screenshots.

@@ -1,0 +1,53 @@
+{
+  "candidate": {
+    "schema": "greenlens.candidate.v1",
+    "source_commit": "f5d2541cbbebc165d0133d20160e93f263855e70",
+    "source_dirty": false,
+    "generated_utc": "2026-10-11T10:24:46.4214597Z",
+    "accepted_release": false,
+    "files": [
+      {
+        "file": "checksums.json",
+        "bytes": 465,
+        "sha256": "bd9da1dded272bd3900897f5c92fdf5cffd2349dd16adebdbff94864e915d705"
+      },
+      {
+        "file": "GreenLens_0.3.0_x64-setup.exe",
+        "bytes": 3470567,
+        "sha256": "04866bc599b045f5e842e6154b67da91e7c7abab75b62f2b18788df0da8a5a10"
+      },
+      {
+        "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+        "bytes": 2604355,
+        "sha256": "2a66ae04fc0a3d5d1a2fa3d25b2b51ad302d7dfc9d2d4b70953563ca5ec5cbb1"
+      },
+      {
+        "file": "greenlens-desktop.exe",
+        "bytes": 14136832,
+        "sha256": "57388ea4a4caf537951be8460b6fce6b99ca9cab05ca19f1a7b883f1a0e74a8a"
+      }
+    ],
+    "cli_sha256": "94c4029a8be44e779b18c7bfb7fccb713b589b552596a42fd9d73c8b0723b89d",
+    "scientific_status": "Method4 shipping A/B failed reflected-solar correction before finalization. This package supports continuing independent native verification, not accepted scientific release."
+  },
+  "installation": {
+    "schema": "greenlens.candidate-install.v1",
+    "source_commit": "f5d2541cbbebc165d0133d20160e93f263855e70",
+    "source_dirty": false,
+    "installed_utc": "2026-10-11T10:25:26.654Z",
+    "installer_exit_code": 0,
+    "installed_sha256": "c4f97266b8bfbe8ca357c4548e8adc0f1ed79e744a085d0297d38215d1bc65df",
+    "unbundled_sha256": "57388ea4a4caf537951be8460b6fce6b99ca9cab05ca19f1a7b883f1a0e74a8a",
+    "bundler_marker": {
+      "offsets": [
+        11305232,
+        11305233,
+        11305234
+      ],
+      "from": "UNK",
+      "to": "NSS",
+      "all_other_bytes_equal": true
+    },
+    "accepted_release": false
+  }
+}

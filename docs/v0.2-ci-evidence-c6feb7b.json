@@ -1,0 +1,474 @@
+{
+  "schema_version": "greenlens.ci-evidence.v0.2",
+  "recorded_utc": "2026-10-11T03:28:30.741683+00:00",
+  "source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+  "source_branch": "codex/v0.2-workspace",
+  "historical_ci_record": "v0.2-ci-evidence-bb0456c.json",
+  "documentation_only_revision_after_build": "b6c2b3e9e0c61c6b7358c8dd2acb1576f2225071",
+  "source_identity_note": "Artifacts and retained-file checks bind to c6feb7b. Later b6c2b3e changed documentation only; later selection-usability code is outside this run.",
+  "candidate_status": "ci_passed_before_selection_usability_followup",
+  "release_acceptance_complete": false,
+  "candidate_note": "This passing run covers the c6feb7b candidate before the subsequent selection-usability followup. Candidate04 native Escape and right-button navigation were later reported passing; modifier interaction acceptance remains unverified. CI does not establish native interaction acceptance.",
+  "repository": "https://github.com/AdrianIp0204/GreenLens",
+  "workflow": "Native Windows verification",
+  "run_id": 38106215182,
+  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182",
+  "status": "completed",
+  "conclusion": "success",
+  "created_utc": "2026-10-11T02:46:10Z",
+  "updated_utc": "2026-10-11T03:26:21Z",
+  "platform": {
+    "requested_runner": "windows-latest",
+    "runner_version": "2.337.0",
+    "image": "windows-2025-vs2026",
+    "image_version": "20260925.250.1",
+    "os": "Microsoft Windows Server 2025 Datacenter",
+    "os_version": "10.0.26100",
+    "rust": "1.99.0 (b940084d7 2026-09-28)",
+    "target": "x86_64-pc-windows-msvc",
+    "node": "24.21.0",
+    "npm": "11.19.0"
+  },
+  "source_identity_assertion": {
+    "expected_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+    "expected_worktree_dirty": false,
+    "build_checks_passed": true
+  },
+  "jobs": [
+    {
+      "id": 114372194457,
+      "name": "native",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182/job/114372194457",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-11T02:46:14Z",
+      "completed_utc": "2026-10-11T03:26:20Z",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:46:15Z",
+          "completed_utc": "2026-10-11T02:46:16Z"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:46:16Z",
+          "completed_utc": "2026-10-11T02:46:27Z"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:46:27Z",
+          "completed_utc": "2026-10-11T02:46:36Z"
+        },
+        {
+          "number": 4,
+          "name": "Native development environment and pinned toolchain",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:46:36Z",
+          "completed_utc": "2026-10-11T02:46:48Z"
+        },
+        {
+          "number": 5,
+          "name": "Build identity changes and explicit CI assertions",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:46:48Z",
+          "completed_utc": "2026-10-11T02:47:01Z"
+        },
+        {
+          "number": 6,
+          "name": "Acquire and verify pinned native engine",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:47:01Z",
+          "completed_utc": "2026-10-11T02:47:05Z"
+        },
+        {
+          "number": 7,
+          "name": "Engine feasibility in spaces and non-ASCII path",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:47:05Z",
+          "completed_utc": "2026-10-11T02:47:06Z"
+        },
+        {
+          "number": 8,
+          "name": "Frontend install, types, tests and production assets",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:47:06Z",
+          "completed_utc": "2026-10-11T02:47:16Z"
+        },
+        {
+          "number": 9,
+          "name": "Rust format, lint and unit/integration checks",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:47:16Z",
+          "completed_utc": "2026-10-11T02:51:38Z"
+        },
+        {
+          "number": 10,
+          "name": "Required real-engine scientific suite (missing engine is failure)",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T02:51:38Z",
+          "completed_utc": "2026-10-11T03:10:24Z"
+        },
+        {
+          "number": 11,
+          "name": "Real CLI A/B, portable save/export and replay",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T03:10:24Z",
+          "completed_utc": "2026-10-11T03:20:07Z"
+        },
+        {
+          "number": 12,
+          "name": "Production per-user Windows package and CLI",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T03:20:07Z",
+          "completed_utc": "2026-10-11T03:26:13Z"
+        },
+        {
+          "number": 13,
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T03:26:13Z",
+          "completed_utc": "2026-10-11T03:26:16Z"
+        },
+        {
+          "number": 25,
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T03:26:16Z",
+          "completed_utc": "2026-10-11T03:26:16Z"
+        },
+        {
+          "number": 26,
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T03:26:16Z",
+          "completed_utc": "2026-10-11T03:26:18Z"
+        },
+        {
+          "number": 27,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T03:26:18Z",
+          "completed_utc": "2026-10-11T03:26:18Z"
+        }
+      ]
+    }
+  ],
+  "test_summary": {
+    "build_provenance": {
+      "passed": 11,
+      "failed": 0
+    },
+    "frontend": {
+      "passed": 47,
+      "failed": 0,
+      "skipped": 0,
+      "coverage": "Node test runner; native desktop gestures are not tested by this suite"
+    },
+    "core": {
+      "passed": 15,
+      "failed": 0
+    },
+    "runner_unit": {
+      "passed": 13,
+      "failed": 0
+    },
+    "runner_jobs": {
+      "passed": 2,
+      "failed": 0
+    },
+    "runner_persistence": {
+      "passed": 15,
+      "failed": 0
+    },
+    "adapter_unit": {
+      "passed": 5,
+      "failed": 0,
+      "ignored_fixture_entry_points": 2,
+      "ignored_explanation": "Child and grandchild fixture entry points are invoked explicitly by the passing process-tree cancellation test; these are not skipped engine acceptance checks."
+    },
+    "required_scientific_suite": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "elapsed_seconds": 1122.74,
+      "checks": [
+        {
+          "id": "B",
+          "status": "PASS"
+        },
+        {
+          "id": "C",
+          "status": "PASS"
+        },
+        {
+          "id": "D",
+          "status": "PASS"
+        },
+        {
+          "id": "E",
+          "status": "PASS"
+        },
+        {
+          "id": "scaling",
+          "status": "PASS"
+        },
+        {
+          "id": "symmetry",
+          "status": "PASS"
+        },
+        {
+          "id": "nonzero_exit",
+          "status": "PASS"
+        },
+        {
+          "id": "cancellation",
+          "status": "PASS"
+        },
+        {
+          "id": "A",
+          "status": "PASS"
+        },
+        {
+          "id": "F",
+          "status": "PASS"
+        }
+      ]
+    },
+    "cli_integration": {
+      "status": "PASS",
+      "checks": [
+        "doctor",
+        "validate",
+        "real A/B runs",
+        "compatible comparison",
+        "copy exact evidence",
+        "reopen/export without original scratch",
+        "ZIP replay tolerance"
+      ]
+    }
+  },
+  "logged_numerical_summary": {
+    "exterior_feasibility": {
+      "configured_horizontal_illuminance_lux": 10000,
+      "actual_horizontal_illuminance_lux": 9984.149229999999,
+      "relative_error": 0.001585077000000092,
+      "relative_tolerance": 0.01,
+      "passed": true
+    },
+    "science_and_replay": "The successful CI log records per-check science PASS outcomes and CLI integration success. Per-sensor science-report.json and replay.json were not uploaded by this run; detailed arrays and replay differences are not inferred from CI."
+  },
+  "dependency_review": {
+    "committed_inventory_check_passed": true,
+    "packages": 358,
+    "retained_notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "actual_nsis_component_hash_check_passed": true,
+    "verified_nsis_components": 9
+  },
+  "artifacts": [
+    {
+      "id": 11690635582,
+      "name": "greenlens-windows-unsigned",
+      "created_at": "2026-10-11T03:26:15Z",
+      "expires_at": "2027-01-09T02:46:10Z",
+      "expired": false,
+      "size_in_bytes": 5469494,
+      "digest": "sha256:b5e51cfa9ea8e82471ed81403517e5e9ef6643483f6dde0cbbab2ca442ac6697",
+      "download_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182/artifacts/11690635582"
+    }
+  ],
+  "downloaded_artifact_verification": {
+    "package_files": [
+      {
+        "file": "GreenLens_0.2.0_x64-setup.exe",
+        "sha256": "452cb289f7a4fb4cf11f2ac02db140194639a1514dae086a22cd6f38bd99a6bd",
+        "bytes": 2674476,
+        "checksum_verified": true
+      },
+      {
+        "file": "GreenLens-CLI-0.2.0-windows-x64.zip",
+        "sha256": "c8befba4eeae5c50566828172fc416531e1a21a8c8509dd18d9dc5e2fd102792",
+        "bytes": 1462046,
+        "checksum_verified": true
+      }
+    ],
+    "cli_zip": {
+      "entries": 32,
+      "files": 32,
+      "all_entries_match_expanded_files": true
+    },
+    "retained_source_files": [
+      {
+        "path": "LICENSE",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+      },
+      {
+        "path": "NOTICE",
+        "sha256": "ee4a586b20f9e9460c479edfc1756875dc03ac5a4904761e37c6578ed53ab1ad"
+      },
+      {
+        "path": "dependencies/license-supplements.json",
+        "sha256": "43700be5416586f89c1513cec10e1c200b5f8b4ebdd22b08a26dda5d64f3de01"
+      },
+      {
+        "path": "dependencies/radiance.json",
+        "sha256": "8069b6da857cf791ba2ff94f9fb5f7549acdeb38034467feeba437408e74fb37"
+      },
+      {
+        "path": "dependencies/resolved-inventory.json",
+        "sha256": "b2f4270106c74b4cd4cb3798b104706950e8b44c25a59dfeba4004005ce25ccc"
+      },
+      {
+        "path": "docs/dependencies.md",
+        "sha256": "a0f2df3df7587f3ef9d32461d1704289cea57b72876036dbabf282853944ef60"
+      },
+      {
+        "path": "docs/installation.md",
+        "sha256": "a302f71c5d3e4896e7908cca78e1ccd6d56a5ae778ab9422bf267e7af66d9890"
+      },
+      {
+        "path": "docs/model-contract.md",
+        "sha256": "2e47baeb486e208033b6fa4d379d29a117b4c7a2eeac0e31de11d62792aa5865"
+      },
+      {
+        "path": "docs/progress.md",
+        "sha256": "343637371dc6dfd06f30f3171478c48c833277fb40213a470aa682818249b0c3"
+      },
+      {
+        "path": "docs/replay.md",
+        "sha256": "3319bb17cbb58d44c87025f4096504efd17efe4a220e347f34b778f5858ce13c"
+      },
+      {
+        "path": "docs/rhino-interaction-matrix.md",
+        "sha256": "9081bc8652fa227c7d85514d59a2b7f5064d405be4a28676136c19509bef96e8"
+      },
+      {
+        "path": "docs/scientific-validation.md",
+        "sha256": "59d5ce369533f69762e1572fa9e52ea2b3d7cc664f90f4af1b4f6e87bde859a5"
+      },
+      {
+        "path": "docs/v0.2-native-verification.md",
+        "sha256": "ef659dcbc77f625ae0c3d4c65c2eda1aa6c2b7c980577fbccb7a1f21156cddf7"
+      },
+      {
+        "path": "docs/windows-installer.md",
+        "sha256": "37535315d86387763b113b0ec3940c4850ffe9eceb99ad8534036452c7993739"
+      },
+      {
+        "path": "docs/windows-runtime.md",
+        "sha256": "bfe4d341dbb078b161e50b92c18fdecb8c9420bee997d9347883694cdfa7ed6c"
+      },
+      {
+        "path": "docs/workspace-guide.md",
+        "sha256": "6799cb3ccaacf691d2d011ee92a10fc0211aa23b354141297113568be57f054f"
+      },
+      {
+        "path": "examples/synthetic-a.json",
+        "sha256": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646"
+      },
+      {
+        "path": "examples/synthetic-b.json",
+        "sha256": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf"
+      },
+      {
+        "path": "third-party/generated-notices.txt",
+        "sha256": "c812d796d9e17fc35a557af898d35a3e97f16af05204681401b8ca8624fe7e00"
+      },
+      {
+        "path": "third-party/Radiance-LICENSE.txt",
+        "sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6"
+      },
+      {
+        "path": "third-party/tauri-template-license.txt",
+        "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+      },
+      {
+        "path": "third-party/upstream/alloc-stdlib-0.3.0-LICENSE.txt",
+        "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+      },
+      {
+        "path": "third-party/upstream/defmt-parser-1.0.0-LICENSE-MIT.txt",
+        "sha256": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50"
+      },
+      {
+        "path": "third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-LICENSE.txt",
+        "sha256": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55"
+      },
+      {
+        "path": "third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-NOTICE.txt",
+        "sha256": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90"
+      },
+      {
+        "path": "third-party/upstream/MPL-2.0.txt",
+        "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+      },
+      {
+        "path": "third-party/upstream/NSIS-3.11-COPYING.txt",
+        "sha256": "e7dd514003ab96cb3ddccbc028fe5c795fccf57dc41f21cfb9d4dd16ead23bf5"
+      },
+      {
+        "path": "third-party/upstream/NSIS-3.11-ModernUI2-LICENSE.txt",
+        "sha256": "d5957bd99460eb21148bd2695eeb5a3718abae6b118040a4678926da3f4cfbc0"
+      },
+      {
+        "path": "third-party/upstream/NSIS-3.11-NSISdl-LICENSE.txt",
+        "sha256": "326e587f36ca58e14bd09cca153f9e69f1c5ed701189aa47d2d0627af7e16280"
+      },
+      {
+        "path": "third-party/upstream/nsis-tauri-utils-0.5.3-LICENSE-MIT.txt",
+        "sha256": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe"
+      },
+      {
+        "path": "third-party/upstream/webview2-rs-LICENSE.txt",
+        "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
+      }
+    ],
+    "retained_source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+    "all_retained_files_match_source_commit": true,
+    "verified_utc": "2026-10-11T03:28:30.741617+00:00",
+    "installer_signature": "NotSigned",
+    "outer_artifact_sha256": "b5e51cfa9ea8e82471ed81403517e5e9ef6643483f6dde0cbbab2ca442ac6697",
+    "outer_artifact_digest_verified": true,
+    "artifact_installed_during_review": false
+  },
+  "raw_evidence": {
+    "directory": "%LOCALAPPDATA%/GreenLens/verification/ci-v0.2-38106215182",
+    "log_file": "run.log",
+    "log_sha256": "1a6e3e860777e1134e1c70ffeaadeb2fc799ddabe6f75a81952cf84f5af969dd",
+    "artifact_api_file": "artifacts-api.json",
+    "run_api_file": "run.json"
+  },
+  "nonblocking_workflow_annotations": [
+    "GitHub forced the Node 20-based checkout/setup-node/upload-artifact v4 actions to run on Node 24; those actions completed successfully."
+  ],
+  "limitations": [
+    "This candidate CI verifies Windows headless science, CLI persistence/export/replay and production builds. Installed desktop interaction is separate and is not inferred from CI.",
+    "Native modifier interaction acceptance remains unverified; later selection-usability work and its package/CI checks are separate. This record does not claim release completion.",
+    "The downloaded CI installer was verified against checksums and confirmed unsigned; it was not installed during this review.",
+    "GitHub Actions artifacts expire according to the recorded expiry; retain important artifacts separately.",
+    "Same-engine integration and limited analytical fixtures are not general measured-building validation or certification."
+  ]
+}

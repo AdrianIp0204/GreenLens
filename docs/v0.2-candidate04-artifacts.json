@@ -1,0 +1,52 @@
+{
+  "schema_version": "greenlens.release-artifacts.v0.2",
+  "generated_utc": "2026-10-11T03:03:20.6871044Z",
+  "acceptance_status": "installed_repair_candidate_native_retest_and_ci_pending",
+  "application_source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+  "source_build_clean": true,
+  "signed": false,
+  "engine_included": false,
+  "artifact_directory": "%LOCALAPPDATA%/GreenLens/releases/0.2.0/20261011-workspace-candidate04",
+  "installed_application": "%LOCALAPPDATA%/Programs/GreenLens/greenlens-desktop.exe",
+  "installed_desktop_sha256": "8ccbc2ad518f991e8ba7a6cd7db8cfed5fe0aacf2fb7ef9e12127e05ecdaa657",
+  "cli_sha256": "02ea24b42311b7967afe26b6606cedd77a6840deace99406e40267723228595e",
+  "source_example": "examples/synthetic-a.json",
+  "artifacts": [
+    {
+      "file": "GreenLens_0.2.0_x64-setup.exe",
+      "bytes": 2674858,
+      "sha256": "d2bdc0a69b8501c9f38599b0387ad2dfd407098f0779d6c80fcf134863cd09c3"
+    },
+    {
+      "file": "GreenLens-CLI-0.2.0-windows-x64.zip",
+      "bytes": 1461842,
+      "sha256": "141ac3ac32e4f46365acb56ce47e8bfd1425299675d58c5e0681692d02b208e3"
+    }
+  ],
+  "checks": {
+    "inventory_packages": 358,
+    "notice_texts": 196,
+    "review_gaps": 0,
+    "actual_nsis_components_verified": true,
+    "distributed_cli_doctor_passed": true,
+    "distribution_matches_frozen_installer_and_cli": true,
+    "cli_zip_entries": 32,
+    "workspace_guide_included": true
+  },
+  "evidence": {
+    "scientific": "v0.2-science-evidence.json",
+    "scientific_record": "v0.2-scientific-verification.md",
+    "native": "v0.2-native-verification.md",
+    "ci_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182",
+    "ci_status": "in_progress",
+    "native_required_demonstrations": "candidate03 modifier selection/held-drag Escape failures repaired in source; installed candidate04 human retest pending; right-button navigation unconfirmed",
+    "new_native_ab": "pending",
+    "v01_candidate04_cli_replay": "passed: both historical runs, 77 sensors each, maximum absolute difference 0 lx",
+    "previous_candidate_artifacts": "v0.2-candidate03-artifacts.json"
+  },
+  "notes": [
+    "Candidate03 artifacts and immutable native A/B evidence remain preserved separately. Candidate04 acceptance is open until native gestures, fresh A/B workflow and final-source CI pass.",
+    "The packaged documentation is the c6feb7b source snapshot; current acceptance records remain in the repository.",
+    "A separate clean-machine installation and signing have not been performed."
+  ]
+}

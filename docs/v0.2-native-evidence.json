@@ -1,7 +1,7 @@
 {
   "schema_version": "greenlens.native-verification.v0.2",
   "observed_date_utc": "2026-10-11",
-  "acceptance_status": "candidate04_modifier_interaction_unverified_visible_controls_pending",
+  "acceptance_status": "candidate05_explicit_selection_verified_modifier_human_retest_pending_native_ab_in_progress",
   "method": "Installed per-user production Tauri application, embedded frontend, actual shared Rust backend and native Radiance; no development server",
   "environment": {
     "os": "Windows 11 Home",
@@ -142,7 +142,7 @@
     }
   ],
   "required_native_gesture_gaps": [
-    "Candidate04 modifier failure report retained; later clarification shows the operation was unclear, without a reproduced exact failing sequence. Demonstrate visible selection controls and retest modifier selection in the next installed package."
+    "Candidate05 concrete Shift-add/Ctrl-remove human retest remains pending; explicit Replace/Add/Remove modes passed native Objects and viewport chooser checks"
   ],
   "coverage_limits": [
     "Sky supplies completed left drags but no documented held-modifier/right-button drag or mid-drag interruption",
@@ -168,7 +168,13 @@
     "25-before-candidate04-preserved-work.png",
     "26-candidate04-text-escape-chooser-preserved.png",
     "27-candidate04-gesture-retest-ready.png",
-    "28-before-candidate05-human-work-saved.png"
+    "28-before-candidate05-human-work-saved.png",
+    "29-candidate05-explicit-add-two-objects.png",
+    "30-candidate05-explicit-remove-keeps-geometry.png",
+    "31-candidate05-viewport-remove-selection.png",
+    "32-candidate05-full-layout-history-drawer.png",
+    "33-candidate05-compact-900x500-selection-history-drawer.png",
+    "34-candidate05-native-A-modifier-handoff.png"
   ],
   "human_observation": {
     "status": "investigation and native retest required",
@@ -200,10 +206,91 @@
     "sensors": 77,
     "status": "superseded after user-reported native gesture failures; immutable evidence retained"
   },
-  "current_candidate_04": {
+  "human_retest_candidate04": {
+    "status": "modifier selection failed; remaining two groups human-reported passed",
+    "date_utc": "2026-10-11",
+    "basis": "User said only group1 did not work in the candidate04 three-group retest",
+    "numbered_groups": [
+      {
+        "number": 1,
+        "check": "Shift-add and Ctrl-remove selection",
+        "status": "failed"
+      },
+      {
+        "number": 2,
+        "check": "Escape during held handle drag",
+        "status": "passed per human report"
+      },
+      {
+        "number": 3,
+        "check": "Perspective RMB orbit, Shift+RMB pan and orthographic RMB pan",
+        "status": "passed per human report"
+      }
+    ],
+    "automated_mouse_gesture_claim": false,
+    "later_clarification": {
+      "observation": "User was unsure what actions were possible and reported pressing both with no apparent effect",
+      "exact_failing_mouse_key_sequence_established": false,
+      "remaining_implementation_defect_independently_reproduced": false,
+      "interpretation": "Selection interaction discovery and feedback need improvement; prior failure report retained and modifier acceptance remains unverified",
+      "next_candidate": "05",
+      "planned_controls": [
+        "Replace",
+        "Add",
+        "Remove",
+        "always-visible selected count",
+        "persistent selection hint"
+      ],
+      "native_verification_of_planned_controls": "not yet performed",
+      "current_dirty_obstruction_document": "subsequently saved through native UI and independently backed up; no further editing during candidate05 preparation"
+    }
+  },
+  "native_checks_scope": "Unless explicitly candidate04/candidate05, these observations belong to historical installed candidates01-03. Earlier failed or unclear human gesture observations are retained separately.",
+  "candidate04_cli_v01_replay": {
+    "status": "passed",
+    "source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+    "cli_sha256": "02ea24b42311b7967afe26b6606cedd77a6840deace99406e40267723228595e",
+    "archive": "relocated-v01-v02-export.zip",
+    "archive_sha256": "b73d03e3d4c06d0d1589f0cae0729df1dc2eb23525ccc1958171c8a6e84959b7",
+    "raw_report": "candidate04-cli-v01-replay.json",
+    "checks": [
+      {
+        "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+        "sensors": 77,
+        "max_absolute_error_lux": 0,
+        "passed": true
+      },
+      {
+        "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+        "sensors": 77,
+        "max_absolute_error_lux": 0,
+        "passed": true
+      }
+    ],
+    "verification": "same-engine integration, not independent physical validation",
+    "scope": "Candidate04 CLI compatibility replay only; repaired desktop gestures and fresh installed A/B remain pending"
+  },
+  "candidate05_preparation": {
+    "status": "complete; installed candidate05 evidence recorded separately",
+    "human_work_saved_through_native_ui": true,
+    "saved_utc": "2026-10-11T03:29:20Z",
+    "native_status": "Project saved. Undo history retained.",
+    "backup_file_count": 2,
+    "backup_all_sha256_equal": true,
+    "project_manifest_sha256": "8fc3589a31aa580fb44c23870abbeed272849111c9df8418d07e5d6440f9b368",
+    "backup_proof": "candidate05-preservation.json",
+    "screenshot": "28-before-candidate05-human-work-saved.png",
+    "saved_model": {
+      "alternative": "A",
+      "overhang_projection_m": 0.6,
+      "obstruction_distance_m": 2.4684079205443705
+    },
+    "native_input_after_preservation": "paused pending package readiness"
+  },
+  "historical_candidate_04": {
     "source_commit_asserted": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
     "source_worktree_dirty_asserted": false,
-    "actual_new_run_provenance": "pending fresh native A/B after gesture retest",
+    "actual_new_run_provenance": "No candidate04 desktop calculation was performed; preserved historical smoke and human observations only",
     "installed_utc": "2026-10-11T02:49:40.0296565Z",
     "installer_exit_code": 0,
     "installer_sha256": "d2bdc0a69b8501c9f38599b0387ad2dfd407098f0779d6c80fcf134863cd09c3",
@@ -256,85 +343,118 @@
       "screenshot": "not retained: capture did not contain the target application"
     }
   },
-  "human_retest_candidate04": {
-    "status": "modifier selection failed; remaining two groups human-reported passed",
-    "date_utc": "2026-10-11",
-    "basis": "User said only group1 did not work in the candidate04 three-group retest",
-    "numbered_groups": [
-      {
-        "number": 1,
-        "check": "Shift-add and Ctrl-remove selection",
-        "status": "failed"
-      },
-      {
-        "number": 2,
-        "check": "Escape during held handle drag",
-        "status": "passed per human report"
-      },
-      {
-        "number": 3,
-        "check": "Perspective RMB orbit, Shift+RMB pan and orthographic RMB pan",
-        "status": "passed per human report"
-      }
-    ],
-    "automated_mouse_gesture_claim": false,
-    "later_clarification": {
-      "observation": "User was unsure what actions were possible and reported pressing both with no apparent effect",
-      "exact_failing_mouse_key_sequence_established": false,
-      "remaining_implementation_defect_independently_reproduced": false,
-      "interpretation": "Selection interaction discovery and feedback need improvement; prior failure report retained and modifier acceptance remains unverified",
-      "next_candidate": "05",
-      "planned_controls": [
-        "Replace",
-        "Add",
-        "Remove",
-        "always-visible selected count",
-        "persistent selection hint"
+  "current_candidate_05": {
+    "source_commit_asserted": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
+    "source_worktree_dirty_asserted": false,
+    "installed_utc": "2026-10-11T03:35:46.5563357Z",
+    "installer_exit_code": 0,
+    "installer_sha256": "458c65bee5937e2aa675e8d942c1c53e4b12bfe38a82c6bedc01b649864b925e",
+    "installed_desktop_sha256": "b24f6ff664e36385a2b20bf35429e75c7c855739a816e53e4b22fef217463b14",
+    "cli_sha256": "1e03cf1a1404c4b1f5f77ccc5f8662b4e3f99b3c631a9b3f95a5c5072a16a2ff",
+    "signed": false,
+    "actual_new_run_provenance": "Confirmed by completed installed run a0406c58-820f-4ef0-b119-de70a0017ade: source1fbb6547b98240a9a9d877a3e50221ab66a896e6, dirtyfalse, app0.2.0/schema0.1.0",
+    "frontend_tests_passed": 54,
+    "explicit_selection": {
+      "objects_list": "Replace Window count1; Add Room envelope count2; Remove Window count1 Room envelope",
+      "viewport_overlap_chooser": "Replace Window count1; Add Room envelope count2; Remove Window count1 Room envelope",
+      "geometry_preserved": true,
+      "model_alternatives_equal": true,
+      "undo_redo_enabled": false,
+      "initial_default_camera_map": "Unchanged empty map; only visual default framing observed",
+      "actual_camera_followup": "Native Perspective wheel zoom saved all4 camera records; Add/Remove and Save preserved every position/target/up/zoom value exactly",
+      "actual_camera_names": [
+        "perspective",
+        "top",
+        "front",
+        "right"
       ],
-      "native_verification_of_planned_controls": "not yet performed",
-      "current_dirty_obstruction_document": "subsequently saved through native UI and independently backed up; no further editing during candidate05 preparation"
+      "actual_camera_integrity_proof": "candidate05-explicit-camera-selection-integrity.json"
+    },
+    "layout": {
+      "full_css_client": [
+        1536,
+        794
+      ],
+      "full_native_client": [
+        1920,
+        991
+      ],
+      "compact_css_client": [
+        900,
+        500
+      ],
+      "compact_native_client": [
+        1125,
+        625
+      ],
+      "dpr": 1.25,
+      "expanded_history_sensor_drawer_properties_and_selection_bar": "visible and usable",
+      "separate_physical_1366x768_monitor": false
+    },
+    "fresh_ab": {
+      "A": {
+        "status": "completed and automatically saved",
+        "run_id": "a0406c58-820f-4ef0-b119-de70a0017ade",
+        "sensors": 77,
+        "statistics": {
+          "count": 77,
+          "max": 1454.3633650000002,
+          "mean": 237.21244494025976,
+          "min": 45.964711900000005
+        },
+        "source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
+        "source_worktree_dirty": false,
+        "application_version": "0.2.0",
+        "schema_version": "0.1.0",
+        "started_utc": "2026-10-11T03:47:55.710479300+00:00",
+        "finished_utc": "2026-10-11T03:51:31.595717+00:00",
+        "required_process_exit_codes": [
+          0,
+          0,
+          0
+        ],
+        "rtrace_elapsed_ms": 215678
+      },
+      "B": "not started",
+      "export": "not yet created"
+    },
+    "handoff": {
+      "selection_mode": "replace",
+      "selected": [
+        "window"
+      ],
+      "objects_visible": [
+        "Room envelope",
+        "Window"
+      ],
+      "no_modal": true,
+      "active_real_job": "A",
+      "native_input_paused": true,
+      "job_update": "A completed while native input remained paused for human modifier check"
+    },
+    "runtime_imports": "Repeated dumpbin: desktop VCRUNTIME140.dll and VCRUNTIME140_1.dll; CLI VCRUNTIME140.dll, plus Windows/UCRT imports",
+    "result_arrival_camera_integrity": {
+      "candidate": "05",
+      "run_id": "a0406c58-820f-4ef0-b119-de70a0017ade",
+      "source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
+      "source_worktree_dirty": false,
+      "camera_names": [
+        "perspective",
+        "top",
+        "front",
+        "right"
+      ],
+      "actual_camera_records_equal": true,
+      "display_state_equal": true,
+      "model_alternatives_equal": true,
+      "before_runs": 0,
+      "after_runs": 1,
+      "observed_without_native_input": true
     }
   },
-  "native_checks_scope": "Unless explicitly candidate04, these observations belong to historical installed candidates01-03. Candidate03 reported modifier/held-Escape failures are retained separately.",
-  "candidate04_cli_v01_replay": {
-    "status": "passed",
-    "source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
-    "cli_sha256": "02ea24b42311b7967afe26b6606cedd77a6840deace99406e40267723228595e",
-    "archive": "relocated-v01-v02-export.zip",
-    "archive_sha256": "b73d03e3d4c06d0d1589f0cae0729df1dc2eb23525ccc1958171c8a6e84959b7",
-    "raw_report": "candidate04-cli-v01-replay.json",
-    "checks": [
-      {
-        "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
-        "sensors": 77,
-        "max_absolute_error_lux": 0,
-        "passed": true
-      },
-      {
-        "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
-        "sensors": 77,
-        "max_absolute_error_lux": 0,
-        "passed": true
-      }
-    ],
-    "verification": "same-engine integration, not independent physical validation",
-    "scope": "Candidate04 CLI compatibility replay only; repaired desktop gestures and fresh installed A/B remain pending"
-  },
-  "candidate05_preparation": {
-    "status": "source/package pending; no installed candidate05 claims",
-    "human_work_saved_through_native_ui": true,
-    "saved_utc": "2026-10-11T03:29:20Z",
-    "native_status": "Project saved. Undo history retained.",
-    "backup_file_count": 2,
-    "backup_all_sha256_equal": true,
-    "project_manifest_sha256": "8fc3589a31aa580fb44c23870abbeed272849111c9df8418d07e5d6440f9b368",
-    "backup_proof": "candidate05-preservation.json",
-    "screenshot": "28-before-candidate05-human-work-saved.png",
-    "saved_model": {
-      "alternative": "A",
-      "overhang_projection_m": 0.6,
-      "obstruction_distance_m": 2.4684079205443705
-    },
-    "native_input_after_preservation": "paused pending package readiness"
+  "human_retest_candidate05": {
+    "status": "pending single concrete modifier check",
+    "instructions": "Hold Shift while clicking Room envelope in Objects to obtain2 selected; then hold Ctrl while clicking Window to obtain1 Room envelope",
+    "automated_modifier_mouse_claim": false
   }
 }

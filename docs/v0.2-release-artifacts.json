@@ -1,26 +1,26 @@
 {
   "schema_version": "greenlens.release-artifacts.v0.2",
-  "generated_utc": "2026-10-11T03:03:20.6871044Z",
-  "acceptance_status": "installed_repair_candidate_native_retest_and_ci_pending",
-  "application_source_commit": "c6feb7bd09663ca38c3e59ad0f890bce1e91f9c5",
+  "generated_utc": "2026-10-11T03:37:30.5238110Z",
+  "acceptance_status": "installed_selection_usability_candidate_native_ab_modifiers_and_ci_pending",
+  "application_source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
   "source_build_clean": true,
   "signed": false,
   "engine_included": false,
-  "artifact_directory": "%LOCALAPPDATA%/GreenLens/releases/0.2.0/20261011-workspace-candidate04",
+  "artifact_directory": "%LOCALAPPDATA%/GreenLens/releases/0.2.0/20261011-workspace-candidate05",
   "installed_application": "%LOCALAPPDATA%/Programs/GreenLens/greenlens-desktop.exe",
-  "installed_desktop_sha256": "8ccbc2ad518f991e8ba7a6cd7db8cfed5fe0aacf2fb7ef9e12127e05ecdaa657",
-  "cli_sha256": "02ea24b42311b7967afe26b6606cedd77a6840deace99406e40267723228595e",
+  "installed_desktop_sha256": "b24f6ff664e36385a2b20bf35429e75c7c855739a816e53e4b22fef217463b14",
+  "cli_sha256": "1e03cf1a1404c4b1f5f77ccc5f8662b4e3f99b3c631a9b3f95a5c5072a16a2ff",
   "source_example": "examples/synthetic-a.json",
   "artifacts": [
     {
       "file": "GreenLens_0.2.0_x64-setup.exe",
-      "bytes": 2674858,
-      "sha256": "d2bdc0a69b8501c9f38599b0387ad2dfd407098f0779d6c80fcf134863cd09c3"
+      "bytes": 2677041,
+      "sha256": "458c65bee5937e2aa675e8d942c1c53e4b12bfe38a82c6bedc01b649864b925e"
     },
     {
       "file": "GreenLens-CLI-0.2.0-windows-x64.zip",
-      "bytes": 1461842,
-      "sha256": "141ac3ac32e4f46365acb56ce47e8bfd1425299675d58c5e0681692d02b208e3"
+      "bytes": 1465589,
+      "sha256": "c4fe77555c6aaf29af37298c00d3d5efde6203aac00db1c0db50d1f893aa316a"
     }
   ],
   "checks": {
@@ -37,16 +37,19 @@
     "scientific": "v0.2-science-evidence.json",
     "scientific_record": "v0.2-scientific-verification.md",
     "native": "v0.2-native-verification.md",
-    "ci_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38106215182",
+    "ci_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38108694542",
     "ci_status": "in_progress",
-    "native_required_demonstrations": "candidate03 modifier selection/held-drag Escape failures repaired in source; installed candidate04 human retest pending; right-button navigation unconfirmed",
-    "new_native_ab": "pending",
+    "native_required_demonstrations": "candidate05 explicit Replace/Add/Remove in list and viewport passed counts 1->2->1 with unchanged model and four populated camera records; compact/full layouts passed; precise human modifier-click check pending. Candidate04 held-drag Escape and RMB navigation passed per human report.",
+    "new_native_ab": "installed candidate05 A completed: a0406c58-820f-4ef0-b119-de70a0017ade, 77 finite nonnegative values, all required exits zero, clean source 1fbb6547; B/export/replay pending",
     "v01_candidate04_cli_replay": "passed: both historical runs, 77 sensors each, maximum absolute difference 0 lx",
-    "previous_candidate_artifacts": "v0.2-candidate03-artifacts.json"
+    "previous_candidate_artifacts": [
+      "v0.2-candidate04-artifacts.json",
+      "v0.2-candidate03-artifacts.json"
+    ]
   },
   "notes": [
-    "Candidate03 artifacts and immutable native A/B evidence remain preserved separately. Candidate04 acceptance is open until native gestures, fresh A/B workflow and final-source CI pass.",
-    "The packaged documentation is the c6feb7b source snapshot; current acceptance records remain in the repository.",
+    "Earlier candidates and their immutable evidence remain preserved separately. Candidate05 acceptance is open until required native selection, fresh A/B workflow and exact-source CI pass.",
+    "The packaged documentation is the 1fbb654 source snapshot; current acceptance records remain in the repository.",
     "A separate clean-machine installation and signing have not been performed."
   ]
 }

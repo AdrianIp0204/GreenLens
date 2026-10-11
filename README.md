@@ -12,9 +12,9 @@ The bounded workflow models one rectangular room, a rectangular window, an optio
 
 Start with the [installation and launch guide](docs/installation.md). Fresh v0.2 checks are recorded in [scientific and CLI verification](docs/v0.2-scientific-verification.md) and [installed workspace verification](docs/v0.2-native-verification.md). The [v0.1 package hashes](docs/release-artifacts.json) and [v0.1 CI record](docs/ci-evidence.json) describe the historical release only.
 
-The repaired candidate's unsigned v0.2 installer and CLI paths and hashes are listed in [v0.2 artifact inventory](docs/v0.2-release-artifacts.json). The [preserved candidate 03 inventory](docs/v0.2-candidate03-artifacts.json) retains its saved example and evidence/report. Acceptance status remains explicit; a built candidate is not a completed release.
+The current candidate's unsigned v0.2 installer and CLI paths and hashes are listed in [v0.2 artifact inventory](docs/v0.2-release-artifacts.json). Earlier [candidate 04](docs/v0.2-candidate04-artifacts.json) and [candidate 03](docs/v0.2-candidate03-artifacts.json) inventories remain preserved, including the earlier saved example and evidence/report. Acceptance status remains explicit; a built candidate is not a completed release.
 
-![Installed GreenLens four-view workspace with constrained window editing](docs/images/v0.2/repaired-workspace-candidate04.jpg)
+![Installed GreenLens four-view workspace showing explicit Add selection and two selected objects](docs/images/v0.2/selection-workspace-candidate05.jpg)
 
 [Native screenshot context and tested sizes](docs/images/v0.2/README.md).
 

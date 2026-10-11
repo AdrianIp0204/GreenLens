@@ -29,11 +29,15 @@ export function metricConvention(field, settings) {
 export function climateRequestKey(path, summary, field, interval, settings) {
   return summary ? JSON.stringify([path, summary.id, summary.record_sha256, field, interval, settings]) : '';
 }
+export function climateGeometryMatches(summary, current, sensorIds, validated) {
+  return Boolean(summary && current && sensorIds && validated &&
+    selectedRecordMatches(summary, current) &&
+    sensorIds.length === validated.sensor_grid.sensors.length &&
+    sensorIds.every((id, i) => id === validated.sensor_grid.sensors[i].id));
+}
 export function climateOverlayMatches(summary, current, values, validated) {
-  return Boolean(summary && current && values && validated &&
-    selectedRecordMatches(summary, current) && values.run_id === summary.id &&
-    values.sensor_ids.length === validated.sensor_grid.sensors.length &&
-    values.sensor_ids.every((id, i) => id === validated.sensor_grid.sensors[i].id));
+  return Boolean(values && values.run_id === summary?.id &&
+    climateGeometryMatches(summary, current, values.sensor_ids, validated));
 }
 /** A stable ID does not establish matching sensor positions across snapshots. */
 export function climateSeriesSensor(canOverlay, viewportSelection, historicalId, sensorIds) {

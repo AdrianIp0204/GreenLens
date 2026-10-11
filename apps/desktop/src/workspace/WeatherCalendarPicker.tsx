@@ -6,7 +6,7 @@ import type { ClimateRunSummary, RunWeatherIntervalView, WeatherIntervalView } f
 export function WeatherCalendarPicker({path,weatherId=null,summary=null,current,disabled=false,onSelect}:{
   path:string;weatherId?:string|null;summary?:ClimateRunSummary|null;current:WeatherIntervalView|RunWeatherIntervalView|null;disabled?:boolean;onSelect:(index:number)=>void;
 }) {
-  const [month,setMonth]=useState('6'),[day,setDay]=useState('21'),[hour,setHour]=useState('12');
+  const [month,setMonth]=useState(''),[day,setDay]=useState(''),[hour,setHour]=useState('');
   const [error,setError]=useState(''),[busy,setBusy]=useState(false);
   const context=JSON.stringify([path,weatherId,summary,current?.interval.index,disabled]);
   const latest=useRef(context),generation=useRef(0);
@@ -14,7 +14,12 @@ export function WeatherCalendarPicker({path,weatherId=null,summary=null,current,
   const matches=(value:WeatherIntervalView|RunWeatherIntervalView)=>summary
     ?'run_id' in value&&value.run_id===summary.id&&value.record_sha256===summary.record_sha256
     :'weather_id' in value&&value.weather_id===weatherId;
-  useEffect(()=>{++generation.current;setBusy(false);setError('');if(current&&matches(current)){setMonth(String(current.hour.month));setDay(String(current.hour.day));setHour(String(current.hour.hour_ending));}},[context]);
+  const sourceContext=JSON.stringify([path,weatherId,summary]);
+  useEffect(()=>{setMonth('');setDay('');setHour('');},[sourceContext]);
+  useEffect(()=>{++generation.current;setBusy(false);setError('');},[context]);
+  // A missing response during an hour read must not invent a date or reset a
+  // typed selection. Only a verified response for this source fills the fields.
+  useEffect(()=>{if(current&&matches(current)){setMonth(String(current.hour.month));setDay(String(current.hour.day));setHour(String(current.hour.hour_ending));}},[sourceContext,current?.interval.index]);
   const find=async()=>{
     if(!path||(!summary&&!weatherId)||disabled)return;
     const requested=context,token=++generation.current;

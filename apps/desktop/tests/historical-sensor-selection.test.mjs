@@ -59,7 +59,7 @@ test('historical series uses a separate saved-coordinate choice without viewport
   const option=nodes(choice).find(n=>n.type==='option'&&n.props.value===id);assert.ok(option);
   assert.match(option.props.children.join(''),/ m$/);choice.props.onChange({target:{value:id}});
   assert.deepEqual(local,[id]);assert.deepEqual(viewport,[]);
-  assert.equal(nodes(ClimateResultsContent({tab:'series',records:[run],selection:[],onSelect(){},controller:{run,values,canOverlay:true}})).some(n=>n.props?.['aria-label']==='Historical time-series sensor'),false);
+  assert.equal(nodes(ClimateResultsContent({tab:'series',records:[run],selection:[],onSelect(){},controller:{run,values,canOverlay:true,matchesCurrentGeometry:true}})).some(n=>n.props?.['aria-label']==='Historical time-series sensor'),false);
 });
 
 test('production result and table captions follow only the displayed metric context',()=>{

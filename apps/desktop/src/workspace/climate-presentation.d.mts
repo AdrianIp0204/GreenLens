@@ -4,6 +4,7 @@ export const CLIMATE_FIELDS: [ResultField,string,string][];
 export function displayedMetricSettings(selectedRunId:string,study:Study|null,run:ClimateRunRecord|null):MetricSettings|null;
 export function metricConvention(field:ResultField,settings:MetricSettings|null):string;
 export function climateRequestKey(path:string, summary:ClimateRunSummary|null, field:ResultField, interval:number, settings:MetricSettings|null):string;
+export function climateGeometryMatches(summary:ClimateRunSummary|null,current:CurrentClimateResult|null,sensorIds:string[]|undefined,validated:ValidatedModel|null):boolean;
 export function climateOverlayMatches(summary:ClimateRunSummary|null,current:CurrentClimateResult|null,values:ClimateValues|null,validated:ValidatedModel|null):boolean;
 export function climateSeriesSensor(canOverlay:boolean,viewportSelection:string[],historicalId:string|null,sensorIds:string[]):string|null;
 export class ClimateRequestGate {

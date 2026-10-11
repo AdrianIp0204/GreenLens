@@ -32,6 +32,7 @@ export interface SceneViewProps {
   documentId: string;
   validated: ValidatedModel | null;
   lux: number[] | null;
+  resultLoading?: boolean;
   scale: number;
   selection: string[];
   selectionMode?: SelectionMode;

@@ -25,7 +25,7 @@ export function useDocument() {
   const [results,setResults] = useState<RunRecord[]>([]);
   const [climateResults,setClimateResults] = useState<ClimateRunRecord[]>([]);
   const [studyDefaults,setStudyDefaults] = useState<Study|null>(null);
-  const [currentClimateState,setCurrentClimateState] = useState<{key:string;result:CurrentClimateResult}|null>(null);
+  const [currentClimateState,setCurrentClimateState] = useState<{key:string;result:CurrentClimateResult|null}|null>(null);
   const [display,setDisplay] = useState<ViewportDisplayState>(defaultDisplay);
   const [path,setPath] = useState('');
   const [revision,setRevision] = useState<string|null>(null);
@@ -49,8 +49,13 @@ export function useDocument() {
   const closing=useRef(false);
   const model=project?.alternatives.find(a=>a.id===alternative)?.model??null;
   const study=project?.climate?.studies[alternative]??studyDefaults;
-  const currentClimateKey=JSON.stringify({projectId:project?.id,path,revision,alternative,model,study,runs:project?.climate?.runs??[]});
+  // Revision/display-only saves do not change scientific lookup inputs. Keep the
+  // last verified projection during that refresh; edits, copies, new documents
+  // and replaced evidence still hide it immediately, before any effect runs.
+  const currentClimateKey=JSON.stringify({documentId,projectId:project?.id,path,alternative,model,study,runs:project?.climate?.runs??[],weather:project?.climate?.weather??[]});
   const currentClimate=currentClimateState?.key===currentClimateKey?currentClimateState.result:null;
+  const currentClimateLoading=Boolean(project&&path&&study&&study.calculation.mode!=='static_overcast'&&currentClimateState?.key!==currentClimateKey);
+  const validationKey=JSON.stringify([documentId,alternative,model,study]);
   const dirty=Boolean(project && documentSignature(project)!==savedSignature);
   const running=activeJob(job);
   const pending=hasPendingEvidence(job,results,climateResults);
@@ -75,13 +80,12 @@ export function useDocument() {
     let live=true;setValidating(true);
     validateInStudy(model,alternative,project).then(value=>{if(live){setValidated(value);state.current.validated=value;}}).catch(e=>{if(live){setValidated(null);state.current.validated=null;setError(errorText(e));}}).finally(()=>live&&setValidating(false));
     return()=>{live=false;};
-  },[model,study,alternative]);
+  },[validationKey]);
   useEffect(()=>{
-    setCurrentClimateState(null);
     if(!project||!path||!study||study.calculation.mode==='static_overcast')return;
     let live=true;
     invoke<CurrentClimateResult>('current_climate_result',{path,project,alternativeId:alternative,study})
-      .then(value=>{if(live)setCurrentClimateState({key:currentClimateKey,result:value});}).catch(e=>live&&setError(errorText(e)));
+      .then(value=>{if(live)setCurrentClimateState({key:currentClimateKey,result:value});}).catch(e=>{if(live){setCurrentClimateState({key:currentClimateKey,result:null});setError(errorText(e));}});
     return()=>{live=false;};
   },[project,path,study,alternative,currentClimateKey]);
   const collect=useCallback(async(status:JobStatus)=>{
@@ -206,6 +210,6 @@ export function useDocument() {
     const destination=await invoke<string|null>('dialog_export_evidence',{initialPath:state.current.path||null});if(!destination)return;
     await invoke('export_project',{path:state.current.path,destination,selectedRuns:selectedRuns??null});setMessage('Portable evidence ZIP and offline report exported.');
   });
-  return {project,alternative,setAlternative,model,validated,results,climateResults,study,currentClimate,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
+  return {project,alternative,setAlternative,model,validated,results,climateResults,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
     commit,commitStudy,attachWeather,importWeather,traverse,replace,save:()=>runAction(async()=>{await save();}),saveAs:()=>runAction(async()=>{await save(true);}),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');}),exportEvidence,runAction};
 }

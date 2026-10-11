@@ -48,7 +48,7 @@ function setup(mode){
   states.length=0;mutations=0;
   const study={calculation:{mode}};
   doc={documentId:1,alternative:'A',project:{id:'doc',name:'Fixture',alternatives:[{id:'A',model:fixture.model}],climate:{studies:{A:study},runs:[],weather:[]}},study,
-    validated:fixture,model:fixture.model,results:[staticRun],climateResults:[climateRun],currentClimate:null,display:{mode:'analysis',cutaway:true,layers:{},objects:{}},
+    validated:fixture,validating:false,model:fixture.model,results:[staticRun],climateResults:[climateRun],currentClimate:null,display:{mode:'analysis',cutaway:true,layers:{},objects:{}},
     path:'mock-project',history:{past:[],future:[]},job:null,error:'',message:'',setError(){},commitStudy(){mutations++;},setDisplay(){mutations++;},commit(){mutations++;}};
   climate={run:climateRun,values:{values:[900],units:'lx'},canOverlay:false,scale:900,a:null,b:null};
   return render();
@@ -107,4 +107,22 @@ test('follow-study routes an open series drawer to the static table after a scie
   assert.equal(byComponent(tree,'AnalysisContent').props.tab,'table');
   assert.equal(byLabel(tree,'table').props.className,'analysis-drawer');
   assert.equal(mutations,0);
+});
+
+test('App labels pending hourly reads as loading without claiming a scientific mismatch or showing old values',()=>{
+  setup('annual');climate={...climate,values:null,canOverlay:false,matchesCurrentGeometry:true,checkingRelationship:false,loading:true};
+  let tree=render(),scene=find(tree,n=>n.type?.name==='SceneView');
+  assert.equal(scene.props.lux,null);assert.equal(scene.props.resultLoading,true);assert.equal(scene.props.validated,fixture);
+  assert.equal(scene.props.display,doc.display);
+  assert.equal(find(tree,n=>n.props?.className==='stale-banner'),undefined);
+  climate={...climate,loading:false,matchesCurrentGeometry:false};tree=render();
+  assert.ok(find(tree,n=>n.props?.className==='stale-banner'),'a completed Rust mismatch still warns');
+  assert.equal(find(tree,n=>n.type?.name==='SceneView').props.resultLoading,false);
+});
+
+test('App distinguishes a pending current lookup from a completed absence of matching evidence',()=>{
+  setup('annual');climate={...climate,run:null,values:null,canOverlay:false,matchesCurrentGeometry:false,checkingRelationship:true,loading:false};
+  let tree=render();assert.equal(find(tree,n=>n.props?.className==='stale-banner'),undefined);
+  assert.equal(find(tree,n=>n.type?.name==='SceneView').props.resultLoading,true);
+  climate={...climate,checkingRelationship:false};tree=render();assert.ok(find(tree,n=>n.props?.className==='stale-banner'));
 });

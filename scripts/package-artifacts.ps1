@@ -18,6 +18,7 @@ function Get-PackageDocumentPaths {
         'scripts/annual-residual-audit.py',
         'docs/evidence/v0.3-native/candidate04-artifacts.json',
         'docs/evidence/v0.3-native/candidate04-historical-inspection.json',
+        'docs/evidence/v0.3-native/candidate04-conflict-recovery.json',
         'docs/profile-investigation.json','docs/engine-feasibility.md',
         'docs/gate-0-evidence.json','docs/science-fixtures-evidence.json','docs/science-evidence.json',
         'docs/evidence/v0.3-engine/method2-actual-ab-twelve-hours-failed.json',

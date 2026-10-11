@@ -1,0 +1,43 @@
+PVGIS 5.3 ERA5 typical meteorological year at 22.30 N, 114.17 E
+Source output acquired 2026-10-11; source period 2005-2023.
+
+Produced by the European Commission, Joint Research Centre, PVGIS 5.3,
+using ECMWF ERA5 reanalysis. PVGIS data source and service citation:
+Huld, T.; Paietta, E.; Zangheri, P.; Pinedo Pascua, I. (2017):
+Typical Meteorological Data access service. European Commission,
+Joint Research Centre [Dataset]. DOI: 10.2905/JRC.FDTQ22G.
+
+The JRC catalogue authorizes reuse with source acknowledgement under the
+European Commission reuse notice. PVGIS-specific usage conditions place
+no restriction on use of the supplied information. Retain attribution and
+identify modifications when redistributing these data. This notice does
+not relicense unrelated EPW files, third-party materials or branding.
+
+Original EPW SHA-256:
+60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8
+Original bytes are unchanged. A separately identified GreenLens canonical
+EPW changes the hourly minute marker from 0 to 60, trims CSV whitespace,
+removes any UTF-8 BOM and uses LF. It changes the singular HOLIDAYS/DAYLIGHT
+SAVING header to Radiance's required plural SAVINGS spelling. Source
+values and years are retained.
+Source-profile interpretation: greenlens.pvgis_tmy_epw_midpoint.v1.
+
+Contains modified Copernicus Climate Change Service information 2026.
+Neither the European Commission nor ECMWF is responsible for any use
+that may be made of the Copernicus information or data it contains.
+ERA5 source catalogue: Copernicus Climate Change Service (2023), ERA5
+hourly data on single levels from 1940 to present. C3S Climate Data Store.
+DOI: 10.24381/cds.adbb2d47. Current source catalogue licence: CC-BY.
+ERA5 is the work of Hersbach et al. and the ECMWF/Copernicus contributors;
+this typical year is obtained through PVGIS, not a direct CDS download.
+
+Primary rights and method sources reviewed 2026-10-11:
+https://data.jrc.ec.europa.eu/dataset/jrc-tmy-tmy-download-service
+https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/general-information/usage-conditions-data-protection_en
+https://commission.europa.eu/legal-notice_en
+https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview
+https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/using-pvgis-5/pvgis-5-tools/pvgis-typical-meteorological-year-tmy-generator_en
+
+This is reanalysis-derived typical weather, not a weather-station record,
+forecast or certification dataset. The original city/country/station
+unknown markers and unused-field quality warnings must remain visible.

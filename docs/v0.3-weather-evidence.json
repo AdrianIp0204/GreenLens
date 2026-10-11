@@ -1,0 +1,214 @@
+{
+  "schema_version": "greenlens.weather-provider-evidence.v0.3",
+  "observed_utc": "2026-10-11T05:10:16Z",
+  "scope": "Native Rust weather provider validation and primary-source rights review; not annual engine or installed application acceptance",
+  "source_commit": "93a65f77d52c64f0d0e8f5e7afe7f9375ecbad49",
+  "source_worktree_dirty": true,
+  "tested_file_sha256": {
+    "crates/greenlens-core/src/weather.rs": "c9012ffae62159c98bac051b3779ab4281dc26f25794b85b39a91420bf3b5b0e",
+    "crates/greenlens-core/tests/weather.rs": "42045020813fc910ab6a9898bab93700f126ae840ac9078dc91611cf548ffa24"
+  },
+  "environment": "Native Windows x86_64 MSVC; repository's pinned Rust toolchain; process-local caches via scripts/dev-env.ps1",
+  "checks": [
+    {
+      "command": "cargo test -p greenlens-core --locked --offline",
+      "observed_before_final_pinned_reader_hardening": true,
+      "legacy_tests_passed": 15,
+      "study_tests_passed": 6,
+      "weather_tests_passed": 10,
+      "optional_external_file_tests_ignored": 1,
+      "exit_code": 0
+    },
+    {
+      "command": "cargo test -p greenlens-core --test weather --locked --offline -- --include-ignored",
+      "required_environment": "GREENLENS_ACCEPTANCE_EPW points to the separately acquired reviewed original.epw",
+      "observed_after_final_pinned_reader_hardening": true,
+      "synthetic_tests_passed": 11,
+      "real_full_year_provider_tests_passed": 1,
+      "ignored": 0,
+      "failed": 0,
+      "exit_code": 0,
+      "elapsed_test_seconds": 3.18
+    },
+    {
+      "command": "cargo clippy -p greenlens-core --all-targets --locked --offline -- -D warnings",
+      "observed_after_final_pinned_reader_hardening": true,
+      "exit_code": 0
+    },
+    {
+      "command": "rustfmt --edition 2021 crates/greenlens-core/src/weather.rs crates/greenlens-core/tests/weather.rs",
+      "exit_code": 0
+    }
+  ],
+  "real_source": {
+    "source_inventory": "dependencies/weather.json",
+    "portable_source_record": "examples/weather/pvgis-hong-kong.source.json",
+    "notice": "third-party/weather/PVGIS-ERA5-NOTICE.txt",
+    "original_bytes": 1863014,
+    "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+    "profile": "pvgis_tmy",
+    "intervals": 8760,
+    "fields_per_record": 35,
+    "utc_offset_minutes": 480,
+    "source_minute": 0,
+    "irradiance_offset_from_interval_end_hours": -0.5,
+    "required_fields_finite_in_range": true,
+    "retained_quality_warnings": {
+      "negative_unused_infrared_records": 3853,
+      "negative_unused_wind_records": 2
+    },
+    "separate_json_crosscheck": {
+      "sha256": "bae59c06ffabcde6e06b39319535364e8658ac05ece83e2cb7a21f5b353f34d0",
+      "used_as_calculation_input": false,
+      "timezone_shift_hours": 8,
+      "ghi_and_dhi_mismatches": 0,
+      "dni_mismatches": 359,
+      "dni_max_absolute_difference_w_m2": 10.99,
+      "conclusion": "Source-format discrepancy retained; no mixed-source substitution or claimed identical-sky verification"
+    }
+  },
+  "investigated_failure": {
+    "owner": "annual engine investigation",
+    "raw_pvgis_native_gendaymtx": "exit 1 at singular HOLIDAYS/DAYLIGHT SAVING header",
+    "remedy": "Documented normalization to pinned reader's plural SAVINGS spelling; original bytes retained",
+    "provider_regression_passed": true,
+    "canonical_engine_execution": "Recorded separately by engine owner; not inferred from parser tests"
+  },
+  "limits": [
+    "Only declared hourly midpoint source profiles; unsupported irradiation shifts reject",
+    "Pinned engine rejects UTC offsets above +12; provider rejects them rather than shifting dates",
+    "Metadata and lines bounded to pinned native reader buffers",
+    "No weather measurement accuracy, thermal/wind suitability or full-year daylight accuracy claim"
+  ],
+  "provider_unit_phase": "Recorded unit/Clippy hashes precede same-line duplicate-offset repair; later CLI observations are separate below.",
+  "cli_observations": [
+    {
+      "result": {
+        "source_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "intervals": 8760,
+        "passed": true,
+        "cli_sha256": "e73e5af5deefec4ed0b77562e2ef560e47eac3c15f443f0ab6171967e21b4bcf",
+        "portable_files_sha256": {
+          "original.epw": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "weather.json": "19a8ce41b5507d2393372f0743610b6df909dd3add40678b0209534aa7965a6a",
+          "normalized.epw": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "checksums.json": "cda9fc9ff7a7446bf27dc0f99266e09c5f6fdead65e221ba5f02bde1fb3674cd",
+          "asset.json": "34c27c50fad3f370682dad834b645a06ffb6c88164f47e74c37e9402ed35e8ba"
+        },
+        "verified_utc": "2026-10-11T05:17:03.0161844Z",
+        "schema_version": "greenlens.weather-cli-verification.v0.3",
+        "platform": "native Windows",
+        "simulation_acceptance": false,
+        "checks": [
+          "required reviewed full-year EPW",
+          "explicit profile inspection",
+          "portable import with attribution",
+          "byte-identical relocation",
+          "reopen with original import paths unavailable",
+          "no engine/network service required",
+          "missing original rejected",
+          "checksum corruption rejected",
+          "unsupported offset rejected"
+        ],
+        "binding": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        }
+      },
+      "phase": "Baseline portable checks before adding duplicate-offset CLI regression",
+      "evidence_directory_basename": "Weather 空間 0ed6c3ee-c050-41f9-b20c-46117e19d40f"
+    },
+    {
+      "observed_utc": "2026-10-11T05:17:54Z",
+      "remedy": "Rebuild CLI from the corrected parser; preserve this failed attempt.",
+      "error": "Expected duplicate-offset-rejected to fail, but it succeeded.",
+      "passed": false,
+      "phase": "New duplicate-offset regression run against stale binary",
+      "evidence_directory_basename": "Weather 空間 12f114af-e3e8-4cdb-8718-b1a69e56faca",
+      "cli_sha256": "e73e5af5deefec4ed0b77562e2ef560e47eac3c15f443f0ab6171967e21b4bcf"
+    },
+    {
+      "result": {
+        "source_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "checks": [
+          "required reviewed full-year EPW",
+          "explicit profile inspection",
+          "portable import with attribution",
+          "byte-identical relocation",
+          "reopen with original import paths unavailable",
+          "no engine/network service required",
+          "missing original rejected",
+          "checksum corruption rejected",
+          "unsupported offset rejected",
+          "same-line conflicting offsets rejected"
+        ],
+        "binding": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "simulation_acceptance": false,
+        "schema_version": "greenlens.weather-cli-verification.v0.3",
+        "verified_utc": "2026-10-11T05:25:09.7033359Z",
+        "portable_files_sha256": {
+          "normalized.epw": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "asset.json": "34c27c50fad3f370682dad834b645a06ffb6c88164f47e74c37e9402ed35e8ba",
+          "checksums.json": "cda9fc9ff7a7446bf27dc0f99266e09c5f6fdead65e221ba5f02bde1fb3674cd",
+          "original.epw": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "weather.json": "19a8ce41b5507d2393372f0743610b6df909dd3add40678b0209534aa7965a6a"
+        },
+        "passed": true,
+        "cli_sha256": "bf71f3ca0028cfc283f793e87dc9635b2cda6e0c037e01f8f3c676bf35bcb2f7",
+        "intervals": 8760,
+        "platform": "native Windows"
+      },
+      "parser_source_sha256": "9a864168b72f19132784af303dbbf3853888ae7759d9b980ba5ea098ec79d35d",
+      "phase": "Complete required CLI provider suite after rebuild",
+      "script_sha256": "fc906730e709480a4696226c4daab609da2947998134cd5770a2974417acad4e",
+      "evidence_directory_basename": "Weather 空間 eb3dce56-0ba4-4a10-8da9-c8fb8581307b"
+    }
+  ],
+  "pending_checks": [],
+  "final_provider_checks": {
+    "observed_utc": "2026-10-11T05:29:36.0894125Z",
+    "core_clippy": {
+      "command": "cargo clippy -p greenlens-core --all-targets --locked --offline -- -D warnings",
+      "exit_code": 0
+    },
+    "runner_weather": {
+      "command": "cargo test -p greenlens-runner --lib --locked --offline",
+      "weather_tests": [
+        "portable_weather_reopens_without_import_source_or_original_asset",
+        "resealed_forged_weather_metadata_is_rejected_by_reparsing",
+        "resealed_forged_binding_is_rejected",
+        "resealed_altered_normalized_weather_is_rejected",
+        "invalid_citations_and_local_source_paths_reject_on_import_and_open",
+        "import_never_overwrites_existing_file_directory_or_weather_asset"
+      ],
+      "exit_code": 0,
+      "runner_library_tests_passed": 29,
+      "weather_service_tests_passed": 6,
+      "execution_owner": "Shared build owner"
+    },
+    "core_weather": {
+      "ignored": 0,
+      "exit_code": 0,
+      "command": "cargo test -p greenlens-core --test weather --locked --offline -- --include-ignored",
+      "passed": 12,
+      "required_environment": "GREENLENS_ACCEPTANCE_EPW=examples/weather/pvgis-hong-kong-tmy-2005-2023.epw resolved from repository",
+      "elapsed_test_seconds": 2.64,
+      "includes_same_line_duplicate_guard": true,
+      "failed": 0
+    },
+    "tested_file_sha256": {
+      "crates/greenlens-core/src/weather.rs": "9a864168b72f19132784af303dbbf3853888ae7759d9b980ba5ea098ec79d35d",
+      "crates/greenlens-core/tests/weather.rs": "72d6e6ba644f52a23eaea80566dcfc0c8a4314eafc069137e2e829e53bd17c95",
+      "crates/greenlens-runner/src/weather.rs": "ece8dda22f277ed088628f0236c19d30dc421d3a7b3e17c52f14b8c1e1496417"
+    },
+    "source_commit": "c9a72168da528f05507196b9bdf29a3b08f9d51e",
+    "source_worktree_dirty": true
+  }
+}

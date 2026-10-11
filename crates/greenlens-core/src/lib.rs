@@ -1,6 +1,9 @@
 //! Versioned, engine-independent scientific contracts for GreenLens v0.1.
 //! All coordinates use metres, +X east, +Y north and +Z up.
 
+pub mod study;
+pub mod weather;
+
 use serde::{Deserialize, Serialize};
 use sha2::{Digest, Sha256};
 use thiserror::Error;

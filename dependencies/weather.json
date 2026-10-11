@@ -1,0 +1,45 @@
+{
+  "schema_version": "greenlens.weather-sources.v0.3",
+  "reviewed_utc_date": "2026-10-11",
+  "datasets": [
+    {
+      "id": "pvgis-5.3-era5-hong-kong-2005-2023",
+      "title": "PVGIS ERA5 typical year at 22.30 N, 114.17 E",
+      "provider": "European Commission, Joint Research Centre, PVGIS 5.3",
+      "underlying_data": "ECMWF ERA5 reanalysis / Copernicus Climate Change Service",
+      "source_url": "https://re.jrc.ec.europa.eu/api/v5_3/tmy?lat=22.3&lon=114.17&outputformat=epw&startyear=2005&endyear=2023&usehorizon=0",
+      "catalogue_url": "https://data.jrc.ec.europa.eu/dataset/jrc-tmy-tmy-download-service",
+      "catalogue_doi": "10.2905/JRC.FDTQ22G",
+      "original_filename": "original.epw",
+      "repository_path": "examples/weather/pvgis-hong-kong-tmy-2005-2023.epw",
+      "original_bytes": 1863014,
+      "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+      "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+      "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+      "profile": "pvgis_tmy",
+      "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1",
+      "intervals": 8760,
+      "source_years_by_month": [2014, 2018, 2005, 2011, 2011, 2021, 2011, 2022, 2012, 2014, 2017, 2007],
+      "location": { "latitude_deg_north": 22.3, "longitude_deg_east": 114.17, "utc_offset_minutes": 480, "elevation_m": 18 },
+      "terrain_horizon_applied_by_provider": false,
+      "source_timestamp": { "hour": "1-24 ending labels", "minute": 0, "irradiance_offset_from_end_hours": -0.5 },
+      "license": "LicenseRef-European-Commission-Reuse-Notice",
+      "license_urls": [
+        "https://data.jrc.ec.europa.eu/dataset/jrc-tmy-tmy-download-service",
+        "https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/general-information/usage-conditions-data-protection_en",
+        "https://commission.europa.eu/legal-notice_en",
+        "https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview"
+      ],
+      "review_decision": "Redistribution of this original PVGIS output and identified normalization is permitted with retained source/Copernicus attribution and change disclosure; no rights claim for unrelated EPWs or branding.",
+      "notice": "third-party/weather/PVGIS-ERA5-NOTICE.txt",
+      "modifications": "Original EPW bytes unchanged. Derived canonical EPW writes minute 60, normalizes HOLIDAYS/DAYLIGHT SAVING to the pinned reader's plural SAVINGS spelling, trims CSV padding, removes optional BOM and uses LF; all source numeric values/source years retained.",
+      "quality_limitations": [
+        "Gridded reanalysis-derived typical year, not station observations or one actual calendar year",
+        "Original station/city/country unknown markers retained",
+        "3853 negative unused infrared values and 2 negative unused wind values retained and reported",
+        "Separate JSON response DNI differs from EPW in 359 intervals, maximum 10.99; canonical EPW is sole data authority"
+      ],
+      "redistribution_in_repository": "Exact reviewed EPW copied into the repository after independent primary-source rights review; original SHA-256 verified. Retain the source record, this inventory entry and notice when packaging or exporting these data."
+    }
+  ]
+}

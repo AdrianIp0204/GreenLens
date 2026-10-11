@@ -1,8 +1,19 @@
 #Requires -Version 7.2
 # Execute only the three sensitivity variants sealed before baseline tracing.
 # This reads numeric evidence, never commands or code from the evidence directory.
-param([Parameter(Mandatory)][string]$BaselineDirectory,[Parameter(Mandatory)][string]$OutputDirectory,[Parameter(Mandatory)][int]$IntervalIndex,[switch]$PrepareOnly)
+param([Parameter(Mandatory)][string]$BaselineDirectory,[Parameter(Mandatory)][string]$OutputDirectory,[Parameter(Mandatory)][int]$IntervalIndex,[ValidateSet('scale10000','weight1e10','depth10-24')][string]$Variant,[switch]$PrepareOnly)
 $ErrorActionPreference='Stop'
+function ConvertTo-SensitivityGeneratedText([string]$Text) {
+ # Match trusted Write-Input exactly; never change original retained bytes.
+ return $Text.Replace("`r`n","`n")
+}
+function Get-SensitivityVariantSelection([object[]]$Plan,[string]$Selected) {
+ $names=@($Plan|ForEach-Object{$_.name})
+ if(($names -join '|') -cne 'scale10000|weight1e10|depth10-24'){throw 'Sensitivity full plan differs.'}
+ if(!$Selected){return $Plan}
+ if($Selected -cnotin $names){throw 'Unknown sensitivity variant.'}
+ return @($Plan|Where-Object{$_.name -ceq $Selected})
+}
 function Read-SensitivityJson([string]$Path) {
  $options=@{InputObject=[IO.File]::ReadAllText($Path);Depth=100}
  if((Get-Command ConvertFrom-Json).Parameters.ContainsKey('DateKind')){$options.DateKind='String'}
@@ -73,7 +84,7 @@ foreach($property in $decl.engine_sha256.PSObject.Properties){$sub=if($property.
 foreach($file in @('identical-sky.mtx','suns.rad')){
  if((Get-FileHash -LiteralPath (Join-Path $BaselineDirectory $file)).Hash.ToLowerInvariant() -ne $decl.input_sha256.$file){throw 'Baseline physical sky or solar inputs changed.'}
 }
-$expectedBasis="MF:2;`n"+[IO.File]::ReadAllText((Join-Path $EngineRoot 'lib/reinhart.cal'))
+$expectedBasis=ConvertTo-SensitivityGeneratedText ("MF:2;`n"+[IO.File]::ReadAllText((Join-Path $EngineRoot 'lib/reinhart.cal')))
 if([IO.File]::ReadAllText((Join-Path $OutputDirectory 'matched-basis.cal')) -cne $expectedBasis){throw 'Baseline sky basis differs from the reviewed MF2 basis.'}
 # Read-Matrix resolves against OutputDirectory. Parse the retained complete sky
 # in its original directory, then restore the new isolated output location.
@@ -88,7 +99,7 @@ for($patch=0;$patch -lt 578;$patch++){
 }
 if([IO.File]::ReadAllText((Join-Path $OutputDirectory "$name.dat")) -cne $expectedData.ToString()){throw 'Baseline hourly sky differs from its declared annual column.'}
 $expectedSuns=@([regex]::Matches([IO.File]::ReadAllText((Join-Path $BaselineDirectory 'suns.rad')),'(?s)void light solar(\d+)\s+0\s+0\s+3\s+.*?(?=\s*void light|\z)')|Where-Object{[int](([int]$_.Groups[1].Value-30)/60) -eq $IntervalIndex})
-if($expectedSuns.Count -ne 1 -or [IO.File]::ReadAllText((Join-Path $OutputDirectory "$name-sun.rad")) -cne $expectedSuns[0].Value){throw 'Baseline hourly source differs from its declared annual source.'}
+if($expectedSuns.Count -ne 1 -or [IO.File]::ReadAllText((Join-Path $OutputDirectory "$name-sun.rad")) -cne (ConvertTo-SensitivityGeneratedText $expectedSuns[0].Value)){throw 'Baseline hourly source differs from its declared annual source.'}
 $sensors=[IO.File]::ReadAllText((Join-Path $OutputDirectory 'sensors.pts'));$sun=[IO.File]::ReadAllText((Join-Path $OutputDirectory "$name-sun.rad"));$scaledSky=[IO.File]::ReadAllText((Join-Path $OutputDirectory "$name-scaled.rad"))
 if(!$sensors.EndsWith("`n") -or @($sensors.Trim() -split '\r?\n').Count -ne 24 -or [IO.File]::ReadAllText((Join-Path $OutputDirectory 'scene.rad')) -match '(?m)^\s*!'){throw 'Invalid trusted reference inputs.'}
 $direct=[GreenLensMatched.Direct]::Rgb((Join-Path $OutputDirectory "$name-direct.rgb"),24)
@@ -114,29 +125,30 @@ $modifier=[regex]::Match($sun,$pattern).Groups[2].Value;if(!$modifier){throw 'Mi
 $base=@('-I+','-h','-faa','-n','1','-ab','9','-ad','8192','-as','0','-aa','0','-ar','256','-av','0','0','0','-lw','1e-9','-lr','-16','-dt','0','-dc','1','-dj','0','-ds','0.05','-st','0','-ss','0','-u-','-c','1','-V+')
 if(($base -join '|') -cne ($decl.full_arguments -join '|')){throw 'Baseline arguments differ from the exact supported estimator.'}
 $variants=@(@{name='scale10000';scale=10000;lw='1e-9';ab=9;lr=-16},@{name='weight1e10';scale=100;lw='1e-10';ab=9;lr=-16},@{name='depth10-24';scale=100;lw='1e-9';ab=10;lr=-24})
+$executedVariants=@(Get-SensitivityVariantSelection $variants $Variant)
 Copy-Item -LiteralPath $PSCommandPath -Destination (Join-Path $OutputDirectory 'harness-source.ps1')
-$declaration=[ordered]@{schema_version='greenlens.controlled-reference-sensitivity.v1';declared_utc=[DateTime]::UtcNow.ToString('o');scope='Predeclared limited sensitivity at all 24 sensors; not arbitrary-building validation';baseline_declaration=$decl;baseline_declaration_sha256=(Get-FileHash -LiteralPath (Join-Path $BaselineDirectory 'declaration.json')).Hash.ToLowerInvariant();interval_index=$IntervalIndex;final_baseline_rounds=$rounds;variants=$variants;input_sha256=$inputs;raw_output_order='Round-major 24-sensor records, sky RGB followed by full-solar RGB';scale_tolerance='abs(normalized_variant-bin - baseline-bin) <= 1e-5*abs(baseline-bin), every RGB channel of both bins; exact zero requires zero';weight_depth_tolerance='max(0.1 lx, 1% baseline mean) at every sensor';centroid_and_finite_policy='Reuse byte-verified original baseline centroid and 4096-ray finite arrays unchanged';harness_sha256=(Get-FileHash -LiteralPath $PSCommandPath).Hash.ToLowerInvariant();supervisor_sha256=(Get-FileHash -LiteralPath "$PSScriptRoot/annual-reference-process.ps1").Hash.ToLowerInvariant();limits=@{maximum_process_seconds=7200;maximum_runner_plus_engine_working_set_bytes=2147483648;maximum_scratch_bytes=2147483648;maximum_single_file_bytes=536870912};release_acceptance_complete=$false}
+$declaration=[ordered]@{schema_version='greenlens.controlled-reference-sensitivity-shard.v1';declared_utc=[DateTime]::UtcNow.ToString('o');scope='Predeclared limited sensitivity at all 24 sensors; not arbitrary-building validation';baseline_declaration=$decl;baseline_declaration_sha256=(Get-FileHash -LiteralPath (Join-Path $BaselineDirectory 'declaration.json')).Hash.ToLowerInvariant();interval_index=$IntervalIndex;final_baseline_rounds=$rounds;variants=$variants;executed_variant_names=@($executedVariants|ForEach-Object{$_.name});input_sha256=$inputs;raw_output_order='Round-major 24-sensor records, sky RGB followed by full-solar RGB';scale_tolerance='abs(normalized_variant-bin - baseline-bin) <= 1e-5*abs(baseline-bin), every RGB channel of both bins; exact zero requires zero';weight_depth_tolerance='max(0.1 lx, 1% baseline mean) at every sensor';centroid_and_finite_policy='Reuse byte-verified original baseline centroid and 4096-ray finite arrays unchanged';harness_sha256=(Get-FileHash -LiteralPath $PSCommandPath).Hash.ToLowerInvariant();supervisor_sha256=(Get-FileHash -LiteralPath "$PSScriptRoot/annual-reference-process.ps1").Hash.ToLowerInvariant();limits=@{maximum_process_seconds=7200;maximum_runner_plus_engine_working_set_bytes=2147483648;maximum_scratch_bytes=2147483648;maximum_single_file_bytes=536870912};release_acceptance_complete=$false}
 $declaration|ConvertTo-Json -Depth 20|Set-Content -LiteralPath (Join-Path $OutputDirectory 'declaration.json') -Encoding utf8
 if($PrepareOnly){Write-Host 'Prepared sensitivity declaration only; native variants NOT EXECUTED.';return}
 $results=[Collections.Generic.List[object]]::new()
-foreach($variant in $variants){
- $variantName=$variant.name;$skyText=$scaledSky
- if($variant.scale -ne 100){
+foreach($variantSetting in $executedVariants){
+ $variantName=$variantSetting.name;$skyText=$scaledSky
+ if($variantSetting.scale -ne 100){
   $skyText=New-SensitivitySky $skyText
  }
  Write-Input "$variantName.rad" $skyText
  Invoke-Engine 'oconv' @('-f','scene.rad',"$variantName.rad") "$variantName.oct"
- $options=@($base);$options[[Array]::IndexOf($options,'-ab')+1]="$($variant.ab)";$options[[Array]::IndexOf($options,'-lr')+1]="$($variant.lr)";$options[[Array]::IndexOf($options,'-lw')+1]=$variant.lw
+ $options=@($base);$options[[Array]::IndexOf($options,'-ab')+1]="$($variantSetting.ab)";$options[[Array]::IndexOf($options,'-lr')+1]="$($variantSetting.lr)";$options[[Array]::IndexOf($options,'-lw')+1]=$variantSetting.lw
  Invoke-Engine 'rcontrib' ($options+@('-y',"$(24*$rounds)",'-m','sky_glow','-m',$modifier,"$variantName.oct")) "$variantName.rgb" ($sensors*$rounds)
  $values=[GreenLensReference.Aggregate]::Read((Join-Path $OutputDirectory "$variantName.rgb"),(24*$rounds*6))
- $mean=[GreenLensReference.Aggregate]::Calculate($values,24,0,$rounds,$variant.scale,$direct,$finite)
+ $mean=[GreenLensReference.Aggregate]::Calculate($values,24,0,$rounds,$variantSetting.scale,$direct,$finite)
  $checks=@()
- if($variant.scale -ne 100){
+ if($variantSetting.scale -ne 100){
   $checks=@(Compare-SensitivityBins $mean $reference)
  }else{$checks=@([GreenLensReference.Aggregate]::CompareWithScale($reference,$mean,$reference))}
  $pass=@($checks|Where-Object{!$_.passed}).Count -eq 0
- $results.Add([ordered]@{variant=$variant;mean=$mean;checks=$checks;passed=$pass;raw_sha256=(Get-FileHash -LiteralPath (Join-Path $OutputDirectory "$variantName.rgb")).Hash.ToLowerInvariant();scene_sha256=(Get-FileHash -LiteralPath (Join-Path $OutputDirectory "$variantName.rad")).Hash.ToLowerInvariant()})
- [ordered]@{declaration=$declaration;results=$results;completed=($results.Count -eq 3);passed=($results.Count -eq 3 -and @($results|Where-Object{!$_.passed}).Count -eq 0);release_acceptance_complete=$false}|ConvertTo-Json -Depth 25|Set-Content -LiteralPath (Join-Path $OutputDirectory 'sensitivity.json') -Encoding utf8
+ $results.Add([ordered]@{variant=$variantSetting;mean=$mean;checks=$checks;passed=$pass;raw_sha256=(Get-FileHash -LiteralPath (Join-Path $OutputDirectory "$variantName.rgb")).Hash.ToLowerInvariant();scene_sha256=(Get-FileHash -LiteralPath (Join-Path $OutputDirectory "$variantName.rad")).Hash.ToLowerInvariant()})
+ [ordered]@{declaration=$declaration;results=$results;completed=($results.Count -eq $executedVariants.Count);passed=($results.Count -eq $executedVariants.Count -and @($results|Where-Object{!$_.passed}).Count -eq 0);case_complete=($results.Count -eq 3);release_acceptance_complete=$false}|ConvertTo-Json -Depth 25|Set-Content -LiteralPath (Join-Path $OutputDirectory 'sensitivity.json') -Encoding utf8
  Write-Host "Sensitivity $($decl.alternative) interval$IntervalIndex $variantName passed=$pass"
 }
 if(@($results|Where-Object{!$_.passed}).Count){throw 'Predeclared sensitivity check failed; every variant is retained.'}

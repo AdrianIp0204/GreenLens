@@ -281,15 +281,63 @@ function Compare-ReferenceScaleBins($Variant,$Baseline){
  }}}
  return $checks
 }
+function Get-ReferenceSensitivityExecution($Declaration){
+ Assert-ReferenceSame $Declaration.variants (Get-ReferenceSensitivityVariants) 'Sensitivity variants'
+ $names=@((Get-ReferenceSensitivityVariants)|ForEach-Object{$_.name})
+ if($Declaration.schema_version -ceq 'greenlens.controlled-reference-sensitivity.v1'){
+  # Original serial reader remains bound to the reviewed pre-sharding source.
+  if($Declaration.harness_sha256 -cne '88400209ed579398253903feb7fe7abb22c53bfafec85433b89001578297db01'){throw 'Legacy sensitivity trusted source differs.'}
+  return $names
+ }
+ if($Declaration.schema_version -cne 'greenlens.controlled-reference-sensitivity-shard.v1'){throw 'Unsupported sensitivity declaration schema.'}
+ if($Declaration.harness_sha256 -cne (Get-MatchedHash "$PSScriptRoot/annual-reference-sensitivity.ps1")){throw 'Sensitivity trusted source differs.'}
+ $selected=$Declaration.executed_variant_names
+ if($selected -isnot [Collections.IList] -or $selected.Count -notin @(1,3)){throw 'Sensitivity execution must contain one variant or the full ordered plan.'}
+ $seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+ foreach($name in $selected){if($name -isnot [string] -or $name -cnotin $names -or !$seen.Add($name)){throw 'Unknown or duplicate sensitivity variant.'}}
+ if($selected.Count -eq 3){Assert-ReferenceSame @($selected) $names 'Sensitivity execution order'}
+ return @($selected)
+}
+function Merge-ReferenceSensitivities([object[]]$Records){
+ $groups=@{};$seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+ $plan=Get-ReferenceSensitivityVariants;$names=@($plan|ForEach-Object{$_.name})
+ foreach($record in $Records){
+  $key=$record.case_key
+  if($key -cnotin @('B:8512','A:4116')){throw 'Unexpected fixed sensitivity case.'}
+  if(!$groups.ContainsKey($key)){$groups[$key]=[ordered]@{case_key=$key;identity=$record.binding;completed=$false;qualified=$false;variants=@();missing_variant_names=@();sources=@()}}
+  $group=$groups[$key]
+  Assert-ReferenceSame $record.binding $group.identity 'Sensitivity shard identity'
+  foreach($name in $record.executed_variant_names){
+   if($name -cnotin $names -or !$seen.Add("${key}:$name")){throw 'Unknown or duplicate fixed sensitivity variant.'}
+  }
+  foreach($variant in $record.variants){
+   if($variant.variant.name -cnotin $record.executed_variant_names){throw 'Completed sensitivity variant was not declared for this shard.'}
+   $group.variants+=,$variant
+  }
+  $group.sources+=,[ordered]@{declaration_sha256=$record.declaration_sha256;report_sha256=$record.report_sha256;processes_sha256=$record.processes_sha256;executed_variant_names=$record.executed_variant_names;completed=$record.completed;verified_processes=$record.verified_processes}
+ }
+ $result=@()
+ foreach($key in @('B:8512','A:4116')){
+  if(!$groups.ContainsKey($key)){continue};$group=$groups[$key]
+  $ordered=@();foreach($name in $names){$matches=@($group.variants|Where-Object{$_.variant.name -ceq $name});if($matches.Count -gt 1){throw 'Duplicate completed sensitivity variant.'};if($matches.Count){$ordered+=,$matches[0]}}
+  $group.variants=$ordered
+  $group.missing_variant_names=@($names|Where-Object{$_ -cnotin @($ordered|ForEach-Object{$_.variant.name})})
+  $group.completed=$ordered.Count -eq 3 -and @($group.sources|Where-Object{!$_.completed}).Count -eq 0
+  $group.qualified=$group.completed -and @($ordered|Where-Object{!$_.passed}).Count -eq 0
+  $result+=,$group
+ }
+ return $result
+}
 function Read-ReferenceSensitivity([string]$Root,$Context){
  $decl=Read-ReferenceJson $Root 'declaration.json';$declHash=Reference-Hash $Root 'declaration.json'
- if($decl.schema_version -cne 'greenlens.controlled-reference-sensitivity.v1' -or $decl.interval_index -ne $Context.record.interval_index -or $decl.baseline_declaration_sha256 -cne $Context.declaration_sha256){throw 'Sensitivity baseline identity differs.'}
+ $executed=@(Get-ReferenceSensitivityExecution $decl)
+ if($decl.interval_index -ne $Context.record.interval_index -or $decl.baseline_declaration_sha256 -cne $Context.declaration_sha256){throw 'Sensitivity baseline identity differs.'}
  Assert-ReferenceSame $decl.baseline_declaration $Context.declaration 'Sensitivity embedded baseline'
  Assert-ReferenceSame $decl.variants (Get-ReferenceSensitivityVariants) 'Sensitivity variants'
  Assert-ReferenceSame $decl.limits @{maximum_process_seconds=7200;maximum_runner_plus_engine_working_set_bytes=2147483648;maximum_scratch_bytes=2147483648;maximum_single_file_bytes=536870912} 'Sensitivity resource bounds'
  if(!$Context.record.qualified -or $decl.final_baseline_rounds -ne $Context.record.reference.rounds){throw 'Sensitivity requires its exact qualified baseline rung.'}
  Assert-ReferenceHash $Root 'harness-source.ps1' $decl.harness_sha256
- if($decl.harness_sha256 -cne (Get-MatchedHash "$PSScriptRoot/annual-reference-sensitivity.ps1") -or $decl.supervisor_sha256 -cne $Context.declaration.process_helper_sha256){throw 'Sensitivity trusted source differs.'}
+ if($decl.supervisor_sha256 -cne $Context.declaration.process_helper_sha256){throw 'Sensitivity trusted source differs.'}
  Assert-ReferenceHash $Root 'process-source.ps1' $Context.declaration.process_helper_sha256
  Assert-ReferenceHash $Root 'aggregation-source.cs' $Context.declaration.aggregation_sha256
  Assert-ReferenceHash $Root 'finite-kernel.cs' (Reference-Hash $Context.root 'finite-kernel.cs')
@@ -298,11 +346,13 @@ function Read-ReferenceSensitivity([string]$Root,$Context){
  if($rounds -eq 512){$expected+=,"$name-rounds256.rgb"}
  Assert-ReferenceSame @($decl.input_sha256.PSObject.Properties.Name|Sort-Object) @($expected|Sort-Object) 'Sensitivity input member set'
  foreach($file in $expected){Assert-ReferenceHash $Root $file $decl.input_sha256.$file;Assert-ReferenceHash $Context.root $file $decl.input_sha256.$file}
- $result=[ordered]@{case_key=$Context.key;completed=$false;qualified=$false;declaration_sha256=$declHash;variants=@();report_sha256=$null;processes_sha256=$null;verified_processes=@()}
+ $binding=Copy-ReferenceJsonObject $decl
+ $null=$binding.Remove('declared_utc');$null=$binding.Remove('executed_variant_names')
+ $result=[ordered]@{case_key=$Context.key;binding=$binding;executed_variant_names=$executed;completed=$false;qualified=$false;declaration_sha256=$declHash;variants=@();report_sha256=$null;processes_sha256=$null;verified_processes=@()}
  if(!(Test-Path -LiteralPath (Join-Path $Root 'sensitivity.json'))){return $result}
  $reportHash=Reference-Hash $Root 'sensitivity.json';$report=Read-ReferenceJson $Root 'sensitivity.json';Assert-ReferenceSame $report.declaration $decl 'Embedded sensitivity declaration'
- $processHash=Reference-Hash $Root 'processes.json';$processes=@(Read-ReferenceJson $Root 'processes.json');$results=@($report.results);$variants=Get-ReferenceSensitivityVariants
- if($results.Count -gt 3){throw 'Excess sensitivity results.'};$cursor=0
+ $processHash=Reference-Hash $Root 'processes.json';$processes=@(Read-ReferenceJson $Root 'processes.json');$results=@($report.results);$variants=@(foreach($selectedName in $executed){(Get-ReferenceSensitivityVariants)|Where-Object{$_.name -ceq $selectedName}})
+ if($results.Count -gt $variants.Count){throw 'Excess sensitivity results.'};$cursor=0
  for($i=0;$i -lt $results.Count;$i++){
   $stored=$results[$i];$variant=$variants[$i];Assert-ReferenceSame $stored.variant $variant 'Stored sensitivity order/settings'
   $label=$variant.name;Assert-ReferenceHash $Root "$label.rgb" $stored.raw_sha256;Assert-ReferenceHash $Root "$label.rad" $stored.scene_sha256
@@ -323,10 +373,13 @@ function Read-ReferenceSensitivity([string]$Root,$Context){
   Assert-ReferenceSame $stored.mean $mean 'Stored sensitivity means';Assert-ReferenceSame $stored.checks $checks 'Stored sensitivity comparisons';Assert-ReferenceSame $stored.passed $passed 'Stored sensitivity outcome'
   $result.variants+=,[ordered]@{variant=$variant;mean=$mean;checks=$checks;passed=$passed;raw_sha256=$stored.raw_sha256;scene_sha256=$stored.scene_sha256}
  }
- $result.completed=$results.Count -eq 3;$result.qualified=$result.completed -and @($result.variants|Where-Object{!$_.passed}).Count -eq 0
+ $result.completed=$results.Count -eq $variants.Count;$result.qualified=$result.completed -and @($result.variants|Where-Object{!$_.passed}).Count -eq 0
  if($result.completed -and $cursor -ne $processes.Count){throw 'Unexpected completed sensitivity process records.'}
  Assert-ReferenceSame $report.completed $result.completed 'Sensitivity completion';Assert-ReferenceSame $report.passed $result.qualified 'Sensitivity qualification'
+ if($decl.schema_version -ceq 'greenlens.controlled-reference-sensitivity-shard.v1'){Assert-ReferenceSame $report.case_complete ($results.Count -eq 3) 'Sensitivity case completion'}
  Assert-ReferenceHash $Root 'declaration.json' $declHash;Assert-ReferenceHash $Root 'sensitivity.json' $reportHash;Assert-ReferenceHash $Root 'processes.json' $processHash
+ foreach($file in $expected){Assert-ReferenceHash $Root $file $decl.input_sha256.$file;Assert-ReferenceHash $Context.root $file $decl.input_sha256.$file}
+ foreach($variant in $result.variants){Assert-ReferenceHash $Root "$($variant.variant.name).rgb" $variant.raw_sha256;Assert-ReferenceHash $Root "$($variant.variant.name).rad" $variant.scene_sha256}
  $result.report_sha256=$reportHash;$result.processes_sha256=$processHash;$result.verified_processes=@($processes|Select-Object -First $cursor)
  return $result
 }
@@ -338,13 +391,15 @@ function Collect-ReferenceEvidence([string[]]$Baselines,[string[]]$Sensitivities
  $identity=Assert-ReferenceShardIdentity @($shards|ForEach-Object{$_.declaration})
  $cases=@($shards|ForEach-Object{$_.cases});$coverage=Test-ReferenceCaseCoverage $cases
  $contexts=@{};foreach($shard in $shards){foreach($context in $shard.contexts){$contexts[$context.key]=$context}}
- $sensitivityResults=@();$sensitivitySeen=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+ $sensitivityRecords=@();$sensitivitySeen=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
  foreach($directory in $Sensitivities){
   $decl=Read-ReferenceJson $directory 'declaration.json';$key="$($decl.baseline_declaration.alternative):$($decl.interval_index)"
-  if($key -cnotin @('B:8512','A:4116') -or !$sensitivitySeen.Add($key)){throw 'Unexpected or duplicate fixed sensitivity case.'}
+  if($key -cnotin @('B:8512','A:4116')){throw 'Unexpected fixed sensitivity case.'}
+  $null=$sensitivitySeen.Add($key)
   if(!$contexts.ContainsKey($key)){throw 'Sensitivity lacks its collected completed baseline case.'}
-  $sensitivityResults+=,(Read-ReferenceSensitivity $directory $contexts[$key])
+  $sensitivityRecords+=,(Read-ReferenceSensitivity $directory $contexts[$key])
  }
+ $sensitivityResults=@(Merge-ReferenceSensitivities $sensitivityRecords)
  $missingSensitivity=@(@('B:8512','A:4116')|Where-Object{!$sensitivitySeen.Contains($_)})
  $numerical=@($cases|Where-Object{!$_.qualified}).Count -eq 0
  $sensitivityComplete=$missingSensitivity.Count -eq 0 -and @($sensitivityResults|Where-Object{!$_.completed}).Count -eq 0

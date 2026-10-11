@@ -182,10 +182,11 @@ Test-SyntheticRecovery
 # native inputs above are never implied, and main readers remain separately used.
 $script:mockCases=@(foreach($a in @('A','B')){foreach($i in (Get-ReferenceFixedIntervals)){@{alternative=$a;interval_index=$i;qualified=$true}}})
 $script:mockSensitivities=@(@{case_key='B:8512';completed=$true;qualified=$true},@{case_key='A:4116';completed=$true;qualified=$true})
+foreach($mock in $script:mockSensitivities){$mock.binding=@{synthetic=$true};$mock.executed_variant_names=@('scale10000','weight1e10','depth10-24');$mock.variants=@((Get-ReferenceSensitivityVariants)|ForEach-Object{@{variant=$_;passed=$true}})}
 function Assert-ReferenceShardIdentity {return @{declarations=@();common_identity='MOCK ONLY'}}
 function Read-ReferenceBaseline {return @{declaration=@{};cases=$script:mockCases;contexts=@(@{key='B:8512'},@{key='A:4116'});source_directory_name='MOCK';declaration_sha256=('0'*64);report_sha256=('1'*64);status='Synthetic reader stub'}}
 function Read-ReferenceJson([string]$Root,[string]$Name){return @{baseline_declaration=@{alternative=$Root.Split(':')[0]};interval_index=[int]$Root.Split(':')[1]}}
-function Read-ReferenceSensitivity([string]$Root,$Context){return @($script:mockSensitivities|Where-Object{$_.case_key -ceq $Context.key})[0]}
+function Read-ReferenceSensitivity([string]$Root,$Context){$mock=@($script:mockSensitivities|Where-Object{$_.case_key -ceq $Context.key})[0];$mock.variants[0].passed=$mock.qualified;return $mock}
 $collection=Collect-ReferenceEvidence @('mock') @('B:8512','A:4116')
 Assert-True ($collection.qualified -and $collection.coverage.completed_case_count -eq 24 -and !$collection.release_acceptance_complete) 'Complete synthetic coverage did not enforce bounded scope.'
 $collection=Collect-ReferenceEvidence @('mock') @()

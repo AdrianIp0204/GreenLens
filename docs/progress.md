@@ -1,5 +1,10 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — independently schedulable fixed sensitivities
+
+- Added an explicit single-variant execution option for the already declared source-scale, weight and depth checks. Each shard binds the full original plan, qualified baseline, exact inputs, process settings and unchanged tolerances. The reader rejects duplicate or mixed variants and requires all three variants at both fixed cases. The historical serial schema remains readable.
+- Twenty helper, 59 collector and 42 new reader/aggregation regressions passed; an independent root rerun also passed all 42 shard checks. The actual B:8512 declaration-only preflight passed without launching an engine. Expected generated text now follows the existing LF writer policy; original inputs are unchanged. Native sensitivity qualification remains pending. See `v0.3-reference-sensitivity-shards.md`.
+
 ## 2026-10-11 — retained paired-candidate arithmetic verification
 
 - Added a bounded, read-only comparator for the declared paired-primary research tuples. It requires all 24 qualified reference cases, all 576 sensor values and both sensitivity families before comparing accuracy. It regenerates primary receipts, checks the retained process/input identities, independently multiplies all three RGB matrix products and rederives finite-disc and lux values. Incomplete reference sets cannot pass.

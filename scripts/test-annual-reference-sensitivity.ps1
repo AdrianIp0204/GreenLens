@@ -4,7 +4,7 @@ $ErrorActionPreference='Stop'
 $parseErrors=$null
 $ast=[Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'annual-reference-sensitivity.ps1'),[ref]$null,[ref]$parseErrors)
 if($parseErrors.Count){throw ($parseErrors|Out-String)}
-foreach($name in @('New-SensitivitySky','Compare-SensitivityBins')){
+foreach($name in @('New-SensitivitySky','Compare-SensitivityBins','ConvertTo-SensitivityGeneratedText','Get-SensitivityVariantSelection')){
  $function=$ast.Find({param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $name},$false)
  if(!$function){throw "Missing production helper $name"}
  . ([scriptblock]::Create($function.Extent.Text))
@@ -32,4 +32,14 @@ $equal.sensors[0].full_solar_rgb[2]=[double]::NaN
 Reject {Compare-SensitivityBins $equal $baseline} 'Nonfinite normalized bins must reject.'
 $equal.sensors[0].full_solar_rgb=@(1.,2.)
 Reject {Compare-SensitivityBins $equal $baseline} 'Truncated RGB bins must reject.'
+$crlf=$sky.Replace("`n","`r`n")
+Assert ((ConvertTo-SensitivityGeneratedText $crlf) -ceq $sky) 'Generated LF policy must match source-derived CRLF text.'
+Assert ($crlf.Contains("`r`n")) 'Expected-text normalization must not mutate the original source.'
+Assert ((ConvertTo-SensitivityGeneratedText $sky) -ceq $sky) 'Existing LF source must remain byte-equivalent.'
+Assert ((ConvertTo-SensitivityGeneratedText "bad`rsource") -ceq "bad`rsource") 'Lone CR must not silently normalize.'
+$plan=@(@{name='scale10000'},@{name='weight1e10'},@{name='depth10-24'})
+Assert ((@(Get-SensitivityVariantSelection $plan '').name -join '|') -ceq 'scale10000|weight1e10|depth10-24') 'Default must retain the full ordered plan.'
+foreach($selected in $plan.name){Assert (@(Get-SensitivityVariantSelection $plan $selected).Count -eq 1 -and @(Get-SensitivityVariantSelection $plan $selected)[0].name -ceq $selected) 'A shard must select exactly its named unchanged variant.'}
+Reject {Get-SensitivityVariantSelection $plan 'unknown'} 'Unknown variant must reject.'
+Reject {Get-SensitivityVariantSelection @($plan[1],$plan[0],$plan[2]) ''} 'Changed full plan order must reject.'
 Write-Host "$checks synthetic sensitivity checks passed; no native qualification executed."

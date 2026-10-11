@@ -1,18 +1,21 @@
 name: Native Windows verification
 on:
   push:
-    branches: [main, codex/v0.2-workspace]
+    branches: [main, codex/v0.2-workspace, codex/v0.3-climate-daylight]
   pull_request:
   workflow_dispatch:
 permissions:
   contents: read
+defaults:
+  run:
+    shell: pwsh
+env:
+  CARGO_HTTP_TIMEOUT: '300'
+  CARGO_NET_RETRY: '3'
 jobs:
   native:
     runs-on: windows-latest
     timeout-minutes: 150
-    defaults:
-      run:
-        shell: pwsh
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -22,21 +25,28 @@ jobs:
           cache-dependency-path: apps/desktop/package-lock.json
       - name: Native development environment and pinned toolchain
         run: |
-          rustup toolchain install 1.99.0 --profile minimal --component rustfmt,clippy --target x86_64-pc-windows-msvc
-          if ($LASTEXITCODE -ne 0) { throw 'Rust installation failed' }
-          "CARGO_TARGET_DIR=$env:LOCALAPPDATA/GreenLens/build/ci" >> $env:GITHUB_ENV
+          $evidence = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-native 空間'
+          New-Item -ItemType Directory -Path $evidence -Force | Out-Null
+          "CI_EVIDENCE=$evidence" >> $env:GITHUB_ENV
           "GREENLENS_EXPECT_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
           "GREENLENS_EXPECT_SOURCE_DIRTY=false" >> $env:GITHUB_ENV
+          rustup toolchain install 1.99.0 --profile minimal --component rustfmt,clippy --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Rust installation failed' }
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 is required for timestamp-preserving JSON reads' }
+          Write-Host "PowerShell $($PSVersionTable.PSVersion); required >=7.5"
+          . ./scripts/dev-env.ps1
+          cargo fetch --locked --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Locked dependency acquisition failed' }
       - name: Build identity changes and explicit CI assertions
         run: |
           . ./scripts/dev-env.ps1
-          ./scripts/test-build-provenance.ps1
+          ./scripts/test-build-provenance.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'provenance')
       - name: Acquire and verify pinned native engine
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./scripts/install-radiance.ps1
       - name: Engine feasibility in spaces and non-ASCII path
-        run: ./scripts/engine-feasibility.ps1
+        run: ./scripts/engine-feasibility.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'feasibility 空間')
       - name: Frontend install, types, tests and production assets
         working-directory: apps/desktop
         run: |
@@ -51,38 +61,449 @@ jobs:
           . ./scripts/dev-env.ps1
           cargo fmt --all -- --check
           if ($LASTEXITCODE -ne 0) { throw 'Formatting failed' }
-          cargo clippy --workspace --all-targets -- -D warnings
+          cargo clippy --workspace --all-targets --locked --offline -- -D warnings
           if ($LASTEXITCODE -ne 0) { throw 'Lint failed' }
-          cargo test --workspace --exclude greenlens-radiance
+          cargo test --workspace --exclude greenlens-radiance --locked --offline
           if ($LASTEXITCODE -ne 0) { throw 'Workspace tests failed' }
-          cargo test -p greenlens-radiance --lib
+          cargo test -p greenlens-radiance --lib --locked --offline
           if ($LASTEXITCODE -ne 0) { throw 'Adapter tests failed' }
+      - name: Mandatory reviewed real weather and script regressions
+        run: |
+          . ./scripts/dev-env.ps1
+          $env:GREENLENS_ACCEPTANCE_EPW = Join-Path $PWD 'examples/weather/pvgis-hong-kong-tmy-2005-2023.epw'
+          cargo test -p greenlens-core --test weather --locked --offline -- --include-ignored
+          if ($LASTEXITCODE -ne 0) { throw 'Required real EPW test failed; ignored defaults cannot count as acceptance' }
+          pwsh -NoProfile -File scripts/test-convergence-verification.ps1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'convergence-script-tests.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Convergence/weather orchestration regressions failed' }
+          pwsh -NoProfile -File scripts/test-annual-single-run.ps1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'annual-script-tests.txt')
+          if ($LASTEXITCODE -ne 0) { throw 'Annual orchestration regressions failed' }
+          pwsh -NoProfile -File scripts/test-annual-replay.ps1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'annual-replay-script-tests.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Annual replay orchestration regressions failed' }
       - name: Required real-engine scientific suite (missing engine is failure)
         run: |
           . ./scripts/dev-env.ps1
-          cargo test -p greenlens-radiance --test scientific -- --nocapture
+          cargo test -p greenlens-radiance --test scientific --locked --offline -- --nocapture
           if ($LASTEXITCODE -ne 0) { throw 'Scientific acceptance failed' }
+      - name: Required native solar-direction and clock fixture
+        run: ./scripts/annual-solar-directions.ps1 -SolarOutputDirectory (Join-Path $env:CI_EVIDENCE 'solar-directions 空間')
       - name: Real CLI A/B, portable save/export and replay
         run: |
           . ./scripts/dev-env.ps1
-          cargo build -p greenlens-cli
+          cargo build -p greenlens-cli --locked --offline
           if ($LASTEXITCODE -ne 0) { throw 'CLI build failed' }
-          ./scripts/cli-integration.ps1
-      - name: Production per-user Windows package and CLI
+          ./scripts/cli-integration.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'static-cli')
+      - name: Production CLI and per-user Windows candidate package
         run: |
           . ./scripts/dev-env.ps1
           node scripts/license-inventory.mjs --strict --check
           if ($LASTEXITCODE -ne 0) { throw 'Dependency license review has unresolved gaps' }
-          cargo build -p greenlens-cli --release
+          cargo build -p greenlens-cli --release --locked --offline
           if ($LASTEXITCODE -ne 0) { throw 'CLI release build failed' }
           Push-Location apps/desktop
           try { npm run tauri -- build --ci; if ($LASTEXITCODE -ne 0) { throw 'Desktop production build failed' } }
           finally { Pop-Location }
           node scripts/license-inventory.mjs --strict --check --installer-cache "$env:LOCALAPPDATA/tauri/NSIS"
           if ($LASTEXITCODE -ne 0) { throw 'Installer component verification failed' }
-          ./scripts/package-artifacts.ps1 -OutputDirectory artifacts
-      - uses: actions/upload-artifact@v4
+          $distribution = Join-Path $env:LOCALAPPDATA 'GreenLens/ci-distribution'
+          ./scripts/package-artifacts.ps1 -OutputDirectory $distribution
+          $version = (Get-Content apps/desktop/package.json -Raw | ConvertFrom-Json).version
+          $cliRoot = Join-Path $distribution "GreenLens-CLI-$version-windows-x64"
+          $commit = (& git rev-parse HEAD).Trim()
+          if ($LASTEXITCODE -ne 0 -or $commit -cne $env:GITHUB_SHA -or (& git status --porcelain)) { throw 'Final build checkout/source identity is not the expected clean commit' }
+          @{schema_version='greenlens.ci-cli-artifact.v1';source_commit=$commit;source_dirty=$false;cli_sha256=(Get-FileHash (Join-Path $cliRoot 'greenlens.exe')).Hash.ToLowerInvariant();application_version=$version;release_acceptance_complete=$false;matched_hour_suite='pending final scientific interface'} | ConvertTo-Json | Set-Content (Join-Path $cliRoot 'ci-build.json') -Encoding utf8NoBOM
+          "CI_CLI_ROOT=$cliRoot" >> $env:GITHUB_ENV
+          "CI_CLI=$(Join-Path $cliRoot 'greenlens.exe')" >> $env:GITHUB_ENV
+          "CI_DISTRIBUTION=$distribution" >> $env:GITHUB_ENV
+      - name: Release CLI weather portability and generator context
+        run: |
+          ./scripts/weather-verification.ps1 -Cli $env:CI_CLI -OutputDirectory (Join-Path $env:CI_EVIDENCE 'weather')
+          $weather = Join-Path $env:CI_EVIDENCE 'weather/Relocated weather 空間/normalized.epw'
+          ./scripts/annual-weather-context.ps1 -WeatherFile $weather -OutputDirectory (Join-Path $env:CI_EVIDENCE 'weather-context 空間')
+      - name: Release CLI immutable v0.1 replay without annual executables
+        run: ./scripts/legacy-replay.ps1 -Cli $env:CI_CLI -OutputDirectory (Join-Path $env:CI_EVIDENCE 'legacy-replay')
+      - name: Upload exact release CLI with notices for annual jobs
+        uses: actions/upload-artifact@v4
         with:
-          name: greenlens-windows-unsigned
-          path: artifacts/*
+          name: greenlens-ci-cli-${{ github.sha }}
+          path: ${{ env.CI_CLI_ROOT }}/
           if-no-files-found: error
+          retention-days: 14
+      - name: Upload unsigned investigation package, not release acceptance
+        uses: actions/upload-artifact@v4
+        with:
+          name: greenlens-windows-unsigned-investigation-${{ github.sha }}
+          path: |
+            ${{ env.CI_DISTRIBUTION }}/*.exe
+            ${{ env.CI_DISTRIBUTION }}/*.zip
+            ${{ env.CI_DISTRIBUTION }}/checksums.json
+          if-no-files-found: error
+          retention-days: 14
+      - name: Collect bounded native diagnostics even after failure
+        if: always()
+        env:
+          OBSERVED_JOB_STATUS: ${{ job.status }}
+        run: |
+          $stage = Join-Path $env:RUNNER_TEMP 'greenlens-native-diagnostics'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          "CI_DIAGNOSTICS=$stage" >> $env:GITHUB_ENV
+          $roots = @((Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-native 空間'),(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/required-scientific-suite'))
+          $omitted = [Collections.Generic.List[object]]::new()
+          [long]$total=0; $count=0
+          foreach ($index in 0..($roots.Count-1)) {
+            if (!(Test-Path -LiteralPath $roots[$index])) { continue }
+            foreach ($file in Get-ChildItem -LiteralPath $roots[$index] -File -Recurse) {
+              $relative = [IO.Path]::GetRelativePath($roots[$index],$file.FullName)
+              if ($relative -match '(^|[\\/])(target|Static-only engine|unavailable-scratch-)[^\\/]*[\\/]' -or $file.Extension -notin @('.json','.txt','.csv','.rgb','.rad','.pts','.epw')) { continue }
+              if ($file.Length -gt 8MB -or $total+$file.Length -gt 128MB -or $count -ge 5000) { $omitted.Add(@{file="$index/$relative";bytes=$file.Length;reason='bounded diagnostic upload'}); continue }
+              $destination = Join-Path $stage "$index/$relative"
+              New-Item -ItemType Directory -Path (Split-Path -Parent $destination) -Force | Out-Null
+              Copy-Item -LiteralPath $file.FullName -Destination $destination
+              $total += $file.Length; $count++
+            }
+          }
+          @{source_commit=$env:GITHUB_SHA;job_status=$env:OBSERVED_JOB_STATUS;copied_files=$count;copied_bytes=$total;omitted=$omitted.ToArray();release_acceptance_complete=$false;matched_hour_suite='pending';scope='Bounded diagnostics, not a complete replay package'} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stage 'capture.json') -Encoding utf8NoBOM
+          'Matched-hour high-quality tracing and final installed desktop acceptance remain pending. This workflow is not complete v0.3 release acceptance.' >> $env:GITHUB_STEP_SUMMARY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: greenlens-native-diagnostics-${{ github.sha }}
+          path: ${{ env.CI_DIAGNOSTICS }}/
+          if-no-files-found: error
+          retention-days: 14
+  selected_hour:
+    needs: native
+    runs-on: windows-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required PowerShell and isolated evidence paths
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 is required' }
+          Write-Host "PowerShell $($PSVersionTable.PSVersion); required >=7.5"
+          "CI_CLI_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-cli')" >> $env:GITHUB_ENV
+          "CI_CASE_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-selected-hour 空間')" >> $env:GITHUB_ENV
+      - uses: actions/download-artifact@v4
+        with:
+          name: greenlens-ci-cli-${{ github.sha }}
+          path: ${{ env.CI_CLI_ROOT }}
+      - name: Verify actual CLI bytes and checked-out source identity
+        run: |
+          $identity = Get-Content (Join-Path $env:CI_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          $cli = Join-Path $env:CI_CLI_ROOT 'greenlens.exe'
+          if ($identity.source_commit -cne $env:GITHUB_SHA -or $identity.source_dirty -cne $false -or (Get-FileHash $cli).Hash.ToLowerInvariant() -cne $identity.cli_sha256) { throw 'Downloaded CLI differs from the clean build artifact' }
+          "CI_CLI=$cli" >> $env:GITHUB_ENV
+      - name: Required pinned native engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/install-radiance.ps1
+      - name: Real selected-hour A/B, portable evidence and replay
+        timeout-minutes: 120
+        run: |
+          ./scripts/climate-cli-integration.ps1 -Mode WeatherHour -Profile shipping -Replay -Cli $env:CI_CLI -OutputDirectory $env:CI_CASE_ROOT
+          $summary = Get-Content (Join-Path $env:CI_CASE_ROOT 'summary.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+          $identity = Get-Content (Join-Path $env:CI_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          if (!$summary.replay_executed -or $summary.cli_sha256 -cne $identity.cli_sha256 -or @($summary.runs).Count -ne 2) { throw 'Selected-hour evidence is incomplete or used a different CLI' }
+          foreach ($alternative in @('A','B')) {
+            $run = @($summary.runs | Where-Object alternative -CEQ $alternative)
+            if ($run.Count -ne 1 -or $run[0].source_commit -cne $env:GITHUB_SHA -or $run[0].source_dirty -cne $false -or $run[0].intervals -ne 1 -or $run[0].sensors -ne 24) { throw 'Selected-hour result shape or embedded source identity differs' }
+          }
+          $replay = Get-Content (Join-Path $env:CI_CASE_ROOT 'replay.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+          if (!$replay.passed -or @($replay.checks).Count -ne 2 -or @($replay.checks | Where-Object { !$_.passed -or $_.sensors -ne 24 }).Count) { throw 'Every selected-hour run must pass real-engine replay' }
+      - name: Collect bounded selected-hour evidence even after failure
+        if: always()
+        env:
+          OBSERVED_JOB_STATUS: ${{ job.status }}
+        run: |
+          $stage = Join-Path $env:RUNNER_TEMP 'greenlens-selected-hour-evidence'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          "CI_CASE_UPLOAD=$stage" >> $env:GITHUB_ENV
+          $root = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-selected-hour 空間'
+          $files = @()
+          if (Test-Path -LiteralPath $root) {
+            $files += @(Get-ChildItem -LiteralPath $root -File | Where-Object Extension -In @('.json','.txt','.zip'))
+            $project = Join-Path $root 'Portable copy'
+            if (Test-Path -LiteralPath $project) { $files += @(Get-ChildItem -LiteralPath $project -File -Recurse) }
+          }
+          $omitted = [Collections.Generic.List[object]]::new()
+          [long]$total=0; $count=0
+          foreach ($file in $files) {
+            $relative = [IO.Path]::GetRelativePath($root,$file.FullName)
+            if ($file.Extension -in @('.exe','.dll','.oct','.amb','.mtx') -or $file.Length -gt 64MB -or $total+$file.Length -gt 256MB -or $count -ge 5000) { $omitted.Add(@{file=$relative;bytes=$file.Length}); continue }
+            $destination = Join-Path $stage $relative
+            New-Item -ItemType Directory -Path (Split-Path -Parent $destination) -Force | Out-Null
+            Copy-Item -LiteralPath $file.FullName -Destination $destination
+            $total += $file.Length; $count++
+          }
+          @{source_commit=$env:GITHUB_SHA;job_status=$env:OBSERVED_JOB_STATUS;copied_files=$count;copied_bytes=$total;omitted=$omitted.ToArray();release_acceptance_complete=$false;matched_hour_suite='pending'} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stage 'capture.json') -Encoding utf8NoBOM
+          if ($env:OBSERVED_JOB_STATUS -eq 'success' -and ($omitted.Count -or !(Test-Path (Join-Path $stage 'summary.json')))) { throw 'Successful selected-hour job lacks complete bounded evidence' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: greenlens-selected-hour-${{ github.sha }}
+          path: ${{ env.CI_CASE_UPLOAD }}/
+          if-no-files-found: error
+          retention-days: 14
+  annual:
+    needs: native
+    runs-on: windows-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        alternative: [A, B]
+        profile: [shipping, reference]
+    env:
+      ANNUAL_ALTERNATIVE: ${{ matrix.alternative }}
+      ANNUAL_PROFILE: ${{ matrix.profile }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required PowerShell and isolated evidence paths
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 is required' }
+          Write-Host "PowerShell $($PSVersionTable.PSVersion); required >=7.5"
+          "CI_CLI_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-cli')" >> $env:GITHUB_ENV
+          "CI_CASE_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-annual 空間')" >> $env:GITHUB_ENV
+      - uses: actions/download-artifact@v4
+        with:
+          name: greenlens-ci-cli-${{ github.sha }}
+          path: ${{ env.CI_CLI_ROOT }}
+      - name: Verify actual CLI bytes and checked-out source identity
+        run: |
+          $identity = Get-Content (Join-Path $env:CI_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          $cli = Join-Path $env:CI_CLI_ROOT 'greenlens.exe'
+          if ($identity.source_commit -cne $env:GITHUB_SHA -or $identity.source_dirty -cne $false -or (Get-FileHash $cli).Hash.ToLowerInvariant() -cne $identity.cli_sha256) { throw 'Downloaded CLI differs from the clean build artifact' }
+          "CI_CLI=$cli" >> $env:GITHUB_ENV
+      - name: Required pinned native engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/install-radiance.ps1
+      - name: One complete year for the explicit alternative and profile
+        timeout-minutes: 300
+        run: |
+          ./scripts/annual-single-run.ps1 -Alternative $env:ANNUAL_ALTERNATIVE -Profile $env:ANNUAL_PROFILE -Cli $env:CI_CLI -OutputDirectory $env:CI_CASE_ROOT
+          $summary = Get-Content (Join-Path $env:CI_CASE_ROOT 'summary.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+          $identity = Get-Content (Join-Path $env:CI_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          if (!$summary.pass -or !$summary.full_evidence_validated -or $summary.intervals -ne 8760 -or $summary.sensors -ne 24 -or $summary.alternative -cne $env:ANNUAL_ALTERNATIVE -or $summary.profile -cne $env:ANNUAL_PROFILE -or $summary.cli_sha256 -cne $identity.cli_sha256 -or $summary.source_commit -cne $env:GITHUB_SHA -or $summary.source_worktree_dirty -cne $false) { throw 'Complete annual evidence, CLI identity or embedded source identity differs' }
+      - name: Collect bounded annual project and diagnostics even after failure
+        if: always()
+        env:
+          OBSERVED_JOB_STATUS: ${{ job.status }}
+        run: |
+          $stage = Join-Path $env:RUNNER_TEMP 'greenlens-annual-evidence'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          "CI_CASE_UPLOAD=$stage" >> $env:GITHUB_ENV
+          $root = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-annual 空間'
+          $files = @()
+          if (Test-Path -LiteralPath $root) {
+            $files += @(Get-ChildItem -LiteralPath $root -File | Where-Object Extension -In @('.json','.txt','.zip'))
+            $project = Join-Path $root 'project'
+            if (Test-Path -LiteralPath $project) { $files += @(Get-ChildItem -LiteralPath $project -File -Recurse) }
+          }
+          $omitted = [Collections.Generic.List[object]]::new()
+          [long]$total=0; $count=0
+          foreach ($file in $files) {
+            $relative = [IO.Path]::GetRelativePath($root,$file.FullName)
+            if ($file.Extension -in @('.exe','.dll','.oct','.amb','.mtx') -or $file.Length -gt 64MB -or $total+$file.Length -gt 256MB -or $count -ge 5000) { $omitted.Add(@{file=$relative;bytes=$file.Length}); continue }
+            $destination = Join-Path $stage $relative
+            New-Item -ItemType Directory -Path (Split-Path -Parent $destination) -Force | Out-Null
+            Copy-Item -LiteralPath $file.FullName -Destination $destination
+            $total += $file.Length; $count++
+          }
+          @{source_commit=$env:GITHUB_SHA;job_status=$env:OBSERVED_JOB_STATUS;alternative=$env:ANNUAL_ALTERNATIVE;profile=$env:ANNUAL_PROFILE;copied_files=$count;copied_bytes=$total;omitted=$omitted.ToArray();release_acceptance_complete=$false;matched_hour_suite='pending'} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stage 'capture.json') -Encoding utf8NoBOM
+          if ($env:OBSERVED_JOB_STATUS -eq 'success' -and ($omitted.Count -or !(Test-Path (Join-Path $stage 'summary.json')))) { throw 'Successful annual job lacks complete bounded evidence' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: greenlens-annual-${{ matrix.profile }}-${{ matrix.alternative }}-${{ github.sha }}
+          path: ${{ env.CI_CASE_UPLOAD }}/
+          if-no-files-found: error
+          retention-days: 14
+  annual_convergence:
+    needs: [native, selected_hour, annual]
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required PowerShell and isolated evidence paths
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 is required' }
+          Write-Host "PowerShell $($PSVersionTable.PSVersion); required >=7.5"
+          "CI_CLI_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-cli')" >> $env:GITHUB_ENV
+          "CI_DOWNLOADS=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-annual-inputs')" >> $env:GITHUB_ENV
+          "CI_COMPARISON=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-convergence 空間')" >> $env:GITHUB_ENV
+      - uses: actions/download-artifact@v4
+        with:
+          name: greenlens-ci-cli-${{ github.sha }}
+          path: ${{ env.CI_CLI_ROOT }}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: greenlens-annual-*-${{ github.sha }}
+          path: ${{ env.CI_DOWNLOADS }}
+          merge-multiple: false
+      - name: Required pinned engine identity (no calculation in aggregation)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ./scripts/install-radiance.ps1
+          $manifest = Get-Content dependencies/radiance.json -Raw | ConvertFrom-Json -DateKind String
+          $engine = Join-Path $env:LOCALAPPDATA 'GreenLens/engines/radiance-6.0.2/package'
+          foreach ($entry in $manifest.annual_workflow_review.executables.PSObject.Properties) {
+            if ((Get-FileHash (Join-Path $engine "bin/$($entry.Name).exe")).Hash.ToLowerInvariant() -cne $entry.Value.sha256) { throw 'Required annual engine executable differs' }
+          }
+          foreach ($entry in $manifest.annual_workflow_review.additional_critical_libraries.PSObject.Properties) {
+            if ((Get-FileHash (Join-Path $engine "lib/$($entry.Name)")).Hash.ToLowerInvariant() -cne $entry.Value.sha256) { throw 'Required annual engine library differs' }
+          }
+      - name: Validate complete matrix, actual CLI and reviewed weather bindings
+        run: |
+          $cli = Join-Path $env:CI_CLI_ROOT 'greenlens.exe'
+          $identity = Get-Content (Join-Path $env:CI_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          if ($identity.source_commit -cne $env:GITHUB_SHA -or $identity.source_dirty -cne $false -or (Get-FileHash $cli).Hash.ToLowerInvariant() -cne $identity.cli_sha256) { throw 'Downloaded CLI identity differs' }
+          $dataset = (Get-Content dependencies/weather.json -Raw | ConvertFrom-Json -DateKind String).datasets[0]
+          $runs = @()
+          foreach ($profile in @('shipping','reference')) {
+            foreach ($alternative in @('A','B')) {
+              $folder = Join-Path $env:CI_DOWNLOADS "greenlens-annual-$profile-$alternative-$env:GITHUB_SHA"
+              $summary = Get-Content (Join-Path $folder 'summary.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+              $capture = Get-Content (Join-Path $folder 'capture.json') -Raw | ConvertFrom-Json -DateKind String
+              if (!$summary.pass -or !$summary.full_evidence_validated -or $summary.alternative -cne $alternative -or $summary.profile -cne $profile -or $summary.intervals -ne 8760 -or $summary.sensors -ne 24 -or $summary.source_commit -cne $env:GITHUB_SHA -or $summary.source_worktree_dirty -cne $false -or $summary.cli_sha256 -cne $identity.cli_sha256 -or $capture.job_status -cne 'success' -or $capture.source_commit -cne $env:GITHUB_SHA -or @($capture.omitted).Count) { throw 'Annual matrix member is incomplete or belongs to a different source/CLI' }
+              foreach ($field in @('original_sha256','normalized_sha256','time_axis_sha256','interpretation')) {
+                if ($summary.weather.$field -cne $dataset.$field) { throw "Annual weather $field differs from reviewed real dataset" }
+              }
+              if ($summary.project -cne 'project' -or $summary.evidence -cne 'annual-evidence.zip' -or (Get-FileHash (Join-Path $folder 'annual-evidence.zip')).Hash.ToLowerInvariant() -cne $summary.package_sha256) { throw 'Annual portable package identity differs' }
+              $runs += @{alternative=$alternative;profile=$profile;project=[IO.Path]::GetRelativePath($env:CI_DOWNLOADS,(Join-Path $folder 'project'));run_id=$summary.run_id}
+            }
+          }
+          if (@(Get-ChildItem -LiteralPath $env:CI_DOWNLOADS -Directory).Count -ne 4) { throw 'Missing or unexpected annual matrix artifacts' }
+          @{schema_version='greenlens.annual-convergence-inputs.v0.3';runs=$runs} | ConvertTo-Json -Depth 10 | Set-Content (Join-Path $env:CI_DOWNLOADS 'selection.json') -Encoding utf8NoBOM
+          ./scripts/annual-compare-convergence.ps1 -InputsFile (Join-Path $env:CI_DOWNLOADS 'selection.json') -Cli $cli -OutputDirectory $env:CI_COMPARISON -ExpectedSensorCount 24
+          $result = Get-Content (Join-Path $env:CI_COMPARISON 'convergence.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+          if (!$result.pass -or $result.metric_check_count -ne 240 -or $result.partition_check_count -ne 96 -or @($result.validated_runs).Count -ne 4) { throw 'Convergence did not validate every annual sensor, metric and partition' }
+          function Read-CiValidatedRecord([string]$archive,[string]$runId) {
+            . ./scripts/annual-compare-convergence.ps1 -FunctionsOnly
+            Read-ConvergenceRecord $archive $runId
+          }
+          foreach ($validated in $result.validated_runs) {
+            # Recheck the records from the new Rust-validated exports, not just
+            # the downloaded orchestration summaries. Paths are constructed.
+            $archive = Join-Path $env:CI_COMPARISON "$($validated.profile)-$($validated.alternative).zip"
+            $record = Read-CiValidatedRecord $archive $validated.run_id
+            if ($record.provenance.source_commit -cne $env:GITHUB_SHA -or $record.provenance.source_worktree_dirty -cne $false) { throw 'Validated immutable run differs from the clean CI source' }
+            foreach ($field in @('original_sha256','normalized_sha256','time_axis_sha256','interpretation')) {
+              if ($record.study.calculation.weather.$field -cne $dataset.$field) { throw "Validated immutable weather $field differs from reviewed real data" }
+            }
+          }
+      - name: Collect bounded convergence diagnostics even after failure
+        if: always()
+        env:
+          OBSERVED_JOB_STATUS: ${{ job.status }}
+        run: |
+          $stage = Join-Path $env:RUNNER_TEMP 'greenlens-convergence-evidence'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          "CI_COMPARISON_UPLOAD=$stage" >> $env:GITHUB_ENV
+          $root = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-convergence 空間'
+          $omitted = [Collections.Generic.List[object]]::new()
+          [long]$total=0; $count=0
+          if (Test-Path -LiteralPath $root) {
+            foreach ($file in Get-ChildItem -LiteralPath $root -File | Where-Object Extension -In @('.json','.txt')) {
+              if ($file.Length -gt 8MB -or $total+$file.Length -gt 64MB -or $count -ge 100) { $omitted.Add(@{file=$file.Name;bytes=$file.Length}); continue }
+              Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $stage $file.Name)
+              $total += $file.Length; $count++
+            }
+          }
+          @{source_commit=$env:GITHUB_SHA;job_status=$env:OBSERVED_JOB_STATUS;copied_files=$count;copied_bytes=$total;omitted=$omitted.ToArray();release_acceptance_complete=$false;matched_hour_suite='pending final scientific interface';full_annual_replay='separate downstream A/B jobs';installed_desktop_acceptance='pending'} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stage 'capture.json') -Encoding utf8NoBOM
+          'This verifies the configured CI foundation only. Shipping replay follows in separate A/B jobs. Final matched-hour science and installed v0.3 desktop acceptance remain required and are not established by this workflow.' >> $env:GITHUB_STEP_SUMMARY
+          if ($env:OBSERVED_JOB_STATUS -eq 'success' -and ($omitted.Count -or !(Test-Path (Join-Path $stage 'convergence.json')))) { throw 'Successful convergence job lacks complete bounded evidence' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: greenlens-convergence-${{ github.sha }}
+          path: ${{ env.CI_COMPARISON_UPLOAD }}/
+          if-no-files-found: error
+          retention-days: 14
+  annual_replay:
+    needs: [native, annual, annual_convergence]
+    runs-on: windows-latest
+    timeout-minutes: 350
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        alternative: [A, B]
+    env:
+      REPLAY_ALTERNATIVE: ${{ matrix.alternative }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required PowerShell and isolated replay paths
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 is required' }
+          Write-Host "PowerShell $($PSVersionTable.PSVersion); required >=7.5"
+          "CI_CLI_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-cli')" >> $env:GITHUB_ENV
+          "CI_REPLAY_INPUT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-replay-input')" >> $env:GITHUB_ENV
+          "CI_REPLAY_OUTPUT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-annual-replay 空間')" >> $env:GITHUB_ENV
+      - uses: actions/download-artifact@v4
+        with:
+          name: greenlens-ci-cli-${{ github.sha }}
+          path: ${{ env.CI_CLI_ROOT }}
+      - uses: actions/download-artifact@v4
+        with:
+          name: greenlens-annual-shipping-${{ matrix.alternative }}-${{ github.sha }}
+          path: ${{ env.CI_REPLAY_INPUT }}
+      - name: Verify frozen CLI and shipping package identity
+        run: |
+          $cli = Join-Path $env:CI_CLI_ROOT 'greenlens.exe'
+          $identity = Get-Content (Join-Path $env:CI_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          if ($identity.source_commit -cne $env:GITHUB_SHA -or $identity.source_dirty -cne $false -or (Get-FileHash $cli).Hash.ToLowerInvariant() -cne $identity.cli_sha256) { throw 'Downloaded replay CLI differs from the clean build artifact' }
+          $summary = Get-Content (Join-Path $env:CI_REPLAY_INPUT 'summary.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+          $capture = Get-Content (Join-Path $env:CI_REPLAY_INPUT 'capture.json') -Raw | ConvertFrom-Json -DateKind String
+          if (!$summary.pass -or !$summary.full_evidence_validated -or $summary.alternative -cne $env:REPLAY_ALTERNATIVE -or $summary.profile -cne 'shipping' -or $summary.intervals -ne 8760 -or $summary.sensors -ne 24 -or $summary.source_commit -cne $env:GITHUB_SHA -or $summary.source_worktree_dirty -cne $false -or $summary.cli_sha256 -cne $identity.cli_sha256 -or $capture.job_status -cne 'success' -or @($capture.omitted).Count) { throw 'Shipping replay input is incomplete or from a different source/CLI' }
+          $package = Join-Path $env:CI_REPLAY_INPUT 'annual-evidence.zip'
+          if ($summary.evidence -cne 'annual-evidence.zip' -or (Get-FileHash $package).Hash.ToLowerInvariant() -cne $summary.package_sha256) { throw 'Shipping replay package bytes differ' }
+          "CI_CLI=$cli" >> $env:GITHUB_ENV
+          "CI_REPLAY_PACKAGE=$package" >> $env:GITHUB_ENV
+      - name: Required pinned native engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/install-radiance.ps1
+      - name: Replay every shipping interval and sensor
+        timeout-minutes: 300
+        run: |
+          ./scripts/annual-replay.ps1 -Package $env:CI_REPLAY_PACKAGE -Cli $env:CI_CLI -OutputDirectory $env:CI_REPLAY_OUTPUT -ExpectedAlternatives $env:REPLAY_ALTERNATIVE -ExpectedProfile shipping -ExpectedSensorCount 24 -EngineDirectory (Join-Path $env:LOCALAPPDATA 'GreenLens/engines/radiance-6.0.2/package')
+          $result = Get-Content (Join-Path $env:CI_REPLAY_OUTPUT 'summary.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+          $input = Get-Content (Join-Path $env:CI_REPLAY_INPUT 'summary.json') -Raw | ConvertFrom-Json -DateKind String -Depth 100
+          $identity = Get-Content (Join-Path $env:CI_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          if (!$result.pass -or !$result.package_unchanged -or !$result.cli_unchanged -or $result.cli_sha256 -cne $identity.cli_sha256 -or $result.package_sha256 -cne $input.package_sha256 -or @($result.expected_runs).Count -ne 1 -or @($result.checks).Count -ne 1 -or $result.expected_runs[0].id -cne $input.run_id -or $result.checks[0].run_id -cne $input.run_id) { throw 'Annual replay did not verify exactly the retained shipping run' }
+          $record = $result.expected_runs[0]
+          if ($record.source_commit -cne $env:GITHUB_SHA -or $record.source_worktree_dirty -cne $false) { throw 'Replayed immutable record has different source provenance' }
+          $dataset = (Get-Content dependencies/weather.json -Raw | ConvertFrom-Json -DateKind String).datasets[0]
+          foreach ($field in @('original_sha256','normalized_sha256','time_axis_sha256','interpretation')) {
+            if ($record.weather.$field -cne $dataset.$field) { throw "Replayed weather $field differs from the reviewed dataset" }
+          }
+          "Shipping $env:REPLAY_ALTERNATIVE replay checked all 8760 intervals × 24 sensors. This is same-engine integration, not independent physical validation or complete release acceptance." >> $env:GITHUB_STEP_SUMMARY
+      - name: Collect bounded replay diagnostics even after failure
+        if: always()
+        env:
+          OBSERVED_JOB_STATUS: ${{ job.status }}
+        run: |
+          $stage = Join-Path $env:RUNNER_TEMP 'greenlens-replay-evidence'
+          New-Item -ItemType Directory -Path $stage -Force | Out-Null
+          "CI_REPLAY_UPLOAD=$stage" >> $env:GITHUB_ENV
+          $root = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-annual-replay 空間'
+          $omitted = [Collections.Generic.List[object]]::new()
+          [long]$total=0; $count=0
+          if (Test-Path -LiteralPath $root) {
+            foreach ($file in Get-ChildItem -LiteralPath $root -File | Where-Object Extension -In @('.json','.txt')) {
+              if ($file.Length -gt 8MB -or $total+$file.Length -gt 64MB -or $count -ge 100) { $omitted.Add(@{file=$file.Name;bytes=$file.Length}); continue }
+              Copy-Item -LiteralPath $file.FullName -Destination (Join-Path $stage $file.Name)
+              $total += $file.Length; $count++
+            }
+          }
+          @{source_commit=$env:GITHUB_SHA;job_status=$env:OBSERVED_JOB_STATUS;alternative=$env:REPLAY_ALTERNATIVE;copied_files=$count;copied_bytes=$total;omitted=$omitted.ToArray();release_acceptance_complete=$false;matched_hour_suite='pending final scientific interface';installed_desktop_acceptance='pending'} | ConvertTo-Json -Depth 8 | Set-Content (Join-Path $stage 'capture.json') -Encoding utf8NoBOM
+          if ($env:OBSERVED_JOB_STATUS -eq 'success' -and ($omitted.Count -or !(Test-Path (Join-Path $stage 'summary.json')) -or !(Test-Path (Join-Path $stage 'replay.json')))) { throw 'Successful replay lacks complete bounded evidence' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: greenlens-replay-shipping-${{ matrix.alternative }}-${{ github.sha }}
+          path: ${{ env.CI_REPLAY_UPLOAD }}/
+          if-no-files-found: error
+          retention-days: 14

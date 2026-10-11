@@ -14,7 +14,10 @@ function Get-PackageDocumentPaths {
         'docs/v0.3-native-verification.md','docs/progress.md',
         'docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md',
         'docs/v0.3-engine-investigation.json','scripts/annual-validation-plan.json',
-        'scripts/annual-high-ad-uniform.ps1',
+        'scripts/annual-high-ad-uniform.ps1','scripts/annual-paired-primary.ps1',
+        'scripts/annual-residual-audit.py',
+        'docs/evidence/v0.3-native/candidate04-artifacts.json',
+        'docs/evidence/v0.3-native/candidate04-historical-inspection.json',
         'docs/profile-investigation.json','docs/engine-feasibility.md',
         'docs/gate-0-evidence.json','docs/science-fixtures-evidence.json','docs/science-evidence.json',
         'docs/evidence/v0.3-engine/method2-actual-ab-twelve-hours-failed.json',
@@ -25,6 +28,8 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-engine/scaled-reference-point-failed.json',
         'docs/evidence/v0.3-engine/path-weight-point-diagnostic.json',
         'docs/evidence/v0.3-engine/moderate-two-sensor-transport-pilot.json',
+        'docs/evidence/v0.3-engine/method4-annual-negative-residuals.json',
+        'docs/evidence/v0.3-engine/paired-primary-coupling.json',
         'dependencies/radiance.json','dependencies/weather.json',
         'third-party/Radiance-LICENSE.txt','third-party/Radiance-gendaymtx-NOTICE.txt'
     )

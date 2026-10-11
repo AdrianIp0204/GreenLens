@@ -3,7 +3,7 @@ import { invoke } from '@tauri-apps/api/core';
 import type { ClimateComparison, ClimateProjectDocument, ClimateRunRecord, ClimateSensorSeries, ClimateValues, CurrentClimateResult, ResultField, Study, WeatherIntervalView } from '../climate-types';
 import type { ValidatedModel } from '../types';
 import { climateOverlayMatches, climateRequestKey, ClimateRequestGate } from './climate-presentation.mjs';
-import { selectedPairProject, selectedPairRelation, snapshotDisplayContext, snapshotDisplayScale } from './climate-pair-context.mjs';
+import { climateRelationKey, selectedRecordProject, selectedPairProject, selectedPairRelation, snapshotDisplayContext, snapshotDisplayScale } from './climate-pair-context.mjs';
 
 interface Options {
   documentId:number; path:string; project:ClimateProjectDocument|null; alternative:string;
@@ -43,7 +43,20 @@ export function useClimateResults(options:Options) {
   },[key]);
   const result=response?.key===key?response:null;
   const values=result?.value??null;
-  const canOverlay=climateOverlayMatches(summary,current,values,validated);
+  // A compatible older snapshot may overlay; the newest run's identity cannot
+  // establish that relationship. Rust checks this one immutable record against
+  // the current study, including the complete profile and engine method.
+  const selectedProject=selectedRecordProject(project,summary);
+  const relationKey=JSON.stringify([documentId,view.runId,alternative,study,climateRelationKey(path,selectedProject)]);
+  const [relation,setRelation]=useState<{key:string;value:CurrentClimateResult|null;error:string}|null>(null);
+  useEffect(()=>{let live=true;if(view.runId==='current'||!path||!summary||!selectedProject?.climate||!study)return;
+    invoke<CurrentClimateResult>('current_climate_result',{path,project:selectedProject,alternativeId:alternative,study})
+      .then(value=>live&&setRelation({key:relationKey,value,error:''})).catch(e=>live&&setRelation({key:relationKey,value:null,error:String(e)}));
+    return()=>{live=false;};},[relationKey]);
+  const selectedResponse=relation?.key===relationKey?relation:null;
+  const selectedCondition=view.runId==='current'?current:selectedResponse?.value??null;
+  const selectedRelation=selectedPairRelation(summary,selectedCondition??undefined,selectedResponse?.error);
+  const canOverlay=climateOverlayMatches(summary,selectedCondition,values,validated);
   const weatherView=useWeatherView(path,project,run,interval);
   const sensorId=selection.find(id=>id.startsWith('sensor:'))?.slice(7)??null;
   const seriesKey=JSON.stringify([path,summary?.id,summary?.record_sha256,sensorId]);
@@ -78,7 +91,7 @@ export function useClimateResults(options:Options) {
   // This projection is used only for a read: the shared Rust lookup must bind
   // metric identity to the selected raw series, not the newest compatible run.
   const pairProject=selectedPairProject(project,a,b);
-  const conditionsKey=JSON.stringify([path,pairProject?.id,pairProject?.alternatives,pairProject?.climate?.studies,pairProject?.climate?.runs]);
+  const conditionsKey=climateRelationKey(path,pairProject);
   const [conditions,setConditions]=useState<{key:string;values:Record<string,CurrentClimateResult>;error:string}|null>(null);
   useEffect(()=>{let live=true;if(!path||!pairProject?.climate)return;
     Promise.all((['A','B'] as const).map(async id=>[id,await invoke<CurrentClimateResult>('current_climate_result',{path,project:pairProject,alternativeId:id,study:pairProject.climate!.studies[id]})] as const))
@@ -87,7 +100,7 @@ export function useClimateResults(options:Options) {
   const activeConditions=conditions?.key===conditionsKey?conditions:null;
   const pairRelation=(side:'A'|'B')=>selectedPairRelation(side==='A'?a:b,activeConditions?.values[side],activeConditions?.error);
   return {path,run,summary,selectedRunId:view.runId,selectRun:(runId:string)=>update({runId}),field,setField:(field:ResultField)=>update({field}),
-    interval,setInterval:(interval:number)=>update({interval}),annual,values,canOverlay,loading:Boolean(key&&!result),error:result?.error??'',
+    interval,setInterval:(interval:number)=>update({interval}),annual,values,canOverlay,selectedRelation,loading:Boolean(key&&!result),error:result?.error??'',
     scale:snapshotDisplayScale(field,values),
     weather:weatherView?.value??null,weatherError:weatherView?.error??'',sensorSeries:sensorSeries?.value??null,seriesError:sensorSeries?.error??'',sensorId,
     pairTime:{path,annual:pairAnnual,field:pairField,interval:pairInterval,setInterval:(interval:number)=>setPairDisplay({...pairView,documentId,interval}),weather:pairWeather?.value??null,weatherError:pairWeather?.error??''},

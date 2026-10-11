@@ -6,6 +6,7 @@ import type {
 } from '../climate-types';
 import { draftFromStudy, fileLabel, matchingInterval, sameWeather, studyFromDraft, type StudyDraft } from './climate-study-form.mjs';
 import './climate-study.css';
+import { runStudyTask } from './climate-study-task.mjs';
 import { WeatherCalendarPicker } from './WeatherCalendarPicker';
 
 export interface ClimateStudyPanelProps {
@@ -119,16 +120,14 @@ export function ClimateStudyPanel({ study, weather, path, disabled, onCommitStud
     setDraft(current => current ? { ...current, [key]: value } : current); setStatus(''); setError('');
   };
   const fail = (reason: unknown) => { const text = message(reason); setError(text); onError(text); };
-  const task = async (action: (stillCurrent: () => boolean) => Promise<void>) => {
-    if (inFlight.current || disabledNow.current) return;
-    const generation = context.current;
-    const current = () => context.current === generation && !disabledNow.current;
-    inFlight.current = true; setBusy(true); setError(''); setStatus('');
-    try { await action(current); } catch (reason) { if (context.current === generation) fail(reason); }
-    finally { if (context.current === generation) { inFlight.current = false; setBusy(false); } }
-  };
-  const apply = () => task(async current => {
-    if (!base || !draft || !current()) return;
+  const task = (action: (stillCurrent: () => boolean, canContinue: () => boolean) => Promise<void>) =>
+    runStudyTask(context, inFlight, disabledNow, action, {
+      start: () => { setBusy(true); setError(''); setStatus(''); },
+      failure: fail,
+      finish: () => setBusy(false),
+    });
+  const apply = () => task(async (current, canContinue) => {
+    if (!base || !draft || !canContinue()) return;
     const accepted = await onCommitStudy(studyFromDraft(base, draft, weather), 'Apply daylight study');
     if (current()) setStatus(accepted ? 'Study applied.' : 'Not applied. Review the validation message; your draft is retained.');
   });
@@ -141,14 +140,14 @@ export function ClimateStudyPanel({ study, weather, path, disabled, onCommitStud
     const inspected = await call('weather_inspect', { path: file, profile });
     if (current()) setInspection(inspected);
   });
-  const readSource = () => task(async current => {
+  const readSource = () => task(async (current, canContinue) => {
     const selected = await call('dialog_weather_source', { initialPath: file || path || null });
-    if (!selected || !current()) return;
+    if (!selected || !canContinue()) return;
     const declaration = await call('weather_read_source', { path: selected });
     if (current()) setSource(declaration);
   });
-  const importFile = () => task(async current => {
-    if (!inspection || !file || !current()) return;
+  const importFile = () => task(async (current, canContinue) => {
+    if (!inspection || !file || !canContinue()) return;
     const accepted = await onImportWeather(file, profile, { ...source, source_url: source.source_url?.trim() || null });
     if (current()) {
       if (accepted) { setImportOpen(false); setFile(''); setInspection(null); setStatus('Weather retained in this project. Select the study mode, then Apply.'); }

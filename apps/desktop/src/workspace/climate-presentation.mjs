@@ -1,3 +1,5 @@
+import { selectedRecordMatches } from './climate-pair-context.mjs';
+
 /** Display coordination only: authoritative identities/values come from Rust. */
 export const CLIMATE_FIELDS = [
   ['illuminance', 'Hourly illuminance', 'lx'], ['da', 'DA', '% of occupied time'],
@@ -9,7 +11,7 @@ export function climateRequestKey(path, summary, field, interval, settings) {
 }
 export function climateOverlayMatches(summary, current, values, validated) {
   return Boolean(summary && current && values && validated &&
-    summary.physical_input_hash === current.physical_input_hash && values.run_id === summary.id &&
+    selectedRecordMatches(summary, current) && values.run_id === summary.id &&
     values.sensor_ids.length === validated.sensor_grid.sensors.length &&
     values.sensor_ids.every((id, i) => id === validated.sensor_grid.sensors[i].id));
 }

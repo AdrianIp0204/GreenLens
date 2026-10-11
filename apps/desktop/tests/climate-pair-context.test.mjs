@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { selectedPairProject, selectedPairRelation, snapshotDisplayContext, snapshotDisplayScale } from '../src/workspace/climate-pair-context.mjs';
+import { climateRelationKey, selectedRecordProject, selectedPairProject, selectedPairRelation, snapshotDisplayContext, snapshotDisplayScale } from '../src/workspace/climate-pair-context.mjs';
 
 const oldA={id:'old-a',alternative_id:'A',record_sha256:'old-seal',physical_input_hash:'same-input'};
 const newA={...oldA,id:'new-a',record_sha256:'different-series-seal'};
@@ -31,7 +31,7 @@ test('empty comparison side never falls back to a newer run for relation lookup'
 test('relationship uses Rust selected-record metric currentness, not another result checksum',()=>{
   // Mock Rust responses test presentation only. Physical/metric identity
   // correctness has a separate native Rust fixture; no physics is computed here.
-  const selected={physical_input_hash:'same-input',stored_metric_identity:'old-series+300',requested_metric_identity:'old-series+300',metrics_current:true};
+  const selected={summary:oldA,run:{id:oldA.id},physical_input_hash:'same-input',stored_metric_identity:'old-series+300',requested_metric_identity:'old-series+300',metrics_current:true};
   assert.doesNotMatch(selectedPairRelation(oldA,selected),/SETTINGS DIFFER/);
   assert.match(selectedPairRelation(oldA,{...selected,requested_metric_identity:'old-series+500',metrics_current:false}),/METRIC SETTINGS DIFFER/);
   assert.match(selectedPairRelation(oldA,{...selected,physical_input_hash:'edited'}),/CURRENT-STUDY MISMATCH/);
@@ -61,4 +61,30 @@ test('main legend/viewport scale uses only that snapshot and metric units remain
   assert.equal(snapshotDisplayScale('illuminance',main),50);
   assert.equal(snapshotDisplayScale('da',main),100);
   assert.equal(snapshotDisplayScale('illuminance',{statistics:{max:0}}),1);
+});
+
+// Synthetic Rust responses exercise UI identity handling, not engine validation.
+test('same-role hash cannot override Rust rejection of a historical numerical profile',()=>{
+  const rejected={physical_input_hash:'same-input',summary:null,run:null,stored_metric_identity:null,requested_metric_identity:null,metrics_current:false};
+  assert.match(selectedPairRelation(oldA,rejected),/CURRENT-STUDY MISMATCH/);
+  assert.match(selectedPairRelation(oldA,{...rejected,summary:newA,run:{id:newA.id}}),/CURRENT-STUDY MISMATCH/);
+  assert.match(selectedPairRelation(oldA,{...rejected,summary:{...oldA,record_sha256:'changed'},run:{id:oldA.id}}),/CURRENT-STUDY MISMATCH/);
+  assert.doesNotMatch(selectedPairRelation(oldA,{...rejected,summary:oldA,run:{id:oldA.id}}),/MISMATCH/);
+});
+
+test('single-snapshot relationship uses unchanged current inputs and invalidates edits or record replacement',()=>{
+  const before=structuredClone(project);
+  const selected=selectedRecordProject(project,oldA);
+  assert.deepEqual(selected.climate.runs,[oldA]);
+  assert.deepEqual(project,before);
+  const key=climateRelationKey('saved-project',selected);
+  const edited=structuredClone(selected);edited.alternatives[0].model.width=5;
+  const metrics=structuredClone(selected);metrics.climate.studies.A.threshold=500;
+  for(const changed of [
+    climateRelationKey('copied-project',selected),
+    climateRelationKey('saved-project',edited),
+    climateRelationKey('saved-project',metrics),
+    climateRelationKey('saved-project',selectedRecordProject(project,newA)),
+    climateRelationKey('saved-project',selectedRecordProject(project,{...oldA,record_sha256:'changed-seal'})),
+  ])assert.notEqual(changed,key);
 });

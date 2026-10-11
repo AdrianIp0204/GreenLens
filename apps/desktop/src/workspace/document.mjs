@@ -23,7 +23,7 @@ export class DocumentHistory {
       return { project: next, validated, changed: true };
     } finally { this.busy = false; }
   }
-  async traverse(project, direction, validate) {
+  async traverse(project, direction, validate, checkEdit = () => {}) {
     if (this.busy) throw new Error('Wait for the current document edit to finish.');
     const source = direction === 'undo' ? this.past : this.future;
     const target = direction === 'undo' ? this.future : this.past;
@@ -31,7 +31,11 @@ export class DocumentHistory {
     if (!entry) throw new Error(`Nothing to ${direction}.`);
     this.busy = true;
     try {
-      const validated = await validate(clone(direction === 'undo' ? entry.before : entry.after));
+      const current = project.alternatives.find(a => a.id === entry.alternativeId);
+      if (!current) throw new Error('The design alternative no longer exists.');
+      const candidate = clone(direction === 'undo' ? entry.before : entry.after);
+      checkEdit(current.model, candidate);
+      const validated = await validate(candidate);
       const next = { ...project, alternatives: project.alternatives.map(a => a.id === entry.alternativeId ? { ...a, model: clone(validated.model) } : a) };
       source.pop(); target.push(entry);
       return { project: next, validated, alternativeId: entry.alternativeId, label: entry.label };

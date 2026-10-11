@@ -3,7 +3,7 @@ import { invoke, isTauri } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import type { Comparison, Model, RunRecord, ValidatedModel } from './types';
 import { visibleResult } from './presentation.mjs';
-import { semanticObjects, objectLabel, objectVisibility } from './viewport/entities';
+import { semanticObjects, objectLabel, objectVisibility, selectableIds } from './viewport/entities';
 import type { LayerId, NumericHandleRequest, PointerStatus, ToolId, ViewCommand, ViewId } from './viewport/types';
 import { useDocument, errorText } from './workspace/useDocument';
 import { COMMANDS, modelCommand, parseCommand, parseQuantity, repeatable, setParameter, suggestions } from './workspace/commands.mjs';
@@ -46,7 +46,7 @@ export default function App(){
   useEffect(()=>{const update=()=>{const css=`${window.innerWidth} × ${window.innerHeight} CSS px · DPR ${window.devicePixelRatio}`;setMetrics(css);if(isTauri())Promise.all([getCurrentWindow().innerSize(),getCurrentWindow().scaleFactor()]).then(([s,d])=>setMetrics(`${css} · native ${s.width} × ${s.height} px · scale ${d}`)).catch(()=>{});};update();window.addEventListener('resize',update);return()=>window.removeEventListener('resize',update);},[]);
   const log=(text:string)=>setHistory(h=>[...h.slice(-149),text]);
   const navigate=(kind:ViewCommand['kind'],view?:ViewId)=>setViewCommand({sequence:++seq.current,kind,view});
-  const select=(ids:string[])=>{setSelection(ids);setPanel('properties');};
+  const select=(ids:string[])=>{const accepted=selectableIds(ids,objects,doc.display);if(accepted.length<new Set(ids).size)doc.setError('Hidden or locked objects cannot be newly selected. Show and unlock the object or its layer first.');setSelection(accepted);setPanel('properties');};
   const toggleAid=(key:'grid_visible'|'grid_snap'|'ortho'|'object_snap'|'gumball'|'cutaway')=>doc.setDisplay(d=>({...d,[key]:!d[key]}));
   const dispatch=async(text:string)=>{
     try{
@@ -72,7 +72,7 @@ export default function App(){
       if(editDisabled)throw new Error('Finish the current edit or calculation first.');
       const result=modelCommand(doc.model,selection,name,args);
       if(!result.model){setPrompt({prefix:text,label:result.prompt});commandRef.current?.focus();return;}
-      if(await doc.commit(result.model,result.label)){if(result.target)select(result.model[result.target as keyof Model]===null?[]:[result.target]);}
+      if(await doc.commit(result.model,result.label)){if(result.target){const state=objectVisibility(result.target,result.target as LayerId,doc.display);setSelection(result.model[result.target as keyof Model]!==null&&state.visible&&!state.locked?[result.target]:[]);setPanel('properties');}}
     }catch(e){doc.setError(errorText(e));log(`Rejected: ${errorText(e)}`);}
   };
   const dispatchRef=useRef(dispatch);dispatchRef.current=dispatch;

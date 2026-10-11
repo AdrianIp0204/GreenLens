@@ -20,6 +20,8 @@ The visible construction grid has 1 m lines in world XY (Top/Perspective), XZ (F
 
 Property fields accept lengths such as `1800mm`, `1.8m`, `150 cm`, `1ft` or `2in`. Enter commits; Escape restores the accepted value. Native text selection, clipboard and text-field undo shortcuts are preserved. Outside text fields: Ctrl+N/O/S, Ctrl+Shift+S, Ctrl+Z/Y, Ctrl+Shift+Z, Ctrl+A, Delete, F8 Ortho and F9 Grid Snap operate on the document/workspace.
 
+Undo/redo also respects the current object and layer locks. Unlock the affected entity before traversing its edit; a rejected traversal leaves both history stacks intact. Inspector and sensor-table links cannot newly select hidden or locked objects.
+
 ## Commands
 
 The command line is case insensitive and uses a fixed registry. Tab completes names, Up recalls the last command, and the arrow expands history. Commands with missing arguments prompt for values. Numeric command tokens attach their units, e.g. `1800mm`; plain numbers are metres or degrees as appropriate. Escape clears a prompt. Empty Enter repeats only safe navigation/selection commands, never Run, removal, save or document replacement.

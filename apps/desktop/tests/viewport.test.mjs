@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import { selectableIds } from '../src/viewport/interaction.mjs';
 import { worldToRender, renderToWorld, localToWorld, worldToLocal, mergeSelection, rectangleSelect, convexHull, snapCandidates, nearestSnap, handleDefinitions, candidateForHandle, candidateForPlanarMove, previewWireSegments } from '../src/viewport/interaction.mjs';
 
 const model = JSON.parse(fs.readFileSync(new URL('../../../examples/synthetic-b.json', import.meta.url)));
@@ -16,6 +17,15 @@ test('click replaces, Shift adds once, Ctrl removes only picked IDs', () => {
   assert.deepEqual(mergeSelection(['window'], ['window', 'overhang'], true), ['window', 'overhang']);
   assert.deepEqual(mergeSelection(['window', 'overhang'], ['window'], true, true), ['overhang']);
   assert.deepEqual(mergeSelection(['window'], []), []);
+});
+test('inspector and table selection honor inherited layer and object visibility/locks',()=>{
+  const objects=[{id:'room',layer:'room'},{id:'surface:south',layer:'room'},{id:'window',layer:'window'},{id:'sensor:s000001',layer:'sensors'}];
+  const display={layers:Object.fromEntries(['room','window','sensors'].map(id=>[id,{visible:true,locked:false}])),objects:{}};
+  display.layers.room.visible=false;display.objects['sensor-plane']={locked:true};
+  assert.deepEqual(selectableIds(objects.map(o=>o.id).concat(['unknown','window']),objects,display),['window']);
+  display.layers.room.visible=true;display.objects.room={locked:true};display.objects['sensor-plane']={visible:false};
+  assert.deepEqual(selectableIds(objects.map(o=>o.id),objects,display),['window']);
+  display.objects={};assert.deepEqual(selectableIds(objects.map(o=>o.id),objects,display),objects.map(o=>o.id));
 });
 test('window requires complete containment while crossing tests actual projected polygon', () => {
   const polygon = [[2, 2], [8, 2], [8, 8], [2, 8]];

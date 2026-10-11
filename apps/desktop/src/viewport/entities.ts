@@ -1,6 +1,7 @@
 import type { Surface, ValidatedModel, Vec3 } from '../types';
-import type { LayerId, SemanticObject, ViewportDisplayState } from './types';
+import type { LayerId, SemanticObject } from './types';
 import { localToWorld } from './interaction.mjs';
+export { objectVisibility, selectableIds } from './interaction.mjs';
 
 export const surfaceEntityId = (surface: Surface) => surface.material === 'glass' ? 'window' : surface.material === 'overhang' ? 'overhang' : surface.material === 'obstruction' ? 'obstruction' : `surface:${surface.id}`;
 export const surfaceLayer = (surface: Surface): LayerId => surface.material === 'glass' ? 'window' : surface.material === 'overhang' ? 'overhang' : surface.material === 'obstruction' ? 'obstruction' : 'room';
@@ -19,13 +20,4 @@ export function semanticObjects(validated: ValidatedModel): SemanticObject[] {
   const envelope = validated.surfaces.filter(s => ['wall', 'floor', 'ceiling'].includes(s.material)).flatMap(s => s.vertices);
   objects.set('room', { id: 'room', label: 'Room envelope', layer: 'room', vertices: envelope });
   return [...objects.values()];
-}
-export function objectVisibility(id: string, layer: LayerId, display: ViewportDisplayState): { visible: boolean; locked: boolean; color: string } {
-  const inherited = id.startsWith('surface:') ? display.objects.room : id.startsWith('sensor:') ? display.objects['sensor-plane'] : undefined;
-  const own = display.objects[id];
-  return {
-    visible: display.layers[layer].visible && inherited?.visible !== false && own?.visible !== false,
-    locked: display.layers[layer].locked || inherited?.locked === true || own?.locked === true,
-    color: own?.color ?? inherited?.color ?? display.layers[layer].color,
-  };
 }

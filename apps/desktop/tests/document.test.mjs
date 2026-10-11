@@ -35,6 +35,23 @@ test('invalid edits and failed undo validation preserve accepted document and bo
   await assert.rejects(h.traverse(first.project,'undo',async()=>{throw new Error('service unavailable');}),/unavailable/);
   assert.equal(h.past.length,1);assert.equal(h.future.length,0);assert.equal(h.busy,false);
 });
+test('undo and redo honor current locks across alternatives without consuming history',async()=>{
+  const h=new DocumentHistory(),p=project();
+  const display={layers:{window:{locked:false}},objects:{}};
+  const check=(before,after)=>{const reason=editLockReason(before,after,display);if(reason)throw new Error(reason);};
+  const edited=await h.edit(p,'B',setParameter(model,'window.width_m',1.6),'B width',validate);
+  display.layers.window.locked=true;
+  await assert.rejects(h.traverse(edited.project,'undo',validate,check),/locked/);
+  assert.equal(h.past.length,1);assert.equal(h.future.length,0);assert.equal(h.busy,false);
+  display.layers.window.locked=false;
+  const undone=await h.traverse(edited.project,'undo',validate,check);
+  display.objects.window={locked:true};
+  await assert.rejects(h.traverse(undone.project,'redo',validate,check),/locked/);
+  assert.equal(h.past.length,0);assert.equal(h.future.length,1);
+  display.objects.window.locked=false;
+  const redone=await h.traverse(undone.project,'redo',validate,check);
+  assert.deepEqual(redone.project,edited.project);
+});
 test('cancelled preview and no-op validation add no accepted history entry',async()=>{
   const h=new DocumentHistory(),p=project(),signature=documentSignature(p);
   const preview=setParameter(model,'window.center_x_m',2.3);assert.notDeepEqual(preview,model);

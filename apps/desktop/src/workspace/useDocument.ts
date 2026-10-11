@@ -95,7 +95,7 @@ export function useDocument() {
   };
   const traverse=async(direction:'undo'|'redo')=>runAction(async()=>{
     const s=state.current;if(!s.project||activeJob(s.job))throw new Error('Finish or cancel the calculation before undo/redo.');
-    const next=await history.current.traverse(s.project,direction,validate);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
+    const next=await history.current.traverse(s.project,direction,validate,(before,after)=>{const reason=editLockReason(before,after,s.display);if(reason)throw new Error(reason);});setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
   });
   const cancelAndWait=async()=>{const status=await invoke<JobStatus|null>('cancel_and_wait');setJob(status);state.current.job=status;return status;};
   const save=async(asCopy=false):Promise<boolean>=>{

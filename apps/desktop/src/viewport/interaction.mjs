@@ -11,6 +11,23 @@ export function mergeSelection(current, picked, shift = false, control = false) 
   if (control) return current.filter(id => !picked.includes(id));
   return shift ? [...new Set([...current, ...picked])] : [...new Set(picked)];
 }
+export function objectVisibility(id, layer, display) {
+  const inherited = id.startsWith('surface:') ? display.objects.room : id.startsWith('sensor:') ? display.objects['sensor-plane'] : undefined;
+  const own = display.objects[id];
+  return {
+    visible: display.layers[layer].visible && inherited?.visible !== false && own?.visible !== false,
+    locked: display.layers[layer].locked || inherited?.locked === true || own?.locked === true,
+    color: own?.color ?? inherited?.color ?? display.layers[layer].color,
+  };
+}
+export function selectableIds(ids, objects, display) {
+  return [...new Set(ids)].filter(id => {
+    const object = objects.find(o => o.id === id);
+    if (!object) return false;
+    const state = objectVisibility(id, object.layer, display);
+    return state.visible && !state.locked;
+  });
+}
 const between = (v, a, b) => v >= Math.min(a, b) && v <= Math.max(a, b);
 const orient = (a, b, c) => (b[0] - a[0]) * (c[1] - a[1]) - (b[1] - a[1]) * (c[0] - a[0]);
 function segmentsCross(a, b, c, d) {

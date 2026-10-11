@@ -1,4 +1,7 @@
 //! Shared application services for the CLI and native desktop.
+pub mod display;
+#[cfg(test)]
+mod document_tests;
 pub mod persistence;
 mod report;
 
@@ -38,6 +41,8 @@ pub struct Project {
     pub name: String,
     pub alternatives: Vec<Alternative>,
     pub runs: Vec<RunSummary>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub display_state: Option<display::DisplayState>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -91,6 +96,7 @@ pub fn example() -> Project {
             },
         ],
         runs: vec![],
+        display_state: None,
     }
 }
 fn validate_project(project: &Project) -> Result<()> {
@@ -99,6 +105,9 @@ fn validate_project(project: &Project) -> Result<()> {
         "Unsupported project schema"
     );
     Uuid::parse_str(&project.id)?;
+    if let Some(display) = &project.display_state {
+        display.validate()?;
+    }
     ensure!(
         !project.name.trim().is_empty() && project.name.len() <= 200,
         "Project name must contain 1–200 characters"
@@ -327,6 +336,85 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
     atomic_json(path, project)?;
     open_project(path)
 }
+/// Save a complete portable copy, publishing its manifest only after all
+/// immutable run evidence has been copied and verified. The source is read-only.
+pub fn save_project_as(
+    source: Option<&Path>,
+    destination: &Path,
+    project: &Project,
+    _expected_source_revision: Option<&str>,
+) -> Result<ProjectView> {
+    copy_project(source, destination, project, None)
+}
+fn copy_project(
+    source: Option<&Path>,
+    destination: &Path,
+    project: &Project,
+    pending: Option<(&Path, &RunRecord)>,
+) -> Result<ProjectView> {
+    validate_project(project)?;
+    let _source_lock = source.map(WriterLock::acquire).transpose()?;
+    if let Some(source) = source {
+        let saved: Project = read_json(&regular_child(source, "project.json")?)?;
+        validate_project(&saved)?;
+        ensure!(
+            saved.id == project.id,
+            "Save As source belongs to another project"
+        );
+        if destination.exists() {
+            ensure!(
+                source.canonicalize()? != destination.canonicalize()?,
+                "Save As requires a different project directory"
+            );
+        }
+    } else {
+        ensure!(
+            project.runs.is_empty(),
+            "A project with historical runs requires its source directory for Save As"
+        );
+    }
+    let _destination_lock = WriterLock::acquire(destination)?;
+    ensure!(
+        fs::read_dir(destination)?
+            .all(|entry| entry.is_ok_and(|e| e.file_name() == ".greenlens.lock")),
+        "Save As destination must be empty; existing files were not overwritten"
+    );
+    if let Some(source) = source {
+        for run in &project.runs {
+            read_run(source, run)?;
+            promote_run(&source.join(&run.path), destination, &run.id)?;
+        }
+    }
+    let mut project = project.clone();
+    if let Some((scratch, run)) = pending {
+        validate_record(run)?;
+        promote_run(scratch, destination, &run.id)?;
+        append_run(&mut project, run)?;
+    }
+    atomic_json(destination, &project)?;
+    open_project(destination)
+}
+fn append_run(project: &mut Project, run: &RunRecord) -> Result<()> {
+    let summary = RunSummary {
+        id: run.id.clone(),
+        alternative_id: run.alternative_id.clone(),
+        path: format!("runs/{}", run.id),
+        scientific_input_hash: run.validated.scientific_input_hash.clone(),
+        comparison_fingerprint: run.provenance["comparison_fingerprint"]
+            .as_str()
+            .context("Missing fingerprint")?
+            .into(),
+    };
+    if let Some(old) = project.runs.iter().find(|old| old.id == run.id) {
+        ensure!(
+            serde_json::to_value(old)? == serde_json::to_value(&summary)?,
+            "Run identity conflicts with the project manifest"
+        );
+    } else {
+        project.runs.push(summary);
+    }
+    Ok(())
+}
 pub fn is_stale(run: &RunRecord, current: &Model) -> Result<bool> {
     Ok(validate_model(current)?.scientific_input_hash != run.validated.scientific_input_hash)
 }
@@ -367,12 +455,15 @@ pub struct JobStatus {
     pub log: Vec<String>,
     pub error: Option<String>,
     pub result: Option<RunRecord>,
+    /// True until immutable completed evidence has been collected or explicitly discarded.
+    pub pending_evidence: bool,
 }
 struct ActiveJob {
     status: Arc<Mutex<JobStatus>>,
     cancel: Arc<AtomicBool>,
     handle: Option<JoinHandle<()>>,
     scratch: PathBuf,
+    project_id: Option<String>,
 }
 #[derive(Default)]
 pub struct Application {
@@ -386,6 +477,19 @@ impl Application {
         engine_dir: Option<PathBuf>,
         profile: Profile,
     ) -> Result<JobStatus> {
+        self.start_for_project(model, alternative, engine_dir, profile, None)
+    }
+    pub fn start_for_project(
+        &self,
+        model: Model,
+        alternative: String,
+        engine_dir: Option<PathBuf>,
+        profile: Profile,
+        project_id: Option<String>,
+    ) -> Result<JobStatus> {
+        if let Some(id) = &project_id {
+            Uuid::parse_str(id)?;
+        }
         validate_model(&model)?;
         ensure!(
             ["A", "B"].contains(&alternative.as_str()),
@@ -396,6 +500,7 @@ impl Application {
             .lock()
             .map_err(|_| anyhow::anyhow!("Job mutex poisoned"))?;
         if let Some(previous) = active.as_ref() {
+            ensure!(!previous.status.lock().unwrap().pending_evidence, "A completed run is waiting to be saved. Save, reload and reconcile, or explicitly discard it before starting another calculation");
             ensure!(
                 !matches!(
                     previous.status.lock().unwrap().state,
@@ -418,6 +523,7 @@ impl Application {
             log: vec!["Job queued".into()],
             error: None,
             result: None,
+            pending_evidence: false,
         };
         let status = Arc::new(Mutex::new(initial.clone()));
         let cancel = Arc::new(AtomicBool::new(false));
@@ -457,6 +563,7 @@ impl Application {
                     Ok(run) => {
                         s.state = JobState::Completed;
                         s.result = Some(run);
+                        s.pending_evidence = true;
                         s.log
                             .push("Validated completed result is ready to save".into());
                     }
@@ -474,6 +581,7 @@ impl Application {
             cancel,
             handle: Some(handle),
             scratch,
+            project_id,
         });
         Ok(initial)
     }
@@ -518,6 +626,53 @@ impl Application {
         let _ = self.cancel();
         let _ = self.wait();
     }
+    /// Called after the UI has resolved dirty-edit and close confirmations.
+    pub fn prepare_close(&self, discard_pending: bool) -> Result<()> {
+        self.shutdown();
+        if !discard_pending {
+            let active = self.active.lock().unwrap();
+            ensure!(active.as_ref().is_none_or(|job| !job.status.lock().unwrap().pending_evidence), "A completed run is waiting to be saved. Save or explicitly discard its evidence before closing");
+        }
+        self.discard_job()
+    }
+    pub fn discard_job(&self) -> Result<()> {
+        self.shutdown();
+        self.active
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Job mutex poisoned"))?
+            .take();
+        Ok(())
+    }
+    /// Reload is performed explicitly by the UI. This operation only appends
+    /// immutable evidence to the current disk project and preserves its models.
+    pub fn reconcile_completed_run(&self, path: &Path, expected: &str) -> Result<ProjectView> {
+        let current = open_project(path)?;
+        ensure!(
+            current.revision == expected,
+            "Project changed externally again. Reload before reconciling the completed run"
+        );
+        self.collect(path, &current.project, Some(expected))
+    }
+    pub fn save_as(
+        &self,
+        source: Option<&Path>,
+        destination: &Path,
+        project: &Project,
+        include_pending: bool,
+    ) -> Result<ProjectView> {
+        let active = self.active.lock().unwrap();
+        if let Some(job) = active.as_ref() {
+            let mut status = job.status.lock().unwrap();
+            if status.pending_evidence && include_pending {
+                ensure!(job.project_id.as_ref().is_none_or(|id| id == &project.id), "Completed run belongs to another project; it cannot be included in this Save As");
+                let run = status.result.as_ref().context("Missing completed result")?;
+                let view = copy_project(source, destination, project, Some((&job.scratch, run)))?;
+                status.pending_evidence = false;
+                return Ok(view);
+            }
+        }
+        copy_project(source, destination, project, None)
+    }
     pub fn collect(
         &self,
         path: &Path,
@@ -526,12 +681,13 @@ impl Application {
     ) -> Result<ProjectView> {
         let active = self.active.lock().unwrap();
         let job = active.as_ref().context("No completed job")?;
-        let status = job.status.lock().unwrap();
+        let mut status = job.status.lock().unwrap();
         ensure!(
             status.state == JobState::Completed,
             "Job has not completed successfully"
         );
         let run = status.result.as_ref().context("Missing result")?;
+        ensure!(job.project_id.as_ref().is_none_or(|id| id == &project.id), "Completed run belongs to another project; reopen its original project before collecting");
         validate_record(run)?;
         validate_project(project)?;
         let _lock = WriterLock::acquire(path)?;
@@ -541,21 +697,12 @@ impl Application {
         }
         promote_run(&job.scratch, path, &run.id)?;
         let mut project = project.clone();
-        if !project.runs.iter().any(|s| s.id == run.id) {
-            project.runs.push(RunSummary {
-                id: run.id.clone(),
-                alternative_id: run.alternative_id.clone(),
-                path: format!("runs/{}", run.id),
-                scientific_input_hash: run.validated.scientific_input_hash.clone(),
-                comparison_fingerprint: run.provenance["comparison_fingerprint"]
-                    .as_str()
-                    .context("Missing fingerprint")?
-                    .into(),
-            });
-        }
+        append_run(&mut project, run)?;
         check_revision(path, expected)?;
         atomic_json(path, &project)?;
-        open_project(path)
+        let view = open_project(path)?;
+        status.pending_evidence = false;
+        Ok(view)
     }
 }
 impl Drop for Application {
@@ -585,10 +732,10 @@ fn run_job(
     ensure!(!cancel.load(Ordering::SeqCst), "Cancelled");
     let identity = serde_json::to_value(engine.identity())?;
     let profile = serde_json::to_value(profile)?;
-    let provenance = json!({"schema_version":SCHEMA_VERSION,"application_version":env!("CARGO_PKG_VERSION"),"source_commit":option_env!("GREENLENS_SOURCE_COMMIT"),"adapter_version":env!("CARGO_PKG_VERSION"),"calculation_label":CALCULATION_LABEL,"state":"completed","units":"lx","started_utc":started,"finished_utc":Utc::now().to_rfc3339(),"engine":identity,"profile":profile,"input_hash":validated.normalized_input_hash,"sensor_hash":validated.sensor_hash,"run_fingerprint":canonical_hash(&json!({"input":validated.scientific_input_hash,"engine":identity,"profile":profile}))?,"comparison_fingerprint":canonical_hash(&json!({"conditions":validated.comparison_conditions_hash,"engine":identity,"profile":profile}))?,"child_environment":{"RAYPATH":".;<compatible-engine>/lib"},"recipe":"Regenerate scene and octree from input.json with the pinned adapter; never execute package-supplied commands"});
+    let provenance = json!({"schema_version":SCHEMA_VERSION,"application_version":env!("CARGO_PKG_VERSION"),"source_commit":option_env!("GREENLENS_BUILD_SOURCE_COMMIT"),"adapter_version":env!("CARGO_PKG_VERSION"),"calculation_label":CALCULATION_LABEL,"state":"completed","units":"lx","started_utc":started,"finished_utc":Utc::now().to_rfc3339(),"engine":identity,"profile":profile,"input_hash":validated.normalized_input_hash,"sensor_hash":validated.sensor_hash,"run_fingerprint":canonical_hash(&json!({"input":validated.scientific_input_hash,"engine":identity,"profile":profile}))?,"comparison_fingerprint":canonical_hash(&json!({"conditions":validated.comparison_conditions_hash,"engine":identity,"profile":profile}))?,"child_environment":{"RAYPATH":".;<compatible-engine>/lib"},"recipe":"Regenerate scene and octree from input.json with the pinned adapter; never execute package-supplied commands"});
     let mut provenance = provenance;
     provenance["source_worktree_dirty"] =
-        json!(option_env!("GREENLENS_SOURCE_DIRTY").map(|value| value == "true"));
+        json!(option_env!("GREENLENS_BUILD_SOURCE_DIRTY").map(|value| value == "true"));
     provenance["processes"] = serde_json::to_value(&output.processes)?;
     provenance["adapter_version"] = json!(greenlens_radiance::ADAPTER_VERSION);
     let run = RunRecord {
@@ -640,6 +787,36 @@ fn run_job(
 
 pub fn export_project(path: &Path, destination: &Path) -> Result<()> {
     let _lock = WriterLock::acquire(path)?;
+    // Bound the immutable source footprint before loading all result arrays or
+    // generating reports. Final generated files share the same writer budget.
+    let project: Project = read_json(&regular_child(path, "project.json")?)?;
+    validate_project(&project)?;
+    let mut source_budget = PackageBudget::default();
+    source_budget.add(
+        "project.json",
+        fs::metadata(path.join("project.json"))?.len(),
+    )?;
+    for run in &project.runs {
+        let sums_path = format!("{}/checksums.json", run.path);
+        let sums_file = regular_child(path, &sums_path)?;
+        source_budget.add(&sums_path, fs::metadata(&sums_file)?.len())?;
+        let sums: Checksums = read_json(&sums_file)?;
+        for name in sums.sha256.keys() {
+            let relative = format!("{}/{name}", run.path);
+            source_budget.add(
+                &relative,
+                fs::metadata(regular_child(path, &relative)?)?.len(),
+            )?;
+        }
+    }
+    for generated in [
+        "comparisons.json",
+        "report.html",
+        "REPLAY.txt",
+        "checksums.json",
+    ] {
+        source_budget.add(generated, 0)?;
+    }
     let view = open_project(path)?;
     ensure!(
         !view.results.is_empty(),
@@ -660,22 +837,12 @@ pub fn export_project(path: &Path, destination: &Path) -> Result<()> {
         }
         files.push(format!("{}/checksums.json", run.path));
     }
-    let comparisons: Vec<Comparison> = view
-        .results
-        .iter()
-        .filter(|a| a.alternative_id == "A")
-        .flat_map(|a| {
-            view.results
-                .iter()
-                .filter(|b| b.alternative_id == "B")
-                .filter_map(move |b| compare_runs(a, b).ok())
-        })
-        .collect();
+    let comparisons = latest_compatible_comparisons(&view.results)?;
     write_json(&staging.join("comparisons.json"), &comparisons)?;
     files.push("comparisons.json".into());
     fs::write(
         staging.join("report.html"),
-        report::render(&view, &comparisons)?,
+        report::render(&view, &comparisons).context("Offline HTML report exceeds its bounded capacity. Keep the current project and export a smaller analysis project")?,
     )?;
     files.push("report.html".into());
     fs::write(staging.join("REPLAY.txt"),"GreenLens 0.1 evidence\nInstall the compatible pinned Radiance 6.0.2 engine separately.\nVerify and replay: greenlens replay evidence.zip --engine-dir <engine-directory>\nReplay validates path containment, checksums, normalized inputs and engine/profile identity; generates a new disposable octree and reports per-sensor tolerance max(0.1 lx, 0.1% reference).\nNo embedded shell commands are executed. Engine binaries are deliberately excluded.\nOpen report.html locally; no network is required. See project.json and immutable runs for complete inputs.\nIntegration verification is not independent physical validation or certification.\n")?;
@@ -686,6 +853,30 @@ pub fn export_project(path: &Path, destination: &Path) -> Result<()> {
     )?;
     files.push("checksums.json".into());
     zip_directory(&staging, &files, destination)
+}
+
+/// Select the most recently saved A and B in each compatible condition group.
+/// Every immutable run remains in the export; comparisons grow linearly rather
+/// than generating the historical A-by-B Cartesian product.
+pub fn latest_compatible_comparisons(results: &[RunRecord]) -> Result<Vec<Comparison>> {
+    type Pair<'a> = (Option<&'a RunRecord>, Option<&'a RunRecord>);
+    let mut groups: std::collections::BTreeMap<&str, Pair<'_>> = std::collections::BTreeMap::new();
+    for run in results {
+        let key = run.provenance["comparison_fingerprint"]
+            .as_str()
+            .context("Missing comparison fingerprint")?;
+        let pair = groups.entry(key).or_default();
+        match run.alternative_id.as_str() {
+            "A" => pair.0 = Some(run),
+            "B" => pair.1 = Some(run),
+            _ => bail!("Unknown alternative in comparison history"),
+        }
+    }
+    groups
+        .into_values()
+        .filter_map(|(a, b)| a.zip(b))
+        .map(|(a, b)| compare_runs(a, b))
+        .collect()
 }
 
 pub fn replay(package: &Path, engine_dir: Option<&Path>) -> Result<Value> {

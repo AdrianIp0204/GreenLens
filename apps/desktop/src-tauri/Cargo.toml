@@ -21,3 +21,6 @@ greenlens-radiance = { path = "../../../crates/greenlens-radiance" }
 serde.workspace = true
 serde_json.workspace = true
 anyhow.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+rfd = { version = "=0.17.2", default-features = false }

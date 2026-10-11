@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:project:v0.2",
+  "title": "GreenLens project manifest with optional v0.2 display extension",
+  "description": "The scientific/project schema_version remains 0.1.0. The v0.2 reader adds optional separately versioned display_state. Unextended v0.1 manifests remain readable; old strict v0.1 readers may reject the extension. Immutable run files retain their original bytes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "name",
+    "alternatives",
+    "runs"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "0.1.0"
+    },
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200
+    },
+    "alternatives": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "model"
+        ],
+        "properties": {
+          "id": {
+            "enum": [
+              "A",
+              "B"
+            ]
+          },
+          "model": {
+            "$ref": "urn:greenlens:model:v0.1"
+          }
+        }
+      }
+    },
+    "runs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "alternative_id",
+          "path",
+          "scientific_input_hash",
+          "comparison_fingerprint"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "alternative_id": {
+            "enum": [
+              "A",
+              "B"
+            ]
+          },
+          "path": {
+            "type": "string",
+            "pattern": "^runs/[0-9a-fA-F-]+$"
+          },
+          "scientific_input_hash": {
+            "$ref": "#/$defs/sha256"
+          },
+          "comparison_fingerprint": {
+            "$ref": "#/$defs/sha256"
+          }
+        }
+      }
+    },
+    "display_state": {
+      "anyOf": [
+        {
+          "$ref": "urn:greenlens:display:v0.2"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

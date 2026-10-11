@@ -10,6 +10,41 @@ use std::{
 };
 use uuid::Uuid;
 
+pub const MAX_PACKAGE_ENTRIES: usize = 5000;
+pub const MAX_EVIDENCE_FILE_BYTES: u64 = 64 * 1024 * 1024;
+pub const MAX_PACKAGE_BYTES: u64 = 256 * 1024 * 1024;
+
+/// Writer and reader use the same uncompressed archive budget.
+#[derive(Default)]
+pub struct PackageBudget {
+    paths: std::collections::HashSet<String>,
+    total_bytes: u64,
+}
+impl PackageBudget {
+    pub fn add(&mut self, name: &str, bytes: u64) -> Result<()> {
+        relative_path(name)?;
+        ensure!(
+            name.len() <= 240,
+            "Evidence path exceeds the 240-byte portable limit"
+        );
+        ensure!(self.paths.len() < MAX_PACKAGE_ENTRIES, "Evidence package exceeds 5000 entries. Save a project with fewer retained runs before exporting");
+        ensure!(
+            self.paths.insert(name.to_ascii_lowercase()),
+            "Duplicate evidence ZIP entry"
+        );
+        ensure!(
+            bytes <= MAX_EVIDENCE_FILE_BYTES,
+            "Evidence file exceeds 64 MiB. Reduce retained runs or sensor count before exporting"
+        );
+        self.total_bytes = self
+            .total_bytes
+            .checked_add(bytes)
+            .context("Evidence size overflow")?;
+        ensure!(self.total_bytes <= MAX_PACKAGE_BYTES, "Evidence package exceeds 256 MiB uncompressed. Export a project with fewer retained runs");
+        Ok(())
+    }
+}
+
 pub fn bytes_hash(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
@@ -165,7 +200,7 @@ pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<T> {
         "Expected a regular file"
     );
     ensure!(
-        meta.len() <= 64 * 1024 * 1024,
+        meta.len() <= MAX_EVIDENCE_FILE_BYTES,
         "JSON exceeds 64 MiB safety limit"
     );
     Ok(serde_json::from_slice(&fs::read(path)?)?)
@@ -173,6 +208,7 @@ pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<T> {
 pub fn write_json(path: &Path, value: &impl Serialize) -> Result<()> {
     let mut data = serde_json::to_vec_pretty(value)?;
     data.push(b'\n');
+    ensure!(data.len() as u64 <= MAX_EVIDENCE_FILE_BYTES, "Generated JSON exceeds 64 MiB. Keep the current project and export a smaller analysis project");
     fs::write(path, data)?;
     Ok(())
 }
@@ -347,7 +383,7 @@ pub fn verify_seal(root: &Path) -> Result<Checksums> {
     for (name, digest) in &checksums.sha256 {
         let file = regular_child(root, name)?;
         ensure!(
-            fs::metadata(&file)?.len() <= 64 * 1024 * 1024,
+            fs::metadata(&file)?.len() <= MAX_EVIDENCE_FILE_BYTES,
             "Evidence file too large"
         );
         ensure!(
@@ -399,6 +435,15 @@ pub fn zip_directory(root: &Path, files: &[String], destination: &Path) -> Resul
         !destination.exists(),
         "Export destination already exists; choose a new filename"
     );
+    // Reject a package the structural reader cannot accept before opening any
+    // destination file. Generated report/comparison bytes are included here.
+    let mut budget = PackageBudget::default();
+    let mut sizes = Vec::with_capacity(files.len());
+    for name in files {
+        let size = fs::metadata(regular_child(root, name)?)?.len();
+        budget.add(name, size)?;
+        sizes.push(size);
+    }
     let temporary = destination.with_extension(format!("{}.tmp", Uuid::new_v4()));
     let file = OpenOptions::new()
         .write(true)
@@ -407,11 +452,18 @@ pub fn zip_directory(root: &Path, files: &[String], destination: &Path) -> Resul
     let mut zip = zip::ZipWriter::new(file);
     let options = zip::write::SimpleFileOptions::default()
         .compression_method(zip::CompressionMethod::Deflated);
-    for name in files {
+    for (name, expected_size) in files.iter().zip(sizes) {
         let path = regular_child(root, name)?;
         zip.start_file(name, options)?;
         let mut file = File::open(path)?;
-        std::io::copy(&mut file, &mut zip)?;
+        let copied = std::io::copy(
+            &mut Read::by_ref(&mut file).take(MAX_EVIDENCE_FILE_BYTES + 1),
+            &mut zip,
+        )?;
+        ensure!(
+            copied == expected_size,
+            "Evidence changed while exporting; retry after closing other writers"
+        );
     }
     zip.finish()?.sync_all()?;
     fs::rename(temporary, destination)?;
@@ -421,32 +473,22 @@ pub fn zip_directory(root: &Path, files: &[String], destination: &Path) -> Resul
 pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
     ensure!(!destination.exists(), "Extraction destination must be new");
     let mut zip = zip::ZipArchive::new(File::open(package)?)?;
-    ensure!(zip.len() <= 5000, "Evidence ZIP contains too many entries");
-    let mut paths = std::collections::HashSet::new();
-    let mut total = 0u64;
+    ensure!(
+        zip.len() <= MAX_PACKAGE_ENTRIES,
+        "Evidence ZIP contains too many entries"
+    );
+    let mut budget = PackageBudget::default();
     for i in 0..zip.len() {
         let item = zip.by_index(i)?;
-        relative_path(item.name())?;
+        budget.add(item.name(), item.size())?;
         ensure!(
             !item.is_dir(),
             "Evidence ZIP contains unexpected directory entries"
         );
         ensure!(
-            paths.insert(item.name().to_ascii_lowercase()),
-            "Duplicate ZIP entry"
-        );
-        ensure!(
             item.unix_mode().is_none_or(|m| m & 0o170000 != 0o120000),
             "ZIP symlinks are forbidden"
         );
-        ensure!(
-            item.size() <= 64 * 1024 * 1024,
-            "ZIP entry exceeds size limit"
-        );
-        total = total
-            .checked_add(item.size())
-            .context("ZIP size overflow")?;
-        ensure!(total <= 256 * 1024 * 1024, "ZIP exceeds total size limit");
     }
     fs::create_dir_all(destination)?;
     let mut actual_total = 0u64;
@@ -457,10 +499,10 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
         fs::create_dir_all(path.parent().context("Invalid destination")?)?;
         let mut out = OpenOptions::new().create_new(true).write(true).open(path)?;
         let copied = std::io::copy(
-            &mut Read::by_ref(&mut item).take(64 * 1024 * 1024 + 1),
+            &mut Read::by_ref(&mut item).take(MAX_EVIDENCE_FILE_BYTES + 1),
             &mut out,
         )?;
-        if copied > 64 * 1024 * 1024 {
+        if copied > MAX_EVIDENCE_FILE_BYTES {
             bail!("ZIP entry exceeds actual size limit");
         }
         ensure!(
@@ -471,7 +513,7 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
             .checked_add(copied)
             .context("ZIP actual size overflow")?;
         ensure!(
-            actual_total <= 256 * 1024 * 1024,
+            actual_total <= MAX_PACKAGE_BYTES,
             "ZIP exceeds actual total size limit"
         );
     }
@@ -487,7 +529,7 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
         .chain(std::iter::once("checksums.json".into()))
         .collect();
     ensure!(
-        paths == covered,
+        budget.paths == covered,
         "Evidence checksum coverage differs from package contents"
     );
     Ok(())
@@ -496,6 +538,36 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn shared_archive_budget_accepts_exact_bounds_and_rejects_one_over() {
+        let mut entries = PackageBudget::default();
+        for i in 0..MAX_PACKAGE_ENTRIES {
+            entries.add(&format!("file-{i}"), 0).unwrap();
+        }
+        assert!(entries.add("one-too-many", 0).is_err());
+        let mut bytes = PackageBudget::default();
+        for i in 0..4 {
+            bytes
+                .add(&format!("large-{i}"), MAX_EVIDENCE_FILE_BYTES)
+                .unwrap();
+        }
+        assert!(bytes.add("one-byte-too-many", 1).is_err());
+        assert!(PackageBudget::default()
+            .add("too-large", MAX_EVIDENCE_FILE_BYTES + 1)
+            .is_err());
+    }
+    #[test]
+    fn oversized_writer_input_is_rejected_before_creating_any_export() {
+        let source = tempfile::tempdir().unwrap();
+        let output = tempfile::tempdir().unwrap();
+        File::create(source.path().join("large"))
+            .unwrap()
+            .set_len(MAX_EVIDENCE_FILE_BYTES + 1)
+            .unwrap();
+        let destination = output.path().join("evidence.zip");
+        assert!(zip_directory(source.path(), &["large".into()], &destination).is_err());
+        assert_eq!(fs::read_dir(output.path()).unwrap().count(), 0);
+    }
     #[test]
     fn reject_paths() {
         for s in ["../a", "/a", "C:/a", "a\\b", "a/../b", ""] {

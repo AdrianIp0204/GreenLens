@@ -35,17 +35,140 @@ fn save_project(
         .map_err(error)
 }
 #[tauri::command]
+fn save_project_as(
+    app: tauri::State<'_, Application>,
+    source_path: Option<String>,
+    destination: String,
+    project: Project,
+    expected_source_revision: Option<String>,
+    include_pending: Option<bool>,
+) -> CommandResult<ProjectView> {
+    // Save As is nondestructive recovery and deliberately does not demand that
+    // the source manifest still has the UI's previous revision.
+    let _ = expected_source_revision;
+    app.save_as(
+        source_path.as_deref().map(Path::new),
+        Path::new(&destination),
+        &project,
+        include_pending.unwrap_or(true),
+    )
+    .map_err(error)
+}
+#[tauri::command]
+fn reconcile_completed_run(
+    app: tauri::State<'_, Application>,
+    path: String,
+    expected_revision: String,
+) -> CommandResult<ProjectView> {
+    app.reconcile_completed_run(Path::new(&path), &expected_revision)
+        .map_err(error)
+}
+#[tauri::command]
+fn discard_job(app: tauri::State<'_, Application>) -> CommandResult<()> {
+    app.discard_job().map_err(error)
+}
+#[tauri::command]
+fn cancel_and_wait(app: tauri::State<'_, Application>) -> CommandResult<Option<JobStatus>> {
+    if app.status().is_err() {
+        return Ok(None);
+    }
+    app.cancel().map_err(error)?;
+    app.wait().map(Some).map_err(error)
+}
+#[tauri::command]
+fn prepare_close(app: tauri::State<'_, Application>, discard_pending: bool) -> CommandResult<()> {
+    app.prepare_close(discard_pending).map_err(error)
+}
+#[cfg(windows)]
+fn file_dialog(
+    initial_path: Option<String>,
+    title: &str,
+    window: &tauri::WebviewWindow,
+) -> rfd::FileDialog {
+    let dialog = rfd::FileDialog::new().set_title(title).set_parent(window);
+    if let Some(path) = initial_path.filter(|path| Path::new(path).is_dir()) {
+        dialog.set_directory(path)
+    } else {
+        dialog
+    }
+}
+#[tauri::command]
+fn dialog_open_project(
+    window: tauri::WebviewWindow,
+    initial_path: Option<String>,
+) -> CommandResult<Option<String>> {
+    #[cfg(windows)]
+    {
+        Ok(
+            file_dialog(initial_path, "Open GreenLens project directory", &window)
+                .pick_folder()
+                .map(|p| p.to_string_lossy().into_owned()),
+        )
+    }
+    #[cfg(not(windows))]
+    {
+        let _ = (window, initial_path);
+        Err("Native dialogs are currently supported on Windows".into())
+    }
+}
+#[tauri::command]
+fn dialog_save_project(
+    window: tauri::WebviewWindow,
+    initial_path: Option<String>,
+) -> CommandResult<Option<String>> {
+    #[cfg(windows)]
+    {
+        Ok(file_dialog(
+            initial_path,
+            "Save As: choose or create an empty project directory",
+            &window,
+        )
+        .pick_folder()
+        .map(|p| p.to_string_lossy().into_owned()))
+    }
+    #[cfg(not(windows))]
+    {
+        let _ = (window, initial_path);
+        Err("Native dialogs are currently supported on Windows".into())
+    }
+}
+#[tauri::command]
+fn dialog_export_evidence(
+    window: tauri::WebviewWindow,
+    initial_path: Option<String>,
+) -> CommandResult<Option<String>> {
+    #[cfg(windows)]
+    {
+        Ok(file_dialog(
+            initial_path,
+            "Export GreenLens evidence to a new ZIP",
+            &window,
+        )
+        .add_filter("Evidence ZIP", &["zip"])
+        .set_file_name("GreenLens-evidence.zip")
+        .save_file()
+        .map(|p| p.to_string_lossy().into_owned()))
+    }
+    #[cfg(not(windows))]
+    {
+        let _ = (window, initial_path);
+        Err("Native dialogs are currently supported on Windows".into())
+    }
+}
+#[tauri::command]
 fn start_run(
     app: tauri::State<'_, Application>,
     model: Model,
     alternative_id: String,
     engine_dir: Option<String>,
+    project_id: Option<String>,
 ) -> CommandResult<JobStatus> {
-    app.start(
+    app.start_for_project(
         model,
         alternative_id,
         engine_dir.map(PathBuf::from),
         Profile::shipping(),
+        project_id,
     )
     .map_err(error)
 }
@@ -86,6 +209,14 @@ pub fn run() {
             doctor,
             open_project,
             save_project,
+            save_project_as,
+            reconcile_completed_run,
+            discard_job,
+            cancel_and_wait,
+            prepare_close,
+            dialog_open_project,
+            dialog_save_project,
+            dialog_export_evidence,
             start_run,
             job_status,
             cancel_run,

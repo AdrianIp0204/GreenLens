@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:display:v0.2",
+  "title": "GreenLens v0.2 document display state",
+  "description": "Presentation only; excluded from all scientific input and comparison hashes. Camera positions use world ENU metres. Rust also rejects nonfinite values, coincident position/target, nonnormalized/parallel up vectors and sensor IDs outside 1..10000.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "active_view",
+    "maximized_view",
+    "mode",
+    "cameras",
+    "layers",
+    "grid_visible",
+    "grid_snap",
+    "object_snap",
+    "ortho",
+    "gumball"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "greenlens.display.v0.2"
+    },
+    "active_view": {
+      "enum": [
+        "perspective",
+        "top",
+        "front",
+        "right"
+      ]
+    },
+    "maximized_view": {
+      "anyOf": [
+        {
+          "enum": [
+            "perspective",
+            "top",
+            "front",
+            "right"
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "mode": {
+      "enum": [
+        "wireframe",
+        "shaded",
+        "analysis"
+      ]
+    },
+    "cameras": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "perspective": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "position",
+            "target",
+            "up",
+            "zoom"
+          ],
+          "properties": {
+            "position": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "target": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "up": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              }
+            },
+            "zoom": {
+              "type": "number",
+              "minimum": 0.0001,
+              "maximum": 10000
+            }
+          }
+        },
+        "top": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "position",
+            "target",
+            "up",
+            "zoom"
+          ],
+          "properties": {
+            "position": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "target": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "up": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              }
+            },
+            "zoom": {
+              "type": "number",
+              "minimum": 0.0001,
+              "maximum": 10000
+            }
+          }
+        },
+        "front": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "position",
+            "target",
+            "up",
+            "zoom"
+          ],
+          "properties": {
+            "position": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "target": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "up": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              }
+            },
+            "zoom": {
+              "type": "number",
+              "minimum": 0.0001,
+              "maximum": 10000
+            }
+          }
+        },
+        "right": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "position",
+            "target",
+            "up",
+            "zoom"
+          ],
+          "properties": {
+            "position": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "target": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "up": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number",
+                "minimum": -1,
+                "maximum": 1
+              }
+            },
+            "zoom": {
+              "type": "number",
+              "minimum": 0.0001,
+              "maximum": 10000
+            }
+          }
+        }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "room",
+        "window",
+        "overhang",
+        "obstruction",
+        "sensors",
+        "analysis"
+      ],
+      "properties": {
+        "room": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "locked",
+            "color"
+          ],
+          "properties": {
+            "visible": {
+              "type": "boolean"
+            },
+            "locked": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          }
+        },
+        "window": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "locked",
+            "color"
+          ],
+          "properties": {
+            "visible": {
+              "type": "boolean"
+            },
+            "locked": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          }
+        },
+        "overhang": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "locked",
+            "color"
+          ],
+          "properties": {
+            "visible": {
+              "type": "boolean"
+            },
+            "locked": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          }
+        },
+        "obstruction": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "locked",
+            "color"
+          ],
+          "properties": {
+            "visible": {
+              "type": "boolean"
+            },
+            "locked": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          }
+        },
+        "sensors": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "locked",
+            "color"
+          ],
+          "properties": {
+            "visible": {
+              "type": "boolean"
+            },
+            "locked": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          }
+        },
+        "analysis": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "visible",
+            "locked",
+            "color"
+          ],
+          "properties": {
+            "visible": {
+              "type": "boolean"
+            },
+            "locked": {
+              "type": "boolean"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            }
+          }
+        }
+      }
+    },
+    "objects": {
+      "type": "object",
+      "maxProperties": 10032,
+      "propertyNames": {
+        "anyOf": [
+          {
+            "enum": [
+              "room",
+              "window",
+              "overhang",
+              "obstruction",
+              "sensor-plane",
+              "surface:floor",
+              "surface:ceiling",
+              "surface:west_wall",
+              "surface:east_wall",
+              "surface:north_wall",
+              "surface:south_below",
+              "surface:south_above",
+              "surface:south_left",
+              "surface:south_right",
+              "surface:window",
+              "surface:overhang",
+              "surface:obstruction_bottom",
+              "surface:obstruction_top",
+              "surface:obstruction_west",
+              "surface:obstruction_east",
+              "surface:obstruction_south",
+              "surface:obstruction_north"
+            ]
+          },
+          {
+            "pattern": "^sensor:s[0-9]{6}$"
+          }
+        ]
+      },
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "visible": {
+            "type": "boolean"
+          },
+          "locked": {
+            "type": "boolean"
+          },
+          "color": {
+            "type": "string",
+            "pattern": "^#[0-9a-fA-F]{6}$"
+          }
+        }
+      }
+    },
+    "grid_visible": {
+      "type": "boolean"
+    },
+    "grid_snap": {
+      "type": "boolean"
+    },
+    "object_snap": {
+      "type": "boolean"
+    },
+    "ortho": {
+      "type": "boolean"
+    },
+    "gumball": {
+      "type": "boolean"
+    }
+  }
+}

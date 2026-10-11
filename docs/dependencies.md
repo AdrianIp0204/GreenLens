@@ -68,6 +68,8 @@ The additional `nsis-tauri-utils` 0.5.3 helper is retained under its MIT alterna
 
 The 11 October 2026 full native Windows inventory check completed with 357 entries, 195 distinct retained notice texts and zero automated review gaps. All nine actual NSIS cache compiler/stub/plugin hashes matched the reviewed components. A subsequent `--strict --check --installer-cache` pass left the inventory and notice bytes unchanged. Confirming that final installed/distributed artifacts retain these documents remains a separate packaging check.
 
+The v0.2 workspace adds the Windows-only `rfd` 0.17.2 native dialog wrapper. Its actual registry package retains the MIT license and copyright notice for Bartłomiej Maryńczak; GreenLens has not modified it. The refreshed native Windows inventory contains 358 packages and 196 distinct retained notice texts, with zero automated review gaps and the same nine verified installer-component hashes. The new package and notice are included in the generated inventory and notices; final v0.2 package retention remains a separate release check.
+
 ## Data and excluded packages
 
 The two bundled room models and analytical fixtures are original synthetic data. No weather file, proprietary assessment manual, copyrighted benchmark model, personal model or regional certification dataset is included. The release requires no Honeybee, IfcOpenShell, EnergyPlus or OpenStudio runtime. Future adapters or assessment modules require their own source, data and redistribution review.

@@ -1,11 +1,11 @@
 {
   "schema_version": "greenlens.dependencies.v0.1",
-  "generated_utc": "2026-10-10T17:55:23.922Z",
+  "generated_utc": "2026-10-11T01:10:40.992Z",
   "scope": "Resolved native Windows Rust graph and locked npm graph",
   "target": "x86_64-pc-windows-msvc",
   "lockfiles": {
-    "Cargo.lock": "2ef5477621d186d6bcf9ed1e18bbb15cfa85bad6c1673a28213e0b454ab6aecb",
-    "apps/desktop/package-lock.json": "155ecbe4ba6ab97b214d0ec604ba15beef7be0354ab1fc1cae2a43eb58983e42"
+    "Cargo.lock": "d8fddc1caf317503612c318c38dcf750df144ee31a202f1712e497363342269f",
+    "apps/desktop/package-lock.json": "8e219e7da9d9781c719d29172ebdbaa246f6d3cbed22555563a49965f285eace"
   },
   "scientific_engine_manifest": "dependencies/radiance.json",
   "supplemental_notice_manifest": "dependencies/license-supplements.json",
@@ -36,7 +36,7 @@
     }
   ],
   "policy": "Declarations are corroborated by the listed actual package license/notice files and their SHA-256 digests. This automated inventory flags gaps for review and does not infer grants from subprocess boundaries. Inapplicable optional npm platform packages are listed but not installed or bundled.",
-  "package_count": 357,
+  "package_count": 358,
   "license_counts": {
     "0BSD OR MIT OR Apache-2.0": 1,
     "Unlicense OR MIT": 8,
@@ -46,7 +46,7 @@
     "MIT/Apache-2.0": 8,
     "BSD-3-Clause/MIT": 1,
     "BSD-3-Clause AND MIT": 1,
-    "MIT": 83,
+    "MIT": 84,
     "MPL-2.0": 17,
     "Apache-2.0 AND MIT": 1,
     "CC0-1.0 OR MIT-0 OR Apache-2.0": 1,
@@ -4937,6 +4937,33 @@
           "Retain applicable copyright, license and attribution notices; see exact retained text.",
           "Preserve applicable NOTICE material; identify modifications; no trademark rights are granted.",
           "Alternatives are preserved in the inventory; an applicable permitted alternative must be followed."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "cargo",
+      "name": "rfd",
+      "version": "0.17.2",
+      "source": "registry+https://github.com/rust-lang/crates.io-index",
+      "repository": "https://github.com/PolyMeilex/rfd",
+      "source_download": "https://crates.io/api/v1/crates/rfd/0.17.2/download",
+      "integrity": "sha256:20dafead71c16a34e1ff357ddefc8afc11e7d51d6d2b9fbd07eaa48e3e540220",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Resolved Windows dependency graph, including build/test tooling; not every crate is linked into every artifact.",
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "65fc947f4bac882a2cd104ef73c246b1b037059df9f2b3a58b7f77f0b9e56071",
+          "bytes": 1079
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
         ]
       },
       "modifications": "No upstream source modifications made by GreenLens."

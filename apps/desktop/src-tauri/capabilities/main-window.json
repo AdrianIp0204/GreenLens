@@ -3,5 +3,5 @@
   "identifier": "main-window",
   "description": "Only the primary local GreenLens window; no filesystem or shell plugin permissions.",
   "windows": ["main"],
-  "permissions": ["core:default"]
+  "permissions": ["core:default", "core:window:allow-destroy"]
 }

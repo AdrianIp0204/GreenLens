@@ -1,0 +1,73 @@
+{
+  "checks": [
+    {
+      "expected_rejection": "",
+      "expected_identity": "486962a5b39255b2f8b9ed306714b308ed39c73f|false",
+      "name": "clean despite stale legacy shell variables",
+      "passed": true
+    },
+    {
+      "expected_rejection": "",
+      "expected_identity": "486962a5b39255b2f8b9ed306714b308ed39c73f|true",
+      "name": "tracked modification without re-sourcing shell",
+      "passed": true
+    },
+    {
+      "expected_rejection": "",
+      "expected_identity": "486962a5b39255b2f8b9ed306714b308ed39c73f|false",
+      "name": "restored clean tree with reused Cargo cache",
+      "passed": true
+    },
+    {
+      "expected_rejection": "",
+      "expected_identity": "486962a5b39255b2f8b9ed306714b308ed39c73f|true",
+      "name": "new untracked file with reused Cargo cache",
+      "passed": true
+    },
+    {
+      "expected_rejection": "",
+      "expected_identity": "ca0622eef99743bc71704ccb7a01c8638bebb866|false",
+      "name": "changed commit in reused shell and Cargo cache",
+      "passed": true
+    },
+    {
+      "expected_rejection": "explicit CI source commit differs",
+      "expected_identity": "",
+      "name": "stale CI commit rejected",
+      "passed": true
+    },
+    {
+      "expected_rejection": "",
+      "expected_identity": "ca0622eef99743bc71704ccb7a01c8638bebb866|false",
+      "name": "matching explicit CI assertions",
+      "passed": true
+    },
+    {
+      "expected_rejection": "explicit CI dirty state differs",
+      "expected_identity": "",
+      "name": "incorrect clean CI assertion rejected",
+      "passed": true
+    },
+    {
+      "expected_rejection": "",
+      "expected_identity": "ca0622eef99743bc71704ccb7a01c8638bebb866|true",
+      "name": "matching explicit dirty CI assertion",
+      "passed": true
+    },
+    {
+      "expected_rejection": "source identity assertions require both",
+      "expected_identity": "",
+      "name": "partial CI assertion rejected",
+      "passed": true
+    },
+    {
+      "expected_rejection": "",
+      "expected_identity": "unknown|unknown",
+      "name": "source archive does not claim a clean known commit",
+      "passed": true
+    }
+  ],
+  "schema_version": "greenlens.build-provenance-tests.v0.2",
+  "passed": true,
+  "verified_utc": "2026-10-11T01:08:05.5976008Z"
+}

@@ -27,12 +27,8 @@ if (-not $SkipVisualStudio -and -not $env:VSCMD_VER) {
     & $greenLensDevShell -Arch amd64 -HostArch amd64 -SkipAutomaticLocation | Out-Null
 }
 if (-not (Get-Command cargo -ErrorAction SilentlyContinue)) { throw 'Rust is missing; follow docs/toolchain.md to install the pinned native toolchain.' }
-if (-not $env:GREENLENS_SOURCE_COMMIT -and (Get-Command git -ErrorAction SilentlyContinue)) {
-    $greenLensHead = & git -C $greenLensRoot rev-parse --verify HEAD 2>$null
-    if ($LASTEXITCODE -eq 0) { $env:GREENLENS_SOURCE_COMMIT = $greenLensHead.Trim() }
-}
-if (-not $env:GREENLENS_SOURCE_DIRTY -and (Get-Command git -ErrorAction SilentlyContinue)) {
-    $greenLensChanges = & git -C $greenLensRoot status --porcelain --untracked-files=normal 2>$null
-    if ($LASTEXITCODE -eq 0) { $env:GREENLENS_SOURCE_DIRTY = if ($greenLensChanges) { 'true' } else { 'false' } }
-}
+# Build identity is queried by the Rust build script for every Cargo invocation.
+# Do not cache it in this reusable shell. Explicit CI assertions use the distinct
+# GREENLENS_EXPECT_SOURCE_COMMIT / GREENLENS_EXPECT_SOURCE_DIRTY variables.
+Remove-Item Env:GREENLENS_SOURCE_COMMIT, Env:GREENLENS_SOURCE_DIRTY -ErrorAction SilentlyContinue
 Write-Host 'GreenLens native development environment ready (process-local caches and tool paths).'

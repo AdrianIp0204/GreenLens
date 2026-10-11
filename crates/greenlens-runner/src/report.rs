@@ -2,6 +2,19 @@ use crate::{Comparison, ProjectView, CALCULATION_LABEL};
 use anyhow::Result;
 use std::fmt::Write;
 
+struct BoundedHtml(String);
+impl Write for BoundedHtml {
+    fn write_str(&mut self, text: &str) -> std::fmt::Result {
+        if self.0.len().saturating_add(text.len()) as u64
+            > crate::persistence::MAX_EVIDENCE_FILE_BYTES
+        {
+            return Err(std::fmt::Error);
+        }
+        self.0.push_str(text);
+        Ok(())
+    }
+}
+
 fn escape(s: &str) -> String {
     s.replace('&', "&amp;")
         .replace('<', "&lt;")
@@ -10,11 +23,11 @@ fn escape(s: &str) -> String {
         .replace('\'', "&#39;")
 }
 pub fn render(view: &ProjectView, comparisons: &[Comparison]) -> Result<String> {
-    let mut html = format!(
+    let mut html = BoundedHtml(format!(
         r#"<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>GreenLens evidence</title><style>body{{font:16px system-ui,sans-serif;color:#192d29;background:#f7f8f3;margin:3rem auto;max-width:1100px;padding:0 24px}}h1{{font-size:42px}}h2{{border-top:1px solid #bbc9c1;padding-top:28px}}small,p{{line-height:1.6}}table{{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}}td,th{{padding:8px;text-align:right;border-bottom:1px solid #ddd}}th:first-child,td:first-child{{text-align:left}}svg{{max-width:600px;width:100%;background:#e1e6de}}pre{{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}}.note{{border-left:3px solid #44745a;padding:8px 16px}}details{{margin:24px 0}}</style><h1>GreenLens · evidence report</h1><p>{}</p><p><strong>{}</strong></p><p class="note">Synthetic geometry, prescribed azimuth-symmetric sky, neutral diffuse surfaces and equivalent zero-thickness glass. No simulated date, weather series, annual daylight or certification evaluation. Analytical fixtures establish limited behavior; adapter replay is integration verification, not measured-building validation.</p>"#,
         escape(&view.project.name),
         CALCULATION_LABEL
-    );
+    ));
     let scale = view
         .results
         .iter()
@@ -34,7 +47,7 @@ pub fn render(view: &ProjectView, comparisons: &[Comparison]) -> Result<String> 
             .find(|a| a.id == run.alternative_id)
         {
             if crate::is_stale(run, &current.model)? {
-                html.push_str("<p class='note'>This historical run is stale relative to the current alternative. All values below describe its immutable original inputs.</p>");
+                html.write_str("<p class='note'>This historical run is stale relative to the current alternative. All values below describe its immutable original inputs.</p>")?;
             }
         }
         write!(html, "<p>Room {:.2} × {:.2} × {:.2} m; workplane {:.2} m; prescribed exterior {:.1} lx; glazing normal transmittance {:.3}.</p><details><summary>Immutable model and material assumptions</summary><pre>{}</pre></details>", run.model.room.width_m,run.model.room.depth_m,run.model.room.height_m,run.model.sensors.workplane_height_m,run.model.sky.exterior_horizontal_illuminance_lux,run.model.materials.visible_transmittance,escape(&serde_json::to_string_pretty(&run.model)?))?;
@@ -69,11 +82,12 @@ pub fn render(view: &ProjectView, comparisons: &[Comparison]) -> Result<String> 
         )?;
     }
     if comparisons.is_empty() {
-        html.push_str("<p>No compatible completed A/B pair is available. Matching sensor, environment, engine and calculation conditions are required; runs are never silently resampled.</p>");
+        html.write_str("<p>No compatible completed A/B pair is available. Matching sensor, environment, engine and calculation conditions are required; runs are never silently resampled.</p>")?;
     }
     for comparison in comparisons {
+        html.write_str("<p>Comparison selects the most recently saved A and B in this compatible condition group. All immutable runs remain available in the evidence package.</p>")?;
         write!(html,"<h2>Compatible comparison · B minus A</h2><p>{} → {}</p><p>Delta statistics (lx): {}</p><p>Reflective shading can increase individual readings. Percentage deltas are omitted.</p><details><summary>Per-sensor deltas and conditions</summary><pre>{}</pre></details>",escape(&comparison.a_id),escape(&comparison.b_id),escape(&comparison.statistics.to_string()),escape(&serde_json::to_string_pretty(comparison)?))?;
     }
-    html.push_str("<h2>Reproduction</h2><p>Install the separately acquired pinned Radiance engine. Run <code>greenlens replay evidence.zip --engine-dir &lt;engine-directory&gt;</code>. See REPLAY.txt, checksums.json and each run's recipe.json. Octrees are disposable and regenerated. This HTML has no network dependencies or executable scripts.</p></html>");
-    Ok(html)
+    html.write_str("<h2>Reproduction</h2><p>Install the separately acquired pinned Radiance engine. Run <code>greenlens replay evidence.zip --engine-dir &lt;engine-directory&gt;</code>. See REPLAY.txt, checksums.json and each run's recipe.json. Octrees are disposable and regenerated. This HTML has no network dependencies or executable scripts.</p></html>")?;
+    Ok(html.0)
 }

@@ -1,7 +1,7 @@
 name: Native Windows verification
 on:
   push:
-    branches: [main]
+    branches: [main, codex/v0.2-workspace]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -25,7 +25,12 @@ jobs:
           rustup toolchain install 1.99.0 --profile minimal --component rustfmt,clippy --target x86_64-pc-windows-msvc
           if ($LASTEXITCODE -ne 0) { throw 'Rust installation failed' }
           "CARGO_TARGET_DIR=$env:LOCALAPPDATA/GreenLens/build/ci" >> $env:GITHUB_ENV
-          "GREENLENS_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
+          "GREENLENS_EXPECT_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
+          "GREENLENS_EXPECT_SOURCE_DIRTY=false" >> $env:GITHUB_ENV
+      - name: Build identity changes and explicit CI assertions
+        run: |
+          . ./scripts/dev-env.ps1
+          ./scripts/test-build-provenance.ps1
       - name: Acquire and verify pinned native engine
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

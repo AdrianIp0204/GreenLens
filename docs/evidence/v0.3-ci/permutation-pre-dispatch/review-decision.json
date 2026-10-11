@@ -1,0 +1,18 @@
+{
+  "schema_version": "greenlens.permutation-review-decision.v1",
+  "recorded_utc": "2026-10-11T19:28:50.615404+00:00",
+  "scope": "Exactly four declared A4116 streams, eight native stages, fixed seeds0/1, no extra cases or escalation",
+  "decision": "Reviewed fixed four-stream scope and independent102guards. Isolated source is committed after four native-free preparations. Remote dispatch is recorded separately; no extra cases or escalation.",
+  "previous_preparation_plan_sha256": "09f885e1c79ba692061404177e9a23934e18ec41816e1dfbc7394c2cdfb5d493",
+  "preparation_cutoff_sha256": "60a330496dd5cec72cd45f56011f2c2ed90df9b55af5163799254f05ad21ce18",
+  "independent_guard_record_sha256": "4b6195d1f27892fd4d3a8b0fbff9cd15d9ebf4445b76b77c00867da1f6f95cf8",
+  "original_control_run": 38162314489,
+  "original_control_summary_sha256": "f6c841ba9106bb2fb437eff98c3878ff5bc0bba52ec35b4cfdd1053fa88b33ca",
+  "data_asset_ids": [
+    "631152052",
+    "631421796"
+  ],
+  "numeric_policy_changed": false,
+  "engine_executed": false,
+  "reference_family_qualified": false
+}

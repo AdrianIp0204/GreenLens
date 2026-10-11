@@ -1,0 +1,128 @@
+name: Fixed A4116 per-round sensor permutations
+on:
+  push:
+    branches: [codex/v0.3-reference-permutation]
+permissions:
+  contents: read
+concurrency:
+  group: greenlens-permutation-fixed-four
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  diagnostic:
+    permissions:
+      # Read the two explicitly reviewed unpublished data-only assets.
+      contents: write
+    runs-on: windows-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [seed0-baseline, seed0-depth, seed1-baseline, seed1-depth]
+    env:
+      DIAGNOSTIC_CASE: '${{ matrix.case }}'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out the exact reviewed reference reader sources
+        uses: actions/checkout@v4
+        with:
+          ref: a29b768522dd41d700b6e53fd585bd1706a80ecd
+          path: trusted-reference
+          persist-credentials: false
+      - name: Restore only hash-proven source newline representation
+        run: |
+          $plan = Get-Content ./scripts/permutation-plan.json -Raw | ConvertFrom-Json -Depth 60 -DateKind String
+          . ./trusted-reference/scripts/prepare-sensitivity-sources.ps1
+          $null = Prepare-SensitivitySources (Join-Path $PWD 'trusted-reference') $plan.legacy_source_sha256
+      - name: Pure fixed-plan, row-mapping and component arithmetic guards
+        run: |
+          ./scripts/test-permutation.ps1 -TrustedSourceRoot (Join-Path $PWD 'trusted-reference') -OutputDirectory (Join-Path $env:RUNNER_TEMP 'permutation-guards')
+      - name: Download exact reviewed baseline and failed endpoint
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: '${{ github.token }}'
+        run: |
+          . ./scripts/permutation-helpers.ps1
+          $plan = Get-Content ./scripts/permutation-plan.json -Raw | ConvertFrom-Json -Depth 60 -DateKind String
+          Assert-PermutationPlan $plan
+          if (!$plan.execution_authorized) { throw 'Reviewed diagnostic dispatch is disabled' }
+          foreach ($role in @('baseline','endpoint')) {
+            $pin = $plan.($role+'_archive')
+            if ($pin.asset_id -notmatch '^[0-9]+$') { throw 'Reviewed asset ID is not fixed' }
+            $url = "repos/$env:GITHUB_REPOSITORY/releases/assets/$($pin.asset_id)"
+            $meta = & gh api $url | ConvertFrom-Json
+            if ($LASTEXITCODE -ne 0 -or $meta.name -cne $pin.name -or $meta.size -ne $pin.bytes -or $meta.digest -cne ('sha256:'+$pin.sha256)) { throw 'Draft asset metadata differs' }
+            $file = Join-Path $env:RUNNER_TEMP $pin.name
+            & gh api $url -H 'Accept: application/octet-stream' > $file
+            if ($LASTEXITCODE -ne 0 -or (Get-Item $file).Length -ne $pin.bytes -or (Get-FileHash $file).Hash.ToLowerInvariant() -cne $pin.sha256) { throw 'Asset bytes differ' }
+            ("DIAGNOSTIC_"+$role.ToUpperInvariant()+"_ARCHIVE=$file") >> $env:GITHUB_ENV
+          }
+          "DIAGNOSTIC_OUTPUT=$(Join-Path $env:RUNNER_TEMP ('permutation-'+$env:DIAGNOSTIC_CASE))" >> $env:GITHUB_ENV
+      - name: Acquire the separately pinned native engine
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        run: ./scripts/install-radiance.ps1
+      - name: One fixed stream under original resource limits
+        run: |
+          ./scripts/run-hosted-permutation.ps1 -Case $env:DIAGNOSTIC_CASE -BaselineArchive $env:DIAGNOSTIC_BASELINE_ARCHIVE -EndpointArchive $env:DIAGNOSTIC_ENDPOINT_ARCHIVE -OutputDirectory $env:DIAGNOSTIC_OUTPUT -SourceRoot (Join-Path $PWD 'trusted-reference')
+      - name: Retain complete or failed bounded data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: permutation-${{ matrix.case }}-${{ github.run_id }}
+          path: '${{ runner.temp }}/permutation-${{ matrix.case }}/'
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Retain synthetic guard record
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: guards-permutation-${{ matrix.case }}-${{ github.run_id }}
+          path: '${{ runner.temp }}/permutation-guards/'
+          if-no-files-found: warn
+          retention-days: 30
+  fixed_comparisons:
+    needs: diagnostic
+    if: always()
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Check out the exact reviewed reference reader sources
+        uses: actions/checkout@v4
+        with:
+          ref: a29b768522dd41d700b6e53fd585bd1706a80ecd
+          path: trusted-reference
+          persist-credentials: false
+      - name: Restore only hash-proven source newline representation
+        run: |
+          $plan = Get-Content ./scripts/permutation-plan.json -Raw | ConvertFrom-Json -Depth 60 -DateKind String
+          . ./trusted-reference/scripts/prepare-sensitivity-sources.ps1
+          $null = Prepare-SensitivitySources (Join-Path $PWD 'trusted-reference') $plan.legacy_source_sha256
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: permutation-*-${{ github.run_id }}
+          path: '${{ runner.temp }}/permutation-inputs'
+      - name: Re-read all four raw streams and preserve all 384 fixed comparisons
+        run: |
+          $plan = Get-Content ./scripts/permutation-plan.json -Raw | ConvertFrom-Json -Depth 60 -DateKind String
+          . ./trusted-reference/scripts/prepare-sensitivity-sources.ps1
+          $null = Prepare-SensitivitySources (Join-Path $PWD 'trusted-reference') $plan.legacy_source_sha256
+          $root = Join-Path $env:RUNNER_TEMP 'permutation-inputs'
+          $cases = @($plan.cases | ForEach-Object { Join-Path $root ("permutation-$($_.id)-$env:GITHUB_RUN_ID/diagnostic") })
+          $first = Join-Path $root ("permutation-seed0-baseline-$env:GITHUB_RUN_ID")
+          ./scripts/collect-permutation.ps1 -CaseDirectories $cases -BaselineDirectory (Join-Path $first 'baseline-inputs/baseline') -EndpointDirectory (Join-Path $first 'endpoint-inputs') -TrustedSourceRoot (Join-Path $PWD 'trusted-reference') -OutputFile (Join-Path $env:RUNNER_TEMP 'permutation-comparisons.json')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: permutation-comparisons-${{ github.run_id }}
+          path: '${{ runner.temp }}/permutation-comparisons.json'
+          if-no-files-found: warn
+          retention-days: 30

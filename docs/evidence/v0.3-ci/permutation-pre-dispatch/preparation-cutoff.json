@@ -1,0 +1,107 @@
+{
+  "schema_version": "greenlens.permutation-preparation-cutoff.v1",
+  "recorded_utc": "2026-10-11T19:27:49.912068+00:00",
+  "base_commit": "45d11837e6ab982423790c1e75d6379b928bf059",
+  "plan_sha256": "09f885e1c79ba692061404177e9a23934e18ec41816e1dfbc7394c2cdfb5d493",
+  "source": [
+    {
+      "path": ".github/workflows/reference-permutation.yml",
+      "bytes": 6506,
+      "sha256": "6f073f8edfd3e5fd9b4f97ec0739b52e28dfeec2c6bfaf4dc562bf6bdeb41312"
+    },
+    {
+      "path": "docs/v0.3-permutation-investigation.md",
+      "bytes": 3648,
+      "sha256": "7b87834a8172e4cb138a22d637f4ffbf15a077e82ed6b4a2a2b8809ff95d6a32"
+    },
+    {
+      "path": "scripts/collect-permutation.ps1",
+      "bytes": 2026,
+      "sha256": "c6deaca5545bc351a1af851d0459766d0b2165e567a1fcb9b87ea03a92f5e5f8"
+    },
+    {
+      "path": "scripts/permutation-helpers.ps1",
+      "bytes": 12756,
+      "sha256": "d94e3f336442bbe96575d7aedeae4a79ea02f9814e31d3e90af93e7150446487"
+    },
+    {
+      "path": "scripts/permutation-order.cs",
+      "bytes": 2273,
+      "sha256": "5ce3eb03dbde7e3dec7d112379a12b82d4fe2c37d7a7110e92605a1f746e0451"
+    },
+    {
+      "path": "scripts/permutation-plan.json",
+      "bytes": 8234,
+      "sha256": "09f885e1c79ba692061404177e9a23934e18ec41816e1dfbc7394c2cdfb5d493"
+    },
+    {
+      "path": "scripts/permutation-proposal.json",
+      "bytes": 20095,
+      "sha256": "77c93eab343c7091d6cf23b0a53b1c2eb5a5525d7436872d3fd0b405f1a26c8f"
+    },
+    {
+      "path": "scripts/permutation-seed0.json",
+      "bytes": 16386,
+      "sha256": "28776a1a90fe3cdc1ba2ba4009f6be548529dcaaecde9741e2d8653ee7cff406"
+    },
+    {
+      "path": "scripts/permutation-seed1.json",
+      "bytes": 16386,
+      "sha256": "e48d7df63780ea5bc824fbb6db417c68612aab0f41e83353e5b070267ae7f82f"
+    },
+    {
+      "path": "scripts/run-hosted-permutation.ps1",
+      "bytes": 6588,
+      "sha256": "eec1dbed63c9d29667c8703fcf9ffdeebd73f88d388429db802c94d67e6bc94e"
+    },
+    {
+      "path": "scripts/run-permutation-case.ps1",
+      "bytes": 11618,
+      "sha256": "575d6cd09f803e3ddf4e8244ab59a149502ec0111076c798c947462b9dfafdf3"
+    },
+    {
+      "path": "scripts/test-permutation.ps1",
+      "bytes": 13516,
+      "sha256": "8a93a0686b5a396ab8f014e758493ccb5b3df0d41bc52d07d3563151504f4475"
+    }
+  ],
+  "cases": [
+    {
+      "case": "seed0-baseline",
+      "declaration_sha256": "99650580f3a7563da009bdcd39e5fa390ad37b27abef977f940ca12f2cc2a018",
+      "primary_sha256": "d002a649d38eae405972fa3a97f21a3198970e5fb7b18c9812a07c4d71fde191",
+      "primary_bytes": 192512,
+      "engine_executed": false
+    },
+    {
+      "case": "seed0-depth",
+      "declaration_sha256": "24a1d3527b2d631d3ceac2db26429f71081f1a6328be88de048ea2dfbb16c5fe",
+      "primary_sha256": "d002a649d38eae405972fa3a97f21a3198970e5fb7b18c9812a07c4d71fde191",
+      "primary_bytes": 192512,
+      "engine_executed": false
+    },
+    {
+      "case": "seed1-baseline",
+      "declaration_sha256": "64dec79cf0f4624f567d4224e81d837fb81b0f4fb105ca040e49766d08f0ea07",
+      "primary_sha256": "401c537b85f8385940ba31b8c3d20f01254713a91f4f1dd49005e10de8964c65",
+      "primary_bytes": 192512,
+      "engine_executed": false
+    },
+    {
+      "case": "seed1-depth",
+      "declaration_sha256": "d18a5c60bb1d50f249eb33fdbbf336940aadeff18d0f22b871c3a5e18b51912d",
+      "primary_sha256": "401c537b85f8385940ba31b8c3d20f01254713a91f4f1dd49005e10de8964c65",
+      "primary_bytes": 192512,
+      "engine_executed": false
+    }
+  ],
+  "synthetic_tests": 102,
+  "independent_test_sha256": "4b6195d1f27892fd4d3a8b0fbff9cd15d9ebf4445b76b77c00867da1f6f95cf8",
+  "privacy_matches": 0,
+  "yaml_parsed": true,
+  "ps1_syntax_passed": true,
+  "all_staged_diagnostic_source_materialized_hashes_match": true,
+  "engine_executed": false,
+  "reference_family_qualified": false,
+  "execution_authorized": false
+}

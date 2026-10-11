@@ -1,0 +1,78 @@
+{
+  "schema_version": "greenlens.permutation-final-preparation.v1",
+  "recorded_utc": "2026-10-11T19:31:59.602722+00:00",
+  "plan_sha256": "a7e59b051202e17dd0d36a495b48b9269d64082811898da6e34929640a250ebd",
+  "proposal_sha256": "77c93eab343c7091d6cf23b0a53b1c2eb5a5525d7436872d3fd0b405f1a26c8f",
+  "review_decision_sha256": "17a7ffc509fd468accc3f3cef0bdc6beba3adffb5a2bb09f9548642823c04216",
+  "cases": [
+    {
+      "case": "seed0-baseline",
+      "declaration_sha256": "1ccd2d753ec576000034deb17528a40b05d61d004b018a42aefc5f148c913199",
+      "primary_sha256": "d002a649d38eae405972fa3a97f21a3198970e5fb7b18c9812a07c4d71fde191",
+      "primary_bytes": 192512,
+      "processes_present": false
+    },
+    {
+      "case": "seed0-depth",
+      "declaration_sha256": "448fbd423d57e719346513772d16613eadbbebba5c83e6b0692801b43c42858b",
+      "primary_sha256": "d002a649d38eae405972fa3a97f21a3198970e5fb7b18c9812a07c4d71fde191",
+      "primary_bytes": 192512,
+      "processes_present": false
+    },
+    {
+      "case": "seed1-baseline",
+      "declaration_sha256": "e6a8495dd6c11baa991c70886475b66a559ba95cadc17d6df91a31458d6df1f6",
+      "primary_sha256": "401c537b85f8385940ba31b8c3d20f01254713a91f4f1dd49005e10de8964c65",
+      "primary_bytes": 192512,
+      "processes_present": false
+    },
+    {
+      "case": "seed1-depth",
+      "declaration_sha256": "b43646fa5e1cdaed6d030791f7951b82eddddb60c6f926763d47b47f9067ccd1",
+      "primary_sha256": "401c537b85f8385940ba31b8c3d20f01254713a91f4f1dd49005e10de8964c65",
+      "primary_bytes": 192512,
+      "processes_present": false
+    }
+  ],
+  "diagnostic_source_sha256": {
+    "depth-order-helpers.ps1": "8300e88f01dd090bb34c25b1d98fe83edfdadb3be2eeec443258d2c1320dd53b",
+    "permutation-order.cs": "5ce3eb03dbde7e3dec7d112379a12b82d4fe2c37d7a7110e92605a1f746e0451",
+    "permutation-helpers.ps1": "d94e3f336442bbe96575d7aedeae4a79ea02f9814e31d3e90af93e7150446487",
+    "run-permutation-case.ps1": "575d6cd09f803e3ddf4e8244ab59a149502ec0111076c798c947462b9dfafdf3",
+    "collect-permutation.ps1": "c6deaca5545bc351a1af851d0459766d0b2165e567a1fcb9b87ea03a92f5e5f8",
+    "run-hosted-permutation.ps1": "eec1dbed63c9d29667c8703fcf9ffdeebd73f88d388429db802c94d67e6bc94e",
+    "test-permutation.ps1": "8a93a0686b5a396ab8f014e758493ccb5b3df0d41bc52d07d3563151504f4475",
+    "permutation-proposal.json": "77c93eab343c7091d6cf23b0a53b1c2eb5a5525d7436872d3fd0b405f1a26c8f",
+    "permutation-seed0.json": "28776a1a90fe3cdc1ba2ba4009f6be548529dcaaecde9741e2d8653ee7cff406",
+    "permutation-seed1.json": "e48d7df63780ea5bc824fbb6db417c68612aab0f41e83353e5b070267ae7f82f"
+  },
+  "trusted_source_sha256": {
+    "scripts/annual-reference-sensitivity.ps1": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566",
+    "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+    "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+    "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+    "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+    "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+    "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+    "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+    "scripts/annual-collect-reference.ps1": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+    "scripts/annual-reference-identity.ps1": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8",
+    "scripts/annual-reference-recovery.ps1": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+    "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+    "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+    "examples/synthetic-a.json": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+    "examples/synthetic-b.json": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf",
+    "scripts/annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "scripts/annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "scripts/run-hosted-sensitivity-case.ps1": "78f882cadd0c4eb89bed9c7dfc1f6d21c84ca061da4163ceb20ebd4ef62a68b8",
+    "scripts/prepare-sensitivity-sources.ps1": "839c155b8fc392462c5a2d04e8344faf973b4c209c09d5b941e8edc19bed695e"
+  },
+  "scope": "Native-free strict preparation of exact four declared streams, using verified retained original baseline and failed endpoint; no scientific engine execution",
+  "fixed_comparisons": 384,
+  "pure_guards_passed": 102,
+  "source_mapping_tagged_scalars": 73728,
+  "primary_line_checks": 12288,
+  "reference_family_qualified": false,
+  "engine_executed": false,
+  "remote_dispatch_recorded": false
+}

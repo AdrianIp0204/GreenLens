@@ -1,5 +1,10 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — bounded reference scheduling
+
+- The scheduling watcher can now stop its exactly identified worker after two finalized winter cases as well as the original three-case default. PID, creation time, command hash, declared case order and retained report bytes are checked. Any next-case work racing with that boundary remains explicitly partial/cancelled and must run again in a fresh shard; no numerical result is inferred from scheduling.
+- All eight synthetic identity, boundary and process-tree checks passed independently. An earlier reviewer run exceeded its 15-second synthetic wait under load even though the retained stop succeeded; that failure remains recorded. Only the test wait increased to 60 seconds. Scientific settings, input files and worker resource/time limits did not change. The A watcher was replaced after exact ownership checks while its current calculation remained active; the freed slot is reserved for integrated method-5 verification.
+
 ## 2026-10-11 — final hosted method-4 checkpoint
 
 - Hosted run `38134501350` finished with its native and selected-hour jobs passing, but all four complete-year shipping/reference A/B jobs failing on negative reflected-solar residuals. Convergence and annual replay were skipped. Required process exits alone did not promote these failed calculations. The final checkpoint preserves the previous partial records and adds A-reference's failure at sensor 1, interval 873.

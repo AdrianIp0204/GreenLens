@@ -1,17 +1,29 @@
-# Stop only an explicitly identified owned reference worker after its three
-# completed winter cases. This scheduling record never marks a numeric pass.
+# Stop only an explicitly identified owned reference worker after its declared
+# winter-case boundary. This scheduling record never marks a numeric pass.
 param(
  [Parameter(Mandatory)][int]$WorkerProcessId,
  [Parameter(Mandatory)][string]$ExpectedStartTimeUtc,
  [Parameter(Mandatory)][string]$ExpectedCommandSha256,
  [Parameter(Mandatory)][string]$OutputDirectory,
  [Parameter(Mandatory)][ValidateSet('A','B')][string]$Alternative,
+ [ValidateSet(2,3)][int]$StopAfterCases=3,
  [switch]$CheckOnly
 )
 $ErrorActionPreference='Stop'
+$watcherSourceHash=(Get-FileHash -LiteralPath $PSCommandPath).Hash.ToLowerInvariant()
 $expectedStart=[DateTime]::Parse($ExpectedStartTimeUtc,[Globalization.CultureInfo]::InvariantCulture,[Globalization.DateTimeStyles]::RoundtripKind).ToUniversalTime()
 $recordPath=Join-Path $OutputDirectory 'scheduling-interruption.json'
 if(Test-Path -LiteralPath $recordPath){throw 'A scheduling record already exists.'}
+function Test-CompletedBoundary($Report) {
+ if($Report.declaration.alternative -cne $Alternative -or $Report.declaration.schema_version -cne 'greenlens.controlled-reference.v1'){throw 'Unexpected retained worker declaration.'}
+ $winterPrefix=@(8512,8504,8508)
+ $declared=@($Report.declaration.executed_interval_indices)
+ if($declared.Count -lt 3 -or ($declared[0..2] -join ',') -cne ($winterPrefix -join ',')){throw 'Unexpected declared winter sequence; refusing termination.'}
+ $completed=@($Report.checks.interval_index)
+ if($completed.Count -gt $StopAfterCases){throw 'Requested scheduling boundary already passed; refusing late termination.'}
+ if($completed.Count -and (($completed -join ',') -cne ($winterPrefix[0..($completed.Count-1)] -join ','))){throw 'Unexpected completed interval sequence; refusing termination.'}
+ return $completed.Count -eq $StopAfterCases
+}
 function Owned-Worker {
  $process=Get-Process -Id $WorkerProcessId -ErrorAction SilentlyContinue
  if(!$process){return $null}
@@ -36,10 +48,8 @@ while($true){
   $reportBytes=[IO.File]::ReadAllBytes((Join-Path $OutputDirectory 'controlled-reference.json'))
   $report=[Text.Encoding]::UTF8.GetString($reportBytes).TrimStart([char]0xfeff)|ConvertFrom-Json -ErrorAction Stop
  }catch{$worker.Dispose();Start-Sleep -Seconds 1;continue}
- if($report.declaration.alternative -ne $Alternative -or $report.declaration.schema_version -ne 'greenlens.controlled-reference.v1'){throw 'Unexpected retained worker declaration.'}
  $completed=@($report.checks.interval_index)
- if($completed.Count -lt 3){$worker.Dispose();Start-Sleep -Seconds 1;continue}
- if(($completed[0..2] -join ',') -ne '8512,8504,8508' -or @($completed|Sort-Object -Unique).Count -ne $completed.Count){throw 'Unexpected completed interval sequence; refusing termination.'}
+ if(!(Test-CompletedBoundary $report)){$worker.Dispose();Start-Sleep -Seconds 1;continue}
  # Recheck immediately before acting. The next case may have begun preparation
  # after its predecessor was sealed; that partial case remains uncompleted.
  $worker.Dispose();$worker=Owned-Worker
@@ -51,7 +61,7 @@ while($true){
  if(Test-Path -LiteralPath $snapshotPath){throw 'A prior scheduling snapshot already exists.'}
  [IO.File]::WriteAllBytes($snapshotPath,$reportBytes)
  $reportHash=[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($reportBytes)).ToLowerInvariant()
- $record=[ordered]@{schema_version='greenlens.reference-scheduling-interruption.v1';requested_utc=[DateTime]::UtcNow.ToString('o');reason='Redistribute remaining fixed cases across isolated workers after retaining three complete winter cases';numeric_outcome='No new pass or failure is inferred by this scheduling action';alternative=$Alternative;worker_pid=$WorkerProcessId;worker_start_utc=$ExpectedStartTimeUtc;worker_command_sha256=$ExpectedCommandSha256;completed_interval_indices=$completed;completed_report_snapshot=$snapshotName;completed_report_sha256=$reportHash;observed_tree=$observed;next_case_preparation_may_be_incomplete=$true;concurrency_context='At most six independent one-worker references plus two production calculations; nonisolated timings';terminated=$false}
+ $record=[ordered]@{schema_version='greenlens.reference-scheduling-interruption.v1';requested_utc=[DateTime]::UtcNow.ToString('o');reason="Redistribute remaining fixed cases after retaining $StopAfterCases complete winter cases";numeric_outcome='No new pass or failure is inferred by this scheduling action';alternative=$Alternative;stop_after_cases=$StopAfterCases;watcher_source_sha256=$watcherSourceHash;worker_pid=$WorkerProcessId;worker_start_utc=$ExpectedStartTimeUtc;worker_command_sha256=$ExpectedCommandSha256;completed_interval_indices=$completed;completed_report_snapshot=$snapshotName;completed_report_sha256=$reportHash;observed_tree=$observed;next_case_preparation_may_be_incomplete=$true;next_case_policy='Any next-case preparation or process that raced with this finalized-report boundary remains partial/cancelled, never unexecuted, completed or qualified; rerun that entire missing case in fresh scratch';concurrency_context='At most eight independent one-worker heavy engine processes; nonisolated timings';terminated=$false}
  $record|ConvertTo-Json -Depth 8|Set-Content -LiteralPath $recordPath -Encoding utf8
  $worker.Kill($true);$worker.WaitForExit()
  $worker.Dispose()

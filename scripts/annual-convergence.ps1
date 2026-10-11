@@ -1,4 +1,4 @@
-#Requires -Version 7.2
+#Requires -Version 7.5
 # Full-year numerical convergence, not independent physical validation.
 # Runs both complete alternatives at both profiles; no sampled-hour extrapolation.
 param(

@@ -571,8 +571,8 @@
     }
   },
   "human_retest_candidate05": {
-    "status": "unverified; pending human observation, automation resumed for independent B workflow",
-    "instructions": "Hold Shift while clicking Room envelope in Objects to obtain2 selected; then hold Ctrl while clicking Window to obtain1 Room envelope",
+    "status": "unverified; saved idle handoff restored after independent A/B verification, native input paused pending human observation; release goal blocked",
+    "instructions": "Hold Shift while clicking Room envelope in Objects to obtain 2 selected; then hold Ctrl while clicking Window to obtain 1 Room envelope",
     "automated_modifier_mouse_claim": false
   },
   "release_acceptance_complete": false

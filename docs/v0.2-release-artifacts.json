@@ -2,6 +2,8 @@
   "schema_version": "greenlens.release-artifacts.v0.2",
   "generated_utc": "2026-10-11T04:24:48.7673914Z",
   "acceptance_status": "native_modifier_human_observation_pending_all_other_required_checks_passed",
+  "goal_status": "blocked",
+  "goal_blocker": "Required installed-native Shift-add/Ctrl-remove observation remains unavailable after three consecutive goal turns; release acceptance is incomplete.",
   "application_source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
   "source_build_clean": true,
   "signed": false,

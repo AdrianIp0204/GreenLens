@@ -1,0 +1,69 @@
+name: Single A8504 controlled-reference pilot (unqualified)
+on:
+  push:
+    branches: [codex/v0.3-reference-pilot]
+permissions:
+  contents: read
+concurrency:
+  group: greenlens-reference-a8504-pilot
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  reference-a8504:
+    runs-on: windows-latest
+    timeout-minutes: 300
+    env:
+      INPUT_ASSET_ID: '630834963'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Synthetic trusted-source newline guards
+        run: ./scripts/test-prepare-reference-sources.ps1
+      - name: Download one reviewed data-only input artifact
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 or later required' }
+          if ($env:INPUT_ASSET_ID -notmatch '^[0-9]+$') { throw 'Root must set the reviewed draft-release asset ID before dispatch' }
+          $endpoint = "repos/$env:GITHUB_REPOSITORY/releases/assets/$env:INPUT_ASSET_ID"
+          $asset = & gh api $endpoint | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $asset.name -cne 'GreenLens-reference-A8504-inputs.zip' -or $asset.size -ne 8682531) { throw 'Draft input asset metadata differs' }
+          $zip = Join-Path $env:RUNNER_TEMP 'GreenLens-reference-A8504-inputs.zip'
+          $info = [Diagnostics.ProcessStartInfo]::new()
+          $info.FileName = (Get-Command gh -CommandType Application).Source
+          $info.UseShellExecute = $false
+          $info.RedirectStandardOutput = $true
+          $info.RedirectStandardError = $true
+          foreach ($arg in @('api',$endpoint,'-H','Accept: application/octet-stream')) { $info.ArgumentList.Add($arg) }
+          $process = [Diagnostics.Process]::new(); $process.StartInfo = $info
+          $stream = [IO.File]::Create($zip)
+          try {
+            if (!$process.Start()) { throw 'Cannot start authenticated artifact download' }
+            $copy = $process.StandardOutput.BaseStream.CopyToAsync($stream)
+            $errors = $process.StandardError.ReadToEndAsync()
+            $process.WaitForExit()
+            $null = $copy.GetAwaiter().GetResult()
+            $stderr = $errors.GetAwaiter().GetResult()
+            if ($process.ExitCode -ne 0) { throw "Artifact download failed: $stderr" }
+          } finally { $stream.Dispose(); $process.Dispose() }
+          if ((Get-Item -LiteralPath $zip).Length -ne 8682531 -or (Get-FileHash -LiteralPath $zip).Hash.ToLowerInvariant() -cne '0b77ddbcf6d1ca03ecece672c2d1d40bdaabab6c53e30b3648bb5e14264f6f83') { throw 'Reviewed archive digest/size differs' }
+          "PILOT_INPUT_ARCHIVE=$zip" >> $env:GITHUB_ENV
+          "PILOT_OUTPUT=$(Join-Path $env:RUNNER_TEMP 'GreenLens-pilot-A8504')" >> $env:GITHUB_ENV
+      - name: Acquire separately pinned Radiance
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/install-radiance.ps1
+      - name: One unchanged A8504 case with one engine worker
+        run: |
+          # No CLI/Cargo/desktop build and no candidate outputs are consumed.
+          ./scripts/run-hosted-reference-pilot.ps1 -InputArchive $env:PILOT_INPUT_ARCHIVE -OutputDirectory $env:PILOT_OUTPUT -SourceRoot $PWD
+      - name: Retain complete or failed pilot evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reference-A8504-pilot-${{ github.run_id }}
+          path: ${{ runner.temp }}/GreenLens-pilot-A8504/
+          if-no-files-found: warn
+          retention-days: 30

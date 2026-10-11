@@ -1,0 +1,265 @@
+{
+  "schema_version": "greenlens.native-package-audit.v0.3",
+  "audited_utc": "2026-10-11T08:03:44.7773055Z",
+  "package_sha256": "4ee9c0c9b85d7a8c521e86781b9ea12170c6cab2313af29b240334f4d40209a4",
+  "package_bytes": 6144306,
+  "cli_sha256": "8b65a0b3d524a6d4bfa39ae94580719a40669522a940f0d97edf094b7371c0a6",
+  "replay_executed": false,
+  "rendering_observed": false,
+  "scope": "Read-only source ZIP/metadata/report audit. Extraction is a new isolated audit copy; no source project/run mutation. Engine replay owned separately.",
+  "archive": {
+    "largest_entry_bytes": 2527669,
+    "shared_limits_pass": true,
+    "safe_unique_paths": true,
+    "entries": 156,
+    "total_uncompressed_bytes": 38836845
+  },
+  "seals": [
+    {
+      "members": 4,
+      "all_match": true,
+      "path": "weather/a92127d4-9ba5-4e5c-8991-463318722c75/checksums.json"
+    },
+    {
+      "members": 72,
+      "all_match": true,
+      "path": "runs/85876c9b-b031-4fe1-9c43-12c85420d299/checksums.json"
+    },
+    {
+      "members": 4,
+      "all_match": true,
+      "path": "runs/85876c9b-b031-4fe1-9c43-12c85420d299/weather/checksums.json"
+    },
+    {
+      "members": 72,
+      "all_match": true,
+      "path": "runs/9cac8625-92b8-4658-9cfe-bf996b8a31ac/checksums.json"
+    },
+    {
+      "members": 4,
+      "all_match": true,
+      "path": "runs/9cac8625-92b8-4658-9cfe-bf996b8a31ac/weather/checksums.json"
+    },
+    {
+      "members": 155,
+      "all_match": true,
+      "path": "checksums.json"
+    }
+  ],
+  "runs": [
+    {
+      "record_sha256": "8f2f275d8e700ee9c5ee42eb5b56874adf92d1c480ace00a3788f43101ea921e",
+      "source_worktree_dirty": true,
+      "sensors": 24,
+      "intervals": 8760,
+      "verified_weather_binding": {
+        "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+        "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+      },
+      "metric_identity": "c60181b30b38cc3fbc0e01fcb5336a649ceadc39b6d478236835256a315962ff",
+      "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+      "chunks": 53,
+      "derived_metrics_max_error_percentage_points": 0,
+      "adapter_version": "radiance-climate-direct-corrected/2",
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "alternative": "A",
+      "id": "85876c9b-b031-4fe1-9c43-12c85420d299",
+      "profile": "shipping",
+      "physical_result_fingerprint": "fb84e1256d3c658559d1712882d7cf9775d9d19092c2c121557179cfd8004aed",
+      "original_weather_matches_reviewed_dataset": true,
+      "normalized_weather_matches_reviewed_dataset": true,
+      "time_policy": {
+        "profile": "pvgis_tmy",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1",
+        "source_minute": 0,
+        "canonical_minute": 60,
+        "interval_duration_minutes": 60,
+        "representative_offset_from_interval_end_minutes": -30,
+        "declared_irradiance_offset_hours": -0.5,
+        "fixed_local_standard_time": true,
+        "source_year_is_calendar": false,
+        "applies_daylight_saving": false
+      },
+      "all_numeric_channels_checked": 840960,
+      "zero_radiation_intervals_checked": 4398,
+      "max_rgb_to_lux_difference_lx": 0
+    },
+    {
+      "record_sha256": "3a976c50e9dfdfcf7f15bb9cdcd01c72113ed0a0caddc84f27a19b66d48350e9",
+      "source_worktree_dirty": true,
+      "sensors": 24,
+      "intervals": 8760,
+      "verified_weather_binding": {
+        "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+        "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+      },
+      "metric_identity": "c1f9ae3e07fd21a8d3f6cc6f4ef46ea1090ccd077b0902c1dd0bab85198b0a7b",
+      "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+      "chunks": 53,
+      "derived_metrics_max_error_percentage_points": 0,
+      "adapter_version": "radiance-climate-direct-corrected/2",
+      "source_commit": "c3d3d59a57ca1def890001a1df5d03d58cc72738",
+      "alternative": "B",
+      "id": "9cac8625-92b8-4658-9cfe-bf996b8a31ac",
+      "profile": "shipping",
+      "physical_result_fingerprint": "bc0e0c3247f5fb749d6ccdf9bf3937b65f9c6bdd2f1e46f55267e44918a099d0",
+      "original_weather_matches_reviewed_dataset": true,
+      "normalized_weather_matches_reviewed_dataset": true,
+      "time_policy": {
+        "profile": "pvgis_tmy",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1",
+        "source_minute": 0,
+        "canonical_minute": 60,
+        "interval_duration_minutes": 60,
+        "representative_offset_from_interval_end_minutes": -30,
+        "declared_irradiance_offset_hours": -0.5,
+        "fixed_local_standard_time": true,
+        "source_year_is_calendar": false,
+        "applies_daylight_saving": false
+      },
+      "all_numeric_channels_checked": 840960,
+      "zero_radiation_intervals_checked": 4398,
+      "max_rgb_to_lux_difference_lx": 0
+    }
+  ],
+  "cli_commands": [
+    {
+      "exit_code": 0,
+      "command": "metadata",
+      "alternative": "A"
+    },
+    {
+      "exit_code": 0,
+      "command": "hour12",
+      "alternative": "A"
+    },
+    {
+      "exit_code": 0,
+      "command": "sensor",
+      "alternative": "A"
+    },
+    {
+      "exit_code": 0,
+      "command": "metrics",
+      "alternative": "A"
+    },
+    {
+      "exit_code": 0,
+      "command": "weather",
+      "alternative": "A"
+    },
+    {
+      "exit_code": 0,
+      "command": "metadata",
+      "alternative": "B"
+    },
+    {
+      "exit_code": 0,
+      "command": "hour12",
+      "alternative": "B"
+    },
+    {
+      "exit_code": 0,
+      "command": "sensor",
+      "alternative": "B"
+    },
+    {
+      "exit_code": 0,
+      "command": "metrics",
+      "alternative": "B"
+    },
+    {
+      "exit_code": 0,
+      "command": "weather",
+      "alternative": "B"
+    },
+    {
+      "command": "study compare",
+      "field": "illuminance",
+      "exit_code": 0
+    },
+    {
+      "command": "study compare",
+      "field": "da",
+      "exit_code": 0
+    },
+    {
+      "command": "study compare",
+      "field": "cda",
+      "exit_code": 0
+    },
+    {
+      "command": "study compare",
+      "field": "udi",
+      "exit_code": 0
+    },
+    {
+      "command": "study compare",
+      "field": "underlit",
+      "exit_code": 0
+    },
+    {
+      "command": "study compare",
+      "field": "overlit",
+      "exit_code": 0
+    }
+  ],
+  "package_unchanged": true,
+  "audit_checks_completed": true,
+  "numeric_channels_checked": 1681920,
+  "report_audit": {
+    "html_bytes": 252186,
+    "rendering_observed": false,
+    "source_and_table_values_verified": true,
+    "table_numeric_values_checked": 288,
+    "shared_hourly_lux_scale": 39295.078,
+    "annual_percentage_scale": 100,
+    "preview_interval_index": 12,
+    "preview_local_standard_time": "January 1, hour-ending 13, midpoint 12:30",
+    "offline_scripts_and_network_dependencies": false,
+    "run_ids_source_commit_dirtyflag_metric_and_profile_identities_present": true,
+    "design_difference": {
+      "A_overhang": null,
+      "B_overhang_projection_m": 0.6
+    },
+    "limitations_present": [
+      "fixed geometry",
+      "neutral materials",
+      "simplified equivalent glass",
+      "metrics are not certification",
+      "replay is integration verification",
+      "one preview is not annual aggregate",
+      "weighted time percentages are not floor-area percentages"
+    ],
+    "readability_gaps": [
+      "DA/cDA/UDI formula definitions and strict underlit/overlit inequalities are not stated in the standalone HTML; it shows threshold values and inclusive UDI bounds.",
+      "Occupancy appears as raw daily minutes JSON rather than 08:00–18:00 and the 3650 interval denominator.",
+      "Full source timestamp normalization/no-DST policy remains in retained weather.json rather than the report; report states fixed UTC+480, local-standard hour-ending/midpoint and non-calendar source years."
+    ]
+  },
+  "privacy_scan": {
+    "text_members_scanned": true,
+    "matching_member_paths": []
+  },
+  "release_accuracy_acceptance": false,
+  "audit_scope_limitation": "No engine replay or rendered visual inspection performed. Existing provisional method/profile accuracy failures remain outside this archive-integrity audit.",
+  "verification_commands": {
+    "numeric_report_audit_script_sha256": "0e005a44dce035937537e7ad2b280486513e6503315412c0d980b94903a0f843",
+    "scope": "All CLI operations are read-only inspection/derivation against a new checksum-verified extraction of the unchanged source ZIP. No replay, engine process, native UI, source-project write, or HTML rendering was performed.",
+    "audit_script_sha256": "5ca9a02d7c23d313e4e639147852ef3c16f91bbe3692cdc3ba2a0e20eb580a4b",
+    "independent_inspection": "PowerShell validates all archive path/size bounds, exact extracted lengths and nested SHA-256 seals; Node reads every float64 channel, checks finite/nonnegative values, zero-radiation outputs, retained RGB/lux consistency, immutable snapshots, all report table values and comparison deltas. Actual CLI commands revalidate stored record identities/weather and derive all stored metrics from retained series.",
+    "comparisons": "CLI study compare PROJECT A_ID B_ID --field FIELD --interval 12; FIELD was illuminance, da, cda, udi, underlit, overlit",
+    "notation": "PROJECT below denotes only the new isolated audit copy; A_ID/B_ID are the immutable IDs recorded under runs. CLI denotes the exact distributed executable bound by cli_sha256. The metric settings files are serialized copies of each retained run study.metrics.",
+    "per_run": [
+      "CLI result PROJECT RUN_ID",
+      "CLI result PROJECT RUN_ID --hour 12",
+      "CLI result PROJECT RUN_ID --sensor s000001",
+      "CLI study metrics PROJECT RUN_ID ALTERNATIVE-metric-settings.json",
+      "CLI weather verify PROJECT/runs/RUN_ID/weather"
+    ]
+  }
+}

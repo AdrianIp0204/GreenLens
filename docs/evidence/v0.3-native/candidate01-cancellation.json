@@ -1,0 +1,14 @@
+{
+  "schema_version": "greenlens.native-cancellation-observation.v1",
+  "observed_utc": "2026-10-11T07:21:48.0944549Z",
+  "installed_sha256": "9c918ae30c5a54fed7278722a5ca7aca7ceecbdc3544d46d0e8bf108e7141c27",
+  "desktop_pid": 38184,
+  "engine_name": "rcontrib.exe",
+  "engine_pid": 31352,
+  "run_id": "eb6a1652-42f6-48a9-9f97-b4993b333da1",
+  "action": "Installed app toolbar Cancel during real annual coefficient generation",
+  "former_engine_process_alive": false,
+  "remaining_engine_children": 0,
+  "completed_climate_runs": 0,
+  "scope": "Native UI cancellation observation, supplemented by separate supervised tree regressions; not a completed annual result"
+}

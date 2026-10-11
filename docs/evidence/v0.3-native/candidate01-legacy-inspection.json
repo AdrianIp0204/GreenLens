@@ -1,0 +1,194 @@
+{
+  "schema_version": "greenlens.native-legacy-fixture-preparation.v1",
+  "prepared_utc": "2026-10-11T08:08:34.4468573Z",
+  "fixture": "tests/fixtures/legacy-static-v0.1.zip",
+  "fixture_sha256": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec",
+  "fixture_bytes": 94116,
+  "source_fixture_unchanged": true,
+  "target_relative": "Legacy v01",
+  "entries": 27,
+  "total_uncompressed_bytes": 272319,
+  "largest_entry_bytes": 85091,
+  "paths_limits_and_all_seals_checked_before_extraction": true,
+  "seals": [
+    {
+      "passed": true,
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/checksums.json",
+      "members": 10
+    },
+    {
+      "passed": true,
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/checksums.json",
+      "members": 10
+    },
+    {
+      "passed": true,
+      "path": "checksums.json",
+      "members": 26
+    }
+  ],
+  "runs": [
+    {
+      "alternative": "A",
+      "sensors": 77,
+      "id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528"
+    },
+    {
+      "alternative": "B",
+      "sensors": 77,
+      "id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0"
+    }
+  ],
+  "reader_command": "greenlens compare PROJECT --a 78b6e8e6-8a46-4a6a-9e75-8931ae5d3528 --b 270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+  "reader_cli_sha256": "8b65a0b3d524a6d4bfa39ae94580719a40669522a940f0d97edf094b7371c0a6",
+  "reader_exit_code": 0,
+  "evidence_unchanged_after_read": true,
+  "engine_executed": false,
+  "ui_observed": true,
+  "inventory": [
+    {
+      "path": "checksums.json",
+      "sha256": "b75967f6f0c53513715f39cbd364dd3fc42fc481fd0739d8240c81e2c5caaa47",
+      "bytes": 3231
+    },
+    {
+      "path": "comparisons.json",
+      "sha256": "3122f4ba32046ab9fe84b5a617f581109d48b995734f3781fb8c8499c19e9c36",
+      "bytes": 3132
+    },
+    {
+      "path": "project.json",
+      "sha256": "67c688e076641f1751482dafc8d9f6ad1a7aa0daed69a393c4022faca6c59c77",
+      "bytes": 2906
+    },
+    {
+      "path": "REPLAY.txt",
+      "sha256": "371de3a137cc142c6a653c783dcd249ac78ba7d60ce5495259cfffaabf336c01",
+      "bytes": 630
+    },
+    {
+      "path": "report.html",
+      "sha256": "726bed9e1fdcf3368a6ad87b3be1ffd4971d4e0b9344231a42b0233f44ab542d",
+      "bytes": 85091
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/checksums.json",
+      "sha256": "b35fd8cf8e812d9e8c4c59bcd6fe0fe280ca04700139a2725f8a4ae9dca2d0aa",
+      "bytes": 912
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/input.json",
+      "sha256": "133b1041d041abe1531439b39e2041807b88784480c10d1c802bfa4a44363e76",
+      "bytes": 820
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/logs.json",
+      "sha256": "376d2f39dcb3c2d82934018e4df1a643f09911337af24990978167bffbb4d384",
+      "bytes": 1377
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/provenance.json",
+      "sha256": "5774c0de3eac1c1a5c3f79b139e7a3947a92837483c630df4e9a433d3f5ed277",
+      "bytes": 17034
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/raw.rgb",
+      "sha256": "0027778b2837a98b7354b5efe6ee6fc9c8ede66d8561005835f864bd39e92215",
+      "bytes": 3157
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/recipe.json",
+      "sha256": "1905e4bbc4c738957bd8b2f6669e764fe92d599ecbe31a7eca31c01d012927b0",
+      "bytes": 16296
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/results.csv",
+      "sha256": "fedbe44fb36b3dff378e63c7ec17f7bc4960bf32a55f77cc13f0d08441ed2c3e",
+      "bytes": 3005
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/results.json",
+      "sha256": "d06d73fe930586992210232a26e1a2edc276c4e0f76fbc9c0cb804131eff9df1",
+      "bytes": 43636
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/scene.rad",
+      "sha256": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8",
+      "bytes": 1352
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/sensors.pts",
+      "sha256": "c9f318db33973af13fe8ee748548cc44542a8527f0532ef0f822d970784291d3",
+      "bytes": 1250
+    },
+    {
+      "path": "runs/270984ca-ecf9-482e-b8e5-d13b851eb4d0/sky.rad",
+      "sha256": "af4ca3144ea1e769226a3036a8430d0d0bf3698c76b5d409d53c907850f6f2b5",
+      "bytes": 268
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/checksums.json",
+      "sha256": "3fc212901461c24e0695a4a4550e4ab1afcd84415d86507ab2f4bbfee08800dd",
+      "bytes": 912
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/input.json",
+      "sha256": "e76191011a5a959141f3038c60cea34189736fae5d00426aba57a7e359fbe0c5",
+      "bytes": 711
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/logs.json",
+      "sha256": "8aaf2db652b97be6796d1c9544f25ad5f9062d4664cadd846e2045d764a1c4cf",
+      "bytes": 1380
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/provenance.json",
+      "sha256": "86f49e2a2a0e3a20e7071604f41ead5dd14845b3efb78db1d46604f10ba8da92",
+      "bytes": 17034
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/raw.rgb",
+      "sha256": "cee79ccb8d79d09f1c9d2a2c03248c529e781c3e6c857e5485f7ce2b93ec5730",
+      "bytes": 3157
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/recipe.json",
+      "sha256": "055e0594213265f5e63dbf37529819c577e08b4a80fe277e303cb66d1d9ef9aa",
+      "bytes": 16299
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/results.csv",
+      "sha256": "0ddbcd9e9766fdbf27000782285d11f9e5f4d419196653df438c229e13de2e3e",
+      "bytes": 3018
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/results.json",
+      "sha256": "41c244c792e2b3c40962773f9eac6c2ae54c7c5aa075d6bc77aad6c695e143a1",
+      "bytes": 42972
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/scene.rad",
+      "sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57",
+      "bytes": 1221
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/sensors.pts",
+      "sha256": "c9f318db33973af13fe8ee748548cc44542a8527f0532ef0f822d970784291d3",
+      "bytes": 1250
+    },
+    {
+      "path": "runs/78b6e8e6-8a46-4a6a-9e75-8931ae5d3528/sky.rad",
+      "sha256": "af4ca3144ea1e769226a3036a8430d0d0bf3698c76b5d409d53c907850f6f2b5",
+      "bytes": 268
+    }
+  ],
+  "native_observed_utc": "2026-10-11T08:12:49.553075+00:00",
+  "native_actions": [
+    "Installed candidate01 Open folder dialog loaded the preserved v0.1 project",
+    "Displayed77-sensor static lux heatmap with the unchanged prescribed-overcast label",
+    "Opened A/B comparison and inspected original run IDs, shared scale and stored values",
+    "Closed without saving or calculation"
+  ],
+  "all_extracted_file_hashes_unchanged_after_native_inspection": true,
+  "scope": "Installed native legacy inspection and immutable evidence preservation; prior headless replay recorded separately. No new simulation."
+}

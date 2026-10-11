@@ -1,0 +1,61 @@
+{
+  "schema_version": "greenlens.native-evidence-manifest.v1",
+  "scope": "Installed Windows candidate01 observations through native UI; method2 accuracy acceptance remains failed and final-source delivery is not claimed.",
+  "records": [
+    {
+      "file": "candidate01-annual-a-hour1908.png",
+      "bytes": 119853,
+      "sha256": "ba1dd1ed86c250762ce060cf8f1451988a6dd2323f08ba328734caaebbf5b8fe"
+    },
+    {
+      "file": "candidate01-cancellation.json",
+      "bytes": 668,
+      "sha256": "787471a68f1dd6508b8c09b062c7943f73fc2413152426f3f1b8103e139e3355"
+    },
+    {
+      "file": "candidate01-cda-comparison.png",
+      "bytes": 157203,
+      "sha256": "0b9c1e5314445882fee8abc8b6046ef7a10eccd68f54bd05b62bf3cf9b5dd1e0"
+    },
+    {
+      "file": "candidate01-copied-evidence-inventory.json",
+      "bytes": 28468,
+      "sha256": "44c0335001c682435ba0eb8759461d4a17b35c38084e48592c436c930c08e586"
+    },
+    {
+      "file": "candidate01-export-audit.json",
+      "bytes": 10276,
+      "sha256": "44b1cebd3479b15a1a5bccdc104f5bad3ec29c38c5b219e30fa9da2fabf8d256"
+    },
+    {
+      "file": "candidate01-legacy-inspection.json",
+      "bytes": 6951,
+      "sha256": "35c43e298adef9408ac34da73e469390b381572e56ca2cd68855c316c7594c52"
+    },
+    {
+      "file": "candidate01-legacy-static.png",
+      "bytes": 158272,
+      "sha256": "f01876bbaaa670bdc3779baba223eef4ce43db711d3a8280386e1487c0e212c1"
+    },
+    {
+      "file": "candidate01-locked-shading-rejection.png",
+      "bytes": 141040,
+      "sha256": "530ae3a7c8390cdf1accc5830dff99f9841cb0cd897dd910c6effed61ab6cae9"
+    },
+    {
+      "file": "candidate01-observations.json",
+      "bytes": 157622,
+      "sha256": "6ca22c4fe877b2481558a02a2f7b956914610b5fdae3db082ee602849bff482b"
+    },
+    {
+      "file": "candidate01-replay-replay.json",
+      "bytes": 55189,
+      "sha256": "239d74bced095c3c150df1d9efdb80196b8757a45616f2131a33bc4134f12ff4"
+    },
+    {
+      "file": "candidate01-replay-summary.json",
+      "bytes": 89757,
+      "sha256": "29da7c86650dd384d40483ddbdcfdbb75e924cfcd15aaf2ec0ce30f1e21a5656"
+    }
+  ]
+}

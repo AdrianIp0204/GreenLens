@@ -29,6 +29,23 @@ Explicitly **synthetic DOM pointer sequences**, initiated through named harness 
 
 The harness exposes state in `#test-state`; panes expose read-only `data-viewport`, `data-camera-identity`, `data-camera-projection`, `data-camera-state`, and the canvas exposes `data-renderer-identity`. There is no production mutation/testing API. Tests capture camera states after a rendered frame, not a potentially stale immediate screenshot. Escape was repeated after the final exact-wire-preview change: a candidate was present, then cleared, with zero commit callbacks and no interaction error.
 
+## Post-report event regression (2026-10-11)
+
+The installed-app user reported modifier selection and held-drag Escape failures. Earlier browser evidence did not establish those native interactions; native retesting remains required after this repair.
+
+Before behavioral repair, `node --test tests/viewport-events.test.mjs` reproduced five failures through production listeners and real Three.js picking: Ctrl/Shift over a selected Move grip never reached selection; Escape left pointer capture; input-targeted Escape left the active preview; lost capture did not cancel. Listener registration was extracted without changing behavior before this failing run. The event delivery/capture shim and commit callback are explicitly test substitutes.
+
+After repair and review, eight listener tests pass, covering unique Ctrl removal, ambiguous removal with the modifier released before choice, Shift addition over a grip, held-pointer Escape, active-drag text focus versus idle text Escape, an open chooser not intercepting a focused Properties field's Escape, pointer cancel/lost capture/window blur, and exactly one ordinary release commit despite synchronous lost-capture delivery. The focused-field/chooser regression failed before the reviewed ordering correction: held drag takes priority, then native text editing, then chooser dismissal.
+
+The actual React `SceneView` browser harness additionally verified:
+
+- A real Ctrl-click at the selected window's visible center grip changed selection from `[window]` to `[]`, with zero commits and no numeric dialog.
+- A real Shift-click at that grip opened **Add to selection**. Choosing Room Envelope after releasing Shift produced `[window, room]`.
+- A real Ctrl-click with both entities selected opened **Remove from selection**. Choosing Window after releasing Ctrl left `[room]`.
+- The explicitly synthetic held-drag/input-focus Escape fixture flushes a parent React preview update before cancellation. A non-null window candidate existed, capture changed from `true` to `false`, the candidate cleared, selection stayed `[window]`, and commit count stayed zero. An actual Escape in the idle text input preserved its text and selection.
+
+An initial asynchronous fixture attempt waited for animation frames; the automation released its initiating pointer before Escape, so it had already committed and was **not** counted as cancellation evidence. The final fixture uses an explicit React flush while the initiating pointer remains held. These browser/synthetic results supplement the pending installed-native user retest; they do not establish that the exact reported native failure is resolved.
+
 Browser investigation found and fixed an overlap-menu defect: native pane pointer capture ran before React's delegated overlay handler. The native listener now excludes menu/button descendants, and genuine click/Shift/Ctrl chooser actions passed afterward. Development hot-reload `createRoot` warnings came from editing the harness entrypoint; the final source was checked after a clean reload, with no new browser errors in that final check. They were not production runtime errors.
 
 `npm run check` passed after the final viewport source changes. `npm test` passed all 35 frontend tests at this integration point, including nine viewport math tests (coordinates, selection, polygon crossing, snap boundaries/priority, immutable supported candidates, actual Ortho/Grid Snap math, rotation/context signs and exact provisional wires). The snap regression excludes invented midpoints between separate context faces and preserves coincident visible-owner points. Exact-wire regressions verify a 37° rotated resized window retains its sill/facade and a 31° rotated context has exactly twelve true box edges. Installed desktop, accepted Rust transactions, authoritative invalid-input rejection, undo/redo, native screen sizes/scaling, real result arrival and engine save/export/replay remain the separate native acceptance record.

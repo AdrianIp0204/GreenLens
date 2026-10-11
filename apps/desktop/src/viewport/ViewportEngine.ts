@@ -10,7 +10,7 @@ type Camera = THREE.PerspectiveCamera | THREE.OrthographicCamera;
 type Handle = { id: string; axis: number; kind: 'move' | 'resize' | 'rotate'; label: string; path: string[]; multiplier: number; planar?: boolean };
 interface View { id: ViewId; camera: Camera; target: THREE.Vector3; element: HTMLDivElement }
 interface SurfaceNode { mesh: THREE.Mesh<THREE.BufferGeometry, THREE.MeshStandardMaterial>; edge: THREE.LineSegments<THREE.EdgesGeometry, THREE.LineBasicMaterial>; signature: string; entityId: string; material: string }
-interface Drag { view: ViewId; start: THREE.Vector2; last: THREE.Vector2; button: number; shift: boolean; ctrl: boolean; handle?: Handle; original?: Model; candidate?: Model; origin?: THREE.Vector3; axis?: THREE.Vector3; screenAxis?: THREE.Vector2; unitsPerPixel?: number; plane?: THREE.Plane; startPoint?: THREE.Vector3; moved: boolean }
+interface Drag { view: ViewId; pointerId: number; start: THREE.Vector2; last: THREE.Vector2; button: number; shift: boolean; ctrl: boolean; handle?: Handle; original?: Model; candidate?: Model; origin?: THREE.Vector3; axis?: THREE.Vector3; screenAxis?: THREE.Vector2; unitsPerPixel?: number; plane?: THREE.Plane; startPoint?: THREE.Vector3; moved: boolean }
 export interface ViewportOverlay { rectangle: null | { view: ViewId; left: number; top: number; width: number; height: number; crossing: boolean }; chooser: null | { view: ViewId; x: number; y: number; ids: string[]; shift: boolean; ctrl: boolean }; hover: string | null; snap: null | { view: ViewId; x: number; y: number; label: string }; preview: string | null }
 const vector = (p: Vec3) => new THREE.Vector3(...worldToRender(p));
 const world = (p: THREE.Vector3) => renderToWorld(p.toArray()) as Vec3;
@@ -78,23 +78,41 @@ export class ViewportEngine {
       const camera: Camera = id === 'perspective' ? new THREE.PerspectiveCamera(40, 1, 0.01, 10000) : new THREE.OrthographicCamera(-8, 8, 8, -8, -5000, 5000);
       if (id === 'top') camera.up.set(0, 0, -1); else camera.up.set(0, 1, 0);
       const view = { id, camera, target: new THREE.Vector3(), element: elements[id] }; this.views.set(id, view);
+      this.bindViewEvents(view);
+    }
+    this.bindGlobalEvents();
+    this.observer = new ResizeObserver(() => this.resize()); this.observer.observe(root); this.resize();
+    this.update(props); this.renderer.setAnimationLoop(() => this.render());
+  }
+  private bindViewEvents(view: View) {
+      const { id, camera, element } = view;
       const down = (e: PointerEvent) => this.pointerDown(view, e), move = (e: PointerEvent) => this.pointerMove(view, e), up = (e: PointerEvent) => this.pointerUp(view, e);
       const wheel = (e: WheelEvent) => { e.preventDefault(); this.activate(id); const factor = Math.exp(Math.max(-100, Math.min(100, e.deltaY)) * 0.0015); if (camera instanceof THREE.OrthographicCamera) camera.zoom = THREE.MathUtils.clamp(camera.zoom / factor, 0.02, 10000); else camera.position.sub(view.target).multiplyScalar(factor).clampLength(0.1, 10000).add(view.target); camera.updateProjectionMatrix(); this.saveCameras(); };
       const keyboard = (e: KeyboardEvent) => {
-        if (e.target !== elements[id] || e.ctrlKey || e.altKey || e.metaKey) return;
+        if (e.target !== element || e.ctrlKey || e.altKey || e.metaKey) return;
         const step: Record<string, [number, number]> = { ArrowLeft: [-24, 0], ArrowRight: [24, 0], ArrowUp: [0, -24], ArrowDown: [0, 24] };
         if (step[e.key]) { e.preventDefault(); e.stopPropagation(); this.activate(id); this.navigate(view, new THREE.Vector2(...step[e.key]), e.shiftKey); this.saveCameras(); }
         else if (['+', '=', '-', '_'].includes(e.key)) { e.preventDefault(); e.stopPropagation(); this.activate(id); const factor = ['-', '_'].includes(e.key) ? 1.15 : 1 / 1.15; if (camera instanceof THREE.OrthographicCamera) camera.zoom = THREE.MathUtils.clamp(camera.zoom / factor, 0.02, 10000); else camera.position.sub(view.target).multiplyScalar(factor).clampLength(0.1, 10000).add(view.target); camera.updateProjectionMatrix(); this.saveCameras(); }
       };
-      const cancelled = () => this.cancel();
+      const cancelled = (e: PointerEvent) => { if (this.drag?.pointerId === e.pointerId) this.cancel(); };
       const context = (e: Event) => e.preventDefault();
-      elements[id].addEventListener('pointerdown', down); elements[id].addEventListener('pointermove', move); elements[id].addEventListener('pointerup', up); elements[id].addEventListener('pointercancel', cancelled); elements[id].addEventListener('keydown', keyboard); elements[id].addEventListener('wheel', wheel, { passive: false }); elements[id].addEventListener('contextmenu', context);
-      this.disposers.push(() => { elements[id].removeEventListener('pointerdown', down); elements[id].removeEventListener('pointermove', move); elements[id].removeEventListener('pointerup', up); elements[id].removeEventListener('pointercancel', cancelled); elements[id].removeEventListener('keydown', keyboard); elements[id].removeEventListener('wheel', wheel); elements[id].removeEventListener('contextmenu', context); });
-    }
-    const key = (e: KeyboardEvent) => { if (e.key === 'Escape' && !/INPUT|TEXTAREA|SELECT/.test((e.target as HTMLElement)?.tagName ?? '')) { if (this.drag || this.overlay.chooser) { e.preventDefault(); e.stopImmediatePropagation(); this.cancel(); } else this.props.onSelectionChange([]); } };
+      element.addEventListener('pointerdown', down); element.addEventListener('pointermove', move); element.addEventListener('pointerup', up); element.addEventListener('pointercancel', cancelled); element.addEventListener('lostpointercapture', cancelled); element.addEventListener('keydown', keyboard); element.addEventListener('wheel', wheel, { passive: false }); element.addEventListener('contextmenu', context);
+      this.disposers.push(() => { element.removeEventListener('pointerdown', down); element.removeEventListener('pointermove', move); element.removeEventListener('pointerup', up); element.removeEventListener('pointercancel', cancelled); element.removeEventListener('lostpointercapture', cancelled); element.removeEventListener('keydown', keyboard); element.removeEventListener('wheel', wheel); element.removeEventListener('contextmenu', context); });
+  }
+  private bindGlobalEvents() {
+    const key = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      // An active viewport gesture owns cancellation even if focus moves to an
+      // input during the held pointer. With no gesture, text Escape stays native.
+      if (this.drag) { e.preventDefault(); e.stopImmediatePropagation(); this.cancel(); return; }
+      const target = e.target as HTMLElement | null;
+      if (target?.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target?.tagName ?? '') || target?.closest?.('[contenteditable="true"]')) return;
+      if (this.overlay.chooser) { e.preventDefault(); e.stopImmediatePropagation(); this.cancel(); return; }
+      this.props.onSelectionChange([]);
+    };
     window.addEventListener('keydown', key, true); this.disposers.push(() => window.removeEventListener('keydown', key, true));
-    this.observer = new ResizeObserver(() => this.resize()); this.observer.observe(root); this.resize();
-    this.update(props); this.renderer.setAnimationLoop(() => this.render());
+    const blur = () => { if (this.drag || this.overlay.chooser) this.cancel(); };
+    window.addEventListener('blur', blur); this.disposers.push(() => window.removeEventListener('blur', blur));
   }
   private emit(patch: Partial<ViewportOverlay>) { this.overlay = { ...this.overlay, ...patch }; this.onOverlay(this.overlay); }
   private activate(id: ViewId) { if (this.props.display.active_view !== id) { this.props = { ...this.props, display: { ...this.props.display, active_view: id } }; this.props.onDisplayChange(this.props.display); } }
@@ -240,37 +258,40 @@ export class ViewportEngine {
     // Let chooser controls receive their click without capturing it as geometry.
     if ((e.target as HTMLElement).closest('button,[role="menu"]')) return;
     if (e.button !== 0 && e.button !== 2 && e.button !== 1) return;
+    if (this.drag) this.cancel();
     e.preventDefault(); view.element.focus(); view.element.setPointerCapture(e.pointerId); this.activate(view.id);
     const p = this.point(e, view); this.emit({ chooser: null, rectangle: null, snap: null });
-    const handle = e.button === 0 && !this.props.disabled && !this.pending ? this.handleHit(view, p) : undefined;
-    this.drag = { view: view.id, start: p.clone(), last: p.clone(), button: e.button, shift: e.shiftKey, ctrl: e.ctrlKey || e.metaKey, moved: false };
+    // Selection modifiers take precedence over overlapping manipulation grips.
+    const modifiedSelection = e.shiftKey || e.ctrlKey || e.metaKey;
+    const handle = e.button === 0 && !modifiedSelection && !this.props.disabled && !this.pending ? this.handleHit(view, p) : undefined;
+    this.drag = { view: view.id, pointerId: e.pointerId, start: p.clone(), last: p.clone(), button: e.button, shift: e.shiftKey, ctrl: e.ctrlKey || e.metaKey, moved: false };
     if (handle && this.props.validated) {
       const origin = this.handles.position.clone(), model = this.props.validated.model;
       if (handle.kind === 'rotate') {
         const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(new THREE.Vector3(0, 1, 0), origin); this.ray(view, p);
         const startPoint = this.raycaster.ray.intersectPlane(plane, new THREE.Vector3());
-        if (!startPoint) { this.drag = null; this.props.onInteractionError?.('The rotation plane is edge-on. Use Top or Perspective.'); return; }
+        if (!startPoint) { this.cancel(); this.props.onInteractionError?.('The rotation plane is edge-on. Use Top or Perspective.'); return; }
         this.drag = { ...this.drag, handle, original: structuredClone(model), origin, plane, startPoint }; this.emit({ preview: `${handle.label} · angular preview; Escape cancels` }); return;
       }
       if (handle.planar) {
         const normal = this.props.selection[0] === 'window' ? vector(localToWorld([0, 1, 0], model.room.rotation_deg) as Vec3) : new THREE.Vector3(0, 1, 0);
         const plane = new THREE.Plane().setFromNormalAndCoplanarPoint(normal, origin); this.ray(view, p);
         const startPoint = this.raycaster.ray.intersectPlane(plane, new THREE.Vector3());
-        if (!startPoint) { this.drag = null; this.props.onInteractionError?.('The edit plane is edge-on. Use Front or Perspective for a window, Top for context.'); return; }
+        if (!startPoint) { this.cancel(); this.props.onInteractionError?.('The edit plane is edge-on. Use Front or Perspective for a window, Top for context.'); return; }
         this.drag = { ...this.drag, handle, original: structuredClone(model), origin, plane, startPoint }; this.emit({ preview: `${handle.label} · planar preview; Ortho constrains the dominant axis` }); return;
       }
       const axis = vector(localToWorld([handle.axis === 0 ? 1 : 0, handle.axis === 1 ? 1 : 0, handle.axis === 2 ? 1 : 0], model.room.rotation_deg) as Vec3).normalize();
       const startScreen = this.project(world(origin), view), endScreen = this.project(world(origin.clone().add(axis)), view);
-      if (!startScreen || !endScreen) { this.drag = null; this.props.onInteractionError?.('The handle is outside this camera clipping range. Use Zoom Selected.'); return; }
+      if (!startScreen || !endScreen) { this.cancel(); this.props.onInteractionError?.('The handle is outside this camera clipping range. Use Zoom Selected.'); return; }
       const screenAxis = new THREE.Vector2(endScreen[0] - startScreen[0], endScreen[1] - startScreen[1]), pixels = screenAxis.length();
-      if (pixels < 3) { this.drag = null; this.props.onInteractionError?.('This axis points toward the camera. Use another viewport or numeric handle entry.'); return; }
+      if (pixels < 3) { this.cancel(); this.props.onInteractionError?.('This axis points toward the camera. Use another viewport or numeric handle entry.'); return; }
       this.drag = { ...this.drag, handle, original: structuredClone(model), origin, axis, screenAxis: screenAxis.normalize(), unitsPerPixel: 1 / pixels };
       this.emit({ preview: `${handle.label} · drag preview; Escape cancels${handle.kind === 'resize' ? ' · Resize uses grid/numeric; object snaps apply to Move' : ''}` });
     }
   }
   private pointerMove(view: View, e: PointerEvent) {
     const p = this.point(e, view), drag = this.drag;
-    if (drag && drag.view === view.id) {
+    if (drag && drag.view === view.id && drag.pointerId === e.pointerId) {
       const delta = p.clone().sub(drag.last); drag.last.copy(p); drag.moved ||= p.distanceTo(drag.start) > 4;
       if (drag.button === 2 || drag.button === 1) { this.navigate(view, delta, e.shiftKey || drag.button === 1); return; }
       if (drag.handle) { this.dragHandle(view, p); return; }
@@ -354,9 +375,10 @@ export class ViewportEngine {
     helper.renderOrder = 30; this.ghost.add(helper);
   }
   private async pointerUp(view: View, e: PointerEvent) {
-    const drag = this.drag; if (!drag || drag.view !== view.id) return;
-    if (view.element.hasPointerCapture(e.pointerId)) view.element.releasePointerCapture(e.pointerId);
-    const p = this.point(e, view); this.drag = null; this.emit({ rectangle: null, preview: null });
+    const drag = this.drag; if (!drag || drag.view !== view.id || drag.pointerId !== e.pointerId) return;
+    // Clear ownership before releasing capture: lostpointercapture may fire
+    // synchronously, and must not cancel an otherwise successful pointer-up.
+    const p = this.point(e, view); this.drag = null; this.releaseCapture(drag); this.emit({ rectangle: null, preview: null });
     if (drag.button !== 0) { this.saveCameras(); return; }
     if (drag.handle) {
       if (!drag.moved && this.props.selection.length === 1 && !drag.handle.planar) {
@@ -374,14 +396,18 @@ export class ViewportEngine {
       }).map(object => object.id);
       this.props.onSelectionChange(mergeSelection(this.props.selection, ids, drag.shift, drag.ctrl));
     } else {
-      const ids = this.hitIds(view, p);
+      const hits = this.hitIds(view, p);
+      // Limit disambiguation to the requested selection operation. A unique
+      // selected hit can be removed directly even behind transparent surfaces.
+      const ids = drag.ctrl ? hits.filter(id => this.props.selection.includes(id)) : drag.shift ? hits.filter(id => !this.props.selection.includes(id)) : hits;
       if (ids.length > 1) this.emit({ chooser: { view: view.id, x: p.x, y: p.y, ids, shift: drag.shift, ctrl: drag.ctrl } });
       else this.props.onSelectionChange(mergeSelection(this.props.selection, ids, drag.shift, drag.ctrl));
     }
   }
   choose(id: string, shift: boolean, ctrl: boolean) { if (this.state(id).visible && !this.state(id).locked) this.props.onSelectionChange(mergeSelection(this.props.selection, [id], shift || this.overlay.chooser?.shift, ctrl || this.overlay.chooser?.ctrl)); this.emit({ chooser: null, hover: null }); this.syncAppearance(); }
   hover(id: string | null) { this.emit({ hover: id }); this.syncAppearance(); }
-  cancel() { this.drag = null; this.clearPreview(); this.emit({ rectangle: null, chooser: null, preview: null, snap: null }); this.syncAppearance(); }
+  private releaseCapture(drag: Drag | null) { const element = drag && this.views.get(drag.view)?.element; if (drag && element?.hasPointerCapture(drag.pointerId)) element.releasePointerCapture(drag.pointerId); }
+  cancel() { const drag = this.drag; this.drag = null; this.releaseCapture(drag); this.clearPreview(); this.emit({ rectangle: null, chooser: null, preview: null, snap: null }); this.syncAppearance(); }
   private clearPreview() { for (const child of [...this.ghost.children]) release(child); this.ghost.rotation.set(0, 0, 0); this.ghost.position.set(0, 0, 0); this.props.onPreviewCandidate?.(null); }
   private syncHandles() {
     const { validated, selection, display, tool, disabled } = this.props;

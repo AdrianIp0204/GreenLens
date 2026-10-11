@@ -13,6 +13,8 @@ Persisted coordinates/cameras use metres and world east/north/up. Three.js uses 
 - Title double-click maximizes/restores, preserving every camera. Zoom Extents/Selected is explicit; ordinary edits/results never frame automatically.
 - Cutaway makes room walls/ceiling translucent; switching it off makes those opaque. It changes materials only and preserves cameras and simulation inputs.
 - Click replaces selection, Shift adds, Ctrl removes. Left-to-right rectangle requires complete containment; right-to-left selects crossing projected silhouettes. An overlap menu resolves coincident objects. Hidden/locked objects cannot be newly picked; an existing locked selection has no edit handles.
+- Shift/Ctrl selection takes priority over overlapping grips. Ctrl considers already-selected hits and removes a unique hit directly; Shift considers new hits. Remaining ambiguity uses an Add/Remove-labelled chooser which remembers the original modifier after it is released.
+- Escape owns an active viewport gesture even if text focus changes during the held pointer, releases capture, clears the preview and prevents a later release from committing. Pointer cancellation, lost capture and window blur also cancel. Idle text fields keep native Escape behavior.
 
 Official McNeel documentation supplied behavioral references only: [navigation](https://docs.mcneel.com/rhino/8/help/en-us/seealso/sak_navigate.htm), [mouse selection](https://docs.mcneel.com/rhino/8/help/en-us/options/mouse.htm), [selection commands](https://docs.mcneel.com/rhino/8/help/en-us/commands/selection_commands.htm). The implementation and assets are original GreenLens code.
 
@@ -31,3 +33,5 @@ The blue provisional outline uses exact supported parameter wire corners and mod
 ## Supplemental verification
 
 `npm test` includes the pure interaction regressions. `tests/viewport-harness.html` is a development-only browser harness, excluded from the production entrypoint. Its JSON geometry fixtures are native CLI validation output from original synthetic A/B models. Its colored values and rejecting callbacks are explicitly fixtures, never simulation evidence. See `tests/viewport-browser-verification.md` for observed browser checks and the native-evidence boundary.
+
+`tests/viewport-events.test.mjs` loads the production TypeScript engine with Node 24's built-in type transform and binds its real pointer/keyboard listeners to an EventTarget/capture shim. Three.js camera, ray picking, geometry and preview paths are real; browser delivery and the commit callback remain test fixtures. This catches event-routing/capture regressions without claiming native acceptance.

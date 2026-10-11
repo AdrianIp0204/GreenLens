@@ -10,6 +10,8 @@ Scientific coordinates are metres, +X east, +Y north and +Z up. The model-local 
 
 Click geometry or a sensor to select. Shift adds; Ctrl removes. Left-to-right rectangular selection includes fully contained objects; right-to-left crossing includes intersecting objects. The overlap chooser disambiguates coincident surfaces, envelope and sensors. Escape cancels a provisional operation or clears selection. Layers and Properties use the same semantic IDs; generated faces are inspectable parts of the envelope, not independently editable CAD objects. Hidden or locked objects cannot be newly selected. An already-selected object remains inspectable but read-only when locked, with no manipulation handles; unlock it through Layers or **Unlock**.
 
+Shift/Ctrl clicks select even over a manipulation handle. Ctrl removes a unique selected hit directly; Shift offers only new hits. If several eligible objects overlap, the chooser says **Add to selection** or **Remove from selection** and remembers the modifier after you release it. Escape during a held drag cancels the preview and releases pointer capture; releasing the mouse afterward cannot commit that cancelled edit. Losing capture or switching away from the app also cancels a provisional edit.
+
 Rectangular selection operates on the inspectable room surfaces, window, optional objects and sensors. Select the aggregate **Room envelope** through the overlap chooser or object list for room parameter editing; the aggregate is omitted from rectangular selection to avoid duplicating its child surfaces.
 
 ## Supported editing

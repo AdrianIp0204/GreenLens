@@ -1,14 +1,17 @@
 {
   "schema_version": "greenlens.native-verification.v0.2",
   "observed_date_utc": "2026-10-11",
-  "acceptance_status": "native_gesture_observations_pending",
+  "acceptance_status": "user_reported_modifier_selection_and_drag_escape_failures",
   "method": "Installed per-user production Tauri application, embedded frontend, actual shared Rust backend and native Radiance; no development server",
   "environment": {
     "os": "Windows 11 Home",
     "os_build": "26200.9168",
     "target": "x86_64-pc-windows-msvc",
     "webview2": "154.0.4258.62",
-    "physical_display_pixels": [1920, 1080],
+    "physical_display_pixels": [
+      1920,
+      1080
+    ],
     "windows_scale": 1.25,
     "webview_dpr": 1.25,
     "display_settings_changed": false,
@@ -28,7 +31,11 @@
     "fresh_completed_run": "d11834a5-88f6-40eb-9963-cf809110c32b",
     "started_utc": "2026-10-11T02:00:56.794526700+00:00",
     "finished_utc": "2026-10-11T02:05:00.051816600+00:00",
-    "required_process_exit_codes": [0, 0, 0],
+    "required_process_exit_codes": [
+      0,
+      0,
+      0
+    ],
     "sensors": 77
   },
   "earlier_native_ab_candidate": {
@@ -36,20 +43,52 @@
     "source_worktree_dirty": true,
     "installed_desktop_sha256": "2a750969369fd47362411f78b418707ccccb58d6a63f86cb844d7f756273e1ad",
     "runs": [
-      {"alternative": "A", "run_id": "24dc5309-5547-4260-b06a-bef56631276b", "sensors": 77, "min_lux": 45.9647119, "mean_lux": 237.21244494025976, "max_lux": 1454.363365},
-      {"alternative": "B", "run_id": "e780591d-6ee0-47c7-b33c-cb46e3e13a8e", "sensors": 77, "min_lux": 40.5262802, "mean_lux": 175.62391238311687, "max_lux": 1079.445896}
+      {
+        "alternative": "A",
+        "run_id": "24dc5309-5547-4260-b06a-bef56631276b",
+        "sensors": 77,
+        "min_lux": 45.9647119,
+        "mean_lux": 237.21244494025976,
+        "max_lux": 1454.363365
+      },
+      {
+        "alternative": "B",
+        "run_id": "e780591d-6ee0-47c7-b33c-cb46e3e13a8e",
+        "sensors": 77,
+        "min_lux": 40.5262802,
+        "mean_lux": 175.62391238311687,
+        "max_lux": 1079.445896
+      }
     ],
     "shared_scale_max_lux": 1454.363365,
     "actual_provenance_preserved": true
   },
   "layout": {
-    "maximized_css_client": [1536, 794],
-    "maximized_captured_physical_client": [1920, 991],
-    "compact_css_client": [1084, 560],
-    "compact_captured_physical_client": [1354, 700],
+    "maximized_css_client": [
+      1536,
+      794
+    ],
+    "maximized_captured_physical_client": [
+      1920,
+      991
+    ],
+    "compact_css_client": [
+      1084,
+      560
+    ],
+    "compact_captured_physical_client": [
+      1354,
+      700
+    ],
     "initial_history_drawer_clipping_reproduced": true,
-    "repaired_minimum_css_client": [900, 500],
-    "repaired_captured_physical_client": [1125, 625],
+    "repaired_minimum_css_client": [
+      900,
+      500
+    ],
+    "repaired_captured_physical_client": [
+      1125,
+      625
+    ],
     "repaired_history_drawer_analysis_footer_visible": true,
     "exact_second_1366x768_monitor_tested": false
   },
@@ -83,12 +122,37 @@
     "scientific_input_hash": "88a2186e616fa07558e559a066c7dcf765b8a87860a5811ec81555fe8c490bfc",
     "historical_and_final_scene_sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57",
     "exact_scene_bytes_equal": true,
-    "model_restored_and_saved": {"window_center_x_m": 2, "window_sill_m": 0.9, "window_width_m": 1.8, "window_height_m": 1.5}
+    "model_restored_and_saved": {
+      "window_center_x_m": 2,
+      "window_sill_m": 0.9,
+      "window_width_m": 1.8,
+      "window_height_m": 1.5
+    }
   },
   "exports": [
-    {"file": "native-v02-evidence.zip", "sha256": "1157bcdb31826b548a4143480ae4558c09211d0f3fbce0d0159d7836c6579959", "final_cli_replay": "passed", "runs": 2, "sensors_each": 77, "max_absolute_error_lux": 0},
-    {"file": "relocated-v01-v02-export.zip", "sha256": "b73d03e3d4c06d0d1589f0cae0729df1dc2eb23525ccc1958171c8a6e84959b7", "final_cli_replay": "passed", "runs": 2, "sensors_each": 77, "max_absolute_error_lux": 0},
-    {"file": "final-candidate-evidence.zip", "sha256": "e75bded45db3ccfcba3eb998d3c64da931704120b0d49401c1094e3a1119470f", "native_export": "passed", "runs": 3, "separate_replay": "not claimed"}
+    {
+      "file": "native-v02-evidence.zip",
+      "sha256": "1157bcdb31826b548a4143480ae4558c09211d0f3fbce0d0159d7836c6579959",
+      "final_cli_replay": "passed",
+      "runs": 2,
+      "sensors_each": 77,
+      "max_absolute_error_lux": 0
+    },
+    {
+      "file": "relocated-v01-v02-export.zip",
+      "sha256": "b73d03e3d4c06d0d1589f0cae0729df1dc2eb23525ccc1958171c8a6e84959b7",
+      "final_cli_replay": "passed",
+      "runs": 2,
+      "sensors_each": 77,
+      "max_absolute_error_lux": 0
+    },
+    {
+      "file": "final-candidate-evidence.zip",
+      "sha256": "e75bded45db3ccfcba3eb998d3c64da931704120b0d49401c1094e3a1119470f",
+      "native_export": "passed",
+      "runs": 3,
+      "separate_replay": "not claimed"
+    }
   ],
   "required_native_gesture_gaps": [
     "Perspective right-button orbit and Shift+right-button pan; orthographic right-button pan",
@@ -116,5 +180,13 @@
     "22-final-undo-lock-rejected.png",
     "23-final-redo-lock-rejected.png",
     "24-manual-gesture-handoff.png"
-  ]
+  ],
+  "human_observation": {
+    "status": "investigation and native retest required",
+    "candidate": "03",
+    "held_drag_escape": "reported not working",
+    "date_utc": "2026-10-11",
+    "modifier_selection": "reported not working",
+    "right_button_navigation": "not explicitly confirmed"
+  }
 }

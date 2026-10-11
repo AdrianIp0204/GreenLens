@@ -1,7 +1,7 @@
 {
   "schema_version": "greenlens.release-artifacts.v0.2",
-  "generated_utc": "2026-10-11T02:18:27.6737412Z",
-  "acceptance_status": "in_progress",
+  "generated_utc": "2026-10-11T02:36:41.7811628Z",
+  "acceptance_status": "native_interaction_failures_under_investigation",
   "application_source_commit": "bb0456c218eb9146035a0c580deb4e546c7b9c21",
   "source_build_clean": true,
   "signed": false,
@@ -56,8 +56,8 @@
     "scientific_record": "v0.2-scientific-verification.md",
     "native": "v0.2-native-verification.md",
     "ci_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38103259502",
-    "ci_status": "in_progress",
-    "native_required_demonstrations": "3 native gesture groups pending; other bounded demonstrations verified with explicit coverage limits",
+    "ci_status": "passed for bb0456c candidate; subsequent native interaction failures require repair and new verification",
+    "native_required_demonstrations": "user reported modifier selection and held-drag Escape failures; repair and native retest required",
     "native_export_final_cli_replay": "passed: 2 runs, 77 sensors each, maximum absolute error 0 lx",
     "v01_export_final_cli_replay": "passed: 2 historical runs, 77 sensors each, maximum absolute error 0 lx"
   },

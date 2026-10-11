@@ -34,7 +34,7 @@ export default function SceneView(props: SceneViewProps) {
           {overlay.rectangle?.view === id && <div className={`gl-selection-rectangle ${overlay.rectangle.crossing ? 'is-crossing' : ''}`} style={{ left: overlay.rectangle.left, top: overlay.rectangle.top, width: overlay.rectangle.width, height: overlay.rectangle.height }} />}
           {overlay.snap?.view === id && <div className="gl-snap-marker" style={{ left: overlay.snap.x, top: overlay.snap.y }}><span>□</span><b>{overlay.snap.label}</b></div>}
           {overlay.chooser?.view === id && <div className="gl-pick-menu" role="menu" aria-label="Choose overlapping object" style={{ left: Math.min(overlay.chooser.x, (panes.current[id]?.clientWidth ?? 400) - 205), top: Math.min(overlay.chooser.y, (panes.current[id]?.clientHeight ?? 300) - 160) }} onPointerDown={e => e.stopPropagation()}>
-            <strong>Choose object</strong>{overlay.chooser.ids.map(object => <button key={object} role="menuitem" onPointerEnter={() => engine.current?.hover(object)} onClick={e => { e.stopPropagation(); engine.current?.choose(object, e.shiftKey, e.ctrlKey || e.metaKey); }}>{objectLabel(object)}</button>)}
+            <strong>{overlay.chooser.ctrl ? 'Remove from selection' : overlay.chooser.shift ? 'Add to selection' : 'Choose object'}</strong>{overlay.chooser.ids.map(object => <button key={object} role="menuitem" onPointerEnter={() => engine.current?.hover(object)} onClick={e => { e.stopPropagation(); engine.current?.choose(object, e.shiftKey, e.ctrlKey || e.metaKey); }}>{objectLabel(object)}</button>)}
           </div>}
         </div>
       </section>)}

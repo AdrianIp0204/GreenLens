@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { ClimateRequestGate, climateRequestKey, climateOverlayMatches, climateSeriesSensor, hourLabel } from '../src/workspace/climate-presentation.mjs';
+import { ClimateRequestGate, climateRequestKey, climateOverlayMatches, climateSeriesSensor, displayedMetricSettings, metricConvention, hourLabel } from '../src/workspace/climate-presentation.mjs';
 const deferred=()=>{let resolve,reject;const promise=new Promise((a,b)=>{resolve=a;reject=b;});return {promise,resolve,reject};};
 test('hour scrubbing discards obsolete reads and failures',async()=>{
   const gate=new ClimateRequestGate(),old=deferred(),fresh=deferred();
@@ -28,6 +28,21 @@ test('historical values cannot overlay changed geometry or reordered sensors',()
 });
 test('hour24 is displayed as interval end without OS date conversion',()=>{
   assert.equal(hourLabel({hour:{month:12,day:31,hour_ending:24}}),'12/31 · 23:00–24:00 · midpoint 23:30 local standard time');
+});
+
+test('metric captions bind to the selected snapshot or current derived settings',()=>{
+  const saved={da_threshold_lux:300,udi_lower_lux:100,udi_upper_lux:3000,occupancy:{kind:'daily',start_minute:480,end_minute:1080}};
+  const edited={...saved,da_threshold_lux:500,udi_upper_lux:2000,occupancy:{kind:'daily',start_minute:555,end_minute:1440}};
+  const run={study:{metrics:saved}},study={metrics:edited};
+  assert.equal(displayedMetricSettings('current',study,run),edited);
+  assert.equal(displayedMetricSettings('old-A',study,run),saved);
+  assert.equal(displayedMetricSettings('old-A',null,run),saved);
+  assert.equal(displayedMetricSettings('current',null,null),null);
+  assert.equal(metricConvention('da',edited),'DA: E ≥ 500 lx. Occupancy: every day 09:15–24:00 local standard time; occupied nighttime is included.');
+  for(const [field,boundary] of [['cda','cDA: E / (300 lx), capped at 1'],['udi','UDI: 100 lx ≤ E ≤ 3000 lx'],['underlit','Underlit: E < 100 lx'],['overlit','Overlit: E > 3000 lx']])assert.equal(metricConvention(field,saved),`${boundary}. Occupancy: every day 08:00–18:00 local standard time; occupied nighttime is included.`);
+  assert.match(metricConvention('da',{...saved,occupancy:{kind:'daily',start_minute:1335,end_minute:390}}),/22:15–06:30 local standard time \(across midnight\)/);
+  assert.match(metricConvention('udi',{...saved,occupancy:{kind:'mask',weights:Array(8760).fill(.5)}}),/explicit 8,760 interval weights/);
+  assert.equal(metricConvention('illuminance',saved),'');assert.equal(metricConvention('da',null),'');
 });
 
 test('selected older snapshot overlays only when Rust confirms that exact record',()=>{

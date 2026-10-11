@@ -21,7 +21,7 @@ async function component(path){
   const result=`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`;compiled.set(url.href,result);return result;
 }
 const {default:AnalysisContent}=await import(await component('../src/workspace/AnalysisContent.tsx'));
-const {ClimateResultsContent}=await import(await component('../src/workspace/ClimateResultsContent.tsx'));
+const {ClimateResultsContent,ClimateResultControls}=await import(await component('../src/workspace/ClimateResultsContent.tsx'));
 const fixture=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
 const id=fixture.sensor_grid.sensors[0].id;
 const run={id:'historical',alternative_id:'A',validated:fixture,lux:fixture.sensor_grid.sensors.map(()=>100)};
@@ -60,4 +60,29 @@ test('historical series uses a separate saved-coordinate choice without viewport
   assert.match(option.props.children.join(''),/ m$/);choice.props.onChange({target:{value:id}});
   assert.deepEqual(local,[id]);assert.deepEqual(viewport,[]);
   assert.equal(nodes(ClimateResultsContent({tab:'series',records:[run],selection:[],onSelect(){},controller:{run,values,canOverlay:true}})).some(n=>n.props?.['aria-label']==='Historical time-series sensor'),false);
+});
+
+test('production result and table captions follow only the displayed metric context',()=>{
+  const metricSettings={da_threshold_lux:500,udi_lower_lux:200,udi_upper_lux:2000,occupancy:{kind:'daily',start_minute:540,end_minute:1020}};
+  const controller={run,values,field:'da',metricSettings,selectedRunId:'current',canOverlay:true,scale:100};
+  const control=ClimateResultControls({controller,records:[],alternative:'A'});
+  assert.match(nodes(control).find(n=>n.props?.['aria-label']==='Displayed metric conventions').props.children,/E ≥ 500 lx.*09:00–17:00/);
+  const table=ClimateResultsContent({tab:'table',controller,records:[],selection:[],onSelect(){}});
+  assert.match(nodes(table).find(n=>n.props?.['aria-label']==='Table metric conventions').props.children,/E ≥ 500 lx/);
+  const loading=ClimateResultControls({controller:{...controller,values:null},records:[],alternative:'A'});
+  assert.equal(nodes(loading).some(n=>n.props?.['aria-label']==='Displayed metric conventions'),false,'no caption accompanies a superseded response');
+  const hourly=ClimateResultsContent({tab:'table',controller:{...controller,field:'illuminance'},records:[],selection:[],onSelect(){}});
+  assert.equal(nodes(hourly).some(n=>n.props?.['aria-label']==='Table metric conventions'),false);
+});
+
+test('comparison captions use the compatible historical pair, not current study conventions',()=>{
+  const saved={da_threshold_lux:300,udi_lower_lux:100,udi_upper_lux:3000,occupancy:{kind:'daily',start_minute:480,end_minute:1080}};
+  const a={...run,series:{interval_count:8760},study:{metrics:saved}},b={...a,id:'historical-B',alternative_id:'B'};
+  const comparison={a:values,b:values,scale_maximum:100,delta_units:'percentage points',delta_statistics:{min:0,mean:0,max:0},deltas:[]};
+  const controller={a,b,comparison,pairTime:{field:'udi',annual:true},pairRelation:()=>'',metricSettings:{...saved,udi_upper_lux:1500}};
+  const props={tab:'compare',controller,records:[a,b],selection:[],onSelect(){}};
+  const tree=ClimateResultsContent(props);
+  assert.match(nodes(tree).find(n=>n.props?.['aria-label']==='Comparison metric conventions').props.children,/100 lx ≤ E ≤ 3000 lx/);
+  const pending=ClimateResultsContent({...props,controller:{...controller,comparison:null}});
+  assert.equal(nodes(pending).some(n=>n.props?.['aria-label']==='Comparison metric conventions'),false,'unvalidated pairs have no accepted convention caption');
 });

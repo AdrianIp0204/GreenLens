@@ -6,6 +6,26 @@ export const CLIMATE_FIELDS = [
   ['cda', 'cDA', '% of occupied time'], ['udi', 'UDI', '% of occupied time'],
   ['underlit', 'Underlit', '% of occupied time'], ['overlit', 'Overlit', '% of occupied time'],
 ];
+/** Select already Rust-validated settings; never derive metrics in the renderer. */
+export function displayedMetricSettings(selectedRunId, study, run) {
+  return selectedRunId === 'current' && study ? study.metrics : run?.study.metrics ?? null;
+}
+/** Caption only. Boundaries and weights remain evaluated by the Rust service. */
+export function metricConvention(field, settings) {
+  if (!settings || field === 'illuminance') return '';
+  const threshold = settings.da_threshold_lux, lower = settings.udi_lower_lux, upper = settings.udi_upper_lux;
+  const boundary = {
+    da: `DA: E ≥ ${threshold} lx`, cda: `cDA: E / (${threshold} lx), capped at 1`,
+    udi: `UDI: ${lower} lx ≤ E ≤ ${upper} lx`,
+    underlit: `Underlit: E < ${lower} lx`, overlit: `Overlit: E > ${upper} lx`,
+  }[field];
+  if (!boundary) return '';
+  const clock = minute => `${String(Math.floor(minute / 60)).padStart(2, '0')}:${String(minute % 60).padStart(2, '0')}`;
+  const occupancy = settings.occupancy.kind === 'daily'
+    ? `every day ${clock(settings.occupancy.start_minute)}–${clock(settings.occupancy.end_minute)} local standard time${settings.occupancy.end_minute < settings.occupancy.start_minute ? ' (across midnight)' : ''}`
+    : 'explicit 8,760 interval weights';
+  return `${boundary}. Occupancy: ${occupancy}; occupied nighttime is included.`;
+}
 export function climateRequestKey(path, summary, field, interval, settings) {
   return summary ? JSON.stringify([path, summary.id, summary.record_sha256, field, interval, settings]) : '';
 }

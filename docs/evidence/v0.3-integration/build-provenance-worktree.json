@@ -1,0 +1,173 @@
+{
+  "schema_version": "greenlens.build-provenance-worktree-verification.v1",
+  "recorded_utc": "2026-10-11T15:40:58.8554719Z",
+  "base_source_commit": "f8ba580c4857ee805991730518b592a90e4e6118",
+  "tested_source_worktree_dirty": true,
+  "scope": "Build helper and isolated synthetic repository regression only. No engine execution, application build, frozen artifact modification, project history rewrite or global configuration change.",
+  "commands": [
+    ". ./scripts/dev-env.ps1",
+    "./scripts/test-build-provenance.ps1 -OutputDirectory <new external directory>",
+    "rustfmt --check --edition 2021 scripts/build-provenance.rs",
+    "git diff --check -- scripts/build-provenance.rs scripts/test-build-provenance.ps1"
+  ],
+  "sources": [
+    {
+      "path": "scripts/build-provenance.rs",
+      "sha256": "ca334b5d70680703875de278b7be94cfec53f0f3a278e4c87e5b49b42acb4947"
+    },
+    {
+      "path": "scripts/test-build-provenance.ps1",
+      "sha256": "57faae7158938004fd0fbbd2414b0de8bca936f1386baa1a6da74c794043e824"
+    }
+  ],
+  "before_fix": {
+    "exit_code": 1,
+    "expected_failure": true,
+    "observed": "No-Git archive accepted inherited GREENLENS_BUILD_SOURCE_COMMIT=1111111111111111111111111111111111111111 and GREENLENS_BUILD_SOURCE_DIRTY=false, producing that synthetic known-clean identity.",
+    "helper_sha256": "9971d052c96992ab023542988e94b9db5bf5ae52caeda2efa80145846b1480ed",
+    "log_sha256": "f796314879e5a0ef8c3d43ae0c628d11dbb39459de25cb6a4ad4a86f3e6de0c7"
+  },
+  "fixed": {
+    "exit_code": 0,
+    "passed": 20,
+    "failed": 0,
+    "checks": [
+      {
+        "expected_rejection": "",
+        "name": "clean despite stale legacy shell variables",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|false"
+      },
+      {
+        "expected_rejection": "",
+        "name": "verified Git identity replaces inherited internal identity",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|false"
+      },
+      {
+        "expected_rejection": "",
+        "name": "tracked modification without re-sourcing shell",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|true"
+      },
+      {
+        "expected_rejection": "",
+        "name": "restored clean tree with reused Cargo cache",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|false"
+      },
+      {
+        "expected_rejection": "",
+        "name": "new untracked file with reused Cargo cache",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|true"
+      },
+      {
+        "expected_rejection": "",
+        "name": "changed commit in reused shell and Cargo cache",
+        "passed": true,
+        "expected_identity": "c3ee44a03feb60dc9518fa74a5a1c79e60da81d2|false"
+      },
+      {
+        "expected_rejection": "",
+        "name": "linked worktree uses its own detached HEAD",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|false"
+      },
+      {
+        "expected_rejection": "",
+        "name": "linked worktree rejects inherited Git directory and index authority",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|false"
+      },
+      {
+        "expected_rejection": "",
+        "name": "linked worktree dirty state survives poisoned Git overrides",
+        "passed": true,
+        "expected_identity": "16250f0dcbe11cb03bbfbda5e7bd4ad98949a050|true"
+      },
+      {
+        "expected_rejection": "",
+        "name": "another worktree modification does not dirty this checkout",
+        "passed": true,
+        "expected_identity": "c3ee44a03feb60dc9518fa74a5a1c79e60da81d2|false"
+      },
+      {
+        "expected_rejection": "explicit CI source commit differs",
+        "name": "stale CI commit rejected",
+        "passed": true,
+        "expected_identity": ""
+      },
+      {
+        "expected_rejection": "",
+        "name": "matching explicit CI assertions",
+        "passed": true,
+        "expected_identity": "c3ee44a03feb60dc9518fa74a5a1c79e60da81d2|false"
+      },
+      {
+        "expected_rejection": "explicit CI dirty state differs",
+        "name": "incorrect clean CI assertion rejected",
+        "passed": true,
+        "expected_identity": ""
+      },
+      {
+        "expected_rejection": "",
+        "name": "matching explicit dirty CI assertion",
+        "passed": true,
+        "expected_identity": "c3ee44a03feb60dc9518fa74a5a1c79e60da81d2|true"
+      },
+      {
+        "expected_rejection": "source identity assertions require both",
+        "name": "partial CI assertion rejected",
+        "passed": true,
+        "expected_identity": ""
+      },
+      {
+        "expected_rejection": "",
+        "name": "source archive does not claim a clean known commit",
+        "passed": true,
+        "expected_identity": "unknown|unknown"
+      },
+      {
+        "expected_rejection": "unverifiable inherited build source identity",
+        "name": "archive rejects inherited internal identity pair",
+        "passed": true,
+        "expected_identity": ""
+      },
+      {
+        "expected_rejection": "unverifiable inherited build source identity",
+        "name": "archive rejects inherited internal commit alone",
+        "passed": true,
+        "expected_identity": ""
+      },
+      {
+        "expected_rejection": "unverifiable inherited build source identity",
+        "name": "archive rejects inherited internal clean flag alone",
+        "passed": true,
+        "expected_identity": ""
+      },
+      {
+        "expected_rejection": "",
+        "name": "archive returns to unknown after clearing internal identity",
+        "passed": true,
+        "expected_identity": "unknown|unknown"
+      }
+    ],
+    "summary_sha256": "5d0e571a66d1e4a00d6f3d5461eec3eb1b1988cada3aa158ab333a5a22fb99fa",
+    "log_sha256": "33af209770b2b2b002a7022aa03edaa79fba7e053a3f9882db830b6fe912ad37",
+    "environment_restored": true,
+    "environment_variable_count": 11,
+    "environment_audit_sha256": "0eae7a943ce124ccd34ce6d45461b1f525420465e683e52e1dbb54a7cdd30e65"
+  },
+  "setup_attempt": {
+    "count": 1,
+    "scope": "Initial synthetic test setup failed because assigning null through the runtime retained empty Git path variables. No provenance conclusion was drawn from that attempt; test cleanup now explicitly removes previously absent variables.",
+    "log_sha256": "cb348fd999f064ea4f1e48b253089fb65a31c4bf04bc73ba3142bbf15f26a1f7"
+  },
+  "checks_passed": {
+    "rustfmt": true,
+    "powershell_parser": true,
+    "git_diff_check": true
+  },
+  "release_acceptance_complete": false
+}

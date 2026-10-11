@@ -35,6 +35,8 @@ pub fn emit() {
     for name in [
         "GREENLENS_EXPECT_SOURCE_COMMIT",
         "GREENLENS_EXPECT_SOURCE_DIRTY",
+        "GREENLENS_BUILD_SOURCE_COMMIT",
+        "GREENLENS_BUILD_SOURCE_DIRTY",
     ] {
         println!("cargo:rerun-if-env-changed={name}");
     }
@@ -71,6 +73,14 @@ pub fn emit() {
         println!("cargo:rustc-env=GREENLENS_BUILD_SOURCE_COMMIT={commit}");
         println!("cargo:rustc-env=GREENLENS_BUILD_SOURCE_DIRTY={dirty}");
     } else {
+        // With no rustc-env output, rustc would inherit these names from the
+        // caller. Reject that unverified fallback instead of stamping an archive
+        // with a caller-provided commit or falsely clean state.
+        assert!(
+            env::var_os("GREENLENS_BUILD_SOURCE_COMMIT").is_none()
+                && env::var_os("GREENLENS_BUILD_SOURCE_DIRTY").is_none(),
+            "unverifiable inherited build source identity: clear GREENLENS_BUILD_SOURCE_COMMIT and GREENLENS_BUILD_SOURCE_DIRTY; checked Git builds may use the GREENLENS_EXPECT_SOURCE_* assertion pair"
+        );
         println!(
             "cargo:warning=Git identity unavailable; source provenance will be unknown, not clean"
         );

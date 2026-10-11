@@ -27,7 +27,8 @@ fn main() {
 'initial input' | Set-Content -LiteralPath (Join-Path $repository 'input.txt') -Encoding utf8
 'target/' | Set-Content -LiteralPath (Join-Path $repository '.gitignore') -Encoding utf8
 $savedEnvironment = @{}
-$names = @('CARGO_TARGET_DIR','GREENLENS_SOURCE_COMMIT','GREENLENS_SOURCE_DIRTY','GREENLENS_EXPECT_SOURCE_COMMIT','GREENLENS_EXPECT_SOURCE_DIRTY')
+$gitOverrides = @('GIT_DIR','GIT_WORK_TREE','GIT_INDEX_FILE','GIT_COMMON_DIR')
+$names = @('CARGO_TARGET_DIR','GREENLENS_SOURCE_COMMIT','GREENLENS_SOURCE_DIRTY','GREENLENS_EXPECT_SOURCE_COMMIT','GREENLENS_EXPECT_SOURCE_DIRTY','GREENLENS_BUILD_SOURCE_COMMIT','GREENLENS_BUILD_SOURCE_DIRTY') + $gitOverrides
 foreach ($name in $names) { $savedEnvironment[$name] = [Environment]::GetEnvironmentVariable($name, 'Process') }
 $checks = [Collections.Generic.List[object]]::new()
 function Invoke-ProbeGit([string[]]$Arguments) {
@@ -47,6 +48,8 @@ function Assert-Probe([string]$Name, [string]$Expected, [string]$FailureMessage 
 try {
     $env:CARGO_TARGET_DIR = Join-Path $OutputDirectory 'target'
     Remove-Item Env:GREENLENS_EXPECT_SOURCE_COMMIT, Env:GREENLENS_EXPECT_SOURCE_DIRTY -ErrorAction SilentlyContinue
+    Remove-Item Env:GREENLENS_BUILD_SOURCE_COMMIT, Env:GREENLENS_BUILD_SOURCE_DIRTY -ErrorAction SilentlyContinue
+    foreach ($name in $gitOverrides) { Remove-Item -LiteralPath "Env:$name" -ErrorAction SilentlyContinue }
     Invoke-ProbeGit @('init','--quiet') | Out-Null
     # Generate Cargo.lock before the clean baseline commit; no dependency fetch.
     & cargo generate-lockfile --offline --manifest-path (Join-Path $repository 'Cargo.toml')
@@ -58,6 +61,10 @@ try {
     $env:GREENLENS_SOURCE_COMMIT = '0000000000000000000000000000000000000000'
     $env:GREENLENS_SOURCE_DIRTY = 'false'
     Assert-Probe 'clean despite stale legacy shell variables' "$firstCommit|false"
+    $env:GREENLENS_BUILD_SOURCE_COMMIT = '1111111111111111111111111111111111111111'
+    $env:GREENLENS_BUILD_SOURCE_DIRTY = 'true'
+    Assert-Probe 'verified Git identity replaces inherited internal identity' "$firstCommit|false"
+    Remove-Item Env:GREENLENS_BUILD_SOURCE_COMMIT, Env:GREENLENS_BUILD_SOURCE_DIRTY
     'modified input' | Set-Content -LiteralPath (Join-Path $repository 'input.txt') -Encoding utf8
     Assert-Probe 'tracked modification without re-sourcing shell' "$firstCommit|true"
     Invoke-ProbeGit @('restore','--','input.txt') | Out-Null
@@ -71,6 +78,23 @@ try {
     $secondCommit = Invoke-ProbeGit @('rev-parse','HEAD')
     if ($firstCommit -eq $secondCommit) { throw 'Synthetic revision did not change' }
     Assert-Probe 'changed commit in reused shell and Cargo cache' "$secondCommit|false"
+    $primaryRepository = $repository
+    $linkedRepository = Join-Path $OutputDirectory 'linked worktree identity 空間'
+    Invoke-ProbeGit @('worktree','add','--quiet','--detach',$linkedRepository,$firstCommit) | Out-Null
+    $repository = $linkedRepository
+    Assert-Probe 'linked worktree uses its own detached HEAD' "$firstCommit|false"
+    # These valid overrides point at the other temporary checkout. None may
+    # redirect the build helper away from the crate's actual worktree.
+    $env:GIT_DIR = Join-Path $primaryRepository '.git'
+    $env:GIT_WORK_TREE = $primaryRepository
+    $env:GIT_INDEX_FILE = Join-Path $primaryRepository '.git/index'
+    $env:GIT_COMMON_DIR = Join-Path $primaryRepository '.git'
+    Assert-Probe 'linked worktree rejects inherited Git directory and index authority' "$firstCommit|false"
+    'linked worktree modification' | Set-Content -LiteralPath (Join-Path $linkedRepository 'input.txt') -Encoding utf8
+    Assert-Probe 'linked worktree dirty state survives poisoned Git overrides' "$firstCommit|true"
+    foreach ($name in $gitOverrides) { Remove-Item -LiteralPath "Env:$name" -ErrorAction SilentlyContinue }
+    $repository = $primaryRepository
+    Assert-Probe 'another worktree modification does not dirty this checkout' "$secondCommit|false"
     $env:GREENLENS_EXPECT_SOURCE_COMMIT = $firstCommit
     $env:GREENLENS_EXPECT_SOURCE_DIRTY = 'false'
     Assert-Probe 'stale CI commit rejected' '' 'explicit CI source commit differs'
@@ -90,8 +114,21 @@ try {
     }
     $repository = $archiveDirectory
     Assert-Probe 'source archive does not claim a clean known commit' 'unknown|unknown'
+    $env:GREENLENS_BUILD_SOURCE_COMMIT = '1111111111111111111111111111111111111111'
+    $env:GREENLENS_BUILD_SOURCE_DIRTY = 'false'
+    Assert-Probe 'archive rejects inherited internal identity pair' '' 'unverifiable inherited build source identity'
+    Remove-Item Env:GREENLENS_BUILD_SOURCE_DIRTY
+    Assert-Probe 'archive rejects inherited internal commit alone' '' 'unverifiable inherited build source identity'
+    Remove-Item Env:GREENLENS_BUILD_SOURCE_COMMIT
+    $env:GREENLENS_BUILD_SOURCE_DIRTY = 'false'
+    Assert-Probe 'archive rejects inherited internal clean flag alone' '' 'unverifiable inherited build source identity'
+    Remove-Item Env:GREENLENS_BUILD_SOURCE_DIRTY
+    Assert-Probe 'archive returns to unknown after clearing internal identity' 'unknown|unknown'
     @{schema_version='greenlens.build-provenance-tests.v0.2'; verified_utc=[DateTime]::UtcNow.ToString('o'); passed=$true; checks=@($checks)} | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $OutputDirectory 'summary.json') -Encoding utf8
     Write-Output "Build provenance checks passed ($($checks.Count)): $OutputDirectory"
 } finally {
-    foreach ($name in $names) { [Environment]::SetEnvironmentVariable($name, $savedEnvironment[$name], 'Process') }
+    foreach ($name in $names) {
+        if ($null -eq $savedEnvironment[$name]) { Remove-Item -LiteralPath "Env:$name" -ErrorAction SilentlyContinue }
+        else { [Environment]::SetEnvironmentVariable($name, $savedEnvironment[$name], 'Process') }
+    }
 }

@@ -1,0 +1,1429 @@
+{
+  "schema_version": "greenlens.hosted-ci-checkpoint.v1",
+  "observed_utc": "2026-10-11T14:44:33.759795+00:00",
+  "scope": "Observed job conclusions and artifact API metadata only; no artifact-content validation or scientific qualification inferred from completed CI jobs. Independent seventeen-case baseline qualification rollout has started; all sensitivity variants remain unexecuted.",
+  "main": {
+    "conclusion": "",
+    "createdAt": "2026-10-11T13:23:10Z",
+    "databaseId": 38142958617,
+    "headSha": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+    "jobs": [
+      {
+        "completedAt": "2026-10-11T14:22:14Z",
+        "conclusion": "success",
+        "databaseId": 114480392880,
+        "name": "native",
+        "startedAt": "2026-10-11T13:23:12Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T13:23:13Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T13:23:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:23:20Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T13:23:13Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:23:26Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-11T13:23:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:24:02Z",
+            "conclusion": "success",
+            "name": "Native development environment and pinned toolchain",
+            "number": 4,
+            "startedAt": "2026-10-11T13:23:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:24:15Z",
+            "conclusion": "success",
+            "name": "Build identity changes and explicit CI assertions",
+            "number": 5,
+            "startedAt": "2026-10-11T13:24:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:24:19Z",
+            "conclusion": "success",
+            "name": "Acquire and verify pinned native engine",
+            "number": 6,
+            "startedAt": "2026-10-11T13:24:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:24:19Z",
+            "conclusion": "success",
+            "name": "Engine feasibility in spaces and non-ASCII path",
+            "number": 7,
+            "startedAt": "2026-10-11T13:24:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:24:31Z",
+            "conclusion": "success",
+            "name": "Frontend install, types, tests and production assets",
+            "number": 8,
+            "startedAt": "2026-10-11T13:24:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:34:08Z",
+            "conclusion": "success",
+            "name": "Rust format, lint and unit/integration checks",
+            "number": 9,
+            "startedAt": "2026-10-11T13:24:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:38:46Z",
+            "conclusion": "success",
+            "name": "Required native paired-primary generator and analytical bridge",
+            "number": 10,
+            "startedAt": "2026-10-11T13:34:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:39:03Z",
+            "conclusion": "success",
+            "name": "Mandatory reviewed real weather and script regressions",
+            "number": 11,
+            "startedAt": "2026-10-11T13:38:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:41:00Z",
+            "conclusion": "success",
+            "name": "Required bounded reference-harness regressions",
+            "number": 12,
+            "startedAt": "2026-10-11T13:39:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:41:02Z",
+            "conclusion": "success",
+            "name": "Required independent finite overhang and context edges",
+            "number": 13,
+            "startedAt": "2026-10-11T13:41:00Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:59:52Z",
+            "conclusion": "success",
+            "name": "Required real-engine scientific suite (missing engine is failure)",
+            "number": 14,
+            "startedAt": "2026-10-11T13:41:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T13:59:54Z",
+            "conclusion": "success",
+            "name": "Required independent native matrix arithmetic",
+            "number": 15,
+            "startedAt": "2026-10-11T13:59:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:00:05Z",
+            "conclusion": "success",
+            "name": "Required native sky normalization and ordering",
+            "number": 16,
+            "startedAt": "2026-10-11T13:59:54Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:00:07Z",
+            "conclusion": "success",
+            "name": "Required native solar-direction and clock fixture",
+            "number": 17,
+            "startedAt": "2026-10-11T14:00:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:09:41Z",
+            "conclusion": "success",
+            "name": "Real CLI A/B, portable save/export and replay",
+            "number": 18,
+            "startedAt": "2026-10-11T14:00:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:17:16Z",
+            "conclusion": "success",
+            "name": "Production CLI and per-user Windows candidate package",
+            "number": 19,
+            "startedAt": "2026-10-11T14:09:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:17:24Z",
+            "conclusion": "success",
+            "name": "Release CLI weather portability and generator context",
+            "number": 20,
+            "startedAt": "2026-10-11T14:17:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:01Z",
+            "conclusion": "success",
+            "name": "Release CLI immutable v0.1 replay without annual executables",
+            "number": 21,
+            "startedAt": "2026-10-11T14:17:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:03Z",
+            "conclusion": "success",
+            "name": "Upload exact release CLI with notices for annual jobs",
+            "number": 22,
+            "startedAt": "2026-10-11T14:22:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:05Z",
+            "conclusion": "success",
+            "name": "Upload unsigned investigation package, not release acceptance",
+            "number": 23,
+            "startedAt": "2026-10-11T14:22:03Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:08Z",
+            "conclusion": "success",
+            "name": "Collect bounded native diagnostics even after failure",
+            "number": 24,
+            "startedAt": "2026-10-11T14:22:05Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:11Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 25,
+            "startedAt": "2026-10-11T14:22:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:11Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 49,
+            "startedAt": "2026-10-11T14:22:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:13Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 50,
+            "startedAt": "2026-10-11T14:22:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:13Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 51,
+            "startedAt": "2026-10-11T14:22:13Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114480392880"
+      },
+      {
+        "completedAt": "2026-10-11T14:29:44Z",
+        "conclusion": "success",
+        "databaseId": 114492047330,
+        "name": "selected_hour",
+        "startedAt": "2026-10-11T14:22:16Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:22:18Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:22:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:23Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:22:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:24Z",
+            "conclusion": "success",
+            "name": "Required PowerShell and isolated evidence paths",
+            "number": 3,
+            "startedAt": "2026-10-11T14:22:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:25Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@v4",
+            "number": 4,
+            "startedAt": "2026-10-11T14:22:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:25Z",
+            "conclusion": "success",
+            "name": "Verify actual CLI bytes and checked-out source identity",
+            "number": 5,
+            "startedAt": "2026-10-11T14:22:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:29Z",
+            "conclusion": "success",
+            "name": "Required pinned native engine",
+            "number": 6,
+            "startedAt": "2026-10-11T14:22:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:29:39Z",
+            "conclusion": "success",
+            "name": "Real selected-hour A/B, portable evidence and replay",
+            "number": 7,
+            "startedAt": "2026-10-11T14:22:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:29:39Z",
+            "conclusion": "success",
+            "name": "Collect bounded selected-hour evidence even after failure",
+            "number": 8,
+            "startedAt": "2026-10-11T14:29:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:29:41Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 9,
+            "startedAt": "2026-10-11T14:29:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:29:42Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 18,
+            "startedAt": "2026-10-11T14:29:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:29:42Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-11T14:29:42Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047330"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114492047342,
+        "name": "annual (B, reference)",
+        "startedAt": "2026-10-11T14:22:17Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:22:20Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:22:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:28Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:22:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:29Z",
+            "conclusion": "success",
+            "name": "Required PowerShell and isolated evidence paths",
+            "number": 3,
+            "startedAt": "2026-10-11T14:22:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:31Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@v4",
+            "number": 4,
+            "startedAt": "2026-10-11T14:22:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:31Z",
+            "conclusion": "success",
+            "name": "Verify actual CLI bytes and checked-out source identity",
+            "number": 5,
+            "startedAt": "2026-10-11T14:22:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:36Z",
+            "conclusion": "success",
+            "name": "Required pinned native engine",
+            "number": 6,
+            "startedAt": "2026-10-11T14:22:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "One complete year for the explicit alternative and profile",
+            "number": 7,
+            "startedAt": "2026-10-11T14:22:36Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Collect bounded annual project and diagnostics even after failure",
+            "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 9,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 18,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047342"
+      },
+      {
+        "completedAt": "2026-10-11T14:25:39Z",
+        "conclusion": "success",
+        "databaseId": 114492047357,
+        "name": "annual (A, shipping)",
+        "startedAt": "2026-10-11T14:22:16Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:22:19Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:22:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:24Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:22:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:24Z",
+            "conclusion": "success",
+            "name": "Required PowerShell and isolated evidence paths",
+            "number": 3,
+            "startedAt": "2026-10-11T14:22:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:26Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@v4",
+            "number": 4,
+            "startedAt": "2026-10-11T14:22:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:26Z",
+            "conclusion": "success",
+            "name": "Verify actual CLI bytes and checked-out source identity",
+            "number": 5,
+            "startedAt": "2026-10-11T14:22:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:30Z",
+            "conclusion": "success",
+            "name": "Required pinned native engine",
+            "number": 6,
+            "startedAt": "2026-10-11T14:22:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:25:32Z",
+            "conclusion": "success",
+            "name": "One complete year for the explicit alternative and profile",
+            "number": 7,
+            "startedAt": "2026-10-11T14:22:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:25:34Z",
+            "conclusion": "success",
+            "name": "Collect bounded annual project and diagnostics even after failure",
+            "number": 8,
+            "startedAt": "2026-10-11T14:25:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:25:36Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 9,
+            "startedAt": "2026-10-11T14:25:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:25:37Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 18,
+            "startedAt": "2026-10-11T14:25:36Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:25:37Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-11T14:25:37Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047357"
+      },
+      {
+        "completedAt": "2026-10-11T14:42:52Z",
+        "conclusion": "success",
+        "databaseId": 114492047382,
+        "name": "annual (A, reference)",
+        "startedAt": "2026-10-11T14:22:17Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:22:19Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:22:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:28Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:22:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:29Z",
+            "conclusion": "success",
+            "name": "Required PowerShell and isolated evidence paths",
+            "number": 3,
+            "startedAt": "2026-10-11T14:22:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:30Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@v4",
+            "number": 4,
+            "startedAt": "2026-10-11T14:22:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:31Z",
+            "conclusion": "success",
+            "name": "Verify actual CLI bytes and checked-out source identity",
+            "number": 5,
+            "startedAt": "2026-10-11T14:22:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:35Z",
+            "conclusion": "success",
+            "name": "Required pinned native engine",
+            "number": 6,
+            "startedAt": "2026-10-11T14:22:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:42:43Z",
+            "conclusion": "success",
+            "name": "One complete year for the explicit alternative and profile",
+            "number": 7,
+            "startedAt": "2026-10-11T14:22:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:42:47Z",
+            "conclusion": "success",
+            "name": "Collect bounded annual project and diagnostics even after failure",
+            "number": 8,
+            "startedAt": "2026-10-11T14:42:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:42:49Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 9,
+            "startedAt": "2026-10-11T14:42:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:42:51Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 18,
+            "startedAt": "2026-10-11T14:42:49Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:42:51Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-11T14:42:51Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047382"
+      },
+      {
+        "completedAt": "2026-10-11T14:25:02Z",
+        "conclusion": "success",
+        "databaseId": 114492047386,
+        "name": "annual (B, shipping)",
+        "startedAt": "2026-10-11T14:22:17Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:22:19Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:22:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:24Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:22:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:24Z",
+            "conclusion": "success",
+            "name": "Required PowerShell and isolated evidence paths",
+            "number": 3,
+            "startedAt": "2026-10-11T14:22:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:25Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@v4",
+            "number": 4,
+            "startedAt": "2026-10-11T14:22:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:25Z",
+            "conclusion": "success",
+            "name": "Verify actual CLI bytes and checked-out source identity",
+            "number": 5,
+            "startedAt": "2026-10-11T14:22:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:22:29Z",
+            "conclusion": "success",
+            "name": "Required pinned native engine",
+            "number": 6,
+            "startedAt": "2026-10-11T14:22:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:24:56Z",
+            "conclusion": "success",
+            "name": "One complete year for the explicit alternative and profile",
+            "number": 7,
+            "startedAt": "2026-10-11T14:22:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:24:57Z",
+            "conclusion": "success",
+            "name": "Collect bounded annual project and diagnostics even after failure",
+            "number": 8,
+            "startedAt": "2026-10-11T14:24:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:24:59Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 9,
+            "startedAt": "2026-10-11T14:24:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:25:00Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 18,
+            "startedAt": "2026-10-11T14:24:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:25:00Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-11T14:25:00Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047386"
+      }
+    ],
+    "status": "in_progress",
+    "updatedAt": "2026-10-11T14:22:18Z",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617"
+  },
+  "main_artifacts": [
+    {
+      "id": 11705471645,
+      "name": "greenlens-windows-unsigned-investigation-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6411476,
+      "digest": "sha256:35b7a0b8e29896b6d8e15019042de9e1969b58b94533a81f22974b1f6fac691e",
+      "expired": false,
+      "content_downloaded_for_this_checkpoint": false
+    },
+    {
+      "id": 11705332227,
+      "name": "greenlens-ci-cli-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 2812878,
+      "digest": "sha256:cd89958f67df0374c6fac1d935f75e436681202783f882faf86a9c1eef805504",
+      "expired": false,
+      "content_downloaded_for_this_checkpoint": false
+    },
+    {
+      "id": 11705192538,
+      "name": "greenlens-native-diagnostics-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 4250535,
+      "digest": "sha256:7f04768a2fcc5f92907b06e884675c29074e865197fa0f73703da9ade283299f",
+      "expired": false,
+      "content_downloaded_for_this_checkpoint": false
+    },
+    {
+      "id": 11705128053,
+      "name": "greenlens-annual-shipping-A-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6694109,
+      "digest": "sha256:cc8da29039b3cfe880c74bde3a9f1234f575581901063f4a248b3c0d93159306",
+      "expired": false,
+      "content_downloaded_for_this_checkpoint": false
+    },
+    {
+      "id": 11704849215,
+      "name": "greenlens-selected-hour-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 3669278,
+      "digest": "sha256:5ccf86144a43bf8e3398ba7bda162e6b28e8a3b18195e13de84c86b8bf4bcd67",
+      "expired": false,
+      "content_downloaded_for_this_checkpoint": false
+    },
+    {
+      "id": 11704823729,
+      "name": "greenlens-annual-shipping-B-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6702391,
+      "digest": "sha256:5370243fecbb84b0635e5d040c6674a0a833fc8e462a8e8a792c9c7a30fa9595",
+      "expired": false,
+      "content_downloaded_for_this_checkpoint": false
+    },
+    {
+      "id": 11704584943,
+      "name": "greenlens-annual-reference-A-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6785845,
+      "digest": "sha256:a7965434016adefb14a18d3a02c77deaa2323acdaa9da5318320e9538d006831",
+      "expired": false,
+      "content_downloaded_for_this_checkpoint": false
+    }
+  ],
+  "fixed_missing_reference_rollout": {
+    "conclusion": "",
+    "createdAt": "2026-10-11T14:43:27Z",
+    "databaseId": 38148336251,
+    "headSha": "e7405b6383b6b0cecb7c1d7b83c5edfab76aba78",
+    "jobs": [
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306486,
+        "name": "baseline (A, 6320)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306486"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306554,
+        "name": "baseline (B, 4120)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306554"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306565,
+        "name": "baseline (A, 1908)",
+        "startedAt": "2026-10-11T14:43:29Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:43:31Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:39Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:43:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:41Z",
+            "conclusion": "success",
+            "name": "Synthetic source and bounded-wrapper guards",
+            "number": 3,
+            "startedAt": "2026-10-11T14:43:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:46Z",
+            "conclusion": "success",
+            "name": "Download exact reviewed alternative input bundle",
+            "number": 4,
+            "startedAt": "2026-10-11T14:43:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:50Z",
+            "conclusion": "success",
+            "name": "Acquire separately pinned Radiance",
+            "number": 5,
+            "startedAt": "2026-10-11T14:43:46Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "One unchanged baseline case with one engine worker",
+            "number": 6,
+            "startedAt": "2026-10-11T14:43:50Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain completed or failed bounded reference evidence",
+            "number": 7,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306565"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306577,
+        "name": "baseline (B, 6320)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306577"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306578,
+        "name": "baseline (A, 6324)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306578"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306592,
+        "name": "baseline (A, 8508)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306592"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306600,
+        "name": "baseline (A, 4116)",
+        "startedAt": "2026-10-11T14:43:29Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:43:31Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:39Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:43:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:40Z",
+            "conclusion": "success",
+            "name": "Synthetic source and bounded-wrapper guards",
+            "number": 3,
+            "startedAt": "2026-10-11T14:43:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:45Z",
+            "conclusion": "success",
+            "name": "Download exact reviewed alternative input bundle",
+            "number": 4,
+            "startedAt": "2026-10-11T14:43:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:49Z",
+            "conclusion": "success",
+            "name": "Acquire separately pinned Radiance",
+            "number": 5,
+            "startedAt": "2026-10-11T14:43:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "One unchanged baseline case with one engine worker",
+            "number": 6,
+            "startedAt": "2026-10-11T14:43:49Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain completed or failed bounded reference evidence",
+            "number": 7,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306600"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306605,
+        "name": "baseline (B, 1908)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306605"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306620,
+        "name": "baseline (B, 1912)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306620"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306629,
+        "name": "baseline (A, 4120)",
+        "startedAt": "2026-10-11T14:43:29Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:43:31Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:39Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:43:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:41Z",
+            "conclusion": "success",
+            "name": "Synthetic source and bounded-wrapper guards",
+            "number": 3,
+            "startedAt": "2026-10-11T14:43:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:51Z",
+            "conclusion": "success",
+            "name": "Download exact reviewed alternative input bundle",
+            "number": 4,
+            "startedAt": "2026-10-11T14:43:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:55Z",
+            "conclusion": "success",
+            "name": "Acquire separately pinned Radiance",
+            "number": 5,
+            "startedAt": "2026-10-11T14:43:51Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "One unchanged baseline case with one engine worker",
+            "number": 6,
+            "startedAt": "2026-10-11T14:43:55Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain completed or failed bounded reference evidence",
+            "number": 7,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306629"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306640,
+        "name": "baseline (A, 6328)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306640"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306649,
+        "name": "baseline (B, 6324)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306649"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306650,
+        "name": "baseline (B, 4116)",
+        "startedAt": "2026-10-11T14:43:27Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306650"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496306750,
+        "name": "baseline (A, 1912)",
+        "startedAt": "2026-10-11T14:43:29Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-11T14:43:31Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-11T14:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:38Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-11T14:43:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:39Z",
+            "conclusion": "success",
+            "name": "Synthetic source and bounded-wrapper guards",
+            "number": 3,
+            "startedAt": "2026-10-11T14:43:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:45Z",
+            "conclusion": "success",
+            "name": "Download exact reviewed alternative input bundle",
+            "number": 4,
+            "startedAt": "2026-10-11T14:43:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-11T14:43:50Z",
+            "conclusion": "success",
+            "name": "Acquire separately pinned Radiance",
+            "number": 5,
+            "startedAt": "2026-10-11T14:43:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "One unchanged baseline case with one engine worker",
+            "number": 6,
+            "startedAt": "2026-10-11T14:43:50Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain completed or failed bounded reference evidence",
+            "number": 7,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 14,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496306750"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496307610,
+        "name": "baseline (B, 6328)",
+        "startedAt": "2026-10-11T14:43:28Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496307610"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496307611,
+        "name": "baseline (B, 8508)",
+        "startedAt": "2026-10-11T14:43:28Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496307611"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 114496307636,
+        "name": "baseline (B, 8504)",
+        "startedAt": "2026-10-11T14:43:28Z",
+        "status": "queued",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251/job/114496307636"
+      }
+    ],
+    "status": "queued",
+    "updatedAt": "2026-10-11T14:43:27Z",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251"
+  },
+  "plan": {
+    "schema_version": "greenlens.hosted-reference-plan.v1",
+    "scope": "Seventeen missing baseline cases only; existing qualified seven and every prior failure remain immutable. Sensitivities are separate.",
+    "maximum_parallel_jobs": 4,
+    "engine_workers_per_job": 1,
+    "process_seconds": 7200,
+    "job_minutes": 300,
+    "archives": {
+      "A": {
+        "asset_id": "630834963",
+        "name": "GreenLens-reference-A8504-inputs.zip",
+        "bytes": 8682531,
+        "sha256": "0b77ddbcf6d1ca03ecece672c2d1d40bdaabab6c53e30b3648bb5e14264f6f83",
+        "manifest_sha256": "ad232a37630912863c1d2123275ede5080bccad123d8a5364df95c157d86cb99",
+        "manifest_schema": "greenlens.hosted-reference-inputs.v1",
+        "source_sha256": {
+          "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+          "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+          "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+          "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+          "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+          "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+          "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+          "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+          "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+        }
+      },
+      "B": {
+        "asset_id": "630970034",
+        "name": "GreenLens-reference-B-inputs.zip",
+        "bytes": 8658788,
+        "sha256": "62926589df94c456f58b2cfa0c8ea47e0e5370e85e3a8a8bb1e6b5f2589a84c9",
+        "manifest_sha256": "4d58382f5a2704f7e0d567c709c0fadc5bb38f2a84653fb12a25695ddf08d9aa",
+        "manifest_schema": "greenlens.hosted-reference-inputs.v2",
+        "source_sha256": {
+          "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+          "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+          "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+          "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+          "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+          "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+          "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+          "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+          "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+        }
+      }
+    },
+    "cases": [
+      {
+        "alternative": "A",
+        "interval_index": 1908
+      },
+      {
+        "alternative": "A",
+        "interval_index": 1912
+      },
+      {
+        "alternative": "A",
+        "interval_index": 4116
+      },
+      {
+        "alternative": "A",
+        "interval_index": 4120
+      },
+      {
+        "alternative": "A",
+        "interval_index": 6320
+      },
+      {
+        "alternative": "A",
+        "interval_index": 6324
+      },
+      {
+        "alternative": "A",
+        "interval_index": 6328
+      },
+      {
+        "alternative": "A",
+        "interval_index": 8508
+      },
+      {
+        "alternative": "B",
+        "interval_index": 1908
+      },
+      {
+        "alternative": "B",
+        "interval_index": 1912
+      },
+      {
+        "alternative": "B",
+        "interval_index": 4116
+      },
+      {
+        "alternative": "B",
+        "interval_index": 4120
+      },
+      {
+        "alternative": "B",
+        "interval_index": 6320
+      },
+      {
+        "alternative": "B",
+        "interval_index": 6324
+      },
+      {
+        "alternative": "B",
+        "interval_index": 6328
+      },
+      {
+        "alternative": "B",
+        "interval_index": 8504
+      },
+      {
+        "alternative": "B",
+        "interval_index": 8508
+      }
+    ],
+    "excluded_qualified": [
+      "A:1904",
+      "A:4112",
+      "A:8504",
+      "A:8512",
+      "B:1904",
+      "B:4112",
+      "B:8512"
+    ],
+    "sensitivities_pending": [
+      "B:8512:scale10000",
+      "B:8512:weight1e10",
+      "B:8512:depth10-24",
+      "A:4116:scale10000",
+      "A:4116:weight1e10",
+      "A:4116:depth10-24"
+    ],
+    "release_acceptance_complete": false
+  },
+  "source_update": {
+    "schema_version": "greenlens.pilot-branch-update.v1",
+    "prepared_utc": "2026-10-11T22:43:05.041006+08:00",
+    "parent_commit": "53a04cec9b36a4fc8639a9f68d8a6879e44caae8",
+    "commit": "e7405b6383b6b0cecb7c1d7b83c5edfab76aba78",
+    "tree": "67445620858e2b9d5fbe914b02af4c9417e20fd0",
+    "files": [
+      {
+        "source": "reference-remaining.yml",
+        "destination": ".github/workflows/reference-a8504-pilot.yml",
+        "bytes": 5604,
+        "sha256": "475764fc8a82e4071e620b7fcd4c4912d064eb681695e5c36f0971e9031bb372"
+      },
+      {
+        "source": "hosted-reference-plan.json",
+        "destination": "scripts/hosted-reference-plan.json",
+        "bytes": 4725,
+        "sha256": "ffeda33ddd31bc07b6dc6bb446e20a76a75816149611fb14c5708d1113bc05c9"
+      },
+      {
+        "source": "run-hosted-reference-case.ps1",
+        "destination": "scripts/run-hosted-reference-case.ps1",
+        "bytes": 8991,
+        "sha256": "c2e181d604c7fc594c6b314f5a90b3bae64896956ff66ebad21514b73f0b6460"
+      },
+      {
+        "source": "test-hosted-reference-case.ps1",
+        "destination": "scripts/test-hosted-reference-case.ps1",
+        "bytes": 6045,
+        "sha256": "030deddef8c865bb281bd74f4da198c6a6ef2acac3189ec6fb6365d3d5a56d60"
+      }
+    ],
+    "active_head_unchanged": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+    "pushed": true,
+    "pushed_observed_utc": "2026-10-11T14:43:45.1468767Z"
+  },
+  "raw_api_records": [
+    {
+      "name": "main-ci-latest.json",
+      "sha256": "20005b0b6eded5a4ec5941f1303f0b121b63a60407134c65ff5a547a2d4cd0dd"
+    },
+    {
+      "name": "main-ci-artifacts.json",
+      "sha256": "218c7f339aeea2a2f33661bf429e64a6f9c027f06e2e1b1cd14aa2a6483295ee"
+    },
+    {
+      "name": "rollout-ci-startup.json",
+      "sha256": "147bfc38710666b78d40154df02aee98679223b3204421496ae76edc4b76ed47"
+    }
+  ],
+  "qualified_baseline_cases_before_rollout": 7,
+  "total_baseline_cases_required": 24,
+  "sensitivity_variants_completed": 0,
+  "sensitivity_variants_required": 6,
+  "scientific_acceptance_complete": false,
+  "release_acceptance_complete": false
+}

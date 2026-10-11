@@ -1,0 +1,1221 @@
+{
+  "schema_version": "greenlens.ci-combined-checkpoint.v1",
+  "recorded_utc": "2026-10-11T13:53:31.3630170Z",
+  "scope": "Read-only hosted CI and downloaded artifact inspection. Exact-source historical outcomes, bounded pilot startup, and pending integration are distinct. No local simulation, replay, source edit, or dispatch by the reviewer.",
+  "historical_method4_runs": [
+    {
+      "run_id": 38137774765,
+      "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38137774765",
+      "source_commit": "15db024173749185b8772f08c7534c6b640ad33e",
+      "status": "completed",
+      "conclusion": "failure",
+      "method_version": "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4",
+      "adapter_version": "radiance-climate-repeated-direct-corrected/4",
+      "cli_sha256": "a010467115752aa3c2f26a77830ddaeab410fce3e6405e8928b1288adefab0f3",
+      "jobs": [
+        {
+          "id": 114465084310,
+          "name": "native",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T12:02:38Z",
+          "completed_utc": "2026-10-11T12:56:45Z",
+          "failed_steps": []
+        },
+        {
+          "id": 114475286896,
+          "name": "selected_hour",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T12:56:47Z",
+          "completed_utc": "2026-10-11T13:21:34Z",
+          "failed_steps": []
+        },
+        {
+          "id": 114475286923,
+          "name": "annual (B, reference)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T12:56:47Z",
+          "completed_utc": "2026-10-11T13:20:28Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T12:57:00Z",
+              "completedAt": "2026-10-11T13:20:22Z"
+            }
+          ]
+        },
+        {
+          "id": 114475286959,
+          "name": "annual (A, reference)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T12:56:47Z",
+          "completed_utc": "2026-10-11T13:20:52Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T12:57:00Z",
+              "completedAt": "2026-10-11T13:20:46Z"
+            }
+          ]
+        },
+        {
+          "id": 114475286965,
+          "name": "annual (B, shipping)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T12:56:47Z",
+          "completed_utc": "2026-10-11T13:05:14Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T12:57:01Z",
+              "completedAt": "2026-10-11T13:05:08Z"
+            }
+          ]
+        },
+        {
+          "id": 114475286995,
+          "name": "annual (A, shipping)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T12:56:47Z",
+          "completed_utc": "2026-10-11T13:07:09Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T12:57:00Z",
+              "completedAt": "2026-10-11T13:07:04Z"
+            }
+          ]
+        },
+        {
+          "id": 114480085973,
+          "name": "annual_replay",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_utc": "2026-10-11T13:21:34Z",
+          "completed_utc": "2026-10-11T13:21:34Z",
+          "failed_steps": []
+        },
+        {
+          "id": 114480086033,
+          "name": "annual_convergence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_utc": "2026-10-11T13:21:34Z",
+          "completed_utc": "2026-10-11T13:21:34Z",
+          "failed_steps": []
+        }
+      ],
+      "annual_failures": [
+        {
+          "alternative": "A",
+          "profile": "shipping",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 2 interval 949; no negative residual is clamped",
+          "first_reported_sensor_index": 2,
+          "first_reported_interval_index": 949,
+          "wall_seconds": 603.1173914,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 948,
+              "sha256": "2ac7e8c0ab355383f19db00d856dbdba820a11019cd419ecedb3959256cd2cdd"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 639,
+              "sha256": "1054378c907ea51fdaabf61e59f6b78d28ad79cad090853bc3724ba3f0d6a68a"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4115,
+              "sha256": "25df7b096c1c2e92dcd3b26bb6034cc688580248503f3b241ab6e088daab36d0"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5299,
+              "sha256": "ebe4f73a1201112f4a5845b8b43dc46ae3ae1826773f6e7c5ca855671d681b55"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4696,
+              "sha256": "2525ebfecee29980ce69159d07211e2255847d8dac5a12bf7b37aa023c65201e"
+            }
+          ]
+        },
+        {
+          "alternative": "B",
+          "profile": "shipping",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 5960; no negative residual is clamped",
+          "first_reported_sensor_index": 1,
+          "first_reported_interval_index": 5960,
+          "wall_seconds": 486.1219678,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 948,
+              "sha256": "72e57fa35d3fbc6844842d931f91cf3f876f82142e3802cbb6bc62e674ca34d7"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 640,
+              "sha256": "e1b9af0cc7e1ba9a159ca810ba4d97dce0a03bdcde9bc33cc4fa43d229272de1"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4115,
+              "sha256": "1cca8d0289ae5c84801dcede613545217db61d4b714f57b1d6d550964fdb61d8"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5299,
+              "sha256": "9cba33bfbde3f21df1bb7ef676d4fae9cbf15220f7581c07abb8fd3a6bfb75a7"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4696,
+              "sha256": "74cbc07126bde3df390f351213af32b47b37bcbbdf9dfbb63e6b62b91e5cb22c"
+            }
+          ]
+        },
+        {
+          "alternative": "A",
+          "profile": "reference",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 873; no negative residual is clamped",
+          "first_reported_sensor_index": 1,
+          "first_reported_interval_index": 873,
+          "wall_seconds": 1425.8985348,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 950,
+              "sha256": "643b1ebe6295ad8be3c4aaa9de60c06ffa3987f6749f64ea8c997cc143feed0f"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 639,
+              "sha256": "d65bd5630e2a520eb36a2d01a980ce1d809123225f438e4a3ff3660c5aec3e78"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4116,
+              "sha256": "8b53b24cac3fa90c830795f33843350bd96773ac6eb0867f47e4b13c71fa0b5d"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5305,
+              "sha256": "686bd0133d3063827cf927974ff21670f5842cf7d21d9ee9798f9b31cd2489cb"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4723,
+              "sha256": "bdfd611ca7926df4652bf88f79357dab49ec31f0c427956418736b0d80d954dc"
+            }
+          ]
+        },
+        {
+          "alternative": "B",
+          "profile": "reference",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 705; no negative residual is clamped",
+          "first_reported_sensor_index": 1,
+          "first_reported_interval_index": 705,
+          "wall_seconds": 1401.154366,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 949,
+              "sha256": "bf9ecdb7ef8c30afb0b0d1e3bda45f7fc973f88dc55707f3bd95221bcf256a78"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 639,
+              "sha256": "957363a66ea6f443682b1470122e55ff1fb621322aa613589cb30a7ca6d2ade4"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4116,
+              "sha256": "890a8f7f5e9f0671604537ac74686784634d3c49c7a484c1a87d3530dae2bfbb"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5287,
+              "sha256": "d74e19b052c35e75965fe5e57a2bc753ca3161f516802d6a70d9744c6c2e8b8a"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4720,
+              "sha256": "861f230986bb226d5d54f719bff0923d2c4ff2da21ecf5ac655839af0131802e"
+            }
+          ]
+        }
+      ],
+      "selected_hour": {
+        "run_count": 2,
+        "intervals_each": 1,
+        "sensors_each": 24,
+        "interval_index": 1908,
+        "total_lux_values": 48,
+        "runs": [
+          {
+            "id": "f8ec1035-3389-48ce-8290-15e42416181b",
+            "alternative": "A",
+            "source_commit": "15db024173749185b8772f08c7534c6b640ad33e",
+            "source_worktree_dirty": false,
+            "process_count": 9,
+            "process_exits_zero": true,
+            "series_sha256": "2c97d9e666515047436399e4b2cbfdf3959b991cc430796cc4e10482c0b5cc5c",
+            "result_sha256": "5725e883329fee2f70fbc28e33c71e81e4b0509c3c7661b4bcc77ef22962f19e",
+            "record_identity_sha256": "cc883381789f3de4adcc430cb04773f5f48372242d28634e7db52f74319ef970",
+            "all_finite_nonnegative": true,
+            "hour_query_equals_series": true,
+            "replay": {
+              "run_id": "f8ec1035-3389-48ce-8290-15e42416181b",
+              "passed": true,
+              "intervals": 1,
+              "sensors": 24,
+              "values_checked": 24,
+              "max_absolute_error_lux": 0.0,
+              "max_tolerance_ratio": 0.0,
+              "tolerance": "max(0.5 lx, 0.5% of reference)",
+              "verification": "same-engine integration, not independent physical validation"
+            }
+          },
+          {
+            "id": "8d1f9996-72d9-40d0-b345-7c6b802c5662",
+            "alternative": "B",
+            "source_commit": "15db024173749185b8772f08c7534c6b640ad33e",
+            "source_worktree_dirty": false,
+            "process_count": 9,
+            "process_exits_zero": true,
+            "series_sha256": "f27060923ac9c0b7f57e95bbf39fcebe256115ed3c0943d022396f4be84f082c",
+            "result_sha256": "24e8ce3ef7dc33b6dc30e75b029e3819a13723f6652975d18755c07375f812ac",
+            "record_identity_sha256": "d14b9ef9fa3b794459e0e7bcabb072ecabb34f3b16fea1dd7f5d8982effb5e69",
+            "all_finite_nonnegative": true,
+            "hour_query_equals_series": true,
+            "replay": {
+              "run_id": "8d1f9996-72d9-40d0-b345-7c6b802c5662",
+              "passed": true,
+              "intervals": 1,
+              "sensors": 24,
+              "values_checked": 24,
+              "max_absolute_error_lux": 0.0,
+              "max_tolerance_ratio": 0.0,
+              "tolerance": "max(0.5 lx, 0.5% of reference)",
+              "verification": "same-engine integration, not independent physical validation"
+            }
+          }
+        ],
+        "verified_run_seal_entries": 44,
+        "verified_portable_file_hashes": 46,
+        "portability": {
+          "original_project_unavailable": true,
+          "original_weather_path_unavailable": true,
+          "original_scratch_unavailable": true,
+          "hosted_report_byte_identical_files": 46
+        },
+        "package": {
+          "sha256": "e4c2b31afc7d5c55a8453a106af413a26df3b8ac5b947641efc4fbf6c98da96d",
+          "compressed_bytes": 1809150,
+          "entries": 56,
+          "uncompressed_bytes": 19271344,
+          "largest_entry_bytes": 2527669,
+          "sealed_entries": 55,
+          "all_hashes_valid": true,
+          "safe_paths": true,
+          "shared_size_limits_satisfied": true
+        },
+        "replay_passed": true,
+        "integration_only": true,
+        "annual_accuracy_acceptance": false,
+        "native_desktop_acceptance": false
+      },
+      "artifacts": [
+        {
+          "id": 11703920690,
+          "name": "greenlens-selected-hour-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 3665500,
+          "github_reported_digest": "sha256:b701e435191fe6f03fadbad70016e555239ea1bf0069c8eef8a118fecfb83a22",
+          "expired": false
+        },
+        {
+          "id": 11703920573,
+          "name": "greenlens-annual-reference-B-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 596359,
+          "github_reported_digest": "sha256:fabca985ebb2f28d2a767d3a34a64b64416d1c2caa931b4f9b7efb861a39d453",
+          "expired": false
+        },
+        {
+          "id": 11703122327,
+          "name": "greenlens-native-diagnostics-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 4162913,
+          "github_reported_digest": "sha256:d55d7f8b637f41de084b160e4c03f70dd99e7683225e977b236b9bd2d8d3d5b1",
+          "expired": false
+        },
+        {
+          "id": 11702923546,
+          "name": "greenlens-annual-shipping-B-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 596333,
+          "github_reported_digest": "sha256:4f916fef6b9883c711b5639438c83a7e834fc5b3ec3c43879a48b2e75dff40c6",
+          "expired": false
+        },
+        {
+          "id": 11702877587,
+          "name": "greenlens-windows-unsigned-investigation-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 6112763,
+          "github_reported_digest": "sha256:35aabbceb055849d91953b6d19cf30a079e492666185fed0c601dbdcef26ee36",
+          "expired": false
+        },
+        {
+          "id": 11702721780,
+          "name": "greenlens-ci-cli-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 2565483,
+          "github_reported_digest": "sha256:2dd1b57a3dd6316de37d04a09b6794e3edd9262c617e5cf2401f2460747a309d",
+          "expired": false
+        },
+        {
+          "id": 11702593678,
+          "name": "greenlens-annual-reference-A-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 596371,
+          "github_reported_digest": "sha256:2d99730929a310f20997366b57f554fc32cfd9fbe12a25a8732ede2ffb64963a",
+          "expired": false
+        },
+        {
+          "id": 11702464571,
+          "name": "greenlens-annual-shipping-A-15db024173749185b8772f08c7534c6b640ad33e",
+          "github_compressed_bytes": 596335,
+          "github_reported_digest": "sha256:d87bfe9d3a029738c9435a2a16d3c38dfb8632ccf40812f0714f2c2e60982f2e",
+          "expired": false
+        }
+      ],
+      "full_read_only_audit": {
+        "path": "38137774765/final-checkpoint.json",
+        "bytes": 62796,
+        "sha256": "3eadd24abc935a0255dd7f4f894d896dfdefe0ea187c050d3d63fdf0aea1f888"
+      }
+    },
+    {
+      "run_id": 38139009385,
+      "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38139009385",
+      "source_commit": "fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+      "status": "completed",
+      "conclusion": "failure",
+      "method_version": "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4",
+      "adapter_version": "radiance-climate-repeated-direct-corrected/4",
+      "cli_sha256": "383ac0f63095e3df49bbfb1c94ee6d1b8ae0dc5db9e0eeb5ec7ae03965697766",
+      "jobs": [
+        {
+          "id": 114468783102,
+          "name": "native",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T12:22:28Z",
+          "completed_utc": "2026-10-11T13:06:59Z",
+          "failed_steps": []
+        },
+        {
+          "id": 114477270620,
+          "name": "selected_hour",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-11T13:07:01Z",
+          "completed_utc": "2026-10-11T13:30:46Z",
+          "failed_steps": []
+        },
+        {
+          "id": 114477270646,
+          "name": "annual (B, shipping)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T13:07:01Z",
+          "completed_utc": "2026-10-11T13:17:42Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T13:07:16Z",
+              "completedAt": "2026-10-11T13:17:35Z"
+            }
+          ]
+        },
+        {
+          "id": 114477270666,
+          "name": "annual (B, reference)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T13:07:01Z",
+          "completed_utc": "2026-10-11T13:31:18Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T13:07:22Z",
+              "completedAt": "2026-10-11T13:31:12Z"
+            }
+          ]
+        },
+        {
+          "id": 114477270690,
+          "name": "annual (A, reference)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T13:07:01Z",
+          "completed_utc": "2026-10-11T13:30:51Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T13:07:13Z",
+              "completedAt": "2026-10-11T13:30:42Z"
+            }
+          ]
+        },
+        {
+          "id": 114477270708,
+          "name": "annual (A, shipping)",
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-11T13:07:01Z",
+          "completed_utc": "2026-10-11T13:17:40Z",
+          "failed_steps": [
+            {
+              "number": 7,
+              "name": "One complete year for the explicit alternative and profile",
+              "startedAt": "2026-10-11T13:07:14Z",
+              "completedAt": "2026-10-11T13:17:34Z"
+            }
+          ]
+        },
+        {
+          "id": 114481987440,
+          "name": "annual_convergence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_utc": "2026-10-11T13:31:18Z",
+          "completed_utc": "2026-10-11T13:31:18Z",
+          "failed_steps": []
+        },
+        {
+          "id": 114481987795,
+          "name": "annual_replay",
+          "status": "completed",
+          "conclusion": "skipped",
+          "started_utc": "2026-10-11T13:31:18Z",
+          "completed_utc": "2026-10-11T13:31:18Z",
+          "failed_steps": []
+        }
+      ],
+      "annual_failures": [
+        {
+          "alternative": "A",
+          "profile": "shipping",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 2 interval 949; no negative residual is clamped",
+          "first_reported_sensor_index": 2,
+          "first_reported_interval_index": 949,
+          "wall_seconds": 620.2467248,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 948,
+              "sha256": "1b5305dce3d76331ff70d45fd2f093e03abae26578dcb9aa439981ca2496b4ad"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 639,
+              "sha256": "1054378c907ea51fdaabf61e59f6b78d28ad79cad090853bc3724ba3f0d6a68a"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4115,
+              "sha256": "5ce1a54e6af31688af7752f4efd42bf6a58499331d0afcdc26cff42ca6f64b77"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5296,
+              "sha256": "8e2cba9011be3de5364a84198567a4f1c6b0ae4a47b8951c3667800ca4bd2d6d"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4702,
+              "sha256": "2518624fc127c11c1946f71f176756607d02fc5e35a02c02f743dd3b7ec93f70"
+            }
+          ]
+        },
+        {
+          "alternative": "B",
+          "profile": "shipping",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 5960; no negative residual is clamped",
+          "first_reported_sensor_index": 1,
+          "first_reported_interval_index": 5960,
+          "wall_seconds": 618.3131251,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 948,
+              "sha256": "8ba116ba2bc0a0f7602584454a603818c278dc05a7c76f651b749524e2f9efc2"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 640,
+              "sha256": "e1b9af0cc7e1ba9a159ca810ba4d97dce0a03bdcde9bc33cc4fa43d229272de1"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4115,
+              "sha256": "f8f519bca02277ec424c0bd547e0b8af5e951faa6673c5bcfbf56519ab944349"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5299,
+              "sha256": "89a98d408a9218446e48f58ca8068c0bee7ce0487632959e28a59f9f10436084"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4702,
+              "sha256": "60648f63cad29593e8c4e6e65c14e985fb0d7a425c293eda7e3ef1d1fc001faf"
+            }
+          ]
+        },
+        {
+          "alternative": "A",
+          "profile": "reference",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 873; no negative residual is clamped",
+          "first_reported_sensor_index": 1,
+          "first_reported_interval_index": 873,
+          "wall_seconds": 1408.7065196,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 950,
+              "sha256": "a4ec422b0f3778acadeed1f68dec796e0e945b30e257de10807cf9f5cdc01b34"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 639,
+              "sha256": "d65bd5630e2a520eb36a2d01a980ce1d809123225f438e4a3ff3660c5aec3e78"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4116,
+              "sha256": "a4406839f9ffd593f4d81022c51d73cd076b78ff73fd5e1df6afa72c3f989e87"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5299,
+              "sha256": "10a1bc01f2190bfa81097dc1caf62f7f4299d294fd9f1755aeb43afcc35a67fa"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4723,
+              "sha256": "f0ce5eebaa34d8219487a988f07c0dbaa379697f575a0a2a9e36b1fa3cf19538"
+            }
+          ]
+        },
+        {
+          "alternative": "B",
+          "profile": "reference",
+          "error": "GreenLens: Study Failed: Invalid reflected solar correction at sensor 1 interval 705; no negative residual is clamped",
+          "first_reported_sensor_index": 1,
+          "first_reported_interval_index": 705,
+          "wall_seconds": 1429.2934904,
+          "required_process_count": 9,
+          "all_process_exits_zero": true,
+          "completed": false,
+          "retained_completed_runs": 0,
+          "annual_export_present": false,
+          "retained_file_hashes": [
+            {
+              "path": "summary.json",
+              "bytes": 950,
+              "sha256": "3a920c7c3025b2c5843db14021e3abc6a3f6ca507c3e97ee5dd87781807a6f58"
+            },
+            {
+              "path": "completed.stderr.txt",
+              "bytes": 639,
+              "sha256": "957363a66ea6f443682b1470122e55ff1fb621322aa613589cb30a7ca6d2ade4"
+            },
+            {
+              "path": "project/project.json",
+              "bytes": 4116,
+              "sha256": "994805b60b32ba157e58aa8f585094a8f31304d33fc74c42cb9abc8c5234890c"
+            },
+            {
+              "path": "annual-logs.json",
+              "bytes": 5302,
+              "sha256": "95edcaa2cd4c529ed16ecf4d7cf00b088322641a7771d5e60b0225262b5dfc65"
+            },
+            {
+              "path": "annual-resources.json",
+              "bytes": 4720,
+              "sha256": "9737b05a14cddb96c7c70b12d7ba617c1a9a9b124d5b95fbc80b08ff5debb20e"
+            }
+          ]
+        }
+      ],
+      "selected_hour": {
+        "run_count": 2,
+        "intervals_each": 1,
+        "sensors_each": 24,
+        "interval_index": 1908,
+        "total_lux_values": 48,
+        "runs": [
+          {
+            "id": "a2dd20f1-7d4e-4a4f-825a-4a9cb92ae435",
+            "alternative": "A",
+            "source_commit": "fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+            "source_worktree_dirty": false,
+            "process_count": 9,
+            "process_exits_zero": true,
+            "series_sha256": "2c97d9e666515047436399e4b2cbfdf3959b991cc430796cc4e10482c0b5cc5c",
+            "result_sha256": "930f8719d9e745298178cf4427ec62cc21b3c3bc4ae6656b0f2393cd775479e5",
+            "record_identity_sha256": "830f85d8efdaa83e8c907eb484cc25b264954507d0b6b79bc6fcdfabd932604c",
+            "all_finite_nonnegative": true,
+            "hour_query_equals_series": true,
+            "replay": {
+              "run_id": "a2dd20f1-7d4e-4a4f-825a-4a9cb92ae435",
+              "passed": true,
+              "intervals": 1,
+              "sensors": 24,
+              "values_checked": 24,
+              "max_absolute_error_lux": 0.0,
+              "max_tolerance_ratio": 0.0,
+              "tolerance": "max(0.5 lx, 0.5% of reference)",
+              "verification": "same-engine integration, not independent physical validation"
+            }
+          },
+          {
+            "id": "c41ac936-47a7-4c7a-aeff-b07ec18985a7",
+            "alternative": "B",
+            "source_commit": "fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+            "source_worktree_dirty": false,
+            "process_count": 9,
+            "process_exits_zero": true,
+            "series_sha256": "f27060923ac9c0b7f57e95bbf39fcebe256115ed3c0943d022396f4be84f082c",
+            "result_sha256": "b2e6ad306540bb3e3322a027f5fcd3930c54f37dff04ed162df2e86e2f8f4e8e",
+            "record_identity_sha256": "6009fed6e05c81e6c93f104ef6fb4b6e6a5a3c27992986a6e5c78c6299567630",
+            "all_finite_nonnegative": true,
+            "hour_query_equals_series": true,
+            "replay": {
+              "run_id": "c41ac936-47a7-4c7a-aeff-b07ec18985a7",
+              "passed": true,
+              "intervals": 1,
+              "sensors": 24,
+              "values_checked": 24,
+              "max_absolute_error_lux": 0.0,
+              "max_tolerance_ratio": 0.0,
+              "tolerance": "max(0.5 lx, 0.5% of reference)",
+              "verification": "same-engine integration, not independent physical validation"
+            }
+          }
+        ],
+        "verified_run_seal_entries": 44,
+        "verified_portable_file_hashes": 46,
+        "portability": {
+          "original_project_unavailable": true,
+          "original_weather_path_unavailable": true,
+          "original_scratch_unavailable": true,
+          "hosted_report_byte_identical_files": 46
+        },
+        "package": {
+          "sha256": "c593c860c356416cf91aea7a481ef20c55ae752ccf4b6300677056d73e9d1a3a",
+          "compressed_bytes": 1809160,
+          "entries": 56,
+          "uncompressed_bytes": 19271341,
+          "largest_entry_bytes": 2527669,
+          "sealed_entries": 55,
+          "all_hashes_valid": true,
+          "safe_paths": true,
+          "shared_size_limits_satisfied": true
+        },
+        "replay_passed": true,
+        "integration_only": true,
+        "annual_accuracy_acceptance": false,
+        "native_desktop_acceptance": false
+      },
+      "artifacts": [
+        {
+          "id": 11704195992,
+          "name": "greenlens-selected-hour-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 3665915,
+          "github_reported_digest": "sha256:c6c049084f40cb81c2ecb6d1c95c54e38844bfa776a118ab99f8f1c96ad83f0d",
+          "expired": false
+        },
+        {
+          "id": 11703891721,
+          "name": "greenlens-annual-reference-B-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 596329,
+          "github_reported_digest": "sha256:d91487dc8691189386f8c07b0276f35d25dc3844dfe5c75422f9e5cc90a2f7a8",
+          "expired": false
+        },
+        {
+          "id": 11703605987,
+          "name": "greenlens-annual-shipping-B-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 596282,
+          "github_reported_digest": "sha256:ce388bcddb596b4e9285cdeb015ef1d6a57ee75a64d7dcc23385b9ccfc15b6ee",
+          "expired": false
+        },
+        {
+          "id": 11703511553,
+          "name": "greenlens-ci-cli-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 2566273,
+          "github_reported_digest": "sha256:0fd9d1b06f0abaf25f20009101fa88bec3f8b0992e6f465c0d8108f29bdeab66",
+          "expired": false
+        },
+        {
+          "id": 11703463788,
+          "name": "greenlens-annual-reference-A-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 596348,
+          "github_reported_digest": "sha256:6cd5f99719837a869175162d733b526442a8ac3ea164463cfc9e31114c9d0067",
+          "expired": false
+        },
+        {
+          "id": 11703018392,
+          "name": "greenlens-annual-shipping-A-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 596319,
+          "github_reported_digest": "sha256:c4bbb25330cc2c23aa971e12a1a6698267677c464c4b9fd30c1e2b98b9edf940",
+          "expired": false
+        },
+        {
+          "id": 11703002358,
+          "name": "greenlens-native-diagnostics-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 4162817,
+          "github_reported_digest": "sha256:4253845b41063a98bcbe3b4926bddaed4b1952ddc6a12c5ea46a91a601381994",
+          "expired": false
+        },
+        {
+          "id": 11702832425,
+          "name": "greenlens-windows-unsigned-investigation-fe630b636cdaa758ad9742a5b9bbe3cc53240c7a",
+          "github_compressed_bytes": 6113268,
+          "github_reported_digest": "sha256:84f3e2d579bf4f48384ae319180b02a39595cdcc66368163ac4a450aca2180a2",
+          "expired": false
+        }
+      ],
+      "full_read_only_audit": {
+        "path": "38139009385/final-checkpoint.json",
+        "bytes": 62807,
+        "sha256": "0cda2c6abc282925a10844fe2fbf5f21f58fe739723a95bbdbe4f7bb5c52f6bd"
+      }
+    }
+  ],
+  "single_case_reference_pilot": {
+    "scope": "One unchanged A8504 baseline case, one engine worker. Does not establish complete 24-case reference qualification, either sensitivity case, production method5 accuracy, or native desktop acceptance.",
+    "first_attempt": {
+      "run_id": 38144321004,
+      "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38144321004",
+      "source_commit": "0f5df6cfff5144f0075c1abbded1e8e5719bcc19",
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": {
+        "id": 114484387975,
+        "name": "reference-a8504",
+        "status": "completed",
+        "conclusion": "failure",
+        "started_utc": "2026-10-11T13:43:39Z",
+        "completed_utc": "2026-10-11T13:43:53Z",
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:43:40Z",
+            "completedAt": "2026-10-11T13:43:40Z"
+          },
+          {
+            "number": 2,
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:43:40Z",
+            "completedAt": "2026-10-11T13:43:45Z"
+          },
+          {
+            "number": 3,
+            "name": "Synthetic trusted-source newline guards",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:43:45Z",
+            "completedAt": "2026-10-11T13:43:45Z"
+          },
+          {
+            "number": 4,
+            "name": "Download one reviewed data-only input artifact",
+            "status": "completed",
+            "conclusion": "failure",
+            "startedAt": "2026-10-11T13:43:45Z",
+            "completedAt": "2026-10-11T13:43:49Z"
+          },
+          {
+            "number": 5,
+            "name": "Acquire separately pinned Radiance",
+            "status": "completed",
+            "conclusion": "skipped",
+            "startedAt": "2026-10-11T13:43:49Z",
+            "completedAt": "2026-10-11T13:43:49Z"
+          },
+          {
+            "number": 6,
+            "name": "One unchanged A8504 case with one engine worker",
+            "status": "completed",
+            "conclusion": "skipped",
+            "startedAt": "2026-10-11T13:43:49Z",
+            "completedAt": "2026-10-11T13:43:49Z"
+          },
+          {
+            "number": 7,
+            "name": "Retain complete or failed pilot evidence",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:43:49Z",
+            "completedAt": "2026-10-11T13:43:50Z"
+          },
+          {
+            "number": 14,
+            "name": "Post Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:43:50Z",
+            "completedAt": "2026-10-11T13:43:51Z"
+          },
+          {
+            "number": 15,
+            "name": "Complete job",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:43:51Z",
+            "completedAt": "2026-10-11T13:43:51Z"
+          }
+        ]
+      },
+      "synthetic_newline_checks": {
+        "passed": true,
+        "checks": 12
+      },
+      "failed_step": "Download one reviewed data-only input artifact",
+      "failure": "gh: Resource not accessible by integration (HTTP 403)",
+      "following_script_error": "Draft input asset metadata differs",
+      "input_asset_id": 630834963,
+      "workflow_contents_permission": "read",
+      "engine_acquisition": "skipped",
+      "reference_execution": "skipped",
+      "artifact_count": 0,
+      "audit": {
+        "path": "38144321004/startup-failure.json",
+        "bytes": 1474,
+        "sha256": "b4e2e97302fc48d5cf3ed2148f0cc8259460c6ea22e8dd8ed7237210287c997f"
+      },
+      "raw_sources": [
+        {
+          "path": "startup.json",
+          "bytes": 2122,
+          "sha256": "e4f8b3566db2ca32b16cf828e7249de9c4352d11781e720aad6196d3a7815cc1"
+        },
+        {
+          "path": "job.log",
+          "bytes": 23841,
+          "sha256": "6899669d1a02144d260834177b7b33c07b0a8de4662147cddd18edd9546e9dca"
+        },
+        {
+          "path": "artifacts.json",
+          "bytes": 32,
+          "sha256": "244563f989470892c537c9a4622920af0d228ee4528f7d00c64a06d6cd95856c"
+        }
+      ]
+    },
+    "permission_remedy": {
+      "source_commit": "53a04cec9b36a4fc8639a9f68d8a6879e44caae8",
+      "diff_scope": "Four lines added to the single pilot job: explicit contents:write permission and rationale for access to the unpublished draft asset. Global contents:read unchanged.",
+      "numerical_sources_and_inputs_unchanged": true
+    },
+    "latest_observation": {
+      "observed_utc": "2026-10-11T13:51:07.0944781Z",
+      "run_id": 38144456237,
+      "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38144456237",
+      "source_commit": "53a04cec9b36a4fc8639a9f68d8a6879e44caae8",
+      "status": "in_progress",
+      "conclusion": "",
+      "jobs": {
+        "id": 114484780208,
+        "name": "reference-a8504",
+        "status": "in_progress",
+        "conclusion": "",
+        "started_utc": "2026-10-11T13:45:37Z",
+        "completed_utc": null,
+        "steps": [
+          {
+            "number": 1,
+            "name": "Set up job",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:45:37Z",
+            "completedAt": "2026-10-11T13:45:38Z"
+          },
+          {
+            "number": 2,
+            "name": "Run actions/checkout@v4",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:45:38Z",
+            "completedAt": "2026-10-11T13:45:51Z"
+          },
+          {
+            "number": 3,
+            "name": "Synthetic trusted-source newline guards",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:45:51Z",
+            "completedAt": "2026-10-11T13:45:52Z"
+          },
+          {
+            "number": 4,
+            "name": "Download one reviewed data-only input artifact",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:45:52Z",
+            "completedAt": "2026-10-11T13:45:56Z"
+          },
+          {
+            "number": 5,
+            "name": "Acquire separately pinned Radiance",
+            "status": "completed",
+            "conclusion": "success",
+            "startedAt": "2026-10-11T13:45:56Z",
+            "completedAt": "2026-10-11T13:45:58Z"
+          },
+          {
+            "number": 6,
+            "name": "One unchanged A8504 case with one engine worker",
+            "status": "in_progress",
+            "conclusion": "",
+            "startedAt": "2026-10-11T13:45:58Z",
+            "completedAt": "0001-01-01T00:00:00Z"
+          }
+        ]
+      },
+      "asset_download": "passed",
+      "pinned_engine_acquisition": "passed",
+      "case_result": "pending",
+      "snapshot": {
+        "path": "38144456237/publication-checkpoint-source.json",
+        "bytes": 1937,
+        "sha256": "04696edaa3ad6da760ef7dfbd647a2db72633f37f2c630763c9076a0b7819eca"
+      }
+    },
+    "input_archive": {
+      "asset_id": 630834963,
+      "sha256": "0b77ddbcf6d1ca03ecece672c2d1d40bdaabab6c53e30b3648bb5e14264f6f83",
+      "compressed_bytes": 8682531,
+      "manifest_sha256": "ad232a37630912863c1d2123275ede5080bccad123d8a5364df95c157d86cb99",
+      "entries": 15,
+      "uncompressed_bytes": 63303843,
+      "independently_verified_member_hashes": 15
+    },
+    "local_guard_test_review": {
+      "schema_version": "greenlens.hosted-reference-pilot-portability-review.v1",
+      "reviewed_utc": "2026-10-11T13:43:03.6366514Z",
+      "scope": "Final narrow self-contained-test correction only; no engines, checkout edits, or hosted dispatch.",
+      "supersedes_test_hash": "24162acd504b7c65f62457d2d145ced94333595676225ddec7f882ca0d539001",
+      "test_sha256": "cc0117d11bf57e274dc9ecd0307bc2e0bb0e5062a384e30100b825fd7abe185b",
+      "workflow_sha256": "7586405705af2cc28a6e1da6ef5443a6c159a63653857e8cc38ed2b5f11c95f8",
+      "helper_sha256": "9978ec621ee6868e5c9d280491781ce76bc83a47db26296ee42d39b869575db3",
+      "wrapper_sha256": "18bd85952e0fceaf7f0ad12b6879bf107f1228fb4f8f4554a3ba9c4bacebf934",
+      "independent_checks": 12,
+      "passed": true,
+      "change": "Test now embeds its fixed nine-path source allowlist instead of loading a local draft input manifest. Workflow runs it before artifact acquisition.",
+      "findings": [],
+      "acceptance_complete": false
+    }
+  },
+  "current_method5_integration": {
+    "observed_utc": "2026-10-11T13:51:07.0619862Z",
+    "run_id": 38142958617,
+    "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617",
+    "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+    "status": "in_progress",
+    "conclusion": "",
+    "jobs": {
+      "id": 114480392880,
+      "name": "native",
+      "status": "in_progress",
+      "conclusion": "",
+      "started_utc": "2026-10-11T13:23:12Z",
+      "completed_utc": null,
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:23:12Z",
+          "completedAt": "2026-10-11T13:23:13Z"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:23:13Z",
+          "completedAt": "2026-10-11T13:23:20Z"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:23:20Z",
+          "completedAt": "2026-10-11T13:23:26Z"
+        },
+        {
+          "number": 4,
+          "name": "Native development environment and pinned toolchain",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:23:26Z",
+          "completedAt": "2026-10-11T13:24:02Z"
+        },
+        {
+          "number": 5,
+          "name": "Build identity changes and explicit CI assertions",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:24:02Z",
+          "completedAt": "2026-10-11T13:24:15Z"
+        },
+        {
+          "number": 6,
+          "name": "Acquire and verify pinned native engine",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:24:15Z",
+          "completedAt": "2026-10-11T13:24:19Z"
+        },
+        {
+          "number": 7,
+          "name": "Engine feasibility in spaces and non-ASCII path",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:24:19Z",
+          "completedAt": "2026-10-11T13:24:19Z"
+        },
+        {
+          "number": 8,
+          "name": "Frontend install, types, tests and production assets",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:24:20Z",
+          "completedAt": "2026-10-11T13:24:31Z"
+        },
+        {
+          "number": 9,
+          "name": "Rust format, lint and unit/integration checks",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:24:31Z",
+          "completedAt": "2026-10-11T13:34:08Z"
+        },
+        {
+          "number": 10,
+          "name": "Required native paired-primary generator and analytical bridge",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:34:08Z",
+          "completedAt": "2026-10-11T13:38:46Z"
+        },
+        {
+          "number": 11,
+          "name": "Mandatory reviewed real weather and script regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:38:46Z",
+          "completedAt": "2026-10-11T13:39:03Z"
+        },
+        {
+          "number": 12,
+          "name": "Required bounded reference-harness regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:39:03Z",
+          "completedAt": "2026-10-11T13:41:00Z"
+        },
+        {
+          "number": 13,
+          "name": "Required independent finite overhang and context edges",
+          "status": "completed",
+          "conclusion": "success",
+          "startedAt": "2026-10-11T13:41:00Z",
+          "completedAt": "2026-10-11T13:41:02Z"
+        },
+        {
+          "number": 14,
+          "name": "Required real-engine scientific suite (missing engine is failure)",
+          "status": "in_progress",
+          "conclusion": "",
+          "startedAt": "2026-10-11T13:41:02Z",
+          "completedAt": "0001-01-01T00:00:00Z"
+        }
+      ]
+    },
+    "snapshot": {
+      "path": "38142958617/publication-checkpoint-source.json",
+      "bytes": 5449,
+      "sha256": "790ef54215dd85d574c285b617f6550fb2261987191a4def28fd9a28c293797a"
+    },
+    "no_final_outcome_inferred": true
+  },
+  "inspection_commands": [
+    "gh run view <recorded run ID> --repo AdrianIp0204/GreenLens --json databaseId,headSha,headBranch,status,conclusion,createdAt,updatedAt,url,jobs",
+    "gh api repos/AdrianIp0204/GreenLens/actions/runs/<recorded run ID>/artifacts?per_page=100",
+    "gh run download <recorded completed run ID> --repo AdrianIp0204/GreenLens --name <recorded artifact name> --dir <new external audit directory>",
+    "gh run view 38144321004 --repo AdrianIp0204/GreenLens --job 114484387975 --log",
+    "git diff 0f5df6cfff5144f0075c1abbded1e8e5719bcc19 53a04cec9b36a4fc8639a9f68d8a6879e44caae8 -- .github/workflows"
+  ],
+  "limitations": [
+    "GitHub artifact digests are API-reported archive hashes. Retained evidence ZIP and individual file hashes were independently computed.",
+    "Annual method4 failure arrays were not available in these compact CI uploads; exact first reported residual errors are retained without claiming they are the only failing sensor/interval.",
+    "Selected-hour integration and replay success do not overturn four failed annual calculations at either historical source.",
+    "The new pilot and method5 integration snapshots are in progress, not successful final outcomes; their downstream acceptance remains unverified.",
+    "No installed native desktop result or complete matched-sky/reference qualification follows from this checkpoint."
+  ],
+  "release_acceptance_complete": false
+}

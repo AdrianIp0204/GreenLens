@@ -1,0 +1,306 @@
+{
+  "schema_version": "greenlens.native-cancellation.v1",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "source_dirty": false,
+  "job_id": "cf7e6dd5-00a9-4800-8580-b25588933a5e",
+  "observation": "Installed candidate05 toolbar Cancel during actual method5 annual rcontrib; UI reports cancelled and no completed result",
+  "checks": {
+    "observed_child_gone": true,
+    "completed_runs_after": 0,
+    "engine_children_after": 0,
+    "saved_manifest_unchanged": true
+  },
+  "failure": {
+    "arguments": [
+      "-n",
+      "1",
+      "-faa",
+      "-y",
+      "24",
+      "-ab",
+      "7",
+      "-ad",
+      "64",
+      "-as",
+      "0",
+      "-aa",
+      "0",
+      "-ar",
+      "256",
+      "-av",
+      "0",
+      "0",
+      "0",
+      "-lw",
+      "0.000000001",
+      "-lr",
+      "-16",
+      "-dt",
+      "0",
+      "-dc",
+      "1",
+      "-dj",
+      "0",
+      "-ds",
+      "0.05",
+      "-st",
+      "0",
+      "-ss",
+      "0",
+      "-u-",
+      "-c",
+      "16384",
+      "-V+",
+      "-e",
+      "MF:2",
+      "-f",
+      "reinhart.cal",
+      "-b",
+      "rbin",
+      "-bn",
+      "Nrbins",
+      "-m",
+      "sky_glow",
+      "annual-coefficient.oct"
+    ],
+    "error": "Streaming cancelled",
+    "process_index": 4,
+    "purpose": "full",
+    "recorded_utc": "2026-10-11T21:51:00.903028+08:00",
+    "schema_version": "greenlens.annual-primary-failure.v1",
+    "state": "failed",
+    "stream_failure": {
+      "cleanup_error": null,
+      "error": "Streaming cancelled",
+      "generated_records": 33122,
+      "pid": 34788,
+      "process_tree_terminated": true,
+      "schema_version": "greenlens.stream-failure.v1",
+      "state": "failed",
+      "telemetry": {
+        "atomic_job_assignment": true,
+        "partial_writes": 0,
+        "peak_child_working_set_bytes": 5832704,
+        "peak_scratch_bytes": 101260895,
+        "sampled_peak_job_plus_runner_working_set_bytes": 108695552,
+        "sampled_peak_runner_plus_child_working_set_bytes": 101265408,
+        "samples": 802,
+        "schema_version": "greenlens.stream-resources.v2",
+        "zero_progress_writes": 732
+      },
+      "written_bytes": 4522638
+    }
+  },
+  "resources": {
+    "schema_version": "greenlens.annual-resources.v1",
+    "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+    "started_utc": "2026-10-11T13:50:21.707716100+00:00",
+    "finished_utc": "2026-10-11T13:51:00.906155900+00:00",
+    "total_wall_ms": 39198,
+    "peak_engine_working_set_bytes": 67260416,
+    "peak_observed_runner_plus_engine_working_set_bytes": 160862208,
+    "peak_scratch_bytes": 101263048,
+    "max_scratch_bytes": 2147483648,
+    "max_matrix_bytes": 536870912,
+    "max_observed_working_set_bytes": 2147483648,
+    "processes": [
+      {
+        "executable": "gendaymtx.exe",
+        "started_utc": "2026-10-11T13:50:21.730469100+00:00",
+        "finished_utc": "2026-10-11T13:50:29.252108500+00:00",
+        "elapsed_ms": 7521,
+        "peak_child_working_set_bytes": 67260416,
+        "peak_observed_runner_plus_child_working_set_bytes": 160854016,
+        "peak_scratch_bytes": 64816096,
+        "output_bytes": 56693520,
+        "samples": 290
+      },
+      {
+        "executable": "gendaymtx.exe",
+        "started_utc": "2026-10-11T13:50:29.272798800+00:00",
+        "finished_utc": "2026-10-11T13:50:33.378925600+00:00",
+        "elapsed_ms": 4106,
+        "peak_child_working_set_bytes": 67244032,
+        "peak_observed_runner_plus_child_working_set_bytes": 160862208,
+        "peak_scratch_bytes": 101231482,
+        "output_bytes": 35736077,
+        "samples": 157
+      },
+      {
+        "executable": "oconv.exe",
+        "started_utc": "2026-10-11T13:50:34.972173300+00:00",
+        "finished_utc": "2026-10-11T13:50:35.153197300+00:00",
+        "elapsed_ms": 181,
+        "peak_child_working_set_bytes": 5398528,
+        "peak_observed_runner_plus_child_working_set_bytes": 100634624,
+        "peak_scratch_bytes": 101236269,
+        "output_bytes": 2125,
+        "samples": 6
+      },
+      {
+        "executable": "oconv.exe",
+        "started_utc": "2026-10-11T21:50:35.190714+08:00",
+        "finished_utc": "2026-10-11T13:50:35.396123600+00:00",
+        "elapsed_ms": 205,
+        "peak_child_working_set_bytes": 5394432,
+        "peak_observed_runner_plus_child_working_set_bytes": 100630528,
+        "peak_scratch_bytes": 101239061,
+        "output_bytes": 2090,
+        "samples": 6
+      }
+    ]
+  },
+  "retained_files": [
+    {
+      "path": "annual-coefficient-receiver.rad",
+      "bytes": 76,
+      "sha256": "7c747c899f317baebf482322f684cdef4df0e556710332afc1b4aa72d0fe7150"
+    },
+    {
+      "path": "annual-coefficient.oct",
+      "bytes": 2090,
+      "sha256": "bf75f6b786c0b5240ab4691540d77adcda0f8a4b2288d26ededfc07fbfb87a3c"
+    },
+    {
+      "path": "annual-diffuse.oct",
+      "bytes": 2125,
+      "sha256": "8936a5aae993205907f31db50188e7daa692c00cfc9172113b79498b54f70c3e"
+    },
+    {
+      "path": "annual-logs.json",
+      "bytes": 2472,
+      "sha256": "9eacc373fa133340d181122e5f9c75ead89472d5bc1e2fef60ba0ea9f18702e8"
+    },
+    {
+      "path": "annual-primary-failure.json",
+      "bytes": 1508,
+      "sha256": "56f9576c4526de6aece0f0be282b657931b40c578189cccdf43e6eb221505d35"
+    },
+    {
+      "path": "annual-receiver.rad",
+      "bytes": 121,
+      "sha256": "c2be1b6c963ffac0ddf772cfad5cf7227ace77af7102665b216db327cd385471"
+    },
+    {
+      "path": "annual-resources.json",
+      "bytes": 2737,
+      "sha256": "7c91afd420dc4ea98db4211fe0aee53022df6a9122755430054b832989152dcd"
+    },
+    {
+      "path": "annual-scene.rad",
+      "bytes": 1221,
+      "sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57"
+    },
+    {
+      "path": "annual-sensors.pts",
+      "bytes": 752,
+      "sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446"
+    },
+    {
+      "path": "annual-sky.mtx",
+      "bytes": 56693520,
+      "sha256": "6674542db4246ab8198f134efcb2d31c62abd86f01dc42cc8bb8df29482d4a8e"
+    },
+    {
+      "path": "annual-solar-sky.mtx",
+      "bytes": 35736077,
+      "sha256": "70b9560f9f461bf1db26985f3b3df894546b92c27bc94b623a9d0f6a84c416c4"
+    },
+    {
+      "path": "annual-sun-modifiers.txt",
+      "bytes": 56493,
+      "sha256": "df92a2881c590b8f1371fe3efab77005e37b21c809a6de3bbcf123ed61f8e503"
+    },
+    {
+      "path": "annual-suns.rad",
+      "bytes": 620345,
+      "sha256": "168c3a9374263b0694df8e27ea7695eaf3e220335ab200cd87a72b305e0868d3"
+    },
+    {
+      "path": "annual-weather.epw",
+      "bytes": 1863006,
+      "sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed"
+    },
+    {
+      "path": "gendaymtx.process.json",
+      "bytes": 875,
+      "sha256": "05c96d74f9245c26d4841410356407e87ea6c1ddb02192ae45f17dc94e7f5fa1"
+    },
+    {
+      "path": "gendaymtx.resources.json",
+      "bytes": 361,
+      "sha256": "208e36d9230bb690e61096938b675356eb33cdb098df42b90a5cee9d7748a8e0"
+    },
+    {
+      "path": "gendaymtx.started.json",
+      "bytes": 107,
+      "sha256": "d5fead494ac1ee38a42a05aa105f27a9b178b26c323ab4a21105c76d15da2fd6"
+    },
+    {
+      "path": "gendaymtx.stderr",
+      "bytes": 491,
+      "sha256": "9e028cc635d106595edc7e9b2041d04317ce7f4b5a16d3022a65b65bf062b244"
+    },
+    {
+      "path": "oconv.process.json",
+      "bytes": 290,
+      "sha256": "86da87994e9c6da0638bfba5eaa91c2da5fe55022edcaca954896e4419590e12"
+    },
+    {
+      "path": "oconv.resources.json",
+      "bytes": 346,
+      "sha256": "098b897eb3ac551161e8090ebee699389994342b010f8595bdb46be1f3cc7202"
+    },
+    {
+      "path": "oconv.started.json",
+      "bytes": 100,
+      "sha256": "3928b0db165449599201526e4ced587c989a1b68502c75d855c655eee5ca3c67"
+    },
+    {
+      "path": "oconv.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "primary-full/stream-failure.json",
+      "bytes": 645,
+      "sha256": "5a988ae48a497fc0b400c812b3790ae0e123339fedc8b0bd4ce54f945befd524"
+    },
+    {
+      "path": "primary-full/stream-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "primary-full/stream-stdout.bin",
+      "bytes": 20491,
+      "sha256": "4eba1f7696b9ee6a3c109f5ae8f7600effa05fc4a8e87453403dfc77b3495117"
+    },
+    {
+      "path": "weather/asset.json",
+      "bytes": 2711,
+      "sha256": "34c27c50fad3f370682dad834b645a06ffb6c88164f47e74c37e9402ed35e8ba"
+    },
+    {
+      "path": "weather/checksums.json",
+      "bytes": 402,
+      "sha256": "cda9fc9ff7a7446bf27dc0f99266e09c5f6fdead65e221ba5f02bde1fb3674cd"
+    },
+    {
+      "path": "weather/normalized.epw",
+      "bytes": 1863006,
+      "sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed"
+    },
+    {
+      "path": "weather/original.epw",
+      "bytes": 1863014,
+      "sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8"
+    },
+    {
+      "path": "weather/weather.json",
+      "bytes": 2527669,
+      "sha256": "19a8ce41b5507d2393372f0743610b6df909dd3add40678b0209534aa7965a6a"
+    }
+  ],
+  "recorded_utc": "2026-10-11T13:52:52.1587147Z"
+}

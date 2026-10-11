@@ -1,0 +1,56 @@
+{
+  "schema_version": "greenlens.clean-method5-legacy-replay-audit.v1",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "source_worktree_dirty": false,
+  "command": "./scripts/legacy-replay.ps1 -Cli <distributed-clean6cf>/greenlens.exe -OutputDirectory <external-unicode-audit>/execution -StaticEngineDirectory <new-ASCII-local-static-only-engine>",
+  "cli_sha256": "03c4c57fcdea031713bb1b2da66b2ce7dbf98c8c91ca8967bbda24a302f11efc",
+  "distributed_cli_matches_zip": true,
+  "fixture_sha256_before": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec",
+  "fixture_sha256_after": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec",
+  "fixture_bytes": 94116,
+  "fixture_original_source_commit": "2c3de39e05271353a3818a2fd10e81c423c27b78",
+  "started_utc": "2026-10-11T14:01:54.9793395Z",
+  "finished_utc": "2026-10-11T14:20:41.8801823Z",
+  "wall_seconds": 1126.8853939,
+  "harness_sha256": "2178f841251e37087e1446f48ea9b609bd88f00e2290fbfcc3119bcce6067506",
+  "helper_sha256": "b27e2b7a3bfaea9959aa1262f6441e05c63c6ddd33cfe5374fda9485134bcc0c",
+  "engine_fixture": {
+    "schema_version": "greenlens.legacy-engine-fixture.v1",
+    "engine_release": "6.0.2",
+    "file_count": 150,
+    "copied_files_sha256": "2a1b108d6c5401b86e232f11cbab338dcc566a3923f4accbfe8a6cdd33df5826",
+    "source_and_copy_identical": true,
+    "library_path_ascii": true,
+    "engine_executables": [
+      "gensky.exe",
+      "oconv.exe",
+      "rtrace.exe"
+    ],
+    "annual_executables_present": false
+  },
+  "checks": [
+    {
+      "max_absolute_error_lux": 0.0,
+      "passed": true,
+      "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+      "sensors": 77
+    },
+    {
+      "max_absolute_error_lux": 0.0,
+      "passed": true,
+      "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+      "sensors": 77
+    }
+  ],
+  "total_sensor_values": 154,
+  "max_absolute_error_lux": 0.0,
+  "tolerance": "Every sensor <= max(0.1 lx, 0.1% of retained reference)",
+  "exit_code": 0,
+  "passed": true,
+  "files": {
+    "replay_json_sha256": "7cf3a1c333324ef69bde222aeb4087716d11b045ad13f2aeff535142d8119d03",
+    "replay_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "summary_sha256": "4426952ea8419d0bd9553c14cce84b5943999122b71d71b9dbfeed315c8703ce"
+  },
+  "scope": "Native same-engine legacy compatibility through clean method5 application; not annual transport qualification or release completion."
+}

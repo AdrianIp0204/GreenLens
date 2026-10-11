@@ -1,0 +1,363 @@
+{
+  "schema_version": "greenlens.selected-hour-replay-audit.v1",
+  "verified_utc": "2026-10-11T14:18:10.928973+00:00",
+  "scope": "Read-only audit of already-completed real native shared-service method5 selected-hour A/B replay. No CLI/engine/application rerun by reviewer; no full-year or independent physical accuracy claim.",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "source_worktree_dirty_at_build": false,
+  "cli_sha256": "03c4c57fcdea031713bb1b2da66b2ce7dbf98c8c91ca8967bbda24a302f11efc",
+  "frozen_and_distributed_cli_identical": true,
+  "commands_as_reconstructed_from_retained_wrapper": {
+    "integration": "pwsh -File scripts/climate-cli-integration.ps1 -Mode WeatherHour -Profile shipping -IntervalIndex 1908 -Cli <frozen-CLI> -OutputDirectory <new-owned-directory> -Replay",
+    "replay": "greenlens.exe replay \"climate-evidence.zip\"",
+    "argument_source": "The retained integration script invokes direct CLI argument arrays; placeholders remove machine-specific locations."
+  },
+  "source_records": [
+    {
+      "path": "summary.json",
+      "bytes": 52022,
+      "sha256": "217efd6ee14349f4412a9155df82ddb0df3fc1c053e186216ba18e97e87af023"
+    },
+    {
+      "path": "replay.json",
+      "bytes": 12035,
+      "sha256": "be18b99317b25330fe637bfacc9ad6fa3a8bd9666005c0ccef02ae17b4964aee"
+    },
+    {
+      "path": "climate-evidence.zip",
+      "bytes": 1810828,
+      "sha256": "53b21d2a1598b0906eeff24b329606a0ad3f135f20e8442134f8e47d2cbfec6c"
+    }
+  ],
+  "package": {
+    "files": 56,
+    "sealed_members": 55,
+    "uncompressed_bytes": 19084378,
+    "largest_member_bytes": 2527669,
+    "sha256": "53b21d2a1598b0906eeff24b329606a0ad3f135f20e8442134f8e47d2cbfec6c",
+    "bytes": 1810828,
+    "unsafe_or_duplicate_paths": false,
+    "engine_binaries_included": false
+  },
+  "timing": {
+    "wrapper_started_utc": "2026-10-11T13:26:38.6544853Z",
+    "wrapper_finished_utc": "2026-10-11T14:10:41.3264754Z",
+    "a_b_calculation_stopwatch_seconds": 1340.9678531,
+    "stopwatch_scope": "Stops immediately after the original A/B calculations; excludes copy, export and replay.",
+    "replay_first_run_started_utc": "2026-10-11T13:49:14.714016+00:00",
+    "replay_last_run_finished_utc": "2026-10-11T14:10:41.197391700+00:00",
+    "replay_measured_process_pipeline_ms_sum": 1285140,
+    "replay_interval_note": "Replay resource timestamps bound actual engine pipelines; exact wrapper replay process launch/exit times were not separately recorded."
+  },
+  "portability": {
+    "recorded_before_replay": {
+      "original_project_unavailable": true,
+      "byte_identical_run_files": 46,
+      "original_weather_path_unavailable": true,
+      "original_scratch_unavailable": true
+    },
+    "fresh_unavailability_checks": {
+      "Original project": true,
+      "Weather import": true,
+      "Input weather.epw": true,
+      "d06cf977-6c07-4a81-b3e5-1bbac3ed1d30": true,
+      "2a066731-3b5f-4899-b1f6-cbf4dea32373": true
+    },
+    "immutable_original_copy_export_files_verified": 46,
+    "original_and_copy_hashes_equal_pre_replay_summary": true,
+    "audit_source_files_unchanged": true
+  },
+  "runs": [
+    {
+      "alternative": "A",
+      "run_id": "d06cf977-6c07-4a81-b3e5-1bbac3ed1d30",
+      "interval_index": 1908,
+      "sensor_count": 24,
+      "interval_count": 1,
+      "values_checked": 24,
+      "max_absolute_error_lux": 0.0,
+      "max_tolerance_ratio": 0.0,
+      "passed": true,
+      "tolerance": "max(0.5 lx, 0.5% of reference)",
+      "original_started_utc": "2026-10-11T13:26:40.325935600+00:00",
+      "original_finished_utc": "2026-10-11T13:36:57.161855800+00:00",
+      "replay_resources": {
+        "finished_utc": "2026-10-11T14:01:09.685716100+00:00",
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648,
+        "max_scratch_bytes": 2147483648,
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+        "peak_engine_working_set_bytes": 6344704,
+        "peak_observed_runner_plus_engine_working_set_bytes": 18059264,
+        "peak_scratch_bytes": 1181172,
+        "processes": [
+          {
+            "elapsed_ms": 155,
+            "executable": "gendaymtx.exe",
+            "finished_utc": "2026-10-11T13:49:14.879650200+00:00",
+            "output_bytes": 27549,
+            "peak_child_working_set_bytes": 5267456,
+            "peak_observed_runner_plus_child_working_set_bytes": 16576512,
+            "peak_scratch_bytes": 30822,
+            "samples": 6,
+            "started_utc": "2026-10-11T13:49:14.724553900+00:00"
+          },
+          {
+            "elapsed_ms": 155,
+            "executable": "gendaymtx.exe",
+            "finished_utc": "2026-10-11T13:49:15.049548100+00:00",
+            "output_bytes": 13724,
+            "peak_child_working_set_bytes": 5349376,
+            "peak_observed_runner_plus_child_working_set_bytes": 16740352,
+            "peak_scratch_bytes": 46949,
+            "samples": 6,
+            "started_utc": "2026-10-11T13:49:14.893744900+00:00"
+          },
+          {
+            "elapsed_ms": 140,
+            "executable": "oconv.exe",
+            "finished_utc": "2026-10-11T13:49:15.205476800+00:00",
+            "output_bytes": 2125,
+            "peak_child_working_set_bytes": 5402624,
+            "peak_observed_runner_plus_child_working_set_bytes": 16805888,
+            "peak_scratch_bytes": 50689,
+            "samples": 5,
+            "started_utc": "2026-10-11T13:49:15.065339500+00:00"
+          },
+          {
+            "elapsed_ms": 153,
+            "executable": "oconv.exe",
+            "finished_utc": "2026-10-11T13:49:15.376247900+00:00",
+            "output_bytes": 2090,
+            "peak_child_working_set_bytes": 5406720,
+            "peak_observed_runner_plus_child_working_set_bytes": 16809984,
+            "peak_scratch_bytes": 53480,
+            "samples": 5,
+            "started_utc": "2026-10-11T13:49:15.222575600+00:00"
+          },
+          {
+            "elapsed_ms": 664429,
+            "executable": "rcontrib.exe",
+            "finished_utc": "2026-10-11T14:00:19.831475+00:00",
+            "output_bytes": 541492,
+            "peak_child_working_set_bytes": 6344704,
+            "peak_observed_runner_plus_child_working_set_bytes": 18059264,
+            "peak_scratch_bytes": 596320,
+            "samples": 12464,
+            "started_utc": "2026-10-11T13:49:15.402351400+00:00"
+          },
+          {
+            "elapsed_ms": 170,
+            "executable": "dctimestep.exe",
+            "finished_utc": "2026-10-11T14:00:20.091661300+00:00",
+            "output_bytes": 2999,
+            "peak_child_working_set_bytes": 5275648,
+            "peak_observed_runner_plus_child_working_set_bytes": 17076224,
+            "peak_scratch_bytes": 602212,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:00:19.921614+00:00"
+          },
+          {
+            "elapsed_ms": 48611,
+            "executable": "rcontrib.exe",
+            "finished_utc": "2026-10-11T14:01:08.831645100+00:00",
+            "output_bytes": 541492,
+            "peak_child_working_set_bytes": 6172672,
+            "peak_observed_runner_plus_child_working_set_bytes": 17526784,
+            "peak_scratch_bytes": 1145088,
+            "samples": 840,
+            "started_utc": "2026-10-11T14:00:20.220434800+00:00"
+          },
+          {
+            "elapsed_ms": 194,
+            "executable": "dctimestep.exe",
+            "finished_utc": "2026-10-11T14:01:09.156282900+00:00",
+            "output_bytes": 3005,
+            "peak_child_working_set_bytes": 5279744,
+            "peak_observed_runner_plus_child_working_set_bytes": 17084416,
+            "peak_scratch_bytes": 1150340,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:01:08.962031900+00:00"
+          },
+          {
+            "elapsed_ms": 195,
+            "executable": "dctimestep.exe",
+            "finished_utc": "2026-10-11T14:01:09.479823500+00:00",
+            "output_bytes": 3012,
+            "peak_child_working_set_bytes": 5259264,
+            "peak_observed_runner_plus_child_working_set_bytes": 17063936,
+            "peak_scratch_bytes": 1154072,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:01:09.284198400+00:00"
+          }
+        ],
+        "schema_version": "greenlens.annual-resources.v1",
+        "started_utc": "2026-10-11T13:49:14.714016+00:00",
+        "total_wall_ms": 714971
+      },
+      "weather": {
+        "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+        "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+      },
+      "engine_package_sha256": "c4f02efcb4a33f4a43b7ce0ba58100544abc317a1be61f7b0425a64a66eb8a09",
+      "method_version": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+      "paired_primary_receipt": {
+        "bytes": 54034456,
+        "records": 393216,
+        "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+      },
+      "original_run_sealed_members": 22,
+      "independent_rgb_lux_max_error": 0.0
+    },
+    {
+      "alternative": "B",
+      "run_id": "2a066731-3b5f-4899-b1f6-cbf4dea32373",
+      "interval_index": 1908,
+      "sensor_count": 24,
+      "interval_count": 1,
+      "values_checked": 24,
+      "max_absolute_error_lux": 0.0,
+      "max_tolerance_ratio": 0.0,
+      "passed": true,
+      "tolerance": "max(0.5 lx, 0.5% of reference)",
+      "original_started_utc": "2026-10-11T13:37:03.444816400+00:00",
+      "original_finished_utc": "2026-10-11T13:48:52.130967800+00:00",
+      "replay_resources": {
+        "finished_utc": "2026-10-11T14:10:41.197391700+00:00",
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648,
+        "max_scratch_bytes": 2147483648,
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+        "peak_engine_working_set_bytes": 6389760,
+        "peak_observed_runner_plus_engine_working_set_bytes": 18194432,
+        "peak_scratch_bytes": 1181566,
+        "processes": [
+          {
+            "elapsed_ms": 177,
+            "executable": "gendaymtx.exe",
+            "finished_utc": "2026-10-11T14:01:11.232367100+00:00",
+            "output_bytes": 27549,
+            "peak_child_working_set_bytes": 5279744,
+            "peak_observed_runner_plus_child_working_set_bytes": 17231872,
+            "peak_scratch_bytes": 30953,
+            "samples": 4,
+            "started_utc": "2026-10-11T14:01:11.054743700+00:00"
+          },
+          {
+            "elapsed_ms": 169,
+            "executable": "gendaymtx.exe",
+            "finished_utc": "2026-10-11T14:01:11.452810400+00:00",
+            "output_bytes": 13724,
+            "peak_child_working_set_bytes": 5345280,
+            "peak_observed_runner_plus_child_working_set_bytes": 17297408,
+            "peak_scratch_bytes": 47083,
+            "samples": 4,
+            "started_utc": "2026-10-11T14:01:11.282844100+00:00"
+          },
+          {
+            "elapsed_ms": 145,
+            "executable": "oconv.exe",
+            "finished_utc": "2026-10-11T14:01:11.660411100+00:00",
+            "output_bytes": 2249,
+            "peak_child_working_set_bytes": 5398528,
+            "peak_observed_runner_plus_child_working_set_bytes": 17354752,
+            "peak_scratch_bytes": 50949,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:01:11.515395600+00:00"
+          },
+          {
+            "elapsed_ms": 147,
+            "executable": "oconv.exe",
+            "finished_utc": "2026-10-11T14:01:11.889543400+00:00",
+            "output_bytes": 2214,
+            "peak_child_working_set_bytes": 5402624,
+            "peak_observed_runner_plus_child_working_set_bytes": 17358848,
+            "peak_scratch_bytes": 53862,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:01:11.741632600+00:00"
+          },
+          {
+            "elapsed_ms": 523466,
+            "executable": "rcontrib.exe",
+            "finished_utc": "2026-10-11T14:09:55.450633900+00:00",
+            "output_bytes": 541492,
+            "peak_child_working_set_bytes": 6389760,
+            "peak_observed_runner_plus_child_working_set_bytes": 18194432,
+            "peak_scratch_bytes": 596699,
+            "samples": 11377,
+            "started_utc": "2026-10-11T14:01:11.983951300+00:00"
+          },
+          {
+            "elapsed_ms": 151,
+            "executable": "dctimestep.exe",
+            "finished_utc": "2026-10-11T14:09:55.690706200+00:00",
+            "output_bytes": 2999,
+            "peak_child_working_set_bytes": 5279744,
+            "peak_observed_runner_plus_child_working_set_bytes": 17256448,
+            "peak_scratch_bytes": 602606,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:09:55.539468200+00:00"
+          },
+          {
+            "elapsed_ms": 44490,
+            "executable": "rcontrib.exe",
+            "finished_utc": "2026-10-11T14:10:40.269329300+00:00",
+            "output_bytes": 541492,
+            "peak_child_working_set_bytes": 6127616,
+            "peak_observed_runner_plus_child_working_set_bytes": 17645568,
+            "peak_scratch_bytes": 1145488,
+            "samples": 841,
+            "started_utc": "2026-10-11T14:09:55.778452800+00:00"
+          },
+          {
+            "elapsed_ms": 223,
+            "executable": "dctimestep.exe",
+            "finished_utc": "2026-10-11T14:10:40.635076+00:00",
+            "output_bytes": 3005,
+            "peak_child_working_set_bytes": 5279744,
+            "peak_observed_runner_plus_child_working_set_bytes": 17256448,
+            "peak_scratch_bytes": 1150734,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:10:40.411161300+00:00"
+          },
+          {
+            "elapsed_ms": 198,
+            "executable": "dctimestep.exe",
+            "finished_utc": "2026-10-11T14:10:40.971916100+00:00",
+            "output_bytes": 3012,
+            "peak_child_working_set_bytes": 5267456,
+            "peak_observed_runner_plus_child_working_set_bytes": 17281024,
+            "peak_scratch_bytes": 1154460,
+            "samples": 3,
+            "started_utc": "2026-10-11T14:10:40.773463300+00:00"
+          }
+        ],
+        "schema_version": "greenlens.annual-resources.v1",
+        "started_utc": "2026-10-11T14:01:11.027611500+00:00",
+        "total_wall_ms": 570169
+      },
+      "weather": {
+        "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+        "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+        "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+        "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+      },
+      "engine_package_sha256": "c4f02efcb4a33f4a43b7ce0ba58100544abc317a1be61f7b0425a64a66eb8a09",
+      "method_version": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+      "paired_primary_receipt": {
+        "bytes": 54034456,
+        "records": 393216,
+        "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+      },
+      "original_run_sealed_members": 22,
+      "independent_rgb_lux_max_error": 0.0
+    }
+  ],
+  "replay_passed": true,
+  "full_year_replay": false,
+  "independent_physical_accuracy": false,
+  "native_desktop_acceptance": false,
+  "release_acceptance_complete": false,
+  "reviewer_script_sha256": "5d87405d285af896846814e0a338396e2ca5b1b15658520182ada92581fde0bd"
+}

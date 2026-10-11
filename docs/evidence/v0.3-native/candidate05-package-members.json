@@ -1,0 +1,1071 @@
+{
+  "schema_version": "greenlens.artifact-package-members.v1",
+  "scope": "Fresh read-only ZIP and installed-resource byte checks; source document content checked against immutable 6cf Git objects with explicit LF/CRLF representation distinction; no build or install performed",
+  "cli_members": [
+    {
+      "path": "greenlens.exe",
+      "bytes": 4699648,
+      "sha256": "03c4c57fcdea031713bb1b2da66b2ce7dbf98c8c91ca8967bbda24a302f11efc"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "NOTICE",
+      "bytes": 470,
+      "sha256": "ee4a586b20f9e9460c479edfc1756875dc03ac5a4904761e37c6578ed53ab1ad"
+    },
+    {
+      "path": "dependencies/license-supplements.json",
+      "bytes": 11049,
+      "sha256": "43700be5416586f89c1513cec10e1c200b5f8b4ebdd22b08a26dda5d64f3de01"
+    },
+    {
+      "path": "dependencies/radiance.json",
+      "bytes": 5578,
+      "sha256": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+    },
+    {
+      "path": "dependencies/resolved-inventory.json",
+      "bytes": 506282,
+      "sha256": "ab1d74d2cff95a34e601c99d8111c3cd426befd524d7e285ad25a00f5a09e3c4"
+    },
+    {
+      "path": "dependencies/weather.json",
+      "bytes": 3394,
+      "sha256": "53898ccde5a11992a2d04e3a7b2ffddda65ea4dadc7efa64ff9cce4cdd6a352b"
+    },
+    {
+      "path": "docs/dependencies.md",
+      "bytes": 13471,
+      "sha256": "8abf214efb40a71a0ebc5126a72c328a444df607a0e378e21f632f900c752f00"
+    },
+    {
+      "path": "docs/engine-feasibility.md",
+      "bytes": 7121,
+      "sha256": "1571c4067f4b62551b17e101edcb94c9feee99f66bda6da31f4b35e1ae850d2e"
+    },
+    {
+      "path": "docs/gate-0-evidence.json",
+      "bytes": 2513,
+      "sha256": "9e5cde9e276293586a39bad453556404818933b1fcd1ab80c4c642718b072d95"
+    },
+    {
+      "path": "docs/installation.md",
+      "bytes": 6924,
+      "sha256": "72ab543c55ca077b65570a4ba732ef573dc1e74cbeabc503069fc1c43a7c7fd0"
+    },
+    {
+      "path": "docs/model-contract.md",
+      "bytes": 8387,
+      "sha256": "2e47baeb486e208033b6fa4d379d29a117b4c7a2eeac0e31de11d62792aa5865"
+    },
+    {
+      "path": "docs/PACKAGE-CONTENTS.md",
+      "bytes": 753,
+      "sha256": "8f1952747116f4cb9544854cb230960b4dcce101f78d6751fe047c55124aea46"
+    },
+    {
+      "path": "docs/persistence.md",
+      "bytes": 7588,
+      "sha256": "935bcc2a05f39b0f8c3d3f8168343b523e7032da5e9886017157c615159fc2ba"
+    },
+    {
+      "path": "docs/profile-investigation.json",
+      "bytes": 10451,
+      "sha256": "3f115451cccf06f68ea8f0ff0c1cef4efc46e89cd17e3d7efbfbb01b2c8ae03e"
+    },
+    {
+      "path": "docs/progress.md",
+      "bytes": 95006,
+      "sha256": "6804f56b47ff262d9bb83f625a66011b5380b0fd9479ab64b3b1a4a02f98041f"
+    },
+    {
+      "path": "docs/replay.md",
+      "bytes": 5963,
+      "sha256": "114491faac679ef81c55c9bd00d788c340cca345b1131b6fe5f5182c6e87402a"
+    },
+    {
+      "path": "docs/rhino-interaction-matrix.md",
+      "bytes": 4839,
+      "sha256": "9f5b0cacb38a0a101dc856b0931030a528be03b99503e58afdb02260076f4b46"
+    },
+    {
+      "path": "docs/science-evidence.json",
+      "bytes": 27409,
+      "sha256": "96aba8962519463f53b02071b741a345dbbbc43b7f0145a703bdb9c428cdfd69"
+    },
+    {
+      "path": "docs/science-fixtures-evidence.json",
+      "bytes": 19476,
+      "sha256": "365d50660fd7f63d05262723eea1245f03e4e57518c41d9afe3ca73215a35217"
+    },
+    {
+      "path": "docs/scientific-validation.md",
+      "bytes": 8757,
+      "sha256": "59d5ce369533f69762e1572fa9e52ea2b3d7cc664f90f4af1b4f6e87bde859a5"
+    },
+    {
+      "path": "docs/v0.2-native-verification.md",
+      "bytes": 33753,
+      "sha256": "41b8a3b425fe1f7ec3f57004f4942138c0f9d113a9e5f875b756d053759a1c86"
+    },
+    {
+      "path": "docs/v0.3-aperture-primary-quadrature.md",
+      "bytes": 8079,
+      "sha256": "2ddd25a5ed171ffbaaa27737939765535dbef05054006466002eb84bebb0de6c"
+    },
+    {
+      "path": "docs/v0.3-contracts.md",
+      "bytes": 9255,
+      "sha256": "3b120e14e063580f79b41ffb97838cb2850f424a1c524d31d44dee2475e70d82"
+    },
+    {
+      "path": "docs/v0.3-derived-metric-verification.md",
+      "bytes": 3867,
+      "sha256": "07f23501978948fade03bad8ea93c2e8f07a98e7e010741458480a22783e7672"
+    },
+    {
+      "path": "docs/v0.3-engine-investigation.json",
+      "bytes": 15293,
+      "sha256": "f1c9891f95d70e4e283826c3d508deeae96efce05eb53799b7567eb6bde66f72"
+    },
+    {
+      "path": "docs/v0.3-engine-investigation.md",
+      "bytes": 24839,
+      "sha256": "8824ada39cc2b512d08bdbc782aed3853a1e78f504387d14a1b4fa4454ff2630"
+    },
+    {
+      "path": "docs/v0.3-implementation-plan.md",
+      "bytes": 11420,
+      "sha256": "368131c34f411caef9ea61fabb6c14d9514d8148a5721732568dd239e70b99b1"
+    },
+    {
+      "path": "docs/v0.3-native-verification.md",
+      "bytes": 18944,
+      "sha256": "0c3825eca5593b9d7ef4fdcfcd3975082b4a57a26e9ab2d498b5995ee99bdc41"
+    },
+    {
+      "path": "docs/v0.3-paired-adapter-integration.md",
+      "bytes": 13982,
+      "sha256": "37b11fc65a0c9a03d23b633fb90fd991d25662192017205f86e077394fe26bfe"
+    },
+    {
+      "path": "docs/v0.3-paired-hammersley-investigation.md",
+      "bytes": 8824,
+      "sha256": "c75bc5cbebd450a1fe35f9f8bacc55c87397667ac2b3e957885a60265db87d4f"
+    },
+    {
+      "path": "docs/v0.3-paired-process-supervision.md",
+      "bytes": 5594,
+      "sha256": "24bd69675a365e11001e68a08f64196a9263e799f723b053ba70464c7525a174"
+    },
+    {
+      "path": "docs/v0.3-reference-protocol.md",
+      "bytes": 13888,
+      "sha256": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7"
+    },
+    {
+      "path": "docs/v0.3-scientific-method.md",
+      "bytes": 21575,
+      "sha256": "c7c1f08d8168cb90e38f5a01dc5658c97e022eb6e9770def2d32acfb1d308814"
+    },
+    {
+      "path": "docs/v0.3-spec.md",
+      "bytes": 12574,
+      "sha256": "94a7a23014737de8c7da6d7a66331f831e9e7d56c224976fc40ded2d7ca32958"
+    },
+    {
+      "path": "docs/v0.3-stream-supervision.md",
+      "bytes": 6222,
+      "sha256": "7715ceb11c0d22b1f3d6fc90e54549e697a144cd545787b57fb923834e2fa302"
+    },
+    {
+      "path": "docs/v0.3-usage.md",
+      "bytes": 11915,
+      "sha256": "8a2c2c566563728b5f8843ed0a61d2ca514f54a242c2841a0a0d6d46a6af45a3"
+    },
+    {
+      "path": "docs/v0.3-weather-sources.md",
+      "bytes": 13525,
+      "sha256": "9c6bb9a00b9c626e9fcd0a729e494e253563dbad2a0663ac76fb319c37f7fd73"
+    },
+    {
+      "path": "docs/windows-installer.md",
+      "bytes": 2402,
+      "sha256": "37535315d86387763b113b0ec3940c4850ffe9eceb99ad8534036452c7993739"
+    },
+    {
+      "path": "docs/windows-runtime.md",
+      "bytes": 6924,
+      "sha256": "7f1e6caffdd4319c46dd2bf558a33bad2286ed99730336098b833c33d3dbd7f6"
+    },
+    {
+      "path": "docs/workspace-guide.md",
+      "bytes": 11371,
+      "sha256": "1d4ecb34cf41bbd928254956788999f9a917046a9ea649e9653dbb518cb6d6cf"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/accumulation-receiver-point-diagnostics.json",
+      "bytes": 49346,
+      "sha256": "5c38794884234a83f3924ee4ac4565e132c589c0e2eccd256c06617db00c379e"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-quadrature.json",
+      "bytes": 376499,
+      "sha256": "f0ccd70b37eaf384dad8cca1c688f4f0603e575b22bc1af569efa8fead058ef2"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/explicit-actual-ab-diffuse1048576-solar8192.json",
+      "bytes": 282113,
+      "sha256": "3ec5598aef8fc90148d0407d1ca19a4014f859110f373a0f901d28525c60a9a6"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/explicit-actual-ab-diffuse262144-solar8192.json",
+      "bytes": 275704,
+      "sha256": "91232e086d02d68e7a904e2e4acffa715f076893904ca3b4bc8410f30f0b5a84"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-candidate-transport.json",
+      "bytes": 719483,
+      "sha256": "687824183955c635e8ff3629e483afbeccfd7d41dbea0bb0580556a996bc4455"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-coupling.json",
+      "bytes": 68295,
+      "sha256": "df7f2e792a909c235a878b749c51f85407fe64cb5cc4f57c9f841f70acc8eb16"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-higher-scheduling-cancellation.json",
+      "bytes": 12940,
+      "sha256": "a84d1e56cde1add3e94e3f5be65f4c4e6a20765cccb19b5489b92cf43f908964"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-primary-stream.json",
+      "bytes": 5564,
+      "sha256": "1d9cc33ab24667df0510a204d0cbc969ca18fa6642783bead2e26ce7cfe1a0e7"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/high-sampling-uniform-diagnostics.json",
+      "bytes": 32908,
+      "sha256": "109bc42468e7373e62621ee8e4814545720e3936d352ee6b2a0100f29104d590"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/method2-actual-ab-twelve-hours-failed.json",
+      "bytes": 281595,
+      "sha256": "3705502d66c1c43108a78ee168baf7e881904b279d4cde741ba53f9bc0ccd30e"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/method4-annual-negative-residuals.json",
+      "bytes": 218544,
+      "sha256": "3cd360c62a6fab446039de44a64aa033142120d037f5d17c8ec590a69dcc6be7"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/moderate-two-sensor-transport-pilot.json",
+      "bytes": 147210,
+      "sha256": "c9b58792881de8bc306199e5268a93996e058c6455ca4d4cb797829beeb4d5bd"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/paired-primary-coupling.json",
+      "bytes": 40845,
+      "sha256": "a40efd380b1977f8ac9beb3508d87528cdfe858719bbd9155218df2dd063e3ba"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/paired-process-supervision.json",
+      "bytes": 19095,
+      "sha256": "f25fe12a13c4f38d1c9b15bfd8ec115fccf0980e6b6d7c708c1617e30857355d"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/path-weight-point-diagnostic.json",
+      "bytes": 15826,
+      "sha256": "ce6ff6ab725aaae0a1c8bbd3a4e9f815b3e8d19ecf9d587e0c0d255b11b96d22"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/rust-primary-stream-bridge.json",
+      "bytes": 73419,
+      "sha256": "85073fe9d0b47f16ad9adab0b7b2b8e618aa662731b545d04d90efdfdb164b21"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/scaled-reference-point-failed.json",
+      "bytes": 12900,
+      "sha256": "dc522a8ad17dbde85924a1044698079ef9d0c3fc9a320cf31d7b80d8ffe3b429"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-inputs/A-model.json",
+      "bytes": 711,
+      "sha256": "583e519dd228b99f20505eb436759086b2884689b902fe20a43f03a35d6e3bdc"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-inputs/B-model.json",
+      "bytes": 820,
+      "sha256": "890e5761edace64268f4fb85c832f6ec829a3545441e864412994c803aaf8ea2"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-inputs/sensors.pts",
+      "bytes": 752,
+      "sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-artifacts.json",
+      "bytes": 1937,
+      "sha256": "f923452222d4703aa5ad365c615dd5d09bcaf35397bca87ce645916684d8e237"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-conflict-recovery.json",
+      "bytes": 38650,
+      "sha256": "ee285b2f7b82487b2beebc97ff17b750d19deea7da3aab2ef0d69a0d522e8897"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-derived-metrics.json",
+      "bytes": 21455,
+      "sha256": "72adaeb1963ef9158446dd5aaa4864fa2a0aec6625011683e755e96fa1a44247"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-historical-inspection.json",
+      "bytes": 35897,
+      "sha256": "d1ef5aeabd63db1adccd4c048dce92050ab84530290e316d65cc5558d40bd97a"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-mixed-replay.json",
+      "bytes": 59323,
+      "sha256": "1c2354c665bb7deccf41f61f29da4fb023da430dbbe87b30935accd0be7984b5"
+    },
+    {
+      "path": "docs/images/v0.2/README.md",
+      "bytes": 3769,
+      "sha256": "20d3ebe2db58d2344cd1ee256e5beaf57e7811ea780b1557c9c0af92bffaee6e"
+    },
+    {
+      "path": "examples/climate-study-pvgis.json",
+      "bytes": 673,
+      "sha256": "72de4380d4162cea9dc402ede5bbe8d8a131465ff1bac1898fde01a8a7ce8a36"
+    },
+    {
+      "path": "examples/synthetic-a.json",
+      "bytes": 633,
+      "sha256": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646"
+    },
+    {
+      "path": "examples/synthetic-b.json",
+      "bytes": 724,
+      "sha256": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf"
+    },
+    {
+      "path": "examples/weather/pvgis-hong-kong-tmy-2005-2023.epw",
+      "bytes": 1863014,
+      "sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8"
+    },
+    {
+      "path": "examples/weather/pvgis-hong-kong.source.json",
+      "bytes": 2249,
+      "sha256": "26043aa4852ed8e137881f2870f47f3e8a3daf4b03adf07a30cc9a010c7f6d5f"
+    },
+    {
+      "path": "examples/weather/synthetic.source.json",
+      "bytes": 393,
+      "sha256": "9b3d02e5b94a1f478b9bacd8a6a7a3577e3c17595ec73a37093b4e8d60d1a055"
+    },
+    {
+      "path": "schemas/primary-streams-v1.schema.json",
+      "bytes": 3281,
+      "sha256": "099c0e7265ed5b13d82abed9989d5111628ab5db2d776608127397b6be0ed8e0"
+    },
+    {
+      "path": "scripts/annual-high-ad-uniform.ps1",
+      "bytes": 2868,
+      "sha256": "2950646b7faa8a5b8f82bf4422acf4114510eb90bfa3f3fc228220cda90d875d"
+    },
+    {
+      "path": "scripts/annual-paired-grid.cs",
+      "bytes": 2052,
+      "sha256": "445e32c1042cdfa5bc9585dca1c526e9cfd3961d0d91633fa1a8e3febe8c5021"
+    },
+    {
+      "path": "scripts/annual-paired-native-process.cs",
+      "bytes": 21240,
+      "sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b"
+    },
+    {
+      "path": "scripts/annual-paired-primary.ps1",
+      "bytes": 8986,
+      "sha256": "bf6379293cb0e26de6e59cdc1eca40c44040f7b0469ac4a967251c6d9e16933b"
+    },
+    {
+      "path": "scripts/annual-paired-process.ps1",
+      "bytes": 9572,
+      "sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00"
+    },
+    {
+      "path": "scripts/annual-residual-audit.py",
+      "bytes": 5728,
+      "sha256": "d3d44810fe9a8ca5469cf5bf6acd9073cba6b0f91f7710cf920f290052b0aa0a"
+    },
+    {
+      "path": "scripts/annual-validation-plan.json",
+      "bytes": 1852,
+      "sha256": "b15123c7c7c315c35de691c32445abb13a4bff2499e4853a381e9aac5767ff8c"
+    },
+    {
+      "path": "third-party/generated-notices.txt",
+      "bytes": 2379904,
+      "sha256": "c812d796d9e17fc35a557af898d35a3e97f16af05204681401b8ca8624fe7e00"
+    },
+    {
+      "path": "third-party/Radiance-gendaymtx-NOTICE.txt",
+      "bytes": 1258,
+      "sha256": "0aa44c83f4fdd3e1b34635705e2aff1a3aabf490634251ea92327bbb9d365bd5"
+    },
+    {
+      "path": "third-party/Radiance-LICENSE.txt",
+      "bytes": 2456,
+      "sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6"
+    },
+    {
+      "path": "third-party/tauri-template-license.txt",
+      "bytes": 1090,
+      "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+    },
+    {
+      "path": "third-party/upstream/alloc-stdlib-0.3.0-LICENSE.txt",
+      "bytes": 1483,
+      "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+    },
+    {
+      "path": "third-party/upstream/defmt-parser-1.0.0-LICENSE-MIT.txt",
+      "bytes": 1053,
+      "sha256": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50"
+    },
+    {
+      "path": "third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-LICENSE.txt",
+      "bytes": 1487,
+      "sha256": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55"
+    },
+    {
+      "path": "third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-NOTICE.txt",
+      "bytes": 3894,
+      "sha256": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90"
+    },
+    {
+      "path": "third-party/upstream/MPL-2.0.txt",
+      "bytes": 16726,
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+    },
+    {
+      "path": "third-party/upstream/NSIS-3.11-COPYING.txt",
+      "bytes": 15632,
+      "sha256": "e7dd514003ab96cb3ddccbc028fe5c795fccf57dc41f21cfb9d4dd16ead23bf5"
+    },
+    {
+      "path": "third-party/upstream/NSIS-3.11-ModernUI2-LICENSE.txt",
+      "bytes": 840,
+      "sha256": "d5957bd99460eb21148bd2695eeb5a3718abae6b118040a4678926da3f4cfbc0"
+    },
+    {
+      "path": "third-party/upstream/NSIS-3.11-NSISdl-LICENSE.txt",
+      "bytes": 943,
+      "sha256": "326e587f36ca58e14bd09cca153f9e69f1c5ed701189aa47d2d0627af7e16280"
+    },
+    {
+      "path": "third-party/upstream/nsis-tauri-utils-0.5.3-LICENSE-MIT.txt",
+      "bytes": 1110,
+      "sha256": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe"
+    },
+    {
+      "path": "third-party/upstream/webview2-rs-LICENSE.txt",
+      "bytes": 1067,
+      "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
+    },
+    {
+      "path": "third-party/weather/PVGIS-ERA5-NOTICE.txt",
+      "bytes": 2655,
+      "sha256": "689e8907f735bc6cd5dffd29b155f1eca00e9fe0ec3e50037a38dfc565da55a7"
+    }
+  ],
+  "installed_resources": [
+    {
+      "path": "notices/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "notices/NOTICE",
+      "bytes": 470,
+      "sha256": "ee4a586b20f9e9460c479edfc1756875dc03ac5a4904761e37c6578ed53ab1ad"
+    },
+    {
+      "path": "notices/resolved-inventory.json",
+      "bytes": 506282,
+      "sha256": "ab1d74d2cff95a34e601c99d8111c3cd426befd524d7e285ad25a00f5a09e3c4"
+    },
+    {
+      "path": "notices/license-supplements.json",
+      "bytes": 11049,
+      "sha256": "43700be5416586f89c1513cec10e1c200b5f8b4ebdd22b08a26dda5d64f3de01"
+    },
+    {
+      "path": "notices/radiance.json",
+      "bytes": 5578,
+      "sha256": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+    },
+    {
+      "path": "notices/weather.json",
+      "bytes": 3394,
+      "sha256": "53898ccde5a11992a2d04e3a7b2ffddda65ea4dadc7efa64ff9cce4cdd6a352b"
+    },
+    {
+      "path": "notices/dependencies.md",
+      "bytes": 13471,
+      "sha256": "8abf214efb40a71a0ebc5126a72c328a444df607a0e378e21f632f900c752f00"
+    },
+    {
+      "path": "notices/windows-runtime.md",
+      "bytes": 6924,
+      "sha256": "7f1e6caffdd4319c46dd2bf558a33bad2286ed99730336098b833c33d3dbd7f6"
+    },
+    {
+      "path": "notices/windows-installer.md",
+      "bytes": 2402,
+      "sha256": "37535315d86387763b113b0ec3940c4850ffe9eceb99ad8534036452c7993739"
+    },
+    {
+      "path": "notices/v0.3-weather-sources.md",
+      "bytes": 13525,
+      "sha256": "9c6bb9a00b9c626e9fcd0a729e494e253563dbad2a0663ac76fb319c37f7fd73"
+    },
+    {
+      "path": "examples/climate-study-pvgis.json",
+      "bytes": 673,
+      "sha256": "72de4380d4162cea9dc402ede5bbe8d8a131465ff1bac1898fde01a8a7ce8a36"
+    },
+    {
+      "path": "examples/synthetic-a.json",
+      "bytes": 633,
+      "sha256": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646"
+    },
+    {
+      "path": "examples/synthetic-b.json",
+      "bytes": 724,
+      "sha256": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf"
+    },
+    {
+      "path": "examples/weather/pvgis-hong-kong-tmy-2005-2023.epw",
+      "bytes": 1863014,
+      "sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8"
+    },
+    {
+      "path": "examples/weather/pvgis-hong-kong.source.json",
+      "bytes": 2249,
+      "sha256": "26043aa4852ed8e137881f2870f47f3e8a3daf4b03adf07a30cc9a010c7f6d5f"
+    },
+    {
+      "path": "examples/weather/synthetic.source.json",
+      "bytes": 393,
+      "sha256": "9b3d02e5b94a1f478b9bacd8a6a7a3577e3c17595ec73a37093b4e8d60d1a055"
+    },
+    {
+      "path": "notices/third-party/generated-notices.txt",
+      "bytes": 2379904,
+      "sha256": "c812d796d9e17fc35a557af898d35a3e97f16af05204681401b8ca8624fe7e00"
+    },
+    {
+      "path": "notices/third-party/Radiance-gendaymtx-NOTICE.txt",
+      "bytes": 1258,
+      "sha256": "0aa44c83f4fdd3e1b34635705e2aff1a3aabf490634251ea92327bbb9d365bd5"
+    },
+    {
+      "path": "notices/third-party/Radiance-LICENSE.txt",
+      "bytes": 2456,
+      "sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6"
+    },
+    {
+      "path": "notices/third-party/tauri-template-license.txt",
+      "bytes": 1090,
+      "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+    },
+    {
+      "path": "notices/third-party/upstream/alloc-stdlib-0.3.0-LICENSE.txt",
+      "bytes": 1483,
+      "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+    },
+    {
+      "path": "notices/third-party/upstream/defmt-parser-1.0.0-LICENSE-MIT.txt",
+      "bytes": 1053,
+      "sha256": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50"
+    },
+    {
+      "path": "notices/third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-LICENSE.txt",
+      "bytes": 1487,
+      "sha256": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55"
+    },
+    {
+      "path": "notices/third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-NOTICE.txt",
+      "bytes": 3894,
+      "sha256": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90"
+    },
+    {
+      "path": "notices/third-party/upstream/MPL-2.0.txt",
+      "bytes": 16726,
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+    },
+    {
+      "path": "notices/third-party/upstream/NSIS-3.11-COPYING.txt",
+      "bytes": 15632,
+      "sha256": "e7dd514003ab96cb3ddccbc028fe5c795fccf57dc41f21cfb9d4dd16ead23bf5"
+    },
+    {
+      "path": "notices/third-party/upstream/NSIS-3.11-ModernUI2-LICENSE.txt",
+      "bytes": 840,
+      "sha256": "d5957bd99460eb21148bd2695eeb5a3718abae6b118040a4678926da3f4cfbc0"
+    },
+    {
+      "path": "notices/third-party/upstream/NSIS-3.11-NSISdl-LICENSE.txt",
+      "bytes": 943,
+      "sha256": "326e587f36ca58e14bd09cca153f9e69f1c5ed701189aa47d2d0627af7e16280"
+    },
+    {
+      "path": "notices/third-party/upstream/nsis-tauri-utils-0.5.3-LICENSE-MIT.txt",
+      "bytes": 1110,
+      "sha256": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe"
+    },
+    {
+      "path": "notices/third-party/upstream/webview2-rs-LICENSE.txt",
+      "bytes": 1067,
+      "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
+    },
+    {
+      "path": "notices/third-party/weather/PVGIS-ERA5-NOTICE.txt",
+      "bytes": 2655,
+      "sha256": "689e8907f735bc6cd5dffd29b155f1eca00e9fe0ec3e50037a38dfc565da55a7"
+    }
+  ],
+  "source_document_bindings": [
+    {
+      "path": "docs/installation.md",
+      "git_blob_sha256": "72ab543c55ca077b65570a4ba732ef573dc1e74cbeabc503069fc1c43a7c7fd0",
+      "packaged_sha256": "72ab543c55ca077b65570a4ba732ef573dc1e74cbeabc503069fc1c43a7c7fd0",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/replay.md",
+      "git_blob_sha256": "114491faac679ef81c55c9bd00d788c340cca345b1131b6fe5f5182c6e87402a",
+      "packaged_sha256": "114491faac679ef81c55c9bd00d788c340cca345b1131b6fe5f5182c6e87402a",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/persistence.md",
+      "git_blob_sha256": "935bcc2a05f39b0f8c3d3f8168343b523e7032da5e9886017157c615159fc2ba",
+      "packaged_sha256": "935bcc2a05f39b0f8c3d3f8168343b523e7032da5e9886017157c615159fc2ba",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/model-contract.md",
+      "git_blob_sha256": "2e47baeb486e208033b6fa4d379d29a117b4c7a2eeac0e31de11d62792aa5865",
+      "packaged_sha256": "2e47baeb486e208033b6fa4d379d29a117b4c7a2eeac0e31de11d62792aa5865",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/scientific-validation.md",
+      "git_blob_sha256": "59d5ce369533f69762e1572fa9e52ea2b3d7cc664f90f4af1b4f6e87bde859a5",
+      "packaged_sha256": "59d5ce369533f69762e1572fa9e52ea2b3d7cc664f90f4af1b4f6e87bde859a5",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/dependencies.md",
+      "git_blob_sha256": "8abf214efb40a71a0ebc5126a72c328a444df607a0e378e21f632f900c752f00",
+      "packaged_sha256": "8abf214efb40a71a0ebc5126a72c328a444df607a0e378e21f632f900c752f00",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/windows-runtime.md",
+      "git_blob_sha256": "7f1e6caffdd4319c46dd2bf558a33bad2286ed99730336098b833c33d3dbd7f6",
+      "packaged_sha256": "7f1e6caffdd4319c46dd2bf558a33bad2286ed99730336098b833c33d3dbd7f6",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/windows-installer.md",
+      "git_blob_sha256": "37535315d86387763b113b0ec3940c4850ffe9eceb99ad8534036452c7993739",
+      "packaged_sha256": "37535315d86387763b113b0ec3940c4850ffe9eceb99ad8534036452c7993739",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/workspace-guide.md",
+      "git_blob_sha256": "1d4ecb34cf41bbd928254956788999f9a917046a9ea649e9653dbb518cb6d6cf",
+      "packaged_sha256": "1d4ecb34cf41bbd928254956788999f9a917046a9ea649e9653dbb518cb6d6cf",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/rhino-interaction-matrix.md",
+      "git_blob_sha256": "9f5b0cacb38a0a101dc856b0931030a528be03b99503e58afdb02260076f4b46",
+      "packaged_sha256": "9f5b0cacb38a0a101dc856b0931030a528be03b99503e58afdb02260076f4b46",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.2-native-verification.md",
+      "git_blob_sha256": "b3d403dfe76a241ed172baf4ef8aaa8a33d1da33e374a02e112c02489b77b7e9",
+      "packaged_sha256": "41b8a3b425fe1f7ec3f57004f4942138c0f9d113a9e5f875b756d053759a1c86",
+      "relation": "only_git_text_LF_CRLF_representation"
+    },
+    {
+      "path": "docs/images/v0.2/README.md",
+      "git_blob_sha256": "20d3ebe2db58d2344cd1ee256e5beaf57e7811ea780b1557c9c0af92bffaee6e",
+      "packaged_sha256": "20d3ebe2db58d2344cd1ee256e5beaf57e7811ea780b1557c9c0af92bffaee6e",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-spec.md",
+      "git_blob_sha256": "94a7a23014737de8c7da6d7a66331f831e9e7d56c224976fc40ded2d7ca32958",
+      "packaged_sha256": "94a7a23014737de8c7da6d7a66331f831e9e7d56c224976fc40ded2d7ca32958",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-implementation-plan.md",
+      "git_blob_sha256": "368131c34f411caef9ea61fabb6c14d9514d8148a5721732568dd239e70b99b1",
+      "packaged_sha256": "368131c34f411caef9ea61fabb6c14d9514d8148a5721732568dd239e70b99b1",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-scientific-method.md",
+      "git_blob_sha256": "c7c1f08d8168cb90e38f5a01dc5658c97e022eb6e9770def2d32acfb1d308814",
+      "packaged_sha256": "c7c1f08d8168cb90e38f5a01dc5658c97e022eb6e9770def2d32acfb1d308814",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-weather-sources.md",
+      "git_blob_sha256": "9c6bb9a00b9c626e9fcd0a729e494e253563dbad2a0663ac76fb319c37f7fd73",
+      "packaged_sha256": "9c6bb9a00b9c626e9fcd0a729e494e253563dbad2a0663ac76fb319c37f7fd73",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-contracts.md",
+      "git_blob_sha256": "3b120e14e063580f79b41ffb97838cb2850f424a1c524d31d44dee2475e70d82",
+      "packaged_sha256": "3b120e14e063580f79b41ffb97838cb2850f424a1c524d31d44dee2475e70d82",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-usage.md",
+      "git_blob_sha256": "8a2c2c566563728b5f8843ed0a61d2ca514f54a242c2841a0a0d6d46a6af45a3",
+      "packaged_sha256": "8a2c2c566563728b5f8843ed0a61d2ca514f54a242c2841a0a0d6d46a6af45a3",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-native-verification.md",
+      "git_blob_sha256": "0c3825eca5593b9d7ef4fdcfcd3975082b4a57a26e9ab2d498b5995ee99bdc41",
+      "packaged_sha256": "0c3825eca5593b9d7ef4fdcfcd3975082b4a57a26e9ab2d498b5995ee99bdc41",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/progress.md",
+      "git_blob_sha256": "6804f56b47ff262d9bb83f625a66011b5380b0fd9479ab64b3b1a4a02f98041f",
+      "packaged_sha256": "6804f56b47ff262d9bb83f625a66011b5380b0fd9479ab64b3b1a4a02f98041f",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-reference-protocol.md",
+      "git_blob_sha256": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+      "packaged_sha256": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-engine-investigation.md",
+      "git_blob_sha256": "8824ada39cc2b512d08bdbc782aed3853a1e78f504387d14a1b4fa4454ff2630",
+      "packaged_sha256": "8824ada39cc2b512d08bdbc782aed3853a1e78f504387d14a1b4fa4454ff2630",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-paired-adapter-integration.md",
+      "git_blob_sha256": "37b11fc65a0c9a03d23b633fb90fd991d25662192017205f86e077394fe26bfe",
+      "packaged_sha256": "37b11fc65a0c9a03d23b633fb90fd991d25662192017205f86e077394fe26bfe",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-paired-hammersley-investigation.md",
+      "git_blob_sha256": "c75bc5cbebd450a1fe35f9f8bacc55c87397667ac2b3e957885a60265db87d4f",
+      "packaged_sha256": "c75bc5cbebd450a1fe35f9f8bacc55c87397667ac2b3e957885a60265db87d4f",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-stream-supervision.md",
+      "git_blob_sha256": "7715ceb11c0d22b1f3d6fc90e54549e697a144cd545787b57fb923834e2fa302",
+      "packaged_sha256": "7715ceb11c0d22b1f3d6fc90e54549e697a144cd545787b57fb923834e2fa302",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-paired-process-supervision.md",
+      "git_blob_sha256": "24bd69675a365e11001e68a08f64196a9263e799f723b053ba70464c7525a174",
+      "packaged_sha256": "24bd69675a365e11001e68a08f64196a9263e799f723b053ba70464c7525a174",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-aperture-primary-quadrature.md",
+      "git_blob_sha256": "2ddd25a5ed171ffbaaa27737939765535dbef05054006466002eb84bebb0de6c",
+      "packaged_sha256": "2ddd25a5ed171ffbaaa27737939765535dbef05054006466002eb84bebb0de6c",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/rust-primary-stream-bridge.json",
+      "git_blob_sha256": "85073fe9d0b47f16ad9adab0b7b2b8e618aa662731b545d04d90efdfdb164b21",
+      "packaged_sha256": "85073fe9d0b47f16ad9adab0b7b2b8e618aa662731b545d04d90efdfdb164b21",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-primary-stream.json",
+      "git_blob_sha256": "1d9cc33ab24667df0510a204d0cbc969ca18fa6642783bead2e26ce7cfe1a0e7",
+      "packaged_sha256": "1d9cc33ab24667df0510a204d0cbc969ca18fa6642783bead2e26ce7cfe1a0e7",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-coupling.json",
+      "git_blob_sha256": "df7f2e792a909c235a878b749c51f85407fe64cb5cc4f57c9f841f70acc8eb16",
+      "packaged_sha256": "df7f2e792a909c235a878b749c51f85407fe64cb5cc4f57c9f841f70acc8eb16",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-candidate-transport.json",
+      "git_blob_sha256": "687824183955c635e8ff3629e483afbeccfd7d41dbea0bb0580556a996bc4455",
+      "packaged_sha256": "687824183955c635e8ff3629e483afbeccfd7d41dbea0bb0580556a996bc4455",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/hammersley-higher-scheduling-cancellation.json",
+      "git_blob_sha256": "a84d1e56cde1add3e94e3f5be65f4c4e6a20765cccb19b5489b92cf43f908964",
+      "packaged_sha256": "a84d1e56cde1add3e94e3f5be65f4c4e6a20765cccb19b5489b92cf43f908964",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-quadrature.json",
+      "git_blob_sha256": "f0ccd70b37eaf384dad8cca1c688f4f0603e575b22bc1af569efa8fead058ef2",
+      "packaged_sha256": "f0ccd70b37eaf384dad8cca1c688f4f0603e575b22bc1af569efa8fead058ef2",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-inputs/A-model.json",
+      "git_blob_sha256": "583e519dd228b99f20505eb436759086b2884689b902fe20a43f03a35d6e3bdc",
+      "packaged_sha256": "583e519dd228b99f20505eb436759086b2884689b902fe20a43f03a35d6e3bdc",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-inputs/B-model.json",
+      "git_blob_sha256": "890e5761edace64268f4fb85c832f6ec829a3545441e864412994c803aaf8ea2",
+      "packaged_sha256": "890e5761edace64268f4fb85c832f6ec829a3545441e864412994c803aaf8ea2",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/aperture-primary-inputs/sensors.pts",
+      "git_blob_sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+      "packaged_sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/paired-process-supervision.json",
+      "git_blob_sha256": "f25fe12a13c4f38d1c9b15bfd8ec115fccf0980e6b6d7c708c1617e30857355d",
+      "packaged_sha256": "f25fe12a13c4f38d1c9b15bfd8ec115fccf0980e6b6d7c708c1617e30857355d",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "scripts/annual-paired-grid.cs",
+      "git_blob_sha256": "445e32c1042cdfa5bc9585dca1c526e9cfd3961d0d91633fa1a8e3febe8c5021",
+      "packaged_sha256": "445e32c1042cdfa5bc9585dca1c526e9cfd3961d0d91633fa1a8e3febe8c5021",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "scripts/annual-paired-native-process.cs",
+      "git_blob_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+      "packaged_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "scripts/annual-paired-process.ps1",
+      "git_blob_sha256": "8c4f030ad21db49ae1bcb125270cb8eabddad3f816222b6ae714fe4def1f393e",
+      "packaged_sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+      "relation": "only_git_text_LF_CRLF_representation"
+    },
+    {
+      "path": "docs/v0.3-engine-investigation.json",
+      "git_blob_sha256": "f1c9891f95d70e4e283826c3d508deeae96efce05eb53799b7567eb6bde66f72",
+      "packaged_sha256": "f1c9891f95d70e4e283826c3d508deeae96efce05eb53799b7567eb6bde66f72",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "scripts/annual-validation-plan.json",
+      "git_blob_sha256": "b15123c7c7c315c35de691c32445abb13a4bff2499e4853a381e9aac5767ff8c",
+      "packaged_sha256": "b15123c7c7c315c35de691c32445abb13a4bff2499e4853a381e9aac5767ff8c",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "scripts/annual-high-ad-uniform.ps1",
+      "git_blob_sha256": "2950646b7faa8a5b8f82bf4422acf4114510eb90bfa3f3fc228220cda90d875d",
+      "packaged_sha256": "2950646b7faa8a5b8f82bf4422acf4114510eb90bfa3f3fc228220cda90d875d",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "scripts/annual-paired-primary.ps1",
+      "git_blob_sha256": "bf6379293cb0e26de6e59cdc1eca40c44040f7b0469ac4a967251c6d9e16933b",
+      "packaged_sha256": "bf6379293cb0e26de6e59cdc1eca40c44040f7b0469ac4a967251c6d9e16933b",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "scripts/annual-residual-audit.py",
+      "git_blob_sha256": "d3d44810fe9a8ca5469cf5bf6acd9073cba6b0f91f7710cf920f290052b0aa0a",
+      "packaged_sha256": "d3d44810fe9a8ca5469cf5bf6acd9073cba6b0f91f7710cf920f290052b0aa0a",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-artifacts.json",
+      "git_blob_sha256": "1df64c8afdcbb495eac860e19ff934212494a43206ae6ee032f0aaeeb3841c52",
+      "packaged_sha256": "f923452222d4703aa5ad365c615dd5d09bcaf35397bca87ce645916684d8e237",
+      "relation": "only_git_text_LF_CRLF_representation"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-historical-inspection.json",
+      "git_blob_sha256": "bdc532de7bba824517620c04e3dacab3e4f51fee9405da455306db31efd831a6",
+      "packaged_sha256": "d1ef5aeabd63db1adccd4c048dce92050ab84530290e316d65cc5558d40bd97a",
+      "relation": "only_git_text_LF_CRLF_representation"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-conflict-recovery.json",
+      "git_blob_sha256": "ee285b2f7b82487b2beebc97ff17b750d19deea7da3aab2ef0d69a0d522e8897",
+      "packaged_sha256": "ee285b2f7b82487b2beebc97ff17b750d19deea7da3aab2ef0d69a0d522e8897",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-mixed-replay.json",
+      "git_blob_sha256": "1c2354c665bb7deccf41f61f29da4fb023da430dbbe87b30935accd0be7984b5",
+      "packaged_sha256": "1c2354c665bb7deccf41f61f29da4fb023da430dbbe87b30935accd0be7984b5",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/v0.3-derived-metric-verification.md",
+      "git_blob_sha256": "07f23501978948fade03bad8ea93c2e8f07a98e7e010741458480a22783e7672",
+      "packaged_sha256": "07f23501978948fade03bad8ea93c2e8f07a98e7e010741458480a22783e7672",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-native/candidate04-derived-metrics.json",
+      "git_blob_sha256": "72adaeb1963ef9158446dd5aaa4864fa2a0aec6625011683e755e96fa1a44247",
+      "packaged_sha256": "72adaeb1963ef9158446dd5aaa4864fa2a0aec6625011683e755e96fa1a44247",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/profile-investigation.json",
+      "git_blob_sha256": "e4269b36df0b5a4e7d884f61c126114805cef29811874d0599c33b0110d86e75",
+      "packaged_sha256": "3f115451cccf06f68ea8f0ff0c1cef4efc46e89cd17e3d7efbfbb01b2c8ae03e",
+      "relation": "only_git_text_LF_CRLF_representation"
+    },
+    {
+      "path": "docs/engine-feasibility.md",
+      "git_blob_sha256": "1571c4067f4b62551b17e101edcb94c9feee99f66bda6da31f4b35e1ae850d2e",
+      "packaged_sha256": "1571c4067f4b62551b17e101edcb94c9feee99f66bda6da31f4b35e1ae850d2e",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/gate-0-evidence.json",
+      "git_blob_sha256": "1e74884aabd6658388ecec504eb370de9bf2f2c163d7593eb029f04b9c7bffe4",
+      "packaged_sha256": "9e5cde9e276293586a39bad453556404818933b1fcd1ab80c4c642718b072d95",
+      "relation": "only_git_text_LF_CRLF_representation"
+    },
+    {
+      "path": "docs/science-fixtures-evidence.json",
+      "git_blob_sha256": "365d50660fd7f63d05262723eea1245f03e4e57518c41d9afe3ca73215a35217",
+      "packaged_sha256": "365d50660fd7f63d05262723eea1245f03e4e57518c41d9afe3ca73215a35217",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/science-evidence.json",
+      "git_blob_sha256": "96aba8962519463f53b02071b741a345dbbbc43b7f0145a703bdb9c428cdfd69",
+      "packaged_sha256": "96aba8962519463f53b02071b741a345dbbbc43b7f0145a703bdb9c428cdfd69",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/method2-actual-ab-twelve-hours-failed.json",
+      "git_blob_sha256": "3705502d66c1c43108a78ee168baf7e881904b279d4cde741ba53f9bc0ccd30e",
+      "packaged_sha256": "3705502d66c1c43108a78ee168baf7e881904b279d4cde741ba53f9bc0ccd30e",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/explicit-actual-ab-diffuse262144-solar8192.json",
+      "git_blob_sha256": "91232e086d02d68e7a904e2e4acffa715f076893904ca3b4bc8410f30f0b5a84",
+      "packaged_sha256": "91232e086d02d68e7a904e2e4acffa715f076893904ca3b4bc8410f30f0b5a84",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/explicit-actual-ab-diffuse1048576-solar8192.json",
+      "git_blob_sha256": "3ec5598aef8fc90148d0407d1ca19a4014f859110f373a0f901d28525c60a9a6",
+      "packaged_sha256": "3ec5598aef8fc90148d0407d1ca19a4014f859110f373a0f901d28525c60a9a6",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/high-sampling-uniform-diagnostics.json",
+      "git_blob_sha256": "109bc42468e7373e62621ee8e4814545720e3936d352ee6b2a0100f29104d590",
+      "packaged_sha256": "109bc42468e7373e62621ee8e4814545720e3936d352ee6b2a0100f29104d590",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/accumulation-receiver-point-diagnostics.json",
+      "git_blob_sha256": "5c38794884234a83f3924ee4ac4565e132c589c0e2eccd256c06617db00c379e",
+      "packaged_sha256": "5c38794884234a83f3924ee4ac4565e132c589c0e2eccd256c06617db00c379e",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/scaled-reference-point-failed.json",
+      "git_blob_sha256": "dc522a8ad17dbde85924a1044698079ef9d0c3fc9a320cf31d7b80d8ffe3b429",
+      "packaged_sha256": "dc522a8ad17dbde85924a1044698079ef9d0c3fc9a320cf31d7b80d8ffe3b429",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/path-weight-point-diagnostic.json",
+      "git_blob_sha256": "ce6ff6ab725aaae0a1c8bbd3a4e9f815b3e8d19ecf9d587e0c0d255b11b96d22",
+      "packaged_sha256": "ce6ff6ab725aaae0a1c8bbd3a4e9f815b3e8d19ecf9d587e0c0d255b11b96d22",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/moderate-two-sensor-transport-pilot.json",
+      "git_blob_sha256": "c9b58792881de8bc306199e5268a93996e058c6455ca4d4cb797829beeb4d5bd",
+      "packaged_sha256": "c9b58792881de8bc306199e5268a93996e058c6455ca4d4cb797829beeb4d5bd",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/method4-annual-negative-residuals.json",
+      "git_blob_sha256": "3cd360c62a6fab446039de44a64aa033142120d037f5d17c8ec590a69dcc6be7",
+      "packaged_sha256": "3cd360c62a6fab446039de44a64aa033142120d037f5d17c8ec590a69dcc6be7",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "docs/evidence/v0.3-engine/paired-primary-coupling.json",
+      "git_blob_sha256": "a40efd380b1977f8ac9beb3508d87528cdfe858719bbd9155218df2dd063e3ba",
+      "packaged_sha256": "a40efd380b1977f8ac9beb3508d87528cdfe858719bbd9155218df2dd063e3ba",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "dependencies/radiance.json",
+      "git_blob_sha256": "975cc4edca34bac685d5d89c9eeadf570aef806f9e53e6c8ec3733c2e86ab6d1",
+      "packaged_sha256": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+      "relation": "only_git_text_LF_CRLF_representation"
+    },
+    {
+      "path": "dependencies/weather.json",
+      "git_blob_sha256": "53898ccde5a11992a2d04e3a7b2ffddda65ea4dadc7efa64ff9cce4cdd6a352b",
+      "packaged_sha256": "53898ccde5a11992a2d04e3a7b2ffddda65ea4dadc7efa64ff9cce4cdd6a352b",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "schemas/primary-streams-v1.schema.json",
+      "git_blob_sha256": "099c0e7265ed5b13d82abed9989d5111628ab5db2d776608127397b6be0ed8e0",
+      "packaged_sha256": "099c0e7265ed5b13d82abed9989d5111628ab5db2d776608127397b6be0ed8e0",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "third-party/Radiance-LICENSE.txt",
+      "git_blob_sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6",
+      "packaged_sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6",
+      "relation": "exact_bytes"
+    },
+    {
+      "path": "third-party/Radiance-gendaymtx-NOTICE.txt",
+      "git_blob_sha256": "0aa44c83f4fdd3e1b34635705e2aff1a3aabf490634251ea92327bbb9d365bd5",
+      "packaged_sha256": "0aa44c83f4fdd3e1b34635705e2aff1a3aabf490634251ea92327bbb9d365bd5",
+      "relation": "exact_bytes"
+    }
+  ]
+}

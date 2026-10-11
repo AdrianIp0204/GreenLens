@@ -1,0 +1,72 @@
+{
+  "schema_version": "greenlens.public-checkpoint-seal.v1",
+  "recorded_utc": "2026-10-11T14:47:22.2947771Z",
+  "scope": "Compact actual clean-6cf package/replay evidence and separately qualified A8504 reference; no full-reference, profile, hosted CI or release acceptance inferred. Earlier failures remain immutable.",
+  "records": [
+    {
+      "path": "evidence/v0.3-native/candidate05-artifact-build-license.json",
+      "bytes": 12203,
+      "sha256": "4da0debed9ac45441d013fc60e614eead6e9708f5bc90fb6f9ca74d99affacad",
+      "original_audit_sha256": "4da0debed9ac45441d013fc60e614eead6e9708f5bc90fb6f9ca74d99affacad",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-native/candidate05-package-members.json",
+      "bytes": 43448,
+      "sha256": "aa9c1841a153169603c3260e0f5ab9e963ec2ea1d4b78df91731b233bd3320f5",
+      "original_audit_sha256": "aa9c1841a153169603c3260e0f5ab9e963ec2ea1d4b78df91731b233bd3320f5",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-integration/method5-selected-hour-replay-audit.json",
+      "bytes": 16873,
+      "sha256": "5af90d491012d7afa4db909be03d405af035d7ed859a4679af02e7f1c2b93af5",
+      "original_audit_sha256": "5af90d491012d7afa4db909be03d405af035d7ed859a4679af02e7f1c2b93af5",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-integration/method5-selected-hour-export-members.json",
+      "bytes": 10773,
+      "sha256": "d25e471833e728630d7b69a2b26d7df9bc346314638af8e3356575a8daa55d6c",
+      "original_audit_sha256": "d25e471833e728630d7b69a2b26d7df9bc346314638af8e3356575a8daa55d6c",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-ci/method5-and-qualified-pilot-1417.json",
+      "bytes": 13744,
+      "sha256": "6db8bbaf6875558f1dd8572670df80ba8e27721b62a76aacbadab103e5c7faa0",
+      "original_audit_sha256": "6db8bbaf6875558f1dd8572670df80ba8e27721b62a76aacbadab103e5c7faa0",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-engine/hosted-A8504-qualified-audit.json",
+      "bytes": 30465,
+      "sha256": "3118c5f2de0e9f75f8cf932bc6e760ac7f9589e6c7601b5ea782f431ac485002",
+      "original_audit_sha256": "3118c5f2de0e9f75f8cf932bc6e760ac7f9589e6c7601b5ea782f431ac485002",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-integration/method5-legacy-static-replay-audit.json",
+      "bytes": 2463,
+      "sha256": "d7378ac44a281ba24b2174d5baad99529c11195c56bca62865624aa926d171ef",
+      "original_audit_sha256": "7df91104ae69253f7df7554e3601c065708497f744deac74b457eacdefaf5b1c",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-integration/method5-native-annual-replay-audit.json",
+      "bytes": 7641,
+      "sha256": "5c8a432d65a874ed184aa3a57c3280f9845b568fd5e436f066f2350dee1e06ad",
+      "original_audit_sha256": "dc96f67a444f08d67a224ff46e35490e525f2ff8d2ba2221f97047ad5173c667",
+      "publication_change": "UTF-8 without BOM; CRLF to LF only"
+    },
+    {
+      "path": "evidence/v0.3-ci/method5-main-and-seventeen-reference-startup.json",
+      "bytes": 51086,
+      "sha256": "69ab0ff94ce84fdba71d31f6cc058a12814640ca5fef579cedc2eca4c1481884",
+      "original_audit_sha256": "69ab0ff94ce84fdba71d31f6cc058a12814640ca5fef579cedc2eca4c1481884",
+      "publication_change": "None; sanitized checkpoint prepared directly from retained API JSON"
+    }
+  ],
+  "scientific_acceptance_complete": false,
+  "release_acceptance_complete": false
+}

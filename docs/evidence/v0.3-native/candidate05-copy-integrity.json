@@ -1,0 +1,20 @@
+{
+  "schema_version": "greenlens.native-save-as-independent-audit.v1",
+  "generated_utc": "2026-10-11T14:23:44.501217+00:00",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "source_annual_audit_sha256": "b0e3c318da0b443b14d36ab0e5907781f11560194a2ef2302f1a40f743f198ed",
+  "copy_annual_audit_sha256": "01393f8d277734c98d91543eb7f41bc5e5ecf0437e4bc34f3f388997d6432e57",
+  "native_save_as_observation_sha256": "ccff0e576dd9891203369fa1b3844e403a2b2031f9c701cda5d92650bd0cb181",
+  "all_audited_run_fields_identical": true,
+  "retained_files": 155,
+  "retained_bytes": 38558778,
+  "retained_inventory_sha256": "650e575da2594a55d09709a29f894e386c76e48cb6fd5d70169536720fd7630f",
+  "full_year_numeric_values_per_alternative": 210240,
+  "independent_metric_errors_percentage_points": [
+    0.0,
+    0.0
+  ],
+  "passed": true,
+  "issues": [],
+  "scope": "Read-only full copy evidence/metric audit. Recomputed checks use copied retained files only, without original source, scratch, engine or UI. Same-run immutable record pins, recorded file hashes, derived values and all audited provenance/resource fields agree with the prior independent original-project audit. Complete155-file source/copy byte equality is additionally corroborated by the native SaveAs observation; this audit independently records every current copy file hash."
+}

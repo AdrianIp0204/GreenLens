@@ -1,0 +1,1097 @@
+{
+  "schema_version": "greenlens.annual-independent-audit.v1",
+  "generated_utc": "2026-10-11T14:17:16.694656+00:00",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "scope": "Read-only independent retained-evidence and metric arithmetic audit of completed annual A/B, without engine execution or replay. No transport accuracy or release acceptance claim.",
+  "project_sha256": "e008040d5a383f5e8b4ef49cdc19da3675ab8dd3c201615b59d7929b7bdaed18",
+  "checks": [
+    "Exact canonical immutable record pins and every retained file checksum",
+    "Complete8760x24 ordered f64RGB/lux values with53ordered chunks per alternative",
+    "Independent RGB-to-lux and zero-input-radiation invariants",
+    "Independent occupied DA/cDA/UDI arithmetic, partition and metric identity",
+    "Known method5 recipe/profile/process arrays plus paired-primary and finite-batch coverage",
+    "Retained weather seals/time axis and clean6cf source provenance",
+    "Every immutable run file unchanged across audit; project display/current-study metadata may be edited independently"
+  ],
+  "runs": [
+    {
+      "id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "alternative_id": "A",
+      "record_sha256": "50b9336ea0f83c6232909f961f33357d91aee0e7307334315d045461ddda5452",
+      "result_file_sha256": "4cd68f3459b7e2a183ed0b626bfd73ac447fcb35c8d8d0775accad161266e387",
+      "sealed_files": 74,
+      "sensor_count": 24,
+      "interval_count": 8760,
+      "numeric_samples": 210240,
+      "series_chunks": 53,
+      "occupied_hour_equivalents": 3650.0,
+      "metric_identity": "845aa9a3e60699bb870b3d2ff28b30f3087916b5ab140c923eda58b4efd44681",
+      "metric_max_error_percentage_points": 0.0,
+      "udi_partition_max_error_percentage_points": 1.4210854715202004e-14,
+      "metric_statistics_percent": {
+        "da_percent": {
+          "min": 31.013698630136986,
+          "mean": 74.60958904109589,
+          "max": 98.63013698630137
+        },
+        "cda_percent": {
+          "min": 75.84333620092528,
+          "mean": 90.96706299056122,
+          "max": 99.66769683848173
+        },
+        "udi_percent": {
+          "min": 52.082191780821915,
+          "mean": 90.23059360730593,
+          "max": 97.91780821917808
+        },
+        "underlit_percent": {
+          "min": 0.0273972602739726,
+          "mean": 3.7317351598173514,
+          "max": 9.178082191780822
+        },
+        "overlit_percent": {
+          "min": 0.0,
+          "mean": 6.037671232876712,
+          "max": 47.89041095890411
+        }
+      },
+      "independent_cda600_percent": {
+        "statistics": {
+          "min": 42.806555327069,
+          "mean": 74.18013028811221,
+          "max": 98.71650744678261
+        },
+        "per_sensor": [
+          93.16376372003474,
+          98.24971485282474,
+          98.71650744678261,
+          97.06590362810424,
+          91.58041084235578,
+          95.05115340481616,
+          96.04639823817675,
+          94.37563344012803,
+          83.60080734654638,
+          88.01025357557984,
+          88.23013775357491,
+          83.89739193920148,
+          68.30880925478267,
+          72.15096235611807,
+          72.07691119298082,
+          68.59179482388774,
+          53.921005559258006,
+          55.53524491046421,
+          55.30274956192615,
+          52.311877694680554,
+          42.83301154613639,
+          44.01470226349633,
+          44.48142623576746,
+          42.806555327069
+        ]
+      },
+      "hour_previews": {
+        "1908": {
+          "weather": {
+            "index": 1908,
+            "source_year": 2005,
+            "month": 3,
+            "day": 21,
+            "hour_ending": 13,
+            "source_minute": 0,
+            "direct_normal_wh_m2": 280.92,
+            "diffuse_horizontal_wh_m2": 326.9,
+            "global_horizontal_wh_m2": 584.85,
+            "dew_point_c": 16.34
+          },
+          "sensor_ids": [
+            "s000001",
+            "s000002",
+            "s000003",
+            "s000004",
+            "s000005",
+            "s000006",
+            "s000007",
+            "s000008",
+            "s000009",
+            "s000010",
+            "s000011",
+            "s000012",
+            "s000013",
+            "s000014",
+            "s000015",
+            "s000016",
+            "s000017",
+            "s000018",
+            "s000019",
+            "s000020",
+            "s000021",
+            "s000022",
+            "s000023",
+            "s000024"
+          ],
+          "lux": [
+            1865.2190694673875,
+            6850.47264206223,
+            6850.233083056022,
+            1867.7319422203818,
+            1356.0903531622116,
+            2200.3060139816216,
+            2236.3354635770957,
+            1345.8711989631433,
+            818.7793811390325,
+            1025.2043794881602,
+            1011.5165683358409,
+            792.5388917526072,
+            537.0232875245985,
+            594.533189053168,
+            597.0596705572192,
+            531.9400141164149,
+            387.1238449969168,
+            404.5666704666673,
+            402.8984231609792,
+            367.9223021442046,
+            300.7890622810182,
+            311.1619897435775,
+            313.24488782113576,
+            298.4404730211534
+          ],
+          "statistics_lx": {
+            "min": 298.4404730211534,
+            "mean": 1386.125116753866,
+            "max": 6850.47264206223
+          }
+        },
+        "1912": {
+          "weather": {
+            "index": 1912,
+            "source_year": 2005,
+            "month": 3,
+            "day": 21,
+            "hour_ending": 17,
+            "source_minute": 0,
+            "direct_normal_wh_m2": 257.94,
+            "diffuse_horizontal_wh_m2": 153.6,
+            "global_horizontal_wh_m2": 300.3,
+            "dew_point_c": 16.5
+          },
+          "sensor_ids": [
+            "s000001",
+            "s000002",
+            "s000003",
+            "s000004",
+            "s000005",
+            "s000006",
+            "s000007",
+            "s000008",
+            "s000009",
+            "s000010",
+            "s000011",
+            "s000012",
+            "s000013",
+            "s000014",
+            "s000015",
+            "s000016",
+            "s000017",
+            "s000018",
+            "s000019",
+            "s000020",
+            "s000021",
+            "s000022",
+            "s000023",
+            "s000024"
+          ],
+          "lux": [
+            660.6383608788728,
+            1844.9173940545522,
+            2685.6277780087757,
+            2078.3343097864754,
+            591.7659226306247,
+            863.546149400111,
+            1112.117781555811,
+            1122.922173908282,
+            414.52642612493,
+            513.8814095316957,
+            568.6278685842999,
+            568.196499293053,
+            289.3998591574093,
+            336.8037559414621,
+            349.3026008805817,
+            353.3165132516925,
+            220.62687163744215,
+            234.45875560053656,
+            244.07943966635227,
+            241.19330473974327,
+            178.0299512509635,
+            184.04120651840185,
+            192.9499110955593,
+            194.93187947726307
+          ],
+          "statistics_lx": {
+            "min": 178.0299512509635,
+            "mean": 668.5098384572872,
+            "max": 2685.6277780087757
+          }
+        }
+      },
+      "zero_input_intervals": 4398,
+      "zero_input_values_all_zero": true,
+      "source_worktree_dirty": false,
+      "method": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+      "profile": {
+        "name": "shipping",
+        "sky_basis_mf": 2,
+        "ambient_bounces": 7,
+        "ambient_divisions": 64,
+        "direct_ambient_divisions": 64,
+        "direct_solar_samples": 1024,
+        "ambient_supersamples": 0,
+        "ambient_accuracy": 0.0,
+        "ambient_resolution": 256,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limit_weight": 1e-09,
+        "ray_depth": -16,
+        "direct_threshold": 0.0,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "specular_threshold": 0.0,
+        "specular_sampling": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1,
+        "coefficient_receiver_scale": 100.0,
+        "external_primary": {
+          "generator_version": "greenlens.hammersley-cosine-primary.v1",
+          "encoding_version": "greenlens.primary-ascii-e17-lf.v1",
+          "count": 16384
+        }
+      },
+      "all_process_exits_zero": true,
+      "process_count": 57,
+      "all_numeric_values_finite_nonnegative": true,
+      "lux": {
+        "min": 0.0,
+        "mean": 647.5946777171132,
+        "max": 44136.07318158477,
+        "rgb_conversion_max_absolute_error_lx": 0.0
+      },
+      "primary_streams": [
+        {
+          "purpose": "full",
+          "process_index": 4,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "57bf53eccac5e50793607f843339bb53ce5dc70609a68ec424787cc3ad8542db",
+          "elapsed_ms": 297286,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 118706176,
+            "peak_child_working_set_bytes": 6295552,
+            "sampled_peak_runner_plus_child_working_set_bytes": 111292416,
+            "peak_scratch_bytes": 101781899,
+            "samples": 9750,
+            "zero_progress_writes": 8897,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        },
+        {
+          "purpose": "direct",
+          "process_index": 6,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "cfb462e9316bfebb3c69153733616388d0235a85ece21f7744d412a64ddfe4f5",
+          "elapsed_ms": 26123,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 108093440,
+            "peak_child_working_set_bytes": 6205440,
+            "sampled_peak_runner_plus_child_working_set_bytes": 100655104,
+            "peak_scratch_bytes": 110527267,
+            "samples": 843,
+            "zero_progress_writes": 1,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        }
+      ],
+      "resource_summary": {
+        "schema_version": "greenlens.annual-resources.v1",
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+        "started_utc": "2026-10-11T13:51:37.239045700+00:00",
+        "finished_utc": "2026-10-11T13:58:46.127045+00:00",
+        "total_wall_ms": 428888,
+        "peak_engine_working_set_bytes": 68222976,
+        "peak_observed_runner_plus_engine_working_set_bytes": 162664448,
+        "peak_scratch_bytes": 142808840,
+        "max_scratch_bytes": 2147483648,
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648
+      },
+      "run_started_utc": "2026-10-11T13:51:36.693535500+00:00",
+      "run_finished_utc": "2026-10-11T13:58:46.415372600+00:00",
+      "process_warnings": [
+        {
+          "index": 0,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "index": 1,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "index": 6,
+          "stderr": "rcontrib: warning - no light sources found\r\n"
+        },
+        {
+          "index": 9,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 10,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 11,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 12,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 13,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 14,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 15,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 16,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 17,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 18,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 19,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 20,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 21,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 22,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 23,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 24,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 25,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 26,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 27,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 28,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 29,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 30,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 31,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 32,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 33,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 34,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 35,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 36,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 37,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 38,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 39,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 40,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 41,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 42,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 43,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 44,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 45,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 46,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 47,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 48,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 49,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 50,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 51,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 52,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 53,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 54,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 55,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 56,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        }
+      ],
+      "notes": [
+        "Complete8760-hour fixed EPW standard-time axis. Typical-year source years are retained provenance, not a forecast.",
+        "DA300/cDA300 and UDI100-3000 independently derived with explicit3650-hour denominator; cDA600 is a separate read-only crosscheck, not a change to saved study.",
+        "Primary receipts bind complete identical inputs; raw regenerated large coefficient matrices are not in the compact package, so their retained digests were format/binding checked, not recomputed."
+      ]
+    },
+    {
+      "id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "alternative_id": "B",
+      "record_sha256": "58fe0235610baa2931e9b23fcf529d59aa01f485974638f7c89c0bf756d708c0",
+      "result_file_sha256": "6b9cbc44e1a75f08165d55c1a588c14ddc8ffa4eac54935c793c88245377aa0a",
+      "sealed_files": 74,
+      "sensor_count": 24,
+      "interval_count": 8760,
+      "numeric_samples": 210240,
+      "series_chunks": 53,
+      "occupied_hour_equivalents": 3650.0,
+      "metric_identity": "3962e052d7bf47dc9ba0add351dc2156c38512f8fb56be5a7cf2a71093f17551",
+      "metric_max_error_percentage_points": 0.0,
+      "udi_partition_max_error_percentage_points": 1.4210854715202004e-14,
+      "metric_statistics_percent": {
+        "da_percent": {
+          "min": 19.945205479452056,
+          "mean": 69.12671232876713,
+          "max": 98.32876712328768
+        },
+        "cda_percent": {
+          "min": 71.7929790421443,
+          "mean": 89.10392868876055,
+          "max": 99.50803174501982
+        },
+        "udi_percent": {
+          "min": 68.46575342465754,
+          "mean": 91.89840182648402,
+          "max": 98.4931506849315
+        },
+        "underlit_percent": {
+          "min": 0.0547945205479452,
+          "mean": 4.561643835616438,
+          "max": 11.232876712328768
+        },
+        "overlit_percent": {
+          "min": 0.0,
+          "mean": 3.5399543378995433,
+          "max": 31.47945205479452
+        }
+      },
+      "independent_cda600_percent": {
+        "statistics": {
+          "min": 37.910704388896555,
+          "mean": 69.614977613965,
+          "max": 98.39364430720772
+        },
+        "per_sensor": [
+          90.13660513775672,
+          97.84165485208032,
+          98.39364430720772,
+          94.82486453274817,
+          88.10869589707991,
+          93.54681398606711,
+          94.34243494798335,
+          91.19411264070001,
+          77.82127358809404,
+          83.51275092489757,
+          83.94729721534159,
+          79.39218164086321,
+          60.579753026981855,
+          64.98498819900142,
+          64.97815003753793,
+          61.39338251370011,
+          46.0384450428449,
+          48.88759499850041,
+          48.492971696258394,
+          45.92522203943071,
+          38.069210772795365,
+          40.24148365614615,
+          40.19522669224628,
+          37.910704388896555
+        ]
+      },
+      "hour_previews": {
+        "1908": {
+          "weather": {
+            "index": 1908,
+            "source_year": 2005,
+            "month": 3,
+            "day": 21,
+            "hour_ending": 13,
+            "source_minute": 0,
+            "direct_normal_wh_m2": 280.92,
+            "diffuse_horizontal_wh_m2": 326.9,
+            "global_horizontal_wh_m2": 584.85,
+            "dew_point_c": 16.34
+          },
+          "sensor_ids": [
+            "s000001",
+            "s000002",
+            "s000003",
+            "s000004",
+            "s000005",
+            "s000006",
+            "s000007",
+            "s000008",
+            "s000009",
+            "s000010",
+            "s000011",
+            "s000012",
+            "s000013",
+            "s000014",
+            "s000015",
+            "s000016",
+            "s000017",
+            "s000018",
+            "s000019",
+            "s000020",
+            "s000021",
+            "s000022",
+            "s000023",
+            "s000024"
+          ],
+          "lux": [
+            1139.1203891186726,
+            4240.136538928303,
+            4238.645441571289,
+            1134.6723688357508,
+            945.4665569395228,
+            1540.4104491020648,
+            1539.9845739222983,
+            941.526441113916,
+            627.6046332084456,
+            784.6148590427226,
+            779.9895279804324,
+            625.8666776060219,
+            431.0267550464371,
+            484.16597898569455,
+            483.32730821049324,
+            430.5026668599217,
+            314.5757292005186,
+            339.4954426222373,
+            338.93939355281634,
+            312.69217514510404,
+            258.205980082391,
+            274.5529552498402,
+            273.97200385302045,
+            255.72851145125756
+          ],
+          "statistics_lx": {
+            "min": 255.72851145125756,
+            "mean": 947.3009732345489,
+            "max": 4240.136538928303
+          }
+        },
+        "1912": {
+          "weather": {
+            "index": 1912,
+            "source_year": 2005,
+            "month": 3,
+            "day": 21,
+            "hour_ending": 17,
+            "source_minute": 0,
+            "direct_normal_wh_m2": 257.94,
+            "diffuse_horizontal_wh_m2": 153.6,
+            "global_horizontal_wh_m2": 300.3,
+            "dew_point_c": 16.5
+          },
+          "sensor_ids": [
+            "s000001",
+            "s000002",
+            "s000003",
+            "s000004",
+            "s000005",
+            "s000006",
+            "s000007",
+            "s000008",
+            "s000009",
+            "s000010",
+            "s000011",
+            "s000012",
+            "s000013",
+            "s000014",
+            "s000015",
+            "s000016",
+            "s000017",
+            "s000018",
+            "s000019",
+            "s000020",
+            "s000021",
+            "s000022",
+            "s000023",
+            "s000024"
+          ],
+          "lux": [
+            532.9179603364713,
+            1569.3471919737,
+            2232.131146783657,
+            1516.7590189807481,
+            479.25502217017976,
+            723.9893183114569,
+            888.8158680897645,
+            859.965338343109,
+            347.56418977863905,
+            428.2991795023377,
+            475.24373032716505,
+            484.9905202782903,
+            249.4429588723321,
+            282.54871901173124,
+            300.68934162709644,
+            306.101212388174,
+            191.01357870453788,
+            205.4683335164678,
+            213.69755652742873,
+            214.60783013995706,
+            159.3989895893587,
+            171.28635904044518,
+            176.3472438037599,
+            174.03326407215113
+          ],
+          "statistics_lx": {
+            "min": 159.3989895893587,
+            "mean": 549.3297446737066,
+            "max": 2232.131146783657
+          }
+        }
+      },
+      "zero_input_intervals": 4398,
+      "zero_input_values_all_zero": true,
+      "source_worktree_dirty": false,
+      "method": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+      "profile": {
+        "name": "shipping",
+        "sky_basis_mf": 2,
+        "ambient_bounces": 7,
+        "ambient_divisions": 64,
+        "direct_ambient_divisions": 64,
+        "direct_solar_samples": 1024,
+        "ambient_supersamples": 0,
+        "ambient_accuracy": 0.0,
+        "ambient_resolution": 256,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limit_weight": 1e-09,
+        "ray_depth": -16,
+        "direct_threshold": 0.0,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "specular_threshold": 0.0,
+        "specular_sampling": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1,
+        "coefficient_receiver_scale": 100.0,
+        "external_primary": {
+          "generator_version": "greenlens.hammersley-cosine-primary.v1",
+          "encoding_version": "greenlens.primary-ascii-e17-lf.v1",
+          "count": 16384
+        }
+      },
+      "all_process_exits_zero": true,
+      "process_count": 57,
+      "all_numeric_values_finite_nonnegative": true,
+      "lux": {
+        "min": 0.0,
+        "mean": 450.52572011899775,
+        "max": 41817.396316243765,
+        "rgb_conversion_max_absolute_error_lx": 0.0
+      },
+      "primary_streams": [
+        {
+          "purpose": "full",
+          "process_index": 4,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "88de63967ee4a8389a1e5dff74ccc7df77cbff0f17ebcad5e152235b07e64194",
+          "elapsed_ms": 285240,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 109486080,
+            "peak_child_working_set_bytes": 6242304,
+            "sampled_peak_runner_plus_child_working_set_bytes": 102080512,
+            "peak_scratch_bytes": 101782293,
+            "samples": 9460,
+            "zero_progress_writes": 8610,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        },
+        {
+          "purpose": "direct",
+          "process_index": 6,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "6cf6cfb36e1c1cf85706abe633be5fb33c18948f188f249df7028130695febf4",
+          "elapsed_ms": 27177,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 109518848,
+            "peak_child_working_set_bytes": 6193152,
+            "sampled_peak_runner_plus_child_working_set_bytes": 102088704,
+            "peak_scratch_bytes": 110527667,
+            "samples": 843,
+            "zero_progress_writes": 1,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        }
+      ],
+      "resource_summary": {
+        "schema_version": "greenlens.annual-resources.v1",
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+        "started_utc": "2026-10-11T14:00:48.812389100+00:00",
+        "finished_utc": "2026-10-11T14:07:44.646166600+00:00",
+        "total_wall_ms": 415833,
+        "peak_engine_working_set_bytes": 68218880,
+        "peak_observed_runner_plus_engine_working_set_bytes": 164139008,
+        "peak_scratch_bytes": 142809233,
+        "max_scratch_bytes": 2147483648,
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648
+      },
+      "run_started_utc": "2026-10-11T14:00:48.154243200+00:00",
+      "run_finished_utc": "2026-10-11T14:07:44.999695800+00:00",
+      "process_warnings": [
+        {
+          "index": 0,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "index": 1,
+          "stderr": "gendaymtx: warning - unusually bright at 18.5 on 3-5\r\ngendaymtx: warning - unusually bright at 18.5 on 3-6\r\ngendaymtx: warning - unusually bright at 18.5 on 3-7\r\ngendaymtx: warning - unusually bright at 18.5 on 3-17\r\ngendaymtx: warning - unusually bright at 18.5 on 9-9\r\ngendaymtx: warning - unusually bright at 18.5 on 9-11\r\ngendaymtx: warning - unusually bright at 18.5 on 9-12\r\ngendaymtx: warning - unusually bright at 18.5 on 9-16\r\ngendaymtx: warning - unusually bright at 18.5 on 9-17\r\n"
+        },
+        {
+          "index": 6,
+          "stderr": "rcontrib: warning - no light sources found\r\n"
+        },
+        {
+          "index": 9,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 10,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 11,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 12,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 13,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 14,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 15,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 16,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 17,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 18,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 19,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 20,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 21,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 22,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 23,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 24,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 25,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 26,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 27,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 28,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 29,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 30,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 31,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 32,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 33,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 34,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 35,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 36,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 37,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 38,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 39,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 40,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 41,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 42,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 43,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 44,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 45,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 46,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 47,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 48,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 49,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 50,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 51,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 52,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 53,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 54,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 55,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        },
+        {
+          "index": 56,
+          "stderr": "rtrace: warning - no light sources found\r\n"
+        }
+      ],
+      "notes": [
+        "Complete8760-hour fixed EPW standard-time axis. Typical-year source years are retained provenance, not a forecast.",
+        "DA300/cDA300 and UDI100-3000 independently derived with explicit3650-hour denominator; cDA600 is a separate read-only crosscheck, not a change to saved study.",
+        "Primary receipts bind complete identical inputs; raw regenerated large coefficient matrices are not in the compact package, so their retained digests were format/binding checked, not recomputed."
+      ]
+    }
+  ],
+  "passed": true,
+  "issues": [],
+  "limitations": [
+    "Read-only evidence audit with no additional engine, replay or native UI action. Arithmetic consistency does not validate transport accuracy or full release acceptance.",
+    "Resource figures are retained observations; scans/queries plus20ms sleeps do not guarantee20ms sample cadence.",
+    "Disposable large matrices and regenerated primary input bytes were not rerun; receipts are checked against immutable bindings and shape, not independently regenerated."
+  ]
+}

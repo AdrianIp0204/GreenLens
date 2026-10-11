@@ -1,0 +1,306 @@
+{
+  "schema_version": "greenlens.selected-hour-independent-audit.v1",
+  "generated_utc": "2026-10-11T13:53:14.313746+00:00",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "scope": "Read-only independent retained-evidence audit of completed selected-hour A/B, without engine execution or replay. No annual accuracy or release acceptance claim.",
+  "project_sha256": "b5b9f2d3b336af54b2c7b22b8c05850402d131697fd85dc86fef56bba2012a91",
+  "checks": [
+    "Exact immutable record canonical pins and file-byte SHA256 seals",
+    "Known method5 profile, recipe process arrays, successful exits and UTC provenance",
+    "Identical complete paired primary receipts and exact stream process/resource timing bindings",
+    "24x1 ordered finite nonnegative RGB/lux per alternative and independent lux conversion",
+    "Retained full weather bytes/nested seals and actual selected interval mapping",
+    "Portable ZIP path/size/member bounds, SHA seals and source-evidence byte equality",
+    "Source clean6cf036e, completed CLI snapshots and unchanged inspected evidence"
+  ],
+  "runs": [
+    {
+      "id": "d06cf977-6c07-4a81-b3e5-1bbac3ed1d30",
+      "alternative_id": "A",
+      "record_sha256": "7221380656f35c71d835d1d1b47f6e819f61999ab69e8098cf924a073cfbab4e",
+      "result_file_sha256": "f7ea9aced03b647f7d6f81ec0092b72e73aaa441e995c7c8ceb2f30ab5689998",
+      "sealed_files": 22,
+      "sensor_count": 24,
+      "interval_count": 1,
+      "retained_weather_interval": {
+        "index": 1908,
+        "source_year": 2005,
+        "month": 3,
+        "day": 21,
+        "hour_ending": 13,
+        "source_minute": 0,
+        "direct_normal_wh_m2": 280.92,
+        "diffuse_horizontal_wh_m2": 326.9,
+        "global_horizontal_wh_m2": 584.85,
+        "dew_point_c": 16.34
+      },
+      "source_worktree_dirty": false,
+      "method": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+      "profile": {
+        "name": "shipping",
+        "sky_basis_mf": 2,
+        "ambient_bounces": 7,
+        "ambient_divisions": 64,
+        "direct_ambient_divisions": 64,
+        "direct_solar_samples": 1024,
+        "ambient_supersamples": 0,
+        "ambient_accuracy": 0.0,
+        "ambient_resolution": 256,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limit_weight": 1e-09,
+        "ray_depth": -16,
+        "direct_threshold": 0.0,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "specular_threshold": 0.0,
+        "specular_sampling": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1,
+        "coefficient_receiver_scale": 100.0,
+        "external_primary": {
+          "generator_version": "greenlens.hammersley-cosine-primary.v1",
+          "encoding_version": "greenlens.primary-ascii-e17-lf.v1",
+          "count": 16384
+        }
+      },
+      "all_process_exits_zero": true,
+      "process_count": 9,
+      "all_numeric_values_finite_nonnegative": true,
+      "lux": {
+        "min": 298.4404730211534,
+        "mean": 1386.125116753866,
+        "max": 6850.47264206223,
+        "rgb_conversion_max_absolute_error_lx": 0.0
+      },
+      "primary_streams": [
+        {
+          "purpose": "full",
+          "process_index": 4,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "66fa8853c0bdd26867e776ec077dea706e0f8230dc34a0c619423331d891f47c",
+          "elapsed_ms": 573660,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 27586560,
+            "peak_child_working_set_bytes": 6324224,
+            "sampled_peak_runner_plus_child_working_set_bytes": 19996672,
+            "peak_scratch_bytes": 6853128,
+            "samples": 12627,
+            "zero_progress_writes": 11776,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        },
+        {
+          "purpose": "direct",
+          "process_index": 6,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "e5a1c8e9d18aa7769af1f5a8f7b4b20952b8c61798d47d66cc2e11bcdcd34af1",
+          "elapsed_ms": 40031,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 27328512,
+            "peak_child_working_set_bytes": 6172672,
+            "sampled_peak_runner_plus_child_working_set_bytes": 19873792,
+            "peak_scratch_bytes": 7401922,
+            "samples": 841,
+            "zero_progress_writes": 1,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        }
+      ],
+      "resource_summary": {
+        "schema_version": "greenlens.annual-resources.v1",
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+        "started_utc": "2026-10-11T13:26:41.202745600+00:00",
+        "finished_utc": "2026-10-11T13:36:57.119845400+00:00",
+        "total_wall_ms": 615917,
+        "peak_engine_working_set_bytes": 6324224,
+        "peak_observed_runner_plus_engine_working_set_bytes": 19996672,
+        "peak_scratch_bytes": 7503009,
+        "max_scratch_bytes": 2147483648,
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648
+      },
+      "run_started_utc": "2026-10-11T13:26:40.325935600+00:00",
+      "run_finished_utc": "2026-10-11T13:36:57.161855800+00:00",
+      "process_warnings": [
+        {
+          "index": 6,
+          "stderr": "rcontrib: warning - no light sources found\r\n"
+        }
+      ],
+      "notes": [
+        "Selected-hour March21 hour-ending13, fixed EPW standard-time mapping. This is not an annual run.",
+        "The selected direct-solar batch retained attempted24576/culled24576/emitted0; no rtrace process was required.",
+        "Primary receipts bind complete identical inputs; raw regenerated large coefficient matrices are not in the compact package, so their retained digests were format/binding checked, not recomputed."
+      ]
+    },
+    {
+      "id": "2a066731-3b5f-4899-b1f6-cbf4dea32373",
+      "alternative_id": "B",
+      "record_sha256": "26474f7ba0c9df7c623c2202dae01d117fb32def646f76d7b08479d8d600734f",
+      "result_file_sha256": "5a01a67432091ab9a710357919f4d36a90d873018ae980003ddcf416f97235d7",
+      "sealed_files": 22,
+      "sensor_count": 24,
+      "interval_count": 1,
+      "retained_weather_interval": {
+        "index": 1908,
+        "source_year": 2005,
+        "month": 3,
+        "day": 21,
+        "hour_ending": 13,
+        "source_minute": 0,
+        "direct_normal_wh_m2": 280.92,
+        "diffuse_horizontal_wh_m2": 326.9,
+        "global_horizontal_wh_m2": 584.85,
+        "dew_point_c": 16.34
+      },
+      "source_worktree_dirty": false,
+      "method": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+      "profile": {
+        "name": "shipping",
+        "sky_basis_mf": 2,
+        "ambient_bounces": 7,
+        "ambient_divisions": 64,
+        "direct_ambient_divisions": 64,
+        "direct_solar_samples": 1024,
+        "ambient_supersamples": 0,
+        "ambient_accuracy": 0.0,
+        "ambient_resolution": 256,
+        "ambient_value": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "limit_weight": 1e-09,
+        "ray_depth": -16,
+        "direct_threshold": 0.0,
+        "direct_certainty": 1.0,
+        "direct_jitter": 0.0,
+        "direct_size": 0.05,
+        "specular_threshold": 0.0,
+        "specular_sampling": 0.0,
+        "uncorrelated_random_sampling": false,
+        "workers": 1,
+        "coefficient_receiver_scale": 100.0,
+        "external_primary": {
+          "generator_version": "greenlens.hammersley-cosine-primary.v1",
+          "encoding_version": "greenlens.primary-ascii-e17-lf.v1",
+          "count": 16384
+        }
+      },
+      "all_process_exits_zero": true,
+      "process_count": 9,
+      "all_numeric_values_finite_nonnegative": true,
+      "lux": {
+        "min": 255.72851145125756,
+        "mean": 947.3009732345489,
+        "max": 4240.136538928303,
+        "rgb_conversion_max_absolute_error_lx": 0.0
+      },
+      "primary_streams": [
+        {
+          "purpose": "full",
+          "process_index": 4,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "c7e234479f2f73ac6ceb973668d90372d2b6581169d4bdd1fd0f2a10eda254d5",
+          "elapsed_ms": 647171,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 28540928,
+            "peak_child_working_set_bytes": 6402048,
+            "sampled_peak_runner_plus_child_working_set_bytes": 20951040,
+            "peak_scratch_bytes": 6853488,
+            "samples": 11473,
+            "zero_progress_writes": 10619,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        },
+        {
+          "purpose": "direct",
+          "process_index": 6,
+          "input": {
+            "bytes": 54034456,
+            "records": 393216,
+            "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+          },
+          "matrix_sha256": "77f83c0c3350f728dad016dc92ad43bfe21f231286eb66d27c7e40b77a359a61",
+          "elapsed_ms": 58419,
+          "resources": {
+            "schema_version": "greenlens.stream-resources.v2",
+            "sampled_peak_job_plus_runner_working_set_bytes": 28315648,
+            "peak_child_working_set_bytes": 6172672,
+            "sampled_peak_runner_plus_child_working_set_bytes": 20877312,
+            "peak_scratch_bytes": 7402283,
+            "samples": 841,
+            "zero_progress_writes": 0,
+            "partial_writes": 0,
+            "atomic_job_assignment": true
+          }
+        }
+      ],
+      "resource_summary": {
+        "schema_version": "greenlens.annual-resources.v1",
+        "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+        "started_utc": "2026-10-11T13:37:04.035657+00:00",
+        "finished_utc": "2026-10-11T13:48:52.070471600+00:00",
+        "total_wall_ms": 708034,
+        "peak_engine_working_set_bytes": 6402048,
+        "peak_observed_runner_plus_engine_working_set_bytes": 20951040,
+        "peak_scratch_bytes": 7504103,
+        "max_scratch_bytes": 2147483648,
+        "max_matrix_bytes": 536870912,
+        "max_observed_working_set_bytes": 2147483648
+      },
+      "run_started_utc": "2026-10-11T13:37:03.444816400+00:00",
+      "run_finished_utc": "2026-10-11T13:48:52.130967800+00:00",
+      "process_warnings": [
+        {
+          "index": 6,
+          "stderr": "rcontrib: warning - no light sources found\r\n"
+        }
+      ],
+      "notes": [
+        "Selected-hour March21 hour-ending13, fixed EPW standard-time mapping. This is not an annual run.",
+        "The selected direct-solar batch retained attempted24576/culled24576/emitted0; no rtrace process was required.",
+        "Primary receipts bind complete identical inputs; raw regenerated large coefficient matrices are not in the compact package, so their retained digests were format/binding checked, not recomputed."
+      ]
+    }
+  ],
+  "zip": {
+    "file": "climate-evidence.zip",
+    "bytes": 1810828,
+    "sha256": "53b21d2a1598b0906eeff24b329606a0ad3f135f20e8442134f8e47d2cbfec6c",
+    "entries": 56,
+    "sealed_files": 55,
+    "uncompressed_bytes": 19084378,
+    "all_run_evidence_matches_portable_project": true
+  },
+  "passed": true,
+  "issues": [],
+  "limitations": [
+    "Read-only audit; no engine process, replay, native UI or new accuracy comparison executed.",
+    "Working-set and scratch statistics are retained measured observations, not an independent sampler. Sample cadence includes scans/queries plus20ms sleep.",
+    "Compact evidence records coefficient-output hashes; original large coefficient matrix bytes were intentionally disposable and are not claimed independently verified here."
+  ]
+}

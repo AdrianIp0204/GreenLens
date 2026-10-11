@@ -1,0 +1,26 @@
+{
+  "schema_version": "greenlens.native-layout-observation.v1",
+  "utc": "2026-10-11T14:37:47.608Z",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "css_client": [
+    1083,
+    582
+  ],
+  "native_inner_pixels": [
+    1353,
+    727
+  ],
+  "dpr": 1.25,
+  "windows_scale": 1.25,
+  "screenshot_logical_pixels": [
+    1084,
+    614
+  ],
+  "windows_global_display_settings_changed": false,
+  "observations": [
+    "Four views, annual heatmap, command history, sensor table, Analysis panel, toolbar Run and status bar visible.",
+    "Analysis and sensor table scroll independently.",
+    "Diagnostics Undo0 Redo1; scientific document saved."
+  ],
+  "limitation": "Compact native window on the existing 1920x1080 display; not a second physical1366x768 monitor."
+}

@@ -1,0 +1,82 @@
+{
+  "schema_version": "greenlens.installed-binary-audit.v1",
+  "verified_utc": "2026-10-11T13:44:25.7296088Z",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "source_dirty_as_recorded": false,
+  "scope": "Read-only byte and artifact-provenance audit; no build, engine, application launch, UI interaction or installer execution.",
+  "passed": true,
+  "issues": [],
+  "binary_comparison": {
+    "equal_length": true,
+    "bytes": 14374912,
+    "frozen_sha256": "4d0cea0ad7fd14afa8507dc0efd5582fd5df2a82e16b5bf0ae9a58b7ebbb4907",
+    "installed_sha256": "dc795955dc04810bbbedc593bc6654e5db0470427c9f4555fb0a1f6ab61b91df",
+    "differing_bytes": 3,
+    "only_expected_nsis_marker": true,
+    "marker_start_offset": 11512648,
+    "differences": [
+      {
+        "offset": 11512672,
+        "end_exclusive": 11512675,
+        "frozen_hex": "554e4b",
+        "installed_hex": "4e5353",
+        "frozen_ascii": "UNK",
+        "installed_ascii": "NSS"
+      }
+    ],
+    "normalized_in_memory_installed_sha256": "4d0cea0ad7fd14afa8507dc0efd5582fd5df2a82e16b5bf0ae9a58b7ebbb4907",
+    "all_other_bytes_identical": true
+  },
+  "marker_source": {
+    "package": "tauri-utils",
+    "version": "2.10.1",
+    "relative_file": "src/platform.rs",
+    "source_sha256": "5e12803d943b7728147c6223fe3e49ba532a0485b122fc47537398160f4092bc",
+    "default_marker_line": 357,
+    "nsis_mapping_line": 368
+  },
+  "artifacts": [
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "bytes": 3525140,
+      "sha256": "fdefb81daa55aed7f1d252d84070c9703129defa6e832ff375a06449fce5f64f",
+      "matches_manifest": true
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 2925192,
+      "sha256": "3514751d21a83249af08ccaa29533e2db4ab37f0b0ddd6960d476a18c0369362",
+      "matches_manifest": true
+    }
+  ],
+  "packaged_and_frozen_cli_sha256": "03c4c57fcdea031713bb1b2da66b2ce7dbf98c8c91ca8967bbda24a302f11efc",
+  "source_records": [
+    {
+      "name": "desktop-build",
+      "sha256": "f08dac50b3eede09abe18627f13ec869d639f79f52b9413b19ef3d64d9705d91"
+    },
+    {
+      "name": "cli-build",
+      "sha256": "797113868d8f30d42586150b79a3d741fd8b5c232cc252291e08f62bfc2ae983"
+    },
+    {
+      "name": "installation",
+      "sha256": "59d3d76737d0bc9289c5f1fce2e928a802084ef096c20c7502ed4799693a79eb"
+    },
+    {
+      "name": "distribution-checksums",
+      "sha256": "22c07c7eb6d2d7372914e252d5c5ad2fb5e01fd865677ea47d0f44226b3d1b0b"
+    },
+    {
+      "name": "inventory-check",
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    }
+  ],
+  "recorded_install_exit_code": 0,
+  "authenticode": {
+    "installer": "NotSigned",
+    "installed_executable": "NotSigned"
+  },
+  "original_binary_bytes_modified": false,
+  "release_acceptance_complete": false
+}

@@ -1,0 +1,1162 @@
+{
+  "schema_version": "greenlens.hosted-reference-pilot-audit.v1",
+  "verified_utc": "2026-10-11T14:24:05.671006+00:00",
+  "scope": "Read-only artifact and strict reference-reader audit of one hosted A8504 baseline. No engine rerun or execution of retained source; no candidate comparison or overall reference qualification.",
+  "workflow": {
+    "run_id": 38144456237,
+    "source_commit": "53a04cec9b36a4fc8639a9f68d8a6879e44caae8",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38144456237",
+    "conclusion": "success"
+  },
+  "artifact": {
+    "id": 11704955645,
+    "name": "reference-A8504-pilot-38144456237",
+    "bytes": 17150049,
+    "sha256": "b8d473e27fdc28d5a4f638ef098267a60dedb89842d7f8c1dd7b92434f340687",
+    "files": 46,
+    "uncompressed_bytes": 127886576,
+    "safe_paths": true,
+    "member_inventory_sha256": "9fbd6c3be0311b3ff5a3bf35b155d01f650e2e05bf01176303a69f6deec6bc23"
+  },
+  "input": {
+    "archive_sha256": "0b77ddbcf6d1ca03ecece672c2d1d40bdaabab6c53e30b3648bb5e14264f6f83",
+    "manifest_sha256": "ad232a37630912863c1d2123275ede5080bccad123d8a5364df95c157d86cb99",
+    "required_data_files": 11,
+    "notice_files": 3,
+    "all14_member_seals_rechecked": true,
+    "source_pins": {
+      "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+      "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+      "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+      "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+      "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+      "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+      "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+      "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+      "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+    },
+    "trusted_source_newline_preparation": {
+      "schema_version": "greenlens.reference-source-newlines.v1",
+      "recorded_utc": "2026-10-11T13:45:59.3459258Z",
+      "policy": "Only fixed trusted checkout source LF/CRLF conversion whose exact bytes match the sealed local digest; no data files or embedded archive code executed",
+      "preparation_source_sha256": "e4394583f3515b1c189b2309a43d55b2664fd8705c69161938cf4f1ef6bd40af",
+      "files": [
+        {
+          "path": "scripts/annual-controlled-reference.ps1",
+          "before_sha256": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+          "after_sha256": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+          "changed": false,
+          "newline_convention": "preserved",
+          "bytes": 16080
+        },
+        {
+          "path": "scripts/annual-reference-process.ps1",
+          "before_sha256": "2ed15f24c2017272f4f83ef8062305e91ce54907acae903eb3ca571e30407c91",
+          "after_sha256": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+          "changed": true,
+          "newline_convention": "lf",
+          "bytes": 5057
+        },
+        {
+          "path": "scripts/annual-reference-aggregation.cs",
+          "before_sha256": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+          "after_sha256": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+          "changed": false,
+          "newline_convention": "preserved",
+          "bytes": 4806
+        },
+        {
+          "path": "scripts/annual-matched-corrected.ps1",
+          "before_sha256": "fc0e4584966a3cc9d17f63ef37f498964bb960e6589f0c7f3541cad51e9580d4",
+          "after_sha256": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+          "changed": true,
+          "newline_convention": "lf",
+          "bytes": 17532
+        },
+        {
+          "path": "scripts/annual-feasibility.ps1",
+          "before_sha256": "4de6701a5671ae560c3fa387c9a7d434fd13a9d97dd2b24f91f1c4c7258d5576",
+          "after_sha256": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+          "changed": true,
+          "newline_convention": "lf",
+          "bytes": 13741
+        },
+        {
+          "path": "scripts/annual-matched-evidence.ps1",
+          "before_sha256": "bf5b16ed66e17a132941257e0a2427d264eff0be6adb9f3f7a271473b32bc6e9",
+          "after_sha256": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+          "changed": true,
+          "newline_convention": "lf",
+          "bytes": 10566
+        },
+        {
+          "path": "scripts/verify-matrix-multiplication.ps1",
+          "before_sha256": "2d2f900db0efadf988fa6ba7e65b411de7515798b1518e00976a7fb06a69060c",
+          "after_sha256": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+          "changed": true,
+          "newline_convention": "lf",
+          "bytes": 3698
+        },
+        {
+          "path": "docs/v0.3-reference-protocol.md",
+          "before_sha256": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+          "after_sha256": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+          "changed": false,
+          "newline_convention": "preserved",
+          "bytes": 13888
+        },
+        {
+          "path": "dependencies/radiance.json",
+          "before_sha256": "975cc4edca34bac685d5d89c9eeadf570aef806f9e53e6c8ec3733c2e86ab6d1",
+          "after_sha256": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+          "changed": true,
+          "newline_convention": "crlf",
+          "bytes": 5578
+        }
+      ]
+    },
+    "cross_host_identity_sha256": "664b14f7e95aeddf62b257050292177c4cceca2553645ad2593e2ce8ba203d37",
+    "cross_host_identity_scope": "Fresh Assert-ReferenceShardIdentity against the already-reviewed local A1904,A4112,A8512 declarations; only declared UTC and executed subset exclusions, no physical/scientific identity relaxation."
+  },
+  "case": {
+    "alternative": "A",
+    "interval_index": 8504,
+    "sensors": [
+      {
+        "sensor_index": 0,
+        "sensor_id": "s000001",
+        "diffuse_rgb": [
+          11.473141835937511,
+          11.473141835937511,
+          11.473141835937511
+        ],
+        "full_solar_rgb": [
+          51.602323828125016,
+          51.602323828125016,
+          51.602323828125016
+        ],
+        "centroid_direct_rgb": [
+          45.53933,
+          45.53933,
+          45.53933
+        ],
+        "finite_direct_rgb": [
+          45.538717562469834,
+          45.538717562469834,
+          45.538717562469834
+        ],
+        "total_rgb": [
+          63.07485322653236,
+          63.07485322653236,
+          63.07485322653236
+        ],
+        "lux": 11290.398727549293
+      },
+      {
+        "sensor_index": 1,
+        "sensor_id": "s000002",
+        "diffuse_rgb": [
+          15.370603398437506,
+          15.370603398437506,
+          15.370603398437506
+        ],
+        "full_solar_rgb": [
+          48.081314687500004,
+          48.081314687500004,
+          48.081314687500004
+        ],
+        "centroid_direct_rgb": [
+          45.53933,
+          45.53933,
+          45.53933
+        ],
+        "finite_direct_rgb": [
+          45.538717562469834,
+          45.538717562469834,
+          45.538717562469834
+        ],
+        "total_rgb": [
+          63.45130564840734,
+          63.45130564840734,
+          63.45130564840734
+        ],
+        "lux": 11357.783711064916
+      },
+      {
+        "sensor_index": 2,
+        "sensor_id": "s000003",
+        "diffuse_rgb": [
+          9.005856851562502,
+          9.005856851562502,
+          9.005856851562502
+        ],
+        "full_solar_rgb": [
+          1.6446402226562515,
+          1.6446402226562515,
+          1.6446402226562515
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          10.650497074218753,
+          10.650497074218753,
+          10.650497074218753
+        ],
+        "lux": 1906.438976285157
+      },
+      {
+        "sensor_index": 3,
+        "sensor_id": "s000004",
+        "diffuse_rgb": [
+          2.8459341406250003,
+          2.8459341406250003,
+          2.8459341406250003
+        ],
+        "full_solar_rgb": [
+          1.4415753320312508,
+          1.4415753320312508,
+          1.4415753320312508
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          4.287509472656251,
+          4.287509472656251,
+          4.287509472656251
+        ],
+        "lux": 767.464195605469
+      },
+      {
+        "sensor_index": 4,
+        "sensor_id": "s000005",
+        "diffuse_rgb": [
+          8.439933382812498,
+          8.439933382812498,
+          8.439933382812498
+        ],
+        "full_solar_rgb": [
+          7.99014817578125,
+          7.99014817578125,
+          7.99014817578125
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          16.43008155859375,
+          16.43008155859375,
+          16.43008155859375
+        ],
+        "lux": 2940.984598988281
+      },
+      {
+        "sensor_index": 5,
+        "sensor_id": "s000006",
+        "diffuse_rgb": [
+          6.812125132812498,
+          6.812125132812498,
+          6.812125132812498
+        ],
+        "full_solar_rgb": [
+          2.7593245781250006,
+          2.7593245781250006,
+          2.7593245781250006
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          9.571449710937499,
+          9.571449710937499,
+          9.571449710937499
+        ],
+        "lux": 1713.2894982578123
+      },
+      {
+        "sensor_index": 6,
+        "sensor_id": "s000007",
+        "diffuse_rgb": [
+          4.382642113281249,
+          4.382642113281249,
+          4.382642113281249
+        ],
+        "full_solar_rgb": [
+          1.7891485468750004,
+          1.7891485468750004,
+          1.7891485468750004
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          6.171790660156249,
+          6.171790660156249,
+          6.171790660156249
+        ],
+        "lux": 1104.7505281679687
+      },
+      {
+        "sensor_index": 7,
+        "sensor_id": "s000008",
+        "diffuse_rgb": [
+          2.6658137773437494,
+          2.6658137773437494,
+          2.6658137773437494
+        ],
+        "full_solar_rgb": [
+          1.4929710195312493,
+          1.4929710195312493,
+          1.4929710195312493
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          4.158784796874999,
+          4.158784796874999,
+          4.158784796874999
+        ],
+        "lux": 744.4224786406247
+      },
+      {
+        "sensor_index": 8,
+        "sensor_id": "s000009",
+        "diffuse_rgb": [
+          4.392315785156248,
+          4.392315785156248,
+          4.392315785156248
+        ],
+        "full_solar_rgb": [
+          2.55229453515625,
+          2.55229453515625,
+          2.55229453515625
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          6.944610320312498,
+          6.944610320312498,
+          6.944610320312498
+        ],
+        "lux": 1243.085247335937
+      },
+      {
+        "sensor_index": 9,
+        "sensor_id": "s000010",
+        "diffuse_rgb": [
+          3.5096969140625003,
+          3.5096969140625003,
+          3.5096969140625003
+        ],
+        "full_solar_rgb": [
+          1.891903859375,
+          1.891903859375,
+          1.891903859375
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          5.4016007734375,
+          5.4016007734375,
+          5.4016007734375
+        ],
+        "lux": 966.8865384453125
+      },
+      {
+        "sensor_index": 10,
+        "sensor_id": "s000011",
+        "diffuse_rgb": [
+          2.6262093437499994,
+          2.6262093437499994,
+          2.6262093437499994
+        ],
+        "full_solar_rgb": [
+          1.5184624101562494,
+          1.5184624101562494,
+          1.5184624101562494
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          4.144671753906248,
+          4.144671753906248,
+          4.144671753906248
+        ],
+        "lux": 741.8962439492185
+      },
+      {
+        "sensor_index": 11,
+        "sensor_id": "s000012",
+        "diffuse_rgb": [
+          2.0297359179687486,
+          2.0297359179687486,
+          2.0297359179687486
+        ],
+        "full_solar_rgb": [
+          1.3482323906250004,
+          1.3482323906250004,
+          1.3482323906250004
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          3.377968308593749,
+          3.377968308593749,
+          3.377968308593749
+        ],
+        "lux": 604.656327238281
+      },
+      {
+        "sensor_index": 12,
+        "sensor_id": "s000013",
+        "diffuse_rgb": [
+          2.5200285585937503,
+          2.5200285585937503,
+          2.5200285585937503
+        ],
+        "full_solar_rgb": [
+          1.0850285273437499,
+          1.0850285273437499,
+          1.0850285273437499
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          3.6050570859375,
+          3.6050570859375,
+          3.6050570859375
+        ],
+        "lux": 645.3052183828125
+      },
+      {
+        "sensor_index": 13,
+        "sensor_id": "s000014",
+        "diffuse_rgb": [
+          2.1727564843750007,
+          2.1727564843750007,
+          2.1727564843750007
+        ],
+        "full_solar_rgb": [
+          1.2158076796875001,
+          1.2158076796875001,
+          1.2158076796875001
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          3.388564164062501,
+          3.388564164062501,
+          3.388564164062501
+        ],
+        "lux": 606.5529853671877
+      },
+      {
+        "sensor_index": 14,
+        "sensor_id": "s000015",
+        "diffuse_rgb": [
+          1.8085423789062491,
+          1.8085423789062491,
+          1.8085423789062491
+        ],
+        "full_solar_rgb": [
+          1.1891392890624997,
+          1.1891392890624997,
+          1.1891392890624997
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          2.997681667968749,
+          2.997681667968749,
+          2.997681667968749
+        ],
+        "lux": 536.5850185664061
+      },
+      {
+        "sensor_index": 15,
+        "sensor_id": "s000016",
+        "diffuse_rgb": [
+          1.5159626757812492,
+          1.5159626757812492,
+          1.5159626757812492
+        ],
+        "full_solar_rgb": [
+          1.1021474687499997,
+          1.1021474687499997,
+          1.1021474687499997
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          2.618110144531249,
+          2.618110144531249,
+          2.618110144531249
+        ],
+        "lux": 468.64171587109354
+      },
+      {
+        "sensor_index": 16,
+        "sensor_id": "s000017",
+        "diffuse_rgb": [
+          1.6313557617187502,
+          1.6313557617187502,
+          1.6313557617187502
+        ],
+        "full_solar_rgb": [
+          0.7227061769531247,
+          0.7227061769531247,
+          0.7227061769531247
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          2.354061938671875,
+          2.354061938671875,
+          2.354061938671875
+        ],
+        "lux": 421.37708702226564
+      },
+      {
+        "sensor_index": 17,
+        "sensor_id": "s000018",
+        "diffuse_rgb": [
+          1.4947861093749992,
+          1.4947861093749992,
+          1.4947861093749992
+        ],
+        "full_solar_rgb": [
+          0.8489485921875002,
+          0.8489485921875002,
+          0.8489485921875002
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          2.343734701562499,
+          2.343734701562499,
+          2.343734701562499
+        ],
+        "lux": 419.52851157968735
+      },
+      {
+        "sensor_index": 18,
+        "sensor_id": "s000019",
+        "diffuse_rgb": [
+          1.3164002539062503,
+          1.3164002539062503,
+          1.3164002539062503
+        ],
+        "full_solar_rgb": [
+          0.8937628324218752,
+          0.8937628324218752,
+          0.8937628324218752
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          2.2101630863281256,
+          2.2101630863281256,
+          2.2101630863281256
+        ],
+        "lux": 395.6191924527346
+      },
+      {
+        "sensor_index": 19,
+        "sensor_id": "s000020",
+        "diffuse_rgb": [
+          1.1785101054687501,
+          1.1785101054687501,
+          1.1785101054687501
+        ],
+        "full_solar_rgb": [
+          0.8711477441406249,
+          0.8711477441406249,
+          0.8711477441406249
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          2.049657849609375,
+          2.049657849609375,
+          2.049657849609375
+        ],
+        "lux": 366.88875508007817
+      },
+      {
+        "sensor_index": 20,
+        "sensor_id": "s000021",
+        "diffuse_rgb": [
+          1.3050493984375,
+          1.3050493984375,
+          1.3050493984375
+        ],
+        "full_solar_rgb": [
+          0.5607594574218748,
+          0.5607594574218748,
+          0.5607594574218748
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          1.8658088558593748,
+          1.8658088558593748,
+          1.8658088558593748
+        ],
+        "lux": 333.9797851988281
+      },
+      {
+        "sensor_index": 21,
+        "sensor_id": "s000022",
+        "diffuse_rgb": [
+          1.2414529414062503,
+          1.2414529414062503,
+          1.2414529414062503
+        ],
+        "full_solar_rgb": [
+          0.6688981417968753,
+          0.6688981417968753,
+          0.6688981417968753
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          1.9103510832031256,
+          1.9103510832031256,
+          1.9103510832031256
+        ],
+        "lux": 341.9528438933595
+      },
+      {
+        "sensor_index": 22,
+        "sensor_id": "s000023",
+        "diffuse_rgb": [
+          1.1403023906250003,
+          1.1403023906250003,
+          1.1403023906250003
+        ],
+        "full_solar_rgb": [
+          0.7287769023437494,
+          0.7287769023437494,
+          0.7287769023437494
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          1.8690792929687496,
+          1.8690792929687496,
+          1.8690792929687496
+        ],
+        "lux": 334.56519344140617
+      },
+      {
+        "sensor_index": 23,
+        "sensor_id": "s000024",
+        "diffuse_rgb": [
+          0.998067990625,
+          0.998067990625,
+          0.998067990625
+        ],
+        "full_solar_rgb": [
+          0.7001794894531251,
+          0.7001794894531251,
+          0.7001794894531251
+        ],
+        "centroid_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "finite_direct_rgb": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "total_rgb": [
+          1.698247480078125,
+          1.698247480078125,
+          1.698247480078125
+        ],
+        "lux": 303.9862989339844
+      }
+    ],
+    "internally_qualified": true,
+    "final_repeat_rung": 256,
+    "primary_order": "Round-major: all24 immutable ordered sensors once per round",
+    "ambient_divisions": 8192,
+    "ambient_bounces": 9,
+    "ray_depth": -16,
+    "ambient_weight": 1e-09,
+    "source_scale": 100,
+    "finite_samples": 4096,
+    "qualification_band": "max(0.1 lx, 1% of higher reference); disjoint blocks use final complete mean for scaling",
+    "transitions": {
+      "first_transition": {
+        "checks": 24,
+        "failed": 0,
+        "maximum_tolerance_ratio": 0.2509692497014871
+      },
+      "second_transition": {
+        "checks": 24,
+        "failed": 0,
+        "maximum_tolerance_ratio": 0.2039683646965535
+      },
+      "block_comparison": {
+        "checks": 24,
+        "failed": 0,
+        "maximum_tolerance_ratio": 0.407936729393073
+      }
+    },
+    "sensor_count": 24
+  },
+  "processes": [
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "receiver.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T13:46:05.2932412Z",
+      "finished_utc": "2026-10-11T13:46:05.3309625Z",
+      "wall_seconds": 0.025442,
+      "sampled_peak_working_set_bytes": null,
+      "sampled_runner_plus_engine_peak_bytes": 344231936,
+      "sampled_scratch_peak_bytes": 59596549,
+      "output_bytes": 2064,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "file_bytes": 536870912,
+        "timeout_seconds": 7200.0,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-8504-scaled.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T13:46:05.3659780Z",
+      "finished_utc": "2026-10-11T13:46:05.3780863Z",
+      "wall_seconds": 0.0105925,
+      "sampled_peak_working_set_bytes": null,
+      "sampled_runner_plus_engine_peak_bytes": 343773184,
+      "sampled_scratch_peak_bytes": 59602599,
+      "output_bytes": 2211,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "file_bytes": 536870912,
+        "timeout_seconds": 7200.0,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    },
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "hour-8504-sun.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T13:46:05.3797294Z",
+      "finished_utc": "2026-10-11T13:46:05.3907530Z",
+      "wall_seconds": 0.0098658,
+      "sampled_peak_working_set_bytes": null,
+      "sampled_runner_plus_engine_peak_bytes": 343908352,
+      "sampled_scratch_peak_bytes": 59605433,
+      "output_bytes": 2072,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "file_bytes": 536870912,
+        "timeout_seconds": 7200.0,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "0",
+        "-ad",
+        "1",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "hour-8504-sun.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T13:46:05.3935914Z",
+      "finished_utc": "2026-10-11T13:46:05.5187429Z",
+      "wall_seconds": 0.1246361,
+      "sampled_peak_working_set_bytes": null,
+      "sampled_runner_plus_engine_peak_bytes": 344088576,
+      "sampled_scratch_peak_bytes": 59607120,
+      "output_bytes": 984,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "file_bytes": 536870912,
+        "timeout_seconds": 7200.0,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    },
+    {
+      "executable": "rtrace.exe",
+      "arguments": [
+        "-h",
+        "-faa",
+        "-ov",
+        "-n",
+        "1",
+        "-ab",
+        "0",
+        "-ad",
+        "1",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "transmission.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "rtrace: warning - no light sources found\r\n",
+      "started_utc": "2026-10-11T13:46:05.6108891Z",
+      "finished_utc": "2026-10-11T13:46:05.9406914Z",
+      "wall_seconds": 0.3290684,
+      "sampled_peak_working_set_bytes": 4685824,
+      "sampled_runner_plus_engine_peak_bytes": 455471104,
+      "sampled_scratch_peak_bytes": 63638718,
+      "output_bytes": 4030464,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "file_bytes": 536870912,
+        "timeout_seconds": 7200.0,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-n",
+        "1",
+        "-ab",
+        "9",
+        "-ad",
+        "8192",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "-16",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-c",
+        "1",
+        "-V+",
+        "-y",
+        "6144",
+        "-m",
+        "sky_glow",
+        "-m",
+        "solar510270",
+        "hour-8504.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T13:46:06.0196071Z",
+      "finished_utc": "2026-10-11T14:02:30.4763814Z",
+      "wall_seconds": 984.4436113,
+      "sampled_peak_working_set_bytes": 6402048,
+      "sampled_runner_plus_engine_peak_bytes": 500002816,
+      "sampled_scratch_peak_bytes": 64323920,
+      "output_bytes": 491520,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "file_bytes": 536870912,
+        "timeout_seconds": 7200.0,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    }
+  ],
+  "retained_reader": {
+    "declaration_sha256": "828b03e80eb94155aaff69fe1d1d1ab4978f889992e056e30fde4ab670bffacd",
+    "report_sha256": "f971fd716e9358b9504cdbae25b41f06604ea0fdaec0a18dac6bb59f6bd517cc",
+    "processes_sha256": "7168b5f0f67855828f932b87887046157370b15f4cc9acec88d2eff84ad0ef45",
+    "recomputed_output_sha256": "53c150274ee20528d2f7dd21a4ef45af466f919fb513c5e911ff5ab0e649d0b6",
+    "finite_kernel_raw_sha256": "8977539ebc1a918dfa6cbefc4aa522992b6d7d50e17e39e4e6d48b72189a0fbe",
+    "finite_kernel_contract_sha256": "d2c6591da529a7bd005a956e781e0078e51ca01ab5c17871236dddd81192f75b",
+    "finite_kernel_note": "The declaration hash binds normalized C# plus base rtrace options; the retained raw C# file has its own byte hash. The strict reader validates both contracts."
+  },
+  "timing": {
+    "started_utc": "2026-10-11T13:45:59.4873457Z",
+    "finished_utc": "2026-10-11T14:02:30.5339568Z",
+    "rcontrib_wall_seconds": 984.4436113
+  },
+  "coverage": {
+    "qualified_baselines_now": 7,
+    "required_baselines": 24,
+    "this_record_adds_only": [
+      "A:8504"
+    ],
+    "sensitivity_families_complete": 0,
+    "required_sensitivity_families": 2
+  },
+  "overall_reference_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "release_acceptance_complete": false,
+  "reviewer_script_sha256": "0bcf93437f057ad4a2f56cbddd73a9702f8c6dc0ceca8b59f4d24f4c32805e7a"
+}

@@ -1,0 +1,186 @@
+{
+  "schema_version": "greenlens.native-currentness-observation.v1",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "utc": "2026-10-11T14:30:21.9024080Z",
+  "model_restored": true,
+  "cameras_equal": true,
+  "camera_count": 4,
+  "before": {
+    "perspective": {
+      "position": [
+        7.296685966467636,
+        -3.356023159761163,
+        5.737348773174109
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "zoom": 1.0
+    },
+    "top": {
+      "position": [
+        2.0,
+        3.0,
+        21.5
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "zoom": 1.4814814814814812
+    },
+    "front": {
+      "position": [
+        2.0,
+        -17.0,
+        1.5
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "zoom": 2.9629629629629624
+    },
+    "right": {
+      "position": [
+        22.0,
+        3.0,
+        1.5
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "zoom": 2.744639376218323
+    }
+  },
+  "after": {
+    "perspective": {
+      "position": [
+        7.296685966467636,
+        -3.356023159761163,
+        5.737348773174109
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "zoom": 1.0
+    },
+    "top": {
+      "position": [
+        2.0,
+        3.0,
+        21.5
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "zoom": 1.4814814814814812
+    },
+    "front": {
+      "position": [
+        2.0,
+        -17.0,
+        1.5
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "zoom": 2.9629629629629624
+    },
+    "right": {
+      "position": [
+        22.0,
+        3.0,
+        1.5
+      ],
+      "target": [
+        2.0,
+        3.0,
+        1.5
+      ],
+      "up": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "zoom": 2.744639376218323
+    }
+  },
+  "run_ids": [
+    "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+    "2c436690-9ddc-4040-91f7-154b7b44b596"
+  ],
+  "observed_edit": {
+    "alternative": "A",
+    "accepted_m": 2.1,
+    "redo_m": 2.1,
+    "save_retains_undo": true,
+    "parameter": "window.center_x_m",
+    "undo_m": 2,
+    "stale_overlay_hidden": true,
+    "undo_restores_matching_run": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+    "restored_m": 2,
+    "accepted_undo_entries": 1,
+    "before_m": 2
+  },
+  "observed_sensor": {
+    "full_series_intervals": 8760,
+    "interval1919_lx": 0,
+    "hour24_label": "03/21 23:00-24:00; midpoint23:30 local standard time",
+    "interval1912_lx": 660.638,
+    "id": "s000001",
+    "interval1908_lx": 1865.219
+  },
+  "limitations": [
+    "Values shown above are native three-decimal display observations; full precision is independently retained in annual audit.",
+    "Physical Shift/Ctrl gestures remain unverified.",
+    "Transient loading presentation was observed and is being repaired; not accepted as final UI behavior."
+  ]
+}

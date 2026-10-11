@@ -1,0 +1,296 @@
+{
+  "schema_version": "greenlens.candidate-artifact-build-license.v1",
+  "verified_utc": "2026-10-11T14:10:54.6999708Z",
+  "candidate": "v0.3 candidate05 method5",
+  "application_version": "0.3.0",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "source_worktree_dirty_at_build": false,
+  "source_identity_basis": "Retained CLI/desktop clean-build records and installation record agree on exact source; current artifact hashes and earlier installed-binary audit source seals were independently rechecked.",
+  "scope": "Read-only retained build, distribution, installed binary, package member, notice and cache identity verification. No build, engine, application/UI launch or installer execution performed by this reviewer.",
+  "distribution_relative": "releases/0.3.0/20261011-method5-6cf036e",
+  "location_convention": "Distribution/build evidence references are relative to the per-user GreenLens local application data directory. Installed paths are relative to the per-user Programs/GreenLens directory.",
+  "artifacts": [
+    {
+      "path": "GreenLens_0.3.0_x64-setup.exe",
+      "bytes": 3525140,
+      "sha256": "fdefb81daa55aed7f1d252d84070c9703129defa6e832ff375a06449fce5f64f"
+    },
+    {
+      "path": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 2925192,
+      "sha256": "3514751d21a83249af08ccaa29533e2db4ab37f0b0ddd6960d476a18c0369362"
+    }
+  ],
+  "cli": {
+    "file": "GreenLens-CLI-0.3.0-windows-x64/greenlens.exe",
+    "bytes": 4699648,
+    "sha256": "03c4c57fcdea031713bb1b2da66b2ce7dbf98c8c91ca8967bbda24a302f11efc",
+    "version_as_recorded": "greenlens-cli 0.3.0",
+    "frozen_and_packaged_equal": true,
+    "build_command": "cargo build --locked --offline --release -p greenlens-cli",
+    "build_started_utc": "2026-10-11T13:24:15.6490816Z",
+    "build_finished_utc": "2026-10-11T13:26:12.8049117Z"
+  },
+  "desktop": {
+    "frozen_bytes": 14374912,
+    "frozen_sha256": "4d0cea0ad7fd14afa8507dc0efd5582fd5df2a82e16b5bf0ae9a58b7ebbb4907",
+    "build_command": "npm run tauri -- build --ci",
+    "build_working_directory": "apps/desktop",
+    "build_started_utc": "2026-10-11T13:27:15.3371921Z",
+    "build_finished_utc": "2026-10-11T13:33:45.9969439Z",
+    "frontend_checks_as_recorded": [
+      "TypeScript tsc --noEmit",
+      "Vite production build"
+    ],
+    "installer_bundler": "NSIS",
+    "per_user_install": true,
+    "development_server_required": false
+  },
+  "installation": {
+    "exit_code_as_recorded": 0,
+    "started_utc": "2026-10-11T13:34:20.7979735Z",
+    "finished_utc": "2026-10-11T13:34:24.5487454Z",
+    "installed_executable": "greenlens-desktop.exe",
+    "installed_sha256": "dc795955dc04810bbbedc593bc6654e5db0470427c9f4555fb0a1f6ab61b91df",
+    "installed_bytes": 14374912,
+    "marker": {
+      "offset": 11512672,
+      "bytes": 3,
+      "frozen": "UNK",
+      "installed": "NSS",
+      "all_other_bytes_identical": true,
+      "normalized_in_memory_sha256": "4d0cea0ad7fd14afa8507dc0efd5582fd5df2a82e16b5bf0ae9a58b7ebbb4907",
+      "tauri_source": {
+        "package": "tauri-utils",
+        "version": "2.10.1",
+        "relative_file": "src/platform.rs",
+        "source_sha256": "5e12803d943b7728147c6223fe3e49ba532a0485b122fc47537398160f4092bc",
+        "default_marker_line": 357,
+        "nsis_mapping_line": 368
+      }
+    },
+    "source_records_unchanged": true
+  },
+  "signing": {
+    "installer": "NotSigned",
+    "cli": "NotSigned",
+    "installed_desktop": "NotSigned"
+  },
+  "licensing": {
+    "original_code": "Apache-2.0",
+    "strict_check_as_recorded": {
+      "command": "node scripts/license-inventory.mjs --strict --check --installer-cache <per-user-tauri-NSIS-cache>",
+      "packages": 358,
+      "notice_texts": 196,
+      "review_gaps": [],
+      "partial": false,
+      "check": true,
+      "installer_cache_verified": true
+    },
+    "current_rechecks": {
+      "inventory_package_count": 358,
+      "distinct_notice_headers": 196,
+      "lockfiles": [
+        {
+          "path": "Cargo.lock",
+          "sha256": "fa93b50ea4fe36a31a18356371009ddb52b1cbd95b6c87aefa138d9260af3b95"
+        },
+        {
+          "path": "apps/desktop/package-lock.json",
+          "sha256": "36311361488cc951858b9b03ffb6320095bd50b11703462820a62a8b87a43db0"
+        }
+      ],
+      "installer_components": [
+        {
+          "component": "NSIS",
+          "path": "makensis.exe",
+          "sha256": "f497e92deb9f179f7b8f7553fcb3bd04f511bb2949e5e4a2aee80a10f7b20431"
+        },
+        {
+          "component": "NSIS",
+          "path": "Bin/makensis.exe",
+          "sha256": "42850802704ecb11163f7e0329d35ee54bd288953200d4966e226d572848cfc5"
+        },
+        {
+          "component": "NSIS",
+          "path": "Stubs/lzma-x86-unicode",
+          "sha256": "e916a205c5421f4287411d402fe1d2cb37e3df93db00ff4cfbacec3b8ec8877e"
+        },
+        {
+          "component": "NSIS",
+          "path": "Stubs/lzma_solid-x86-unicode",
+          "sha256": "a0d065b62d34be5f0aaaf7c162e101a5e25d7cd3eb10a13fdb37f91b02ebfce2"
+        },
+        {
+          "component": "NSIS",
+          "path": "Plugins/x86-unicode/NSISdl.dll",
+          "sha256": "ddf40229dd9d6b268902d8dea88c8a04aacf1af218dd29f6dcd35babc54ac08d"
+        },
+        {
+          "component": "NSIS",
+          "path": "Plugins/x86-unicode/StartMenu.dll",
+          "sha256": "fe330320459637d8dd2b5d84d07925c38ec264152ffd3b1760a4d44d76536caa"
+        },
+        {
+          "component": "NSIS",
+          "path": "Plugins/x86-unicode/System.dll",
+          "sha256": "8b4c47c4cf5e76ec57dd5a050d5acd832a0d532ee875d7b44f6cdaf68f90d37c"
+        },
+        {
+          "component": "NSIS",
+          "path": "Plugins/x86-unicode/nsDialogs.dll",
+          "sha256": "b1350f487692057c8ffde75dcc55287a52a3272240d4d4912f24464b27551fc0"
+        },
+        {
+          "component": "nsis-tauri-utils",
+          "path": "Plugins/x86-unicode/additional/nsis_tauri_utils.dll",
+          "sha256": "5ba143b5db4a87d32d6e7802e033330aae56cbceabe0d1e3ba41948385ad4709"
+        }
+      ]
+    },
+    "inventory": {
+      "path": "dependencies/resolved-inventory.json",
+      "bytes": 506282,
+      "sha256": "ab1d74d2cff95a34e601c99d8111c3cd426befd524d7e285ad25a00f5a09e3c4"
+    },
+    "generated_notices": {
+      "path": "third-party/generated-notices.txt",
+      "bytes": 2379904,
+      "sha256": "c812d796d9e17fc35a557af898d35a3e97f16af05204681401b8ca8624fe7e00"
+    },
+    "installed_notice_and_example_files_verified": 31,
+    "external_runtimes": [
+      {
+        "name": "Microsoft Edge WebView2 Evergreen Runtime",
+        "source": "https://developer.microsoft.com/en-us/microsoft-edge/webview2/",
+        "bundled": false,
+        "license": "Microsoft proprietary runtime terms; separate upstream acquisition",
+        "review_document": "docs/installation.md"
+      },
+      {
+        "name": "Microsoft Visual C++ v14 x64 Redistributable and Universal CRT",
+        "source": "https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist",
+        "bundled": false,
+        "license": "Microsoft proprietary runtime terms; separate upstream acquisition",
+        "review_document": "docs/windows-runtime.md"
+      }
+    ],
+    "engine_binaries_bundled": false
+  },
+  "packaging": {
+    "zip_files": 96,
+    "zip_directory_entries": 2,
+    "zip_total_entries": 98,
+    "uncompressed_bytes": 12861146,
+    "largest_member_bytes": 4699648,
+    "all_members_equal_extracted_distribution": true,
+    "safe_paths_and_no_duplicates": true,
+    "source_document_members_verified": 71,
+    "source_document_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+    "source_document_exact_bytes": 64,
+    "source_document_EOL_only": 7,
+    "local_markdown_links_verified": 87,
+    "third_party_notice_files": 15,
+    "no_engine_or_octree_ambient_files": true,
+    "member_manifest": {
+      "path": "candidate05-package-members.json",
+      "bytes": 43448,
+      "sha256": "aa9c1841a153169603c3260e0f5ab9e963ec2ea1d4b78df91731b233bd3320f5"
+    }
+  },
+  "runtime_imports_from_retained_dumpbin": {
+    "cli": [
+      "VCRUNTIME140.dll"
+    ],
+    "desktop": [
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll"
+    ]
+  },
+  "documented_commands": {
+    "install": "Run GreenLens_0.3.0_x64-setup.exe as the current user",
+    "desktop_launch": "Launch the installed GreenLens shortcut or <per-user-install>/greenlens-desktop.exe",
+    "cli_version": ".\\GreenLens-CLI-0.3.0-windows-x64\\greenlens.exe --version",
+    "cli_doctor": ".\\GreenLens-CLI-0.3.0-windows-x64\\greenlens.exe doctor --engine-dir <separately-installed-Radiance-root>",
+    "guides": [
+      "docs/installation.md",
+      "docs/windows-runtime.md",
+      "docs/v0.3-usage.md",
+      "docs/replay.md"
+    ],
+    "scope": "Usage guidance only; these commands were not executed during this audit."
+  },
+  "retained_source_records": [
+    {
+      "path": "verification/v0.3 method5 desktop build 6cf036e/build.json",
+      "bytes": 718,
+      "sha256": "f08dac50b3eede09abe18627f13ec869d639f79f52b9413b19ef3d64d9705d91"
+    },
+    {
+      "path": "verification/v0.3 method5 desktop build 6cf036e/artifact-inspection.json",
+      "bytes": 620,
+      "sha256": "30a04704f7db679ea5ce106013b5db9e4d347bb52fcf5596896f8d9e4700f5c2"
+    },
+    {
+      "path": "verification/v0.3 method5 desktop build 6cf036e/inventory-check.log",
+      "bytes": 147,
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    },
+    {
+      "path": "verification/v0.3 method5 desktop build 6cf036e/package.log",
+      "bytes": 122,
+      "sha256": "d790532c35b84be31eb429981854ab2be0e8b68d9d3bca3361e28adebfc51c48"
+    },
+    {
+      "path": "verification/v0.3 method5 desktop build 6cf036e/desktop-build.log",
+      "bytes": 2560,
+      "sha256": "72cb4117186cde4dc7e7f35b709a9872f1cf19e4f62a2c28310eb99501044008"
+    },
+    {
+      "path": "verification/v0.3 method5 desktop build 6cf036e/cli-imports.txt",
+      "bytes": 784,
+      "sha256": "0b61943fd8b0567dfdc8b103bf6f80bca34e542a6806df60c5e54c89b8faa23c"
+    },
+    {
+      "path": "verification/v0.3 method5 desktop build 6cf036e/desktop-imports.txt",
+      "bytes": 1119,
+      "sha256": "91ade75cb4f454de2d2bbb71fa0f1b1373808dcbf0c41a47c7e6c1872955d085"
+    },
+    {
+      "path": "verification/v0.3 method5 CLI 6cf036e/build.json",
+      "bytes": 532,
+      "sha256": "797113868d8f30d42586150b79a3d741fd8b5c232cc252291e08f62bfc2ae983"
+    },
+    {
+      "path": "verification/v0.3 method5 CLI 6cf036e/cli-build.log",
+      "bytes": 606,
+      "sha256": "1fa50d38a5f965d1fd4f25a50b6dcdae89c1d8363b604ff729968c6c1f928bb4"
+    },
+    {
+      "path": "verification/v0.3 native candidate05 6cf036e 空間/install.json",
+      "bytes": 502,
+      "sha256": "59d3d76737d0bc9289c5f1fce2e928a802084ef096c20c7502ed4799693a79eb"
+    },
+    {
+      "path": "verification/v0.3 candidate05 installed binary audit abf5076505544427a29a585b950f5603 空間/audit.json",
+      "bytes": 2896,
+      "sha256": "4c1d0584b7b07ec0670c1b36ec63c734822db6b6cc573a405d6691bd746ded3e"
+    },
+    {
+      "path": "releases/0.3.0/20261011-method5-6cf036e/checksums.json",
+      "bytes": 465,
+      "sha256": "22c07c7eb6d2d7372914e252d5c5ad2fb5e01fd865677ea47d0f44226b3d1b0b"
+    }
+  ],
+  "reviewer_script_sha256": "ddcab3469d90d8d24a0bfea1cb420fe0562f85c40e1a318602e3f2c3876d6d5f",
+  "limitations": [
+    "Installed byte identity and retained install exit0 do not establish a clean-machine installation or complete native desktop workflow.",
+    "Strict inventory and exact retained notices support this package review; they do not imply every resolved dependency is linked into every executable.",
+    "PE imports show external Microsoft VC++ runtime requirements; WebView2 and Radiance remain separate prerequisites.",
+    "All scientific acceptance, full annual A/B convergence/replay, complete reference qualification and current native workflow evidence remain separate. This record makes no claim that annual alternative B completed.",
+    "Unsigned artifacts have no claimed code-signing or reputation status."
+  ],
+  "scientific_acceptance_complete": false,
+  "native_full_acceptance_complete": false,
+  "release_acceptance_complete": false
+}

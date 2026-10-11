@@ -948,6 +948,15 @@ mod current_result_tests {
         next_request = profile.clone();
         next_request.direct_solar_samples *= 4;
         assert!(!matches_requested_numerics(&record, &next_request).unwrap());
+        next_request = profile.clone();
+        next_request.coefficient_primary_repetitions = Some(256);
+        assert!(!matches_requested_numerics(&record, &next_request).unwrap());
+        next_request = profile.clone();
+        next_request.coefficient_receiver_scale = Some(1000.0);
+        assert!(!matches_requested_numerics(&record, &next_request).unwrap());
+        next_request = profile.clone();
+        next_request.ray_depth = 16;
+        assert!(!matches_requested_numerics(&record, &next_request).unwrap());
         let mut other_method = record.clone();
         other_method.provenance["engine"]["method_version"] = json!("historical-method/0");
         assert!(!matches_requested_numerics(&other_method, &profile).unwrap());
@@ -958,48 +967,53 @@ mod current_result_tests {
     #[test]
     fn accepted_historical_method_stays_inspectable_but_never_current() {
         use greenlens_radiance::annual;
-        let temporary = tempfile::tempdir().unwrap();
-        let mut historical = crate::climate::tests::fixture_for_method(
-            &temporary.path().join("historical"),
-            false,
+        for method in [
             annual::LEGACY_METHOD_VERSION,
-        );
-        let current = crate::climate::tests::fixture(&temporary.path().join("current"), false);
-        // Even a later-collected historical calculation cannot displace the
-        // actual current-method result with the same model/study role.
-        historical.provenance["finished_utc"] = json!("2026-01-02T00:00:00Z");
-        let original = serde_json::to_vec(&historical).unwrap();
-        climate::validate_record(&historical).unwrap();
-        assert!(is_stale(&historical, &historical.model, &historical.study).unwrap());
-        assert!(!is_stale(&current, &current.model, &current.study).unwrap());
-        assert_eq!(
-            historical
-                .study
-                .physical_input_hash(&historical.model)
-                .unwrap(),
-            current.study.physical_input_hash(&current.model).unwrap()
-        );
-        let selected = current_from_records(
-            &current.model,
-            "A",
-            &current.study,
-            &[current.clone(), historical.clone()],
-        )
-        .unwrap();
-        assert_eq!(selected.run.unwrap().id, current.id);
-        let history_only = current_from_records(
-            &historical.model,
-            "A",
-            &historical.study,
-            std::slice::from_ref(&historical),
-        )
-        .unwrap();
-        assert!(history_only.run.is_none() && history_only.summary.is_none());
-        assert_eq!(serde_json::to_vec(&historical).unwrap(), original);
-        assert_ne!(
-            climate::comparison_fingerprint(&historical).unwrap(),
-            climate::comparison_fingerprint(&current).unwrap()
-        );
+            annual::EXPLICIT_METHOD_VERSION,
+        ] {
+            let temporary = tempfile::tempdir().unwrap();
+            let mut historical = crate::climate::tests::fixture_for_method(
+                &temporary.path().join("historical"),
+                false,
+                method,
+            );
+            let current = crate::climate::tests::fixture(&temporary.path().join("current"), false);
+            // Even a later-collected historical calculation cannot displace the
+            // actual current-method result with the same model/study role.
+            historical.provenance["finished_utc"] = json!("2026-01-02T00:00:00Z");
+            let original = serde_json::to_vec(&historical).unwrap();
+            climate::validate_record(&historical).unwrap();
+            assert!(is_stale(&historical, &historical.model, &historical.study).unwrap());
+            assert!(!is_stale(&current, &current.model, &current.study).unwrap());
+            assert_eq!(
+                historical
+                    .study
+                    .physical_input_hash(&historical.model)
+                    .unwrap(),
+                current.study.physical_input_hash(&current.model).unwrap()
+            );
+            let selected = current_from_records(
+                &current.model,
+                "A",
+                &current.study,
+                &[current.clone(), historical.clone()],
+            )
+            .unwrap();
+            assert_eq!(selected.run.unwrap().id, current.id);
+            let history_only = current_from_records(
+                &historical.model,
+                "A",
+                &historical.study,
+                std::slice::from_ref(&historical),
+            )
+            .unwrap();
+            assert!(history_only.run.is_none() && history_only.summary.is_none());
+            assert_eq!(serde_json::to_vec(&historical).unwrap(), original);
+            assert_ne!(
+                climate::comparison_fingerprint(&historical).unwrap(),
+                climate::comparison_fingerprint(&current).unwrap()
+            );
+        }
     }
 }
 

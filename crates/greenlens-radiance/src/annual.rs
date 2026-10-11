@@ -5,7 +5,10 @@
 mod direct;
 #[path = "annual_matrix.rs"]
 mod matrix;
-pub use direct::{DirectBatch, DIRECT_POLICY, LEGACY_DIRECT_POLICY, MAX_DIRECT_BATCH_RAYS};
+pub use direct::{
+    DirectBatch, DIRECT_POLICY as EXPLICIT_DIRECT_POLICY, LEGACY_DIRECT_POLICY,
+    MAX_DIRECT_BATCH_RAYS,
+};
 
 pub use crate::process::AnnualProcessResources;
 use crate::{digest, process, scene_text, Engine, ProcessRecord, ENGINE_VERSION};
@@ -27,9 +30,14 @@ pub const LEGACY_ADAPTER_VERSION: &str = "radiance-climate-direct-corrected/2";
 pub const LEGACY_METHOD_VERSION: &str =
     "perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2";
 pub const LEGACY_RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v2";
-pub const ADAPTER_VERSION: &str = "radiance-climate-explicit-indirect-finite-direct/3";
-pub const METHOD_VERSION: &str = "perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3";
-pub const RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v3";
+pub const EXPLICIT_ADAPTER_VERSION: &str = "radiance-climate-explicit-indirect-finite-direct/3";
+pub const EXPLICIT_METHOD_VERSION: &str =
+    "perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3";
+pub const EXPLICIT_RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v3";
+pub const ADAPTER_VERSION: &str = "radiance-climate-repeated-direct-corrected/4";
+pub const METHOD_VERSION: &str =
+    "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4";
+pub const RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v4";
 pub const MAX_SENSORS: usize = 256;
 pub const HOURS: usize = 8760;
 
@@ -58,7 +66,9 @@ pub const RESULT_ORDERING: &str = "time_sensor_RGB; engine matrices sensor_rows_
 pub const RESULT_UNITS: &str = "visible Radiance RGB irradiance W/m2; illuminance=179*(0.265074126R+0.670114631G+0.064811243B) lx";
 pub const TIME_POLICY: &str = "EPW hourly midpoint hour-0.5, fixed standard time; no -u night removal or -i horizon adjustment; selected hour retains preceding two dew-point records; sun exported when any part of0.533-degree disc is above horizon";
 pub const LEGACY_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry.";
-pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once. Solar-only explicit source transport has no luminous dome or external ground geometry. Reflected solar is full explicit-source transport minus identical ab0 centroid-direct transport; finite-disc directional transmission replaces only direct sun. The emitted-source horizon policy applies to both solar terms.";
+pub const EXPLICIT_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once. Solar-only explicit source transport has no luminous dome or external ground geometry. Reflected solar is full explicit-source transport minus identical ab0 centroid-direct transport; finite-disc directional transmission replaces only direct sun. The emitted-source horizon policy applies to both solar terms.";
+pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry. Coefficients use a scaled receiver and contiguous repeated primaries with negative-depth Russian roulette; divide each coefficient product by the recorded receiver scale exactly once. Finite-direct transmission retains a separate unit receiver.";
+pub const DIRECT_POLICY: &str = "Equal-solid-angle midpoint solar-disc quadrature: uniform cos(theta) rings and azimuth; shipping 32x32, reference 64x64. Normalize printed solar direction; horizon clip each ray at world z>0. Ray origin is sensor+0.0001m*normal, matching pinned immediate-irradiance evaluation. Cull each ray only if it misses the authoritative glass polygon, with inclusive 1e-9m edge allowance; Radiance traces glazing/shading/context at ab0 with a unit receiver. Reflected solar is approximated by scaled repeated full minus direct-only patch transport, normalized once by the receiver scale and included only for emitted solar-source intervals. No negative corrected RGB is silently clamped.";
 pub const RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
 const EXECUTABLES: [(&str, &str); 5] = [
     (
@@ -112,7 +122,7 @@ pub struct AnnualProfile {
     pub ambient_resolution: u32,
     pub ambient_value: [f64; 3],
     pub limit_weight: f64,
-    pub ray_depth: u32,
+    pub ray_depth: i32,
     pub direct_threshold: f64,
     pub direct_certainty: f64,
     pub direct_jitter: f64,
@@ -125,10 +135,26 @@ pub struct AnnualProfile {
     /// canonical serialization; method-3 profiles bind explicit solar sampling.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub solar_ambient_divisions: Option<u32>,
+    /// Absent in immutable method-2/3 profiles. These two fields jointly bind
+    /// the method-4 primary grouping and contribution normalization.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub coefficient_primary_repetitions: Option<usize>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub coefficient_receiver_scale: Option<f64>,
 }
 impl AnnualProfile {
     /// Candidate numerical settings; release freeze requires the recorded suite.
     pub fn shipping() -> Self {
+        Self {
+            ambient_divisions: 8192,
+            direct_ambient_divisions: 8192,
+            ray_depth: -16,
+            coefficient_primary_repetitions: Some(128),
+            coefficient_receiver_scale: Some(100.0),
+            ..Self::legacy_shipping()
+        }
+    }
+    fn explicit_shipping() -> Self {
         Self {
             ambient_divisions: 1_048_576,
             direct_ambient_divisions: 1_048_576,
@@ -159,9 +185,23 @@ impl AnnualProfile {
             uncorrelated_random_sampling: false,
             workers: 1,
             solar_ambient_divisions: None,
+            coefficient_primary_repetitions: None,
+            coefficient_receiver_scale: None,
         }
     }
     pub fn reference() -> Self {
+        Self {
+            name: "reference".into(),
+            sky_basis_mf: 4,
+            ambient_bounces: 9,
+            ambient_divisions: 65536,
+            direct_ambient_divisions: 65536,
+            direct_solar_samples: 4096,
+            coefficient_primary_repetitions: Some(32),
+            ..Self::shipping()
+        }
+    }
+    fn explicit_reference() -> Self {
         Self {
             name: "reference".into(),
             sky_basis_mf: 4,
@@ -170,7 +210,7 @@ impl AnnualProfile {
             direct_ambient_divisions: 2_097_152,
             direct_solar_samples: 4096,
             solar_ambient_divisions: Some(16384),
-            ..Self::shipping()
+            ..Self::explicit_shipping()
         }
     }
     fn legacy_reference() -> Self {
@@ -187,6 +227,7 @@ impl AnnualProfile {
     pub fn shipping_for_method(method: &str) -> Result<Self> {
         match method {
             METHOD_VERSION => Ok(Self::shipping()),
+            EXPLICIT_METHOD_VERSION => Ok(Self::explicit_shipping()),
             LEGACY_METHOD_VERSION => Ok(Self::legacy_shipping()),
             _ => anyhow::bail!("Unsupported climate transport method"),
         }
@@ -194,12 +235,17 @@ impl AnnualProfile {
     pub fn reference_for_method(method: &str) -> Result<Self> {
         match method {
             METHOD_VERSION => Ok(Self::reference()),
+            EXPLICIT_METHOD_VERSION => Ok(Self::explicit_reference()),
             LEGACY_METHOD_VERSION => Ok(Self::legacy_reference()),
             _ => anyhow::bail!("Unsupported climate transport method"),
         }
     }
     pub fn method(&self) -> Result<&'static str> {
-        for method in [METHOD_VERSION, LEGACY_METHOD_VERSION] {
+        for method in [
+            METHOD_VERSION,
+            EXPLICIT_METHOD_VERSION,
+            LEGACY_METHOD_VERSION,
+        ] {
             if self == &Self::shipping_for_method(method)?
                 || self == &Self::reference_for_method(method)?
             {
@@ -280,6 +326,78 @@ impl AnnualProfile {
             .expect("complete profile includes -ab");
         arguments[position + 1] = "1".into();
         arguments
+    }
+    /// Complete coefficient command. Historical methods retain their original
+    /// argument order; method 4 averages contiguous primary repeats per sensor.
+    pub fn coefficient_arguments(&self, sensors: usize, direct: bool) -> Vec<String> {
+        let mut arguments = if direct {
+            self.direct_arguments(sensors)
+        } else {
+            self.arguments(sensors)
+        };
+        let repeated = self.coefficient_primary_repetitions;
+        if let Some(repeats) = repeated {
+            arguments.extend(["-c".into(), repeats.to_string()]);
+        }
+        arguments.extend([
+            if repeated.is_some() { "-V+" } else { "-V-" }.into(),
+            "-e".into(),
+            format!("MF:{}", self.sky_basis_mf),
+            "-f".into(),
+            "reinhart.cal".into(),
+            "-b".into(),
+            "rbin".into(),
+            "-bn".into(),
+            "Nrbins".into(),
+            "-m".into(),
+            "sky_glow".into(),
+            if repeated.is_some() {
+                "annual-coefficient.oct"
+            } else {
+                "annual-diffuse.oct"
+            }
+            .into(),
+        ]);
+        arguments
+    }
+    pub fn coefficient_receiver_text(&self) -> String {
+        match self.coefficient_receiver_scale {
+            None => RECEIVER_TEXT.into(),
+            Some(scale) => {
+                RECEIVER_TEXT.replacen("4 1 1 1 0", &format!("4 {scale} {scale} {scale} 0"), 1)
+            }
+        }
+    }
+    /// Regenerate bounded engine input from authoritative unique sensor text.
+    /// Sensor identity/order remains unchanged; only transport primaries repeat.
+    pub fn coefficient_sensor_text(&self, sensors: &str) -> Result<String> {
+        self.validate()?;
+        let lines: Vec<_> = sensors.lines().collect();
+        ensure!(
+            (1..=MAX_SENSORS).contains(&lines.len()) && sensors.ends_with('\n'),
+            "Invalid authoritative coefficient sensor input"
+        );
+        for line in &lines {
+            let values = line
+                .split_whitespace()
+                .map(str::parse::<f64>)
+                .collect::<std::result::Result<Vec<_>, _>>()?;
+            ensure!(
+                values.len() == 6 && values.iter().all(|value| value.is_finite()),
+                "Coefficient sensor records require six finite coordinates/directions"
+            );
+        }
+        let Some(repeats) = self.coefficient_primary_repetitions else {
+            return Ok(sensors.into());
+        };
+        let mut output = String::new();
+        for line in lines {
+            for _ in 0..repeats {
+                output.push_str(line);
+                output.push('\n');
+            }
+        }
+        Ok(output)
     }
     pub fn solar_arguments(&self, sensors: usize, direct: bool) -> Vec<String> {
         let mut arguments = self.arguments(sensors);
@@ -364,6 +482,8 @@ impl AnnualEngineIdentity {
             self.version == ENGINE_VERSION
                 && ((self.adapter_version == ADAPTER_VERSION
                     && self.method_version == METHOD_VERSION)
+                    || (self.adapter_version == EXPLICIT_ADAPTER_VERSION
+                        && self.method_version == EXPLICIT_METHOD_VERSION)
                     || (self.adapter_version == LEGACY_ADAPTER_VERSION
                         && self.method_version == LEGACY_METHOD_VERSION))
                 && self.package_sha256 == PACKAGE_SHA256,
@@ -413,6 +533,7 @@ impl AnnualEngineIdentity {
     pub fn discover_for_method(engine: &Engine, method: &str) -> Result<Self> {
         let adapter = match method {
             METHOD_VERSION => ADAPTER_VERSION,
+            EXPLICIT_METHOD_VERSION => EXPLICIT_ADAPTER_VERSION,
             LEGACY_METHOD_VERSION => LEGACY_ADAPTER_VERSION,
             _ => anyhow::bail!("Unsupported annual transport method"),
         };
@@ -510,7 +631,7 @@ impl AnnualResources {
             "Invalid annual resource UTC timestamps"
         );
         ensure!(
-            (5..=8 + HOURS).contains(&self.processes.len()),
+            (5..=9 + HOURS).contains(&self.processes.len()),
             "Incomplete annual process resource measurements"
         );
         let mut child_peak = 0;
@@ -750,6 +871,8 @@ pub fn simulate(
     let start = Instant::now();
     let method = profile.method()?;
     let legacy = method == LEGACY_METHOD_VERSION;
+    let repeated = method == METHOD_VERSION;
+    let patch_solar = method != EXPLICIT_METHOD_VERSION;
     cancelled(cancel)?;
     let model = greenlens_core::validate_model(&model.model)?;
     let sensor_count = model.sensor_grid.sensors.len();
@@ -785,6 +908,16 @@ pub fn simulate(
     fs::write(scratch.join("annual-sensors.pts"), &sensors)?;
     fs::write(scratch.join("annual-weather.epw"), &weather)?;
     fs::write(scratch.join("annual-receiver.rad"), RECEIVER_TEXT)?;
+    if repeated {
+        fs::write(
+            scratch.join("annual-coefficient-receiver.rad"),
+            profile.coefficient_receiver_text(),
+        )?;
+        fs::write(
+            scratch.join("annual-coefficient-sensors.pts"),
+            profile.coefficient_sensor_text(&sensors)?,
+        )?;
+    }
     let mut processes = Vec::new();
     let mut resources = AnnualResources {
         schema_version: "greenlens.annual-resources.v1".into(),
@@ -866,7 +999,7 @@ pub fn simulate(
         "annual-weather.epw".into(),
     ];
     execute("gendaymtx", sky_arguments, None, "annual-sky.mtx")?;
-    if legacy {
+    if patch_solar {
         execute(
             "gendaymtx",
             solar_generation_arguments(profile, true),
@@ -892,7 +1025,7 @@ pub fn simulate(
         &sun_indices,
     )?;
     MatrixReader::open(&scratch.join("annual-sky.mtx"), sky_rows, time_count)?.finish()?;
-    if legacy {
+    if patch_solar {
         MatrixReader::open(&scratch.join("annual-solar-sky.mtx"), sky_rows, time_count)?
             .finish()?;
     }
@@ -905,26 +1038,26 @@ pub fn simulate(
         None,
         "annual-diffuse.oct",
     )?;
-    let mut args = profile.arguments(sensor_count);
-    args.extend([
-        "-V-".into(),
-        "-e".into(),
-        format!("MF:{}", profile.sky_basis_mf),
-        "-f".into(),
-        "reinhart.cal".into(),
-        "-b".into(),
-        "rbin".into(),
-        "-bn".into(),
-        "Nrbins".into(),
-        "-m".into(),
-        "sky_glow".into(),
-        "annual-diffuse.oct".into(),
-    ]);
+    if repeated {
+        execute(
+            "oconv",
+            ["-f", "annual-scene.rad", "annual-coefficient-receiver.rad"]
+                .map(String::from)
+                .to_vec(),
+            None,
+            "annual-coefficient.oct",
+        )?;
+    }
+    let coefficient_input = if repeated {
+        "annual-coefficient-sensors.pts"
+    } else {
+        "annual-sensors.pts"
+    };
     on_log("Tracing diffuse and ground daylight coefficients; cancellation remains available");
     execute(
         "rcontrib",
-        args,
-        Some("annual-sensors.pts"),
+        profile.coefficient_arguments(sensor_count, false),
+        Some(coefficient_input),
         "annual-coefficients.mtx",
     )?;
     MatrixReader::open(
@@ -942,27 +1075,12 @@ pub fn simulate(
         None,
         "annual-diffuse-rgb.mtx",
     )?;
-    if !sun_indices.is_empty() && legacy {
+    if !sun_indices.is_empty() && patch_solar {
         on_log("Tracing direct-only sky-patch coefficients for solar correction");
-        let mut args = profile.direct_arguments(sensor_count);
-        args.extend([
-            "-V-".into(),
-            "-e".into(),
-            format!("MF:{}", profile.sky_basis_mf),
-            "-f".into(),
-            "reinhart.cal".into(),
-            "-b".into(),
-            "rbin".into(),
-            "-bn".into(),
-            "Nrbins".into(),
-            "-m".into(),
-            "sky_glow".into(),
-            "annual-diffuse.oct".into(),
-        ]);
         execute(
             "rcontrib",
-            args,
-            Some("annual-sensors.pts"),
+            profile.coefficient_arguments(sensor_count, true),
+            Some(coefficient_input),
             "annual-direct-coefficients.mtx",
         )?;
         MatrixReader::open(
@@ -992,7 +1110,7 @@ pub fn simulate(
             "annual-direct-patch-rgb.mtx",
         )?;
     }
-    if !sun_indices.is_empty() && !legacy {
+    if !sun_indices.is_empty() && !patch_solar {
         on_log("Compiling unchanged geometry with explicit solar sources and no luminous ground");
         execute(
             "oconv",
@@ -1033,13 +1151,14 @@ pub fn simulate(
                 .next_rgb()?
                 .context("Incomplete diffuse sensor/time matrix")?;
             if let Ok(position) = output_indices.binary_search(&index) {
-                combined[position * sensor_count + sensor] = rgb;
+                combined[position * sensor_count + sensor] =
+                    rgb.map(|value| value / profile.coefficient_receiver_scale.unwrap_or(1.0));
             }
         }
         cancelled(cancel)?;
     }
     ensure!(diffuse.next_rgb()?.is_none(), "Excess diffuse output");
-    if !sun_indices.is_empty() && legacy {
+    if !sun_indices.is_empty() && patch_solar {
         let mut solar = MatrixReader::open(
             &scratch.join("annual-solar-patch-rgb.mtx"),
             sensor_count,
@@ -1066,8 +1185,13 @@ pub fn simulate(
                         continue;
                     }
                     for channel in 0..3 {
-                        combined[position * sensor_count + sensor][channel] +=
-                            rgb[channel] - direct[channel];
+                        let reflected = (rgb[channel] - direct[channel])
+                            / profile.coefficient_receiver_scale.unwrap_or(1.0);
+                        if repeated {
+                            ensure!(reflected.is_finite() && reflected >= 0.0,
+                                "Invalid reflected solar correction at sensor {} interval {index}; no negative residual is clamped", sensor + 1);
+                        }
+                        combined[position * sensor_count + sensor][channel] += reflected;
                     }
                 }
             }
@@ -1078,7 +1202,7 @@ pub fn simulate(
             "Excess solar patch output"
         );
     }
-    if !sun_indices.is_empty() && !legacy {
+    if !sun_indices.is_empty() && !patch_solar {
         let mut solar = MatrixReader::open(
             &scratch.join("annual-solar-rgb.mtx"),
             sensor_count,
@@ -1189,6 +1313,8 @@ pub fn simulate(
     let recipe = AnnualRecipe {
         schema_version: if legacy {
             LEGACY_RECIPE_SCHEMA_VERSION
+        } else if !repeated {
+            EXPLICIT_RECIPE_SCHEMA_VERSION
         } else {
             RECIPE_SCHEMA_VERSION
         }
@@ -1210,12 +1336,16 @@ pub fn simulate(
         time_policy: TIME_POLICY.into(),
         ground_policy: if legacy {
             LEGACY_GROUND_POLICY
+        } else if !repeated {
+            EXPLICIT_GROUND_POLICY
         } else {
             GROUND_POLICY
         }
         .into(),
         direct_policy: if legacy {
             LEGACY_DIRECT_POLICY
+        } else if !repeated {
+            EXPLICIT_DIRECT_POLICY
         } else {
             DIRECT_POLICY
         }
@@ -1232,6 +1362,28 @@ pub fn simulate(
     resources.refresh(start, scratch)?;
     resources.validate()?;
     cancelled(cancel)?;
+    let mut compact_files = [
+        "annual-scene.rad",
+        "annual-sensors.pts",
+        "annual-weather.epw",
+        "annual-receiver.rad",
+        "annual-suns.rad",
+        "annual-sun-modifiers.txt",
+        "annual-recipe.json",
+        "annual-logs.json",
+        "annual-resources.json",
+    ]
+    .map(String::from)
+    .to_vec();
+    if repeated {
+        compact_files.extend(
+            [
+                "annual-coefficient-receiver.rad",
+                "annual-coefficient-sensors.pts",
+            ]
+            .map(String::from),
+        );
+    }
     Ok(AnnualOutput {
         combined_f64,
         sensor_count,
@@ -1239,19 +1391,7 @@ pub fn simulate(
         identity,
         profile: profile.clone(),
         processes,
-        compact_files: [
-            "annual-scene.rad",
-            "annual-sensors.pts",
-            "annual-weather.epw",
-            "annual-receiver.rad",
-            "annual-suns.rad",
-            "annual-sun-modifiers.txt",
-            "annual-recipe.json",
-            "annual-logs.json",
-            "annual-resources.json",
-        ]
-        .map(String::from)
-        .to_vec(),
+        compact_files,
         recipe,
         resources,
     })
@@ -1418,8 +1558,12 @@ mod tests {
     }
     #[test]
     fn explicit_profile_binds_solar_counts_and_never_aliases_history() {
-        for profile in [AnnualProfile::shipping(), AnnualProfile::reference()] {
-            assert_eq!(profile.method().unwrap(), METHOD_VERSION);
+        for profile in [
+            AnnualProfile::explicit_shipping(),
+            AnnualProfile::explicit_reference(),
+        ] {
+            assert_eq!(profile.method().unwrap(), EXPLICIT_METHOD_VERSION);
+            assert!(profile.validate_for_method(METHOD_VERSION).is_err());
             assert!(profile.validate_for_method(LEGACY_METHOD_VERSION).is_err());
             let full = profile.solar_arguments(24, false);
             let direct = profile.solar_arguments(24, true);
@@ -1437,6 +1581,114 @@ mod tests {
             let mut changed = profile.clone();
             changed.solar_ambient_divisions = Some(2048);
             assert!(changed.validate().is_err());
+        }
+    }
+    #[test]
+    fn repeated_coefficient_input_is_contiguous_and_historical_bytes_are_unchanged() {
+        let sensors = "1 2 0.8 0 0 1\n3 4 0.8 0 1 0\n";
+        for method in [LEGACY_METHOD_VERSION, EXPLICIT_METHOD_VERSION] {
+            let profile = AnnualProfile::shipping_for_method(method).unwrap();
+            assert_eq!(profile.coefficient_sensor_text(sensors).unwrap(), sensors);
+            assert_eq!(profile.coefficient_receiver_text(), RECEIVER_TEXT);
+            let serialized = serde_json::to_value(&profile).unwrap();
+            assert!(serialized.get("coefficient_primary_repetitions").is_none());
+            assert!(serialized.get("coefficient_receiver_scale").is_none());
+            assert_eq!(profile.ray_depth, 16);
+            assert!(!profile
+                .coefficient_arguments(2, false)
+                .contains(&"-c".into()));
+        }
+        for profile in [AnnualProfile::shipping(), AnnualProfile::reference()] {
+            let repeats = profile.coefficient_primary_repetitions.unwrap();
+            let text = profile.coefficient_sensor_text(sensors).unwrap();
+            let lines: Vec<_> = text.lines().collect();
+            assert_eq!(lines.len(), 2 * repeats);
+            assert!(lines[..repeats].iter().all(|line| *line == "1 2 0.8 0 0 1"));
+            assert!(lines[repeats..].iter().all(|line| *line == "3 4 0.8 0 1 0"));
+            assert!(profile
+                .coefficient_receiver_text()
+                .contains("4 100 100 100 0\n"));
+            assert_eq!(profile.ray_depth, -16);
+            assert_eq!(
+                profile.transmission_arguments().last().unwrap(),
+                "annual-diffuse.oct"
+            );
+            assert!(profile.coefficient_sensor_text("0 0 NaN 0 0 1\n").is_err());
+            assert!(profile
+                .coefficient_sensor_text("0 0 0 0 0 1\n".repeat(257).as_str())
+                .is_err());
+            let mut invalid = profile.clone();
+            invalid.coefficient_receiver_scale = None;
+            assert!(invalid.validate().is_err());
+            let mut invalid = profile.clone();
+            invalid.coefficient_primary_repetitions = Some(1);
+            assert!(invalid.validate().is_err());
+        }
+    }
+    #[cfg(windows)]
+    #[test]
+    fn native_repeated_scaled_coefficients_integrate_uniform_radiance() {
+        let engine = Engine::discover(None).expect("Required native Radiance is unavailable");
+        let root = PathBuf::from(std::env::var_os("LOCALAPPDATA").expect("Native local cache"))
+            .join("GreenLens/verification")
+            .join(format!(
+                "annual repeated coefficients 空間 {}",
+                Utc::now().timestamp_nanos_opt().unwrap()
+            ));
+        fs::create_dir_all(&root).unwrap();
+        let cancel = AtomicBool::new(false);
+        for profile in [AnnualProfile::shipping(), AnnualProfile::reference()] {
+            let directory = root.join(&profile.name);
+            fs::create_dir_all(&directory).unwrap();
+            fs::write(
+                directory.join("annual-coefficient-receiver.rad"),
+                profile.coefficient_receiver_text(),
+            )
+            .unwrap();
+            fs::write(
+                directory.join("annual-coefficient-sensors.pts"),
+                profile
+                    .coefficient_sensor_text("0 0 0 0 0 1\n0 0 0 0 1 0\n")
+                    .unwrap(),
+            )
+            .unwrap();
+            process::execute(
+                engine.root(),
+                "oconv",
+                &["-f".into(), "annual-coefficient-receiver.rad".into()],
+                &directory,
+                None,
+                &directory.join("annual-coefficient.oct"),
+                &cancel,
+            )
+            .unwrap();
+            process::execute(
+                engine.root(),
+                "rcontrib",
+                &profile.coefficient_arguments(2, true),
+                &directory,
+                Some(&directory.join("annual-coefficient-sensors.pts")),
+                &directory.join("coefficients.mtx"),
+                &cancel,
+            )
+            .unwrap();
+            let bins = 144 * profile.sky_basis_mf * profile.sky_basis_mf + 2;
+            let mut matrix =
+                MatrixReader::open(&directory.join("coefficients.mtx"), 2, bins).unwrap();
+            for _ in 0..2 {
+                let mut rgb = [0.0; 3];
+                for _ in 0..bins {
+                    let value = matrix.next_rgb().unwrap().unwrap();
+                    for channel in 0..3 {
+                        rgb[channel] += value[channel] / 100.0;
+                    }
+                }
+                for value in rgb {
+                    assert!((value - std::f64::consts::PI).abs() <= 0.01 * std::f64::consts::PI,
+                        "Uniform-sky integral must equal pi after exactly one receiver normalization: {value}");
+                }
+            }
+            assert!(matrix.next_rgb().unwrap().is_none());
         }
     }
 }

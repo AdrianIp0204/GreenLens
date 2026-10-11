@@ -332,7 +332,7 @@ pub fn validate_record(record: &ClimateRunRecord) -> Result<()> {
     );
     let profile: annual::AnnualProfile = serde_json::from_value(p["profile"].clone())?;
     profile.validate_for_method(&engine.method_version)?;
-    // A legacy profile omits method-3-only fields. Explicit nulls must not be
+    // Historical profiles omit later method fields. Explicit nulls must not be
     // normalized away while retaining a differently hashed provenance value.
     ensure!(
         serde_json::to_value(&profile)? == p["profile"],
@@ -452,6 +452,12 @@ pub fn evidence_files(record: &ClimateRunRecord) -> Vec<String> {
     ]
     .map(String::from)
     .to_vec();
+    if record.provenance["engine"]["method_version"] == annual::METHOD_VERSION {
+        files.extend([
+            "annual-coefficient-receiver.rad".into(),
+            "annual-coefficient-sensors.pts".into(),
+        ]);
+    }
     files.extend(
         record
             .series
@@ -471,6 +477,11 @@ fn recipe_contract(method: &str) -> Result<(&'static str, &'static str, &'static
             annual::LEGACY_GROUND_POLICY,
             annual::LEGACY_DIRECT_POLICY,
         )),
+        annual::EXPLICIT_METHOD_VERSION => Ok((
+            annual::EXPLICIT_RECIPE_SCHEMA_VERSION,
+            annual::EXPLICIT_GROUND_POLICY,
+            annual::EXPLICIT_DIRECT_POLICY,
+        )),
         annual::METHOD_VERSION => Ok((
             annual::RECIPE_SCHEMA_VERSION,
             annual::GROUND_POLICY,
@@ -486,7 +497,8 @@ fn expected_processes(
 ) -> Result<Vec<(String, Vec<String>)>> {
     recipe_contract(&recipe.method_version)?;
     recipe.profile.validate_for_method(&recipe.method_version)?;
-    let legacy = recipe.method_version == annual::LEGACY_METHOD_VERSION;
+    let patch_solar = recipe.method_version != annual::EXPLICIT_METHOD_VERSION;
+    let repeated = recipe.method_version == annual::METHOD_VERSION;
     let strings = |v: &[&str]| v.iter().map(|s| (*s).to_string()).collect::<Vec<_>>();
     let ground = record.model.sky.ground_reflectance.to_string();
     let mut sky = vec![
@@ -505,7 +517,7 @@ fn expected_processes(
     ];
     sky.push("annual-weather.epw".into());
     let mut result = vec![("gendaymtx.exe".into(), sky)];
-    if legacy {
+    if patch_solar {
         result.push((
             "gendaymtx.exe".into(),
             vec![
@@ -538,44 +550,30 @@ fn expected_processes(
         "oconv.exe".into(),
         strings(&["-f", "annual-scene.rad", "annual-receiver.rad"]),
     ));
-    let mut diffuse = recipe.profile.arguments(recipe.sensor_count);
-    diffuse.extend([
-        "-V-".into(),
-        "-e".into(),
-        format!("MF:{}", recipe.profile.sky_basis_mf),
-        "-f".into(),
-        "reinhart.cal".into(),
-        "-b".into(),
-        "rbin".into(),
-        "-bn".into(),
-        "Nrbins".into(),
-        "-m".into(),
-        "sky_glow".into(),
-        "annual-diffuse.oct".into(),
-    ]);
-    result.push(("rcontrib.exe".into(), diffuse));
+    if repeated {
+        result.push((
+            "oconv.exe".into(),
+            strings(&["-f", "annual-scene.rad", "annual-coefficient-receiver.rad"]),
+        ));
+    }
+    result.push((
+        "rcontrib.exe".into(),
+        recipe
+            .profile
+            .coefficient_arguments(recipe.sensor_count, false),
+    ));
     result.push((
         "dctimestep.exe".into(),
         strings(&["-oa", "annual-coefficients.mtx", "annual-sky.mtx"]),
     ));
     if !recipe.solar_interval_indices.is_empty() {
-        if legacy {
-            let mut direct = recipe.profile.direct_arguments(recipe.sensor_count);
-            direct.extend([
-                "-V-".into(),
-                "-e".into(),
-                format!("MF:{}", recipe.profile.sky_basis_mf),
-                "-f".into(),
-                "reinhart.cal".into(),
-                "-b".into(),
-                "rbin".into(),
-                "-bn".into(),
-                "Nrbins".into(),
-                "-m".into(),
-                "sky_glow".into(),
-                "annual-diffuse.oct".into(),
-            ]);
-            result.push(("rcontrib.exe".into(), direct));
+        if patch_solar {
+            result.push((
+                "rcontrib.exe".into(),
+                recipe
+                    .profile
+                    .coefficient_arguments(recipe.sensor_count, true),
+            ));
             result.push((
                 "dctimestep.exe".into(),
                 strings(&["-oa", "annual-coefficients.mtx", "annual-solar-sky.mtx"]),
@@ -835,6 +833,15 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
             && bytes(dir, "annual-sensors.pts")? == sensors.as_bytes(),
         "Scene/sensors differ from authoritative geometry"
     );
+    if recipe.method_version == annual::METHOD_VERSION {
+        ensure!(
+            bytes(dir, "annual-coefficient-receiver.rad")?
+                == recipe.profile.coefficient_receiver_text().as_bytes()
+                && bytes(dir, "annual-coefficient-sensors.pts")?
+                    == recipe.profile.coefficient_sensor_text(&sensors)?.as_bytes(),
+            "Scaled receiver/repeated sensors differ from recognized method inputs"
+        );
+    }
     let modifier_bytes = bytes(dir, "annual-sun-modifiers.txt")?;
     let source_bytes = bytes(dir, "annual-suns.rad")?;
     ensure!(

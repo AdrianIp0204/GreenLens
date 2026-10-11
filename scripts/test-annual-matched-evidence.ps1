@@ -71,6 +71,18 @@ $recipe=@{schema_version='greenlens.annual-recipe.v3';method_version=$newMethod;
 Assert-Test ((Get-MatchedMethodTuple $recipe).StartsWith('greenlens.annual-recipe.v3|')) 'matched harness recognizes exact method3 contract'
 $recipe.schema_version='greenlens.annual-recipe.v2'
 Assert-Rejected {Get-MatchedMethodTuple $recipe} 'method tuple' 'mixed annual method tuple rejected'
+$repeatedMethod='perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4'
+$repeated=$new|ConvertTo-Json -Depth 10|ConvertFrom-Json -AsHashtable
+$repeated.engine.adapter_version='radiance-climate-repeated-direct-corrected/4';$repeated.engine.method_version=$repeatedMethod;$repeated.engine.fingerprint=('3'*64)
+Assert-MatchedPhysicalReference $physical $repeated;$checks.Add('recognized method4 metadata alone does not alter a separately fixed reference')
+$recipe4=@{schema_version='greenlens.annual-recipe.v4';method_version=$repeatedMethod;engine=$repeated.engine}
+Assert-Test ((Get-MatchedMethodTuple $recipe4).StartsWith('greenlens.annual-recipe.v4|')) 'matched harness recognizes exact method4 contract'
+$recipe4.schema_version='greenlens.annual-recipe.v3'
+Assert-Rejected {Get-MatchedMethodTuple $recipe4} 'method tuple' 'method4 with method3 recipe schema rejected'
+$repeated.lr=-16
+Assert-Rejected {Assert-MatchedPhysicalReference $physical $repeated} 'physical inputs' 'negative-depth reference cannot reuse positive-depth values'
+$repeated.lr=16;$repeated.repetitions=128
+Assert-Rejected {Assert-MatchedPhysicalReference $physical $repeated} 'physical inputs' 'changed reference primary grouping cannot reuse an older reference'
 $report=@{scope='Synthetic evidence-handling regression, not scientific acceptance';checks=$checks;pass=$true}
 $report|ConvertTo-Json -Depth 4|Set-Content -LiteralPath (Join-Path $root 'result.json') -Encoding utf8
 Write-Host "Matched evidence regression: $($checks.Count) checks passed."

@@ -1,0 +1,253 @@
+{
+  "schema_version": "greenlens.repeated-coefficient-uniform.v1",
+  "scope": "Independent pi-L integration through native production coefficient argument/input helpers; empty uniform scene only, not annual or room acceptance",
+  "source_commit_at_test": "0d63e72",
+  "source_worktree_dirty": true,
+  "tested_adapter_source_sha256": "09adc0bbb867d9fa737f6507bc94395f81ae5612544ba9c9ef2d8a02be805fa6",
+  "observed_utc": "2026-10-11T09:39:12.2479045+00:00",
+  "command": "cargo test -p greenlens-radiance --lib",
+  "suite_passed": 22,
+  "failed": 0,
+  "child_fixture_entry_points_invoked_by_parent_tests": 4,
+  "roles": [
+    {
+      "profile": "shipping",
+      "matrix_rows": 2,
+      "matrix_columns": 578,
+      "receiver_scale": 100,
+      "process": {
+        "executable": "rcontrib.exe",
+        "arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-ab",
+          "1",
+          "-ad",
+          "8192",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "0.000000001",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-c",
+          "128",
+          "-V+",
+          "-e",
+          "MF:2",
+          "-f",
+          "reinhart.cal",
+          "-b",
+          "rbin",
+          "-bn",
+          "Nrbins",
+          "-m",
+          "sky_glow",
+          "annual-coefficient.oct"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T09:31:25.663206500+00:00",
+        "finished_utc": "2026-10-11T09:31:35.678951200+00:00",
+        "elapsed_ms": 10015,
+        "stderr": ""
+      },
+      "matrix_sha256": "2c9e985fca0325ba7458bd8975842374ca571663e54d99cc1ba8339237bb3cb7",
+      "repeated_input_sha256": "6c1a978956ddfd3b9fe29327344cad42426f7a93a6e1a2cd58fc3c9d98958d9c",
+      "sensors": [
+        {
+          "sensor_index": 0,
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "normalized_rgb": [
+            3.1415926266000014,
+            3.1415926266000014,
+            3.1415926266000014
+          ],
+          "expected_rgb": [
+            3.141592653589793,
+            3.141592653589793,
+            3.141592653589793
+          ],
+          "relative_error": [
+            8.591117535252959E-09,
+            8.591117535252959E-09,
+            8.591117535252959E-09
+          ],
+          "passed": true
+        },
+        {
+          "sensor_index": 1,
+          "direction": [
+            0,
+            1,
+            0
+          ],
+          "normalized_rgb": [
+            3.1415929037200003,
+            3.1415929037200003,
+            3.1415929037200003
+          ],
+          "expected_rgb": [
+            3.141592653589793,
+            3.141592653589793,
+            3.141592653589793
+          ],
+          "relative_error": [
+            7.961891778919895E-08,
+            7.961891778919895E-08,
+            7.961891778919895E-08
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "profile": "reference",
+      "matrix_rows": 2,
+      "matrix_columns": 2306,
+      "receiver_scale": 100,
+      "process": {
+        "executable": "rcontrib.exe",
+        "arguments": [
+          "-I+",
+          "-n",
+          "1",
+          "-faa",
+          "-y",
+          "2",
+          "-ab",
+          "1",
+          "-ad",
+          "65536",
+          "-as",
+          "0",
+          "-aa",
+          "0",
+          "-ar",
+          "256",
+          "-av",
+          "0",
+          "0",
+          "0",
+          "-lw",
+          "0.000000001",
+          "-lr",
+          "-16",
+          "-dt",
+          "0",
+          "-dc",
+          "1",
+          "-dj",
+          "0",
+          "-ds",
+          "0.05",
+          "-st",
+          "0",
+          "-ss",
+          "0",
+          "-u-",
+          "-c",
+          "32",
+          "-V+",
+          "-e",
+          "MF:4",
+          "-f",
+          "reinhart.cal",
+          "-b",
+          "rbin",
+          "-bn",
+          "Nrbins",
+          "-m",
+          "sky_glow",
+          "annual-coefficient.oct"
+        ],
+        "exit_code": 0,
+        "started_utc": "2026-10-11T09:31:35.866181600+00:00",
+        "finished_utc": "2026-10-11T09:32:00.175550300+00:00",
+        "elapsed_ms": 24309,
+        "stderr": ""
+      },
+      "matrix_sha256": "2904673d62604c537c837e18742b6e017efa36f52eb875716c36fd9cfd9962d4",
+      "repeated_input_sha256": "bc8d58bf58361109884235537ff3fc89d94ab31101cdafe58cafc06f4058b57f",
+      "sensors": [
+        {
+          "sensor_index": 0,
+          "direction": [
+            0,
+            0,
+            1
+          ],
+          "normalized_rgb": [
+            3.141592700909998,
+            3.141592700909998,
+            3.141592700909998
+          ],
+          "expected_rgb": [
+            3.141592653589793,
+            3.141592653589793,
+            3.141592653589793
+          ],
+          "relative_error": [
+            1.5062489095655096E-08,
+            1.5062489095655096E-08,
+            1.5062489095655096E-08
+          ],
+          "passed": true
+        },
+        {
+          "sensor_index": 1,
+          "direction": [
+            0,
+            1,
+            0
+          ],
+          "normalized_rgb": [
+            3.141592342631005,
+            3.141592342631005,
+            3.141592342631005
+          ],
+          "expected_rgb": [
+            3.141592653589793,
+            3.141592653589793,
+            3.141592653589793
+          ],
+          "relative_error": [
+            9.898125643278281E-08,
+            9.898125643278281E-08,
+            9.898125643278281E-08
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "release_acceptance_complete": false
+}

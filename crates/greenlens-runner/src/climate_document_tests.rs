@@ -78,6 +78,7 @@ fn external_conflict_preserves_climate_evidence_until_explicit_reconcile() {
 fn save_as_copies_current_weather_history_pending_evidence_and_unsaved_models() {
     let source = tempdir().unwrap();
     let historical_scratch = tempdir().unwrap();
+    let explicit_scratch = tempdir().unwrap();
     let pending_scratch = tempdir().unwrap();
     let destination = tempdir().unwrap();
     let initial = save_project(source.path(), &example(), None).unwrap();
@@ -91,6 +92,20 @@ fn save_as_copies_current_weather_history_pending_evidence_and_unsaved_models() 
         .collect(source.path(), &initial.project, Some(&initial.revision))
         .unwrap();
     drop(first);
+    let historical_explicit = climate::tests::fixture_for_method(
+        explicit_scratch.path(),
+        false,
+        greenlens_radiance::annual::EXPLICIT_METHOD_VERSION,
+    );
+    let second = completed_app(
+        explicit_scratch.path(),
+        &saved.project,
+        historical_explicit.clone(),
+    );
+    let saved = second
+        .collect(source.path(), &saved.project, Some(&saved.revision))
+        .unwrap();
+    drop(second);
     let mut b = climate::tests::fixture(pending_scratch.path(), false);
     b.alternative_id = "B".into();
     save_fixture(pending_scratch.path(), &b);
@@ -108,7 +123,7 @@ fn save_as_copies_current_weather_history_pending_evidence_and_unsaved_models() 
         .unwrap();
     assert_eq!(copied.project.name, local.name);
     assert_eq!(copied.project.alternatives[0].model.window.width_m, 2.1);
-    assert_eq!(copied.climate_results.len(), 2);
+    assert_eq!(copied.climate_results.len(), 3);
     assert_eq!(
         copied.project.climate.as_ref().unwrap().studies,
         local.climate.as_ref().unwrap().studies
@@ -119,10 +134,11 @@ fn save_as_copies_current_weather_history_pending_evidence_and_unsaved_models() 
     );
     assert_eq!(
         open_project(source.path()).unwrap().climate_results.len(),
-        1
+        2
     );
     for (scratch, record) in [
         (historical_scratch.path(), &a),
+        (explicit_scratch.path(), &historical_explicit),
         (pending_scratch.path(), &b),
     ] {
         for relative in climate::evidence_files(record)
@@ -147,11 +163,16 @@ fn save_as_copies_current_weather_history_pending_evidence_and_unsaved_models() 
     drop(app);
     drop(source);
     drop(historical_scratch);
+    drop(explicit_scratch);
     drop(pending_scratch);
 
     let reopened = open_project(destination.path()).unwrap();
-    assert_eq!(reopened.climate_results.len(), 2);
-    for (actual, expected) in reopened.climate_results.iter().zip([&a, &b]) {
+    assert_eq!(reopened.climate_results.len(), 3);
+    for (actual, expected) in reopened
+        .climate_results
+        .iter()
+        .zip([&a, &historical_explicit, &b])
+    {
         assert_eq!(
             canonical_hash(actual).unwrap(),
             canonical_hash(expected).unwrap()
@@ -169,10 +190,42 @@ fn save_as_copies_current_weather_history_pending_evidence_and_unsaved_models() 
     }
     let output = tempdir().unwrap();
     let archive = output.path().join("portable-climate.zip");
-    climate_export::export_selected(destination.path(), &archive, &[a.id, b.id]).unwrap();
+    climate_export::export_selected(
+        destination.path(),
+        &archive,
+        &[a.id.clone(), historical_explicit.id.clone(), b.id.clone()],
+    )
+    .unwrap();
     let extracted = output.path().join("extracted");
     extract_package(&archive, &extracted).unwrap();
-    assert_eq!(open_project(&extracted).unwrap().climate_results.len(), 2);
+    let exported = open_project(&extracted).unwrap();
+    assert_eq!(exported.climate_results.len(), 3);
+    for (actual, expected) in exported
+        .climate_results
+        .iter()
+        .zip([&a, &historical_explicit, &b])
+    {
+        assert_eq!(
+            canonical_hash(actual).unwrap(),
+            canonical_hash(expected).unwrap()
+        );
+        for relative in climate::evidence_files(expected)
+            .into_iter()
+            .chain(["checksums.json".into()])
+        {
+            assert_eq!(
+                fs::read(
+                    destination
+                        .path()
+                        .join("runs")
+                        .join(&expected.id)
+                        .join(&relative)
+                )
+                .unwrap(),
+                fs::read(extracted.join("runs").join(&expected.id).join(&relative)).unwrap(),
+            );
+        }
+    }
 }
 
 #[test]

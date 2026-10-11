@@ -27,13 +27,13 @@ function Get-MatchedPhysicalReferenceHash($Reference) {
     # Clone before removing the three identity fields; never rewrite old evidence.
     $physical=$Reference|ConvertTo-Json -Depth 12|ConvertFrom-Json -AsHashtable
     $pair=$physical.engine.adapter_version+'|'+$physical.engine.method_version
-    if ($pair -notin @('radiance-climate-direct-corrected/2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2','radiance-climate-explicit-indirect-finite-direct/3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3')) { throw 'Unsupported reference method tuple.' }
+    if ($pair -notin @('radiance-climate-direct-corrected/2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2','radiance-climate-explicit-indirect-finite-direct/3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3','radiance-climate-repeated-direct-corrected/4|perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4')) { throw 'Unsupported reference method tuple.' }
     foreach ($name in @('adapter_version','method_version','fingerprint')) { $null=$physical.engine.Remove($name) }
     return Get-MatchedReferenceHash $physical
 }
 function Get-MatchedMethodTuple($Recipe) {
     $tuple=$Recipe.schema_version+'|'+$Recipe.method_version+'|'+$Recipe.engine.adapter_version+'|'+$Recipe.engine.method_version
-    $supported=@('greenlens.annual-recipe.v2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2|radiance-climate-direct-corrected/2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2','greenlens.annual-recipe.v3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3|radiance-climate-explicit-indirect-finite-direct/3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3')
+    $supported=@('greenlens.annual-recipe.v2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2|radiance-climate-direct-corrected/2|perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2','greenlens.annual-recipe.v3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3|radiance-climate-explicit-indirect-finite-direct/3|perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3','greenlens.annual-recipe.v4|perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4|radiance-climate-repeated-direct-corrected/4|perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4')
     if ($tuple -notin $supported) { throw 'Unsupported annual matched method tuple.' }
     return $tuple
 }

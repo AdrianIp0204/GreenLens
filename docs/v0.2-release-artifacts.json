@@ -1,7 +1,7 @@
 {
   "schema_version": "greenlens.release-artifacts.v0.2",
-  "generated_utc": "2026-10-11T03:37:30.5238110Z",
-  "acceptance_status": "installed_selection_usability_candidate_native_ab_modifiers_and_ci_pending",
+  "generated_utc": "2026-10-11T04:24:48.7673914Z",
+  "acceptance_status": "native_modifier_human_observation_pending_all_other_required_checks_passed",
   "application_source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
   "source_build_clean": true,
   "signed": false,
@@ -21,6 +21,16 @@
       "file": "GreenLens-CLI-0.2.0-windows-x64.zip",
       "bytes": 1465589,
       "sha256": "c4fe77555c6aaf29af37298c00d3d5efde6203aac00db1c0db50d1f893aa316a"
+    },
+    {
+      "file": "GreenLens-synthetic-a-b-evidence.zip",
+      "sha256": "ab2fab60bdb43054fcbfbf4d28cf48135e2533c3b2ebe3dd91613ab09c0ef5dc",
+      "bytes": 94651
+    },
+    {
+      "file": "report.html",
+      "sha256": "f9c0fed93f4e5017d3e35f8c079d8f0e45959c38b6b5a450913ec7dfd6e589ed",
+      "bytes": 85245
     }
   ],
   "checks": {
@@ -31,25 +41,61 @@
     "distributed_cli_doctor_passed": true,
     "distribution_matches_frozen_installer_and_cli": true,
     "cli_zip_entries": 32,
-    "workspace_guide_included": true
+    "workspace_guide_included": true,
+    "native_export_entries": 27,
+    "native_export_uncompressed_bytes": 274633,
+    "native_export_sealed_files_verified": 26,
+    "native_export_paths_and_privacy_passed": true,
+    "distributed_project_compare_passed": true
   },
   "evidence": {
     "scientific": "v0.2-science-evidence.json",
     "scientific_record": "v0.2-scientific-verification.md",
     "native": "v0.2-native-verification.md",
     "ci_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38108694542",
-    "ci_status": "in_progress",
+    "ci_status": "completed: success; downloaded artifact digest and retained source files verified",
     "native_required_demonstrations": "candidate05 explicit Replace/Add/Remove in list and viewport passed counts 1->2->1 with unchanged model and four populated camera records; compact/full layouts passed; precise human modifier-click check pending. Candidate04 held-drag Escape and RMB navigation passed per human report.",
-    "new_native_ab": "installed candidate05 A completed: a0406c58-820f-4ef0-b119-de70a0017ade, 77 finite nonnegative values, all required exits zero, clean source 1fbb6547; B/export/replay pending",
+    "new_native_ab": "Installed candidate05 A a0406c58-820f-4ef0-b119-de70a0017ade and B f6c7c71b-13a3-41e4-9c16-de69b444ffeb completed; 77 sensors each, all required exits zero and source 1fbb6547 clean. Shared comparison, save/export/copied-project reopen and Close-Discard passed. Distributed CLI replay passed both 77-sensor runs, maximum absolute difference 0 lx.",
     "v01_candidate04_cli_replay": "passed: both historical runs, 77 sensors each, maximum absolute difference 0 lx",
     "previous_candidate_artifacts": [
       "v0.2-candidate04-artifacts.json",
       "v0.2-candidate03-artifacts.json"
-    ]
+    ],
+    "ci_record": "v0.2-ci-evidence.json",
+    "distributed_cli_native_ab_replay": {
+      "verified_utc": "2026-10-11T04:24:48.7079468Z",
+      "status": "passed",
+      "tolerance": "max(0.1 lx, 0.1% of reference)",
+      "verification": "same-engine integration, not independent physical validation",
+      "exit_code": 0,
+      "cli_sha256": "1e03cf1a1404c4b1f5f77ccc5f8662b4e3f99b3c631a9b3f95a5c5072a16a2ff",
+      "report": "candidate05-cli-ab-replay.json",
+      "report_sha256": "228da34480d69d195512bacabbb27db216f95b49f936e8bb678ddb97525a76db",
+      "source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
+      "checks": [
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "a0406c58-820f-4ef0-b119-de70a0017ade",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "f6c7c71b-13a3-41e4-9c16-de69b444ffeb",
+          "sensors": 77
+        }
+      ]
+    }
   },
   "notes": [
-    "Earlier candidates and their immutable evidence remain preserved separately. Candidate05 acceptance is open until required native selection, fresh A/B workflow and exact-source CI pass.",
+    "Earlier candidates and immutable evidence remain preserved separately. Release acceptance is open only for the required native Shift-add/Ctrl-remove observation. Explicit selection modes and all other required checks passed.",
     "The packaged documentation is the 1fbb654 source snapshot; current acceptance records remain in the repository.",
-    "A separate clean-machine installation and signing have not been performed."
-  ]
+    "A separate clean-machine installation and signing have not been performed.",
+    "Offline HTML source, identities, statistics and integrity were verified; supplementary visual rendering was blocked by the browser file-URL policy and is not claimed."
+  ],
+  "saved_example": "synthetic-a-b-project/project.json",
+  "example_project_files": 23,
+  "example_project_copy_hashes_equal": true,
+  "release_acceptance_complete": false
 }

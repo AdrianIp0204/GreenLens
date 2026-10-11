@@ -1,7 +1,7 @@
 {
   "schema_version": "greenlens.native-verification.v0.2",
   "observed_date_utc": "2026-10-11",
-  "acceptance_status": "candidate05_explicit_selection_verified_modifier_human_retest_pending_native_ab_in_progress",
+  "acceptance_status": "native_ab_export_reopen_replay_verified_native_modifier_human_observation_pending",
   "method": "Installed per-user production Tauri application, embedded frontend, actual shared Rust backend and native Radiance; no development server",
   "environment": {
     "os": "Windows 11 Home",
@@ -139,6 +139,18 @@
       "native_export": "passed",
       "runs": 3,
       "separate_replay": "not claimed"
+    },
+    {
+      "file": "candidate05-native-evidence.zip",
+      "sha256": "ab2fab60bdb43054fcbfbf4d28cf48135e2533c3b2ebe3dd91613ab09c0ef5dc",
+      "bytes": 94651,
+      "status": "native dialog export passed",
+      "cli_replay": "pending",
+      "runs": 2,
+      "sensors_each": 77,
+      "candidate": "05",
+      "source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
+      "source_worktree_dirty": false
     }
   ],
   "required_native_gesture_gaps": [
@@ -174,7 +186,17 @@
     "31-candidate05-viewport-remove-selection.png",
     "32-candidate05-full-layout-history-drawer.png",
     "33-candidate05-compact-900x500-selection-history-drawer.png",
-    "34-candidate05-native-A-modifier-handoff.png"
+    "34-candidate05-native-A-modifier-handoff.png",
+    "35-candidate05-A-completed-preserved-camera.png",
+    "36-candidate05-B-real-job-logs.png",
+    "37-candidate05-real-AB-shared-scale.png",
+    "38-candidate05-real-AB-heatmap-statistics.png",
+    "39-candidate05-real-AB-sensor-deltas.png",
+    "40-candidate05-copied-project-reopened.png",
+    "41-candidate05-copied-dirty-stale-width.png",
+    "42-candidate05-native-close-discard-guard.png",
+    "43-candidate05-discard-reopened-width-restored.png",
+    "44-candidate05-final-selection-handoff.png"
   ],
   "human_observation": {
     "status": "investigation and native retest required",
@@ -415,11 +437,84 @@
         ],
         "rtrace_elapsed_ms": 215678
       },
-      "B": "not started",
-      "export": "not yet created"
+      "B": {
+        "status": "completed and automatically saved",
+        "run_id": "f6c7c71b-13a3-41e4-9c16-de69b444ffeb",
+        "sensors": 77,
+        "statistics": {
+          "count": 77,
+          "max": 1079.445896,
+          "mean": 175.62391238311687,
+          "min": 40.526280199999995
+        },
+        "source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
+        "source_worktree_dirty": false,
+        "application_version": "0.2.0",
+        "schema_version": "0.1.0",
+        "started_utc": "2026-10-11T03:59:15.226134200+00:00",
+        "finished_utc": "2026-10-11T04:02:27.870270700+00:00",
+        "required_process_exit_codes": [
+          0,
+          0,
+          0
+        ],
+        "rtrace_elapsed_ms": 192444
+      },
+      "export": {
+        "file": "candidate05-native-evidence.zip",
+        "sha256": "ab2fab60bdb43054fcbfbf4d28cf48135e2533c3b2ebe3dd91613ab09c0ef5dc",
+        "bytes": 94651,
+        "status": "native dialog export passed",
+        "cli_replay": {
+          "verified_utc": "2026-10-11T04:24:48.7079468Z",
+          "status": "passed",
+          "tolerance": "max(0.1 lx, 0.1% of reference)",
+          "verification": "same-engine integration, not independent physical validation",
+          "exit_code": 0,
+          "cli_sha256": "1e03cf1a1404c4b1f5f77ccc5f8662b4e3f99b3c631a9b3f95a5c5072a16a2ff",
+          "report": "candidate05-cli-ab-replay.json",
+          "report_sha256": "228da34480d69d195512bacabbb27db216f95b49f936e8bb678ddb97525a76db",
+          "source_commit": "1fbb6547b98240a9a9d877a3e50221ab66a896e6",
+          "checks": [
+            {
+              "max_absolute_error_lux": 0.0,
+              "passed": true,
+              "run_id": "a0406c58-820f-4ef0-b119-de70a0017ade",
+              "sensors": 77
+            },
+            {
+              "max_absolute_error_lux": 0.0,
+              "passed": true,
+              "run_id": "f6c7c71b-13a3-41e4-9c16-de69b444ffeb",
+              "sensors": 77
+            }
+          ]
+        }
+      },
+      "comparison": {
+        "both_snapshots_match_current_designs": true,
+        "shared_scale_max_lux": 1454.3633650000002,
+        "displayed_delta_statistics_lx": {
+          "min": -374.92,
+          "mean": -61.59,
+          "max": -5.44
+        },
+        "sensor_table": "Observed stable IDs and A/B/absolute delta values; first rows matched immutable output rounding",
+        "percentage_deltas": "omitted"
+      },
+      "reopen": {
+        "status": "passed using independent copied directory",
+        "files": 24,
+        "includes_empty_lock": true,
+        "all_sha256_equal_before_copy_after_discard_and_final_reopen": true,
+        "immutable_run_files": 22,
+        "original_saved_project_unchanged": true,
+        "proof": "candidate05-final-reopen-integrity.json"
+      }
     },
     "handoff": {
       "selection_mode": "replace",
+      "tool": "select",
       "selected": [
         "window"
       ],
@@ -428,9 +523,13 @@
         "Window"
       ],
       "no_modal": true,
-      "active_real_job": "A",
+      "active_real_job": false,
       "native_input_paused": true,
-      "job_update": "A completed while native input remained paused for human modifier check"
+      "saved": true,
+      "undo_enabled": false,
+      "display": "four Shaded views, maximized, Cutaway on",
+      "fixture": "independent copied synthetic A/B project",
+      "screenshot": "44-candidate05-final-selection-handoff.png"
     },
     "runtime_imports": "Repeated dumpbin: desktop VCRUNTIME140.dll and VCRUNTIME140_1.dll; CLI VCRUNTIME140.dll, plus Windows/UCRT imports",
     "result_arrival_camera_integrity": {
@@ -450,11 +549,31 @@
       "before_runs": 0,
       "after_runs": 1,
       "observed_without_native_input": true
+    },
+    "close_discard": {
+      "status": "passed",
+      "fixture": "independent copy of saved synthetic A/B project",
+      "unsaved_window_width_m": 2,
+      "last_saved_window_width_m": 1.8,
+      "native_close_guard_observed": true,
+      "discard_closed_process": true,
+      "all_24_saved_file_sha256_equal": true,
+      "native_reopen_width_m": 1.8,
+      "undo_enabled_after_reopen": false,
+      "human_work_untouched": true,
+      "proof": "candidate05-close-discard-integrity.json"
+    },
+    "offline_report_verification": {
+      "external_references_and_private_paths_found": false,
+      "visual_rendering": "not executed: local file URL rejected by browser protocol policy; no workaround attempted",
+      "source_statistics_and_snapshot_ids_verified": true,
+      "standalone_matches_zip": true
     }
   },
   "human_retest_candidate05": {
-    "status": "pending single concrete modifier check",
+    "status": "unverified; pending human observation, automation resumed for independent B workflow",
     "instructions": "Hold Shift while clicking Room envelope in Objects to obtain2 selected; then hold Ctrl while clicking Window to obtain1 Room envelope",
     "automated_modifier_mouse_claim": false
-  }
+  },
+  "release_acceptance_complete": false
 }

@@ -1,6 +1,6 @@
 # Installation and launch
 
-The historical v0.1 package was exercised on native Windows with no development server. Fresh v0.2 package and interaction outcomes are recorded separately in [v0.2 native verification](v0.2-native-verification.md) and [release progress](progress.md); consult these for actual acceptance status. The following clean-machine installation route is documented; a separate clean Windows installation has not been tested.
+The historical v0.1 package was exercised on native Windows with no development server. Historical v0.2 package and interaction outcomes remain in [v0.2 native verification](v0.2-native-verification.md). The current 0.3.0 development candidate adds climate studies; consult [v0.3 native verification](v0.3-native-verification.md) and [release progress](progress.md) for its incomplete scientific/native acceptance. The following clean-machine installation route is documented; a separate clean Windows installation has not been tested.
 
 ## Windows users
 
@@ -15,7 +15,7 @@ For a default installation, the exact PowerShell launch command is:
 & "$env:LOCALAPPDATA/Programs/GreenLens/greenlens-desktop.exe"
 ```
 
-The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and retained notices. Extract the entire directory before use. From the extracted `GreenLens-CLI-0.2.0-windows-x64` directory:
+The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and retained notices. Extract the entire directory before use. From the extracted `GreenLens-CLI-0.3.0-windows-x64` directory:
 
 ```powershell
 ./greenlens.exe doctor
@@ -28,6 +28,8 @@ The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and r
 ```
 
 For an engine installed elsewhere, enter the directory containing `bin` and `lib` under **Analysis → Project and engine**. CLI commands accept `--engine-dir <directory>`. Initial acquisition needs internet; ordinary calculation, reopening, report viewing and exporting operate locally without it.
+
+For climate studies, follow the [weather import, annual desktop and CLI guide](v0.3-usage.md). The real-weather example retains PVGIS/ERA5 attribution and source-specific time conventions. Climate verification scripts require PowerShell 7.5 or newer. Annual numerical accuracy and installed workflow checks are still in progress; the candidate must not be represented as a verified release.
 
 ## Build from source
 

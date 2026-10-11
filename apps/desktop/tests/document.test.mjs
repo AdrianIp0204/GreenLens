@@ -3,8 +3,8 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { DocumentHistory, documentSignature, protectReplacement, isTextTarget } from '../src/workspace/document.mjs';
 import { parseCommand, parseQuantity, modelCommand, setParameter, repeatable, suggestions } from '../src/workspace/commands.mjs';
-import { editLockReason } from '../src/workspace/locks.mjs';
-import { visibleResult } from '../src/presentation.mjs';
+import { editLockReason, validatedEditLockReason } from '../src/workspace/locks.mjs';
+import { visibleResult, newestCompatibleResult } from '../src/presentation.mjs';
 
 // Injected validator checks transaction orchestration only. Rust geometry and real
 // Radiance acceptance are exercised independently by the required native suites.
@@ -17,15 +17,19 @@ const validate=async candidate=>{
 };
 test('one provisional drag commits one validated snapshot; undo/redo restore exact inputs and result relation',async()=>{
   const h=new DocumentHistory(),original=project(),before=await validate(model);
-  const run={validated:before,lux:[1]};
+  const run={id:'original',alternative_id:'A',validated:before,lux:[1]};
   let provisional=structuredClone(model);for(let i=0;i<20;i++)provisional.window.width_m=1.8+i*.01;
   const edited=await h.edit(original,'A',provisional,'Window drag',validate);
   assert.equal(h.past.length,1);assert.equal(h.future.length,0);assert.equal(original.alternatives[0].model.window.width_m,1.8);
   assert.equal(visibleResult(edited.validated,run),null);
   const undone=await h.traverse(edited.project,'undo',validate);
   assert.deepEqual(undone.project,original);assert.equal(visibleResult(undone.validated,run),run);
+  const editedRun={id:'edited',alternative_id:'A',validated:edited.validated,lux:[2]},records=[run,editedRun];
+  assert.equal(newestCompatibleResult(undone.validated,records,'A'),run);
   const redone=await h.traverse(undone.project,'redo',validate);
   assert.deepEqual(redone.project,edited.project);assert.equal(visibleResult(redone.validated,run),null);
+  assert.equal(newestCompatibleResult(redone.validated,records,'A'),editedRun);
+  assert.deepEqual(records.map(record=>record.id),['original','edited']);
 });
 test('invalid edits and failed undo validation preserve accepted document and both stacks',async()=>{
   const h=new DocumentHistory(),p=project();
@@ -128,6 +132,72 @@ test('layer/object locks reject edits across command/property/gizmo paths withou
   assert.match(editLockReason(model,setParameter(model,'materials.visible_transmittance',.5),display),/locked/i);
   display.layers.window.locked=false;display.objects.window={locked:true};assert.match(editLockReason(model,setParameter(model,'window.sill_m',1),display),/locked/i);
   assert.equal(editLockReason(model,setParameter(model,'sky.ground_reflectance',.1),display),null);
+});
+
+// These intentionally synthetic validator outputs test lock/transaction
+// orchestration. They are not substitutes for Rust geometry or engine checks.
+const lockDisplay=()=>({layers:{},objects:{}});
+const sampleSurface=(id,material)=>({id,material,reflectance:material==='glass'?null:.5,vertices:[[0,0,0],[1,0,0],[1,1,0],[0,1,0]]});
+const withDependents=()=>{
+  const value=structuredClone(fixture);
+  value.model.overhang={projection_m:.6,side_extension_m:0,gap_above_window_m:0,reflectance:.5};
+  value.model.obstruction={center_x_m:2,width_m:1,depth_m:1,height_m:1,distance_m:3,reflectance:.2};
+  value.surfaces.push(sampleSurface('overhang','overhang'),sampleSurface('obstruction_top','obstruction'));
+  return value;
+};
+test('window edits honor locked generated shading and facade surfaces, but unaffected locks allow edits',()=>{
+  const before=withDependents(),after=structuredClone(before),display=lockDisplay();
+  after.model.window.center_x_m+=.1;
+  for(const surface of after.surfaces.filter(s=>['overhang','south_right'].includes(s.id)))surface.vertices[0][0]+=.1;
+  display.layers.overhang={locked:true};assert.match(validatedEditLockReason(before,after,display),/overhang is locked/);
+  display.layers.overhang.locked=false;display.objects.overhang={locked:true};assert.match(validatedEditLockReason(before,after,display),/overhang is locked/);
+  display.objects={room:{locked:true}};assert.match(validatedEditLockReason(before,after,display),/surface:south_right is locked/);
+  display.objects={'surface:south_right':{locked:true}};assert.match(validatedEditLockReason(before,after,display),/surface:south_right is locked/);
+  display.objects={'surface:floor':{locked:true}};assert.equal(validatedEditLockReason(before,after,display),null);
+});
+test('room rotation honors each affected dependent layer and individual generated sensor',()=>{
+  const before=withDependents(),after=structuredClone(before);
+  after.model.room.rotation_deg=90;
+  for(const surface of after.surfaces)surface.vertices[0][0]+=.1;
+  after.sensor_grid.sensors[0].position[0]+=.1;
+  for(const layer of ['window','overhang','obstruction','sensors']){
+    const display=lockDisplay();display.layers[layer]={locked:true};assert.match(validatedEditLockReason(before,after,display),/locked/);
+  }
+  for(const id of ['window','overhang','obstruction','sensor-plane','sensor:s000001']){
+    const display=lockDisplay();display.objects[id]={locked:true};assert.match(validatedEditLockReason(before,after,display),/locked/);
+  }
+});
+test('locks inspect added/removed geometry and material changes without broad dependency guessing',()=>{
+  const before=withDependents(),removed=structuredClone(before),display=lockDisplay();
+  removed.model.sensors.requested_spacing_m=1;
+  removed.sensor_grid.sensors.shift();display.objects['sensor:s000001']={locked:true};
+  assert.match(validatedEditLockReason(before,removed,display),/sensor:s000001 is locked/);
+  const material=structuredClone(before);material.model.materials.ceiling_reflectance=.7;
+  material.surfaces.find(s=>s.id==='ceiling').reflectance=.7;
+  display.objects={'surface:ceiling':{locked:true}};assert.match(validatedEditLockReason(before,material,display),/surface:ceiling is locked/);
+  display.objects={'surface:floor':{locked:true}};assert.equal(validatedEditLockReason(before,material,display),null);
+  const glazing=structuredClone(before);glazing.model.materials.visible_transmittance=.5;
+  display.objects={overhang:{locked:true}};assert.equal(validatedEditLockReason(before,glazing,display),null);
+  const metadata=structuredClone(before);metadata.model.name='Display name only';
+  display.layers={room:{locked:true},window:{locked:true},overhang:{locked:true},obstruction:{locked:true},sensors:{locked:true}};
+  assert.equal(validatedEditLockReason(before,metadata,display),null);
+});
+test('validated lock rejection preserves document and both history stacks for edits, undo and redo',async()=>{
+  const before=withDependents(),after=structuredClone(before),display=lockDisplay();
+  after.model.window.center_x_m+=.1;after.surfaces.find(s=>s.id==='overhang').vertices[0][0]+=.1;
+  const snapshots=new Map([before,after].map(v=>[JSON.stringify(v.model),v]));
+  const backend=async candidate=>structuredClone(snapshots.get(JSON.stringify(candidate)));
+  const check=async(b,_a,validated)=>{const reason=validatedEditLockReason(await backend(b),validated,display);if(reason)throw new Error(reason);};
+  const p=project();p.alternatives[0].model=structuredClone(before.model);const original=structuredClone(p),h=new DocumentHistory();
+  display.layers.overhang={locked:true};
+  await assert.rejects(h.edit(p,'A',after.model,'Move window',backend,check),/overhang is locked/);
+  assert.deepEqual(p,original);assert.equal(h.past.length,0);assert.equal(h.future.length,0);assert.equal(h.busy,false);
+  display.layers.overhang.locked=false;const edited=await h.edit(p,'A',after.model,'Move window',backend,check);
+  display.layers.overhang.locked=true;await assert.rejects(h.traverse(edited.project,'undo',backend,check),/overhang is locked/);
+  assert.equal(h.past.length,1);assert.equal(h.future.length,0);assert.deepEqual(edited.project.alternatives[0].model,after.model);
+  display.layers.overhang.locked=false;const undone=await h.traverse(edited.project,'undo',backend,check);
+  display.layers.overhang.locked=true;await assert.rejects(h.traverse(undone.project,'redo',backend,check),/overhang is locked/);
+  assert.equal(h.past.length,0);assert.equal(h.future.length,1);assert.deepEqual(undone.project,original);assert.equal(h.busy,false);
 });
 test('global shortcuts preserve text controls and contenteditable native editing',()=>{
   for(const tagName of ['INPUT','TEXTAREA','SELECT'])assert.equal(isTextTarget({tagName}),true);

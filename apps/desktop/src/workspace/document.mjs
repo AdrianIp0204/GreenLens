@@ -9,13 +9,14 @@ export class DocumentHistory {
   future = [];
   busy = false;
   reset() { this.past = []; this.future = []; }
-  async edit(project, alternativeId, candidate, label, validate) {
+  async edit(project, alternativeId, candidate, label, validate, checkEdit = () => {}) {
     if (this.busy) throw new Error('Wait for the current document edit to finish.');
     const current = project.alternatives.find(a => a.id === alternativeId);
     if (!current) throw new Error('The design alternative no longer exists.');
     this.busy = true;
     try {
       const validated = await validate(clone(candidate));
+      await checkEdit(current.model, validated.model, validated);
       if (JSON.stringify(current.model) === JSON.stringify(validated.model)) return { project, validated, changed: false };
       const entry = { alternativeId, before: clone(current.model), after: clone(validated.model), label };
       const next = { ...project, alternatives: project.alternatives.map(a => a.id === alternativeId ? { ...a, model: clone(validated.model) } : a) };
@@ -34,8 +35,8 @@ export class DocumentHistory {
       const current = project.alternatives.find(a => a.id === entry.alternativeId);
       if (!current) throw new Error('The design alternative no longer exists.');
       const candidate = clone(direction === 'undo' ? entry.before : entry.after);
-      checkEdit(current.model, candidate);
       const validated = await validate(candidate);
+      await checkEdit(current.model, validated.model, validated);
       const next = { ...project, alternatives: project.alternatives.map(a => a.id === entry.alternativeId ? { ...a, model: clone(validated.model) } : a) };
       source.pop(); target.push(entry);
       return { project: next, validated, alternativeId: entry.alternativeId, label: entry.label };

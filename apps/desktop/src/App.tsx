@@ -1,12 +1,13 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { invoke, isTauri } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
-import type { Comparison, Model, RunRecord, ValidatedModel } from './types';
-import { visibleResult } from './presentation.mjs';
+import type { Model, RunRecord, ValidatedModel } from './types';
+import { newestCompatibleResult } from './presentation.mjs';
 import { semanticObjects, objectLabel, objectVisibility, selectableIds } from './viewport/entities';
 import type { LayerId, NumericHandleRequest, PointerStatus, SelectionMode, ToolId, ViewCommand, ViewId } from './viewport/types';
 import { mergeSelection, selectionIntent } from './viewport/interaction.mjs';
 import { useDocument, errorText } from './workspace/useDocument';
+import { useHistoricalComparison } from './workspace/useHistoricalComparison';
 import { COMMANDS, modelCommand, parseCommand, parseQuantity, repeatable, setParameter, suggestions } from './workspace/commands.mjs';
 import { isTextTarget } from './workspace/document.mjs';
 import PropertiesPanel, { ParameterField } from './workspace/PropertiesPanel';
@@ -28,15 +29,16 @@ export default function App(){
   const [viewCommand,setViewCommand]=useState<ViewCommand>(),[pointer,setPointer]=useState<PointerStatus>({world:null,snap:null,view:'perspective'});
   const [preview,setPreview]=useState(''),[numeric,setNumeric]=useState<NumericHandleRequest|null>(null),[numericText,setNumericText]=useState('');
   const [engineDir,setEngineDir]=useState(''),[engineInfo,setEngineInfo]=useState('');
-  const [comparison,setComparison]=useState<Comparison|null>(null),[comparisonError,setComparisonError]=useState('');
-  const [hashes,setHashes]=useState<Record<string,string>>({}),[metrics,setMetrics]=useState('');
+  const [hashState,setHashState]=useState<{key:string;values:Record<string,string>}>({key:'',values:{}}),[metrics,setMetrics]=useState('');
   const [recoverConfirm,setRecoverConfirm]=useState(false);
   const commandRef=useRef<HTMLInputElement>(null),seq=useRef(0);
   const records=useMemo(()=>doc.job?.result&&!doc.results.some(r=>r.id===doc.job?.result?.id)?[...doc.results,doc.job.result]:doc.results,[doc.results,doc.job]);
+  const {a:comparisonA,b:comparisonB,comparison,comparisonError,comparing,selectRun}=useHistoricalComparison(doc.documentId,records);
+  const modelsKey=JSON.stringify(doc.project?.alternatives??[]),hashes=hashState.key===modelsKey?hashState.values:{};
   const latest=(id:string):RunRecord|null=>[...records].reverse().find(r=>r.alternative_id===id)??null;
-  const latestA=latest('A'),latestB=latest('B'),run=latest(doc.alternative);
-  const current=visibleResult(doc.validated,run,doc.validating) as RunRecord|null;
-  const stale=Boolean(run&&!current),staleA=Boolean(latestA&&hashes.A!==latestA.validated.scientific_input_hash),staleB=Boolean(latestB&&hashes.B!==latestB.validated.scientific_input_hash);
+  const run=latest(doc.alternative);
+  const current=newestCompatibleResult(doc.validated,records,doc.alternative,doc.validating) as RunRecord|null;
+  const stale=Boolean(run&&!current);
   const scale=Math.max(1,current?.statistics.max??0,comparison?.scale_max_lux??0);
   const objects=useMemo(()=>doc.validated?semanticObjects(doc.validated):[],[doc.validated]);
   const listedObjects=useMemo(()=>{const order=['room','window','overhang','obstruction','sensor-plane'];return objects.filter(o=>!o.id.startsWith('sensor:')).sort((a,b)=>(order.includes(a.id)?order.indexOf(a.id):order.length)-(order.includes(b.id)?order.indexOf(b.id):order.length));},[objects]);
@@ -45,8 +47,7 @@ export default function App(){
   const editDisabled=doc.busy||doc.running||Boolean(doc.guard)||Boolean(preview);
   useEffect(()=>{setSelection([]);setSelectionMode('replace');setTool('select');setPrompt(null);setNumeric(null);setPreview('');},[doc.documentId,doc.alternative]);
   useEffect(()=>{setSelection(ids=>{const next=ids.filter(id=>{const object=objects.find(o=>o.id===id);return object&&objectVisibility(id,object.layer,doc.display).visible;});return next.length===ids.length?ids:next;});},[objects,doc.display]);
-  useEffect(()=>{let live=true;if(!doc.project)return;Promise.all(doc.project.alternatives.map(async a=>[a.id,(await invoke<ValidatedModel>('validate',{model:a.model})).scientific_input_hash] as const)).then(entries=>live&&setHashes(Object.fromEntries(entries))).catch(()=>{});return()=>{live=false;};},[doc.project?.alternatives]);
-  useEffect(()=>{let live=true;setComparison(null);setComparisonError('');if(latestA&&latestB)invoke<Comparison>('compare_runs',{a:latestA,b:latestB}).then(value=>live&&setComparison(value)).catch(e=>live&&setComparisonError(errorText(e)));return()=>{live=false;};},[latestA,latestB]);
+  useEffect(()=>{let live=true;if(!doc.project)return;Promise.all(doc.project.alternatives.map(async a=>[a.id,(await invoke<ValidatedModel>('validate',{model:a.model})).scientific_input_hash] as const)).then(entries=>live&&setHashState({key:modelsKey,values:Object.fromEntries(entries)})).catch(()=>{});return()=>{live=false;};},[doc.project?.alternatives,modelsKey]);
   useEffect(()=>{const update=()=>{const css=`${window.innerWidth} × ${window.innerHeight} CSS px · DPR ${window.devicePixelRatio}`;setMetrics(css);if(isTauri())Promise.all([getCurrentWindow().innerSize(),getCurrentWindow().scaleFactor()]).then(([s,d])=>setMetrics(`${css} · native ${s.width} × ${s.height} px · scale ${d}`)).catch(()=>{});};update();window.addEventListener('resize',update);return()=>window.removeEventListener('resize',update);},[]);
   const log=(text:string)=>setHistory(h=>[...h.slice(-149),text]);
   const navigate=(kind:ViewCommand['kind'],view?:ViewId)=>setViewCommand({sequence:++seq.current,kind,view});
@@ -106,7 +107,7 @@ export default function App(){
     <main className="modeling-area"><aside className="modeling-tools" aria-label="Modeling tools">{(Object.keys(toolNames) as ToolId[]).map(name=><button key={name} title={`${toolNames[name]}: constrained parametric ${name==='select'?'selection':'handles'}`} aria-label={`${toolNames[name]} tool`} aria-pressed={tool===name} disabled={editDisabled} onClick={()=>{setTool(name);setSelectionMode('replace');}}><ToolIcon name={name}/><small>{toolNames[name]}</small></button>)}<hr/><button title="Create overhang" aria-label="Create overhang" disabled={editDisabled} onClick={()=>void dispatch('Overhang')}><ToolIcon name="shade"/><small>Shade</small></button><button title="Create obstruction" aria-label="Create obstruction" disabled={editDisabled} onClick={()=>void dispatch('Obstruction')}><ToolIcon name="box"/><small>Context</small></button><button title="Remove selected optional entity" aria-label="Remove optional entity" disabled={editDisabled} onClick={()=>void dispatch('Remove')}><ToolIcon name="remove"/><small>Remove</small></button></aside>
       <section className="central-workspace"><SelectionBar mode={selectionMode} names={selection.map(objectLabel)} disabled={Boolean(preview)||Boolean(numeric)||Boolean(doc.guard)} onMode={mode=>void dispatch(`Select${mode[0].toUpperCase()}${mode.slice(1)}`)} onObjects={()=>{setPanelHidden(false);setPanel('layers');}}/><div className="viewport-stage"><Suspense fallback={<div className="loading">Preparing WebGL2 viewports…</div>}><SceneView documentId={String(doc.documentId)} validated={doc.validated} lux={current?.lux??null} scale={scale} selection={selection} selectionMode={selectionMode} onSelectionModeChange={setSelectionMode} display={doc.display} tool={tool} disabled={doc.busy||doc.running||Boolean(doc.guard)||Boolean(numeric)} viewCommand={viewCommand} onSelectionChange={setSelection} onDisplayChange={doc.setDisplay} onCommitCandidate={doc.commit} onNumericHandle={request=>{setNumeric(request);setNumericText(String(request.value));}} onPreviewCandidate={(_model,label)=>setPreview(label??'')} onPointerStatus={setPointer} onInteractionError={doc.setError}/></Suspense>{stale&&<div className="stale-banner">Historical result hidden: current design has changed. Undo or calculate again.</div>}</div>
         <div className="analysis-tabs" aria-label="Analysis views">{[['table','Sensor table'],['compare','A/B compare'],['logs','Job logs'],['evidence','Evidence'],['method','Method']].map(([id,label])=><button key={id} aria-pressed={drawer===id} onClick={()=>setDrawer(drawer===id?null:id)}>{label}</button>)}<span>{doc.validated?.sensor_grid.sensors.length??0} sensors · {selection.length} selected</span></div>
-        {drawer&&<section className="analysis-drawer" aria-label={drawer}><button className="drawer-close" aria-label="Close analysis panel" onClick={()=>setDrawer(null)}>×</button><AnalysisContent tab={drawer} validated={doc.validated} current={current} records={records} comparison={comparison} comparisonError={comparisonError} job={doc.job} selection={selection} onSelect={select} latestA={latestA} latestB={latestB} staleA={staleA} staleB={staleB}/></section>}
+        {drawer&&<section className="analysis-drawer" aria-label={drawer}><button className="drawer-close" aria-label="Close analysis panel" onClick={()=>setDrawer(null)}>×</button><AnalysisContent tab={drawer} validated={doc.validated} current={current} records={records} comparison={comparison} comparisonError={comparisonError} comparing={comparing} job={doc.job} selection={selection} onSelect={select} comparisonA={comparisonA} comparisonB={comparisonB} currentHashes={hashes} onComparisonSelect={selectRun}/></section>}
       </section>
       {!panelHidden&&<><div className="panel-resizer" role="separator" aria-label="Resize properties panel" aria-orientation="vertical" aria-valuemin={260} aria-valuemax={520} aria-valuenow={panelWidth} tabIndex={0} onPointerDown={beginResize} onKeyDown={e=>{if(e.key==='ArrowLeft'||e.key==='ArrowRight'){e.preventDefault();setPanelWidth(w=>Math.max(260,Math.min(520,w+(e.key==='ArrowLeft'?20:-20))));}}}/><aside className="right-panel" style={{width:panelWidth}}><div className="panel-tabs" role="tablist">{['properties','layers','analysis'].map(id=><button role="tab" aria-selected={panel===id} key={id} onClick={()=>setPanel(id)}>{id[0].toUpperCase()+id.slice(1)}</button>)}</div><div className="panel-body">
         {panel==='properties'&&doc.model&&<PropertiesPanel model={doc.model} validated={doc.validated} selection={selection} result={current} locked={locked} disabled={editDisabled} commit={doc.commit} select={select}/>}

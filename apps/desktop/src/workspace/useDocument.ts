@@ -5,7 +5,7 @@ import type { JobStatus, Model, Project, ProjectView, RunRecord, ValidatedModel 
 import { defaultDisplay, type ViewportDisplayState } from '../viewport/types';
 import { DocumentHistory, documentSignature, protectReplacement } from './document.mjs';
 import { activeJob } from '../presentation.mjs';
-import { editLockReason } from './locks.mjs';
+import { validatedEditLockReason } from './locks.mjs';
 
 export const errorText = (e: unknown) => typeof e === 'string' ? e : e instanceof Error ? e.message : JSON.stringify(e);
 const validate = (model:Model) => invoke<ValidatedModel>('validate', { model });
@@ -82,12 +82,17 @@ export function useDocument() {
     actionBusy.current=true;setBusy(true);setError('');
     try{await body();}catch(e){setError(errorText(e));}finally{actionBusy.current=false;setBusy(false);}
   };
+  const checkEditLocks=async(before:Model,_after:Model,afterValidated:ValidatedModel)=>{
+    const cached=state.current.validated;
+    const beforeValidated=cached&&JSON.stringify(cached.model)===JSON.stringify(before)?cached:await validate(before);
+    const reason=validatedEditLockReason(beforeValidated,afterValidated,state.current.display);
+    if(reason)throw new Error(reason);
+  };
   const commit=async(candidate:Model,label:string)=>{
     const s=state.current;if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active document operation or calculation before editing.');return false;}
     actionBusy.current=true;setBusy(true);setError('');
     try{
-      const lockReason=editLockReason(s.project.alternatives.find(a=>a.id===s.alternative)!.model,candidate,s.display);if(lockReason)throw new Error(lockReason);
-      const next=await history.current.edit(s.project,s.alternative,candidate,label,validate);
+      const next=await history.current.edit(s.project,s.alternative,candidate,label,validate,checkEditLocks);
       setProject(next.project);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);
       setMessage(next.changed?`${label} accepted by Rust. One undo entry.`:'No parameter change.');return true;
     }catch(e){setError(`Edit rejected; document and history unchanged. ${errorText(e)}`);return false;}
@@ -95,7 +100,7 @@ export function useDocument() {
   };
   const traverse=async(direction:'undo'|'redo')=>runAction(async()=>{
     const s=state.current;if(!s.project||activeJob(s.job))throw new Error('Finish or cancel the calculation before undo/redo.');
-    const next=await history.current.traverse(s.project,direction,validate,(before,after)=>{const reason=editLockReason(before,after,s.display);if(reason)throw new Error(reason);});setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
+    const next=await history.current.traverse(s.project,direction,validate,checkEditLocks);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
   });
   const cancelAndWait=async()=>{const status=await invoke<JobStatus|null>('cancel_and_wait');setJob(status);state.current.job=status;return status;};
   const save=async(asCopy=false):Promise<boolean>=>{

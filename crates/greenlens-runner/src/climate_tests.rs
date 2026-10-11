@@ -253,7 +253,7 @@ fn fixture_at_method(
         units: annual::RESULT_UNITS.into(),
         time_policy: annual::TIME_POLICY.into(),
         ground_policy: recipe_contract(method).unwrap().1.into(),
-        direct_policy: annual::DIRECT_POLICY.into(),
+        direct_policy: recipe_contract(method).unwrap().2.into(),
         direct_batches: vec![],
         child_environment: BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
         processes: vec![],
@@ -787,6 +787,22 @@ fn direct_recipe_sources_and_trace_processes_are_validated_after_coherent_reseal
         save_mock_recipe(&root, &mut record, &recipe);
         read_run_directory(&root).unwrap();
 
+        // A coherently resealed recipe must not describe the other method's
+        // reflected-solar calculation, even though finite rays are unchanged.
+        let mut wrong_policy = recipe.clone();
+        wrong_policy.direct_policy = if method == annual::LEGACY_METHOD_VERSION {
+            annual::DIRECT_POLICY
+        } else {
+            annual::LEGACY_DIRECT_POLICY
+        }
+        .into();
+        save_mock_recipe(&root, &mut record, &wrong_policy);
+        assert!(read_run_directory(&root)
+            .unwrap_err()
+            .to_string()
+            .contains("direct policy"));
+        save_mock_recipe(&root, &mut record, &recipe);
+
         // A retained process list cannot quietly increase bounce depth of the
         // finite-direction transmission trace, even with all outer hashes updated.
         let mut changed = recipe.clone();
@@ -1002,6 +1018,7 @@ fn historical_process_builder_matches_actual_native_export_contract() {
         snapshot["recipe_schema_version"]
     );
     assert_eq!(json!(recipe.ground_policy), snapshot["ground_policy"]);
+    assert_eq!(json!(recipe.direct_policy), snapshot["direct_policy"]);
     // Match the exported 24-sensor process shape without fabricating a result
     // vector. Only the recognized command builder is exercised here.
     recipe.sensor_count = snapshot["sensor_count"].as_u64().unwrap() as usize;

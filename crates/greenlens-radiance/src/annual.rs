@@ -5,7 +5,7 @@
 mod direct;
 #[path = "annual_matrix.rs"]
 mod matrix;
-pub use direct::{DirectBatch, DIRECT_POLICY, MAX_DIRECT_BATCH_RAYS};
+pub use direct::{DirectBatch, DIRECT_POLICY, LEGACY_DIRECT_POLICY, MAX_DIRECT_BATCH_RAYS};
 
 pub use crate::process::AnnualProcessResources;
 use crate::{digest, process, scene_text, Engine, ProcessRecord, ENGINE_VERSION};
@@ -1214,7 +1214,12 @@ pub fn simulate(
             GROUND_POLICY
         }
         .into(),
-        direct_policy: DIRECT_POLICY.into(),
+        direct_policy: if legacy {
+            LEGACY_DIRECT_POLICY
+        } else {
+            DIRECT_POLICY
+        }
+        .into(),
         direct_batches,
         child_environment: BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
         processes: processes.clone(),

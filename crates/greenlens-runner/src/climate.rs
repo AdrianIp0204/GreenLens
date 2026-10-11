@@ -464,13 +464,18 @@ pub fn evidence_files(record: &ClimateRunRecord) -> Vec<String> {
 
 /// Only these compiled method contracts may interpret retained recipes.
 /// Historical evidence is never retagged to the current method.
-fn recipe_contract(method: &str) -> Result<(&'static str, &'static str)> {
+fn recipe_contract(method: &str) -> Result<(&'static str, &'static str, &'static str)> {
     match method {
         annual::LEGACY_METHOD_VERSION => Ok((
             annual::LEGACY_RECIPE_SCHEMA_VERSION,
             annual::LEGACY_GROUND_POLICY,
+            annual::LEGACY_DIRECT_POLICY,
         )),
-        annual::METHOD_VERSION => Ok((annual::RECIPE_SCHEMA_VERSION, annual::GROUND_POLICY)),
+        annual::METHOD_VERSION => Ok((
+            annual::RECIPE_SCHEMA_VERSION,
+            annual::GROUND_POLICY,
+            annual::DIRECT_POLICY,
+        )),
         _ => anyhow::bail!("Unsupported climate method contract"),
     }
 }
@@ -611,7 +616,7 @@ fn expected_processes(
 fn validate_direct_batches(recipe: &annual::AnnualRecipe) -> Result<()> {
     recipe.profile.validate_for_method(&recipe.method_version)?;
     ensure!(
-        recipe.direct_policy == annual::DIRECT_POLICY,
+        recipe.direct_policy == recipe_contract(&recipe.method_version)?.2,
         "Unsupported direct solar policy"
     );
     ensure!(
@@ -759,7 +764,7 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
     );
     let recipe: annual::AnnualRecipe = serde_json::from_slice(&recipe_bytes)?;
     let recipe_json: Value = serde_json::from_slice(&recipe_bytes)?;
-    let (schema, ground_policy) = recipe_contract(&recipe.method_version)?;
+    let (schema, ground_policy, direct_policy) = recipe_contract(&recipe.method_version)?;
     ensure!(
         recipe.schema_version == schema && recipe.method_version == recipe.engine.method_version,
         "Unsupported or inconsistent annual recipe"
@@ -773,7 +778,7 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
             && recipe.units == annual::RESULT_UNITS
             && recipe.time_policy == annual::TIME_POLICY
             && recipe.ground_policy == ground_policy
-            && recipe.direct_policy == annual::DIRECT_POLICY
+            && recipe.direct_policy == direct_policy
             && bytes(dir, "annual-receiver.rad")? == annual::RECEIVER_TEXT.as_bytes(),
         "Unsupported receiver, units, ordering or climate time/ground/direct policy"
     );

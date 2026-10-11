@@ -11,6 +11,7 @@
   "method_version": "perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2",
   "recipe_schema_version": "greenlens.annual-recipe.v2",
   "ground_policy": "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry.",
+  "direct_policy": "Equal-solid-angle midpoint solar-disc quadrature: uniform cos(theta) rings and azimuth; shipping 32x32, reference 64x64. Normalize printed solar direction; horizon clip each ray at world z>0. Ray origin is sensor+0.0001m*normal, matching pinned immediate-irradiance evaluation. Cull each ray only if it misses the authoritative glass polygon, with inclusive 1e-9m edge allowance; Radiance traces glazing/shading/context at ab0. Reflected solar is patch-approximated. Solar patch transport is included only for emitted solar-source intervals. No negative corrected RGB is silently clamped.",
   "profile": {
     "name": "shipping",
     "sky_basis_mf": 2,

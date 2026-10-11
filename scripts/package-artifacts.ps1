@@ -61,6 +61,7 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-engine/sky-time-block-four-case-summary.json',
         'docs/evidence/v0.3-engine/overlap-horizon-controls.json',
         'docs/evidence/v0.3-engine/horizon-moment-planar-controls.json',
+        'docs/evidence/v0.3-engine/canonical128-moment-room-controls.json',
         'docs/evidence/v0.3-engine/fixed-depth-order-controls.json',
         'docs/v0.3-depth-order-diagnostic.md',
         'docs/v0.3-permutation-investigation.md',

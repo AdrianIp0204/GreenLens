@@ -917,7 +917,7 @@ mod current_result_tests {
         let tmp = tempfile::tempdir().unwrap();
         let record = crate::climate::tests::fixture(tmp.path(), false);
         let mut changed_profile = record.clone();
-        changed_profile.provenance["profile"]["ambient_divisions"] = json!(262144);
+        changed_profile.provenance["profile"]["ambient_divisions"] = json!(131073);
         let mut changed_method = record.clone();
         changed_method.provenance["engine"]["method_version"] = json!("unsupported-method/999");
         for unsupported in [changed_profile, changed_method] {
@@ -953,6 +953,53 @@ mod current_result_tests {
         assert!(!matches_requested_numerics(&other_method, &profile).unwrap());
         assert_eq!(serde_json::to_vec(&record).unwrap(), stored_bytes);
         assert!(!is_stale(&record, &record.model, &record.study).unwrap());
+    }
+
+    #[test]
+    fn accepted_historical_method_stays_inspectable_but_never_current() {
+        use greenlens_radiance::annual;
+        let temporary = tempfile::tempdir().unwrap();
+        let mut historical = crate::climate::tests::fixture_for_method(
+            &temporary.path().join("historical"),
+            false,
+            annual::LEGACY_METHOD_VERSION,
+        );
+        let current = crate::climate::tests::fixture(&temporary.path().join("current"), false);
+        // Even a later-collected historical calculation cannot displace the
+        // actual current-method result with the same model/study role.
+        historical.provenance["finished_utc"] = json!("2026-01-02T00:00:00Z");
+        let original = serde_json::to_vec(&historical).unwrap();
+        climate::validate_record(&historical).unwrap();
+        assert!(is_stale(&historical, &historical.model, &historical.study).unwrap());
+        assert!(!is_stale(&current, &current.model, &current.study).unwrap());
+        assert_eq!(
+            historical
+                .study
+                .physical_input_hash(&historical.model)
+                .unwrap(),
+            current.study.physical_input_hash(&current.model).unwrap()
+        );
+        let selected = current_from_records(
+            &current.model,
+            "A",
+            &current.study,
+            &[current.clone(), historical.clone()],
+        )
+        .unwrap();
+        assert_eq!(selected.run.unwrap().id, current.id);
+        let history_only = current_from_records(
+            &historical.model,
+            "A",
+            &historical.study,
+            std::slice::from_ref(&historical),
+        )
+        .unwrap();
+        assert!(history_only.run.is_none() && history_only.summary.is_none());
+        assert_eq!(serde_json::to_vec(&historical).unwrap(), original);
+        assert_ne!(
+            climate::comparison_fingerprint(&historical).unwrap(),
+            climate::comparison_fingerprint(&current).unwrap()
+        );
     }
 }
 

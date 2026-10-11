@@ -23,11 +23,16 @@ fn source() -> WeatherSource {
         synthetic_non_climatic: true,
     }
 }
-fn engine() -> annual::AnnualEngineIdentity {
+fn engine(method: &str) -> annual::AnnualEngineIdentity {
+    let adapter = match method {
+        annual::LEGACY_METHOD_VERSION => annual::LEGACY_ADAPTER_VERSION,
+        annual::METHOD_VERSION => annual::ADAPTER_VERSION,
+        _ => panic!("Unknown synthetic method"),
+    };
     let mut engine = annual::AnnualEngineIdentity {
         version: greenlens_radiance::ENGINE_VERSION.into(),
-        adapter_version: annual::ADAPTER_VERSION.into(),
-        method_version: annual::METHOD_VERSION.into(),
+        adapter_version: adapter.into(),
+        method_version: method.into(),
         package_sha256: "c4f02efcb4a33f4a43b7ce0ba58100544abc317a1be61f7b0425a64a66eb8a09".into(),
         executable_sha256: [
             (
@@ -105,7 +110,27 @@ fn reseal(root: &Path, record: &ClimateRunRecord) {
 pub(crate) fn fixture(root: &Path, annual_result: bool) -> ClimateRunRecord {
     fixture_at(root, annual_result, 0)
 }
+pub(crate) fn fixture_for_method(
+    root: &Path,
+    annual_result: bool,
+    method: &str,
+) -> ClimateRunRecord {
+    fixture_at_method(root, annual_result, 0, method)
+}
 fn fixture_at(root: &Path, annual_result: bool, selected_interval: usize) -> ClimateRunRecord {
+    fixture_at_method(
+        root,
+        annual_result,
+        selected_interval,
+        annual::METHOD_VERSION,
+    )
+}
+fn fixture_at_method(
+    root: &Path,
+    annual_result: bool,
+    selected_interval: usize,
+    method: &str,
+) -> ClimateRunRecord {
     fs::create_dir_all(root).unwrap();
     let temporary = tempdir().unwrap();
     let original = temporary.path().join("synthetic.epw");
@@ -158,8 +183,8 @@ fn fixture_at(root: &Path, annual_result: bool, selected_interval: usize) -> Cli
             .metrics(&study.metrics)
             .unwrap()
     });
-    let identity = engine();
-    let profile = annual::AnnualProfile::shipping();
+    let identity = engine(method);
+    let profile = annual::AnnualProfile::shipping_for_method(method).unwrap();
     let mut record = ClimateRunRecord {
         schema_version: RUN_SCHEMA.into(),
         id: Uuid::new_v4().to_string(),
@@ -170,7 +195,7 @@ fn fixture_at(root: &Path, annual_result: bool, selected_interval: usize) -> Cli
         weather_asset: asset,
         series,
         metrics,
-        provenance: json!({"schema_version":RUN_SCHEMA,"application_version":"synthetic-test","adapter_version":annual::ADAPTER_VERSION,
+        provenance: json!({"schema_version":RUN_SCHEMA,"application_version":"synthetic-test","adapter_version":identity.adapter_version,
             "test_fixture":"MOCK: persistence only; no process was executed","calculation_label":if annual_result {ANNUAL_LABEL} else {HOUR_LABEL},
             "state":"completed","units":"lx","engine":identity,"profile":profile,
             "child_environment":{"RAYPATH":".;<compatible-engine>/lib"},
@@ -207,8 +232,8 @@ fn fixture_at(root: &Path, annual_result: bool, selected_interval: usize) -> Cli
     )
     .unwrap();
     let mut recipe = annual::AnnualRecipe {
-        schema_version: "greenlens.annual-recipe.v2".into(),
-        method_version: annual::METHOD_VERSION.into(),
+        schema_version: recipe_contract(method).unwrap().0.into(),
+        method_version: method.into(),
         engine: identity,
         profile: profile.clone(),
         normalized_weather_sha256: record.weather_asset.binding.normalized_sha256.clone(),
@@ -227,13 +252,14 @@ fn fixture_at(root: &Path, annual_result: bool, selected_interval: usize) -> Cli
         ordering: annual::RESULT_ORDERING.into(),
         units: annual::RESULT_UNITS.into(),
         time_policy: annual::TIME_POLICY.into(),
-        ground_policy: annual::GROUND_POLICY.into(),
+        ground_policy: recipe_contract(method).unwrap().1.into(),
         direct_policy: annual::DIRECT_POLICY.into(),
         direct_batches: vec![],
         child_environment: BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
         processes: vec![],
     };
     recipe.processes = expected_processes(&record, &recipe)
+        .unwrap()
         .into_iter()
         .map(|(executable, arguments)| ProcessRecord {
             executable,
@@ -720,6 +746,7 @@ fn save_mock_recipe(root: &Path, record: &mut ClimateRunRecord, recipe: &annual:
 
 fn mock_direct_processes(record: &ClimateRunRecord, recipe: &mut annual::AnnualRecipe) {
     recipe.processes = expected_processes(record, recipe)
+        .unwrap()
         .into_iter()
         .map(|(executable, arguments)| ProcessRecord {
             executable,
@@ -735,80 +762,82 @@ fn mock_direct_processes(record: &ClimateRunRecord, recipe: &mut annual::AnnualR
 
 #[test]
 fn direct_recipe_sources_and_trace_processes_are_validated_after_coherent_reseal() {
-    let temp = tempdir().unwrap();
-    let root = temp.path().join("mock");
-    let mut record = fixture_at(&root, false, 8);
-    let mut recipe: annual::AnnualRecipe = read_json(&root.join("annual-recipe.json")).unwrap();
-    recipe.solar_interval_indices = vec![8];
-    let attempted = recipe.sensor_count * recipe.profile.direct_solar_samples;
-    recipe.direct_batches = vec![annual::DirectBatch {
-        interval_indices: vec![8],
-        attempted_rays: attempted,
-        emitted_rays: 1,
-        culled_rays: attempted - 1,
-        input_sha256: bytes_hash(b"MOCK ray input"),
-        output_sha256: bytes_hash(b"MOCK ray output"),
-    }];
-    let source =
+    for method in [annual::LEGACY_METHOD_VERSION, annual::METHOD_VERSION] {
+        let temp = tempdir().unwrap();
+        let root = temp.path().join("mock");
+        let mut record = fixture_at_method(&root, false, 8, method);
+        let mut recipe: annual::AnnualRecipe = read_json(&root.join("annual-recipe.json")).unwrap();
+        recipe.solar_interval_indices = vec![8];
+        let attempted = recipe.sensor_count * recipe.profile.direct_solar_samples;
+        recipe.direct_batches = vec![annual::DirectBatch {
+            interval_indices: vec![8],
+            attempted_rays: attempted,
+            emitted_rays: 1,
+            culled_rays: attempted - 1,
+            input_sha256: bytes_hash(b"MOCK ray input"),
+            output_sha256: bytes_hash(b"MOCK ray output"),
+        }];
+        let source =
         "void light solar510\n0\n0\n3 1 1 1\nsolar510 source sun510\n0\n0\n4 0 -0.8 0.6 0.533\n";
-    fs::write(root.join("annual-suns.rad"), source).unwrap();
-    fs::write(root.join("annual-sun-modifiers.txt"), "solar510\n").unwrap();
-    mock_direct_processes(&record, &mut recipe);
-    assert_eq!(recipe.processes.len(), 9);
-    assert_eq!(recipe.processes.last().unwrap().executable, "rtrace.exe");
-    save_mock_recipe(&root, &mut record, &recipe);
-    read_run_directory(&root).unwrap();
+        fs::write(root.join("annual-suns.rad"), source).unwrap();
+        fs::write(root.join("annual-sun-modifiers.txt"), "solar510\n").unwrap();
+        mock_direct_processes(&record, &mut recipe);
+        assert_eq!(recipe.processes.len(), 9);
+        assert_eq!(recipe.processes.last().unwrap().executable, "rtrace.exe");
+        save_mock_recipe(&root, &mut record, &recipe);
+        read_run_directory(&root).unwrap();
 
-    // A retained process list cannot quietly increase bounce depth of the
-    // finite-direction transmission trace, even with all outer hashes updated.
-    let mut changed = recipe.clone();
-    let arguments = &mut changed.processes.last_mut().unwrap().arguments;
-    let position = arguments.iter().position(|arg| arg == "-ab").unwrap();
-    arguments[position + 1] = "1".into();
-    save_mock_recipe(&root, &mut record, &changed);
-    assert!(read_run_directory(&root)
-        .unwrap_err()
-        .to_string()
-        .contains("Recorded commands"));
-    changed = recipe.clone();
-    changed.direct_batches[0].interval_indices[0] = 7;
-    save_mock_recipe(&root, &mut record, &changed);
-    assert!(read_run_directory(&root)
-        .unwrap_err()
-        .to_string()
-        .contains("Direct batch"));
-    save_mock_recipe(&root, &mut record, &recipe);
-    fs::write(
-        root.join("annual-suns.rad"),
-        format!("{source}!unsupported command\n"),
-    )
-    .unwrap();
-    save_mock_recipe(&root, &mut record, &recipe);
-    assert!(read_run_directory(&root)
-        .unwrap_err()
-        .to_string()
-        .contains("solar definition count"));
+        // A retained process list cannot quietly increase bounce depth of the
+        // finite-direction transmission trace, even with all outer hashes updated.
+        let mut changed = recipe.clone();
+        let arguments = &mut changed.processes.last_mut().unwrap().arguments;
+        let position = arguments.iter().position(|arg| arg == "-ab").unwrap();
+        arguments[position + 1] = "1".into();
+        save_mock_recipe(&root, &mut record, &changed);
+        assert!(read_run_directory(&root)
+            .unwrap_err()
+            .to_string()
+            .contains("Recorded commands"));
+        changed = recipe.clone();
+        changed.direct_batches[0].interval_indices[0] = 7;
+        save_mock_recipe(&root, &mut record, &changed);
+        assert!(read_run_directory(&root)
+            .unwrap_err()
+            .to_string()
+            .contains("Direct batch"));
+        save_mock_recipe(&root, &mut record, &recipe);
+        fs::write(
+            root.join("annual-suns.rad"),
+            format!("{source}!unsupported command\n"),
+        )
+        .unwrap();
+        save_mock_recipe(&root, &mut record, &recipe);
+        assert!(read_run_directory(&root)
+            .unwrap_err()
+            .to_string()
+            .contains("solar definition count"));
 
-    // Empty-cull batches remain explicit provenance, but must have no rtrace.
-    fs::write(root.join("annual-suns.rad"), source).unwrap();
-    recipe.direct_batches[0].emitted_rays = 0;
-    recipe.direct_batches[0].culled_rays = attempted;
-    recipe.direct_batches[0].input_sha256 = bytes_hash(b"");
-    recipe.direct_batches[0].output_sha256 = bytes_hash(b"");
-    mock_direct_processes(&record, &mut recipe);
-    assert_eq!(recipe.processes.len(), 8);
-    save_mock_recipe(&root, &mut record, &recipe);
-    read_run_directory(&root).unwrap();
+        // Empty-cull batches remain explicit provenance, but must have no rtrace.
+        fs::write(root.join("annual-suns.rad"), source).unwrap();
+        recipe.direct_batches[0].emitted_rays = 0;
+        recipe.direct_batches[0].culled_rays = attempted;
+        recipe.direct_batches[0].input_sha256 = bytes_hash(b"");
+        recipe.direct_batches[0].output_sha256 = bytes_hash(b"");
+        mock_direct_processes(&record, &mut recipe);
+        assert_eq!(recipe.processes.len(), 8);
+        save_mock_recipe(&root, &mut record, &recipe);
+        read_run_directory(&root).unwrap();
 
-    // A sun generated only for preceding dew-point context is never assigned a
-    // direct batch for the selected output hour. The base matrix passes remain.
-    recipe.solar_interval_indices = vec![6];
-    recipe.direct_batches.clear();
-    fs::write(root.join("annual-suns.rad"), source.replace("510", "390")).unwrap();
-    fs::write(root.join("annual-sun-modifiers.txt"), "solar390\n").unwrap();
-    mock_direct_processes(&record, &mut recipe);
-    save_mock_recipe(&root, &mut record, &recipe);
-    read_run_directory(&root).unwrap();
+        // A sun generated only for preceding dew-point context is never assigned a
+        // direct batch for the selected output hour. The base matrix passes remain.
+        recipe.solar_interval_indices = vec![6];
+        recipe.direct_batches.clear();
+        fs::write(root.join("annual-suns.rad"), source.replace("510", "390")).unwrap();
+        fs::write(root.join("annual-sun-modifiers.txt"), "solar390\n").unwrap();
+        mock_direct_processes(&record, &mut recipe);
+        save_mock_recipe(&root, &mut record, &recipe);
+        read_run_directory(&root).unwrap();
+    }
 }
 
 #[test]
@@ -843,4 +872,153 @@ fn immutable_recipe_and_solar_file_pins_reject_resealing_without_record_changes(
         reseal(&root, &record);
     }
     read_run_directory(&root).unwrap();
+}
+
+#[test]
+fn historical_method_two_keeps_exact_profile_evidence_and_metric_derivation() {
+    let temporary = tempdir().unwrap();
+    let scratch = temporary.path().join("historical-mock");
+    let project = temporary.path().join("portable");
+    let record = fixture_for_method(&scratch, true, annual::LEGACY_METHOD_VERSION);
+    // Frozen serialization, independent of whichever profile is current later.
+    let expected_profile = json!({
+        "name":"shipping", "sky_basis_mf":2, "ambient_bounces":8,
+        "ambient_divisions":131072, "direct_ambient_divisions":131072,
+        "direct_solar_samples":1024, "ambient_supersamples":0,
+        "ambient_accuracy":0.0, "ambient_resolution":256, "ambient_value":[0.0,0.0,0.0],
+        "limit_weight":1e-9, "ray_depth":16, "direct_threshold":0.0,
+        "direct_certainty":1.0, "direct_jitter":0.0, "direct_size":0.05,
+        "specular_threshold":0.0, "specular_sampling":0.0,
+        "uncorrelated_random_sampling":false, "workers":1
+    });
+    assert_eq!(record.provenance["profile"], expected_profile);
+    let serialized = serde_json::to_vec(&record).unwrap();
+    let reference = summary(&record).unwrap();
+    let original_files = evidence_files(&record)
+        .into_iter()
+        .chain(["checksums.json".into()])
+        .map(|name| {
+            let data = fs::read(scratch.join(&name)).unwrap();
+            (name, data)
+        })
+        .collect::<Vec<_>>();
+    read_run_directory(&scratch).unwrap();
+    fs::create_dir(&project).unwrap();
+    promote_run(&scratch, &project, &record.id).unwrap();
+    fs::rename(&scratch, temporary.path().join("original-unavailable")).unwrap();
+    let restored = read_run(&project, &reference).unwrap();
+    assert_eq!(serde_json::to_vec(&restored).unwrap(), serialized);
+    assert_eq!(summary(&restored).unwrap(), reference);
+    let derived =
+        crate::studies::derive_metrics(&project, &reference, record.study.metrics.clone()).unwrap();
+    assert_eq!(
+        serde_json::to_value(derived.metrics).unwrap(),
+        json!(record.metrics.unwrap())
+    );
+    assert_eq!(
+        json!(derived.metric_identity),
+        record.provenance["metric_identity"]
+    );
+    let mut changed = record.study.metrics.clone();
+    changed.da_threshold_lux = 500.0;
+    let derived_changed = crate::studies::derive_metrics(&project, &reference, changed).unwrap();
+    assert_ne!(
+        json!(derived_changed.metric_identity),
+        record.provenance["metric_identity"]
+    );
+    for (name, original) in original_files {
+        assert_eq!(
+            fs::read(project.join(&reference.path).join(name)).unwrap(),
+            original
+        );
+    }
+}
+
+#[test]
+fn historical_method_rejects_null_profile_alias_and_cross_method_relabeling() {
+    let temporary = tempdir().unwrap();
+    let root = temporary.path().join("historical-mock");
+    let original = fixture_for_method(&root, false, annual::LEGACY_METHOD_VERSION);
+    let mut null_alias = original.clone();
+    null_alias.provenance["profile"]["solar_ambient_divisions"] = Value::Null;
+    identities(&mut null_alias);
+    assert!(validate_record(&null_alias)
+        .unwrap_err()
+        .to_string()
+        .contains("canonical"));
+    let mut unknown = original.clone();
+    unknown.provenance["profile"]["ambient_divisions"] = json!(131073);
+    identities(&mut unknown);
+    assert!(validate_record(&unknown).is_err());
+    let mut other_profile = original.clone();
+    other_profile.provenance["profile"] = json!(annual::AnnualProfile::shipping());
+    identities(&mut other_profile);
+    assert!(validate_record(&other_profile).is_err());
+    let mut other_engine = original.clone();
+    other_engine.provenance["engine"] = json!(engine(annual::METHOD_VERSION));
+    identities(&mut other_engine);
+    assert!(validate_record(&other_engine).is_err());
+
+    let recipe: annual::AnnualRecipe = read_json(&root.join("annual-recipe.json")).unwrap();
+    let mut record = original;
+    for mutation in 0..4 {
+        let mut changed = recipe.clone();
+        match mutation {
+            0 => changed.schema_version = annual::RECIPE_SCHEMA_VERSION.into(),
+            1 => changed.method_version = annual::METHOD_VERSION.into(),
+            2 => changed.ground_policy = annual::GROUND_POLICY.into(),
+            _ => changed.method_version = "unsupported-method/999".into(),
+        }
+        save_mock_recipe(&root, &mut record, &changed);
+        assert!(
+            read_run_directory(&root).is_err(),
+            "Mutation {mutation} accepted"
+        );
+    }
+    save_mock_recipe(&root, &mut record, &recipe);
+    read_run_directory(&root).unwrap();
+}
+
+#[test]
+fn historical_process_builder_matches_actual_native_export_contract() {
+    // Actual recognized arrays from the immutable candidate-01 A/B export;
+    // these are contract fixtures, not a mocked proof of engine execution.
+    let snapshot: Value = serde_json::from_str(include_str!(
+        "../../../tests/fixtures/climate-method2-contract.json"
+    ))
+    .unwrap();
+    let temporary = tempdir().unwrap();
+    let record = fixture_for_method(temporary.path(), false, annual::LEGACY_METHOD_VERSION);
+    let mut recipe: annual::AnnualRecipe =
+        read_json(&temporary.path().join("annual-recipe.json")).unwrap();
+    assert_eq!(record.provenance["profile"], snapshot["profile"]);
+    assert_eq!(
+        record.provenance["adapter_version"],
+        snapshot["adapter_version"]
+    );
+    assert_eq!(json!(recipe.method_version), snapshot["method_version"]);
+    assert_eq!(
+        json!(recipe.schema_version),
+        snapshot["recipe_schema_version"]
+    );
+    assert_eq!(json!(recipe.ground_policy), snapshot["ground_policy"]);
+    // Match the exported 24-sensor process shape without fabricating a result
+    // vector. Only the recognized command builder is exercised here.
+    recipe.sensor_count = snapshot["sensor_count"].as_u64().unwrap() as usize;
+    recipe.solar_interval_indices = vec![8];
+    let attempted = recipe.sensor_count * recipe.profile.direct_solar_samples;
+    recipe.direct_batches = vec![annual::DirectBatch {
+        interval_indices: vec![8],
+        attempted_rays: attempted,
+        emitted_rays: 1,
+        culled_rays: attempted - 1,
+        input_sha256: bytes_hash(b"MOCK"),
+        output_sha256: bytes_hash(b"MOCK"),
+    }];
+    let expected = expected_processes(&record, &recipe)
+        .unwrap()
+        .into_iter()
+        .map(|(executable, arguments)| json!({"executable":executable,"arguments":arguments}))
+        .collect::<Vec<_>>();
+    assert_eq!(json!(expected), snapshot["processes"]);
 }

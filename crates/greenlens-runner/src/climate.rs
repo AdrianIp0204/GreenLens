@@ -300,9 +300,8 @@ pub fn validate_record(record: &ClimateRunRecord) -> Result<()> {
             .as_str()
             .is_some_and(|v| !v.trim().is_empty()
                 && v.len() <= 120
-                && !v.chars().any(char::is_control))
-            && p["adapter_version"] == annual::ADAPTER_VERSION,
-        "Missing application/adapter version provenance"
+                && !v.chars().any(char::is_control)),
+        "Missing application version provenance"
     );
     for name in [
         "recipe_sha256",
@@ -327,8 +326,18 @@ pub fn validate_record(record: &ClimateRunRecord) -> Result<()> {
     );
     let engine: annual::AnnualEngineIdentity = serde_json::from_value(p["engine"].clone())?;
     engine.validate()?;
+    ensure!(
+        p["adapter_version"] == engine.adapter_version,
+        "Climate adapter and engine method provenance differ"
+    );
     let profile: annual::AnnualProfile = serde_json::from_value(p["profile"].clone())?;
-    profile.validate()?;
+    profile.validate_for_method(&engine.method_version)?;
+    // A legacy profile omits method-3-only fields. Explicit nulls must not be
+    // normalized away while retaining a differently hashed provenance value.
+    ensure!(
+        serde_json::to_value(&profile)? == p["profile"],
+        "Climate profile is not in its canonical serialized form"
+    );
     let selected_profile = match record.study.calculation {
         StudyMode::WeatherHour { profile, .. } | StudyMode::Annual { profile, .. } => profile,
         StudyMode::StaticOvercast => unreachable!("rejected above"),
@@ -336,8 +345,12 @@ pub fn validate_record(record: &ClimateRunRecord) -> Result<()> {
     ensure!(
         profile
             == match selected_profile {
-                NumericalProfile::Shipping => annual::AnnualProfile::shipping(),
-                NumericalProfile::Reference => annual::AnnualProfile::reference(),
+                NumericalProfile::Shipping => {
+                    annual::AnnualProfile::shipping_for_method(&engine.method_version)?
+                }
+                NumericalProfile::Reference => {
+                    annual::AnnualProfile::reference_for_method(&engine.method_version)?
+                }
             },
         "Study and engine numerical profile differ"
     );
@@ -449,32 +462,46 @@ pub fn evidence_files(record: &ClimateRunRecord) -> Vec<String> {
     files
 }
 
+/// Only these compiled method contracts may interpret retained recipes.
+/// Historical evidence is never retagged to the current method.
+fn recipe_contract(method: &str) -> Result<(&'static str, &'static str)> {
+    match method {
+        annual::LEGACY_METHOD_VERSION => Ok((
+            annual::LEGACY_RECIPE_SCHEMA_VERSION,
+            annual::LEGACY_GROUND_POLICY,
+        )),
+        annual::METHOD_VERSION => Ok((annual::RECIPE_SCHEMA_VERSION, annual::GROUND_POLICY)),
+        _ => anyhow::bail!("Unsupported climate method contract"),
+    }
+}
+
 fn expected_processes(
     record: &ClimateRunRecord,
     recipe: &annual::AnnualRecipe,
-) -> Vec<(String, Vec<String>)> {
+) -> Result<Vec<(String, Vec<String>)>> {
+    recipe_contract(&recipe.method_version)?;
+    recipe.profile.validate_for_method(&recipe.method_version)?;
+    let legacy = recipe.method_version == annual::LEGACY_METHOD_VERSION;
     let strings = |v: &[&str]| v.iter().map(|s| (*s).to_string()).collect::<Vec<_>>();
     let ground = record.model.sky.ground_reflectance.to_string();
-    let mut result = vec![
-        (
-            "gendaymtx.exe".into(),
-            vec![
-                "-O0".into(),
-                "-m".into(),
-                recipe.profile.sky_basis_mf.to_string(),
-                "-c".into(),
-                "1".into(),
-                "1".into(),
-                "1".into(),
-                "-g".into(),
-                ground.clone(),
-                ground.clone(),
-                ground,
-                "-s".into(),
-                "annual-weather.epw".into(),
-            ],
-        ),
-        (
+    let mut sky = vec![
+        "-O0".into(),
+        "-m".into(),
+        recipe.profile.sky_basis_mf.to_string(),
+        "-c".into(),
+        "1".into(),
+        "1".into(),
+        "1".into(),
+        "-g".into(),
+        ground.clone(),
+        ground.clone(),
+        ground,
+        "-s".into(),
+    ];
+    sky.push("annual-weather.epw".into());
+    let mut result = vec![("gendaymtx.exe".into(), sky)];
+    if legacy {
+        result.push((
             "gendaymtx.exe".into(),
             vec![
                 "-O0".into(),
@@ -487,12 +514,25 @@ fn expected_processes(
                 "annual-sun-modifiers.txt".into(),
                 "annual-weather.epw".into(),
             ],
-        ),
-        (
-            "oconv.exe".into(),
-            strings(&["-f", "annual-scene.rad", "annual-receiver.rad"]),
-        ),
-    ];
+        ));
+    } else {
+        result.push((
+            "gendaymtx.exe".into(),
+            strings(&[
+                "-O0",
+                "-n",
+                "-D",
+                "annual-suns.rad",
+                "-M",
+                "annual-sun-modifiers.txt",
+                "annual-weather.epw",
+            ]),
+        ));
+    }
+    result.push((
+        "oconv.exe".into(),
+        strings(&["-f", "annual-scene.rad", "annual-receiver.rad"]),
+    ));
     let mut diffuse = recipe.profile.arguments(recipe.sensor_count);
     diffuse.extend([
         "-V-".into(),
@@ -514,47 +554,62 @@ fn expected_processes(
         strings(&["-oa", "annual-coefficients.mtx", "annual-sky.mtx"]),
     ));
     if !recipe.solar_interval_indices.is_empty() {
-        let mut direct = recipe.profile.direct_arguments(recipe.sensor_count);
-        direct.extend([
-            "-V-".into(),
-            "-e".into(),
-            format!("MF:{}", recipe.profile.sky_basis_mf),
-            "-f".into(),
-            "reinhart.cal".into(),
-            "-b".into(),
-            "rbin".into(),
-            "-bn".into(),
-            "Nrbins".into(),
-            "-m".into(),
-            "sky_glow".into(),
-            "annual-diffuse.oct".into(),
-        ]);
-        result.push(("rcontrib.exe".into(), direct));
-        result.push((
-            "dctimestep.exe".into(),
-            strings(&["-oa", "annual-coefficients.mtx", "annual-solar-sky.mtx"]),
-        ));
-        result.push((
-            "dctimestep.exe".into(),
-            strings(&[
-                "-oa",
-                "annual-direct-coefficients.mtx",
-                "annual-solar-sky.mtx",
-            ]),
-        ));
+        if legacy {
+            let mut direct = recipe.profile.direct_arguments(recipe.sensor_count);
+            direct.extend([
+                "-V-".into(),
+                "-e".into(),
+                format!("MF:{}", recipe.profile.sky_basis_mf),
+                "-f".into(),
+                "reinhart.cal".into(),
+                "-b".into(),
+                "rbin".into(),
+                "-bn".into(),
+                "Nrbins".into(),
+                "-m".into(),
+                "sky_glow".into(),
+                "annual-diffuse.oct".into(),
+            ]);
+            result.push(("rcontrib.exe".into(), direct));
+            result.push((
+                "dctimestep.exe".into(),
+                strings(&["-oa", "annual-coefficients.mtx", "annual-solar-sky.mtx"]),
+            ));
+            result.push((
+                "dctimestep.exe".into(),
+                strings(&[
+                    "-oa",
+                    "annual-direct-coefficients.mtx",
+                    "annual-solar-sky.mtx",
+                ]),
+            ));
+        } else {
+            result.push((
+                "oconv.exe".into(),
+                strings(&["-f", "annual-scene.rad", "annual-suns.rad"]),
+            ));
+            result.push((
+                "rcontrib.exe".into(),
+                recipe.profile.solar_arguments(recipe.sensor_count, false),
+            ));
+            result.push((
+                "rcontrib.exe".into(),
+                recipe.profile.solar_arguments(recipe.sensor_count, true),
+            ));
+        }
     }
     for batch in &recipe.direct_batches {
         if batch.emitted_rays > 0 {
             result.push(("rtrace.exe".into(), recipe.profile.transmission_arguments()));
         }
     }
-    result
+    Ok(result)
 }
 
 /// The retained recipe pins every regenerated batch's order, shape and digests.
 /// Reading evidence does not retrace rays or execute its recorded commands.
 fn validate_direct_batches(recipe: &annual::AnnualRecipe) -> Result<()> {
-    recipe.profile.validate()?;
+    recipe.profile.validate_for_method(&recipe.method_version)?;
     ensure!(
         recipe.direct_policy == annual::DIRECT_POLICY,
         "Unsupported direct solar policy"
@@ -703,16 +758,21 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
         "Annual recipe differs from immutable run provenance"
     );
     let recipe: annual::AnnualRecipe = serde_json::from_slice(&recipe_bytes)?;
+    let recipe_json: Value = serde_json::from_slice(&recipe_bytes)?;
+    let (schema, ground_policy) = recipe_contract(&recipe.method_version)?;
     ensure!(
-        recipe.schema_version == "greenlens.annual-recipe.v2"
-            && recipe.method_version == annual::METHOD_VERSION,
-        "Unsupported annual recipe"
+        recipe.schema_version == schema && recipe.method_version == recipe.engine.method_version,
+        "Unsupported or inconsistent annual recipe"
+    );
+    ensure!(
+        serde_json::to_value(&recipe.profile)? == recipe_json["profile"],
+        "Annual recipe profile is not in its canonical serialized form"
     );
     ensure!(
         recipe.ordering == annual::RESULT_ORDERING
             && recipe.units == annual::RESULT_UNITS
             && recipe.time_policy == annual::TIME_POLICY
-            && recipe.ground_policy == annual::GROUND_POLICY
+            && recipe.ground_policy == ground_policy
             && recipe.direct_policy == annual::DIRECT_POLICY
             && bytes(dir, "annual-receiver.rad")? == annual::RECEIVER_TEXT.as_bytes(),
         "Unsupported receiver, units, ordering or climate time/ground/direct policy"
@@ -805,7 +865,7 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
     );
     annual::validate_solar_definitions(std::str::from_utf8(&source_bytes)?, &sun_indices)?;
     validate_direct_batches(&recipe)?;
-    let expected = expected_processes(&record, &recipe);
+    let expected = expected_processes(&record, &recipe)?;
     ensure!(
         recipe.processes.len() == expected.len()
             && recipe

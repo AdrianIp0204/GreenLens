@@ -23,16 +23,42 @@ use std::{
     time::Instant,
 };
 
-pub const ADAPTER_VERSION: &str = "radiance-climate-direct-corrected/2";
-pub const METHOD_VERSION: &str = "perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2";
+pub const LEGACY_ADAPTER_VERSION: &str = "radiance-climate-direct-corrected/2";
+pub const LEGACY_METHOD_VERSION: &str =
+    "perez-epw-dewpoint3-reinhart-patch-indirect-finite-direct/2";
+pub const LEGACY_RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v2";
+pub const ADAPTER_VERSION: &str = "radiance-climate-explicit-indirect-finite-direct/3";
+pub const METHOD_VERSION: &str = "perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3";
+pub const RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v3";
 pub const MAX_SENSORS: usize = 256;
 pub const HOURS: usize = 8760;
+
+fn solar_generation_arguments(profile: &AnnualProfile, legacy: bool) -> Vec<String> {
+    let mut arguments = vec!["-O0".into()];
+    if legacy {
+        arguments.extend(["-m".into(), profile.sky_basis_mf.to_string(), "-d".into()]);
+    } else {
+        arguments.push("-n".into());
+    }
+    arguments.extend(
+        [
+            "-D",
+            "annual-suns.rad",
+            "-M",
+            "annual-sun-modifiers.txt",
+            "annual-weather.epw",
+        ]
+        .map(String::from),
+    );
+    arguments
+}
 pub const MAX_SCRATCH_BYTES: u64 = 2 * 1024 * 1024 * 1024;
 pub const RECEIVER_TEXT: &str = "void glow sky_glow\n0\n0\n4 1 1 1 0\nsky_glow source upper_sky\n0\n0\n4 0 0 1 180\nsky_glow source lower_ground\n0\n0\n4 0 0 -1 180\n";
 pub const RESULT_ORDERING: &str = "time_sensor_RGB; engine matrices sensor_rows_time_columns_RGB; sky patch_rows_time_columns_RGB";
 pub const RESULT_UNITS: &str = "visible Radiance RGB irradiance W/m2; illuminance=179*(0.265074126R+0.670114631G+0.064811243B) lx";
 pub const TIME_POLICY: &str = "EPW hourly midpoint hour-0.5, fixed standard time; no -u night removal or -i horizon adjustment; selected hour retains preceding two dew-point records; sun exported when any part of0.533-degree disc is above horizon";
-pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry.";
+pub const LEGACY_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry.";
+pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once. Solar-only explicit source transport has no luminous dome or external ground geometry. Reflected solar is full explicit-source transport minus identical ab0 centroid-direct transport; finite-disc directional transmission replaces only direct sun. The emitted-source horizon policy applies to both solar terms.";
 pub const RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
 const EXECUTABLES: [(&str, &str); 5] = [
     (
@@ -95,10 +121,22 @@ pub struct AnnualProfile {
     pub specular_sampling: f64,
     pub uncorrelated_random_sampling: bool,
     pub workers: usize,
+    /// Absent in immutable method-2 profiles. Omission preserves their exact
+    /// canonical serialization; method-3 profiles bind explicit solar sampling.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub solar_ambient_divisions: Option<u32>,
 }
 impl AnnualProfile {
     /// Candidate numerical settings; release freeze requires the recorded suite.
     pub fn shipping() -> Self {
+        Self {
+            ambient_divisions: 1_048_576,
+            direct_ambient_divisions: 1_048_576,
+            solar_ambient_divisions: Some(8192),
+            ..Self::legacy_shipping()
+        }
+    }
+    fn legacy_shipping() -> Self {
         Self {
             name: "shipping".into(),
             sky_basis_mf: 2,
@@ -120,6 +158,7 @@ impl AnnualProfile {
             specular_sampling: 0.0,
             uncorrelated_random_sampling: false,
             workers: 1,
+            solar_ambient_divisions: None,
         }
     }
     pub fn reference() -> Self {
@@ -127,17 +166,59 @@ impl AnnualProfile {
             name: "reference".into(),
             sky_basis_mf: 4,
             ambient_bounces: 9,
-            ambient_divisions: 262144,
-            direct_ambient_divisions: 262144,
+            ambient_divisions: 2_097_152,
+            direct_ambient_divisions: 2_097_152,
             direct_solar_samples: 4096,
+            solar_ambient_divisions: Some(16384),
             ..Self::shipping()
         }
     }
-    pub fn validate(&self) -> Result<()> {
-        ensure!(
-            self == &Self::shipping() || self == &Self::reference(),
+    fn legacy_reference() -> Self {
+        Self {
+            name: "reference".into(),
+            sky_basis_mf: 4,
+            ambient_bounces: 9,
+            ambient_divisions: 262144,
+            direct_ambient_divisions: 262144,
+            direct_solar_samples: 4096,
+            ..Self::legacy_shipping()
+        }
+    }
+    pub fn shipping_for_method(method: &str) -> Result<Self> {
+        match method {
+            METHOD_VERSION => Ok(Self::shipping()),
+            LEGACY_METHOD_VERSION => Ok(Self::legacy_shipping()),
+            _ => anyhow::bail!("Unsupported climate transport method"),
+        }
+    }
+    pub fn reference_for_method(method: &str) -> Result<Self> {
+        match method {
+            METHOD_VERSION => Ok(Self::reference()),
+            LEGACY_METHOD_VERSION => Ok(Self::legacy_reference()),
+            _ => anyhow::bail!("Unsupported climate transport method"),
+        }
+    }
+    pub fn method(&self) -> Result<&'static str> {
+        for method in [METHOD_VERSION, LEGACY_METHOD_VERSION] {
+            if self == &Self::shipping_for_method(method)?
+                || self == &Self::reference_for_method(method)?
+            {
+                return Ok(method);
+            }
+        }
+        anyhow::bail!(
             "Unsupported climate numerical profile; replay requires a recognized complete profile"
+        )
+    }
+    pub fn validate_for_method(&self, method: &str) -> Result<()> {
+        ensure!(
+            self.method()? == method,
+            "Profile and transport method differ"
         );
+        Ok(())
+    }
+    pub fn validate(&self) -> Result<()> {
+        self.method()?;
         Ok(())
     }
     pub fn arguments(&self, sensors: usize) -> Vec<String> {
@@ -200,6 +281,28 @@ impl AnnualProfile {
         arguments[position + 1] = "1".into();
         arguments
     }
+    pub fn solar_arguments(&self, sensors: usize, direct: bool) -> Vec<String> {
+        let mut arguments = self.arguments(sensors);
+        let position = arguments
+            .iter()
+            .position(|argument| argument == "-ad")
+            .expect("complete profile includes -ad");
+        arguments[position + 1] = self
+            .solar_ambient_divisions
+            .expect("explicit solar arguments require a validated method-3 profile")
+            .to_string();
+        if direct {
+            let position = arguments
+                .iter()
+                .position(|argument| argument == "-ab")
+                .expect("complete profile includes -ab");
+            arguments[position + 1] = "0".into();
+        }
+        arguments.extend(
+            ["-V+", "-M", "annual-sun-modifiers.txt", "annual-solar.oct"].map(String::from),
+        );
+        arguments
+    }
     pub fn transmission_arguments(&self) -> Vec<String> {
         [
             "-h",
@@ -259,8 +362,10 @@ impl AnnualEngineIdentity {
     pub fn validate(&self) -> Result<()> {
         ensure!(
             self.version == ENGINE_VERSION
-                && self.adapter_version == ADAPTER_VERSION
-                && self.method_version == METHOD_VERSION
+                && ((self.adapter_version == ADAPTER_VERSION
+                    && self.method_version == METHOD_VERSION)
+                    || (self.adapter_version == LEGACY_ADAPTER_VERSION
+                        && self.method_version == LEGACY_METHOD_VERSION))
                 && self.package_sha256 == PACKAGE_SHA256,
             "Unsupported annual engine identity"
         );
@@ -303,6 +408,14 @@ impl AnnualEngineIdentity {
         Ok(())
     }
     pub fn discover(engine: &Engine) -> Result<Self> {
+        Self::discover_for_method(engine, METHOD_VERSION)
+    }
+    pub fn discover_for_method(engine: &Engine, method: &str) -> Result<Self> {
+        let adapter = match method {
+            METHOD_VERSION => ADAPTER_VERSION,
+            LEGACY_METHOD_VERSION => LEGACY_ADAPTER_VERSION,
+            _ => anyhow::bail!("Unsupported annual transport method"),
+        };
         let mut executable_sha256 = BTreeMap::new();
         for (name, expected) in EXECUTABLES {
             let actual=digest(&fs::read(engine.root().join("bin").join(name)).with_context(|| format!("Required annual engine {name} is unavailable; reinstall pinned Radiance 6.0.2"))?);
@@ -319,8 +432,8 @@ impl AnnualEngineIdentity {
         );
         let mut result = Self {
             version: ENGINE_VERSION.into(),
-            adapter_version: ADAPTER_VERSION.into(),
-            method_version: METHOD_VERSION.into(),
+            adapter_version: adapter.into(),
+            method_version: method.into(),
             package_sha256: PACKAGE_SHA256.into(),
             executable_sha256,
             library_sha256: engine.identity().library_sha256.clone(),
@@ -635,7 +748,8 @@ pub fn simulate(
 ) -> Result<AnnualOutput> {
     let started_utc = Utc::now().to_rfc3339();
     let start = Instant::now();
-    profile.validate()?;
+    let method = profile.method()?;
+    let legacy = method == LEGACY_METHOD_VERSION;
     cancelled(cancel)?;
     let model = greenlens_core::validate_model(&model.model)?;
     let sensor_count = model.sensor_grid.sensors.len();
@@ -643,7 +757,7 @@ pub fn simulate(
         (1..=MAX_SENSORS).contains(&sensor_count),
         "Weather studies require at most 256 sensors; increase requested grid spacing"
     );
-    let identity = AnnualEngineIdentity::discover(engine)?;
+    let identity = AnnualEngineIdentity::discover_for_method(engine, method)?;
     let (weather, weather_indices) = weather_window(normalized_epw, selected_interval)?;
     let output_indices =
         selected_interval.map_or_else(|| weather_indices.clone(), |index| vec![index]);
@@ -736,42 +850,39 @@ pub fn simulate(
         };
     on_log("Preparing visible Perez sky and luminous ground for every requested weather interval");
     let ground = model.model.sky.ground_reflectance.to_string();
-    execute(
-        "gendaymtx",
-        vec![
-            "-O0".into(),
-            "-m".into(),
-            profile.sky_basis_mf.to_string(),
-            "-c".into(),
-            "1".into(),
-            "1".into(),
-            "1".into(),
-            "-g".into(),
-            ground.clone(),
-            ground.clone(),
-            ground,
-            "-s".into(),
-            "annual-weather.epw".into(),
-        ],
-        None,
-        "annual-sky.mtx",
-    )?;
-    execute(
-        "gendaymtx",
-        vec![
-            "-O0".into(),
-            "-m".into(),
-            profile.sky_basis_mf.to_string(),
-            "-d".into(),
-            "-D".into(),
-            "annual-suns.rad".into(),
-            "-M".into(),
-            "annual-sun-modifiers.txt".into(),
-            "annual-weather.epw".into(),
-        ],
-        None,
-        "annual-solar-sky.mtx",
-    )?;
+    let sky_arguments = vec![
+        "-O0".into(),
+        "-m".into(),
+        profile.sky_basis_mf.to_string(),
+        "-c".into(),
+        "1".into(),
+        "1".into(),
+        "1".into(),
+        "-g".into(),
+        ground.clone(),
+        ground.clone(),
+        ground,
+        "-s".into(),
+        "annual-weather.epw".into(),
+    ];
+    execute("gendaymtx", sky_arguments, None, "annual-sky.mtx")?;
+    if legacy {
+        execute(
+            "gendaymtx",
+            solar_generation_arguments(profile, true),
+            None,
+            "annual-solar-sky.mtx",
+        )?;
+    } else {
+        // -s zeros suncolor, including exported sources. Generate solar sources
+        // separately with -n so no solar matrix or second ground term is used.
+        execute(
+            "gendaymtx",
+            solar_generation_arguments(profile, false),
+            None,
+            "annual-sun-generation.txt",
+        )?;
+    }
     let sun_indices = solar_indices(
         &fs::read_to_string(scratch.join("annual-sun-modifiers.txt"))?,
         &weather_indices,
@@ -781,7 +892,10 @@ pub fn simulate(
         &sun_indices,
     )?;
     MatrixReader::open(&scratch.join("annual-sky.mtx"), sky_rows, time_count)?.finish()?;
-    MatrixReader::open(&scratch.join("annual-solar-sky.mtx"), sky_rows, time_count)?.finish()?;
+    if legacy {
+        MatrixReader::open(&scratch.join("annual-solar-sky.mtx"), sky_rows, time_count)?
+            .finish()?;
+    }
     on_log("Compiling unchanged geometry with diffuse/ground coefficient receiver");
     execute(
         "oconv",
@@ -828,7 +942,7 @@ pub fn simulate(
         None,
         "annual-diffuse-rgb.mtx",
     )?;
-    if !sun_indices.is_empty() {
+    if !sun_indices.is_empty() && legacy {
         on_log("Tracing direct-only sky-patch coefficients for solar correction");
         let mut args = profile.direct_arguments(sensor_count);
         args.extend([
@@ -878,6 +992,31 @@ pub fn simulate(
             "annual-direct-patch-rgb.mtx",
         )?;
     }
+    if !sun_indices.is_empty() && !legacy {
+        on_log("Compiling unchanged geometry with explicit solar sources and no luminous ground");
+        execute(
+            "oconv",
+            ["-f", "annual-scene.rad", "annual-suns.rad"]
+                .map(String::from)
+                .to_vec(),
+            None,
+            "annual-solar.oct",
+        )?;
+        on_log("Tracing explicit reflected-solar transport; full-year jobs can take hours and remain cancellable");
+        execute(
+            "rcontrib",
+            profile.solar_arguments(sensor_count, false),
+            Some("annual-sensors.pts"),
+            "annual-solar-rgb.mtx",
+        )?;
+        on_log("Tracing the identical centroid-direct solar term for finite-disc replacement");
+        execute(
+            "rcontrib",
+            profile.solar_arguments(sensor_count, true),
+            Some("annual-sensors.pts"),
+            "annual-solar-direct-rgb.mtx",
+        )?;
+    }
     cancelled(cancel)?;
     on_log("Validating every RGB value and assembling complete ordered time series");
     // <=256*8760*24 = 53,821,440 bytes. Large sky matrices are streamed and are
@@ -900,7 +1039,7 @@ pub fn simulate(
         cancelled(cancel)?;
     }
     ensure!(diffuse.next_rgb()?.is_none(), "Excess diffuse output");
-    if !sun_indices.is_empty() {
+    if !sun_indices.is_empty() && legacy {
         let mut solar = MatrixReader::open(
             &scratch.join("annual-solar-patch-rgb.mtx"),
             sensor_count,
@@ -937,6 +1076,39 @@ pub fn simulate(
         ensure!(
             solar.next_rgb()?.is_none() && direct_patch.next_rgb()?.is_none(),
             "Excess solar patch output"
+        );
+    }
+    if !sun_indices.is_empty() && !legacy {
+        let mut solar = MatrixReader::open(
+            &scratch.join("annual-solar-rgb.mtx"),
+            sensor_count,
+            sun_indices.len(),
+        )?;
+        let mut direct_solar = MatrixReader::open(
+            &scratch.join("annual-solar-direct-rgb.mtx"),
+            sensor_count,
+            sun_indices.len(),
+        )?;
+        for sensor in 0..sensor_count {
+            for &index in &sun_indices {
+                let rgb = solar
+                    .next_rgb()?
+                    .context("Incomplete explicit full solar matrix")?;
+                let direct = direct_solar
+                    .next_rgb()?
+                    .context("Incomplete explicit direct solar matrix")?;
+                if let Ok(position) = output_indices.binary_search(&index) {
+                    for channel in 0..3 {
+                        combined[position * sensor_count + sensor][channel] +=
+                            rgb[channel] - direct[channel];
+                    }
+                }
+            }
+            cancelled(cancel)?;
+        }
+        ensure!(
+            solar.next_rgb()?.is_none() && direct_solar.next_rgb()?.is_none(),
+            "Excess explicit solar output"
         );
     }
     let aperture = direct::Aperture::from_model(&model)?;
@@ -1015,8 +1187,13 @@ pub fn simulate(
     writer.flush()?;
     writer.get_ref().sync_all()?;
     let recipe = AnnualRecipe {
-        schema_version: "greenlens.annual-recipe.v2".into(),
-        method_version: METHOD_VERSION.into(),
+        schema_version: if legacy {
+            LEGACY_RECIPE_SCHEMA_VERSION
+        } else {
+            RECIPE_SCHEMA_VERSION
+        }
+        .into(),
+        method_version: method.into(),
         engine: identity.clone(),
         profile: profile.clone(),
         normalized_weather_sha256: digest(normalized_epw),
@@ -1031,7 +1208,12 @@ pub fn simulate(
         ordering: RESULT_ORDERING.into(),
         units: RESULT_UNITS.into(),
         time_policy: TIME_POLICY.into(),
-        ground_policy: GROUND_POLICY.into(),
+        ground_policy: if legacy {
+            LEGACY_GROUND_POLICY
+        } else {
+            GROUND_POLICY
+        }
+        .into(),
         direct_policy: DIRECT_POLICY.into(),
         direct_batches,
         child_environment: BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
@@ -1073,6 +1255,52 @@ pub fn simulate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(windows)]
+    #[test]
+    fn native_explicit_generator_preserves_nonzero_legacy_solar_sources() {
+        let engine = Engine::discover(None).expect("Required native Radiance is unavailable");
+        let root = PathBuf::from(std::env::var_os("LOCALAPPDATA").expect("Native local cache"))
+            .join("GreenLens/verification")
+            .join(format!(
+                "annual solar generator regression 空間 {}",
+                Utc::now().timestamp_nanos_opt().unwrap()
+            ));
+        let mut weather = String::from("LOCATION,Synthetic,None,None,GreenLens,000000,0,0,0,0\nDESIGN CONDITIONS,0\nTYPICAL/EXTREME PERIODS,0\nGROUND TEMPERATURES,0\nHOLIDAYS/DAYLIGHT SAVINGS,No,0,0,0\nCOMMENTS 1,Synthetic\nCOMMENTS 2,Test\nDATA PERIODS,1,1,Data,Monday,3/21,3/21\n");
+        for hour in 11..=13 {
+            weather.push_str(&format!("2001,3,21,{hour},60,?9?9?9?9,25,15,60,101325,0,0,300,800,700,100,0,0,0,0,180,1,5,5,20,77777,9,999999999,20,0.1,0,88,0.2,0,0\n"));
+        }
+        let cancel = AtomicBool::new(false);
+        let mut results = Vec::new();
+        for legacy in [true, false] {
+            let directory = root.join(if legacy { "legacy" } else { "explicit" });
+            fs::create_dir_all(&directory).unwrap();
+            fs::write(directory.join("annual-weather.epw"), &weather).unwrap();
+            process::execute(
+                engine.root(),
+                "gendaymtx",
+                &solar_generation_arguments(&AnnualProfile::shipping(), legacy),
+                &directory,
+                None,
+                &directory.join("output.txt"),
+                &cancel,
+            )
+            .unwrap();
+            let source = fs::read_to_string(directory.join("annual-suns.rad")).unwrap();
+            let modifiers = fs::read_to_string(directory.join("annual-sun-modifiers.txt")).unwrap();
+            let expected = [79 * 24 + 10, 79 * 24 + 11, 79 * 24 + 12];
+            assert_eq!(solar_indices(&modifiers, &expected).unwrap(), expected);
+            direct::parse_suns(&source, &expected).unwrap();
+            let tokens: Vec<_> = source.split_whitespace().collect();
+            assert!(tokens.as_chunks::<19>().0.iter().all(|sun| sun[6..9]
+                .iter()
+                .all(|value| value.parse::<f64>().unwrap() > 0.0)));
+            results.push((source, modifiers));
+        }
+        assert_eq!(
+            results[0], results[1],
+            "Solar source export must be independent of the unused patch matrix"
+        );
+    }
     fn fixture() -> Vec<u8> {
         let mut data=String::from("LOCATION,Synthetic,None,None,GreenLens,000000,0,0,0,0\nDESIGN CONDITIONS,0\nTYPICAL/EXTREME PERIODS,0\nGROUND TEMPERATURES,0\nHOLIDAYS/DAYLIGHT SAVINGS,No,0,0,0\nCOMMENTS 1,Synthetic\nCOMMENTS 2,Test\nDATA PERIODS,1,1,Data,Monday,1/1,12/31\n");
         for index in 0..HOURS {
@@ -1132,5 +1360,78 @@ mod tests {
         let mut profile = AnnualProfile::shipping();
         profile.workers = 10;
         assert!(profile.validate().is_err());
+    }
+    #[test]
+    fn historical_profiles_preserve_frozen_serialization_and_hashes() {
+        let shipping: serde_json::Value = serde_json::from_str(
+            r#"{
+            "name":"shipping","sky_basis_mf":2,"ambient_bounces":8,
+            "ambient_divisions":131072,"direct_ambient_divisions":131072,
+            "direct_solar_samples":1024,"ambient_supersamples":0,
+            "ambient_accuracy":0.0,"ambient_resolution":256,"ambient_value":[0.0,0.0,0.0],
+            "limit_weight":1e-9,"ray_depth":16,"direct_threshold":0.0,
+            "direct_certainty":1.0,"direct_jitter":0.0,"direct_size":0.05,
+            "specular_threshold":0.0,"specular_sampling":0.0,
+            "uncorrelated_random_sampling":false,"workers":1
+        }"#,
+        )
+        .unwrap();
+        let mut reference = shipping.clone();
+        for (key, value) in [
+            ("name", serde_json::json!("reference")),
+            ("sky_basis_mf", serde_json::json!(4)),
+            ("ambient_bounces", serde_json::json!(9)),
+            ("ambient_divisions", serde_json::json!(262144)),
+            ("direct_ambient_divisions", serde_json::json!(262144)),
+            ("direct_solar_samples", serde_json::json!(4096)),
+        ] {
+            reference[key] = value;
+        }
+        for (profile, frozen) in [
+            (
+                AnnualProfile::shipping_for_method(LEGACY_METHOD_VERSION).unwrap(),
+                shipping,
+            ),
+            (
+                AnnualProfile::reference_for_method(LEGACY_METHOD_VERSION).unwrap(),
+                reference,
+            ),
+        ] {
+            assert_eq!(serde_json::to_value(&profile).unwrap(), frozen);
+            assert_eq!(
+                greenlens_core::canonical_hash(&profile).unwrap(),
+                greenlens_core::canonical_hash(&frozen).unwrap()
+            );
+            assert!(!serde_json::to_value(&profile)
+                .unwrap()
+                .as_object()
+                .unwrap()
+                .contains_key("solar_ambient_divisions"));
+            assert_eq!(profile.method().unwrap(), LEGACY_METHOD_VERSION);
+            assert!(profile.validate_for_method(METHOD_VERSION).is_err());
+        }
+    }
+    #[test]
+    fn explicit_profile_binds_solar_counts_and_never_aliases_history() {
+        for profile in [AnnualProfile::shipping(), AnnualProfile::reference()] {
+            assert_eq!(profile.method().unwrap(), METHOD_VERSION);
+            assert!(profile.validate_for_method(LEGACY_METHOD_VERSION).is_err());
+            let full = profile.solar_arguments(24, false);
+            let direct = profile.solar_arguments(24, true);
+            let ad = full.iter().position(|value| value == "-ad").unwrap();
+            let ab = full.iter().position(|value| value == "-ab").unwrap();
+            assert_eq!(
+                full[ad + 1],
+                profile.solar_ambient_divisions.unwrap().to_string()
+            );
+            assert_eq!(direct[ad + 1], full[ad + 1]);
+            assert_eq!(direct[ab + 1], "0");
+            let mut without_method_marker = profile.clone();
+            without_method_marker.solar_ambient_divisions = None;
+            assert!(without_method_marker.validate().is_err());
+            let mut changed = profile.clone();
+            changed.solar_ambient_divisions = Some(2048);
+            assert!(changed.validate().is_err());
+        }
     }
 }

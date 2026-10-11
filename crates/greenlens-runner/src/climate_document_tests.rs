@@ -81,7 +81,11 @@ fn save_as_copies_current_weather_history_pending_evidence_and_unsaved_models() 
     let pending_scratch = tempdir().unwrap();
     let destination = tempdir().unwrap();
     let initial = save_project(source.path(), &example(), None).unwrap();
-    let a = climate::tests::fixture(historical_scratch.path(), false);
+    let a = climate::tests::fixture_for_method(
+        historical_scratch.path(),
+        false,
+        greenlens_radiance::annual::LEGACY_METHOD_VERSION,
+    );
     let first = completed_app(historical_scratch.path(), &initial.project, a.clone());
     let saved = first
         .collect(source.path(), &initial.project, Some(&initial.revision))

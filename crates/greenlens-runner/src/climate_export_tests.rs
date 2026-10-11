@@ -7,6 +7,21 @@ use crate::{
 use tempfile::tempdir;
 
 #[test]
+fn legacy_only_replay_does_not_discover_annual_engines() {
+    let temporary = tempdir().unwrap();
+    let missing_engine = temporary.path().join("annual-engine-is-not-installed");
+    let checks = replay_climate(
+        temporary.path(),
+        &[],
+        Some(&missing_engine),
+        &AtomicBool::new(false),
+    )
+    .unwrap();
+    assert!(checks.is_empty());
+    assert!(!missing_engine.exists());
+}
+
+#[test]
 fn explicit_selection_rejects_ambiguous_ids_and_preserves_current_studies() {
     let mut project = crate::example();
     let id = Uuid::new_v4().to_string();
@@ -106,6 +121,10 @@ fn selected_export_roundtrips_reader_with_retained_weather_and_offline_report() 
     assert!(!report.contains("<script>"));
     assert!(report.contains(climate::HOUR_LABEL));
     assert!(report.contains("Original synthetic fixture"));
+    assert!(report.contains("Source minute 60 → canonical hour-ending minute 60"));
+    assert!(report.contains("Daylight-saving adjustment applied: no"));
+    assert!(report.contains("Radiation policy:"));
+    assert!(report.contains("Complete validated time-normalization policy"));
     let comparisons: Value = read_json(&extracted.join("comparisons.json")).unwrap();
     assert_eq!(comparisons["climate"].as_array().unwrap().len(), 1);
     assert_eq!(comparisons["climate"][0]["a_id"], records[0].id);
@@ -199,4 +218,94 @@ fn streaming_replay_checks_every_value_tolerance_shape_and_cancellation() {
             .unwrap()
             .is_empty()
     );
+}
+
+#[test]
+fn report_defines_metrics_boundaries_and_actual_occupancy_denominator() {
+    let mut html = Html(String::new());
+    let mut settings = MetricSettings::default();
+    metric_definitions(&mut html, &settings).unwrap();
+    for text in [
+        "Daily 08:00–18:00 local standard time",
+        "start inclusive and end exclusive",
+        "Occupied intervals (positive weight): 3650 of 8760",
+        "W = Σ wₜ = 3650",
+        "DA = 100 × Σ(wₜ × 1[Eₜ ≥ T]) / W",
+        "cDA = 100 × Σ(wₜ × min(Eₜ / T, 1)) / W",
+        "1[L ≤ Eₜ ≤ U]",
+        "1[Eₜ &lt; L]",
+        "1[Eₜ &gt; U]",
+        "T = 300 lx; L = 100 lx; U = 3000 lx",
+        "Nighttime occupancy remains",
+    ] {
+        assert!(html.0.contains(text), "Missing definition: {text}");
+    }
+    settings.occupancy = Occupancy::Daily {
+        start_minute: 22 * 60 + 30,
+        end_minute: 6 * 60 + 15,
+    };
+    let mut overnight = Html(String::new());
+    metric_definitions(&mut overnight, &settings).unwrap();
+    assert!(overnight.0.contains("22:30–06:15"));
+    assert!(overnight.0.contains("crossing midnight"));
+    assert!(overnight.0.contains("W = Σ wₜ = 2828.75"));
+    let mut weights = vec![0.0; 8760];
+    weights[0] = 0.25;
+    weights[1] = 0.75;
+    weights[2] = 1.0;
+    settings.occupancy = Occupancy::Mask { weights };
+    let mut mask = Html(String::new());
+    metric_definitions(&mut mask, &settings).unwrap();
+    assert!(mask
+        .0
+        .contains("Explicit 8,760-interval occupancy-weight mask"));
+    assert!(mask
+        .0
+        .contains("positive weight): 3 of 8760; fractional-weight intervals: 2"));
+    assert!(mask.0.contains("W = Σ wₜ = 2"));
+    let mut tiny_weights = vec![0.0; 8760];
+    tiny_weights[0] = 1e-310;
+    tiny_weights[1] = 1e-310;
+    settings.occupancy = Occupancy::Mask {
+        weights: tiny_weights,
+    };
+    let mut tiny = Html(String::new());
+    metric_definitions(&mut tiny, &settings).unwrap();
+    assert!(tiny.0.contains("W = Σ wₜ = 2e-310"));
+}
+
+#[test]
+fn report_weather_policy_uses_reparsed_source_specific_normalization() {
+    use greenlens_core::weather::{parse_epw, synthetic_epw, WeatherSourceProfile};
+    let original = synthetic_epw();
+    let generic = parse_epw(&original, WeatherSourceProfile::EpwHourEnding).unwrap();
+    let mut first = Html(String::new());
+    weather_policy(&mut first, &generic.data).unwrap();
+    assert!(first.0.contains("greenlens.epw_hour_ending_midpoint.v1"));
+    assert!(first
+        .0
+        .contains("Source minute 60 → canonical hour-ending minute 60"));
+    assert!(first.0.contains("not declared by the source"));
+    assert!(first.0.contains("Daylight-saving adjustment applied: no"));
+    assert!(first.0.contains("interval duration 60 minutes"));
+    assert!(first.0.contains("Representative instant: -30 minutes"));
+    assert!(first
+        .0
+        .contains("accumulation divided by the 1 h interval duration"));
+    assert!(first.0.contains(&generic.data.original_sha256));
+    // Synthetic bytes explicitly exercise the supported PVGIS labeling policy;
+    // they are not actual PVGIS climate or a native simulation fixture.
+    let pvgis = String::from_utf8(original.clone()).unwrap()
+        .replace(",60,?9?9?9,", ",0,?9?9?9,")
+        .replace("COMMENTS 2,Hourly interval-ending accumulations represented at midpoint; no source irradiation shift", "COMMENTS 2,Irradiance Time Offset (h):-0.5");
+    let parsed = parse_epw(pvgis.as_bytes(), WeatherSourceProfile::PvgisTmy).unwrap();
+    let mut second = Html(String::new());
+    weather_policy(&mut second, &parsed.data).unwrap();
+    assert!(second.0.contains("greenlens.pvgis_tmy_epw_midpoint.v1"));
+    assert!(second
+        .0
+        .contains("Source minute 0 → canonical hour-ending minute 60"));
+    assert!(second.0.contains("-0.5 h relative to the interval end"));
+    assert!(!second.0.contains("not declared by the source"));
+    assert_eq!(original, synthetic_epw());
 }

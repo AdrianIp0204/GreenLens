@@ -7,7 +7,11 @@ use crate::{
     weather, Project, ProjectView,
 };
 use anyhow::{ensure, Context, Result};
-use greenlens_core::{canonical_hash, rgb_to_lux, statistics, study::StudyMode};
+use greenlens_core::{
+    canonical_hash, rgb_to_lux, statistics,
+    study::{MetricSettings, Occupancy, StudyMode},
+    weather::WeatherData,
+};
 use greenlens_radiance::{annual, Engine};
 use serde_json::{json, Value};
 use std::{
@@ -248,6 +252,68 @@ fn escape(text: &str) -> String {
         .replace('"', "&quot;")
         .replace('\'', "&#39;")
 }
+
+fn weather_policy(html: &mut Html, weather: &WeatherData) -> Result<()> {
+    let policy = &weather.time_policy;
+    let yes_no = |value| if value { "yes" } else { "no" };
+    let declared_offset = policy.declared_irradiance_offset_hours.map_or_else(
+        || "not declared by the source".into(),
+        |hours| format!("{hours} h relative to the interval end"),
+    );
+    write!(html,
+        "<h3>Retained weather interpretation</h3><p>Validated interpretation: {}. Source minute {} → canonical hour-ending minute {}; interval duration {} minutes. Representative instant: {} minutes relative to the interval end. Declared irradiation offset: {}.</p><p>Fixed local standard time: {}. Daylight-saving adjustment applied: {}. Source-year labels treated as a calendar: {}. These values come from the reparsed retained weather asset; no operating-system timezone conversion is applied.</p>",
+        escape(&policy.interpretation), policy.source_minute, policy.canonical_minute,
+        policy.interval_duration_minutes, policy.representative_offset_from_interval_end_minutes,
+        escape(&declared_offset), yes_no(policy.fixed_local_standard_time),
+        yes_no(policy.applies_daylight_saving), yes_no(policy.source_year_is_calendar),
+    )?;
+    write!(html,
+        "<p>Radiation policy: retained DNI, DHI and GHI are interval accumulations in Wh/m². The mean irradiance in W/m² is the accumulation divided by the {} h interval duration; it is not a direct conversion to lux. Visible sky generation uses DNI, DHI and retained dew point; GHI is retained for checks. Missing required values are rejected, never substituted with night. The retained asset has {} intervals with both DNI and DHI equal to zero; occupied zero-light intervals remain in annual denominators.</p><details><summary>Complete validated time-normalization policy</summary><pre>{}</pre><p>Original weather SHA-256: {}<br>Normalized weather SHA-256: {}<br>Time-axis SHA-256: {}</p></details>",
+        f64::from(policy.interval_duration_minutes) / 60.0,
+        weather.summary.zero_solar_intervals,
+        escape(&serde_json::to_string_pretty(policy)?),
+        escape(&weather.original_sha256), escape(&weather.normalized_sha256),
+        escape(&weather.time_axis_sha256),
+    )?;
+    Ok(())
+}
+
+fn metric_definitions(html: &mut Html, settings: &MetricSettings) -> Result<()> {
+    let weights = settings.weights()?;
+    let occupied = weights.iter().filter(|&&weight| weight > 0.0).count();
+    let partial = weights
+        .iter()
+        .filter(|&&weight| weight > 0.0 && weight < 1.0)
+        .count();
+    // Compensated positive sum for presentation only; metric evaluation remains
+    // in the authoritative core accumulator. Do not round tiny masks to zero.
+    let (mut total, mut correction) = (0.0_f64, 0.0_f64);
+    for weight in &weights {
+        let corrected = weight - correction;
+        let next = total + corrected;
+        correction = (next - total) - corrected;
+        total = next;
+    }
+    let denominator = if total < 0.000001 {
+        format!("{total:e}")
+    } else {
+        total.to_string()
+    };
+    let schedule = match &settings.occupancy {
+        Occupancy::Daily { start_minute, end_minute } => format!(
+            "Daily {:02}:{:02}–{:02}:{:02} local standard time, every day; start inclusive and end exclusive{}. Partial hourly overlap supplies fractional weights.",
+            start_minute / 60, start_minute % 60, end_minute / 60, end_minute % 60,
+            if start_minute > end_minute { ", crossing midnight" } else { "" },
+        ),
+        Occupancy::Mask { .. } => "Explicit 8,760-interval occupancy-weight mask in the retained weather order; no weekday or calendar inference.".into(),
+    };
+    write!(html,
+        "<h3>Annual metric definitions</h3><p>Occupancy: {} Occupied intervals (positive weight): {} of 8760; fractional-weight intervals: {}. Denominator W = Σ wₜ = {} weighted hourly intervals. Nighttime occupancy remains in the denominator.</p><p>For each sensor, Eₜ is illuminance in lux and wₜ is the retained occupancy weight. T = {} lx; L = {} lx; U = {} lx. The indicator 1[condition] equals one when its condition is true and zero otherwise.</p><ul><li>DA = 100 × Σ(wₜ × 1[Eₜ ≥ T]) / W.</li><li>cDA = 100 × Σ(wₜ × min(Eₜ / T, 1)) / W.</li><li>UDI = 100 × Σ(wₜ × 1[L ≤ Eₜ ≤ U]) / W; both endpoints are included.</li><li>Underlit = 100 × Σ(wₜ × 1[Eₜ &lt; L]) / W; the lower boundary is strict.</li><li>Overlit = 100 × Σ(wₜ × 1[Eₜ &gt; U]) / W; the upper boundary is strict.</li></ul><p>Percentages are occupancy-weighted temporal metrics per sensor, not floor-area percentages or certification criteria. UDI, underlit and overlit partition the occupied denominator.</p>",
+        escape(&schedule), occupied, partial, denominator,
+        settings.da_threshold_lux, settings.udi_lower_lux, settings.udi_upper_lux,
+    )?;
+    Ok(())
+}
 fn heatmap(
     html: &mut Html,
     run: &ClimateRunRecord,
@@ -321,6 +387,7 @@ fn render_report(root: &Path, view: &ProjectView, comparisons: &[Value]) -> Resu
         let metric_current =
             canonical_hash(&current_study.metrics)? == canonical_hash(&run.study.metrics)?;
         write!(html,"<h2>{} · run {}</h2><p><strong>{}</strong></p><p>Physical inputs match current document: {}. Metric settings match: {}. {} sensors; {} retained intervals. UTC run timestamps: {} to {}.</p><p>Weather: {}. Fixed UTC offset {} minutes; source-year labels do not define a real calendar or weekdays.</p><details><summary>Weather attribution, assumptions and warnings</summary><pre>{}</pre><pre>{}</pre></details>",escape(&run.alternative_id),escape(&run.id),escape(run.provenance["calculation_label"].as_str().unwrap_or("")),physical_current,metric_current,run.series.sensor_ids.len(),run.series.interval_count,escape(run.provenance["started_utc"].as_str().unwrap_or("")),escape(run.provenance["finished_utc"].as_str().unwrap_or("")),escape(&run.weather_asset.source.citation),weather.data.location.utc_offset_minutes,escape(&run.weather_asset.source.rights_note),escape(&serde_json::to_string_pretty(&weather.data.warnings)?))?;
+        weather_policy(&mut html, &weather.data)?;
         write!(html,"<h3>Hourly illuminance preview · interval {interval}</h3><p>Month/day {}/{}, hour-ending {} in local standard time; midpoint {:02}:30. Source-year label {} is provenance. {} This is one hourly preview, not an annual illuminance aggregate.</p>",hour.month,hour.day,hour.hour_ending,hour.hour_ending-1,hour.source_year,if run.series.interval_count==1 {"The selected calculation interval is shown."} else {"The offline report explicitly previews January 1 interval 12; all 8,760 intervals remain in the retained series."})?;
         let preview = &previews[&run.id];
         heatmap(
@@ -331,7 +398,7 @@ fn render_report(root: &Path, view: &ProjectView, comparisons: &[Value]) -> Resu
             "lx",
         )?;
         if run.metrics.is_some() {
-            write!(html,"<p>DA threshold {:.3} lx; UDI inclusive [{:.3}, {:.3}] lx. Occupancy: {}. Nighttime occupancy remains in the denominator. Percentages are occupancy-weighted temporal metrics per sensor, not floor-area percentages.</p>",run.study.metrics.da_threshold_lux,run.study.metrics.udi_lower_lux,run.study.metrics.udi_upper_lux,escape(&serde_json::to_string(&run.study.metrics.occupancy)?))?;
+            metric_definitions(&mut html, &run.study.metrics)?;
             for (i, name) in ["DA", "cDA", "UDI", "Underlit", "Overlit"]
                 .into_iter()
                 .enumerate()
@@ -437,7 +504,6 @@ pub fn replay_climate(
     }
     ensure!(!cancel.load(Ordering::SeqCst), "Climate replay cancelled");
     let engine = Engine::discover(engine_dir)?;
-    let identity = annual::AnnualEngineIdentity::discover(&engine)?;
     let mut checks = Vec::new();
     for supplied in records {
         ensure!(!cancel.load(Ordering::SeqCst), "Climate replay cancelled");
@@ -447,6 +513,13 @@ pub fn replay_climate(
             canonical_hash(&record)? == canonical_hash(supplied)?,
             "Replay record differs from verified package snapshot"
         );
+        let retained: annual::AnnualEngineIdentity =
+            serde_json::from_value(record.provenance["engine"].clone())?;
+        // A package can contain multiple supported historical methods. Rehash
+        // the installed engine under each record's compiled method contract;
+        // never relabel old provenance with the current adapter identity.
+        let identity =
+            annual::AnnualEngineIdentity::discover_for_method(&engine, &retained.method_version)?;
         ensure!(
             serde_json::to_value(&identity)? == record.provenance["engine"],
             "Replay requires the retained compatible climate engine/library identity"
@@ -454,6 +527,7 @@ pub fn replay_climate(
         let (_, weather) = weather::open(&root.join(&summary.path).join("weather"))?;
         let profile: annual::AnnualProfile =
             serde_json::from_value(record.provenance["profile"].clone())?;
+        profile.validate_for_method(&retained.method_version)?;
         let selected = match record.study.calculation {
             StudyMode::WeatherHour { interval_index, .. } => Some(interval_index),
             _ => None,
@@ -472,6 +546,14 @@ pub fn replay_climate(
             cancel,
             |_: &str| {},
         )?;
+        ensure!(
+            output.identity == identity
+                && output.recipe.engine == identity
+                && output.profile == profile
+                && output.recipe.profile == profile
+                && output.recipe.method_version == retained.method_version,
+            "Replay adapter selected a different method or complete profile"
+        );
         let expected_indices =
             selected.map_or_else(|| (0..8760).collect::<Vec<_>>(), |index| vec![index]);
         ensure!(

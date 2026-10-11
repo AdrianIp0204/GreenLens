@@ -1,5 +1,10 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — frozen method-4 compatibility boundary
+
+- Captured method-4 shipping/reference profiles, policies, generated receiver/repeated-sensor identities, required compact member set and command order before integrating a new transport method. The first nine commands per profile come from retained failed native CI jobs; the final finite-direct command and serialization contract come from the pinned source. The fixture is explicitly compatibility evidence, not a completed simulation.
+- The focused runner regression passes both profiles and no-sun process prefixes, and strict runner Clippy passes. Existing method-2/3 fixtures remain unchanged. This preserves a concrete historical contract for the forthcoming paired-primary integration without rewriting or relabeling failed evidence.
+
 ## 2026-10-11 — displayed metric conventions
 
 - Added compact DA, cDA and UDI boundary and occupancy captions beside result heatmaps, sensor tables and accepted comparisons. Current derived results use the current Rust-validated settings; explicitly selected history and A/B pairs use their immutable saved settings. Pending responses do not retain a caption from the previous result. No metric arithmetic, numerical profile, evidence or camera state changed.

@@ -1211,6 +1211,105 @@ fn historical_process_builders_match_independent_frozen_contracts() {
 }
 
 #[test]
+fn method4_contract_preserves_profiles_inputs_members_and_executed_command_prefix() {
+    // Captured before external-primary integration. Native jobs supplying the
+    // first nine command arrays failed assembly; this fixture never claims a
+    // completed simulation. The final finite-direct command is source-only.
+    let snapshot: Value = serde_json::from_str(include_str!(
+        "../../../tests/fixtures/climate-method4-contract.json"
+    ))
+    .unwrap();
+    let method = snapshot["method_version"].as_str().unwrap();
+    for (profile_key, command_key) in [
+        ("profile", "processes"),
+        ("reference_profile", "reference_processes"),
+    ] {
+        let profile: annual::AnnualProfile =
+            serde_json::from_value(snapshot[profile_key].clone()).unwrap();
+        profile.validate_for_method(method).unwrap();
+        assert_eq!(json!(profile), snapshot[profile_key]);
+        let frozen = if profile_key == "profile" {
+            annual::AnnualProfile::shipping_for_method(method).unwrap()
+        } else {
+            annual::AnnualProfile::reference_for_method(method).unwrap()
+        };
+        assert_eq!(profile, frozen);
+        assert_eq!(profile.ray_depth, -16);
+        assert!(snapshot[profile_key]
+            .get("solar_ambient_divisions")
+            .is_none());
+        assert_eq!(
+            profile.coefficient_receiver_text(),
+            snapshot["coefficient_receiver"].as_str().unwrap()
+        );
+        let repeated = profile
+            .coefficient_sensor_text(snapshot["authoritative_sensor_text"].as_str().unwrap())
+            .unwrap();
+        let repetitions = profile.coefficient_primary_repetitions.unwrap();
+        assert_eq!(repeated.lines().count(), 2 * repetitions);
+        assert_eq!(
+            json!(bytes_hash(repeated.as_bytes())),
+            snapshot["coefficient_sensor_sha256"][repetitions.to_string()]
+        );
+
+        let temporary = tempdir().unwrap();
+        let record = fixture_for_method(temporary.path(), false, method);
+        let mut recipe: annual::AnnualRecipe =
+            read_json(&temporary.path().join("annual-recipe.json")).unwrap();
+        recipe.profile = profile;
+        assert_eq!(
+            json!(recipe.schema_version),
+            snapshot["recipe_schema_version"]
+        );
+        assert_eq!(json!(recipe.ground_policy), snapshot["ground_policy"]);
+        assert_eq!(json!(recipe.direct_policy), snapshot["direct_policy"]);
+        assert_eq!(
+            record.provenance["adapter_version"],
+            snapshot["adapter_version"]
+        );
+        assert_eq!(json!(annual::RECEIVER_TEXT), snapshot["unit_receiver"]);
+        let mut members = evidence_files(&record);
+        members.retain(|name| {
+            !record
+                .series
+                .chunks
+                .iter()
+                .any(|chunk| name == &format!("series/{}", chunk.file))
+        });
+        members.sort();
+        assert_eq!(
+            json!(members),
+            snapshot["required_evidence_members_excluding_chunks"]
+        );
+        recipe.sensor_count = snapshot["sensor_count"].as_u64().unwrap() as usize;
+        recipe.solar_interval_indices = vec![8];
+        let attempted = recipe.sensor_count * recipe.profile.direct_solar_samples;
+        recipe.direct_batches = vec![annual::DirectBatch {
+            interval_indices: vec![8],
+            attempted_rays: attempted,
+            emitted_rays: 1,
+            culled_rays: attempted - 1,
+            input_sha256: bytes_hash(b"MOCK"),
+            output_sha256: bytes_hash(b"MOCK"),
+        }];
+        let commands = expected_processes(&record, &recipe)
+            .unwrap()
+            .into_iter()
+            .map(|(executable, arguments)| json!({"executable":executable,"arguments":arguments}))
+            .collect::<Vec<_>>();
+        assert_eq!(json!(commands), snapshot[command_key]);
+        recipe.solar_interval_indices.clear();
+        recipe.direct_batches.clear();
+        let no_solar = expected_processes(&record, &recipe)
+            .unwrap()
+            .into_iter()
+            .map(|(executable, arguments)| json!({"executable":executable,"arguments":arguments}))
+            .collect::<Vec<_>>();
+        assert_eq!(json!(no_solar), json!(&commands[..6]));
+    }
+}
+
+#[test]
 fn historical_weather_navigation_uses_embedded_assets_without_current_weather_references() {
     for method in [
         annual::LEGACY_METHOD_VERSION,

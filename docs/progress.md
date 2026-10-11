@@ -1,5 +1,12 @@
 # Progress and acceptance evidence
 
+## 2026-10-12 local — upper-cap moment analytical fixture
+
+- Verified limited behavior: the [fixed twelve-stage moment fixture](evidence/v0.3-engine/horizon-moment-planar-controls.json) passes all 72 analytical comparisons, with maximum relative error 0.048314% against the unchanged 1% limit. Independent review covers all 96 raw RGB values, 48 residuals and twelve successful native process records. The original failed horizon fixture remains unchanged; the real low-radiance case passes without rescaling it to the separate amplified case.
+- Retained preparation failure: the first input-contract check compared independently integrated values at an inappropriate ASCII encoding tolerance. A narrow repair separates frozen-input encoding checks from quadrature convergence. All 161 pure guards pass; source literals, native settings and scientific tolerances are unchanged.
+- Resources and scope: native stages total 2.519 seconds, sampled combined working set 217,698,304 bytes and scratch 203,069 bytes. The proposed first-moment source is only verified for unoccluded planar lighting and one diffuse reflection. Ground, glazing/shadow behavior, annual profile convergence and reference qualification remain open. A separate fixed annual-group A/B investigation is being prepared; no application or historical result changes follow from this fixture.
+- Unverified acceptance: the six annual metric failures and failed reference sensitivities remain barriers. Physical Shift-add/Ctrl-remove remains unavailable while the user cannot test; no repeated immediate request is made. The existing scoped branch is pushed through `5cde6dc`, with fresh main Windows CI in progress.
+
 ## 2026-10-12 local — complete fixed depth/order evidence
 
 - Verified execution and arithmetic: all four declared streams and the descriptive aggregate in [Windows run 38162314489](https://github.com/AdrianIp0204/GreenLens/actions/runs/38162314489) completed successfully from isolated source `a29b768`. The [compact final record](evidence/v0.3-engine/fixed-depth-order-controls.json) preserves all ten contrasts, 240 sensor effects and five RGB components per effect. An independent reader checks all 147,456 raw scalars and 6,366 arithmetic comparisons, with maximum discrepancy 1.75e-12. Root separately rechecks all 1,200 RGB-to-lux effects and thirty summary statistics. The source integration `45d1183` also passes all 100 pure guards.

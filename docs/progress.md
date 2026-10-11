@@ -1,5 +1,19 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — paired stream supervision and resource enforcement
+
+- Added a research-only primary stream generator and atomic Windows Job supervisor. The final native primitive passed 12 synthetic checks, its wrapper passed 16, and generation/native stream checks passed 9 and 3 respectively. The original inherited-pipe hang and stale open-file size failures remain retained. Exact tested sources and limits are recorded in `v0.3-paired-process-supervision.md`; these are lifecycle checks, not numerical qualification.
+- Added an isolated Rust streaming supervisor with no production caller. Six stream tests, five process tests and the historical resource-policy regression passed, along with strict crate Clippy. Shared annual supervision now queries live file handles and rechecks final sizes before success; historical measurement-policy records remain accepted without rewriting. `v0.3-stream-supervision.md` distinguishes sampled observations from guaranteed limits and records the test scope.
+- The Hammersley candidate and higher profile remain research experiments. All 24 sensors, the original twelve intervals and both alternatives remain required; controlled-reference qualification and full-year convergence are still incomplete. No production method or numerical tolerance changed in this checkpoint.
+
+## 2026-10-11 — recovered mixed evidence replay completed
+
+- The candidate04 distributed CLI replayed the native-exported recovered project: one static 24-sensor run and two historical annual 8,760-by-24 runs passed, with maximum absolute difference 0 lx across all 420,504 readings. Wall time was 1,574.455 seconds under concurrent workload. All 157 compact run files, saved manifest, package and CLI remained unchanged, with the original project and static scratch paths unavailable. The complete raw-response identity, process/resource measurements and scope are in `candidate04-mixed-replay.json`. Historical method2 accuracy remains failed; this closes the candidate's mixed compatibility/replay observation, not final annual acceptance.
+
+## 2026-10-11 — distributed CLI metric derivation on immutable annual evidence
+
+- Candidate04's distributed CLI passed 360 independent arithmetic checks across 24 sensors, five metrics and three settings on retained method2 data: defaults, revised thresholds/daily occupancy, and a weighted mask containing both daytime and nighttime. Maximum arithmetic and UDI-partition errors were 1.42109e-14 percentage points against the unchanged 1e-9 target. Empty occupancy was rejected and all three metric identities differed. All 157 compact run files, the project manifest and CLI stayed byte-identical. Exact identities, settings and reference arrays are retained in `v0.3-derived-metric-verification.md` and its compact evidence. This is headless derived-metric verification; it neither repairs the historical method's accuracy failure nor substitutes for installed metric-edit observation.
+
 ## 2026-10-11 — independent primary-ray aperture investigation
 
 - Verified an independent aperture-area integral for both alternatives, all24 sensors and uniform/overcast skies. Exact horizontal integration and split vertical Gauss–Legendre orders16/32/64 converged within2.79e-14 relative change. The unchanged max(5lx,5%) diagnostic band exposed28/96 failures in the128×128 midpoint hemisphere rule;256² and512² each passed96 cases. Every failure remains retained.

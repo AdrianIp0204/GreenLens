@@ -1,0 +1,586 @@
+{
+  "schema_version": "greenlens.derived-metric-verification-evidence.v1",
+  "declaration": {
+    "schema_version": "greenlens.derived-metric-verification.v1",
+    "declared_utc": "2026-10-11T11:43:36.588637+00:00",
+    "run_id": "85876c9b-b031-4fe1-9c43-12c85420d299",
+    "sensor_count": 24,
+    "intervals": 8760,
+    "cli_sha256": "94c4029a8be44e779b18c7bfb7fccb713b589b552596a42fd9d73c8b0723b89d",
+    "record_sha256": "f6d4290471dc3c3c7702628041c8a0870e5a7bddb65b213a55ec23e3d35f9317",
+    "inspector_sha256": "5b6cd89dab809492a219b567e324d85a9469712c6edc39a21ef121d396ba9542",
+    "cases": [
+      "default",
+      "revised_daily",
+      "weighted_day_and_night"
+    ],
+    "tolerance_percentage_points": 1e-09,
+    "scope": "Derived metric arithmetic and immutable CLI reads; no engine accuracy or native UI acceptance"
+  },
+  "result": {
+    "schema_version": "greenlens.derived-metric-verification-result.v1",
+    "passed": true,
+    "declaration_sha256": "e4efa0a85d603b5ff911bf5c56bfea52a53d2d4b57dacb65854a2a80d275da64",
+    "cases": [
+      {
+        "case": "default",
+        "metric_identity": "c60181b30b38cc3fbc0e01fcb5336a649ceadc39b6d478236835256a315962ff",
+        "occupied_hour_equivalents": 3650.0,
+        "checks": 120,
+        "maximum_error_pp": 1.4210854715202004e-14,
+        "maximum_partition_error_pp": 1.4210854715202004e-14,
+        "reference": [
+          {
+            "da_percent": 94.38356164383562,
+            "cda_percent": 97.4969494640626,
+            "udi_percent": 84.65753424657534,
+            "underlit_percent": 1.5890410958904109,
+            "overlit_percent": 13.753424657534246
+          },
+          {
+            "da_percent": 98.16438356164383,
+            "cda_percent": 99.37092938458497,
+            "udi_percent": 52.71232876712329,
+            "underlit_percent": 0.0547945205479452,
+            "overlit_percent": 47.23287671232877
+          },
+          {
+            "da_percent": 98.63013698630137,
+            "cda_percent": 99.66555164034482,
+            "udi_percent": 52.273972602739725,
+            "underlit_percent": 0.0273972602739726,
+            "overlit_percent": 47.6986301369863
+          },
+          {
+            "da_percent": 97.28767123287672,
+            "cda_percent": 99.02319917983532,
+            "udi_percent": 85.8082191780822,
+            "underlit_percent": 0.136986301369863,
+            "overlit_percent": 14.054794520547945
+          },
+          {
+            "da_percent": 92.79452054794521,
+            "cda_percent": 96.9267199530758,
+            "udi_percent": 93.23287671232876,
+            "underlit_percent": 1.9726027397260273,
+            "overlit_percent": 4.794520547945205
+          },
+          {
+            "da_percent": 95.83561643835617,
+            "cda_percent": 98.19797836554409,
+            "udi_percent": 93.01369863013699,
+            "underlit_percent": 0.958904109589041,
+            "overlit_percent": 6.027397260273973
+          },
+          {
+            "da_percent": 96.52054794520548,
+            "cda_percent": 98.53228076202929,
+            "udi_percent": 93.06849315068493,
+            "underlit_percent": 0.3835616438356164,
+            "overlit_percent": 6.5479452054794525
+          },
+          {
+            "da_percent": 95.56164383561644,
+            "cda_percent": 98.27266664532647,
+            "udi_percent": 94.46575342465754,
+            "underlit_percent": 0.5753424657534246,
+            "overlit_percent": 4.958904109589041
+          },
+          {
+            "da_percent": 86.38356164383562,
+            "cda_percent": 94.55653991015716,
+            "udi_percent": 97.20547945205479,
+            "underlit_percent": 2.7945205479452055,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 88.84931506849315,
+            "cda_percent": 95.9010744293439,
+            "udi_percent": 97.58904109589041,
+            "underlit_percent": 2.410958904109589,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 90.41095890410959,
+            "cda_percent": 96.52695875919103,
+            "udi_percent": 97.91780821917808,
+            "underlit_percent": 2.0821917808219177,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 88.05479452054794,
+            "cda_percent": 96.12512669136495,
+            "udi_percent": 97.91780821917808,
+            "underlit_percent": 2.0821917808219177,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 74.79452054794521,
+            "cda_percent": 90.36682857248945,
+            "udi_percent": 95.53424657534246,
+            "underlit_percent": 4.465753424657534,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 78.35616438356165,
+            "cda_percent": 91.87558802425384,
+            "udi_percent": 96.24657534246575,
+            "underlit_percent": 3.7534246575342465,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 79.8082191780822,
+            "cda_percent": 92.18284551561453,
+            "udi_percent": 96.35616438356165,
+            "underlit_percent": 3.643835616438356,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 77.53424657534246,
+            "cda_percent": 91.56077320198195,
+            "udi_percent": 96.1917808219178,
+            "underlit_percent": 3.808219178082192,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 51.50684931506849,
+            "cda_percent": 83.24493130987577,
+            "udi_percent": 93.06849315068493,
+            "underlit_percent": 6.931506849315069,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 59.31506849315068,
+            "cda_percent": 85.69140903488095,
+            "udi_percent": 93.97260273972603,
+            "underlit_percent": 6.027397260273973,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 58.986301369863014,
+            "cda_percent": 85.59098400141164,
+            "udi_percent": 94.10958904109589,
+            "underlit_percent": 5.890410958904109,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 53.23287671232877,
+            "cda_percent": 84.29626255509156,
+            "udi_percent": 93.8082191780822,
+            "underlit_percent": 6.191780821917808,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 32.87671232876713,
+            "cda_percent": 76.96410605301999,
+            "udi_percent": 90.93150684931507,
+            "underlit_percent": 9.068493150684931,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 40.41095890410959,
+            "cda_percent": 79.77114435676548,
+            "udi_percent": 92.0,
+            "underlit_percent": 8.0,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 38.794520547945204,
+            "cda_percent": 79.46794327068856,
+            "udi_percent": 92.0,
+            "underlit_percent": 8.0,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 33.97260273972603,
+            "cda_percent": 77.7522241661427,
+            "udi_percent": 91.78082191780823,
+            "underlit_percent": 8.219178082191782,
+            "overlit_percent": 0.0
+          }
+        ],
+        "stdout_sha256": "bd1a9643bd1313146280bc7dc9f13f09ae1ca246ec4bd7878690a38150620010",
+        "passed": true
+      },
+      {
+        "case": "revised_daily",
+        "metric_identity": "6027605dfe11aff5ca1a5edc8fd57cb52d086c7b720134b1c6ba5a791f2ba25d",
+        "occupied_hour_equivalents": 2920.0,
+        "checks": 120,
+        "maximum_error_pp": 1.4210854715202004e-14,
+        "maximum_partition_error_pp": 1.4210854715202004e-14,
+        "reference": [
+          {
+            "da_percent": 95.54794520547945,
+            "cda_percent": 99.20284673649859,
+            "udi_percent": 78.01369863013699,
+            "underlit_percent": 0.03424657534246575,
+            "overlit_percent": 21.95205479452055
+          },
+          {
+            "da_percent": 99.96575342465754,
+            "cda_percent": 99.9848010230822,
+            "udi_percent": 20.445205479452056,
+            "underlit_percent": 0.0,
+            "overlit_percent": 79.55479452054794
+          },
+          {
+            "da_percent": 99.96575342465754,
+            "cda_percent": 99.98466479917809,
+            "udi_percent": 11.575342465753424,
+            "underlit_percent": 0.0,
+            "overlit_percent": 88.42465753424658
+          },
+          {
+            "da_percent": 98.86986301369863,
+            "cda_percent": 99.72062904550933,
+            "udi_percent": 72.73972602739725,
+            "underlit_percent": 0.03424657534246575,
+            "overlit_percent": 27.226027397260275
+          },
+          {
+            "da_percent": 92.08904109589041,
+            "cda_percent": 98.45519576343018,
+            "udi_percent": 88.6986301369863,
+            "underlit_percent": 0.273972602739726,
+            "overlit_percent": 11.027397260273972
+          },
+          {
+            "da_percent": 98.56164383561644,
+            "cda_percent": 99.65074354902453,
+            "udi_percent": 76.54109589041096,
+            "underlit_percent": 0.03424657534246575,
+            "overlit_percent": 23.424657534246574
+          },
+          {
+            "da_percent": 98.83561643835617,
+            "cda_percent": 99.72456669709966,
+            "udi_percent": 78.42465753424658,
+            "underlit_percent": 0.03424657534246575,
+            "overlit_percent": 21.541095890410958
+          },
+          {
+            "da_percent": 96.91780821917808,
+            "cda_percent": 99.2241563985005,
+            "udi_percent": 88.63013698630137,
+            "underlit_percent": 0.2054794520547945,
+            "overlit_percent": 11.164383561643836
+          },
+          {
+            "da_percent": 74.28082191780823,
+            "cda_percent": 93.95612091113237,
+            "udi_percent": 98.6986301369863,
+            "underlit_percent": 1.3013698630136987,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 83.83561643835617,
+            "cda_percent": 96.66913260423574,
+            "udi_percent": 99.14383561643835,
+            "underlit_percent": 0.8561643835616438,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 87.56849315068493,
+            "cda_percent": 97.77988113894428,
+            "udi_percent": 99.31506849315069,
+            "underlit_percent": 0.684931506849315,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 84.17808219178082,
+            "cda_percent": 96.76569815397175,
+            "udi_percent": 98.97260273972603,
+            "underlit_percent": 1.0273972602739727,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 37.26027397260274,
+            "cda_percent": 82.42618973802387,
+            "udi_percent": 96.57534246575342,
+            "underlit_percent": 3.4246575342465753,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 46.54109589041096,
+            "cda_percent": 86.74169531874135,
+            "udi_percent": 97.36301369863014,
+            "underlit_percent": 2.636986301369863,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 47.226027397260275,
+            "cda_percent": 87.31185959952718,
+            "udi_percent": 97.46575342465754,
+            "underlit_percent": 2.5342465753424657,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 39.10958904109589,
+            "cda_percent": 84.5644190710296,
+            "udi_percent": 97.08904109589041,
+            "underlit_percent": 2.910958904109589,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 14.246575342465754,
+            "cda_percent": 66.7764814707621,
+            "udi_percent": 87.67123287671232,
+            "underlit_percent": 12.32876712328767,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 20.068493150684933,
+            "cda_percent": 71.68736845145341,
+            "udi_percent": 92.36301369863014,
+            "underlit_percent": 7.636986301369863,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 19.006849315068493,
+            "cda_percent": 71.56175951646266,
+            "udi_percent": 92.91095890410959,
+            "underlit_percent": 7.089041095890411,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 12.67123287671233,
+            "cda_percent": 68.22056109208907,
+            "udi_percent": 92.46575342465754,
+            "underlit_percent": 7.534246575342466,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 4.4520547945205475,
+            "cda_percent": 57.94878305521048,
+            "udi_percent": 80.71917808219177,
+            "underlit_percent": 19.28082191780822,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 7.431506849315069,
+            "cda_percent": 61.65316718379964,
+            "udi_percent": 83.32191780821918,
+            "underlit_percent": 16.67808219178082,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 6.404109589041096,
+            "cda_percent": 61.082665085445356,
+            "udi_percent": 83.66438356164383,
+            "underlit_percent": 16.335616438356166,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 2.9452054794520546,
+            "cda_percent": 58.71545649420518,
+            "udi_percent": 82.22602739726027,
+            "underlit_percent": 17.773972602739725,
+            "overlit_percent": 0.0
+          }
+        ],
+        "stdout_sha256": "2b697c3be9fc3980f2d05daa127f8edec724263fdea71617a0119f60219e80f9",
+        "passed": true
+      },
+      {
+        "case": "weighted_day_and_night",
+        "metric_identity": "c944b6ac494eef32008a2e3761f1450bd41cbeb4e5e0569a94b005a31942fcc9",
+        "occupied_hour_equivalents": 1.5,
+        "checks": 120,
+        "maximum_error_pp": 1.4210854715202004e-14,
+        "maximum_partition_error_pp": 1.4210854715202004e-14,
+        "reference": [
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 0.0,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 66.66666666666667
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 0.0,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 66.66666666666667
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 0.0,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 66.66666666666667
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 0.0,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 66.66666666666667
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 66.66666666666667,
+            "cda_percent": 66.66666666666667,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 49.38446036000001,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 54.56625260000001,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 53.412508816000006,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 49.04010302399999,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 40.357390597333335,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 43.754803437333344,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 42.69048328,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          },
+          {
+            "da_percent": 0.0,
+            "cda_percent": 40.855211316,
+            "udi_percent": 66.66666666666667,
+            "underlit_percent": 33.333333333333336,
+            "overlit_percent": 0.0
+          }
+        ],
+        "stdout_sha256": "ca50e8fbf9aac49a1cc98ca62f1a000f53424db9af3f960ab861a1b47976abe0",
+        "passed": true
+      }
+    ],
+    "empty_occupancy_rejected": true,
+    "distinct_metric_identities": true,
+    "run_files_unchanged": 157,
+    "project_and_cli_unchanged": true,
+    "release_acceptance_complete": false
+  },
+  "raw_declaration_sha256": "e4efa0a85d603b5ff911bf5c56bfea52a53d2d4b57dacb65854a2a80d275da64",
+  "raw_result_sha256": "69b770dcb34e1453b853e42dc2b48578f07f6ed75f883faa7e6a8e10abd62b16",
+  "raw_seal_sha256": "e4cf8df4b35ab3a1c339980c5ec1e57f845b547bac883f11f1a5427f9810efac",
+  "oracle_guard_regression": {
+    "invalid_values_rejected": 8,
+    "valid_boundaries_accepted": 3,
+    "passed": true
+  },
+  "prior_observation": {
+    "raw_declaration_sha256": "3f14941a642e80b12eb1c5375a64f39f497bc68f03a78d3a52817fed0b63461f",
+    "raw_result_sha256": "dced8d47af659ae55613bc0db9bde34acf6b2212b5335548f85f687230dd3063",
+    "passed": true,
+    "reason_for_fresh_run": "Independent review added explicit finite/range checks on actual CLI metric fields; previous actual fields were finite. Original reports and inspector retained separately."
+  }
+}

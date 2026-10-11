@@ -893,10 +893,11 @@
     "historical_bytes_unchanged": true,
     "top_level_weather_path_absent": true,
     "initial_manifest_sha256": "98d50e9ac97180a8e418f608e9e173200d53dd8ee8d1cdfaef866c22203dd77a",
-    "export_saved_manifest_sha256": "98d50e9ac97180a8e418f608e9e173200d53dd8ee8d1cdfaef866c22203dd77a"
+    "export_saved_manifest_sha256": "98d50e9ac97180a8e418f608e9e173200d53dd8ee8d1cdfaef866c22203dd77a",
+    "unchanged_after_replay": true
   },
   "export": {
-    "replay": "Not executed for this new package yet.",
+    "replay": "Verified by the distributed candidate04 CLI: one static24-sensor run and two8760-by24 historical annual runs, maximum absolute difference0lx. See candidate04-mixed-replay.json.",
     "largest_entry_bytes": 2527669,
     "uncompressed_bytes": 32688112,
     "entries": 163,
@@ -910,7 +911,8 @@
     "sha256": "6623a2e54c903a297a03cf8e5210b54d373b14a51b1d4faae4e15e3d7cb00114",
     "all_seals_verified": true,
     "file": "recovered-all-runs.zip",
-    "offline_static_report_sha256": "cd9c2d19005d219b81e4d6275f73ef2b0b0250ed865230f635bd2a489a2d638e"
+    "offline_static_report_sha256": "cd9c2d19005d219b81e4d6275f73ef2b0b0250ed865230f635bd2a489a2d638e",
+    "replay_evidence": "candidate04-mixed-replay.json"
   },
   "screenshots": [
     {

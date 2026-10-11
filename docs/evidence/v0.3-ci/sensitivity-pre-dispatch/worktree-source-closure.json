@@ -1,0 +1,128 @@
+{
+  "schema_version": "greenlens.reference-source-newlines.v1",
+  "recorded_utc": "2026-10-11T15:57:51.0120896Z",
+  "policy": "Only fixed trusted checkout source LF/CRLF conversion whose exact bytes match the sealed local digest; no data files or embedded archive code executed",
+  "preparation_source_sha256": "839c155b8fc392462c5a2d04e8344faf973b4c209c09d5b941e8edc19bed695e",
+  "files": [
+    {
+      "path": "scripts/annual-reference-sensitivity.ps1",
+      "before_sha256": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566",
+      "after_sha256": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 15850
+    },
+    {
+      "path": "scripts/annual-controlled-reference.ps1",
+      "before_sha256": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+      "after_sha256": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 16080
+    },
+    {
+      "path": "scripts/annual-reference-process.ps1",
+      "before_sha256": "2ed15f24c2017272f4f83ef8062305e91ce54907acae903eb3ca571e30407c91",
+      "after_sha256": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+      "changed": true,
+      "newline_convention": "lf",
+      "bytes": 5057
+    },
+    {
+      "path": "scripts/annual-reference-aggregation.cs",
+      "before_sha256": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+      "after_sha256": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 4806
+    },
+    {
+      "path": "scripts/annual-matched-corrected.ps1",
+      "before_sha256": "fc0e4584966a3cc9d17f63ef37f498964bb960e6589f0c7f3541cad51e9580d4",
+      "after_sha256": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+      "changed": true,
+      "newline_convention": "lf",
+      "bytes": 17532
+    },
+    {
+      "path": "scripts/annual-feasibility.ps1",
+      "before_sha256": "4de6701a5671ae560c3fa387c9a7d434fd13a9d97dd2b24f91f1c4c7258d5576",
+      "after_sha256": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+      "changed": true,
+      "newline_convention": "lf",
+      "bytes": 13741
+    },
+    {
+      "path": "scripts/annual-matched-evidence.ps1",
+      "before_sha256": "bf5b16ed66e17a132941257e0a2427d264eff0be6adb9f3f7a271473b32bc6e9",
+      "after_sha256": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+      "changed": true,
+      "newline_convention": "lf",
+      "bytes": 10566
+    },
+    {
+      "path": "scripts/verify-matrix-multiplication.ps1",
+      "before_sha256": "2d2f900db0efadf988fa6ba7e65b411de7515798b1518e00976a7fb06a69060c",
+      "after_sha256": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+      "changed": true,
+      "newline_convention": "lf",
+      "bytes": 3698
+    },
+    {
+      "path": "scripts/annual-collect-reference.ps1",
+      "before_sha256": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+      "after_sha256": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 43535
+    },
+    {
+      "path": "scripts/annual-reference-identity.ps1",
+      "before_sha256": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8",
+      "after_sha256": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 8571
+    },
+    {
+      "path": "scripts/annual-reference-recovery.ps1",
+      "before_sha256": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+      "after_sha256": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 9445
+    },
+    {
+      "path": "docs/v0.3-reference-protocol.md",
+      "before_sha256": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+      "after_sha256": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 13888
+    },
+    {
+      "path": "dependencies/radiance.json",
+      "before_sha256": "975cc4edca34bac685d5d89c9eeadf570aef806f9e53e6c8ec3733c2e86ab6d1",
+      "after_sha256": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+      "changed": true,
+      "newline_convention": "crlf",
+      "bytes": 5578
+    },
+    {
+      "path": "examples/synthetic-a.json",
+      "before_sha256": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+      "after_sha256": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 633
+    },
+    {
+      "path": "examples/synthetic-b.json",
+      "before_sha256": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf",
+      "after_sha256": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf",
+      "changed": false,
+      "newline_convention": "preserved",
+      "bytes": 724
+    }
+  ]
+}

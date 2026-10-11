@@ -1,0 +1,62 @@
+{
+  "recorded_utc": "2026-10-11T15:53:06.2928858Z",
+  "reference_family_qualified": false,
+  "release_accepted": false,
+  "source_sha256": {
+    "preparation": "839c155b8fc392462c5a2d04e8344faf973b4c209c09d5b941e8edc19bed695e",
+    "wrapper": "78f882cadd0c4eb89bed9c7dfc1f6d21c84ca061da4163ceb20ebd4ef62a68b8",
+    "plan": "b448553440a4122381698a8b8e6668c69ef84c49ad1b44df24012916a73b61c7"
+  },
+  "scope": "Final actual archive verification with bounded decompression and pre-extraction installed EXE/CAL hashes; fresh strict A4116/B8512 reads, isolated trusted-source copies, declaration only",
+  "cases": [
+    {
+      "source_preparation_sha256": "fdca3ad1198ab2b428d758238f0a43577ec0ca73670e0d5a1824bf627270f127",
+      "baseline_verified": true,
+      "declaration_sha256": "0984f32276042e5ea915612c7b13e3d802b8c1ab7b97c3b9dedb29c677fbb5ce",
+      "case_sha256": "b89e84b8657f52d105d03c3430510bf0b1f3d2b2f07832da4b0055bece113a42",
+      "alternative": "A",
+      "interval_index": 4116,
+      "engine_sha256": {
+        "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+        "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+        "rcontrib.exe": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+        "rayinit.cal": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+        "skybright.cal": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454",
+        "reinhart.cal": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934"
+      },
+      "variant": "scale10000",
+      "executed_variant_names": [
+        "scale10000"
+      ],
+      "final_baseline_rounds": 256,
+      "engine_processes_started": 0,
+      "prepare_only": true
+    },
+    {
+      "source_preparation_sha256": "35fae94bde4c716b79dae16afb15f5e324c1c12abdd5e6624ba09d9f278dc8c5",
+      "baseline_verified": true,
+      "declaration_sha256": "2e20f00eef5261c3c2289415dbb0723432458bff13ae35444a6e6bd9a8024787",
+      "case_sha256": "cc1da8689993d8a96d7a1423897f8698220c459ccfd3d59865a021e1bc5717d9",
+      "alternative": "B",
+      "interval_index": 8512,
+      "engine_sha256": {
+        "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+        "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+        "rcontrib.exe": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+        "rayinit.cal": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+        "skybright.cal": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454",
+        "reinhart.cal": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934"
+      },
+      "variant": "weight1e10",
+      "executed_variant_names": [
+        "weight1e10"
+      ],
+      "final_baseline_rounds": 256,
+      "engine_processes_started": 0,
+      "prepare_only": true
+    }
+  ],
+  "schema_version": "greenlens.hosted-sensitivity-prepare-verification.v1",
+  "candidate_accepted": false,
+  "passed": true
+}

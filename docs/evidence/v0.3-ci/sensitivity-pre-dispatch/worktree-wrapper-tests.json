@@ -1,0 +1,248 @@
+{
+  "schema_version": "greenlens.hosted-sensitivity-wrapper-tests.v1",
+  "scope": "Original synthetic plan/archive/path, actual-stream bounds and strict-reader-shape guard tests; no engine or scientific qualification",
+  "wrapper_sha256": "78f882cadd0c4eb89bed9c7dfc1f6d21c84ca061da4163ceb20ebd4ef62a68b8",
+  "passed": true,
+  "checks": [
+    {
+      "name": "exact six tuples and unchanged limits",
+      "passed": true
+    },
+    {
+      "name": "all six fixed tuples accepted",
+      "passed": true
+    },
+    {
+      "name": "unknown design",
+      "passed": true
+    },
+    {
+      "name": "wrong fixed index",
+      "passed": true
+    },
+    {
+      "name": "unknown variant",
+      "passed": true
+    },
+    {
+      "name": "duplicate plan tuple",
+      "passed": true
+    },
+    {
+      "name": "missing plan tuple",
+      "passed": true
+    },
+    {
+      "name": "changed numerical variant",
+      "passed": true
+    },
+    {
+      "name": "changed maximum_parallel_jobs",
+      "passed": true
+    },
+    {
+      "name": "changed engine_workers_per_job",
+      "passed": true
+    },
+    {
+      "name": "changed maximum_other_baseline_jobs",
+      "passed": true
+    },
+    {
+      "name": "changed job_minutes",
+      "passed": true
+    },
+    {
+      "name": "changed process_seconds",
+      "passed": true
+    },
+    {
+      "name": "changed maximum_file_bytes",
+      "passed": true
+    },
+    {
+      "name": "changed maximum_scratch_bytes",
+      "passed": true
+    },
+    {
+      "name": "changed maximum_runner_plus_engine_bytes",
+      "passed": true
+    },
+    {
+      "name": "changed ambient_divisions",
+      "passed": true
+    },
+    {
+      "name": "exact synthetic A archive closure",
+      "passed": true
+    },
+    {
+      "name": "exact synthetic B archive closure",
+      "passed": true
+    },
+    {
+      "name": "existing destination retained",
+      "passed": true
+    },
+    {
+      "name": "wrongDesign rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "wrongInterval rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "wrongSensors rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "wrongRung rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "baselineIdentity rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "sourceDigest rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "sourceMissing rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "sourceExtra rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "memberHash rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "memberLength rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "duplicateManifest rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "uncompressedTotal rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "pathTraversal rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "duplicateZip rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "caseDuplicateZip rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "symlink rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "unlistedMember rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "invalidManifestUtf8 rejected before extraction",
+      "passed": true
+    },
+    {
+      "name": "wrong pinned bytes",
+      "passed": true
+    },
+    {
+      "name": "wrong pinned sha256",
+      "passed": true
+    },
+    {
+      "name": "wrong pinned manifest_sha256",
+      "passed": true
+    },
+    {
+      "name": "oversized archive member",
+      "passed": true
+    },
+    {
+      "name": "rooted archive path",
+      "passed": true
+    },
+    {
+      "name": "Windows path separators",
+      "passed": true
+    },
+    {
+      "name": "strict-reader result shape accepted",
+      "passed": true
+    },
+    {
+      "name": "invalid baseline unqualified",
+      "passed": true
+    },
+    {
+      "name": "invalid baseline differentCase",
+      "passed": true
+    },
+    {
+      "name": "invalid baseline wrongRung",
+      "passed": true
+    },
+    {
+      "name": "invalid baseline wrongSensors",
+      "passed": true
+    },
+    {
+      "name": "invalid baseline duplicateCase",
+      "passed": true
+    },
+    {
+      "name": "invalid baseline missingContext",
+      "passed": true
+    },
+    {
+      "name": "invalid baseline identity",
+      "passed": true
+    },
+    {
+      "name": "actual multi-buffer stream length hash and copied bytes",
+      "passed": true
+    },
+    {
+      "name": "exact empty bounded stream",
+      "passed": true
+    },
+    {
+      "name": "actual truncated stream",
+      "passed": true
+    },
+    {
+      "name": "actual oversized stream",
+      "passed": true
+    },
+    {
+      "name": "overread stops at expected plus one",
+      "passed": true
+    },
+    {
+      "name": "declared cap plus one",
+      "passed": true
+    },
+    {
+      "name": "negative stream limit",
+      "passed": true
+    },
+    {
+      "name": "actual byte in declared empty stream",
+      "passed": true
+    }
+  ]
+}

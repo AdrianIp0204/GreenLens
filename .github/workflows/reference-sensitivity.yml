@@ -1,0 +1,97 @@
+name: Fixed controlled-reference sensitivity variants
+on:
+  push:
+    branches: [codex/v0.3-reference-sensitivity]
+permissions:
+  contents: read
+concurrency:
+  group: greenlens-controlled-sensitivity-fixed
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  sensitivity:
+    permissions:
+      # Required only to read existing unpublished, reviewed data-only assets.
+      contents: write
+    runs-on: windows-latest
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - { alternative: A, interval: 4116, variant: scale10000 }
+          - { alternative: A, interval: 4116, variant: weight1e10 }
+          - { alternative: A, interval: 4116, variant: depth10-24 }
+          - { alternative: B, interval: 8512, variant: scale10000 }
+          - { alternative: B, interval: 8512, variant: weight1e10 }
+          - { alternative: B, interval: 8512, variant: depth10-24 }
+    env:
+      REFERENCE_ALTERNATIVE: '${{ matrix.alternative }}'
+      REFERENCE_VARIANT: '${{ matrix.variant }}'
+      REFERENCE_INTERVAL: '${{ matrix.interval }}'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Synthetic source and bounded-wrapper guards
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 or later required' }
+          ./scripts/test-prepare-sensitivity-sources.ps1
+          ./scripts/test-hosted-sensitivity-case.ps1
+      - name: Download exact reviewed alternative input bundle
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: '${{ github.token }}'
+        run: |
+          . ./scripts/run-hosted-sensitivity-case.ps1 -FunctionsOnly
+          $plan = Get-Content ./scripts/hosted-sensitivity-plan.json -Raw | ConvertFrom-Json -Depth 40 -DateKind String
+          Assert-HostedSensitivityPlan $plan
+          Assert-HostedSensitivityCase $env:REFERENCE_ALTERNATIVE ([int]$env:REFERENCE_INTERVAL) $env:REFERENCE_VARIANT
+          $pinned = @($plan.archives | Where-Object { $_.alternative -ceq $env:REFERENCE_ALTERNATIVE })[0]
+          if ($pinned.asset_id -notmatch '^[0-9]+$') { throw 'Reviewed draft asset ID must be fixed before dispatch' }
+          $endpoint = "repos/$env:GITHUB_REPOSITORY/releases/assets/$($pinned.asset_id)"
+          $asset = & gh api $endpoint | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $asset.name -cne $pinned.name -or $asset.size -ne $pinned.bytes -or $asset.digest -cne ('sha256:'+$pinned.sha256)) { throw 'Draft asset metadata differs' }
+          $zip = Join-Path $env:RUNNER_TEMP $pinned.name
+          $info = [Diagnostics.ProcessStartInfo]::new()
+          $info.FileName = (Get-Command gh -CommandType Application | Select-Object -First 1).Source
+          $info.UseShellExecute = $false
+          $info.RedirectStandardOutput = $true
+          $info.RedirectStandardError = $true
+          foreach ($arg in @('api',$endpoint,'-H','Accept: application/octet-stream')) { $info.ArgumentList.Add($arg) }
+          $process = [Diagnostics.Process]::new(); $process.StartInfo = $info
+          $stream = [IO.File]::Open($zip,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write)
+          $started = $false
+          try {
+            $started = $process.Start()
+            if (!$started) { throw 'Cannot start authenticated input download' }
+            $copy = $process.StandardOutput.BaseStream.CopyToAsync($stream)
+            $errors = $process.StandardError.ReadToEndAsync()
+            if (!$process.WaitForExit(300000)) { $process.Kill($true); throw 'Input download deadline exceeded' }
+            if (!$copy.Wait(30000) -or !$errors.Wait(30000)) { throw 'Input download pipe drain deadline exceeded' }
+            $null = $copy.GetAwaiter().GetResult()
+            $null = $errors.GetAwaiter().GetResult()
+            if ($process.ExitCode -ne 0) { throw 'Authenticated input download failed' }
+          } finally { if ($started -and !$process.HasExited) { $process.Kill($true) }; $stream.Dispose(); $process.Dispose() }
+          if ((Get-Item -LiteralPath $zip).Length -ne $pinned.bytes -or (Get-FileHash -LiteralPath $zip).Hash.ToLowerInvariant() -cne $pinned.sha256) { throw 'Reviewed bundle digest/size differs' }
+          "REFERENCE_INPUT_ARCHIVE=$zip" >> $env:GITHUB_ENV
+          $out = Join-Path $env:RUNNER_TEMP ("GreenLens-sensitivity-" + $env:REFERENCE_ALTERNATIVE + "-" + $env:REFERENCE_INTERVAL + "-" + $env:REFERENCE_VARIANT)
+          "REFERENCE_OUTPUT=$out" >> $env:GITHUB_ENV
+      - name: Acquire separately pinned Radiance
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        run: ./scripts/install-radiance.ps1
+      - name: One fixed sensitivity variant with one engine worker
+        run: |
+          ./scripts/run-hosted-sensitivity-case.ps1 -Alternative $env:REFERENCE_ALTERNATIVE -IntervalIndex ([int]$env:REFERENCE_INTERVAL) -Variant $env:REFERENCE_VARIANT -InputArchive $env:REFERENCE_INPUT_ARCHIVE -OutputDirectory $env:REFERENCE_OUTPUT -SourceRoot $PWD
+      - name: Retain completed or failed bounded reference evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: sensitivity-${{ matrix.alternative }}-${{ matrix.interval }}-${{ matrix.variant }}-${{ github.run_id }}
+          path: '${{ runner.temp }}/GreenLens-sensitivity-${{ matrix.alternative }}-${{ matrix.interval }}-${{ matrix.variant }}/'
+          if-no-files-found: warn
+          retention-days: 30

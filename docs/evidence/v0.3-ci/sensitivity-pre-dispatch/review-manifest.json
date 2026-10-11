@@ -1,0 +1,66 @@
+{
+  "reference_family_qualified": false,
+  "members": [
+    {
+      "sha256": "78f882cadd0c4eb89bed9c7dfc1f6d21c84ca061da4163ceb20ebd4ef62a68b8",
+      "bytes": 15014,
+      "name": "run-hosted-sensitivity-case.ps1"
+    },
+    {
+      "sha256": "839c155b8fc392462c5a2d04e8344faf973b4c209c09d5b941e8edc19bed695e",
+      "bytes": 3314,
+      "name": "prepare-sensitivity-sources.ps1"
+    },
+    {
+      "sha256": "b448553440a4122381698a8b8e6668c69ef84c49ad1b44df24012916a73b61c7",
+      "bytes": 5751,
+      "name": "hosted-sensitivity-plan.json"
+    },
+    {
+      "sha256": "ef380f25b837adf9c01fcc3eb4f98be10ed15b7ffb1c1a32facad715cd995808",
+      "bytes": 5521,
+      "name": "reference-sensitivity.yml"
+    },
+    {
+      "sha256": "64b849c00ca2279e7e02a4eccffc2fab8b2f1c67825c86703db46cad57e9827e",
+      "bytes": 11851,
+      "name": "test-hosted-sensitivity-case.ps1"
+    },
+    {
+      "sha256": "c6069eec89b8033db23b8b8e7e2f7e05ce3111b3ae1f27b950b62341ac8c3eaf",
+      "bytes": 5048,
+      "name": "test-prepare-sensitivity-sources.ps1"
+    },
+    {
+      "sha256": "47b90157a1d7b45149744b893f1063599def5a2f753caa3a9844bdeff8e237e9",
+      "bytes": 5562,
+      "name": "wrapper-tests.json"
+    },
+    {
+      "sha256": "4c3ea15b40b86ea719cd0bf05abb4b0078d9266c46f404e416df0b93dcca5c07",
+      "bytes": 1473,
+      "name": "source-preparation-tests.json"
+    },
+    {
+      "sha256": "44209da7562ab961d991257e02de0d9270692367fe6d11dfaf05e70ac7ca837a",
+      "bytes": 3130,
+      "name": "prepare-only-verification-final.json"
+    },
+    {
+      "sha256": "8fd652022f6411d5e6bfb82a00b093f89b9ba8124322e2daec7c0383bc52f009",
+      "bytes": 2877,
+      "name": "README.md"
+    }
+  ],
+  "source_preparation_checks_passed": 15,
+  "actual_prepare_only_cases_passed": 2,
+  "release_accepted": false,
+  "engine_executions": 0,
+  "candidate_accepted": false,
+  "recorded_utc": "2026-10-11T15:55:16.0572590Z",
+  "scope": "Fixed six existing sensitivity variants; data and trusted-source wrapper review only, no dispatch or numerical acceptance",
+  "wrapper_checks_passed": 60,
+  "schema_version": "greenlens.hosted-sensitivity-proposal-review.v1",
+  "workflow_dispatches": 0,
+  "remote_uploads": 0
+}

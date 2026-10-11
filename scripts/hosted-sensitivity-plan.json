@@ -1,0 +1,148 @@
+{
+  "schema_version": "greenlens.hosted-sensitivity-plan.v1",
+  "declared_utc": "2026-10-11T15:39:05.2838575Z",
+  "scope": "Exactly six predeclared variants, one worker per isolated hosted Windows job, no baseline resampling or additional cases",
+  "maximum_parallel_jobs": 2,
+  "engine_workers_per_job": 1,
+  "maximum_other_baseline_jobs": 4,
+  "job_minutes": 150,
+  "process_seconds": 7200,
+  "maximum_file_bytes": 536870912,
+  "maximum_scratch_bytes": 2147483648,
+  "maximum_runner_plus_engine_bytes": 2147483648,
+  "source_sha256": {
+    "scripts/annual-reference-sensitivity.ps1": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566",
+    "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+    "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+    "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+    "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+    "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+    "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+    "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+    "scripts/annual-collect-reference.ps1": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+    "scripts/annual-reference-identity.ps1": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8",
+    "scripts/annual-reference-recovery.ps1": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+    "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+    "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+    "examples/synthetic-a.json": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+    "examples/synthetic-b.json": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf"
+  },
+  "archives": [
+    {
+      "name": "GreenLens-sensitivity-A4116-baseline.zip",
+      "manifest_sha256": "50f9b846fcfa60dd76f6f1addec8d9648cf1b8868eaf4142ef98fdaabf402833",
+      "baseline_report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5",
+      "baseline_strict_reader_verified": true,
+      "member_count": 33,
+      "interval_index": 4116,
+      "baseline_processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18",
+      "bytes": 8371685,
+      "sha256": "4f1dc61244890bc8d7a726ef032429de8213948dad0cff08f1236ce91838c59c",
+      "privacy_matches": 0,
+      "uncompressed_bytes": 64602523,
+      "alternative": "A",
+      "asset_id": "631152052",
+      "baseline_declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a"
+    },
+    {
+      "name": "GreenLens-sensitivity-B8512-baseline.zip",
+      "manifest_sha256": "309270a6ad036343c31d80db2da208f4e0fa72e866ab06319a4257efbdaa7ba9",
+      "baseline_report_sha256": "51b35ed0bab20d9a236374bbd18e9c49855ba81dd58eab695fdb1599f7ac1d42",
+      "baseline_strict_reader_verified": true,
+      "member_count": 39,
+      "interval_index": 8512,
+      "baseline_processes_sha256": "7564d3ddbc48d2e5ee5136c9de3af4aa0cff7664cb7deb8bbc34464614b53c3f",
+      "bytes": 8475377,
+      "sha256": "8dce4b0b256c373ca38d14b62f144ecd7e0d9956a56568047a23a76d5ba0b666",
+      "privacy_matches": 0,
+      "uncompressed_bytes": 64659025,
+      "alternative": "B",
+      "asset_id": "631152054",
+      "baseline_declaration_sha256": "e573d1b33014a8db3ac52e12902d6f92729918ed9696f6aa7f09057cb47b136f"
+    }
+  ],
+  "cases": [
+    {
+      "variant": "scale10000",
+      "sensors": 24,
+      "alternative": "A",
+      "rounds": 256,
+      "interval_index": 4116
+    },
+    {
+      "variant": "weight1e10",
+      "sensors": 24,
+      "alternative": "A",
+      "rounds": 256,
+      "interval_index": 4116
+    },
+    {
+      "variant": "depth10-24",
+      "sensors": 24,
+      "alternative": "A",
+      "rounds": 256,
+      "interval_index": 4116
+    },
+    {
+      "variant": "scale10000",
+      "sensors": 24,
+      "alternative": "B",
+      "rounds": 256,
+      "interval_index": 8512
+    },
+    {
+      "variant": "weight1e10",
+      "sensors": 24,
+      "alternative": "B",
+      "rounds": 256,
+      "interval_index": 8512
+    },
+    {
+      "variant": "depth10-24",
+      "sensors": 24,
+      "alternative": "B",
+      "rounds": 256,
+      "interval_index": 8512
+    }
+  ],
+  "variants": [
+    {
+      "lw": "1e-9",
+      "scale": 10000,
+      "name": "scale10000",
+      "ab": 9,
+      "lr": -16
+    },
+    {
+      "lw": "1e-10",
+      "scale": 100,
+      "name": "weight1e10",
+      "ab": 9,
+      "lr": -16
+    },
+    {
+      "lw": "1e-9",
+      "scale": 100,
+      "name": "depth10-24",
+      "ab": 10,
+      "lr": -24
+    }
+  ],
+  "ambient_divisions": 8192,
+  "primary_mode": "-I+ -c1 round-major 24 sensors x qualified256 repeats; one uninterrupted stream",
+  "direct_correction": "Reuse exact original centroid and 4096-ray finite arrays, unchanged",
+  "scale_criterion": "Each normalized RGB component of each of two bins: abs(diff)<=1e-5*abs(baseline), both-zero required at zero",
+  "weight_depth_criterion": "Each24sensor assembled illuminance: abs(diff)<=max(0.1lx,1%baseline)",
+  "workflow_branch_proposal": "codex/v0.3-reference-sensitivity",
+  "dispatch_authorized": true,
+  "variants_executed": 0,
+  "reference_family_accepted": false,
+  "candidate_accepted": false,
+  "release_accepted": false,
+  "dispatch_authorization": {
+    "basis": "User-authorized project CI; root reviewed final wrapper, independent guards, exact data-only assets and fixed six-variant plan",
+    "reviewed_utc": "2026-10-11T15:57:17.6833838Z",
+    "constraint": "No additional cases; at most two sensitivity jobs alongside four authorized baseline jobs; unchanged per-process caps and numerical protocol",
+    "pre_dispatch_variants_executed": 0
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "greenlens.sensitivity-source-preparation-tests.v1",
+  "scope": "Original synthetic source-only newline guard tests; no engine, network, archive-code execution or real checkout mutation",
+  "source_sha256": "839c155b8fc392462c5a2d04e8344faf973b4c209c09d5b941e8edc19bed695e",
+  "passed": true,
+  "checks": [
+    {
+      "name": "unchanged-lf",
+      "passed": true
+    },
+    {
+      "name": "unchanged-crlf",
+      "passed": true
+    },
+    {
+      "name": "to-lf",
+      "passed": true
+    },
+    {
+      "name": "to-crlf",
+      "passed": true
+    },
+    {
+      "name": "non-newline source change",
+      "passed": true
+    },
+    {
+      "name": "lone CR is not normalized",
+      "passed": true
+    },
+    {
+      "name": "invalid UTF8",
+      "passed": true
+    },
+    {
+      "name": "unlisted path pin",
+      "passed": true
+    },
+    {
+      "name": "missing source pin",
+      "passed": true
+    },
+    {
+      "name": "malformed source digest",
+      "passed": true
+    },
+    {
+      "name": "directory source",
+      "passed": true
+    },
+    {
+      "name": "source beyond 2MiB cap",
+      "passed": true
+    },
+    {
+      "name": "later invalid source rejects whole plan",
+      "passed": true
+    },
+    {
+      "name": "all validation precedes any rewrite",
+      "passed": true
+    },
+    {
+      "name": "numeric data untouched",
+      "passed": true
+    }
+  ]
+}

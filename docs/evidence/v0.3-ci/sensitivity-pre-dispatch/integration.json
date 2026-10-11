@@ -1,0 +1,99 @@
+{
+  "schema_version": "greenlens.hosted-sensitivity-integration.v1",
+  "recorded_utc": "2026-10-11T15:59:15.0670710Z",
+  "base_source_commit": "890166b6ae64cdd3b416ee65b7b51dc50d66266a",
+  "branch": "codex/v0.3-reference-sensitivity",
+  "scope": "Reviewed fixed six sensitivity jobs, no numerical policy change; local source/wrapper guards and actual declaration-only baseline closure checks",
+  "original_draft_plan_sha256": "b448553440a4122381698a8b8e6668c69ef84c49ad1b44df24012916a73b61c7",
+  "plan_changes": [
+    "Fill reviewed existing draft asset IDs A631152052/B631152054",
+    "Record root-reviewed user-authorized dispatch scope; preserve original declaration and zero-execution snapshot"
+  ],
+  "worktree_source_guards_passed": 15,
+  "worktree_wrapper_guards_passed": 60,
+  "trusted_source_pins": 15,
+  "newline_only_restorations_on_disposable_copy": 6,
+  "actual_prepare_only_cases": 2,
+  "engine_executions_during_integration": 0,
+  "workflow_dispatches_during_integration": 0,
+  "reference_family_qualified": false,
+  "candidate_accepted": false,
+  "release_accepted": false,
+  "records": [
+    {
+      "path": ".github/workflows/reference-sensitivity.yml",
+      "sha256": "ef380f25b837adf9c01fcc3eb4f98be10ed15b7ffb1c1a32facad715cd995808",
+      "bytes": 5521
+    },
+    {
+      "path": "scripts/hosted-sensitivity-plan.json",
+      "sha256": "0bd3075a0cdeafa504adaa388739730c5ad407a98b62a1ef732e314d21e961c2",
+      "bytes": 6158
+    },
+    {
+      "path": "scripts/run-hosted-sensitivity-case.ps1",
+      "sha256": "78f882cadd0c4eb89bed9c7dfc1f6d21c84ca061da4163ceb20ebd4ef62a68b8",
+      "bytes": 15014
+    },
+    {
+      "path": "scripts/prepare-sensitivity-sources.ps1",
+      "sha256": "839c155b8fc392462c5a2d04e8344faf973b4c209c09d5b941e8edc19bed695e",
+      "bytes": 3314
+    },
+    {
+      "path": "scripts/test-hosted-sensitivity-case.ps1",
+      "sha256": "64b849c00ca2279e7e02a4eccffc2fab8b2f1c67825c86703db46cad57e9827e",
+      "bytes": 11851
+    },
+    {
+      "path": "scripts/test-prepare-sensitivity-sources.ps1",
+      "sha256": "c6069eec89b8033db23b8b8e7e2f7e05ce3111b3ae1f27b950b62341ac8c3eaf",
+      "bytes": 5048
+    },
+    {
+      "path": "docs/v0.3-hosted-sensitivity.md",
+      "sha256": "fec85bf1e57b627cc2d2781aafaf59fdde387e99fca1fa0f75962482894adf68",
+      "bytes": 3174
+    },
+    {
+      "path": ".gitattributes",
+      "sha256": "e3da252cca5b89b8a00c8216ad28e7a32f41e597ea73bcdadcac6501d2406a25",
+      "bytes": 1778
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/sensitivity-pre-dispatch/prepare-only-verification-final.json",
+      "sha256": "44209da7562ab961d991257e02de0d9270692367fe6d11dfaf05e70ac7ca837a",
+      "bytes": 3130
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/sensitivity-pre-dispatch/review-manifest.json",
+      "sha256": "6eb52d7d88fdbd595dc46acde0217a74625a3fdc078a0bd297c2332b7441f492",
+      "bytes": 2261
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/sensitivity-pre-dispatch/source-preparation-tests.json",
+      "sha256": "4c3ea15b40b86ea719cd0bf05abb4b0078d9266c46f404e416df0b93dcca5c07",
+      "bytes": 1473
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/sensitivity-pre-dispatch/worktree-source-closure.json",
+      "sha256": "ed621f3d3eb426ffc686b7b52949066bf515a9d189c804cbac10607f003f3340",
+      "bytes": 5449
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/sensitivity-pre-dispatch/worktree-source-tests.json",
+      "sha256": "4c3ea15b40b86ea719cd0bf05abb4b0078d9266c46f404e416df0b93dcca5c07",
+      "bytes": 1473
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/sensitivity-pre-dispatch/worktree-wrapper-tests.json",
+      "sha256": "47b90157a1d7b45149744b893f1063599def5a2f753caa3a9844bdeff8e237e9",
+      "bytes": 5562
+    },
+    {
+      "path": "docs/evidence/v0.3-ci/sensitivity-pre-dispatch/wrapper-tests.json",
+      "sha256": "47b90157a1d7b45149744b893f1063599def5a2f753caa3a9844bdeff8e237e9",
+      "bytes": 5562
+    }
+  ]
+}

@@ -28,3 +28,9 @@ tests/fixtures/legacy-static-v0.1.zip binary
 docs/evidence/v0.3-engine/solar-directions/processes.json -text -whitespace
 *.png binary
 *.ico binary
+# Retain reviewed hosted-sensitivity source/verification bytes and their digests.
+scripts/run-hosted-sensitivity-case.ps1 -text -whitespace
+scripts/prepare-sensitivity-sources.ps1 -text -whitespace
+scripts/test-hosted-sensitivity-case.ps1 -text -whitespace
+scripts/test-prepare-sensitivity-sources.ps1 -text -whitespace
+docs/evidence/v0.3-ci/sensitivity-pre-dispatch/*.json -text -whitespace

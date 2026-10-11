@@ -7,7 +7,7 @@ The historical v0.1 package was exercised on native Windows with no development 
 1. Use a supported x64 Windows installation with the [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) and [Microsoft Visual C++ v14 x64 Redistributable](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist). Use the latest supported redistributable, at least as recent as the release's MSVC toolset. GreenLens uses the installed Evergreen WebView2 Runtime. Its installer does not silently acquire either Microsoft prerequisite. See [runtime requirements and observed imports](windows-runtime.md).
 2. Obtain the unsigned GreenLens per-user NSIS setup package from the project build/release artifacts. Signing and SmartScreen reputation are not claimed. The application installs for the current user.
 3. Acquire the separately licensed pinned Radiance engine. In PowerShell 7.2 or newer, from a source checkout, run `./scripts/install-radiance.ps1`. It verifies the official release asset and SHA-256 before extraction into `%LOCALAPPDATA%/GreenLens/engines/radiance-6.0.2/package`. There is no engine binary inside the GreenLens evidence ZIP or desktop installer.
-4. Launch GreenLens from its installed shortcut. The synthetic A/B document opens in the four-view workspace. Use **Save** and select a project folder in the native dialog, then **Run**. Switch designs, run the second alternative, use **A/B compare**, then **Export** to a new ZIP filename. See the [workspace guide](workspace-guide.md) for editing and document protection.
+4. Launch GreenLens from its installed shortcut. The synthetic A/B document opens in the four-view workspace with the static prescribed-overcast study. Use **Save** and select a project folder in the native dialog, then **Run**. Switch designs, run the second alternative, use **A/B compare**, then **Export** to a new ZIP filename. To calculate a weather-selected hour or a full year, import retained weather and explicitly apply that study using the [climate guide](v0.3-usage.md). See the [workspace guide](workspace-guide.md) for editing and document protection.
 
 For a default installation, the exact PowerShell launch command is:
 
@@ -15,7 +15,7 @@ For a default installation, the exact PowerShell launch command is:
 & "$env:LOCALAPPDATA/Programs/GreenLens/greenlens-desktop.exe"
 ```
 
-The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and retained notices. Extract the entire directory before use. From the extracted `GreenLens-CLI-0.3.0-windows-x64` directory:
+The CLI ZIP includes `greenlens.exe`, synthetic room inputs, the reviewed weather example, documentation and retained notices. Extract the entire directory before use. The following commands exercise **static prescribed overcast**, from the extracted `GreenLens-CLI-0.3.0-windows-x64` directory:
 
 ```powershell
 ./greenlens.exe doctor
@@ -27,7 +27,7 @@ The CLI ZIP includes `greenlens.exe`, synthetic input files, documentation and r
 ./greenlens.exe replay "$env:LOCALAPPDATA/GreenLens/projects/example-evidence.zip"
 ```
 
-For an engine installed elsewhere, enter the directory containing `bin` and `lib` under **Analysis → Project and engine**. CLI commands accept `--engine-dir <directory>`. Initial acquisition needs internet; ordinary calculation, reopening, report viewing and exporting operate locally without it.
+For an engine installed elsewhere, enter the directory containing `bin` and `lib` under **Analysis → Project and engine**. The CLI `doctor`, `run`, `study run` and `replay` commands accept `--engine-dir <directory>`. Initial acquisition needs internet; ordinary calculation, reopening, report viewing and exporting operate locally without it.
 
 For climate studies, follow the [weather import, annual desktop and CLI guide](v0.3-usage.md). The real-weather example retains PVGIS/ERA5 attribution and source-specific time conventions. Climate verification scripts require PowerShell 7.5 or newer. Annual numerical accuracy and installed workflow checks are still in progress; the candidate must not be represented as a verified release.
 
@@ -64,6 +64,6 @@ The CLI is `$env:CARGO_TARGET_DIR/release/greenlens.exe`. The installer is benea
 
 Source stays in the checkout. Build products, engine installation, disposable octrees and active jobs are outside OneDrive under local application data. `node_modules` remains in the checkout; `.gitignore` does not stop OneDrive from synchronizing it. No junctions or silent source relocation are used.
 
-A project contains `project.json` and relative `runs/<id>` evidence directories. Copy the whole directory after saving. Historical run inputs are immutable; edited alternatives can make a run stale. External edits and concurrent writers are rejected rather than overwritten. Simultaneous editing across devices is unsupported. Export to a new ZIP filename; existing exports are not replaced.
+A project contains `project.json`, relative `runs/<id>` evidence directories and, for retained climate weather, `weather/<id>` assets. Copy the whole directory after saving. Historical run inputs are immutable; edited geometry, weather or numerical settings can make a physical result stale, while occupancy/threshold edits change the derived metric identity. External edits and concurrent writers are rejected rather than overwritten. Simultaneous editing across devices is unsupported. Climate exports select immutable run IDs explicitly; see the mode-specific formats and tolerances in [replay](replay.md). Export to a new ZIP filename; existing exports are not replaced.
 
 For a lost lock after an application crash, ordinary OS locks release automatically; the small `.greenlens.lock` file may remain and is harmless. Do not remove a file to try to bypass a live writer.

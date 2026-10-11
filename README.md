@@ -2,7 +2,9 @@
 
 Local-first building environmental simulation with Rust, a native Tauri desktop, and Radiance.
 
-**Static daylight illuminance under a prescribed CIE standard overcast sky.**
+The v0.3 development candidate adds local EPW import, selected-weather-hour and annual daylight studies, hourly inspection, occupied-time metrics and portable climate evidence. **Scientific acceptance is incomplete:** matched-sky/reference convergence remains under investigation, with failures preserved. Start with the [climate usage guide](docs/v0.3-usage.md), [method and frozen tolerances](docs/v0.3-scientific-method.md), [acceptance plan](docs/v0.3-implementation-plan.md) and [progress record](docs/progress.md). A built installer or successful full-year calculation does not establish numerical accuracy.
+
+The legacy calculation remains **Static daylight illuminance under a prescribed CIE standard overcast sky.** Its historical inputs, labels, identities and replay tolerance are preserved.
 
 Version 0.2 adds a bounded Rhino-inspired modeling workspace: four persistent views, semantic selection, constrained handles, numeric commands, snapping, layers and Rust-validated undo/redo. Document guards, complete-copy Save As and completed-evidence recovery protect local work. See the [workspace guide](docs/workspace-guide.md), [v0.2 acceptance plan](docs/v0.2-implementation-plan.md) and [progress record](docs/progress.md) for current verification status. Windows packages are unsigned; a separate clean-machine test has not been performed.
 
@@ -14,7 +16,7 @@ The bounded workflow models one rectangular room, a rectangular window, an optio
 
 Start with the [installation and launch guide](docs/installation.md). Fresh v0.2 checks are recorded in [scientific and CLI verification](docs/v0.2-scientific-verification.md) and [installed workspace verification](docs/v0.2-native-verification.md). The [v0.1 package hashes](docs/release-artifacts.json) and [v0.1 CI record](docs/ci-evidence.json) describe the historical release only.
 
-The current candidate's unsigned v0.2 installer and CLI paths and hashes are listed in [v0.2 artifact inventory](docs/v0.2-release-artifacts.json). Earlier [candidate 04](docs/v0.2-candidate04-artifacts.json) and [candidate 03](docs/v0.2-candidate03-artifacts.json) inventories remain preserved, including the earlier saved example and evidence/report. Acceptance status remains explicit; a built candidate is not a completed release.
+The current unsigned v0.3 candidate's installed binary and artifact identities are recorded in [native verification](docs/v0.3-native-verification.md); [CI and packaging](docs/v0.3-ci-package-validation.md) records separate outcomes. The historical [v0.2 artifact inventory](docs/v0.2-release-artifacts.json), [candidate 04](docs/v0.2-candidate04-artifacts.json) and [candidate 03](docs/v0.2-candidate03-artifacts.json) remain preserved. Acceptance status remains explicit; a built candidate is not a completed release.
 
 ![Installed GreenLens four-view workspace showing explicit Add selection and two selected objects](docs/images/v0.2/selection-workspace-candidate05.jpg)
 
@@ -22,7 +24,7 @@ The current candidate's unsigned v0.2 installer and CLI paths and hashes are lis
 
 ## Native Windows development
 
-Install Visual Studio C++ Build Tools, WebView2, Node.js 24 and the pinned Rust toolchain following [toolchain instructions](docs/toolchain.md). From this repository in PowerShell:
+Install Visual Studio C++ Build Tools, WebView2, Node.js 24 and the pinned Rust toolchain following [toolchain instructions](docs/toolchain.md). The following commands exercise the static workflow from this repository in PowerShell; [climate commands](docs/v0.3-usage.md) configure weather and studies separately:
 
 ```powershell
 . ./scripts/dev-env.ps1
@@ -44,8 +46,10 @@ For the desktop, run `npm ci` followed by `npm run tauri -- dev` from `apps/desk
 
 ## Interpretation
 
-The sky has a prescribed exterior illuminance and no date, weather sequence or annual schedule. Neutral equivalent glass, diffuse surfaces and simplified geometry limit interpretation. A metric is not a criterion evaluation, and a criterion evaluation is not certification. Same-engine replay verifies integration; analytical fixtures test limited behaviors rather than arbitrary building accuracy.
+Static mode has a prescribed exterior illuminance and no date, weather sequence or annual schedule. Climate modes use retained EPW intervals in fixed local standard time; annual studies retain all 8,760 intervals and separate transport identity from occupancy/threshold metrics. DA, cDA and UDI are study metrics, not sDA, ASE, floor-area percentages or certification. The reviewed weather example is reanalysis-derived typical weather, not a measured-building validation or forecast.
 
-Read [the v0.2 workspace specification](docs/v0.2-spec.md), [historical v0.1 scientific contract](docs/v0.1-spec.md), [architecture](docs/architecture.md), [model contract](docs/model-contract.md), [engine feasibility](docs/engine-feasibility.md) and [excluded roadmap](docs/roadmap.md).
+Neutral equivalent glass, diffuse surfaces, fixed shading and simplified geometry limit interpretation. A metric is not a criterion evaluation, and a criterion evaluation is not certification. Same-engine replay verifies integration; analytical fixtures test limited behaviors rather than arbitrary building accuracy. Read the current [scientific method](docs/v0.3-scientific-method.md) and its unresolved numerical evidence before interpreting provisional climate results.
+
+Read the [v0.3 specification](docs/v0.3-spec.md), [v0.2 workspace specification](docs/v0.2-spec.md), [historical v0.1 scientific contract](docs/v0.1-spec.md), [architecture](docs/architecture.md), [model contract](docs/model-contract.md), [engine feasibility](docs/engine-feasibility.md) and [excluded roadmap](docs/roadmap.md).
 
 Original code is licensed under Apache-2.0. Third-party components retain their own licenses; see `LICENSE`, `NOTICE`, `dependencies` and `third-party`.

@@ -1,0 +1,140 @@
+{
+  "schema_version": "greenlens.hosted-reference-three-autumn-case-qualification.v1",
+  "recorded_utc": "2026-10-11T15:40:32.3426951Z",
+  "workflow_run": 38148336251,
+  "workflow_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251",
+  "workflow_commit": "e7405b6383b6b0cecb7c1d7b83c5edfab76aba78",
+  "scope": "Independent retained-artifact qualification of A6320/A6324/A6328 only; no engine rerun, no candidate comparison, and no sensitivity-family or release acceptance.",
+  "verification_method": [
+    "Match downloaded ZIP SHA-256 and byte count to authenticated GitHub artifact metadata.",
+    "Validate exact paths, member count, regular files and bounded ZIP sizes before extraction.",
+    "Invoke current trusted Initialize-ReferenceCollector and Read-ReferenceBaseline; retained commands and source files are never executed.",
+    "Assert-ReferenceShardIdentity against independently qualified hosted A8504, preserving all other declared scientific identity.",
+    "Recompute all three 24-sensor convergence comparisons and full component assembly from raw output."
+  ],
+  "reader_sources": [
+    {
+      "path": "scripts/annual-collect-reference.ps1",
+      "sha256": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a"
+    },
+    {
+      "path": "scripts/annual-reference-identity.ps1",
+      "sha256": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8"
+    }
+  ],
+  "case_count": 3,
+  "sensor_values": 72,
+  "convergence_checks": 216,
+  "cases": [
+    {
+      "alternative": "A",
+      "interval_index": 6320,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.3857161854071939
+        }
+      ],
+      "artifact": {
+        "id": 11707166102,
+        "name": "reference-A-6320-38148336251",
+        "sha256": "469bf2fc16470a89764bf289de423d66bc760f05317a1dbb7b9110a7d88c37d8",
+        "bytes": 17104004,
+        "entry_count": 46,
+        "uncompressed_bytes": 127886539
+      },
+      "declaration_sha256": "aac7f50d2a5b984536dec3d5e90b09821e3fbd5301fe50987b36da2c9b3ca02e",
+      "report_sha256": "1436b608333a2ff801f68c0ed53626d6a35e7708c25b3366f719c6ab6182ef85",
+      "processes_sha256": "9408d407a45388fd7bfc192805123b69fd1a02ae2316ef646f27e169b4719367",
+      "audit_sha256": "d3a1e62728c36dc95c393012f6c38a283d125c93f16560f0e26c8e6af051af7f",
+      "verified_utc": "2026-10-11T15:37:25.2636912Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1684.4523757
+      ],
+      "max_runner_plus_engine_bytes": 471441408.0,
+      "max_scratch_bytes": 64323887.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6324,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.3246779185290449
+        }
+      ],
+      "artifact": {
+        "id": 11707205904,
+        "name": "reference-A-6324-38148336251",
+        "sha256": "5f8bd68f302d64dad7a3944bcd1e6530f0498d7c7d631d9820c894c0bebb7008",
+        "bytes": 17105739,
+        "entry_count": 46,
+        "uncompressed_bytes": 127886561
+      },
+      "declaration_sha256": "4ec473b7aab61ad291c476267c5501ff23497611a5f5435b425b1e64a0dde876",
+      "report_sha256": "49dbd1f278a786adbba9b34f4ae8a80fe139ee685c30aba3ba86c938d3c12276",
+      "processes_sha256": "78a1483cb343e3aba5b32bbb1c19d05019a2c125f42b8eea4d3cad045679675d",
+      "audit_sha256": "38f0e1b1e720ec2df1cffafbfcf9aa46fc39c45e8b324048df428569a9ee70d8",
+      "verified_utc": "2026-10-11T15:37:29.6464398Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1688.4195219
+      ],
+      "max_runner_plus_engine_bytes": 474013696.0,
+      "max_scratch_bytes": 64323881.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6328,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.7546016669635744
+        }
+      ],
+      "artifact": {
+        "id": 11705719556,
+        "name": "reference-A-6328-38148336251",
+        "sha256": "7cef2ae50d67d9df1c755b47046251489f19a1b6d12b6c3cc3f7abefb965262b",
+        "bytes": 17108530,
+        "entry_count": 46,
+        "uncompressed_bytes": 127886958
+      },
+      "declaration_sha256": "c221697f1e63bdc74127711aa70fb84e101af40c33e88630472405cc4166addd",
+      "report_sha256": "7c62c1b2dff885fc8a35db9c67ce86ef1179899a5b3bdddb55e7b30340b9f99f",
+      "processes_sha256": "e594a2bdd7dde1f174c341db6867d28d1227567ede0b349c8038bf4c206b94df",
+      "audit_sha256": "ea17c383df01c2720d3b73c334e8d10c67e0d109266812707628b70bb66b3974",
+      "verified_utc": "2026-10-11T15:39:05.7281553Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1294.6557442
+      ],
+      "max_runner_plus_engine_bytes": 474648576.0,
+      "max_scratch_bytes": 64323924.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    }
+  ],
+  "full_reference_cases_required": 24,
+  "sensitivity_variants_required": 6,
+  "full_reference_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "release_acceptance_complete": false
+}

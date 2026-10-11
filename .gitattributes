@@ -22,6 +22,7 @@ docs/evidence/v0.3-ci/method5-*.json -text -whitespace
 docs/evidence/v0.3-engine/method5-selected-hour-independent-audit.json -text -whitespace
 docs/evidence/v0.3-engine/method5-higher-MF2-A-partial-audit.json -text -whitespace
 docs/evidence/v0.3-engine/hosted-four-A-qualification.json -text -whitespace
+docs/evidence/v0.3-engine/hosted-three-autumn-A-qualification.json -text -whitespace
 tests/fixtures/legacy-static-v0.1.zip binary
 # Preserve the recorded native process log bytes bound by the solar fixture seal.
 docs/evidence/v0.3-engine/solar-directions/processes.json -text -whitespace

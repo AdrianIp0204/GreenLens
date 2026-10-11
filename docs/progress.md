@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — selected-hour replay and source-archive provenance repair
+
+- The candidate06 native hourly export subsequently [replayed through its distributed CLI](evidence/v0.3-integration/candidate06-selected-hour-replay.json): all 24 readings matched at 0 lx maximum difference, nine successful processes, 295.210 seconds overall. Independent validation checked the 33-member ZIP, regenerated receipts/raw values and all 178 original compact files unchanged. It does not qualify transport accuracy or annual convergence.
+- Implemented `e112d3a`: a no-Git build now rejects inherited internal build-identity fields instead of accepting a fabricated clean commit. Verified Git builds continue to derive actual identity and check optional CI assertions. [All 20 compiled provenance probes passed](evidence/v0.3-integration/build-provenance-worktree.json), including linked worktrees, poisoned directory/index variables, reused-cache changes and archive fallback. The original red failure is retained; no real project history, global setting or frozen binary was rewritten.
+- Three more [hosted autumn A cases](evidence/v0.3-engine/hosted-three-autumn-A-qualification.json), intervals 6320/6324/6328, qualified all 24 sensors at 256 repeats. All 216 convergence checks were recomputed independently. Baseline coverage at this checkpoint is 14/24; the six fixed sensitivity variants are being prepared separately. Failed annual and partial matched-sky results remain unchanged. The physical modifier observation remains unverified.
+
 ## 2026-10-11 — candidate06 selected-hour workflow and bounded manifest reads
 
 - Verified installed candidate06: a real weather-hour 1908 run completed 24 sensors through nine successful processes in 458.311 seconds. The [independent audit](evidence/v0.3-native/candidate06-selected-hour-audit.json) confirms all sensor values equal annual A1908, exact recipe/engine/weather identity and all 155 preexisting compact files unchanged. [Native study Undo/Redo and selected-run export](evidence/v0.3-native/candidate06-selected-hour-observation.json) restored the correct older annual and newer hourly snapshots without rerunning. The 1,189,310-byte ZIP was saved through the native dialog; distributed real replay is in progress. This is integration/workflow evidence, not transport accuracy.

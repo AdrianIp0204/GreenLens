@@ -6,6 +6,8 @@ GreenLens v0.2 stamps application provenance when Cargo builds the shared Rust r
 
 The helper emits `GREENLENS_BUILD_SOURCE_COMMIT` and `GREENLENS_BUILD_SOURCE_DIRTY` to the compiler. Legacy shell variables `GREENLENS_SOURCE_COMMIT` and `GREENLENS_SOURCE_DIRTY` have no authority over these fields and are cleared by the development setup script.
 
+The v0.3 repair also protects source archives against caller-supplied internal `GREENLENS_BUILD_SOURCE_*` variables. With verified Git, actual checkout identity replaces those values. Without Git identity, either inherited internal variable causes an actionable build error: remove both and rebuild to obtain unknown provenance. Explicit CI assertions remain the only supported caller assertions and must be checked against Git. Internal output variables are never accepted as archive identity.
+
 ## Refresh and CI assertions
 
 A deliberately nonexistent `rerun-if-changed` input under Cargo's `OUT_DIR` makes Cargo rerun the small helper on every invocation. HEAD/index tracking alone misses newly created untracked files. Recursive repository tracking would repeatedly scan `node_modules`; the explicit refresh avoids that cost. This can recompile the small runner after an otherwise unchanged invocation, a deliberate correctness tradeoff. It does not fetch dependencies, mutate Git history or require a new shell.
@@ -32,5 +34,7 @@ Run in a native development shell:
 The test creates a fresh synthetic repository and Cargo probe under the local GreenLens cache. It compiles and runs the actual helper repeatedly using the same shell and target cache. It verifies clean state, tracked edits, restoring clean state, untracked files, a newly committed revision, stale legacy environment variables, matching CI assertions, wrong commit/dirty assertions, partial assertions and unknown identity for a source archive without Git metadata. Temporary commits use command-local synthetic author settings; the project history and global Git settings are untouched. A dated JSON summary is retained outside the source tree.
 
 All eleven native compiled checks passed; the sanitized record is [v0.2-build-provenance-evidence.json](v0.2-build-provenance-evidence.json).
+
+The later [v0.3 regression record](evidence/v0.3-integration/build-provenance-worktree.json) preserves a genuine failing archive probe followed by 20 passing compiled checks. These add linked-worktree HEAD/dirty identity, inherited Git directory/index overrides, verified Git replacing poisoned internal identity, each no-Git inherited-variable rejection and recovery to unknown after clearing them. The disposable repositories, source commits and test failure remain separate from real project history; all 11 touched process-environment variables are restored.
 
 Application/package version `0.2.0` is separate from scientific model/project/run contracts. Existing v0.1 schemas, engine adapter protocol and historical immutable bytes remain readable and are not rewritten by version stamping.

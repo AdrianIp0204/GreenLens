@@ -1,4 +1,4 @@
-//! Isolated preparation for bounded generated stdin. No annual method routes here.
+//! Bounded generated stdin for the compiled method-5 coefficient stages.
 //!
 //! Windows 10+ is required: JOB_LIST assigns the child before its first instruction.
 //! Only compiled, trusted callers may select the executable or record iterator.
@@ -11,6 +11,8 @@
 //! thread, outstanding OVERLAPPED allocation, FlushFileBuffers, or thread join.
 //! See https://learn.microsoft.com/windows/win32/ipc/named-pipe-type-read-and-wait-modes
 //! and https://devblogs.microsoft.com/oldnewthing/20230209-00/?p=107812 .
+use crate::annual_primary::STREAM_RESOURCE_SCHEMA_VERSION;
+pub use crate::annual_primary::{InputReceipt, StreamTelemetry};
 use crate::process::{self, ProcessRecord};
 use anyhow::{bail, ensure, Context, Result};
 use chrono::Utc;
@@ -23,7 +25,7 @@ use std::{
     io::Read,
     mem::{size_of, size_of_val},
     os::windows::{ffi::OsStrExt, io::AsRawHandle},
-    path::PathBuf,
+    path::{Path, PathBuf},
     ptr::{null, null_mut},
     sync::atomic::{AtomicBool, AtomicU64, Ordering},
     thread,
@@ -73,24 +75,6 @@ pub struct StreamRequest {
     pub child_environment: BTreeMap<String, String>,
     pub expected_records: u64,
     pub limits: StreamLimits,
-}
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-#[serde(deny_unknown_fields)]
-pub struct InputReceipt {
-    pub bytes: u64,
-    pub records: u64,
-    pub sha256: String,
-}
-#[derive(Debug, Serialize, Deserialize)]
-#[serde(deny_unknown_fields)]
-pub struct StreamTelemetry {
-    pub schema_version: String,
-    pub sampled_peak_job_plus_runner_working_set_bytes: u64,
-    pub peak_scratch_bytes: u64,
-    pub samples: u64,
-    pub zero_progress_writes: u64,
-    pub partial_writes: u64,
-    pub atomic_job_assignment: bool,
 }
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -208,9 +192,9 @@ struct Child {
     observed_members: BTreeMap<u32, Handle>,
 }
 impl Child {
-    fn start(request: &StreamRequest) -> Result<Self> {
+    fn start(request: &StreamRequest, working_directory: &Path) -> Result<Self> {
         let exe = wide(request.executable.as_os_str())?;
-        let cwd = wide(request.directory.as_os_str())?;
+        let cwd = wide(working_directory.as_os_str())?;
         let mut command = quote(
             request
                 .executable
@@ -468,22 +452,67 @@ impl Child {
     }
 }
 fn process_working_set(handle: HANDLE) -> Result<u64> {
+    Ok(process_memory(handle)?.WorkingSetSize as u64)
+}
+fn process_memory(handle: HANDLE) -> Result<PROCESS_MEMORY_COUNTERS> {
     let mut counters: PROCESS_MEMORY_COUNTERS = unsafe { std::mem::zeroed() };
     counters.cb = size_of_val(&counters) as u32;
     check(
         unsafe { GetProcessMemoryInfo(handle, &mut counters, size_of_val(&counters) as u32) },
         "Measure process working set",
     )?;
-    Ok(counters.WorkingSetSize as u64)
+    Ok(counters)
 }
 
 /// Execute one continuous, finite record stream. Iterator calls must be bounded
 /// and trusted; caller records are opaque bytes, with no numerical policy here.
 /// Output and failure diagnostics live only in the caller's owned scratch dir.
-pub fn execute<I>(
+pub fn execute<I>(request: &StreamRequest, records: I, cancel: &AtomicBool) -> Result<StreamOutcome>
+where
+    I: Iterator<Item = Result<Vec<u8>>>,
+{
+    execute_scoped(request, records, cancel, &request.directory)
+}
+
+/// Production stage diagnostics stay below the owned run root; the child and
+/// resource scanner use the whole root. No sibling scratch escapes the budget.
+pub fn execute_in_run<I>(
+    request: &StreamRequest,
+    records: I,
+    cancel: &AtomicBool,
+    run_root: &Path,
+) -> Result<StreamOutcome>
+where
+    I: Iterator<Item = Result<Vec<u8>>>,
+{
+    ensure!(
+        run_root.is_absolute() && run_root.is_dir(),
+        "Run root must be an existing absolute directory"
+    );
+    for path in [run_root, request.directory.as_path()] {
+        for ancestor in path.ancestors() {
+            let metadata = fs::symlink_metadata(ancestor)?;
+            use std::os::windows::fs::MetadataExt;
+            ensure!(
+                !metadata.file_type().is_symlink() && metadata.file_attributes() & 0x400 == 0,
+                "Run/stage path must not traverse a reparse point"
+            );
+        }
+    }
+    let root = fs::canonicalize(run_root)?;
+    let stage = fs::canonicalize(&request.directory)?;
+    ensure!(
+        stage != root && stage.starts_with(&root),
+        "Stage must be strictly below the owned run root"
+    );
+    execute_scoped(request, records, cancel, run_root)
+}
+
+fn execute_scoped<I>(
     request: &StreamRequest,
     mut records: I,
     cancel: &AtomicBool,
+    run_root: &Path,
 ) -> Result<StreamOutcome>
 where
     I: Iterator<Item = Result<Vec<u8>>>,
@@ -541,10 +570,12 @@ where
         Ok(())
     };
     check_deadline()?;
-    let mut child = Child::start(request)?;
+    let mut child = Child::start(request, run_root)?;
     let mut telemetry = StreamTelemetry {
-        schema_version: "greenlens.stream-resources.v1".into(),
+        schema_version: STREAM_RESOURCE_SCHEMA_VERSION.into(),
         sampled_peak_job_plus_runner_working_set_bytes: 0,
+        peak_child_working_set_bytes: 0,
+        sampled_peak_runner_plus_child_working_set_bytes: 0,
         peak_scratch_bytes: 0,
         samples: 0,
         zero_progress_writes: 0,
@@ -560,8 +591,18 @@ where
         let mut eof = false;
         loop {
             check_deadline()?;
-            let (scratch, largest) = process::scratch_sizes(&request.directory)?;
+            let (scratch, largest) = process::scratch_sizes(run_root)?;
             let working_set = child.observed_working_set()?;
+            let memory = process_memory(child.process.0)?;
+            let child_combined = (memory.WorkingSetSize as u64)
+                .checked_add(process_working_set(unsafe { GetCurrentProcess() })?)
+                .context("Working set overflow")?;
+            telemetry.peak_child_working_set_bytes = telemetry
+                .peak_child_working_set_bytes
+                .max(memory.PeakWorkingSetSize as u64);
+            telemetry.sampled_peak_runner_plus_child_working_set_bytes = telemetry
+                .sampled_peak_runner_plus_child_working_set_bytes
+                .max(child_combined);
             check_deadline()?;
             telemetry.samples += 1;
             telemetry.peak_scratch_bytes = telemetry.peak_scratch_bytes.max(scratch);
@@ -577,7 +618,10 @@ where
                 "Streaming scratch resource limit exceeded"
             );
             ensure!(
-                working_set <= limits.max_observed_working_set_bytes,
+                working_set <= limits.max_observed_working_set_bytes
+                    && child_combined <= limits.max_observed_working_set_bytes
+                    && telemetry.peak_child_working_set_bytes
+                        <= limits.max_observed_working_set_bytes,
                 "Streaming working-set resource limit exceeded"
             );
             ensure!(
@@ -599,8 +643,16 @@ where
                     // Recheck only after every owned writer has exited, inside
                     // the failure-handled closure so excess output is retained
                     // as a failed diagnostic rather than a successful receipt.
-                    let (scratch, largest) = process::scratch_sizes(&request.directory)?;
+                    let (scratch, largest) = process::scratch_sizes(run_root)?;
                     telemetry.peak_scratch_bytes = telemetry.peak_scratch_bytes.max(scratch);
+                    telemetry.peak_child_working_set_bytes = telemetry
+                        .peak_child_working_set_bytes
+                        .max(process_memory(child.process.0)?.PeakWorkingSetSize as u64);
+                    ensure!(
+                        telemetry.peak_child_working_set_bytes
+                            <= limits.max_observed_working_set_bytes,
+                        "Streaming final child working-set resource limit exceeded"
+                    );
                     ensure!(
                         largest <= limits.max_file_bytes,
                         "Streaming final file resource limit exceeded"
@@ -724,8 +776,9 @@ where
     );
     let mut stderr = String::from_utf8_lossy(&stderr).into_owned();
     for (path, label) in [
-        (&request.directory, "<scratch>"),
-        (&request.executable, "<executable>"),
+        (request.directory.as_path(), "<stage>"),
+        (run_root, "<scratch>"),
+        (request.executable.as_path(), "<executable>"),
     ] {
         stderr = stderr.replace(path.to_string_lossy().as_ref(), label);
     }

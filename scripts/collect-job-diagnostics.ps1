@@ -41,6 +41,41 @@ function Assert-ProcessRecord($Value,[string]$Kind) {
     $stamp=[datetimeoffset]::Parse($Value.started_utc,[Globalization.CultureInfo]::InvariantCulture)
     if($stamp.Offset -ne [timespan]::Zero -or $stamp -lt $EarliestUtc){throw 'Diagnostic belongs to an earlier job.'}
 }
+function Assert-StreamTelemetry($Value) {
+    $keys=@('schema_version','sampled_peak_job_plus_runner_working_set_bytes','peak_child_working_set_bytes','sampled_peak_runner_plus_child_working_set_bytes','peak_scratch_bytes','samples','zero_progress_writes','partial_writes','atomic_job_assignment')
+    Assert-DiagnosticObject $Value $keys $keys
+    if($Value.schema_version -cne 'greenlens.stream-resources.v2' -or $Value.atomic_job_assignment -isnot [bool]){throw 'Unexpected stream telemetry schema.'}
+    foreach($key in $keys|Where-Object{$_ -notin @('schema_version','atomic_job_assignment')}){
+        if($Value[$key] -is [bool] -or $Value[$key] -is [string] -or $null -eq $Value[$key] -or ![double]::IsFinite([double]$Value[$key]) -or [double]$Value[$key] -lt 0 -or [double]$Value[$key] -ne [math]::Truncate([double]$Value[$key])){throw 'Invalid stream telemetry count.'}
+    }
+    # Failure diagnostics can truthfully contain zero samples or exceeded caps.
+    # Retaining a measurement is not accepting a completed scientific result.
+}
+function Assert-PrimaryFailure($Value) {
+    $required=@('schema_version','state','purpose','process_index','arguments','recorded_utc','error')
+    Assert-DiagnosticObject $Value ($required+@('stream_failure','completed_process_before_adapter_validation')) $required
+    if($Value.schema_version -cne 'greenlens.annual-primary-failure.v1' -or $Value.state -cne 'failed' -or $Value.purpose -cnotin @('full','direct') -or $Value.process_index -ne $(if($Value.purpose -ceq 'full'){4}else{6}) -or $Value.arguments -isnot [array] -or @($Value.arguments|Where-Object{$_ -isnot [string]}).Count -or $Value.error -isnot [string]){throw 'Unexpected primary failure identity.'}
+    $stamp=[datetimeoffset]::Parse($Value.recorded_utc,[Globalization.CultureInfo]::InvariantCulture)
+    if($stamp.Offset -ne [timespan]::Zero -or $stamp -lt $EarliestUtc){throw 'Primary failure belongs to an earlier job.'}
+    if($Value.Contains('stream_failure')){
+        $failure=$Value.stream_failure
+        $keys=@('schema_version','state','error','pid','written_bytes','generated_records','process_tree_terminated','cleanup_error','telemetry')
+        Assert-DiagnosticObject $failure $keys $keys
+        if($failure.schema_version -cne 'greenlens.stream-failure.v1' -or $failure.state -cne 'failed' -or $failure.error -isnot [string] -or $failure.process_tree_terminated -isnot [bool] -or ($null -ne $failure.cleanup_error -and $failure.cleanup_error -isnot [string])){throw 'Unexpected nested stream failure.'}
+        foreach($key in @('pid','written_bytes','generated_records')){if($null -eq $failure[$key] -or $failure[$key] -is [bool] -or $failure[$key] -is [string] -or ![double]::IsFinite([double]$failure[$key]) -or [double]$failure[$key] -lt 0 -or [double]$failure[$key] -ne [math]::Truncate([double]$failure[$key])){throw 'Invalid stream failure count.'}}
+        Assert-StreamTelemetry $failure.telemetry
+    }
+    if($Value.Contains('completed_process_before_adapter_validation')){
+        $completed=$Value.completed_process_before_adapter_validation
+        Assert-DiagnosticObject $completed @('process','input','telemetry') @('process','input','telemetry')
+        Assert-ProcessRecord $completed.process 'process'
+        if($completed.process.executable -cne 'rcontrib.exe' -or $completed.process.exit_code -ne 0){throw 'Unexpected pre-validation completed process.'}
+        Assert-DiagnosticObject $completed.input @('bytes','records','sha256') @('bytes','records','sha256')
+        foreach($key in @('bytes','records')){if($null -eq $completed.input[$key] -or $completed.input[$key] -is [bool] -or $completed.input[$key] -is [string] -or ![double]::IsFinite([double]$completed.input[$key]) -or [double]$completed.input[$key] -lt 0 -or [double]$completed.input[$key] -ne [math]::Truncate([double]$completed.input[$key])){throw 'Invalid completed primary receipt count.'}}
+        if($completed.input.sha256 -cnotmatch '^[a-f0-9]{64}$'){throw 'Unexpected primary receipt hash.'}
+        Assert-StreamTelemetry $completed.telemetry
+    }
+}
 function Assert-DiagnosticJson($Value,[string]$Name) {
     if($Name -ceq 'annual-logs.json'){
         if($Value -isnot [array]){throw 'Expected process record array.'}
@@ -49,6 +84,8 @@ function Assert-DiagnosticJson($Value,[string]$Name) {
         Assert-DiagnosticObject $Value $annualKeys $annualKeys
         if($Value.schema_version -cne 'greenlens.annual-resources.v1' -or $Value.processes -isnot [array]){throw 'Unexpected annual resources schema.'}
         foreach($record in $Value.processes){Assert-ProcessRecord $record 'resources'}
+    }elseif($Name -ceq 'annual-primary-failure.json'){
+        Assert-PrimaryFailure $Value
     }elseif($Name -cmatch '^(oconv|gensky|rtrace|gendaymtx|rcontrib|dctimestep)\.(process|resources|started)\.json$'){
         Assert-ProcessRecord $Value $Matches[2]
     }else{throw 'Unexpected diagnostic JSON filename.'}
@@ -92,7 +129,7 @@ if(Test-Path -LiteralPath $JobRoot -PathType Container){
         $id=[guid]::Empty
         if(![guid]::TryParseExact($directory.Name,'D',[ref]$id) -or $id.ToString() -cne $directory.Name -or $directory.CreationTimeUtc -lt $EarliestUtc.UtcDateTime){continue}
         if($directory.Attributes -band [IO.FileAttributes]::ReparsePoint){$omitted.Add(@{file=$directory.Name;reason='reparse job directory'});continue}
-        $files=@(Get-ChildItem -LiteralPath $directory.FullName -File -Force|Where-Object{$_.Name -cmatch '^(annual-(logs|resources)\.json|(oconv|gensky|rtrace|gendaymtx|rcontrib|dctimestep)\.(process\.json|resources\.json|started\.json|stderr))$'}|Sort-Object Name)
+        $files=@(Get-ChildItem -LiteralPath $directory.FullName -File -Force|Where-Object{$_.Name -cmatch '^(annual-(logs|resources|primary-failure)\.json|(oconv|gensky|rtrace|gendaymtx|rcontrib|dctimestep)\.(process\.json|resources\.json|started\.json|stderr))$'}|Sort-Object Name)
         foreach($file in $files){
             if($report.scanned_files -ge 5000){$report.scan_truncated=$true;$omitted.Add(@{file='remaining-job-diagnostics';reason='5000-file inspection bound reached'});break jobs}
             $report.scanned_files++

@@ -1,5 +1,12 @@
 # Progress and acceptance evidence
 
+## 2026-10-11 — integrated paired-primary method, acceptance pending
+
+- Implemented method 5 with bounded external Hammersley primaries, byte-identical full/direct input receipts, explicit finite sun, strict nonnegative residual checks, and versioned recipe/resource evidence. Methods 2–4 retain their historical profiles, serialization and replay dispatch. The runner validates retained receipts and resource bindings; replay checks regenerated primary bytes before the unchanged numerical tolerance. No historical evidence was rewritten.
+- Fresh checks passed: all 82 runner tests; 43 non-engine adapter tests (six helper entrypoints are ignored individually and exercised by parent tests; five real-engine checks were deliberately filtered); focused primary receipt/timing and selected export/report regressions; strict workspace Clippy; formatting; all 119 frontend tests, TypeScript and production frontend build. The twelve-case native analytical bridge remains tied to its separately recorded source and earlier telemetry version, not relabeled as final-source science.
+- Failure capture passed 44 synthetic checks and independently retained an actual Rust-generated synthetic early-exit diagnostic without changing source bytes or promoting success. The diagnostic reports the terminated process tree and partial input truthfully. This is process-supervision evidence, not Radiance accuracy.
+- Independent review found no concrete contract/replay issue. The offline document selection contains 71 compact files and all 87 inline local links resolve; Cargo and npm lockfiles are unchanged. Current-method clean-source CLI execution, full-year convergence, qualified matched-sky references, installed workflow and exact-source CI remain unverified. Physical modifier selection remains separately unverified because the user is currently unable to test it.
+
 ## 2026-10-11 — resource-aware investigation scheduling
 
 - Two supplementary MF2 higher-sampling A/B research jobs were explicitly cancelled during their first coefficient stages after exact process ownership checks. Both owned trees exited; all 50 closed files, source/process snapshots and cancellation records were retained and rechecked. Their partial matrices are excluded from results and qualification. The completed lower-sampling candidate arrays remain unchanged.

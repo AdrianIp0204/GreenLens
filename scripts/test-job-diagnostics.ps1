@@ -83,6 +83,51 @@ $linked=Capture
 Require 'UUID-named directory junction is never followed' ($linked.copied_files -eq 6 -and @($linked.omitted|Where-Object reason -CEQ 'reparse job directory').Count -eq 1)
 Reject 'Existing capture cannot be overwritten' {Capture @{Destination=(Join-Path $OutputDirectory 'capture-1')}}
 Reject 'Destination inside a worker job tree rejected' {Capture @{Destination=(Join-Path $source 'capture')}}
+# Method-5 failures remain top-level, explicitly failed diagnostic metadata.
+# Nested arbitrary files are still excluded; only two known optional JSON shapes
+# are admitted inside the one strictly allowlisted failure record.
+$telemetry=@{schema_version='greenlens.stream-resources.v2';sampled_peak_job_plus_runner_working_set_bytes=2147483649;peak_child_working_set_bytes=100;sampled_peak_runner_plus_child_working_set_bytes=200;peak_scratch_bytes=4;samples=1;zero_progress_writes=2;partial_writes=3;atomic_job_assignment=$true}
+$primary=@{schema_version='greenlens.annual-primary-failure.v1';state='failed';purpose='full';process_index=4;arguments=@('-c','16384','annual-coefficient.oct');recorded_utc=$stamp;error="Primary stage failed in $job/primary-full";stream_failure=@{schema_version='greenlens.stream-failure.v1';state='failed';error='Streaming working-set resource limit exceeded';pid=123;written_bytes=64000;generated_records=450;process_tree_terminated=$false;cleanup_error='Synthetic cleanup failure';telemetry=$telemetry}}
+function Check-PrimaryCapture([string]$Name,$Value,[bool]$Expected){
+    Write-Fixture 'annual-primary-failure.json' $Value
+    $result=Capture
+    $retainedPath=Join-Path $OutputDirectory "capture-$script:serial/$jobId/annual-primary-failure.json"
+    Require $Name ((Test-Path -LiteralPath $retainedPath) -eq $Expected)
+    if($Expected){return (Get-Content -LiteralPath $retainedPath -Raw|ConvertFrom-Json -Depth 30 -AsHashtable -DateKind String)}
+}
+function Copy-Primary {return ($primary|ConvertTo-Json -Depth 30|ConvertFrom-Json -Depth 30 -AsHashtable -DateKind String)}
+$observed=Check-PrimaryCapture 'Known failed primary schema and exceeded-cap telemetry retained' $primary $true
+Require 'Failure/cleanup status and written partial bytes preserved without completed result' ($observed.state -ceq 'failed' -and !$observed.stream_failure.process_tree_terminated -and $observed.stream_failure.written_bytes -eq 64000 -and $observed.stream_failure.telemetry.sampled_peak_job_plus_runner_working_set_bytes -eq 2147483649)
+Require 'Nested primary paths sanitized before upload' ($observed.error -ceq 'Primary stage failed in <scratch>/primary-full')
+$changed=Copy-Primary;$changed.stream_failure.telemetry.environment=@{SECRET='synthetic'}
+$null=Check-PrimaryCapture 'Unknown nested primary telemetry fields rejected' $changed $false
+$changed=Copy-Primary;$changed.stream_failure.cleanup_error='Z:\private-owner\unrelated-file'
+$null=Check-PrimaryCapture 'Unknown nested cleanup path rejected' $changed $false
+$changed=Copy-Primary;$changed.stream_failure.error='API_KEY=synthetic-not-a-real-secret'
+$null=Check-PrimaryCapture 'Nested credential-shaped failure text rejected' $changed $false
+$changed=Copy-Primary;$changed.stream_failure.telemetry.schema_version='greenlens.stream-resources.v1'
+$null=Check-PrimaryCapture 'Unknown stream telemetry schema rejected' $changed $false
+$changed=Copy-Primary;$changed.process_index=6
+$null=Check-PrimaryCapture 'Primary purpose and process index mismatch rejected' $changed $false
+$changed=Copy-Primary;$changed.recorded_utc=$start.AddDays(-1).ToString('o')
+$null=Check-PrimaryCapture 'Primary failure from earlier job rejected' $changed $false
+$changed=Copy-Primary;$changed.state='completed'
+$null=Check-PrimaryCapture 'Failure record cannot advertise completed state' $changed $false
+$changed=Copy-Primary;$changed.stream_failure.written_bytes=-1
+$null=Check-PrimaryCapture 'Negative partial input count rejected' $changed $false
+$changed=Copy-Primary;$changed.stream_failure.telemetry.samples=0;$changed.stream_failure.telemetry.atomic_job_assignment=$false
+$null=Check-PrimaryCapture 'Early failed launch measurements are retained without inventing successful assignment' $changed $true
+$completed=@{process=@{executable='rcontrib.exe';arguments=@('-c','16384','annual-coefficient.oct');exit_code=0;started_utc=$stamp;finished_utc=$stamp;elapsed_ms=2;stderr=''};input=@{bytes=2293760;records=16384;sha256=('0'*64)};telemetry=$telemetry}
+$changed=Copy-Primary;$changed.Remove('stream_failure');$changed.completed_process_before_adapter_validation=$completed
+$observed=Check-PrimaryCapture 'Completed engine before adapter rejection retained only inside failed outer record' $changed $true
+Require 'Adapter rejection preserves original receipt and failed scientific outcome' ($observed.state -ceq 'failed' -and $observed.completed_process_before_adapter_validation.process.exit_code -eq 0 -and $observed.completed_process_before_adapter_validation.input.records -eq 16384)
+$changed.completed_process_before_adapter_validation.input.environment='unwanted'
+$null=Check-PrimaryCapture 'Unexpected completed-input fields rejected' $changed $false
+$changed=Copy-Primary;$changed.Remove('stream_failure')
+$null=Check-PrimaryCapture 'Pre-launch primary error retains valid minimal failed diagnostic' $changed $true
+$changed=Copy-Primary;Write-Fixture 'annual-primary-failure.json' $changed
+$capped=Capture @{MaxFileBytes=1}
+Require 'Existing byte cap also bounds primary failure metadata' (@($capped.records|Where-Object file -Like '*annual-primary-failure.json').Count -eq 0 -and @($capped.omitted|Where-Object file -Like '*annual-primary-failure.json').Count -eq 1)
 # Execute the actual workflow collectors against isolated original fixtures. A
 # refused optional stderr must not make complete compulsory evidence fail, while
 # a refused project/report file must still fail its existing success guard.

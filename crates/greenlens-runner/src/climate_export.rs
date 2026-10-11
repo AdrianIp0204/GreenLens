@@ -493,6 +493,36 @@ fn compare_stream(reference: &SeriesReader, combined: &Path, cancel: &AtomicBool
     )
 }
 
+fn verify_primary_replay(
+    original: Option<greenlens_radiance::annual_primary::PrimaryStreams>,
+    regenerated: Option<greenlens_radiance::annual_primary::PrimaryStreams>,
+) -> Result<()> {
+    match (original, regenerated) {
+        (None, None) => Ok(()),
+        (Some(original), Some(regenerated)) => {
+            ensure!(
+                original.contract == regenerated.contract
+                    && original.sensor_sha256 == regenerated.sensor_sha256
+                    && original.sensor_count == regenerated.sensor_count
+                    && original.sky_rows == regenerated.sky_rows
+                    && original.records.len() == regenerated.records.len()
+                    && original
+                        .records
+                        .iter()
+                        .zip(&regenerated.records)
+                        .all(|(a, b)| a.purpose == b.purpose
+                            && a.process_index == b.process_index
+                            && a.input == b.input),
+                "Replay primary stream differs from the retained generator receipt"
+            );
+            // Output hashes identify each execution. Secondary sampling may
+            // differ; the existing per-value numerical tolerance decides replay.
+            Ok(())
+        }
+        _ => anyhow::bail!("Replay changed paired-primary method semantics"),
+    }
+}
+
 pub fn replay_climate(
     root: &Path,
     records: &[ClimateRunRecord],
@@ -561,6 +591,19 @@ pub fn replay_climate(
                 && output.sensor_count == record.series.sensor_ids.len(),
             "Replay interval or sensor order differs"
         );
+        let retained_recipe_bytes = fs::read(regular_child(
+            &root.join(&summary.path),
+            "annual-recipe.json",
+        )?)?;
+        ensure!(
+            record.provenance["recipe_sha256"] == bytes_hash(&retained_recipe_bytes),
+            "Replay recipe changed after verification"
+        );
+        let retained_recipe: annual::AnnualRecipe = serde_json::from_slice(&retained_recipe_bytes)?;
+        let original_primaries =
+            climate::read_primary_streams(&root.join(&summary.path), &retained_recipe)?;
+        let regenerated_primaries = climate::read_primary_streams(&scratch, &output.recipe)?;
+        verify_primary_replay(original_primaries, regenerated_primaries)?;
         let reader = SeriesReader::open(&root.join(&summary.path).join("series"))?;
         let mut check = compare_stream(&reader, &output.combined_f64, cancel)?;
         check["run_id"] = json!(record.id);

@@ -10,6 +10,10 @@ pub use direct::{
     MAX_DIRECT_BATCH_RAYS,
 };
 
+use crate::annual_primary::{
+    ExternalPrimaryContract, PrimaryPurpose, PrimaryStreamRecord, PrimaryStreams,
+    PRIMARY_STREAMS_SCHEMA_VERSION,
+};
 pub use crate::process::AnnualProcessResources;
 use crate::{digest, process, scene_text, Engine, ProcessRecord, ENGINE_VERSION};
 use anyhow::{ensure, Context, Result};
@@ -23,7 +27,7 @@ use std::{
     io::{BufReader, BufWriter, Read, Write},
     path::{Path, PathBuf},
     sync::atomic::{AtomicBool, Ordering},
-    time::Instant,
+    time::{Duration, Instant},
 };
 
 pub const LEGACY_ADAPTER_VERSION: &str = "radiance-climate-direct-corrected/2";
@@ -34,10 +38,13 @@ pub const EXPLICIT_ADAPTER_VERSION: &str = "radiance-climate-explicit-indirect-f
 pub const EXPLICIT_METHOD_VERSION: &str =
     "perez-epw-dewpoint3-reinhart-explicit-indirect-finite-direct/3";
 pub const EXPLICIT_RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v3";
-pub const ADAPTER_VERSION: &str = "radiance-climate-repeated-direct-corrected/4";
-pub const METHOD_VERSION: &str =
+pub const REPEATED_ADAPTER_VERSION: &str = "radiance-climate-repeated-direct-corrected/4";
+pub const REPEATED_METHOD_VERSION: &str =
     "perez-epw-dewpoint3-reinhart-repeated-patch-indirect-finite-direct/4";
-pub const RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v4";
+pub const REPEATED_RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v4";
+pub const ADAPTER_VERSION: &str = "radiance-climate-paired-primary-finite-direct/5";
+pub const METHOD_VERSION: &str = "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5";
+pub const RECIPE_SCHEMA_VERSION: &str = "greenlens.annual-recipe.v5";
 pub const MAX_SENSORS: usize = 256;
 pub const HOURS: usize = 8760;
 
@@ -67,10 +74,13 @@ pub const RESULT_UNITS: &str = "visible Radiance RGB irradiance W/m2; illuminanc
 pub const TIME_POLICY: &str = "EPW hourly midpoint hour-0.5, fixed standard time; no -u night removal or -i horizon adjustment; selected hour retains preceding two dew-point records; sun exported when any part of0.533-degree disc is above horizon";
 pub const LEGACY_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry.";
 pub const EXPLICIT_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once. Solar-only explicit source transport has no luminous dome or external ground geometry. Reflected solar is full explicit-source transport minus identical ab0 centroid-direct transport; finite-disc directional transmission replaces only direct sun. The emitted-source horizon policy applies to both solar terms.";
-pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry. Coefficients use a scaled receiver and contiguous repeated primaries with negative-depth Russian roulette; divide each coefficient product by the recorded receiver scale exactly once. Finite-direct transmission retains a separate unit receiver.";
-pub const DIRECT_POLICY: &str = "Equal-solid-angle midpoint solar-disc quadrature: uniform cos(theta) rings and azimuth; shipping 32x32, reference 64x64. Normalize printed solar direction; horizon clip each ray at world z>0. Ray origin is sensor+0.0001m*normal, matching pinned immediate-irradiance evaluation. Cull each ray only if it misses the authoritative glass polygon, with inclusive 1e-9m edge allowance; Radiance traces glazing/shading/context at ab0 with a unit receiver. Reflected solar is approximated by scaled repeated full minus direct-only patch transport, normalized once by the receiver scale and included only for emitted solar-source intervals. No negative corrected RGB is silently clamped.";
+pub const REPEATED_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry. Coefficients use a scaled receiver and contiguous repeated primaries with negative-depth Russian roulette; divide each coefficient product by the recorded receiver scale exactly once. Finite-direct transmission retains a separate unit receiver.";
+pub const REPEATED_DIRECT_POLICY: &str = "Equal-solid-angle midpoint solar-disc quadrature: uniform cos(theta) rings and azimuth; shipping 32x32, reference 64x64. Normalize printed solar direction; horizon clip each ray at world z>0. Ray origin is sensor+0.0001m*normal, matching pinned immediate-irradiance evaluation. Cull each ray only if it misses the authoritative glass polygon, with inclusive 1e-9m edge allowance; Radiance traces glazing/shading/context at ab0 with a unit receiver. Reflected solar is approximated by scaled repeated full minus direct-only patch transport, normalized once by the receiver scale and included only for emitted solar-source intervals. No negative corrected RGB is silently clamped.";
 pub const LEGACY_RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
-pub const RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled in a loop with a complete owned scratch tree scan and a 20ms sleep between iterations (shared pages counted in both processes). Scan and scheduling time add to the interval; this is not fixed-20ms sampling. Scratch file sizes are queried from opened file handles during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
+pub const FILE_RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled in a loop with a complete owned scratch tree scan and a 20ms sleep between iterations (shared pages counted in both processes). Scan and scheduling time add to the interval; this is not fixed-20ms sampling. Scratch file sizes are queried from opened file handles during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
+pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus ab0 direct-only patch transport on identical external cosine-weighted Hammersley primary streams, gated to emitted solar-source intervals. Radiance -c N returns the coefficient mean; multiply each coefficient product by pi/receiver_scale exactly once with no further division by N. No external ground geometry; finite-direct transmission retains a separate unit receiver.";
+pub const DIRECT_POLICY: &str = "Equal-solid-angle midpoint solar-disc quadrature: uniform cos(theta) rings and azimuth; shipping 32x32, reference 64x64. Normalize printed solar direction; horizon clip each ray at world z>0. Ray origin is sensor+0.0001m*normal, matching pinned immediate-irradiance evaluation. Cull finite-solar rays only when they miss the authoritative glass polygon, with inclusive 1e-9m edge allowance; Radiance traces glazing/shading/context at ab0 with a unit receiver. Reflected solar uses paired full minus ab0 patch coefficients from uncropped external Hammersley hemispheres, normalized once by pi/receiver_scale and gated to emitted solar-source intervals. Negative coefficient residuals and corrected RGB are rejected, never clamped.";
+pub const RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.";
 const EXECUTABLES: [(&str, &str); 5] = [
     (
         "rtrace.exe",
@@ -142,16 +152,29 @@ pub struct AnnualProfile {
     pub coefficient_primary_repetitions: Option<usize>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub coefficient_receiver_scale: Option<f64>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub external_primary: Option<ExternalPrimaryContract>,
 }
 impl AnnualProfile {
     /// Candidate numerical settings; release freeze requires the recorded suite.
-    pub fn shipping() -> Self {
+    fn repeated_shipping() -> Self {
         Self {
             ambient_divisions: 8192,
             direct_ambient_divisions: 8192,
             ray_depth: -16,
             coefficient_primary_repetitions: Some(128),
             coefficient_receiver_scale: Some(100.0),
+            ..Self::legacy_shipping()
+        }
+    }
+    pub fn shipping() -> Self {
+        Self {
+            ambient_bounces: 7,
+            ambient_divisions: 64,
+            direct_ambient_divisions: 64,
+            ray_depth: -16,
+            coefficient_receiver_scale: Some(100.0),
+            external_primary: Some(ExternalPrimaryContract::new(16_384).expect("compiled count")),
             ..Self::legacy_shipping()
         }
     }
@@ -188,9 +211,10 @@ impl AnnualProfile {
             solar_ambient_divisions: None,
             coefficient_primary_repetitions: None,
             coefficient_receiver_scale: None,
+            external_primary: None,
         }
     }
-    pub fn reference() -> Self {
+    fn repeated_reference() -> Self {
         Self {
             name: "reference".into(),
             sky_basis_mf: 4,
@@ -199,6 +223,18 @@ impl AnnualProfile {
             direct_ambient_divisions: 65536,
             direct_solar_samples: 4096,
             coefficient_primary_repetitions: Some(32),
+            ..Self::repeated_shipping()
+        }
+    }
+    pub fn reference() -> Self {
+        Self {
+            name: "reference".into(),
+            sky_basis_mf: 4,
+            ambient_bounces: 8,
+            ambient_divisions: 128,
+            direct_ambient_divisions: 128,
+            direct_solar_samples: 4096,
+            external_primary: Some(ExternalPrimaryContract::new(65_536).expect("compiled count")),
             ..Self::shipping()
         }
     }
@@ -228,6 +264,7 @@ impl AnnualProfile {
     pub fn shipping_for_method(method: &str) -> Result<Self> {
         match method {
             METHOD_VERSION => Ok(Self::shipping()),
+            REPEATED_METHOD_VERSION => Ok(Self::repeated_shipping()),
             EXPLICIT_METHOD_VERSION => Ok(Self::explicit_shipping()),
             LEGACY_METHOD_VERSION => Ok(Self::legacy_shipping()),
             _ => anyhow::bail!("Unsupported climate transport method"),
@@ -236,6 +273,7 @@ impl AnnualProfile {
     pub fn reference_for_method(method: &str) -> Result<Self> {
         match method {
             METHOD_VERSION => Ok(Self::reference()),
+            REPEATED_METHOD_VERSION => Ok(Self::repeated_reference()),
             EXPLICIT_METHOD_VERSION => Ok(Self::explicit_reference()),
             LEGACY_METHOD_VERSION => Ok(Self::legacy_reference()),
             _ => anyhow::bail!("Unsupported climate transport method"),
@@ -244,6 +282,7 @@ impl AnnualProfile {
     pub fn method(&self) -> Result<&'static str> {
         for method in [
             METHOD_VERSION,
+            REPEATED_METHOD_VERSION,
             EXPLICIT_METHOD_VERSION,
             LEGACY_METHOD_VERSION,
         ] {
@@ -337,11 +376,27 @@ impl AnnualProfile {
             self.arguments(sensors)
         };
         let repeated = self.coefficient_primary_repetitions;
+        if let Some(primary) = &self.external_primary {
+            arguments.retain(|argument| argument != "-I+");
+            if direct {
+                let position = arguments
+                    .iter()
+                    .position(|argument| argument == "-ab")
+                    .expect("compiled profile");
+                arguments[position + 1] = "0".into();
+            }
+            arguments.extend(["-c".into(), primary.count.to_string()]);
+        }
         if let Some(repeats) = repeated {
             arguments.extend(["-c".into(), repeats.to_string()]);
         }
         arguments.extend([
-            if repeated.is_some() { "-V+" } else { "-V-" }.into(),
+            if repeated.is_some() || self.external_primary.is_some() {
+                "-V+"
+            } else {
+                "-V-"
+            }
+            .into(),
             "-e".into(),
             format!("MF:{}", self.sky_basis_mf),
             "-f".into(),
@@ -352,7 +407,7 @@ impl AnnualProfile {
             "Nrbins".into(),
             "-m".into(),
             "sky_glow".into(),
-            if repeated.is_some() {
+            if repeated.is_some() || self.external_primary.is_some() {
                 "annual-coefficient.oct"
             } else {
                 "annual-diffuse.oct"
@@ -362,6 +417,12 @@ impl AnnualProfile {
         arguments
     }
     pub fn coefficient_receiver_text(&self) -> String {
+        if self.external_primary.is_some() {
+            let scale = self
+                .coefficient_receiver_scale
+                .expect("compiled external-primary profile");
+            return format!("void glow sky_glow\n0\n0\n4 {scale} {scale} {scale} 0\nsky_glow source dome\n0\n0\n4 0 0 1 360\n");
+        }
         match self.coefficient_receiver_scale {
             None => RECEIVER_TEXT.into(),
             Some(scale) => {
@@ -373,6 +434,10 @@ impl AnnualProfile {
     /// Sensor identity/order remains unchanged; only transport primaries repeat.
     pub fn coefficient_sensor_text(&self, sensors: &str) -> Result<String> {
         self.validate()?;
+        ensure!(
+            self.external_primary.is_none(),
+            "External primaries must use the bounded iterator, not an expanded sensor file"
+        );
         let lines: Vec<_> = sensors.lines().collect();
         ensure!(
             (1..=MAX_SENSORS).contains(&lines.len()) && sensors.ends_with('\n'),
@@ -483,6 +548,8 @@ impl AnnualEngineIdentity {
             self.version == ENGINE_VERSION
                 && ((self.adapter_version == ADAPTER_VERSION
                     && self.method_version == METHOD_VERSION)
+                    || (self.adapter_version == REPEATED_ADAPTER_VERSION
+                        && self.method_version == REPEATED_METHOD_VERSION)
                     || (self.adapter_version == EXPLICIT_ADAPTER_VERSION
                         && self.method_version == EXPLICIT_METHOD_VERSION)
                     || (self.adapter_version == LEGACY_ADAPTER_VERSION
@@ -534,6 +601,7 @@ impl AnnualEngineIdentity {
     pub fn discover_for_method(engine: &Engine, method: &str) -> Result<Self> {
         let adapter = match method {
             METHOD_VERSION => ADAPTER_VERSION,
+            REPEATED_METHOD_VERSION => REPEATED_ADAPTER_VERSION,
             EXPLICIT_METHOD_VERSION => EXPLICIT_ADAPTER_VERSION,
             LEGACY_METHOD_VERSION => LEGACY_ADAPTER_VERSION,
             _ => anyhow::bail!("Unsupported annual transport method"),
@@ -589,6 +657,8 @@ pub struct AnnualRecipe {
     pub ground_policy: String,
     pub direct_policy: String,
     pub direct_batches: Vec<DirectBatch>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub primary_streams_sha256: Option<String>,
     pub child_environment: BTreeMap<String, String>,
     pub processes: Vec<ProcessRecord>,
 }
@@ -610,12 +680,39 @@ pub struct AnnualResources {
     pub processes: Vec<AnnualProcessResources>,
 }
 impl AnnualResources {
+    pub fn validate_for_method(&self, method: &str) -> Result<()> {
+        AnnualProfile::shipping_for_method(method)?;
+        self.validate()?;
+        ensure!(
+            if method == METHOD_VERSION {
+                self.measurement_policy == RESOURCE_MEASUREMENT_POLICY
+            } else {
+                matches!(
+                    self.measurement_policy.as_str(),
+                    FILE_RESOURCE_MEASUREMENT_POLICY | LEGACY_RESOURCE_MEASUREMENT_POLICY
+                )
+            },
+            "Resource policy does not match transport method"
+        );
+        if method == METHOD_VERSION {
+            ensure!(
+                self.processes.iter().all(|p| p.elapsed_ms <= 7_200_000
+                    && p.peak_child_working_set_bytes > 0
+                    && p.peak_child_working_set_bytes <= self.max_observed_working_set_bytes
+                    && p.peak_observed_runner_plus_child_working_set_bytes > 0),
+                "Method-5 process duration or resource observation violates its compiled policy"
+            );
+        }
+        Ok(())
+    }
     pub fn validate(&self) -> Result<()> {
         ensure!(
             self.schema_version == "greenlens.annual-resources.v1"
                 && matches!(
                     self.measurement_policy.as_str(),
-                    RESOURCE_MEASUREMENT_POLICY | LEGACY_RESOURCE_MEASUREMENT_POLICY
+                    RESOURCE_MEASUREMENT_POLICY
+                        | FILE_RESOURCE_MEASUREMENT_POLICY
+                        | LEGACY_RESOURCE_MEASUREMENT_POLICY
                 ),
             "Unsupported annual resource measurement policy"
         );
@@ -860,6 +957,231 @@ fn cancelled(cancel: &AtomicBool) -> Result<()> {
     Ok(())
 }
 
+#[derive(Clone, Copy)]
+enum AnnualInput<'a> {
+    File(&'a str),
+    Primary(PrimaryPurpose),
+}
+
+fn retain_primary_failure(
+    engine: &Engine,
+    scratch: &Path,
+    purpose: PrimaryPurpose,
+    process_index: usize,
+    arguments: &[String],
+    error: &anyhow::Error,
+) -> Result<()> {
+    let stage = scratch.join(match purpose {
+        PrimaryPurpose::Full => "primary-full",
+        PrimaryPurpose::Direct => "primary-direct",
+    });
+    let mut diagnostic = serde_json::json!({"schema_version":"greenlens.annual-primary-failure.v1","state":"failed","purpose":purpose,"process_index":process_index,"arguments":arguments,"recorded_utc":Utc::now().to_rfc3339(),"error":format!("{error:#}")});
+    for (name, key) in [
+        ("stream-failure.json", "stream_failure"),
+        (
+            "stream-success.json",
+            "completed_process_before_adapter_validation",
+        ),
+    ] {
+        let file = stage.join(name);
+        if file.is_file() {
+            let mut data = Vec::new();
+            File::open(file)?
+                .take(1024 * 1024 + 1)
+                .read_to_end(&mut data)?;
+            ensure!(
+                data.len() <= 1024 * 1024,
+                "Primary failure diagnostic exceeds bound"
+            );
+            diagnostic[key] = serde_json::from_slice(&data)?;
+        }
+    }
+    fn sanitize(value: &mut serde_json::Value, replacements: &[(String, &str)]) {
+        match value {
+            serde_json::Value::String(text) => {
+                for (path, label) in replacements {
+                    *text = text.replace(path, label);
+                }
+            }
+            serde_json::Value::Array(items) => {
+                for item in items {
+                    sanitize(item, replacements)
+                }
+            }
+            serde_json::Value::Object(items) => {
+                for item in items.values_mut() {
+                    sanitize(item, replacements)
+                }
+            }
+            _ => {}
+        }
+    }
+    let replacements = [
+        (scratch.to_string_lossy().into_owned(), "<scratch>"),
+        (
+            scratch
+                .to_string_lossy()
+                .trim_start_matches(r"\\?\")
+                .to_owned(),
+            "<scratch>",
+        ),
+        (engine.root().to_string_lossy().into_owned(), "<engine>"),
+        (
+            engine
+                .root()
+                .to_string_lossy()
+                .trim_start_matches(r"\\?\")
+                .to_owned(),
+            "<engine>",
+        ),
+    ];
+    sanitize(&mut diagnostic, &replacements);
+    fs::write(
+        scratch.join("annual-primary-failure.json"),
+        serde_json::to_vec_pretty(&diagnostic)?,
+    )?;
+    Ok(())
+}
+
+fn validate_paired_coefficients(
+    scratch: &Path,
+    sensors: usize,
+    sky_rows: usize,
+    cancel: &AtomicBool,
+) -> Result<()> {
+    let mut full = MatrixReader::open(&scratch.join("annual-coefficients.mtx"), sensors, sky_rows)?;
+    let mut direct = MatrixReader::open(
+        &scratch.join("annual-direct-coefficients.mtx"),
+        sensors,
+        sky_rows,
+    )?;
+    for index in 0..sensors * sky_rows {
+        if index % sky_rows == 0 {
+            cancelled(cancel)?;
+        }
+        let a = full
+            .next_rgb()?
+            .context("Incomplete paired full coefficients")?;
+        let b = direct
+            .next_rgb()?
+            .context("Incomplete paired direct coefficients")?;
+        ensure!(a.iter().zip(b).all(|(a,b)| (*a-b).is_finite() && *a-b >= 0.0), "Negative/nonfinite paired coefficient residual at flattened sensor/patch {index}; no residual is clamped");
+    }
+    ensure!(
+        full.next_rgb()?.is_none() && direct.next_rgb()?.is_none(),
+        "Excess paired coefficients"
+    );
+    Ok(())
+}
+
+#[cfg(windows)]
+#[allow(clippy::too_many_arguments)]
+fn execute_primary(
+    engine: &Engine,
+    model: &ValidatedModel,
+    profile: &AnnualProfile,
+    scratch: &Path,
+    args: &[String],
+    output: &str,
+    purpose: PrimaryPurpose,
+    process_index: usize,
+    cancel: &AtomicBool,
+) -> Result<(ProcessRecord, AnnualProcessResources, PrimaryStreamRecord)> {
+    use crate::{
+        annual_primary::HammersleyPrimary,
+        annual_stream::{execute_in_run, StreamLimits, StreamRequest},
+    };
+    let contract = profile
+        .external_primary
+        .as_ref()
+        .context("Missing compiled primary contract")?;
+    let generator = HammersleyPrimary::new(&model.sensor_grid.sensors, contract.count)?;
+    let stage = scratch.join(match purpose {
+        PrimaryPurpose::Full => "primary-full",
+        PrimaryPurpose::Direct => "primary-direct",
+    });
+    fs::create_dir(&stage).context("Primary stage already exists or cannot be created")?;
+    let request = StreamRequest {
+        executable: engine.root().join("bin/rcontrib.exe"),
+        arguments: args.into(),
+        directory: stage.clone(),
+        child_environment: BTreeMap::from([(
+            "RAYPATH".into(),
+            format!(".;{}", engine.root().join("lib").display()),
+        )]),
+        expected_records: generator.expected_records(),
+        limits: StreamLimits {
+            max_input_bytes: generator.expected_records()
+                * crate::annual_primary::MAX_RECORD_BYTES as u64,
+            ..StreamLimits::default()
+        },
+    };
+    let mut outcome = execute_in_run(&request, generator, cancel, scratch)?;
+    // Sanitize the separate library configuration from retained diagnostic text.
+    for text in [
+        engine.root().to_string_lossy().into_owned(),
+        engine
+            .root()
+            .to_string_lossy()
+            .trim_start_matches(r"\\?\")
+            .to_owned(),
+    ] {
+        outcome.process.stderr = outcome.process.stderr.replace(&text, "<engine>");
+    }
+    outcome.telemetry.validate()?;
+    let matrix = stage.join("stream-stdout.bin");
+    MatrixReader::open(
+        &matrix,
+        model.sensor_grid.sensors.len(),
+        144 * profile.sky_basis_mf * profile.sky_basis_mf + 2,
+    )?
+    .finish()?;
+    let matrix_sha256 = direct::file_hash(&matrix)?;
+    let output_bytes = File::open(&matrix)?.metadata()?.len();
+    let measurement = AnnualProcessResources {
+        executable: outcome.process.executable.clone(),
+        started_utc: outcome.process.started_utc.clone(),
+        finished_utc: outcome.process.finished_utc.clone(),
+        elapsed_ms: outcome.process.elapsed_ms,
+        peak_child_working_set_bytes: outcome.telemetry.peak_child_working_set_bytes,
+        peak_observed_runner_plus_child_working_set_bytes: outcome
+            .telemetry
+            .sampled_peak_runner_plus_child_working_set_bytes,
+        peak_scratch_bytes: outcome.telemetry.peak_scratch_bytes,
+        output_bytes,
+        samples: outcome.telemetry.samples,
+    };
+    let evidence = PrimaryStreamRecord {
+        purpose,
+        process_index,
+        input: outcome.input,
+        matrix_sha256,
+        resources: outcome.telemetry,
+    };
+    ensure!(
+        !scratch.join(output).exists(),
+        "Primary matrix destination already exists"
+    );
+    fs::rename(matrix, scratch.join(output))?;
+    Ok((outcome.process, measurement, evidence))
+}
+
+#[cfg(not(windows))]
+#[allow(clippy::too_many_arguments)]
+fn execute_primary(
+    _engine: &Engine,
+    _model: &ValidatedModel,
+    _profile: &AnnualProfile,
+    _scratch: &Path,
+    _args: &[String],
+    _output: &str,
+    _purpose: PrimaryPurpose,
+    _process_index: usize,
+    _cancel: &AtomicBool,
+) -> Result<(ProcessRecord, AnnualProcessResources, PrimaryStreamRecord)> {
+    anyhow::bail!("Streamed climate transport requires native Windows 10 or later")
+}
+
 #[allow(clippy::too_many_arguments)]
 pub fn simulate(
     engine: &Engine,
@@ -875,7 +1197,9 @@ pub fn simulate(
     let start = Instant::now();
     let method = profile.method()?;
     let legacy = method == LEGACY_METHOD_VERSION;
-    let repeated = method == METHOD_VERSION;
+    let paired = method == METHOD_VERSION;
+    let repeated = method == REPEATED_METHOD_VERSION;
+    let scaled = repeated || paired;
     let patch_solar = method != EXPLICIT_METHOD_VERSION;
     cancelled(cancel)?;
     let model = greenlens_core::validate_model(&model.model)?;
@@ -912,20 +1236,28 @@ pub fn simulate(
     fs::write(scratch.join("annual-sensors.pts"), &sensors)?;
     fs::write(scratch.join("annual-weather.epw"), &weather)?;
     fs::write(scratch.join("annual-receiver.rad"), RECEIVER_TEXT)?;
-    if repeated {
+    if scaled {
         fs::write(
             scratch.join("annual-coefficient-receiver.rad"),
             profile.coefficient_receiver_text(),
         )?;
-        fs::write(
-            scratch.join("annual-coefficient-sensors.pts"),
-            profile.coefficient_sensor_text(&sensors)?,
-        )?;
+        if repeated {
+            fs::write(
+                scratch.join("annual-coefficient-sensors.pts"),
+                profile.coefficient_sensor_text(&sensors)?,
+            )?;
+        }
     }
+    let mut primary_records = Vec::new();
     let mut processes = Vec::new();
     let mut resources = AnnualResources {
         schema_version: "greenlens.annual-resources.v1".into(),
-        measurement_policy: RESOURCE_MEASUREMENT_POLICY.into(),
+        measurement_policy: if paired {
+            RESOURCE_MEASUREMENT_POLICY
+        } else {
+            FILE_RESOURCE_MEASUREMENT_POLICY
+        }
+        .into(),
         started_utc,
         finished_utc: String::new(),
         total_wall_ms: 0,
@@ -937,54 +1269,102 @@ pub fn simulate(
         max_observed_working_set_bytes: process::ANNUAL_MAX_OBSERVED_WORKING_SET_BYTES,
         processes: Vec::new(),
     };
-    let mut execute =
-        |name: &str, args: Vec<String>, input: Option<&str>, output: &str| -> Result<()> {
-            cancelled(cancel)?;
-            let input = input.map(|file| scratch.join(file));
-            for suffix in ["resources.json", "process.json"] {
-                let path = scratch.join(format!("{name}.{suffix}"));
-                if path.exists() {
-                    fs::remove_file(path)?;
+    let mut execute = |name: &str,
+                       args: Vec<String>,
+                       input: Option<AnnualInput<'_>>,
+                       output: &str|
+     -> Result<()> {
+        cancelled(cancel)?;
+        let input_file = match input {
+            Some(AnnualInput::File(file)) => Some(scratch.join(file)),
+            _ => None,
+        };
+        for suffix in ["resources.json", "process.json"] {
+            let path = scratch.join(format!("{name}.{suffix}"));
+            if path.exists() {
+                fs::remove_file(path)?;
+            }
+        }
+        let result = if let Some(AnnualInput::Primary(purpose)) = input {
+            let result = execute_primary(
+                engine,
+                &model,
+                profile,
+                scratch,
+                &args,
+                output,
+                purpose,
+                processes.len(),
+                cancel,
+            );
+            match result {
+                Ok((record, measurement, primary)) => {
+                    primary_records.push(primary);
+                    Ok((record, measurement))
+                }
+                Err(error) => {
+                    retain_primary_failure(
+                        engine,
+                        scratch,
+                        purpose,
+                        processes.len(),
+                        &args,
+                        &error,
+                    )?;
+                    Err(error)
                 }
             }
-            let result = process::execute_annual(
+        } else if paired {
+            process::execute_annual_with_deadline(
                 engine.root(),
                 name,
                 &args,
                 scratch,
-                input.as_deref(),
+                input_file.as_deref(),
                 &scratch.join(output),
                 cancel,
-            );
-            // Keep separate records even when the same executable is invoked twice.
-            if let Ok((record, measurement)) = &result {
-                processes.push(record.clone());
-                resources.processes.push(measurement.clone());
-            } else {
-                // Cancellation/resource failure records have a separate shape;
-                // preserve them in scratch without representing a complete run.
-                if let Ok(bytes) = fs::read(scratch.join(format!("{name}.resources.json"))) {
-                    if let Ok(measurement) = serde_json::from_slice(&bytes) {
-                        resources.processes.push(measurement);
-                    }
+                Duration::from_secs(7200),
+            )
+        } else {
+            process::execute_annual(
+                engine.root(),
+                name,
+                &args,
+                scratch,
+                input_file.as_deref(),
+                &scratch.join(output),
+                cancel,
+            )
+        };
+        // Keep separate records even when the same executable is invoked twice.
+        if let Ok((record, measurement)) = &result {
+            processes.push(record.clone());
+            resources.processes.push(measurement.clone());
+        } else {
+            // Cancellation/resource failure records have a separate shape;
+            // preserve them in scratch without representing a complete run.
+            if let Ok(bytes) = fs::read(scratch.join(format!("{name}.resources.json"))) {
+                if let Ok(measurement) = serde_json::from_slice(&bytes) {
+                    resources.processes.push(measurement);
                 }
-                if let Ok(bytes) = fs::read(scratch.join(format!("{name}.process.json"))) {
-                    if let Ok(record) = serde_json::from_slice::<ProcessRecord>(&bytes) {
-                        if record.arguments == args {
-                            processes.push(record);
-                        }
+            }
+            if let Ok(bytes) = fs::read(scratch.join(format!("{name}.process.json"))) {
+                if let Ok(record) = serde_json::from_slice::<ProcessRecord>(&bytes) {
+                    if record.arguments == args {
+                        processes.push(record);
                     }
                 }
             }
-            fs::write(
-                scratch.join("annual-logs.json"),
-                serde_json::to_vec_pretty(&processes)?,
-            )?;
-            resources.refresh(start, scratch)?;
-            result?;
-            check_scratch(scratch)?;
-            Ok(())
-        };
+        }
+        fs::write(
+            scratch.join("annual-logs.json"),
+            serde_json::to_vec_pretty(&processes)?,
+        )?;
+        resources.refresh(start, scratch)?;
+        result?;
+        check_scratch(scratch)?;
+        Ok(())
+    };
     on_log("Preparing visible Perez sky and luminous ground for every requested weather interval");
     let ground = model.model.sky.ground_reflectance.to_string();
     let sky_arguments = vec![
@@ -1042,7 +1422,7 @@ pub fn simulate(
         None,
         "annual-diffuse.oct",
     )?;
-    if repeated {
+    if scaled {
         execute(
             "oconv",
             ["-f", "annual-scene.rad", "annual-coefficient-receiver.rad"]
@@ -1052,10 +1432,12 @@ pub fn simulate(
             "annual-coefficient.oct",
         )?;
     }
-    let coefficient_input = if repeated {
-        "annual-coefficient-sensors.pts"
+    let coefficient_input = if paired {
+        AnnualInput::Primary(PrimaryPurpose::Full)
+    } else if repeated {
+        AnnualInput::File("annual-coefficient-sensors.pts")
     } else {
-        "annual-sensors.pts"
+        AnnualInput::File("annual-sensors.pts")
     };
     on_log("Tracing diffuse and ground daylight coefficients; cancellation remains available");
     execute(
@@ -1084,7 +1466,11 @@ pub fn simulate(
         execute(
             "rcontrib",
             profile.coefficient_arguments(sensor_count, true),
-            Some(coefficient_input),
+            Some(if paired {
+                AnnualInput::Primary(PrimaryPurpose::Direct)
+            } else {
+                coefficient_input
+            }),
             "annual-direct-coefficients.mtx",
         )?;
         MatrixReader::open(
@@ -1093,6 +1479,9 @@ pub fn simulate(
             sky_rows,
         )?
         .finish()?;
+        if paired {
+            validate_paired_coefficients(scratch, sensor_count, sky_rows, cancel)?;
+        }
         execute(
             "dctimestep",
             ["-oa", "annual-coefficients.mtx", "annual-solar-sky.mtx"]
@@ -1128,14 +1517,14 @@ pub fn simulate(
         execute(
             "rcontrib",
             profile.solar_arguments(sensor_count, false),
-            Some("annual-sensors.pts"),
+            Some(AnnualInput::File("annual-sensors.pts")),
             "annual-solar-rgb.mtx",
         )?;
         on_log("Tracing the identical centroid-direct solar term for finite-disc replacement");
         execute(
             "rcontrib",
             profile.solar_arguments(sensor_count, true),
-            Some("annual-sensors.pts"),
+            Some(AnnualInput::File("annual-sensors.pts")),
             "annual-solar-direct-rgb.mtx",
         )?;
     }
@@ -1143,6 +1532,8 @@ pub fn simulate(
     on_log("Validating every RGB value and assembling complete ordered time series");
     // <=256*8760*24 = 53,821,440 bytes. Large sky matrices are streamed and are
     // never retained together with another unbounded in-memory representation.
+    let normalization = if paired { std::f64::consts::PI } else { 1.0 }
+        / profile.coefficient_receiver_scale.unwrap_or(1.0);
     let mut combined = vec![[0.0; 3]; sensor_count * output_indices.len()];
     let mut diffuse = MatrixReader::open(
         &scratch.join("annual-diffuse-rgb.mtx"),
@@ -1155,8 +1546,13 @@ pub fn simulate(
                 .next_rgb()?
                 .context("Incomplete diffuse sensor/time matrix")?;
             if let Ok(position) = output_indices.binary_search(&index) {
-                combined[position * sensor_count + sensor] =
-                    rgb.map(|value| value / profile.coefficient_receiver_scale.unwrap_or(1.0));
+                combined[position * sensor_count + sensor] = rgb.map(|value| {
+                    if paired {
+                        value * normalization
+                    } else {
+                        value / profile.coefficient_receiver_scale.unwrap_or(1.0)
+                    }
+                });
             }
         }
         cancelled(cancel)?;
@@ -1189,9 +1585,13 @@ pub fn simulate(
                         continue;
                     }
                     for channel in 0..3 {
-                        let reflected = (rgb[channel] - direct[channel])
-                            / profile.coefficient_receiver_scale.unwrap_or(1.0);
-                        if repeated {
+                        let reflected = if paired {
+                            (rgb[channel] - direct[channel]) * normalization
+                        } else {
+                            (rgb[channel] - direct[channel])
+                                / profile.coefficient_receiver_scale.unwrap_or(1.0)
+                        };
+                        if scaled {
                             ensure!(reflected.is_finite() && reflected >= 0.0,
                                 "Invalid reflected solar correction at sensor {} interval {index}; no negative residual is clamped", sensor + 1);
                         }
@@ -1266,7 +1666,7 @@ pub fn simulate(
             execute(
                 "rtrace",
                 profile.transmission_arguments(),
-                Some("annual-direct-rays.pts"),
+                Some(AnnualInput::File("annual-direct-rays.pts")),
                 "annual-direct-rgb.txt",
             )?;
         } else {
@@ -1314,11 +1714,39 @@ pub fn simulate(
     }
     writer.flush()?;
     writer.get_ref().sync_all()?;
+    let primary_streams_sha256 = if paired {
+        let streams = PrimaryStreams {
+            schema_version: PRIMARY_STREAMS_SCHEMA_VERSION.into(),
+            contract: profile
+                .external_primary
+                .clone()
+                .expect("compiled primary profile"),
+            sensor_sha256: digest(sensors.as_bytes()),
+            sensor_count,
+            sky_rows,
+            records: primary_records,
+        };
+        streams.validate(
+            &streams.contract,
+            sensor_count,
+            &streams.sensor_sha256,
+            sky_rows,
+            !sun_indices.is_empty(),
+            &processes,
+        )?;
+        let bytes = serde_json::to_vec_pretty(&streams)?;
+        fs::write(scratch.join("annual-primary-streams.json"), &bytes)?;
+        Some(digest(&bytes))
+    } else {
+        None
+    };
     let recipe = AnnualRecipe {
         schema_version: if legacy {
             LEGACY_RECIPE_SCHEMA_VERSION
-        } else if !repeated {
+        } else if method == EXPLICIT_METHOD_VERSION {
             EXPLICIT_RECIPE_SCHEMA_VERSION
+        } else if repeated {
+            REPEATED_RECIPE_SCHEMA_VERSION
         } else {
             RECIPE_SCHEMA_VERSION
         }
@@ -1340,21 +1768,26 @@ pub fn simulate(
         time_policy: TIME_POLICY.into(),
         ground_policy: if legacy {
             LEGACY_GROUND_POLICY
-        } else if !repeated {
+        } else if method == EXPLICIT_METHOD_VERSION {
             EXPLICIT_GROUND_POLICY
+        } else if repeated {
+            REPEATED_GROUND_POLICY
         } else {
             GROUND_POLICY
         }
         .into(),
         direct_policy: if legacy {
             LEGACY_DIRECT_POLICY
-        } else if !repeated {
+        } else if method == EXPLICIT_METHOD_VERSION {
             EXPLICIT_DIRECT_POLICY
+        } else if repeated {
+            REPEATED_DIRECT_POLICY
         } else {
             DIRECT_POLICY
         }
         .into(),
         direct_batches,
+        primary_streams_sha256,
         child_environment: BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
         processes: processes.clone(),
     };
@@ -1364,7 +1797,7 @@ pub fn simulate(
     )?;
     check_scratch(scratch)?;
     resources.refresh(start, scratch)?;
-    resources.validate()?;
+    resources.validate_for_method(method)?;
     cancelled(cancel)?;
     let mut compact_files = [
         "annual-scene.rad",
@@ -1384,6 +1817,15 @@ pub fn simulate(
             [
                 "annual-coefficient-receiver.rad",
                 "annual-coefficient-sensors.pts",
+            ]
+            .map(String::from),
+        );
+    }
+    if paired {
+        compact_files.extend(
+            [
+                "annual-coefficient-receiver.rad",
+                "annual-primary-streams.json",
             ]
             .map(String::from),
         );
@@ -1434,6 +1876,18 @@ mod tests {
             processes: vec![measurement; 5],
         };
         record.validate().unwrap();
+        record.validate_for_method(METHOD_VERSION).unwrap();
+        let mut excessive = record.clone();
+        excessive.total_wall_ms = 7_200_001;
+        excessive.processes[0].elapsed_ms = 7_200_001;
+        assert!(excessive.validate_for_method(METHOD_VERSION).is_err());
+        let mut incomplete = record.clone();
+        incomplete.processes[0].peak_child_working_set_bytes = 0;
+        assert!(incomplete.validate_for_method(METHOD_VERSION).is_err());
+        assert!(record.validate_for_method(REPEATED_METHOD_VERSION).is_err());
+        record.measurement_policy = FILE_RESOURCE_MEASUREMENT_POLICY.into();
+        record.validate_for_method(REPEATED_METHOD_VERSION).unwrap();
+        assert!(record.validate_for_method(METHOD_VERSION).is_err());
         record.measurement_policy = LEGACY_RESOURCE_MEASUREMENT_POLICY.into();
         let original = serde_json::to_vec(&record).unwrap();
         let historical: AnnualResources = serde_json::from_slice(&original).unwrap();
@@ -1640,7 +2094,10 @@ mod tests {
                 .coefficient_arguments(2, false)
                 .contains(&"-c".into()));
         }
-        for profile in [AnnualProfile::shipping(), AnnualProfile::reference()] {
+        for profile in [
+            AnnualProfile::repeated_shipping(),
+            AnnualProfile::repeated_reference(),
+        ] {
             let repeats = profile.coefficient_primary_repetitions.unwrap();
             let text = profile.coefficient_sensor_text(sensors).unwrap();
             let lines: Vec<_> = text.lines().collect();
@@ -1667,6 +2124,213 @@ mod tests {
             assert!(invalid.validate().is_err());
         }
     }
+    #[test]
+    fn paired_profile_binds_radiance_arguments_and_rejects_expanded_input() {
+        for profile in [AnnualProfile::shipping(), AnnualProfile::reference()] {
+            assert_eq!(profile.method().unwrap(), METHOD_VERSION);
+            let contract = profile.external_primary.as_ref().unwrap();
+            let full = profile.coefficient_arguments(24, false);
+            let direct = profile.coefficient_arguments(24, true);
+            assert!(!full.iter().any(|a| a.starts_with("-I")));
+            assert!(!direct.iter().any(|a| a.starts_with("-I")));
+            assert!(full.contains(&"-V+".into()));
+            let ab = full.iter().position(|a| a == "-ab").unwrap();
+            let count = full.iter().position(|a| a == "-c").unwrap();
+            assert_eq!(direct[ab + 1], "0");
+            assert_eq!(full[count + 1], contract.count.to_string());
+            assert_eq!(direct[count + 1], full[count + 1]);
+            assert_eq!(full.last().unwrap(), "annual-coefficient.oct");
+            let mut comparable = direct.clone();
+            comparable[ab + 1] = full[ab + 1].clone();
+            assert_eq!(comparable, full);
+            assert_eq!(profile.coefficient_receiver_text(), "void glow sky_glow\n0\n0\n4 100 100 100 0\nsky_glow source dome\n0\n0\n4 0 0 1 360\n");
+            assert!(profile.coefficient_sensor_text("0 0 0.8 0 0 1\n").is_err());
+            assert_eq!(profile.coefficient_primary_repetitions, None);
+            assert_eq!(profile.solar_ambient_divisions, None);
+            let mut changed = profile.clone();
+            changed.external_primary.as_mut().unwrap().count = 262_144;
+            assert!(changed.validate().is_err());
+            let mut changed = profile.clone();
+            changed.external_primary = None;
+            assert!(changed.validate().is_err());
+        }
+        for method in [
+            LEGACY_METHOD_VERSION,
+            EXPLICIT_METHOD_VERSION,
+            REPEATED_METHOD_VERSION,
+        ] {
+            let profile = AnnualProfile::shipping_for_method(method).unwrap();
+            assert!(serde_json::to_value(&profile)
+                .unwrap()
+                .get("external_primary")
+                .is_none());
+            assert_ne!(profile.method().unwrap(), METHOD_VERSION);
+        }
+    }
+
+    #[test]
+    fn paired_coefficient_check_rejects_negative_bin_even_when_product_can_compensate() {
+        let directory = std::env::temp_dir().join(format!(
+            "greenlens-paired-coefficients-{}",
+            Utc::now().timestamp_nanos_opt().unwrap()
+        ));
+        fs::create_dir(&directory).unwrap();
+        let header = "NROWS=1\nNCOLS=2\nNCOMP=3\nFORMAT=ascii\n\n";
+        fs::write(
+            directory.join("annual-coefficients.mtx"),
+            format!("{header}1 1 1 3 3 3\n"),
+        )
+        .unwrap();
+        fs::write(
+            directory.join("annual-direct-coefficients.mtx"),
+            format!("{header}2 2 2 0 0 0\n"),
+        )
+        .unwrap();
+        assert!(validate_paired_coefficients(&directory, 1, 2, &AtomicBool::new(false)).is_err());
+        fs::write(
+            directory.join("annual-direct-coefficients.mtx"),
+            format!("{header}1 1 1 0 0 0\n"),
+        )
+        .unwrap();
+        validate_paired_coefficients(&directory, 1, 2, &AtomicBool::new(false)).unwrap();
+        assert!(validate_paired_coefficients(&directory, 1, 2, &AtomicBool::new(true)).is_err());
+    }
+    #[test]
+    fn primary_failure_summary_is_bounded_sanitized_and_preserves_original_stage() {
+        let scratch = std::env::temp_dir().join(format!(
+            "greenlens-primary-failure-{}",
+            Utc::now().timestamp_nanos_opt().unwrap()
+        ));
+        fs::create_dir_all(scratch.join("primary-full")).unwrap();
+        // Synthetic identity is never used to discover or execute an engine.
+        let engine = Engine {
+            root: scratch.join("private-engine"),
+            identity: crate::EngineIdentity {
+                version: "MOCK".into(),
+                adapter_version: "MOCK".into(),
+                executable_sha256: BTreeMap::new(),
+                library_sha256: BTreeMap::new(),
+                fingerprint: String::new(),
+            },
+        };
+        let original=serde_json::to_vec(&serde_json::json!({"schema_version":"greenlens.stream-failure.v1","state":"failed","error":format!("failed in {} using {}",scratch.display(),engine.root().display()),"pid":1,"written_bytes":0,"generated_records":0,"process_tree_terminated":true,"cleanup_error":null,"telemetry":null})).unwrap();
+        fs::write(scratch.join("primary-full/stream-failure.json"), &original).unwrap();
+        retain_primary_failure(
+            &engine,
+            &scratch,
+            PrimaryPurpose::Full,
+            4,
+            &["-c".into(), "16384".into()],
+            &anyhow::anyhow!("failed at {}", scratch.display()),
+        )
+        .unwrap();
+        let bytes = fs::read(scratch.join("annual-primary-failure.json")).unwrap();
+        let diagnostic: serde_json::Value = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(diagnostic["state"], "failed");
+        assert_eq!(diagnostic["purpose"], "full");
+        assert_eq!(
+            diagnostic["stream_failure"]["process_tree_terminated"],
+            true
+        );
+        assert!(!diagnostic["error"]
+            .as_str()
+            .unwrap()
+            .contains(scratch.to_string_lossy().as_ref()));
+        assert_eq!(
+            fs::read(scratch.join("primary-full/stream-failure.json")).unwrap(),
+            original
+        );
+        fs::write(
+            scratch.join("primary-full/stream-failure.json"),
+            vec![b'x'; 1024 * 1024 + 1],
+        )
+        .unwrap();
+        assert!(retain_primary_failure(
+            &engine,
+            &scratch,
+            PrimaryPurpose::Full,
+            4,
+            &[],
+            &anyhow::anyhow!("mock")
+        )
+        .is_err());
+        assert_eq!(
+            fs::read(scratch.join("annual-primary-failure.json")).unwrap(),
+            bytes
+        );
+    }
+    #[cfg(windows)]
+    #[test]
+    fn synthetic_primary_failure_retains_actual_supervisor_diagnostic() {
+        let scratch = PathBuf::from(std::env::var_os("LOCALAPPDATA").unwrap())
+            .join("GreenLens/verification")
+            .join(format!(
+                "annual primary failure synthetic 空間 {}",
+                Utc::now().timestamp_nanos_opt().unwrap()
+            ));
+        let engine_root = scratch.join("fixture-engine");
+        fs::create_dir_all(engine_root.join("bin")).unwrap();
+        // This is a tiny native test executable, not a simulation engine. Listing
+        // its tests exits without consuming the generated stdin stream.
+        fs::copy(
+            std::env::current_exe().unwrap(),
+            engine_root.join("bin/rcontrib.exe"),
+        )
+        .unwrap();
+        let engine = Engine {
+            root: engine_root,
+            identity: crate::EngineIdentity {
+                version: "MOCK synthetic test executable".into(),
+                adapter_version: "MOCK".into(),
+                executable_sha256: BTreeMap::new(),
+                library_sha256: BTreeMap::new(),
+                fingerprint: String::new(),
+            },
+        };
+        let model = greenlens_core::validate_model(&greenlens_core::Model::default()).unwrap();
+        let args = vec!["--list".to_string()];
+        let error = execute_primary(
+            &engine,
+            &model,
+            &AnnualProfile::shipping(),
+            &scratch,
+            &args,
+            "annual-coefficients.mtx",
+            PrimaryPurpose::Full,
+            4,
+            &AtomicBool::new(false),
+        )
+        .unwrap_err();
+        retain_primary_failure(&engine, &scratch, PrimaryPurpose::Full, 4, &args, &error).unwrap();
+        let diagnostic: serde_json::Value =
+            serde_json::from_slice(&fs::read(scratch.join("annual-primary-failure.json")).unwrap())
+                .unwrap();
+        assert_eq!(diagnostic["state"], "failed");
+        assert_eq!(
+            diagnostic["stream_failure"]["process_tree_terminated"],
+            true
+        );
+        assert_eq!(
+            diagnostic["stream_failure"]["telemetry"]["schema_version"],
+            "greenlens.stream-resources.v2"
+        );
+        assert_eq!(
+            diagnostic["stream_failure"]["telemetry"]["atomic_job_assignment"],
+            true
+        );
+        assert!(
+            diagnostic["stream_failure"]["generated_records"]
+                .as_u64()
+                .unwrap()
+                < model.sensor_grid.sensors.len() as u64 * 16_384
+        );
+        assert!(!scratch.join("annual-coefficients.mtx").exists());
+        assert!(!scratch.join("annual-primary-streams.json").exists());
+        eprintln!(
+            "Synthetic primary failure diagnostic: {}",
+            scratch.display()
+        );
+    }
     #[cfg(windows)]
     #[test]
     fn native_repeated_scaled_coefficients_integrate_uniform_radiance() {
@@ -1679,7 +2343,10 @@ mod tests {
             ));
         fs::create_dir_all(&root).unwrap();
         let cancel = AtomicBool::new(false);
-        for profile in [AnnualProfile::shipping(), AnnualProfile::reference()] {
+        for profile in [
+            AnnualProfile::repeated_shipping(),
+            AnnualProfile::repeated_reference(),
+        ] {
             let directory = root.join(&profile.name);
             fs::create_dir_all(&directory).unwrap();
             fs::write(

@@ -452,10 +452,16 @@ pub fn evidence_files(record: &ClimateRunRecord) -> Vec<String> {
     ]
     .map(String::from)
     .to_vec();
-    if record.provenance["engine"]["method_version"] == annual::METHOD_VERSION {
+    if record.provenance["engine"]["method_version"] == annual::REPEATED_METHOD_VERSION {
         files.extend([
             "annual-coefficient-receiver.rad".into(),
             "annual-coefficient-sensors.pts".into(),
+        ]);
+    }
+    if record.provenance["engine"]["method_version"] == annual::METHOD_VERSION {
+        files.extend([
+            "annual-coefficient-receiver.rad".into(),
+            "annual-primary-streams.json".into(),
         ]);
     }
     files.extend(
@@ -482,6 +488,11 @@ fn recipe_contract(method: &str) -> Result<(&'static str, &'static str, &'static
             annual::EXPLICIT_GROUND_POLICY,
             annual::EXPLICIT_DIRECT_POLICY,
         )),
+        annual::REPEATED_METHOD_VERSION => Ok((
+            annual::REPEATED_RECIPE_SCHEMA_VERSION,
+            annual::REPEATED_GROUND_POLICY,
+            annual::REPEATED_DIRECT_POLICY,
+        )),
         annual::METHOD_VERSION => Ok((
             annual::RECIPE_SCHEMA_VERSION,
             annual::GROUND_POLICY,
@@ -491,6 +502,45 @@ fn recipe_contract(method: &str) -> Result<(&'static str, &'static str, &'static
     }
 }
 
+/// Integrity validation only. Opening evidence never regenerates millions of
+/// primary rays or executes the recorded commands. Replay checks regeneration.
+pub(crate) fn read_primary_streams(
+    dir: &Path,
+    recipe: &annual::AnnualRecipe,
+) -> Result<Option<greenlens_radiance::annual_primary::PrimaryStreams>> {
+    if recipe.method_version != annual::METHOD_VERSION {
+        ensure!(
+            recipe.primary_streams_sha256.is_none(),
+            "Historical method cannot carry paired-primary evidence"
+        );
+        return Ok(None);
+    }
+    let data = bytes(dir, "annual-primary-streams.json")?;
+    ensure!(
+        recipe.primary_streams_sha256.as_deref() == Some(bytes_hash(&data).as_str()),
+        "Primary stream evidence differs from its recipe pin"
+    );
+    let streams: greenlens_radiance::annual_primary::PrimaryStreams =
+        serde_json::from_slice(&data)?;
+    ensure!(
+        serde_json::to_value(&streams)? == serde_json::from_slice::<Value>(&data)?,
+        "Primary stream evidence is not canonical"
+    );
+    streams.validate(
+        recipe
+            .profile
+            .external_primary
+            .as_ref()
+            .context("Missing paired-primary contract")?,
+        recipe.sensor_count,
+        &recipe.sensor_sha256,
+        recipe.sky_rows,
+        !recipe.solar_interval_indices.is_empty(),
+        &recipe.processes,
+    )?;
+    Ok(Some(streams))
+}
+
 fn expected_processes(
     record: &ClimateRunRecord,
     recipe: &annual::AnnualRecipe,
@@ -498,7 +548,10 @@ fn expected_processes(
     recipe_contract(&recipe.method_version)?;
     recipe.profile.validate_for_method(&recipe.method_version)?;
     let patch_solar = recipe.method_version != annual::EXPLICIT_METHOD_VERSION;
-    let repeated = recipe.method_version == annual::METHOD_VERSION;
+    let scaled = matches!(
+        recipe.method_version.as_str(),
+        annual::REPEATED_METHOD_VERSION | annual::METHOD_VERSION
+    );
     let strings = |v: &[&str]| v.iter().map(|s| (*s).to_string()).collect::<Vec<_>>();
     let ground = record.model.sky.ground_reflectance.to_string();
     let mut sky = vec![
@@ -550,7 +603,7 @@ fn expected_processes(
         "oconv.exe".into(),
         strings(&["-f", "annual-scene.rad", "annual-receiver.rad"]),
     ));
-    if repeated {
+    if scaled {
         result.push((
             "oconv.exe".into(),
             strings(&["-f", "annual-scene.rad", "annual-coefficient-receiver.rad"]),
@@ -772,6 +825,11 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
         "Annual recipe profile is not in its canonical serialized form"
     );
     ensure!(
+        recipe_json.get("primary_streams_sha256").is_some()
+            == recipe.primary_streams_sha256.is_some(),
+        "Annual recipe contains a null primary-stream alias"
+    );
+    ensure!(
         recipe.ordering == annual::RESULT_ORDERING
             && recipe.units == annual::RESULT_UNITS
             && recipe.time_policy == annual::TIME_POLICY
@@ -833,13 +891,20 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
             && bytes(dir, "annual-sensors.pts")? == sensors.as_bytes(),
         "Scene/sensors differ from authoritative geometry"
     );
-    if recipe.method_version == annual::METHOD_VERSION {
+    if recipe.method_version == annual::REPEATED_METHOD_VERSION {
         ensure!(
             bytes(dir, "annual-coefficient-receiver.rad")?
                 == recipe.profile.coefficient_receiver_text().as_bytes()
                 && bytes(dir, "annual-coefficient-sensors.pts")?
                     == recipe.profile.coefficient_sensor_text(&sensors)?.as_bytes(),
             "Scaled receiver/repeated sensors differ from recognized method inputs"
+        );
+    }
+    if recipe.method_version == annual::METHOD_VERSION {
+        ensure!(
+            bytes(dir, "annual-coefficient-receiver.rad")?
+                == recipe.profile.coefficient_receiver_text().as_bytes(),
+            "Paired-primary receiver differs from recognized method inputs"
         );
     }
     let modifier_bytes = bytes(dir, "annual-sun-modifiers.txt")?;
@@ -889,7 +954,8 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
     );
     let resources: annual::AnnualResources =
         read_json(&regular_child(dir, "annual-resources.json")?)?;
-    resources.validate()?;
+    resources.validate_for_method(&recipe.method_version)?;
+    let primary_streams = read_primary_streams(dir, &recipe)?;
     ensure!(
         resources.processes.len() == recipe.processes.len()
             && resources
@@ -901,6 +967,25 @@ pub fn read_run_directory(dir: &Path) -> Result<ClimateRunRecord> {
             && utc(&json!(resources.finished_utc))? <= utc(&record.provenance["finished_utc"])?,
         "Resource observations do not correspond to retained processes/run"
     );
+    if let Some(streams) = primary_streams {
+        for stream in streams.records {
+            let observation = &resources.processes[stream.process_index];
+            let process = &recipe.processes[stream.process_index];
+            ensure!(
+                observation.finished_utc == process.finished_utc
+                    && observation.elapsed_ms == process.elapsed_ms
+                    && observation.peak_child_working_set_bytes
+                        == stream.resources.peak_child_working_set_bytes
+                    && observation.peak_observed_runner_plus_child_working_set_bytes
+                        == stream
+                            .resources
+                            .sampled_peak_runner_plus_child_working_set_bytes
+                    && observation.peak_scratch_bytes == stream.resources.peak_scratch_bytes
+                    && observation.samples == stream.resources.samples,
+                "Primary stream resource observations differ from annual process measurements"
+            );
+        }
+    }
     ensure!(
         recipe.child_environment == BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
         "Unexpected child environment configuration"

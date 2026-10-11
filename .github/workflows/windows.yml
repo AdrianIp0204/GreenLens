@@ -72,6 +72,11 @@ jobs:
           $env:GREENLENS_FINITE_FIXTURE_ROOT = Join-Path $env:CI_EVIDENCE 'finite-rust'
           cargo test -p greenlens-radiance --lib --locked --offline
           if ($LASTEXITCODE -ne 0) { throw 'Adapter tests failed' }
+      - name: Required native paired-primary generator and analytical bridge
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo test -p greenlens-radiance --lib --locked --offline annual_primary::native_tests::native_hammersley_primary_stream_bridge -- --ignored --exact --nocapture
+          if ($LASTEXITCODE -ne 0) { throw 'Required native primary-stream bridge failed; missing engine or ignored defaults cannot count as acceptance' }
       - name: Mandatory reviewed real weather and script regressions
         run: |
           . ./scripts/dev-env.ps1
@@ -92,7 +97,7 @@ jobs:
           # execute it or reconstruct an unchecked approximation of the defect.
           git fetch --no-tags --depth=1 origin 8e7fe4bc95c07856f89ba008fdd4d6cc751b1615
           if ($LASTEXITCODE -ne 0) { throw 'Required historical reference-harness source is unavailable' }
-          $scripts = @('test-annual-matched-evidence','test-annual-reference','test-annual-reference-process','test-annual-reference-sensitivity','test-annual-reference-boundary-stop','test-annual-reference-identity','test-annual-collect-reference','test-annual-reference-recovery','test-annual-paired-native-process','test-annual-paired-process','test-annual-paired-primary-stream','test-annual-hammersley-native-stream')
+          $scripts = @('test-annual-matched-evidence','test-annual-reference','test-annual-reference-process','test-annual-reference-sensitivity','test-annual-reference-boundary-stop','test-annual-reference-identity','test-annual-collect-reference','test-annual-reference-recovery','test-annual-paired-native-process','test-annual-paired-process','test-annual-paired-primary-stream','test-annual-hammersley-native-stream','test-annual-compare-paired-reference','test-annual-sensitivity-shards')
           foreach ($name in $scripts) {
             pwsh -NoProfile -File "scripts/$name.ps1" 2>&1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE "$name.txt")
             if ($LASTEXITCODE -ne 0) { throw "Required bounded harness regression failed: $name" }
@@ -181,7 +186,7 @@ jobs:
           $roots = @((Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-native 空間'),(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/required-scientific-suite'))
           # Only these owned helper fixtures, created during this job, are added.
           # The same file/count/total caps and extension filters below still apply.
-          $prefixes = @('matched evidence regression ','reference supervisor ','reference process regression ','reference scheduling regression ')
+          $prefixes = @('matched evidence regression ','reference supervisor ','reference process regression ','reference scheduling regression ','Rust primary bridge ','paired-comparator-synthetic-','sensitivity-shards-')
           if ($env:CI_JOB_STARTED_UTC) {
             $began = [DateTimeOffset]::Parse($env:CI_JOB_STARTED_UTC).UtcDateTime
             foreach ($directory in Get-ChildItem (Join-Path $env:LOCALAPPDATA 'GreenLens/verification') -Directory -ErrorAction SilentlyContinue) {

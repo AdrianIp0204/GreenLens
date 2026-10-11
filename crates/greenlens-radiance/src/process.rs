@@ -177,7 +177,7 @@ pub(crate) fn execute(
     cancel: &AtomicBool,
 ) -> Result<ProcessRecord> {
     execute_inner(
-        engine, name, arguments, directory, input, output, cancel, false,
+        engine, name, arguments, directory, input, output, cancel, false, None,
     )
     .map(|(record, _)| record)
 }
@@ -193,7 +193,41 @@ pub(crate) fn execute_annual(
     cancel: &AtomicBool,
 ) -> Result<(ProcessRecord, AnnualProcessResources)> {
     let (record, resources) = execute_inner(
-        engine, name, arguments, directory, input, output, cancel, true,
+        engine, name, arguments, directory, input, output, cancel, true, None,
+    )?;
+    Ok((
+        record,
+        resources.context("Annual resource measurement missing")?,
+    ))
+}
+
+/// New-method bounded file-backed stages; historical callers keep their exact
+/// execution policy. A deadline failure retains the normal failure diagnostics.
+#[allow(clippy::too_many_arguments)]
+pub(crate) fn execute_annual_with_deadline(
+    engine: &Path,
+    name: &str,
+    arguments: &[String],
+    directory: &Path,
+    input: Option<&Path>,
+    output: &Path,
+    cancel: &AtomicBool,
+    deadline: Duration,
+) -> Result<(ProcessRecord, AnnualProcessResources)> {
+    ensure!(
+        !deadline.is_zero() && deadline <= Duration::from_secs(7200),
+        "Invalid annual process deadline"
+    );
+    let (record, resources) = execute_inner(
+        engine,
+        name,
+        arguments,
+        directory,
+        input,
+        output,
+        cancel,
+        true,
+        Some(deadline),
     )?;
     Ok((
         record,
@@ -211,6 +245,7 @@ fn execute_inner(
     output: &Path,
     cancel: &AtomicBool,
     annual: bool,
+    deadline: Option<Duration>,
 ) -> Result<(ProcessRecord, Option<AnnualProcessResources>)> {
     if cancel.load(Ordering::SeqCst) {
         bail!("Simulation cancelled before {name}");
@@ -266,7 +301,12 @@ fn execute_inner(
     let status = loop {
         let resource_error = resources
             .as_mut()
-            .and_then(|resources| resources.sample(&child, directory).err());
+            .and_then(|resources| resources.sample(&child, directory).err())
+            .or_else(|| {
+                deadline
+                    .filter(|limit| start.elapsed() >= *limit)
+                    .map(|_| anyhow::anyhow!("Annual process deadline exceeded"))
+            });
         if cancel.load(Ordering::SeqCst) || resource_error.is_some() {
             #[cfg(windows)]
             drop(job);
@@ -306,6 +346,8 @@ fn execute_inner(
             Some("Annual final output exceeds 512 MiB file budget")
         } else if scratch > ANNUAL_MAX_SCRATCH_BYTES {
             Some("Annual final scratch exceeds 2 GiB budget")
+        } else if deadline.is_some_and(|limit| start.elapsed() >= limit) {
+            Some("Annual process deadline exceeded during finalization")
         } else {
             None
         };
@@ -501,6 +543,7 @@ mod tests {
             &base.join("fixture.stdout"),
             &cancel,
             annual,
+            None,
         )
         .unwrap_err();
         watcher.join().unwrap();

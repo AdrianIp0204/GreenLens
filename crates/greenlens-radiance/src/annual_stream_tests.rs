@@ -146,6 +146,7 @@ fn native_partial_nonblocking_stream_preserves_bytes_count_digest_and_arguments(
     let expected: Vec<_> = input(1500).flat_map(|r| r.unwrap()).collect();
     let before = std::env::var_os("GREENLENS_STREAM_TEST_VALUE");
     let outcome = execute(&req, input(1500), &AtomicBool::new(false)).unwrap();
+    outcome.telemetry.validate().unwrap();
     assert_eq!(
         fs::read(req.directory.join("fixture-input.bin")).unwrap(),
         expected
@@ -170,6 +171,35 @@ fn native_partial_nonblocking_stream_preserves_bytes_count_digest_and_arguments(
     assert!(outcome.telemetry.partial_writes > 0 || outcome.telemetry.zero_progress_writes > 0);
     assert!(outcome.telemetry.atomic_job_assignment);
     assert!(!req.directory.join("stream-failure.json").exists());
+}
+
+#[test]
+fn native_run_scope_uses_root_cwd_and_includes_sibling_files_in_budget() {
+    let mut req = request("echo", 2);
+    let root = req.directory.clone();
+    req.directory = root.join("stage");
+    fs::create_dir(&req.directory).unwrap();
+    let outcome = execute_in_run(&req, input(2), &AtomicBool::new(false), &root).unwrap();
+    assert_eq!(outcome.input.records, 2);
+    outcome.telemetry.validate().unwrap();
+    assert!(root.join("fixture-input.bin").is_file());
+    assert!(!req.directory.join("fixture-input.bin").exists());
+    assert!(req.directory.join("stream-success.json").is_file());
+
+    let mut req = request("hold", 2);
+    let root = req.directory.clone();
+    req.directory = root.join("stage");
+    fs::create_dir(&req.directory).unwrap();
+    fs::write(root.join("prior-stage.mtx"), [0; 32768]).unwrap();
+    req.limits.max_scratch_bytes = 16384;
+    let error = execute_in_run(&req, input(2), &AtomicBool::new(false), &root).unwrap_err();
+    assert!(error.to_string().contains("scratch resource"), "{error:#}");
+    let report: serde_json::Value =
+        serde_json::from_slice(&fs::read(req.directory.join("stream-failure.json")).unwrap())
+            .unwrap();
+    assert_eq!(report["process_tree_terminated"], true);
+    assert!(!req.directory.join("stream-success.json").exists());
+    assert!(execute_in_run(&req, input(2), &AtomicBool::new(false), &req.directory).is_err());
 }
 
 #[test]

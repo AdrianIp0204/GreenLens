@@ -970,6 +970,7 @@ mod current_result_tests {
         for method in [
             annual::LEGACY_METHOD_VERSION,
             annual::EXPLICIT_METHOD_VERSION,
+            annual::REPEATED_METHOD_VERSION,
         ] {
             let temporary = tempfile::tempdir().unwrap();
             let mut historical = crate::climate::tests::fixture_for_method(

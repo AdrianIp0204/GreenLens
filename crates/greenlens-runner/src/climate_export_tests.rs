@@ -221,6 +221,36 @@ fn streaming_replay_checks_every_value_tolerance_shape_and_cancellation() {
 }
 
 #[test]
+fn primary_replay_compares_exact_input_without_demanding_stochastic_output_identity() {
+    let temp = tempdir().unwrap();
+    let record = climate::tests::fixture(temp.path(), false);
+    let recipe = read_json(&temp.path().join("annual-recipe.json")).unwrap();
+    let original = climate::read_primary_streams(temp.path(), &recipe)
+        .unwrap()
+        .unwrap();
+    assert_eq!(original.sensor_count, record.series.sensor_ids.len());
+    let mut regenerated = original.clone();
+    regenerated.records[0].matrix_sha256 = "a".repeat(64);
+    regenerated.records[0].resources.samples += 1;
+    verify_primary_replay(Some(original.clone()), Some(regenerated.clone())).unwrap();
+    verify_primary_replay(None, None).unwrap();
+    assert!(verify_primary_replay(Some(original.clone()), None).is_err());
+    assert!(verify_primary_replay(None, Some(original.clone())).is_err());
+    for mutation in 0..6 {
+        let mut changed = regenerated.clone();
+        match mutation {
+            0 => changed.records[0].input.bytes += 1,
+            1 => changed.records[0].input.records += 1,
+            2 => changed.records[0].input.sha256 = "b".repeat(64),
+            3 => changed.contract.count *= 4,
+            4 => changed.sensor_sha256 = "c".repeat(64),
+            _ => changed.records.clear(),
+        }
+        assert!(verify_primary_replay(Some(original.clone()), Some(changed)).is_err());
+    }
+}
+
+#[test]
 fn report_defines_metrics_boundaries_and_actual_occupancy_denominator() {
     let mut html = Html(String::new());
     let mut settings = MetricSettings::default();

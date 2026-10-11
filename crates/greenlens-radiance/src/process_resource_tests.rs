@@ -217,3 +217,58 @@ fn scratch_sizes_observes_growth_while_writer_is_still_open() {
     );
     drop(writer);
 }
+
+#[test]
+#[ignore = "synthetic deadline child entry point"]
+fn deadline_child_fixture() {
+    fs::write("deadline-child.pid", std::process::id().to_string()).unwrap();
+    thread::sleep(Duration::from_secs(30));
+}
+
+#[test]
+fn bounded_annual_stage_deadline_preserves_failure_and_terminates_child() {
+    let base = PathBuf::from(std::env::var_os("LOCALAPPDATA").unwrap()).join(format!(
+        "GreenLens/verification/deadline stage 空間 {}",
+        Utc::now().timestamp_nanos_opt().unwrap()
+    ));
+    fs::create_dir_all(base.join("engine/bin")).unwrap();
+    let scratch = base.join("job");
+    fs::create_dir(&scratch).unwrap();
+    fs::copy(
+        std::env::current_exe().unwrap(),
+        base.join("engine/bin/helper.exe"),
+    )
+    .unwrap();
+    let started = Instant::now();
+    let error = execute_annual_with_deadline(
+        &base.join("engine"),
+        "helper",
+        &[
+            "--ignored".into(),
+            "--exact".into(),
+            "process::resource_tests::deadline_child_fixture".into(),
+            "--nocapture".into(),
+        ],
+        &scratch,
+        None,
+        &scratch.join("stdout"),
+        &AtomicBool::new(false),
+        Duration::from_secs(2),
+    )
+    .unwrap_err();
+    assert!(error.to_string().contains("deadline"), "{error:#}");
+    assert!(started.elapsed() < Duration::from_secs(10));
+    let pid = fs::read_to_string(scratch.join("deadline-child.pid"))
+        .unwrap()
+        .parse()
+        .unwrap();
+    assert!(!active(pid));
+    let failure: serde_json::Value =
+        serde_json::from_slice(&fs::read(scratch.join("helper.process.json")).unwrap()).unwrap();
+    assert_eq!(failure["process_tree_terminated"], true);
+    assert!(failure["resource_failure"]
+        .as_str()
+        .unwrap()
+        .contains("deadline"));
+    assert!(scratch.join("helper.resources.json").is_file());
+}

@@ -1,6 +1,7 @@
 //! Pinned native Radiance adapter. This module owns subprocess execution;
 //! physical model validation and unit conversions remain in greenlens-core.
 pub mod annual;
+pub mod annual_primary;
 #[cfg(windows)]
 pub mod annual_stream;
 mod process;

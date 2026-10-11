@@ -7,7 +7,7 @@ $fixtureRoot = Join-Path $env:LOCALAPPDATA ('GreenLens/verification/package docu
 $destination = Join-Path $fixtureRoot 'package'
 Copy-PackageDocuments -Source $sourceRoot -Destination $destination
 $paths = @(Get-PackageDocumentPaths)
-foreach ($required in @('docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md','docs/v0.3-engine-investigation.json','scripts/annual-validation-plan.json','dependencies/weather.json')) {
+foreach ($required in @('docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md','docs/v0.3-engine-investigation.json','scripts/annual-validation-plan.json','dependencies/weather.json','docs/v0.3-paired-adapter-integration.md','docs/evidence/v0.3-engine/rust-primary-stream-bridge.json','docs/evidence/v0.3-engine/hammersley-candidate-transport.json','schemas/primary-streams-v1.schema.json')) {
     if ($required -notin $paths) { throw "Required reference document omitted: $required" }
 }
 foreach ($path in $paths) {

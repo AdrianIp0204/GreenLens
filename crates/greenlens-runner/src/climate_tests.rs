@@ -27,6 +27,7 @@ fn engine(method: &str) -> annual::AnnualEngineIdentity {
     let adapter = match method {
         annual::LEGACY_METHOD_VERSION => annual::LEGACY_ADAPTER_VERSION,
         annual::EXPLICIT_METHOD_VERSION => annual::EXPLICIT_ADAPTER_VERSION,
+        annual::REPEATED_METHOD_VERSION => annual::REPEATED_ADAPTER_VERSION,
         annual::METHOD_VERSION => annual::ADAPTER_VERSION,
         _ => panic!("Unknown synthetic method"),
     };
@@ -256,6 +257,7 @@ fn fixture_at_method(
         ground_policy: recipe_contract(method).unwrap().1.into(),
         direct_policy: recipe_contract(method).unwrap().2.into(),
         direct_batches: vec![],
+        primary_streams_sha256: None,
         child_environment: BTreeMap::from([("RAYPATH".into(), ".;<engine>/lib".into())]),
         processes: vec![],
     };
@@ -278,12 +280,17 @@ fn fixture_at_method(
     fs::write(root.join("annual-sensors.pts"), &sensors).unwrap();
     fs::write(root.join("annual-weather.epw"), generated).unwrap();
     fs::write(root.join("annual-receiver.rad"), annual::RECEIVER_TEXT).unwrap();
-    if method == annual::METHOD_VERSION {
+    if matches!(
+        method,
+        annual::REPEATED_METHOD_VERSION | annual::METHOD_VERSION
+    ) {
         fs::write(
             root.join("annual-coefficient-receiver.rad"),
             profile.coefficient_receiver_text(),
         )
         .unwrap();
+    }
+    if method == annual::REPEATED_METHOD_VERSION {
         fs::write(
             root.join("annual-coefficient-sensors.pts"),
             profile.coefficient_sensor_text(&sensors).unwrap(),
@@ -294,21 +301,98 @@ fn fixture_at_method(
     fs::write(root.join("annual-sun-modifiers.txt"), "").unwrap();
     record.provenance["solar_sources_sha256"] = json!(bytes_hash(b""));
     record.provenance["solar_modifiers_sha256"] = json!(bytes_hash(b""));
+    let primary_streams = mock_primary_evidence(root, &mut recipe);
     write_json(&root.join("annual-recipe.json"), &recipe).unwrap();
     record.provenance["recipe_sha256"] = json!(bytes_hash(
         &fs::read(root.join("annual-recipe.json")).unwrap()
     ));
     write_json(&root.join("annual-logs.json"), &recipe.processes).unwrap();
-    write_json(&root.join("annual-resources.json"), &json!({
-        "schema_version":"greenlens.annual-resources.v1", "measurement_policy":annual::RESOURCE_MEASUREMENT_POLICY,
+    mock_resources(root, &recipe, primary_streams.as_ref());
+    save_record(root, &record);
+    record
+}
+
+/// Fictional bounded receipts for persistence rejection tests. These do not
+/// represent bytes sent to an engine or measured process resources.
+fn mock_primary_evidence(
+    root: &Path,
+    recipe: &mut annual::AnnualRecipe,
+) -> Option<greenlens_radiance::annual_primary::PrimaryStreams> {
+    use greenlens_radiance::annual_primary::*;
+    if recipe.method_version != annual::METHOD_VERSION {
+        return None;
+    }
+    let contract = recipe.profile.external_primary.clone()?;
+    let count = (recipe.sensor_count * contract.count) as u64;
+    let records = [(PrimaryPurpose::Full, 4), (PrimaryPurpose::Direct, 6)]
+        .into_iter()
+        .take(if recipe.solar_interval_indices.is_empty() {
+            1
+        } else {
+            2
+        })
+        .map(|(purpose, process_index)| PrimaryStreamRecord {
+            purpose,
+            process_index,
+            input: InputReceipt {
+                bytes: count * 140,
+                records: count,
+                sha256: bytes_hash(b"MOCK: no primary bytes were generated"),
+            },
+            matrix_sha256: bytes_hash(b"MOCK: no matrix was generated"),
+            resources: StreamTelemetry {
+                schema_version: STREAM_RESOURCE_SCHEMA_VERSION.into(),
+                peak_child_working_set_bytes: 100,
+                sampled_peak_runner_plus_child_working_set_bytes: 200,
+                sampled_peak_job_plus_runner_working_set_bytes: 300,
+                peak_scratch_bytes: 4096,
+                samples: 1,
+                zero_progress_writes: 0,
+                partial_writes: 0,
+                atomic_job_assignment: true,
+            },
+        })
+        .collect();
+    let streams = PrimaryStreams {
+        schema_version: PRIMARY_STREAMS_SCHEMA_VERSION.into(),
+        contract,
+        sensor_sha256: recipe.sensor_sha256.clone(),
+        sensor_count: recipe.sensor_count,
+        sky_rows: recipe.sky_rows,
+        records,
+    };
+    let path = root.join("annual-primary-streams.json");
+    write_json(&path, &streams).unwrap();
+    recipe.primary_streams_sha256 = Some(bytes_hash(&fs::read(path).unwrap()));
+    Some(streams)
+}
+
+fn mock_resources(
+    root: &Path,
+    recipe: &annual::AnnualRecipe,
+    streams: Option<&greenlens_radiance::annual_primary::PrimaryStreams>,
+) {
+    let mut resources = json!({
+        "schema_version":"greenlens.annual-resources.v1", "measurement_policy":if recipe.method_version == annual::METHOD_VERSION {annual::RESOURCE_MEASUREMENT_POLICY} else {annual::FILE_RESOURCE_MEASUREMENT_POLICY},
         "started_utc":"2026-01-01T00:00:00Z", "finished_utc":"2026-01-01T00:00:00Z", "total_wall_ms":0,
         "peak_engine_working_set_bytes":0,"peak_observed_runner_plus_engine_working_set_bytes":0,"peak_scratch_bytes":0,
         "max_scratch_bytes":2_u64*1024*1024*1024,"max_matrix_bytes":512_u64*1024*1024,"max_observed_working_set_bytes":2_u64*1024*1024*1024,
         "processes":recipe.processes.iter().map(|p| json!({"executable":p.executable,"started_utc":p.started_utc,"finished_utc":p.finished_utc,"elapsed_ms":0,
-            "peak_child_working_set_bytes":0,"peak_observed_runner_plus_child_working_set_bytes":0,"peak_scratch_bytes":0,"output_bytes":0,"samples":1})).collect::<Vec<_>>()
-    })).unwrap();
-    save_record(root, &record);
-    record
+            "peak_child_working_set_bytes":if streams.is_some(){50}else{0},"peak_observed_runner_plus_child_working_set_bytes":if streams.is_some(){150}else{0},"peak_scratch_bytes":0,"output_bytes":0,"samples":1})).collect::<Vec<_>>()
+    });
+    if let Some(streams) = streams {
+        resources["peak_engine_working_set_bytes"] = json!(100);
+        resources["peak_observed_runner_plus_engine_working_set_bytes"] = json!(200);
+        resources["peak_scratch_bytes"] = json!(4096);
+        for stream in &streams.records {
+            let measurement = &mut resources["processes"][stream.process_index];
+            measurement["peak_child_working_set_bytes"] = json!(100);
+            measurement["peak_observed_runner_plus_child_working_set_bytes"] = json!(200);
+            measurement["peak_scratch_bytes"] = json!(4096);
+            measurement["output_bytes"] = json!(2048);
+        }
+    }
+    write_json(&root.join("annual-resources.json"), &resources).unwrap();
 }
 
 #[test]
@@ -729,7 +813,9 @@ fn direct_batch_partition_covers_selected_suns_once_with_bounded_exact_shapes() 
 /// Rebind intentionally mocked files so rejection tests exercise the inner
 /// contract rather than stopping at a stale checksum. No engine is executed.
 fn save_mock_recipe(root: &Path, record: &mut ClimateRunRecord, recipe: &annual::AnnualRecipe) {
-    write_json(&root.join("annual-recipe.json"), recipe).unwrap();
+    let mut recipe = recipe.clone();
+    let primary_streams = mock_primary_evidence(root, &mut recipe);
+    write_json(&root.join("annual-recipe.json"), &recipe).unwrap();
     write_json(&root.join("annual-logs.json"), &recipe.processes).unwrap();
     record.provenance["processes"] = serde_json::to_value(&recipe.processes).unwrap();
     for (key, name) in [
@@ -739,20 +825,7 @@ fn save_mock_recipe(root: &Path, record: &mut ClimateRunRecord, recipe: &annual:
     ] {
         record.provenance[key] = json!(bytes_hash(&fs::read(root.join(name)).unwrap()));
     }
-    let mut resources: Value = read_json(&root.join("annual-resources.json")).unwrap();
-    let original = resources["processes"][0].clone();
-    resources["processes"] = json!(recipe
-        .processes
-        .iter()
-        .map(|process| {
-            let mut item = original.clone();
-            item["executable"] = json!(process.executable);
-            item["started_utc"] = json!(process.started_utc);
-            item["finished_utc"] = json!(process.finished_utc);
-            item
-        })
-        .collect::<Vec<_>>());
-    write_json(&root.join("annual-resources.json"), &resources).unwrap();
+    mock_resources(root, &recipe, primary_streams.as_ref());
     identities(record);
     save_record(root, record);
 }
@@ -778,6 +851,7 @@ fn direct_recipe_sources_and_trace_processes_are_validated_after_coherent_reseal
     for method in [
         annual::LEGACY_METHOD_VERSION,
         annual::EXPLICIT_METHOD_VERSION,
+        annual::REPEATED_METHOD_VERSION,
         annual::METHOD_VERSION,
     ] {
         let temp = tempdir().unwrap();
@@ -801,7 +875,10 @@ fn direct_recipe_sources_and_trace_processes_are_validated_after_coherent_reseal
         mock_direct_processes(&record, &mut recipe);
         assert_eq!(
             recipe.processes.len(),
-            if method == annual::METHOD_VERSION {
+            if matches!(
+                method,
+                annual::REPEATED_METHOD_VERSION | annual::METHOD_VERSION
+            ) {
                 10
             } else {
                 9
@@ -866,7 +943,10 @@ fn direct_recipe_sources_and_trace_processes_are_validated_after_coherent_reseal
         mock_direct_processes(&record, &mut recipe);
         assert_eq!(
             recipe.processes.len(),
-            if method == annual::METHOD_VERSION {
+            if matches!(
+                method,
+                annual::REPEATED_METHOD_VERSION | annual::METHOD_VERSION
+            ) {
                 9
             } else {
                 8
@@ -922,10 +1002,11 @@ fn immutable_recipe_and_solar_file_pins_reject_resealing_without_record_changes(
 }
 
 #[test]
-fn historical_methods_two_three_keep_exact_profile_evidence_and_metric_derivation() {
+fn historical_methods_two_three_four_keep_exact_profile_evidence_and_metric_derivation() {
     for method in [
         annual::LEGACY_METHOD_VERSION,
         annual::EXPLICIT_METHOD_VERSION,
+        annual::REPEATED_METHOD_VERSION,
     ] {
         let temporary = tempdir().unwrap();
         let scratch = temporary.path().join("historical-mock");
@@ -944,9 +1025,15 @@ fn historical_methods_two_three_keep_exact_profile_evidence_and_metric_derivatio
         });
         let expected_profile = if method == annual::LEGACY_METHOD_VERSION {
             expected_profile
-        } else {
+        } else if method == annual::EXPLICIT_METHOD_VERSION {
             serde_json::from_str::<Value>(include_str!(
                 "../../../tests/fixtures/climate-method3-contract.json"
+            ))
+            .unwrap()["profile"]
+                .clone()
+        } else {
+            serde_json::from_str::<Value>(include_str!(
+                "../../../tests/fixtures/climate-method4-contract.json"
             ))
             .unwrap()["profile"]
                 .clone()
@@ -1002,12 +1089,13 @@ fn historical_method_rejects_null_profile_alias_and_cross_method_relabeling() {
     for method in [
         annual::LEGACY_METHOD_VERSION,
         annual::EXPLICIT_METHOD_VERSION,
+        annual::REPEATED_METHOD_VERSION,
     ] {
         let temporary = tempdir().unwrap();
         let root = temporary.path().join("historical-mock");
         let original = fixture_for_method(&root, false, method);
         let mut null_alias = original.clone();
-        null_alias.provenance["profile"]["coefficient_receiver_scale"] = Value::Null;
+        null_alias.provenance["profile"]["external_primary"] = Value::Null;
         identities(&mut null_alias);
         assert!(validate_record(&null_alias)
             .unwrap_err()
@@ -1058,6 +1146,7 @@ fn historical_methods_reject_new_coefficient_fields_negative_depth_and_members()
         for field in [
             "coefficient_primary_repetitions",
             "coefficient_receiver_scale",
+            "external_primary",
         ] {
             let mut changed = original.clone();
             changed.provenance["profile"][field] = Value::Null;
@@ -1077,6 +1166,7 @@ fn historical_methods_reject_new_coefficient_fields_negative_depth_and_members()
         for name in [
             "annual-coefficient-receiver.rad",
             "annual-coefficient-sensors.pts",
+            "annual-primary-streams.json",
         ] {
             fs::write(
                 temporary.path().join(name),
@@ -1105,7 +1195,7 @@ fn historical_methods_reject_new_coefficient_fields_negative_depth_and_members()
 fn repeated_coefficient_inputs_are_regenerated_after_coherent_reseal() {
     let temporary = tempdir().unwrap();
     let root = temporary.path();
-    let record = fixture(root, false);
+    let record = fixture_for_method(root, false, annual::REPEATED_METHOD_VERSION);
     assert_eq!(record.provenance["profile"]["ray_depth"], json!(-16));
     let ordinary = fs::read(root.join("annual-sensors.pts")).unwrap();
     let unit_receiver = fs::read(root.join("annual-receiver.rad")).unwrap();
@@ -1149,6 +1239,143 @@ fn repeated_coefficient_inputs_are_regenerated_after_coherent_reseal() {
         unit_receiver
     );
     read_run_directory(root).unwrap();
+}
+
+#[test]
+fn paired_primary_receipts_are_pinned_and_bound_to_shape_and_process_resources() {
+    let temporary = tempdir().unwrap();
+    let root = temporary.path();
+    let original_record = fixture(root, false);
+    read_run_directory(root).unwrap();
+    let original_recipe: annual::AnnualRecipe =
+        read_json(&root.join("annual-recipe.json")).unwrap();
+    let original_stream_bytes = fs::read(root.join("annual-primary-streams.json")).unwrap();
+    let original: Value = serde_json::from_slice(&original_stream_bytes).unwrap();
+    assert_eq!(original["records"].as_array().unwrap().len(), 1);
+    assert!(!root.join("annual-coefficient-sensors.pts").exists());
+    assert!(original_recipe
+        .profile
+        .coefficient_sensor_text("1 2 0.8 0 0 1\n")
+        .is_err());
+    let mut record = original_record.clone();
+    for mutation in 0..15 {
+        let mut changed = original.clone();
+        match mutation {
+            0 => changed["sensor_sha256"] = json!("a".repeat(64)),
+            1 => changed["sensor_count"] = json!(1),
+            2 => changed["sky_rows"] = json!(2306),
+            3 => changed["contract"]["generator_version"] = json!("invented/1"),
+            4 => changed["records"][0]["input"]["records"] = json!(1),
+            5 => changed["records"][0]["input"]["bytes"] = json!(1),
+            6 => changed["records"][0]["input"]["sha256"] = json!("A".repeat(64)),
+            7 => changed["records"][0]["matrix_sha256"] = json!("unknown"),
+            8 => changed["records"][0]["purpose"] = json!("direct"),
+            9 => changed["records"][0]["process_index"] = json!(0),
+            10 => changed["records"][0]["resources"]["atomic_job_assignment"] = json!(false),
+            11 => {
+                changed["records"][0]["resources"]
+                    ["sampled_peak_job_plus_runner_working_set_bytes"] = json!(2147483649_u64)
+            }
+            12 => changed["records"][0]["resources"]["peak_child_working_set_bytes"] = json!(101),
+            13 => changed["unknown"] = json!("unsupported metadata"),
+            _ => changed["records"]
+                .as_array_mut()
+                .unwrap()
+                .push(original["records"][0].clone()),
+        }
+        write_json(&root.join("annual-primary-streams.json"), &changed).unwrap();
+        let mut recipe = original_recipe.clone();
+        recipe.primary_streams_sha256 = Some(bytes_hash(
+            &fs::read(root.join("annual-primary-streams.json")).unwrap(),
+        ));
+        write_json(&root.join("annual-recipe.json"), &recipe).unwrap();
+        record.provenance["recipe_sha256"] = json!(bytes_hash(
+            &fs::read(root.join("annual-recipe.json")).unwrap()
+        ));
+        identities(&mut record);
+        save_record(root, &record);
+        assert!(
+            read_run_directory(root).is_err(),
+            "Resealed primary mutation {mutation} was accepted"
+        );
+    }
+    fs::write(
+        root.join("annual-primary-streams.json"),
+        original_stream_bytes,
+    )
+    .unwrap();
+    write_json(&root.join("annual-recipe.json"), &original_recipe).unwrap();
+    save_record(root, &original_record);
+    read_run_directory(root).unwrap();
+
+    // Stream stages report exactly the process lifetime. Historical file-backed
+    // observations keep their earlier independently sampled finish semantics.
+    let resources_path = root.join("annual-resources.json");
+    let original_resources = fs::read(&resources_path).unwrap();
+    let mut timing_resources: Value = serde_json::from_slice(&original_resources).unwrap();
+    timing_resources["finished_utc"] = json!("2026-01-01T00:00:01Z");
+    timing_resources["total_wall_ms"] = json!(1000);
+    let mut timing_record = original_record.clone();
+    timing_record.provenance["finished_utc"] = json!("2026-01-01T00:00:01Z");
+    identities(&mut timing_record);
+    write_json(&resources_path, &timing_resources).unwrap();
+    save_record(root, &timing_record);
+    read_run_directory(root).unwrap();
+    for field in ["finished_utc", "elapsed_ms"] {
+        let mut changed = timing_resources.clone();
+        changed["processes"][4][field] = if field == "finished_utc" {
+            json!("2026-01-01T00:00:00.001Z")
+        } else {
+            json!(1)
+        };
+        write_json(&resources_path, &changed).unwrap();
+        reseal(root, &timing_record);
+        assert!(
+            read_run_directory(root)
+                .unwrap_err()
+                .to_string()
+                .contains("Primary stream resource observations"),
+            "Resealed stream {field} mismatch did not reach the process binding check"
+        );
+    }
+    fs::write(&resources_path, original_resources).unwrap();
+    save_record(root, &original_record);
+    read_run_directory(root).unwrap();
+
+    // A package seal alone cannot replace the immutable recipe's stream pin.
+    fs::write(root.join("annual-primary-streams.json"), b"{}\n").unwrap();
+    reseal(root, &original_record);
+    assert!(read_run_directory(root)
+        .unwrap_err()
+        .to_string()
+        .contains("recipe pin"));
+}
+
+#[test]
+fn historical_recipes_reject_even_null_new_primary_receipt_fields() {
+    for method in [
+        annual::LEGACY_METHOD_VERSION,
+        annual::EXPLICIT_METHOD_VERSION,
+        annual::REPEATED_METHOD_VERSION,
+    ] {
+        let temporary = tempdir().unwrap();
+        let root = temporary.path();
+        let mut record = fixture_for_method(root, false, method);
+        let mut recipe: Value = read_json(&root.join("annual-recipe.json")).unwrap();
+        assert!(recipe.get("primary_streams_sha256").is_none());
+        assert!(recipe["profile"].get("external_primary").is_none());
+        recipe["primary_streams_sha256"] = Value::Null;
+        write_json(&root.join("annual-recipe.json"), &recipe).unwrap();
+        record.provenance["recipe_sha256"] = json!(bytes_hash(
+            &fs::read(root.join("annual-recipe.json")).unwrap()
+        ));
+        identities(&mut record);
+        save_record(root, &record);
+        assert!(read_run_directory(root)
+            .unwrap_err()
+            .to_string()
+            .contains("primary"));
+    }
 }
 
 #[test]
@@ -1314,6 +1541,7 @@ fn historical_weather_navigation_uses_embedded_assets_without_current_weather_re
     for method in [
         annual::LEGACY_METHOD_VERSION,
         annual::EXPLICIT_METHOD_VERSION,
+        annual::REPEATED_METHOD_VERSION,
         annual::METHOD_VERSION,
     ] {
         let scratch = tempdir().unwrap();

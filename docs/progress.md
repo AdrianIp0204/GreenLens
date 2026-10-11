@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+## 2026-10-12 local — fixed reference permutation execution started
+
+- Implemented: a [bounded four-stream investigation](v0.3-permutation-investigation.md) changes each round's sensor order using two predetermined tables, each tested at the original baseline and depth endpoint. All 384 repeat/half/depth/cross-seed comparisons are fixed before execution; no seed selection, averaging or automatic escalation is allowed. Historical reference sources, sensitivity failures and numerical limits remain unchanged.
+- Verified preparation: independent mapping/arithmetic/receipt guards pass 102 checks, followed by four native-free preparations against the exact final plan. Main integration `fc6e444` also passes all 102 guards. Actual allowlisted OS, processor and RAM metadata is captured before each engine job; personal host/account fields are excluded.
+- Running, not accepted: [Windows run 38168510535](https://github.com/AdrianIp0204/GreenLens/actions/runs/38168510535) starts the exact isolated source `7b306a7`, with two of four cases active at the initial checkpoint. Complete raw streams and numerical comparison results remain pending. This does not qualify the failed reference family, current annual profile or release.
+
 ## 2026-10-12 local — upper-cap moment analytical fixture
 
 - Verified limited behavior: the [fixed twelve-stage moment fixture](evidence/v0.3-engine/horizon-moment-planar-controls.json) passes all 72 analytical comparisons, with maximum relative error 0.048314% against the unchanged 1% limit. Independent review covers all 96 raw RGB values, 48 residuals and twelve successful native process records. The original failed horizon fixture remains unchanged; the real low-radiance case passes without rescaling it to the separate amplified case.

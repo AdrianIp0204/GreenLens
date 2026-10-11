@@ -1,0 +1,115 @@
+{
+  "schema_version": "greenlens.native-loading-regression.v1",
+  "recorded_utc": "2026-10-11T15:07:33.9389452Z",
+  "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+  "source_worktree_dirty": false,
+  "candidate": "candidate06",
+  "scope": "Installed bundled Windows application through native UI. Focused regression of saved-result context and hour loading, using copied immutable candidate05 annual evidence. No new engine run or independent accuracy claim.",
+  "installation": {
+    "schema_version": "greenlens.native-install-observation.v1",
+    "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+    "started_utc": "2026-10-11T14:57:22.8760824Z",
+    "finished_utc": "2026-10-11T14:57:25.364199Z",
+    "installer_sha256": "0dbc8dcbb9d3b8d34715e01515b66d6ff3ab91c0f0aa87a98759e4b3f59742c4",
+    "installer_exit": 0,
+    "installed_sha256": "9dc6face9c1fb2a721230a7bad3fc1906da17a96b478f310949abcc170a9a2a3",
+    "installed_bytes": 14375424,
+    "signed": false,
+    "scope": "Per-user silent NSIS installation; no desktop interaction yet"
+  },
+  "installed_binary": {
+    "bytes": 14375424,
+    "frozen_sha256": "9c7f2d33884fa6579e59485e6358821f6dfb9135dcf0fefb15756acd79f3a9f6",
+    "installed_sha256": "9dc6face9c1fb2a721230a7bad3fc1906da17a96b478f310949abcc170a9a2a3",
+    "differing_bytes": 3,
+    "marker_start_offset": 11512872,
+    "difference_offset": 11512896,
+    "frozen_ascii": "UNK",
+    "installed_ascii": "NSS",
+    "normalized_in_memory_installed_sha256": "9c7f2d33884fa6579e59485e6358821f6dfb9135dcf0fefb15756acd79f3a9f6",
+    "all_other_bytes_identical": true
+  },
+  "installed_resources_verified": 31,
+  "cli_sha256": "a54899446bda9c187fe7212fc13846731a6e2362c805626ced70d78c450fd9d8",
+  "cli_zip_sha256": "a67970ac331e78c7b599bb8147cce0447acada8366bc85a434ba33e00fca866d",
+  "actions": [
+    "Opened saved copy through native folder picker; bundled workspace with no development server",
+    "Selected s000001 through sensor table; Save retained geometry, heatmap, matching snapshot and selected sensor",
+    "Time series retained all 8760 values; interval1908 to1912 updated verified calendar and selected sensor",
+    "Typed hour ending24; prior interval1912 remained until Go; actual retained load showed explicit Loading retained weather interval while series and selection remained",
+    "Go resolved to1919 with 03/21 23:00-24:00 midpoint23:30 local standard time and nighttime0lx",
+    "Save while series open: Working state retained verified values, calendar, selection and series; Ready confirmed completion",
+    "Native Close exited cleanly after save"
+  ],
+  "observed_sensor": "s000001",
+  "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+  "observed_values": [
+    {
+      "displayed_lx": 1865.219,
+      "hour_ending": 13,
+      "interval_index": 1908
+    },
+    {
+      "displayed_lx": 660.638,
+      "hour_ending": 17,
+      "interval_index": 1912
+    },
+    {
+      "displayed_lx": 0.0,
+      "hour_ending": 24,
+      "interval_index": 1919
+    }
+  ],
+  "retained_intervals": 8760,
+  "save_pending_false_mismatch_observed": false,
+  "save_pending_series_lost": false,
+  "undo_redo_disabled_throughout": true,
+  "immutable_file_count": 155,
+  "immutable_file_bytes": 38558778.0,
+  "changed_immutable_files": 0,
+  "all_four_saved_camera_definitions_identical": true,
+  "scientific_alternatives_identical": true,
+  "study_weather_and_runs_identical": true,
+  "manifest_sha256_before": "e008040d5a383f5e8b4ef49cdc19da3675ab8dd3c201615b59d7929b7bdaed18",
+  "manifest_sha256_after": "e008040d5a383f5e8b4ef49cdc19da3675ab8dd3c201615b59d7929b7bdaed18",
+  "engine_processes_at_end": 0,
+  "screenshots": [
+    {
+      "bytes": 134257,
+      "path": "candidate06-save-retains-result.png",
+      "sha256": "1eda6056e1fc2b16c8b5fd52e8dde3d103564f9c548c7611ed42049af7a54949",
+      "unaltered": true
+    },
+    {
+      "bytes": 136060,
+      "path": "candidate06-retained-series-1912.png",
+      "sha256": "bf445ac0682827bb0e1c2aaa959153d2ed6b4af9d73577978a5e9fe5c1d49b3e",
+      "unaltered": true
+    },
+    {
+      "bytes": 134011,
+      "path": "candidate06-hour-request-loading.png",
+      "sha256": "c8f9b61bd44e3e097c373769276133e18f9fd498a594e7c264eb28a96a771212",
+      "unaltered": true
+    },
+    {
+      "bytes": 135704,
+      "path": "candidate06-hour24-retained-context.png",
+      "sha256": "1d2ac695a7b5d145c64899cbb39192c88269a8f2f8ac6d736fee52b86b9c5e78",
+      "unaltered": true
+    },
+    {
+      "bytes": 134024,
+      "path": "candidate06-save-busy-retains-series.png",
+      "sha256": "e2d601584171ed2bcb2e01fc48b6ea6cad08c65db2d0a02cfbddb305a809bf26",
+      "unaltered": true
+    }
+  ],
+  "limitations": [
+    "Physical Shift-add/Ctrl-remove remains unverified; user unable to test",
+    "Native observations sample visible transitions; asynchronous unit regressions additionally cover pending and stale responses",
+    "Current method matched-sky and annual convergence failures remain release failures",
+    "This focused installation does not repeat the complete annual calculation performed by candidate05"
+  ],
+  "release_acceptance_complete": false
+}

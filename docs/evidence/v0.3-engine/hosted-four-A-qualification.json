@@ -1,0 +1,175 @@
+{
+  "schema_version": "greenlens.hosted-reference-four-case-qualification.v1",
+  "recorded_utc": "2026-10-11T15:30:53.1725243Z",
+  "workflow_run": 38148336251,
+  "workflow_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38148336251",
+  "workflow_commit": "e7405b6383b6b0cecb7c1d7b83c5edfab76aba78",
+  "scope": "Independent retained-artifact qualification of four completed baseline cases; no engine rerun, no candidate comparison, and no sensitivity-family or release acceptance.",
+  "verification_method": [
+    "Match downloaded ZIP SHA-256 and byte count to authenticated GitHub artifact metadata.",
+    "Validate exact paths, member count, regular files and bounded ZIP sizes before extraction.",
+    "Invoke current trusted Initialize-ReferenceCollector and Read-ReferenceBaseline; retained commands and source files are never executed.",
+    "Assert-ReferenceShardIdentity against independently qualified hosted A8504, preserving all other declared scientific identity.",
+    "Recompute all three 24-sensor convergence comparisons and full component assembly from raw output."
+  ],
+  "reader_sources": [
+    {
+      "path": "scripts/annual-collect-reference.ps1",
+      "sha256": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a"
+    },
+    {
+      "path": "scripts/annual-reference-identity.ps1",
+      "sha256": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8"
+    }
+  ],
+  "case_count": 4,
+  "sensor_values": 96,
+  "convergence_checks": 288,
+  "cases": [
+    {
+      "alternative": "A",
+      "interval_index": 1908,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.406978730104319
+        }
+      ],
+      "artifact": {
+        "id": 11706282196,
+        "name": "reference-A-1908-38148336251",
+        "sha256": "f2a43ebd34693832f5bebd7a18028b1b2b4538535cee3e025ea17830639ee880",
+        "bytes": 17106856,
+        "entry_count": 46,
+        "uncompressed_bytes": 127886660
+      },
+      "declaration_sha256": "b340b38c0847917c3ba27f54df9a1f716da1e7e498c885735a5f820d156e90e8",
+      "report_sha256": "d5719d317a4dfe9aba5c9ac83216061c291b1451c0317cef7960d1459036b7c5",
+      "processes_sha256": "2b44a6c2ae3b85d2477bf9871001f6c058db9a46487ce42b3cc248145830369f",
+      "audit_sha256": "b2ace17ca32ae908ed0813e9fdeb125c1b4e19750cbbfb62d94d1a93701652bf",
+      "verified_utc": "2026-10-11T15:20:47.0411901Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1692.4750402
+      ],
+      "max_runner_plus_engine_bytes": 475090944.0,
+      "max_scratch_bytes": 64323874.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 1912,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.3846920764940588
+        }
+      ],
+      "artifact": {
+        "id": 11705552528,
+        "name": "reference-A-1912-38148336251",
+        "sha256": "f8db82d7843d41aaa42ed4524ad016aa8f24e45e45d4a4258b140b06bcdc9d1c",
+        "bytes": 17107963,
+        "entry_count": 46,
+        "uncompressed_bytes": 127887142
+      },
+      "declaration_sha256": "599bf0946ead63198576871db65a3fe27d7ac5dd484843369db46f58a9f695c2",
+      "report_sha256": "06ccb71fc78a60d2e5f8dcdeef20876bfb171196f0180d8f54c92bcd99245dae",
+      "processes_sha256": "9dcc1f48c00c4e8819b320492f1ef10a806b93d679eb9a1d53749724f3ca325c",
+      "audit_sha256": "8f21d581c1ab3c4313dc2554de8c2d202c13679ddeb90f56ad6c3e86b0ddff6a",
+      "verified_utc": "2026-10-11T15:23:40.1519578Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1293.3414718
+      ],
+      "max_runner_plus_engine_bytes": 472920064.0,
+      "max_scratch_bytes": 64323868.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4116,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.4038107386424177
+        }
+      ],
+      "artifact": {
+        "id": 11706072472,
+        "name": "reference-A-4116-38148336251",
+        "sha256": "799cdce993555cfcf818ed9824ea270e735cad63560d18a214f62bb1fd96f5d4",
+        "bytes": 17067415,
+        "entry_count": 46,
+        "uncompressed_bytes": 127886938
+      },
+      "declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a",
+      "report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5",
+      "processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18",
+      "audit_sha256": "9e3bc5ae4d56d49ca9e88d9a533472ff4e249553cdf7e6ef91d4d8e888a7fce7",
+      "verified_utc": "2026-10-11T15:20:55.1211351Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1684.7358897
+      ],
+      "max_runner_plus_engine_bytes": 470667264.0,
+      "max_scratch_bytes": 64323880.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4120,
+      "qualified": true,
+      "sensor_count": 24,
+      "final_rounds": 256,
+      "attempts": [
+        {
+          "rounds": 256,
+          "check_count": 72,
+          "failed_checks": 0,
+          "maximum_error_to_tolerance_ratio": 0.6716635721981629
+        }
+      ],
+      "artifact": {
+        "id": 11706407529,
+        "name": "reference-A-4120-38148336251",
+        "sha256": "d8cf973efdb992848b406236648757b5a6423ba75eb56011c206cbe631955d91",
+        "bytes": 17068287,
+        "entry_count": 46,
+        "uncompressed_bytes": 127887004
+      },
+      "declaration_sha256": "852803404ca8df85e13b20d4e2e1e19a4b49f71c93f00e3a4c4c714313051a5d",
+      "report_sha256": "f0ffd8c23d23e1d19d4ec543224c3b88e16800459ecec372afb106457bf4fcd5",
+      "processes_sha256": "3ae4cb6c623760a8d8c1f6bf26c8f5954f227446e280ea75c12612221a22c561",
+      "audit_sha256": "bb6b65a3a8743769dd2fd93503c015ded4db1feeb74ff23934b749fcb3882fdb",
+      "verified_utc": "2026-10-11T15:23:38.6132124Z",
+      "successful_processes": 6,
+      "rcontrib_seconds": [
+        1275.9244655
+      ],
+      "max_runner_plus_engine_bytes": 470736896.0,
+      "max_scratch_bytes": 64323844.0,
+      "cross_host_identity_matches_qualified_A8504": true
+    }
+  ],
+  "full_reference_cases_required": 24,
+  "sensitivity_variants_required": 6,
+  "full_reference_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "release_acceptance_complete": false
+}

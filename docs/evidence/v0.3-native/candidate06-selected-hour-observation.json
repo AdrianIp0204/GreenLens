@@ -1,0 +1,64 @@
+{
+  "schema_version": "greenlens.native-selected-hour-observation.v1",
+  "recorded_utc": "2026-10-11T15:32:45.1960820Z",
+  "source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+  "source_worktree_dirty": false,
+  "installed_executable_sha256": "9dc6face9c1fb2a721230a7bad3fc1906da17a96b478f310949abcc170a9a2a3",
+  "candidate": "candidate06",
+  "scope": "Installed Windows bundled application; no development server. Native selected-hour execution, study Undo/Redo current-result lookup and selected-run export. No transport-accuracy claim.",
+  "selected_run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+  "annual_run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+  "interval_index": 1908,
+  "interval_label": "03/21 12:00-13:00; midpoint12:30 local standard time",
+  "sensor_count": 24,
+  "observed_statistics_lx": {
+    "min": 298.44,
+    "max": 6850.47,
+    "mean": 1386.13
+  },
+  "actions": [
+    "Opened separate saved copy through native folder picker",
+    "Configured Selected weather hour, interval1908 and shipping profile; Apply accepted one Rust transaction; Save persisted study",
+    "Run executed pinned Radiance and completed with an immutable retained run",
+    "Undo restored annual study and older matching annual snapshot despite the newer selected-hour run; Undo disabled, Redo enabled",
+    "Redo restored weather-hour study and selected-hour snapshot; Undo enabled, Redo disabled; no calculation started by these history actions",
+    "Native Export selected only the selected-hour run and saved the ZIP through the native file dialog",
+    "Native close exited cleanly after export; no GreenLens window remained"
+  ],
+  "independent_audit": {
+    "path": "candidate06-selected-hour-audit.json",
+    "sha256": "7a8786ec5e07b8c2a9a0c3e30e41ce2b4f8e4bf9b6c7a09318b9b9ca8ea72706"
+  },
+  "export": {
+    "sha256": "f0c400b09300b19c6ee5eb1e6df256688c87f80eb83f547e145aa3c032cdcf19",
+    "file": "selected-hour-native.zip",
+    "bytes": 1189310,
+    "real_replay_status": "Separate verification pending at this observation"
+  },
+  "screenshots": [
+    {
+      "path": "candidate06-selected-hour-exported.png",
+      "unaltered": true,
+      "sha256": "e23b914f9ca1ebfdea2e29356d0cbb9f83a619fa9d87a8ff9ca142b7bfc088e6",
+      "bytes": 158204
+    },
+    {
+      "path": "candidate06-selected-hour-study-undo-annual.png",
+      "unaltered": true,
+      "sha256": "8984545295e9bc247023b4eceab1cb08060b626afcf6e017baacb83ccf6aced3",
+      "bytes": 159689
+    },
+    {
+      "path": "candidate06-selected-hour-study-redo.png",
+      "unaltered": true,
+      "sha256": "350c09748b94500d09fefce63482c58fd48b3c853b1dc55c9a11830bd69171d1",
+      "bytes": 158255
+    }
+  ],
+  "limitations": [
+    "Physical Shift-add/Ctrl-remove remains unverified; user unable to test now",
+    "Research and replay run concurrently; timing is not a clean-machine benchmark",
+    "Known annual convergence and partial matched-sky failures remain release failures"
+  ],
+  "release_acceptance_complete": false
+}

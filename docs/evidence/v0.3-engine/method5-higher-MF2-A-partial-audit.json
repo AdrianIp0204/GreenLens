@@ -1,0 +1,431 @@
+{
+  "schema_version": "greenlens.method5-higher-mf2-partial-independent-audit.v1",
+  "audited_utc": "2026-10-11T15:18:05.249722+00:00",
+  "scope": "Read-only independent arithmetic and identity audit of higher MF2 A against exactly four individually converged reference cases. No new engine process, build, profile adoption or release qualification.",
+  "alternative": "A",
+  "overall_reference_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "release_acceptance_complete": false,
+  "full_acceptance_comparator_invoked": false,
+  "fixed_candidate_intervals": [
+    1904,
+    1908,
+    1912,
+    4112,
+    4116,
+    4120,
+    6320,
+    6324,
+    6328,
+    8504,
+    8508,
+    8512
+  ],
+  "compared_reference_intervals": [
+    1904,
+    4112,
+    8512,
+    8504
+  ],
+  "candidate_sensor_values_verified": 288,
+  "compared_values": 96,
+  "candidate_case_coverage": 12,
+  "reference_case_coverage_for_this_comparison": 4,
+  "required_full_family_case_coverage": 24,
+  "required_full_family_sensor_values": 576,
+  "required_sensitivities_complete": false,
+  "source_records": {
+    "higher_partial_report_sha256": "ce6640ac232dfbfd0e95c778efed049992919b24299f8cc88b2d6f211383be99",
+    "higher_declaration_sha256": "76a49bb33ab45a71eb3669a1a69c698b03162c55e50532e8db8f632529e8f32a",
+    "higher_report_sha256": "4818893fe1124469762686d0c9f9c4ee352012756997f89121cc3cdcc33d30fd",
+    "higher_processes_sha256": "6d73b32c115d6822c16a4aa83390ecea83887d14af4a22a713e7126b6a330bfa",
+    "higher_harness_sha256": "1d519c54b493c80e77536db8ea86a79cc594e9120674df398ccd8694135837d2",
+    "higher_primary_helper_sha256": "49ccb427479ee2951c1b94753dafecd318b519511c3aca7c6b629eed695045cd",
+    "higher_finite_kernel_sha256": "2ad71fb2d54b64c984ccc669a0507dc892e5d97e7d8c14e0babbcb00162abbf7",
+    "shipping_partial_reports_sha256": [
+      "efa6ef123ed18da51cf8f2ce88bb28d5e106e569f3a68edac6e6ae71d54f8a2c",
+      "75fe9f2a15904eb9ddc8ce17c42a5d9c9bc90d7c1b68e0da5c8720d38f039278"
+    ],
+    "shipping_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+    "shipping_source_worktree_dirty": false,
+    "shipping_run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+    "shipping_results_sha256": "4cd68f3459b7e2a183ed0b626bfd73ac447fcb35c8d8d0775accad161266e387",
+    "shipping_recipe_sha256": "5a814d3500aa451e4456597bde6bc7c5be67121ecb50052d648c7b4a59250587",
+    "input_sha256": {
+      "scene.rad": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57",
+      "sensors.pts": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446",
+      "diffuse-year.mtx": "6674542db4246ab8198f134efcb2d31c62abd86f01dc42cc8bb8df29482d4a8e",
+      "solar-year.mtx": "70b9560f9f461bf1db26985f3b3df894546b92c27bc94b623a9d0f6a84c416c4",
+      "suns.rad": "168c3a9374263b0694df8e27ea7695eaf3e220335ab200cd87a72b305e0868d3",
+      "weather.epw": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+      "source-recipe.json": "52d948d817dee6bd27127e2f8eabbcfb39a07c189ce5e65530f0d66673aea553",
+      "model.json": "583e519dd228b99f20505eb436759086b2884689b902fe20a43f03a35d6e3bdc",
+      "study.json": "5a42bfc44284e3dfe4d8e6cdb4380ff7c1409e9d898fc27a3c941a59d84c88e4"
+    },
+    "engine_sha256": {
+      "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+      "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+      "rcontrib.exe": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+      "dctimestep.exe": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05",
+      "rayinit.cal": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+      "skybright.cal": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454",
+      "reinhart.cal": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934"
+    },
+    "higher_output_sha256": {
+      "full-coefficients.mtx": "b4d55fc4aed05fc721a841e72a6ad8c2b6e757a866963b9d34ecb7d628c9db9e",
+      "direct-coefficients.mtx": "61ee35324828d889cef535c55198777304f3782c93e77d220c84713f2266802c",
+      "primary-stream.json": "2c9c2c6b6617533776ebe9d585c48a028ba42c3c531c304f47bc5f85ddcb6c96",
+      "diffuse-selected.mtx": "382fa87f32e3de0943f41f3a4009494ed6ed2629c4f5a4a44c3e95e267d587fa",
+      "solar-selected.mtx": "b0ed2898f67187c5e0079c51e685086672b79db9bad03e579c85acdbb1a10753",
+      "diffuse-rgb.mtx": "8aa5b4844500de35a5c031507cc8fcad440558dc9e57c930d41e4fa0ecf1ba28",
+      "solar-rgb.mtx": "072422686de8ac2acafaa5523364fb385bbacf3f33af9c77be69bef113dbc562",
+      "direct-solar-rgb.mtx": "2b52d930b983be10d004030d23d16295a9a3bc493fcb0c7cfd0af1b225929980"
+    },
+    "higher_diagnostic_source_sha256": {
+      "diagnostic": "ee86ddae7b0cc1b7f0bbf66f43a61a447d7d9e505c14d01ea3bf99c81feeae7a",
+      "paired_reader": "e8f5c66e605d392dc7bbd4c9e5e731f43a9003aef2cd3b069b883ab8e4c9f0c8",
+      "reference_reader": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a"
+    }
+  },
+  "changed_factors": {
+    "primary_rays_per_sensor": {
+      "shipping": 16384,
+      "higher": 65536
+    },
+    "secondary_ambient_divisions": {
+      "shipping": 64,
+      "higher": 128
+    },
+    "full_ambient_bounces": {
+      "shipping": 7,
+      "higher": 8
+    },
+    "finite_direct_samples": {
+      "shipping": 1024,
+      "higher": 4096
+    },
+    "sky_basis_mf": {
+      "shipping": 2,
+      "higher": 2
+    },
+    "receiver_scale": {
+      "shipping": 100,
+      "higher": 100
+    },
+    "direct_ambient_bounces": {
+      "shipping": 0,
+      "higher": 0
+    },
+    "ray_depth": {
+      "shipping": -16,
+      "higher": -16
+    },
+    "execution_and_encoding": "Shipping is a clean Rust application run (e17 LF primary encoding); higher is the retained PowerShell/C# research harness (G17 primary encoding). The mathematical Hammersley rule is the same, but byte-identical primary inputs across implementations are not claimed. Multiple settings change together; this is not a single-factor causal experiment.",
+    "production_reference_distinction": "The research higher tuple keeps MF2; the production reference profile uses MF4. This diagnostic does not accept that profile or full-year convergence."
+  },
+  "independent_checks": {
+    "all_higher_input_and_output_hashes_match": true,
+    "all_19_higher_process_argument_arrays_and_success_states_match": true,
+    "full_and_direct_primary_receipts_equal": true,
+    "primary_receipt": {
+      "Bytes": 161415784,
+      "Rays": 1572864,
+      "Sha256": "5e3e7df2ea3c4d8df982d00a19190f77c8e82115ecddb812f86e7d2c3892d4b2"
+    },
+    "primary_bytes_regenerated_in_this_audit": false,
+    "selected_diffuse_and_solar_columns_equal_full_year_arrays": true,
+    "matrix_product_rgb_component_checks": 2592,
+    "matrix_arithmetic_ascii_tolerance": "max(1e-7,1e-5*abs(expected RGB)); arithmetic/ASCII rounding only, unchanged from the existing checker",
+    "maximum_matrix_product_absolute_rgb_error": 0.00040917807814366824,
+    "maximum_matrix_product_error_over_ascii_tolerance": 0.049429563742778994,
+    "all_higher_288_finite_component_assemblies_recomputed": true,
+    "negative_full_minus_direct_coefficient_channels": 0,
+    "reference_raw_rounds_recomputed": 256,
+    "reference_transition_and_disjoint_checks": 288,
+    "maximum_reference_mean_lux_recomputation_difference": 3.637978807091713e-12,
+    "shipping_run_seal_members_checked": 74,
+    "shipping_96_values_reloaded_from_checksummed_float64_chunks": true,
+    "all_96_reference_rgb_vectors_identical_between_shipping_and_higher_comparisons": true,
+    "daylight_error_band": "max(5 lx,5% of reference) for each sensor, unchanged",
+    "raw_evidence_unchanged": true,
+    "arithmetic_method": "Standard-library Python reimplementation parsed exact ASCII matrix dimensions; multiplied component-wise RGB matrices; reconstructed equal-solid-angle finite-disc weights from retained sources and 4096 transmission triples per sensor; applied pi/100 once; converted irradiance to lux with the pinned weights. No Radiance or C# helper execution.",
+    "reference_averaging_method": "Round-major 24 sensors x two RGB contributions, divide each accumulated component by rounds*100, subtract retained centroid direct, add recomputed 4096-direction finite direct. Recomputed 64/128/256 prefixes and the two disjoint 128-round halves. Prefix transitions use max(0.1 lx,1% of the corresponding higher-prefix value); the disjoint-half test uses max(0.1 lx,1% of the full256 mean), as declared.",
+    "primary_receipt_scope": "Compared retained full/direct receipts and process bindings; this audit did not regenerate the 161415784 primary bytes."
+  },
+  "references": [
+    {
+      "interval_index": 1904,
+      "report_sha256": "b2fc70873651ca84d7d2b5670f01b36dd68c0d55f92445b7c5361f0abf2978c8",
+      "declaration_sha256": "b8ed754ed18228c51ea04e82e1791d5018d10d4c1265532f58e0b87ec7a75976",
+      "processes_sha256": "c9898352e40e7ec5ccff7a564a26179c1fcba757272372f1f790024c95b99aac",
+      "rounds": 256,
+      "raw_sha256": "1ff76e006f5af6934bdf2b6f99a1f303264e2feddbff19d51622007dba749ef9",
+      "finite_sha256": "7f2523865d4f2d707c5117f020231f53e0f5e3f91f3f57fd51e3e8671107e2c6",
+      "all_72_transition_and_disjoint_checks_pass": true
+    },
+    {
+      "interval_index": 4112,
+      "report_sha256": "9a34dca68b9731e0c9dba4f456824f9b0f3271b0705a5a9f56b3041e868e1ae2",
+      "declaration_sha256": "3ff67db36fdb57e6be55c2dc08ae7883921d41b595179db67922bb2a55d550e6",
+      "processes_sha256": "b26812677ac78901562239cdb0bb74ba3647fdd3762fc8c2b350a9d5ad00b3d2",
+      "rounds": 256,
+      "raw_sha256": "9f2ca2b9624c9bccba68981a119ec5105528e9c3a0ea19a60dd491d5c36f5ccf",
+      "finite_sha256": "7f2523865d4f2d707c5117f020231f53e0f5e3f91f3f57fd51e3e8671107e2c6",
+      "all_72_transition_and_disjoint_checks_pass": true
+    },
+    {
+      "interval_index": 8512,
+      "report_sha256": "eb053299511033a09cde29a6f9b42fefc1609a5500158802edda3178ff14dc49",
+      "declaration_sha256": "fea43141ddcb8b62ad67b6bd9cd179c680ef872b562f86a9f8ca498652b845a2",
+      "processes_sha256": "c43802ce5eabf85a4d8b5a1be3d5717e570108d4da957f1e39891885927e6e57",
+      "rounds": 256,
+      "raw_sha256": "ae0ab71a391314f077c53cea8fc3c9b8fbf40d62e2798aefcc0e9f5532c8b183",
+      "finite_sha256": "3a1ab13b4d032741fae71497e46f9931c8f6ad542819d9979dfd5a00385dbc5f",
+      "all_72_transition_and_disjoint_checks_pass": true
+    },
+    {
+      "interval_index": 8504,
+      "report_sha256": "f971fd716e9358b9504cdbae25b41f06604ea0fdaec0a18dac6bb59f6bd517cc",
+      "declaration_sha256": "828b03e80eb94155aaff69fe1d1d1ab4978f889992e056e30fde4ab670bffacd",
+      "processes_sha256": "7168b5f0f67855828f932b87887046157370b15f4cc9acec88d2eff84ad0ef45",
+      "rounds": 256,
+      "raw_sha256": "7c6699c3f6099905a2c8e03dede108aaf549d6e52a5df1c67e35d8c62535c837",
+      "finite_sha256": "46cae7fe914bb496a5a2c467e19471fff158d43398dee2f9b7f388fc3084daf0",
+      "all_72_transition_and_disjoint_checks_pass": true
+    }
+  ],
+  "comparison_by_interval": [
+    {
+      "interval_index": 1904,
+      "sensor_values": 24,
+      "shipping_failures": 0,
+      "higher_failures": 0
+    },
+    {
+      "interval_index": 4112,
+      "sensor_values": 24,
+      "shipping_failures": 2,
+      "higher_failures": 0
+    },
+    {
+      "interval_index": 8512,
+      "sensor_values": 24,
+      "shipping_failures": 5,
+      "higher_failures": 0
+    },
+    {
+      "interval_index": 8504,
+      "sensor_values": 24,
+      "shipping_failures": 7,
+      "higher_failures": 1
+    }
+  ],
+  "shipping_failure_count": 14,
+  "higher_failure_count": 1,
+  "maximum_higher_error_over_tolerance": 2.015770524555283,
+  "all_shipping_or_higher_failed_samples": [
+    {
+      "interval_index": 4112,
+      "sensor_id": "s000022",
+      "reference_lux": 191.50584252496228,
+      "shipping_lux": 180.90084662576933,
+      "higher_lux": 190.50423858022145,
+      "allowed_error_lux": 9.575292126248113,
+      "shipping_absolute_error_lux": 10.604995899192943,
+      "higher_absolute_error_lux": 1.0016039447408218,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 4112,
+      "sensor_id": "s000023",
+      "reference_lux": 191.44588633781512,
+      "shipping_lux": 180.60128539899378,
+      "higher_lux": 189.42616681778222,
+      "allowed_error_lux": 9.572294316890757,
+      "shipping_absolute_error_lux": 10.844600938821344,
+      "higher_absolute_error_lux": 2.0197195200329077,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8512,
+      "sensor_id": "s000005",
+      "reference_lux": 483.90675518125005,
+      "shipping_lux": 519.6333449866406,
+      "higher_lux": 490.6203312511274,
+      "allowed_error_lux": 24.195337759062504,
+      "shipping_absolute_error_lux": 35.726589805390574,
+      "higher_absolute_error_lux": 6.7135760698773765,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8512,
+      "sensor_id": "s000010",
+      "reference_lux": 476.75439980976563,
+      "shipping_lux": 517.7625915923958,
+      "higher_lux": 469.0842577656752,
+      "allowed_error_lux": 23.83771999048828,
+      "shipping_absolute_error_lux": 41.00819178263015,
+      "higher_absolute_error_lux": 7.670142044090426,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8512,
+      "sensor_id": "s000011",
+      "reference_lux": 615.6326783488281,
+      "shipping_lux": 647.0075434009174,
+      "higher_lux": 610.6469287848911,
+      "allowed_error_lux": 30.781633917441408,
+      "shipping_absolute_error_lux": 31.374865052089262,
+      "higher_absolute_error_lux": 4.98574956393702,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8512,
+      "sensor_id": "s000014",
+      "reference_lux": 331.57644750234374,
+      "shipping_lux": 350.11582497834195,
+      "higher_lux": 343.81559181862764,
+      "allowed_error_lux": 16.578822375117188,
+      "shipping_absolute_error_lux": 18.539377475998208,
+      "higher_absolute_error_lux": 12.239144316283898,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8512,
+      "sensor_id": "s000022",
+      "reference_lux": 205.62022762890626,
+      "shipping_lux": 193.95747040779136,
+      "higher_lux": 209.5293062983613,
+      "allowed_error_lux": 10.281011381445314,
+      "shipping_absolute_error_lux": 11.662757221114902,
+      "higher_absolute_error_lux": 3.9090786694550275,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000009",
+      "reference_lux": 1243.0852473359378,
+      "shipping_lux": 1409.5708159718736,
+      "higher_lux": 1368.3739773904026,
+      "allowed_error_lux": 62.15426236679689,
+      "shipping_absolute_error_lux": 166.4855686359358,
+      "higher_absolute_error_lux": 125.28873005446485,
+      "shipping_failed": true,
+      "higher_failed": true
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000012",
+      "reference_lux": 604.6563272382812,
+      "shipping_lux": 558.7552426735059,
+      "higher_lux": 615.4555416066626,
+      "allowed_error_lux": 30.23281636191406,
+      "shipping_absolute_error_lux": 45.90108456477526,
+      "higher_absolute_error_lux": 10.7992143683814,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000013",
+      "reference_lux": 645.3052183828124,
+      "shipping_lux": 678.802703209923,
+      "higher_lux": 672.6123522798163,
+      "allowed_error_lux": 32.26526091914062,
+      "shipping_absolute_error_lux": 33.49748482711061,
+      "higher_absolute_error_lux": 27.307133897003837,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000017",
+      "reference_lux": 421.37708702226564,
+      "shipping_lux": 442.6179924510763,
+      "higher_lux": 431.9568293917531,
+      "allowed_error_lux": 21.068854351113284,
+      "shipping_absolute_error_lux": 21.240905428810663,
+      "higher_absolute_error_lux": 10.579742369487462,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000018",
+      "reference_lux": 419.5285115796875,
+      "shipping_lux": 445.9359971560579,
+      "higher_lux": 428.79375075768684,
+      "allowed_error_lux": 20.976425578984376,
+      "shipping_absolute_error_lux": 26.40748557637039,
+      "higher_absolute_error_lux": 9.26523917799932,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000019",
+      "reference_lux": 395.6191924527344,
+      "shipping_lux": 416.4870535106583,
+      "higher_lux": 403.4291756990968,
+      "allowed_error_lux": 19.780959622636722,
+      "shipping_absolute_error_lux": 20.867861057923903,
+      "higher_absolute_error_lux": 7.809983246362378,
+      "shipping_failed": true,
+      "higher_failed": false
+    },
+    {
+      "interval_index": 8504,
+      "sensor_id": "s000021",
+      "reference_lux": 333.97978519882815,
+      "shipping_lux": 354.63775427578423,
+      "higher_lux": 330.2907988829968,
+      "allowed_error_lux": 16.69898925994141,
+      "shipping_absolute_error_lux": 20.65796907695608,
+      "higher_absolute_error_lux": 3.6889863158313574,
+      "shipping_failed": true,
+      "higher_failed": false
+    }
+  ],
+  "remaining_failure_components": {
+    "candidate_lux": 1368.3739773904026,
+    "reference_lux": 1243.085247335937,
+    "allowed_error_lux": 62.15426236679686,
+    "absolute_error_lux": 125.28873005446553,
+    "tolerance_ratio": 2.015770524555295,
+    "candidate_diffuse_ground_lux": 800.6410641385157,
+    "reference_diffuse_ground_lux": 786.2245255429684,
+    "candidate_reflected_solar_lux": 567.7329132518868,
+    "reference_reflected_solar_lux": 456.8607217929687,
+    "candidate_finite_direct_lux": 0.0,
+    "reference_finite_direct_lux": 0.0,
+    "interval_index": 8504,
+    "sensor_id": "s000009",
+    "sensor_index_zero_based": 8,
+    "diffuse_ground_signed_delta_lux": 14.416538595547308,
+    "reflected_solar_signed_delta_lux": 110.87219145891805,
+    "finite_direct_signed_delta_lux": 0.0
+  },
+  "higher_process_observations": {
+    "total_recorded_process_wall_seconds": 2484.5180117,
+    "full_rcontrib_wall_seconds": 2461.8095143,
+    "direct_rcontrib_wall_seconds": 10.5988379,
+    "maximum_sampled_engine_working_set_bytes": 13561856,
+    "maximum_sampled_runner_plus_engine_working_set_bytes": 530546688,
+    "maximum_sampled_scratch_bytes": 145258472,
+    "scope": "Retained workload-specific sampled observations; not hard instantaneous resource peaks or a general benchmark."
+  },
+  "interpretation": [
+    "Thirteen of the fourteen shipping failures fall within the same unchanged band under the higher MF2 research tuple; interval8504 s000009 remains outside.",
+    "At the remaining failure, the positive reflected-solar component discrepancy dominates; the finite direct term is zero for both. This arithmetic localization does not identify a unique numerical cause.",
+    "Only A and four reference cases are compared; all twelve higher candidate cases were retained and their product/assembly arithmetic checked. Missing reference cases, B higher research and required sensitivities remain outstanding.",
+    "A complete source6cf full-year shipping/reference convergence test separately failed; this partial improvement does not supersede that failure.",
+    "The earlier reporting attempt failed on a PowerShell automatic-variable collision and remains retained separately. This audit used only the corrected report identified by its digest; it executed no reporting harness or engine."
+  ]
+}

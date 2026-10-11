@@ -1,0 +1,413 @@
+{
+  "schema_version": "greenlens.independent-ci-annual-convergence.v1",
+  "recorded_utc": "2026-10-11T15:05:31.277009+00:00",
+  "audit_completed_utc": "2026-10-11T14:53:24.079413+00:00",
+  "scope": "Independent read-only inspection of four completed source-6cf annual CI projects and exports, including every retained RGB/lux value and independently derived metrics. No engine, build, replay or native UI was executed by this audit.",
+  "application_version": "0.3.0",
+  "source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+  "source_worktree_dirty": false,
+  "source_scope": "Only the named clean 6cf source and its hosted CLI are tested by these four annual runs. Later desktop candidates and display-only changes are not inferred from this record.",
+  "method_version": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+  "adapter_version": "radiance-climate-paired-primary-finite-direct/5",
+  "recipe_schema_version": "greenlens.annual-recipe.v5",
+  "numerical_status": "Investigation profiles; annual convergence failed and release acceptance is incomplete.",
+  "ci": {
+    "run_id": 38142958617,
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617",
+    "status": "completed",
+    "conclusion": "failure",
+    "created_utc": "2026-10-11T13:23:10Z",
+    "updated_utc": "2026-10-11T14:48:21Z",
+    "jobs": [
+      {
+        "name": "native",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T13:23:12Z",
+        "completedAt": "2026-10-11T14:22:14Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114480392880"
+      },
+      {
+        "name": "selected_hour",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:22:16Z",
+        "completedAt": "2026-10-11T14:29:44Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047330"
+      },
+      {
+        "name": "annual (B, reference)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:22:17Z",
+        "completedAt": "2026-10-11T14:47:38Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047342"
+      },
+      {
+        "name": "annual (A, shipping)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:22:16Z",
+        "completedAt": "2026-10-11T14:25:39Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047357"
+      },
+      {
+        "name": "annual (A, reference)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:22:17Z",
+        "completedAt": "2026-10-11T14:42:52Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047382"
+      },
+      {
+        "name": "annual (B, shipping)",
+        "status": "completed",
+        "conclusion": "success",
+        "startedAt": "2026-10-11T14:22:17Z",
+        "completedAt": "2026-10-11T14:25:02Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114492047386"
+      },
+      {
+        "name": "annual_convergence",
+        "status": "completed",
+        "conclusion": "failure",
+        "startedAt": "2026-10-11T14:47:40Z",
+        "completedAt": "2026-10-11T14:48:20Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114497151149"
+      },
+      {
+        "name": "annual_replay",
+        "status": "completed",
+        "conclusion": "skipped",
+        "startedAt": "2026-10-11T14:48:20Z",
+        "completedAt": "2026-10-11T14:48:20Z",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38142958617/job/114497287409"
+      }
+    ]
+  },
+  "hosted_cli": {
+    "sha256": "b528f76df7db604cfa786f76ad1e056e4ef363a3734c40c3ae2a965b5c7ad793",
+    "bytes": 4700672,
+    "executed_by_audit": false
+  },
+  "profiles": {
+    "shipping": {
+      "name": "shipping",
+      "sky_basis_mf": 2,
+      "ambient_bounces": 7,
+      "ambient_divisions": 64,
+      "direct_ambient_divisions": 64,
+      "direct_solar_samples": 1024,
+      "ambient_supersamples": 0,
+      "ambient_accuracy": 0.0,
+      "ambient_resolution": 256,
+      "ambient_value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "limit_weight": 1e-09,
+      "ray_depth": -16,
+      "direct_threshold": 0.0,
+      "direct_certainty": 1.0,
+      "direct_jitter": 0.0,
+      "direct_size": 0.05,
+      "specular_threshold": 0.0,
+      "specular_sampling": 0.0,
+      "uncorrelated_random_sampling": false,
+      "workers": 1,
+      "coefficient_receiver_scale": 100.0,
+      "external_primary": {
+        "generator_version": "greenlens.hammersley-cosine-primary.v1",
+        "encoding_version": "greenlens.primary-ascii-e17-lf.v1",
+        "count": 16384
+      }
+    },
+    "reference": {
+      "name": "reference",
+      "sky_basis_mf": 4,
+      "ambient_bounces": 8,
+      "ambient_divisions": 128,
+      "direct_ambient_divisions": 128,
+      "direct_solar_samples": 4096,
+      "ambient_supersamples": 0,
+      "ambient_accuracy": 0.0,
+      "ambient_resolution": 256,
+      "ambient_value": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "limit_weight": 1e-09,
+      "ray_depth": -16,
+      "direct_threshold": 0.0,
+      "direct_certainty": 1.0,
+      "direct_jitter": 0.0,
+      "direct_size": 0.05,
+      "specular_threshold": 0.0,
+      "specular_sampling": 0.0,
+      "uncorrelated_random_sampling": false,
+      "workers": 1,
+      "coefficient_receiver_scale": 100.0,
+      "external_primary": {
+        "generator_version": "greenlens.hammersley-cosine-primary.v1",
+        "encoding_version": "greenlens.primary-ascii-e17-lf.v1",
+        "count": 65536
+      }
+    }
+  },
+  "retained_evidence": {
+    "integrity_checks_pass": true,
+    "completed_runs": 4,
+    "intervals_per_run": 8760,
+    "sensors_per_run": 24,
+    "channels": [
+      "R",
+      "G",
+      "B",
+      "illuminance"
+    ],
+    "encoding": "float64_little_endian",
+    "ordering": "time_sensor_channel",
+    "chunks_per_run": 53,
+    "sensor_hour_values_verified": 840960,
+    "f64_channel_values_verified": 3363840,
+    "all_values_finite_nonnegative": true,
+    "rgb_to_lux_max_absolute_error_lx": 0.0,
+    "saved_vs_independently_derived_metric_max_error_pp": 0.0,
+    "zero_input_intervals_per_run": 4398,
+    "zero_input_rgb_and_lux_all_zero": true,
+    "checks": [
+      "GitHub artifact API digest and bounded, unique, safe ZIP members",
+      "Every compact package member checksum and byte equality with its retained project",
+      "Canonical immutable record, sensor, physical-input, run, comparison, series/result and metric identities",
+      "Exact known method, numerical profiles, process argument arrays, successful exits and ordered UTC records",
+      "Paired primary count/byte/digest receipts, resource and process bindings, finite-batch source/order/count coverage",
+      "Reviewed original and normalized EPW byte hashes; all 8760 source-year, month/day/hour, standard-time and required radiation mappings",
+      "Independent daily-occupancy DA, cDA and UDI derivation from every retained lux value",
+      "Every immutable file in all four runs remained unchanged across the read-only audit"
+    ]
+  },
+  "metric_conventions": {
+    "occupancy": "Daily 08:00-18:00 in retained EPW local standard time; no daylight-saving or operating-system timezone conversion",
+    "weighted_occupied_hours": 3650.0,
+    "da_threshold_lux": 300.0,
+    "cda": "Weighted mean of min(E/300, 1), multiplied by 100",
+    "da": "Weighted fraction with E >= 300 lx, multiplied by 100",
+    "udi": "Weighted fraction with 100 <= E <= 3000 lx, multiplied by 100",
+    "underlit": "Weighted fraction with E < 100 lx, multiplied by 100",
+    "overlit": "Weighted fraction with E > 3000 lx, multiplied by 100",
+    "percentage_units": "percent; differences are percentage points"
+  },
+  "convergence": {
+    "metric_check_count": 240,
+    "partition_check_count": 96,
+    "failed_metric_checks": 6,
+    "failed_partition_checks": 0,
+    "convergence_pass": false,
+    "ci_report_matches_independent_recomputation": true,
+    "ci_report_max_arithmetic_difference_pp": 0,
+    "metric_max_difference_pp": 4.547945205479451,
+    "partition_max_error_pp": 1.4210854715202004e-14,
+    "failure_details": [
+      {
+        "alternative": "A",
+        "sensor_id": "s000017",
+        "metric": "da_percent",
+        "shipping": 55.86301369863014,
+        "reference": 53.06849315068494,
+        "absolute_difference_pp": 2.794520547945204,
+        "tolerance_pp": 2,
+        "pass": false
+      },
+      {
+        "alternative": "A",
+        "sensor_id": "s000020",
+        "metric": "da_percent",
+        "shipping": 50.95890410958904,
+        "reference": 54.16438356164384,
+        "absolute_difference_pp": 3.205479452054796,
+        "tolerance_pp": 2,
+        "pass": false
+      },
+      {
+        "alternative": "A",
+        "sensor_id": "s000022",
+        "metric": "da_percent",
+        "shipping": 33.6986301369863,
+        "reference": 38.24657534246575,
+        "absolute_difference_pp": 4.547945205479451,
+        "tolerance_pp": 2,
+        "pass": false
+      },
+      {
+        "alternative": "A",
+        "sensor_id": "s000022",
+        "metric": "cda_percent",
+        "shipping": 76.73727108918551,
+        "reference": 79.07025739284843,
+        "absolute_difference_pp": 2.3329863036629206,
+        "tolerance_pp": 2,
+        "pass": false
+      },
+      {
+        "alternative": "A",
+        "sensor_id": "s000023",
+        "metric": "da_percent",
+        "shipping": 34.465753424657535,
+        "reference": 38.657534246575345,
+        "absolute_difference_pp": 4.19178082191781,
+        "tolerance_pp": 2,
+        "pass": false
+      },
+      {
+        "alternative": "B",
+        "sensor_id": "s000020",
+        "metric": "da_percent",
+        "shipping": 42.13698630136986,
+        "reference": 40.0,
+        "absolute_difference_pp": 2.136986301369859,
+        "tolerance_pp": 2,
+        "pass": false
+      }
+    ]
+  },
+  "run_summaries": [
+    {
+      "key": "shipping-A",
+      "run_id": "c7cc1951-f969-43ce-97a3-80ae480a2986",
+      "audit_sha256": "dc002c543f06dfc8ef55ba3b56e623d1332671aa2e8e70d26c489b69c6c95bad",
+      "record_sha256": "94c52b80a81a4e987f98bef1855fb2a7b884946627ff717f3c9fcc185d47b6d8",
+      "metric_arithmetic_max_error_pp": 0.0,
+      "lux_conversion_max_error_lx": 0.0,
+      "process_count": 57,
+      "zero_input_intervals": 4398,
+      "started_utc": "2026-10-11T14:22:31.876807900+00:00",
+      "finished_utc": "2026-10-11T14:25:21.025764200+00:00",
+      "wall_ms": 168558,
+      "peak_child_working_set_bytes": 67600384,
+      "peak_observed_runner_plus_child_working_set_bytes": 82853888,
+      "peak_scratch_bytes": 142808681
+    },
+    {
+      "key": "shipping-B",
+      "run_id": "dc9685d8-d9fc-46c6-a8ee-25f79ff77dbe",
+      "audit_sha256": "ec5b02c32c907866579d3ed96e09861c9d4e0adb2464b44294f748575ad76b2b",
+      "record_sha256": "8770e80a96c9f458f844236294fccf3de1acb1c988aacaac6b58c7e88e6fc5b8",
+      "metric_arithmetic_max_error_pp": 0.0,
+      "lux_conversion_max_error_lx": 0.0,
+      "process_count": 57,
+      "zero_input_intervals": 4398,
+      "started_utc": "2026-10-11T14:22:30.355014500+00:00",
+      "finished_utc": "2026-10-11T14:24:50.935040300+00:00",
+      "wall_ms": 140108,
+      "peak_child_working_set_bytes": 67604480,
+      "peak_observed_runner_plus_child_working_set_bytes": 82919424,
+      "peak_scratch_bytes": 142809064
+    },
+    {
+      "key": "reference-A",
+      "run_id": "c908e9f7-1046-4330-94a2-6b6eed09db6c",
+      "audit_sha256": "99aea8a3cf782d233ed6de887fa2addd29c2393b85e246deed704384088a9747",
+      "record_sha256": "a2166c2ce73568dede5a4866db025aefadcfac48fb2f2c7360492ee72b90952c",
+      "metric_arithmetic_max_error_pp": 0.0,
+      "lux_conversion_max_error_lx": 0.0,
+      "process_count": 209,
+      "zero_input_intervals": 4398,
+      "started_utc": "2026-10-11T14:22:37.830786900+00:00",
+      "finished_utc": "2026-10-11T14:42:33.490963300+00:00",
+      "wall_ms": 1194522,
+      "peak_child_working_set_bytes": 249749504,
+      "peak_observed_runner_plus_child_working_set_bytes": 265240576,
+      "peak_scratch_bytes": 422468028
+    },
+    {
+      "key": "reference-B",
+      "run_id": "be40e407-676a-4fdb-b445-3083e14a0c21",
+      "audit_sha256": "d1debb47421a2fb15c01e0c0e11ce4a30e88229e054502ba8af8e5a51833f760",
+      "record_sha256": "2f097647aa8ea73159c9f6550186fc6581cc0cc47b59cee5c891e05b74b2191a",
+      "metric_arithmetic_max_error_pp": 0.0,
+      "lux_conversion_max_error_lx": 0.0,
+      "process_count": 209,
+      "zero_input_intervals": 4398,
+      "started_utc": "2026-10-11T14:22:38.740007100+00:00",
+      "finished_utc": "2026-10-11T14:47:17.450864200+00:00",
+      "wall_ms": 1478056,
+      "peak_child_working_set_bytes": 249749504,
+      "peak_observed_runner_plus_child_working_set_bytes": 265027584,
+      "peak_scratch_bytes": 422468389
+    }
+  ],
+  "downloaded_artifacts": [
+    {
+      "id": 11706045362,
+      "name": "greenlens-convergence-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 17996,
+      "digest": "sha256:1045c6fad822f398f40bcfb2067fcd89589bced02fea47eced6705e717ec4644",
+      "created_at": "2026-10-11T14:48:15Z",
+      "expired": false
+    },
+    {
+      "id": 11705332227,
+      "name": "greenlens-ci-cli-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 2812878,
+      "digest": "sha256:cd89958f67df0374c6fac1d935f75e436681202783f882faf86a9c1eef805504",
+      "created_at": "2026-10-11T14:22:03Z",
+      "expired": false
+    },
+    {
+      "id": 11705128053,
+      "name": "greenlens-annual-shipping-A-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6694109,
+      "digest": "sha256:cc8da29039b3cfe880c74bde3a9f1234f575581901063f4a248b3c0d93159306",
+      "created_at": "2026-10-11T14:25:36Z",
+      "expired": false
+    },
+    {
+      "id": 11704823729,
+      "name": "greenlens-annual-shipping-B-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6702391,
+      "digest": "sha256:5370243fecbb84b0635e5d040c6674a0a833fc8e462a8e8a792c9c7a30fa9595",
+      "created_at": "2026-10-11T14:24:59Z",
+      "expired": false
+    },
+    {
+      "id": 11704734923,
+      "name": "greenlens-annual-reference-B-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6797070,
+      "digest": "sha256:135dc9d6c821d92733541f2a7accfc04b9e7b81186496a11b642f5b069cca6f5",
+      "created_at": "2026-10-11T14:47:34Z",
+      "expired": false
+    },
+    {
+      "id": 11704584943,
+      "name": "greenlens-annual-reference-A-6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "size_in_bytes": 6785845,
+      "digest": "sha256:a7965434016adefb14a18d3a02c77deaa2323acdaa9da5318320e9538d006831",
+      "created_at": "2026-10-11T14:42:49Z",
+      "expired": false
+    }
+  ],
+  "retained_external_records": {
+    "full_audit_sha256": "10d10a644b1f9acfd46cf4a9ce1c32113f389dc4ad16a197ea075bfc139c2f3a",
+    "compact_summary_sha256": "cdf28f3a11387b243cf306d26cfcec87189d68c7a14758236c01439b762b0da6",
+    "ci_status_sha256": "80a481571d8628379a3f0895be45724dc0f6864f10431a4b3c3694b0ccbf3e74",
+    "full_audit_contents": "All 240 metric rows, 96 partition rows, per-run statistics/identities, artifact and export digests, resource observations and limitations. Original downloaded ZIP bytes and external inspector sources remain unchanged.",
+    "inspector_sha256": {
+      "download.py": "a9394bf1c70611187faa3e832ff2b7debef62a454c24965a9e19ed120220fc6d",
+      "audit-one.py": "084b138e4b302391b9677c04339210da1c34e8ce7c642901caa0768a368fd966",
+      "finish-audit.py": "4b4bf6a32e0fe50c5fdb4af093b7d3366d5b2025f9b9805365c893aacadc8524"
+    }
+  },
+  "remaining_acceptance": [
+    "Annual convergence fails the unchanged 2 percentage-point threshold at six checks; investigate without discarding values or loosening the threshold.",
+    "The dependent hosted annual_replay job was skipped after convergence failed. Separate local replay evidence does not change that CI status.",
+    "Matched-hour independent reference qualification, applicable final-source/native/package evidence and release completion remain separate."
+  ],
+  "limitations": [
+    "This audit establishes retained-data integrity and metric arithmetic, not independent transport accuracy or certification.",
+    "Large disposable coefficient matrices and original generated primary streams were not regenerated; retained digests were checked for identity, shape and process binding.",
+    "Observed resource figures are sampled measurements. Scans and queries plus 20 ms sleeps do not guarantee a 20 ms measurement cadence.",
+    "No production profile, scientific threshold or historical evidence byte was changed."
+  ]
+}

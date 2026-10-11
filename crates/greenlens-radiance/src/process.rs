@@ -79,7 +79,9 @@ pub(crate) fn scratch_sizes(directory: &Path) -> Result<(u64, u64)> {
                     kind.is_file(),
                     "Annual scratch contains an unsupported file type"
                 );
-                let size = metadata.len();
+                // Directory-entry size may remain stale while the engine holds
+                // a growing output open. Query the open file handle instead.
+                let size = File::open(entry.path())?.metadata()?.len();
                 *total = total.checked_add(size).context("Scratch size overflow")?;
                 *largest = (*largest).max(size);
             }
@@ -145,11 +147,12 @@ impl AnnualProcessResources {
         );
         Ok(())
     }
-    fn finish(&mut self, directory: &Path, output: &Path, start: Instant) -> Result<()> {
+    fn finish(&mut self, directory: &Path, output: &Path, start: Instant) -> Result<(u64, u64)> {
         self.finished_utc = Utc::now().to_rfc3339();
         self.elapsed_ms = start.elapsed().as_millis();
         self.output_bytes = output.metadata()?.len();
-        self.peak_scratch_bytes = self.peak_scratch_bytes.max(scratch_sizes(directory)?.0);
+        let sizes = scratch_sizes(directory)?;
+        self.peak_scratch_bytes = self.peak_scratch_bytes.max(sizes.0);
         fs::write(
             directory.join(format!(
                 "{}.resources.json",
@@ -157,7 +160,9 @@ impl AnnualProcessResources {
             )),
             serde_json::to_vec_pretty(self)?,
         )?;
-        Ok(())
+        // Return final sizes only after retaining telemetry. Cancellation and
+        // prior failures must still write their original process diagnostics.
+        Ok(sizes)
     }
 }
 
@@ -296,7 +301,25 @@ fn execute_inner(
         }
     };
     if let Some(resources) = &mut resources {
-        resources.finish(directory, output, start)?;
+        let (scratch, largest) = resources.finish(directory, output, start)?;
+        let resource_error = if largest > ANNUAL_MAX_FILE_BYTES {
+            Some("Annual final output exceeds 512 MiB file budget")
+        } else if scratch > ANNUAL_MAX_SCRATCH_BYTES {
+            Some("Annual final scratch exceeds 2 GiB budget")
+        } else {
+            None
+        };
+        if let Some(error) = resource_error {
+            #[cfg(windows)]
+            drop(job);
+            fs::write(
+                directory.join(format!("{name}.process.json")),
+                serde_json::to_vec_pretty(
+                    &serde_json::json!({"executable":format!("{name}.exe"),"arguments":arguments,"exit_code":status.code(),"started_utc":started_utc,"finished_utc":Utc::now().to_rfc3339(),"resource_failure":error,"process_tree_terminated":true}),
+                )?,
+            )?;
+            bail!("Annual resource supervision stopped {name}: {error}; process tree terminated");
+        }
     }
     let mut stderr = fs::read_to_string(stderr_path)?;
     for (path, replacement) in [(engine, "<engine>"), (directory, "<scratch>")] {

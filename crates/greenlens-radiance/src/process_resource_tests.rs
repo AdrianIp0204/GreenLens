@@ -67,7 +67,15 @@ fn resource_child_fixture() {
     };
     assert_ne!(sparse, 0, "Sparse fixture requires a supporting filesystem");
     oversized.set_len(ANNUAL_MAX_FILE_BYTES + 1).unwrap();
-    drop(oversized);
+    if directory.join("fixture-exit-after-write").exists() {
+        // Exit immediately after the final oversized write. The parent must
+        // reject either its live sample or the post-exit sample, never succeed.
+        // The supervisor owns this intentionally surviving synthetic child.
+        std::mem::forget(descendant);
+        return;
+    }
+    // Keep the writer open: directory-entry length may still be stale. The
+    // production supervisor must observe growth through an opened handle.
     thread::sleep(Duration::from_secs(15));
     // Reaching this sentinel means the resource supervisor failed to intervene.
     fs::write(
@@ -105,6 +113,11 @@ fn active(pid: u32) -> bool {
 
 #[test]
 fn annual_file_cap_terminates_tree_without_success_record() {
+    check_file_cap(false);
+    check_file_cap(true);
+}
+
+fn check_file_cap(exit_after_write: bool) {
     let base = PathBuf::from(std::env::var_os("LOCALAPPDATA").unwrap()).join(format!(
         "GreenLens/verification/resource-cap 空間 {}-{}",
         std::process::id(),
@@ -114,6 +127,9 @@ fn annual_file_cap_terminates_tree_without_success_record() {
     let scratch = base.join("job");
     fs::create_dir_all(engine.join("bin")).unwrap();
     fs::create_dir_all(&scratch).unwrap();
+    if exit_after_write {
+        fs::write(scratch.join("fixture-exit-after-write"), b"synthetic").unwrap();
+    }
     fs::copy(
         std::env::current_exe().unwrap(),
         engine.join("bin/helper.exe"),
@@ -170,4 +186,34 @@ fn annual_file_cap_terminates_tree_without_success_record() {
         .unwrap();
     assert_eq!(payload.parent().unwrap(), scratch.canonicalize().unwrap());
     fs::remove_file(payload).unwrap();
+}
+
+#[test]
+fn scratch_sizes_observes_growth_while_writer_is_still_open() {
+    use std::io::Write;
+    let root = PathBuf::from(std::env::var_os("LOCALAPPDATA").unwrap()).join(format!(
+        "GreenLens/verification/live scratch sizes 空間 {}-{}",
+        std::process::id(),
+        Utc::now().timestamp_nanos_opt().unwrap()
+    ));
+    fs::create_dir_all(&root).unwrap();
+    let mut writer = File::create(root.join("growing.fixture")).unwrap();
+    assert_eq!(scratch_sizes(&root).unwrap(), (0, 0));
+    writer.write_all(&[7; 65536]).unwrap();
+    assert_eq!(scratch_sizes(&root).unwrap(), (65536, 65536));
+    writer.write_all(&[8; 65536]).unwrap();
+    assert_eq!(scratch_sizes(&root).unwrap(), (131072, 131072));
+    // A bounded observation of practical polling cost, not a performance gate.
+    for i in 0..100 {
+        fs::write(root.join(format!("small-{i}.fixture")), [0; 8]).unwrap();
+    }
+    let start = Instant::now();
+    for _ in 0..20 {
+        assert_eq!(scratch_sizes(&root).unwrap(), (131872, 131072));
+    }
+    eprintln!(
+        "Native live-size sampling101files: mean {:.3}ms over20 scans",
+        start.elapsed().as_secs_f64() * 1000.0 / 20.0
+    );
+    drop(writer);
 }

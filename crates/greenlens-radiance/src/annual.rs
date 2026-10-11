@@ -69,7 +69,8 @@ pub const LEGACY_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse
 pub const EXPLICIT_GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once. Solar-only explicit source transport has no luminous dome or external ground geometry. Reflected solar is full explicit-source transport minus identical ab0 centroid-direct transport; finite-disc directional transmission replaces only direct sun. The emitted-source horizon policy applies to both solar terms.";
 pub const GROUND_POLICY: &str = "Uniform luminous ground includes diffuse and direct-horizontal reflected radiance in the -s sky matrix once; -d solar matrix has zero ground and diffuse sky. Reflected solar is full minus direct-only patch transport, gated to emitted solar-source intervals; no external ground geometry. Coefficients use a scaled receiver and contiguous repeated primaries with negative-depth Russian roulette; divide each coefficient product by the recorded receiver scale exactly once. Finite-direct transmission retains a separate unit receiver.";
 pub const DIRECT_POLICY: &str = "Equal-solid-angle midpoint solar-disc quadrature: uniform cos(theta) rings and azimuth; shipping 32x32, reference 64x64. Normalize printed solar direction; horizon clip each ray at world z>0. Ray origin is sensor+0.0001m*normal, matching pinned immediate-irradiance evaluation. Cull each ray only if it misses the authoritative glass polygon, with inclusive 1e-9m edge allowance; Radiance traces glazing/shading/context at ab0 with a unit receiver. Reflected solar is approximated by scaled repeated full minus direct-only patch transport, normalized once by the receiver scale and included only for emitted solar-source intervals. No negative corrected RGB is silently clamped.";
-pub const RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
+pub const LEGACY_RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled every20ms (shared pages counted in both processes); complete owned scratch tree file bytes sampled during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
+pub const RESOURCE_MEASUREMENT_POLICY: &str = "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child; simultaneous runner+child working sets sampled in a loop with a complete owned scratch tree scan and a 20ms sleep between iterations (shared pages counted in both processes). Scan and scheduling time add to the interval; this is not fixed-20ms sampling. Scratch file sizes are queried from opened file handles during each child, after assembly, and after retained series creation. Observed working-set sum is not total private memory. One worker; no engine subprocess descendants expected.";
 const EXECUTABLES: [(&str, &str); 5] = [
     (
         "rtrace.exe",
@@ -612,7 +613,10 @@ impl AnnualResources {
     pub fn validate(&self) -> Result<()> {
         ensure!(
             self.schema_version == "greenlens.annual-resources.v1"
-                && self.measurement_policy == RESOURCE_MEASUREMENT_POLICY,
+                && matches!(
+                    self.measurement_policy.as_str(),
+                    RESOURCE_MEASUREMENT_POLICY | LEGACY_RESOURCE_MEASUREMENT_POLICY
+                ),
             "Unsupported annual resource measurement policy"
         );
         ensure!(
@@ -1400,6 +1404,44 @@ pub fn simulate(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn resource_policy_preserves_exact_historical_records_and_rejects_unknown_policy() {
+        // Synthetic metadata only; this does not claim a native engine run.
+        let timestamp = "2026-10-11T00:00:00Z".to_string();
+        let measurement = AnnualProcessResources {
+            executable: "oconv.exe".into(),
+            started_utc: timestamp.clone(),
+            finished_utc: timestamp.clone(),
+            elapsed_ms: 0,
+            peak_child_working_set_bytes: 1,
+            peak_observed_runner_plus_child_working_set_bytes: 2,
+            peak_scratch_bytes: 3,
+            output_bytes: 3,
+            samples: 1,
+        };
+        let mut record = AnnualResources {
+            schema_version: "greenlens.annual-resources.v1".into(),
+            measurement_policy: RESOURCE_MEASUREMENT_POLICY.into(),
+            started_utc: timestamp.clone(),
+            finished_utc: timestamp,
+            total_wall_ms: 0,
+            peak_engine_working_set_bytes: 1,
+            peak_observed_runner_plus_engine_working_set_bytes: 2,
+            peak_scratch_bytes: 3,
+            max_scratch_bytes: process::ANNUAL_MAX_SCRATCH_BYTES,
+            max_matrix_bytes: process::ANNUAL_MAX_FILE_BYTES,
+            max_observed_working_set_bytes: process::ANNUAL_MAX_OBSERVED_WORKING_SET_BYTES,
+            processes: vec![measurement; 5],
+        };
+        record.validate().unwrap();
+        record.measurement_policy = LEGACY_RESOURCE_MEASUREMENT_POLICY.into();
+        let original = serde_json::to_vec(&record).unwrap();
+        let historical: AnnualResources = serde_json::from_slice(&original).unwrap();
+        historical.validate().unwrap();
+        assert_eq!(serde_json::to_vec(&historical).unwrap(), original);
+        record.measurement_policy = "Measured at a guaranteed 20ms cadence".into();
+        assert!(record.validate().is_err());
+    }
     #[cfg(windows)]
     #[test]
     fn native_explicit_generator_preserves_nonzero_legacy_solar_sources() {

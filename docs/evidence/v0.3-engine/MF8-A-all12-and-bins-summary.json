@@ -1,0 +1,1177 @@
+{
+  "schema_version": "greenlens.MF8-solar-only-A-summary.v1",
+  "recorded_utc": "2026-10-11T16:56:06.988088+00:00",
+  "scope": "All twelve A intervals and 24 ordered sensors. This remains a component diagnostic; required reference depth sensitivity failed and the reference family is unqualified. No profile is adopted.",
+  "strict_report": {
+    "sha256": "ad3b6e898a53e06ac9cf926ec68112ed64a30e38dd7238212c14dd0dd55f3953",
+    "bytes": 410064,
+    "source_sha256": {
+      "diagnostic": "322edccff428bba20b840726c0d439c7ea6a6f80c5d4595c3b64747c2cbd32b0",
+      "reference_reader": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+      "paired_reader": "e8f5c66e605d392dc7bbd4c9e5e731f43a9003aef2cd3b069b883ab8e4c9f0c8"
+    }
+  },
+  "raw_result_sha256": "ec3eb4056084ef9d5ca4f24b84c890576e427ce8577f24566ba886c907db7252",
+  "declaration_sha256": "c6ebf302c4681b82cf9f10719dfde218d784a9df043fee3870903745e480695f",
+  "processes_sha256": "526955ccca2f05e811165b3bb650c2edfd4d9772d803edc757d96a5849614b9a",
+  "reference_pins": [
+    {
+      "declaration_sha256": "b8ed754ed18228c51ea04e82e1791d5018d10d4c1265532f58e0b87ec7a75976",
+      "report_sha256": "b2fc70873651ca84d7d2b5670f01b36dd68c0d55f92445b7c5361f0abf2978c8",
+      "processes_sha256": "c9898352e40e7ec5ccff7a564a26179c1fcba757272372f1f790024c95b99aac",
+      "interval_index": 1904
+    },
+    {
+      "declaration_sha256": "3ff67db36fdb57e6be55c2dc08ae7883921d41b595179db67922bb2a55d550e6",
+      "report_sha256": "9a34dca68b9731e0c9dba4f456824f9b0f3271b0705a5a9f56b3041e868e1ae2",
+      "processes_sha256": "b26812677ac78901562239cdb0bb74ba3647fdd3762fc8c2b350a9d5ad00b3d2",
+      "interval_index": 4112
+    },
+    {
+      "declaration_sha256": "fea43141ddcb8b62ad67b6bd9cd179c680ef872b562f86a9f8ca498652b845a2",
+      "report_sha256": "eb053299511033a09cde29a6f9b42fefc1609a5500158802edda3178ff14dc49",
+      "processes_sha256": "c43802ce5eabf85a4d8b5a1be3d5717e570108d4da957f1e39891885927e6e57",
+      "interval_index": 8512
+    },
+    {
+      "declaration_sha256": "828b03e80eb94155aaff69fe1d1d1ab4978f889992e056e30fde4ab670bffacd",
+      "report_sha256": "f971fd716e9358b9504cdbae25b41f06604ea0fdaec0a18dac6bb59f6bd517cc",
+      "processes_sha256": "7168b5f0f67855828f932b87887046157370b15f4cc9acec88d2eff84ad0ef45",
+      "interval_index": 8504
+    },
+    {
+      "declaration_sha256": "b340b38c0847917c3ba27f54df9a1f716da1e7e498c885735a5f820d156e90e8",
+      "report_sha256": "d5719d317a4dfe9aba5c9ac83216061c291b1451c0317cef7960d1459036b7c5",
+      "processes_sha256": "2b44a6c2ae3b85d2477bf9871001f6c058db9a46487ce42b3cc248145830369f",
+      "interval_index": 1908
+    },
+    {
+      "declaration_sha256": "599bf0946ead63198576871db65a3fe27d7ac5dd484843369db46f58a9f695c2",
+      "report_sha256": "06ccb71fc78a60d2e5f8dcdeef20876bfb171196f0180d8f54c92bcd99245dae",
+      "processes_sha256": "9dcc1f48c00c4e8819b320492f1ef10a806b93d679eb9a1d53749724f3ca325c",
+      "interval_index": 1912
+    },
+    {
+      "declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a",
+      "report_sha256": "7837362a81f5fceecea14123ec01621a316a7224803b92145ec3bd4432d61fa5",
+      "processes_sha256": "48b75d8406475fd5cc4af9cf5c10781a5551cd6a6f90212441aabb0f2a184a18",
+      "interval_index": 4116
+    },
+    {
+      "declaration_sha256": "852803404ca8df85e13b20d4e2e1e19a4b49f71c93f00e3a4c4c714313051a5d",
+      "report_sha256": "f0ffd8c23d23e1d19d4ec543224c3b88e16800459ecec372afb106457bf4fcd5",
+      "processes_sha256": "3ae4cb6c623760a8d8c1f6bf26c8f5954f227446e280ea75c12612221a22c561",
+      "interval_index": 4120
+    },
+    {
+      "declaration_sha256": "aac7f50d2a5b984536dec3d5e90b09821e3fbd5301fe50987b36da2c9b3ca02e",
+      "report_sha256": "1436b608333a2ff801f68c0ed53626d6a35e7708c25b3366f719c6ab6182ef85",
+      "processes_sha256": "9408d407a45388fd7bfc192805123b69fd1a02ae2316ef646f27e169b4719367",
+      "interval_index": 6320
+    },
+    {
+      "declaration_sha256": "4ec473b7aab61ad291c476267c5501ff23497611a5f5435b425b1e64a0dde876",
+      "report_sha256": "49dbd1f278a786adbba9b34f4ae8a80fe139ee685c30aba3ba86c938d3c12276",
+      "processes_sha256": "78a1483cb343e3aba5b32bbb1c19d05019a2c125f42b8eea4d3cad045679675d",
+      "interval_index": 6324
+    },
+    {
+      "declaration_sha256": "c221697f1e63bdc74127711aa70fb84e101af40c33e88630472405cc4166addd",
+      "report_sha256": "7c62c1b2dff885fc8a35db9c67ce86ef1179899a5b3bdddb55e7b30340b9f99f",
+      "processes_sha256": "e594a2bdd7dde1f174c341db6867d28d1227567ede0b349c8038bf4c206b94df",
+      "interval_index": 6328
+    },
+    {
+      "declaration_sha256": "c438518d75a6d9939208c170d31933659fce7e21b5c01d5530d00e54840039f3",
+      "report_sha256": "e9e2b1ed5572bbc5ea495787a87a380cf0a6fb0a4de0683db8d238c2883c7ff5",
+      "processes_sha256": "e3423ea70c4d98675a368bf383d18743d6b616478b0b587ecac572e5d0508a49",
+      "interval_index": 8508
+    }
+  ],
+  "comparison_band": "max(5 lx, 5% of reference), unchanged",
+  "case_results": [
+    {
+      "interval_index": 1904,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.4648802432376046
+    },
+    {
+      "interval_index": 1908,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.48901522569550016
+    },
+    {
+      "interval_index": 1912,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.40455042794779156
+    },
+    {
+      "interval_index": 4112,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.31479788436793205
+    },
+    {
+      "interval_index": 4116,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.4274963388558181
+    },
+    {
+      "interval_index": 4120,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.29312834755100675
+    },
+    {
+      "interval_index": 6320,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.7892630808154106
+    },
+    {
+      "interval_index": 6324,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.5531004961950251
+    },
+    {
+      "interval_index": 6328,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.43996628283609257
+    },
+    {
+      "interval_index": 8504,
+      "sensor_count": 24,
+      "mf2_failure_count": 1,
+      "mf8_failure_count": 3,
+      "maximum_mf8_tolerance_ratio": 1.9286422051150212
+    },
+    {
+      "interval_index": 8508,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.7026257071802612
+    },
+    {
+      "interval_index": 8512,
+      "sensor_count": 24,
+      "mf2_failure_count": 0,
+      "mf8_failure_count": 0,
+      "maximum_mf8_tolerance_ratio": 0.9809838313630437
+    }
+  ],
+  "failure_count": 3,
+  "maximum_tolerance_ratio": 1.9286422051150212,
+  "failed_values": [
+    {
+      "interval_index": 8504,
+      "sensor_index_zero_based": 8,
+      "mf2_reflected_solar_lux": 567.7329132518868,
+      "reference_diffuse_ground_lux": 786.2245255429684,
+      "sensor_id": "s000009",
+      "mf8": {
+        "candidate_lux": 1321.1326601938722,
+        "absolute_error_lux": 78.04741285793511,
+        "allowed_error_lux": 62.15426236679686,
+        "reference_lux": 1243.085247335937,
+        "tolerance_ratio": 1.255704916862282,
+        "within_diagnostic_band": false
+      },
+      "reference_finite_direct_lux": 0.0,
+      "reference_reflected_solar_lux": 456.8607217929687,
+      "candidate_diffuse_ground_lux": 800.6410641385157,
+      "mf8_reflected_solar_lux": 520.4915960553562,
+      "mf2": {
+        "candidate_lux": 1368.3739773904026,
+        "absolute_error_lux": 125.28873005446553,
+        "allowed_error_lux": 62.15426236679686,
+        "reference_lux": 1243.085247335937,
+        "tolerance_ratio": 2.015770524555295,
+        "within_diagnostic_band": false
+      },
+      "candidate_finite_direct_lux": 0.0
+    },
+    {
+      "interval_index": 8504,
+      "sensor_index_zero_based": 11,
+      "mf2_reflected_solar_lux": 255.98774916136864,
+      "reference_diffuse_ground_lux": 363.322729316406,
+      "sensor_id": "s000012",
+      "mf8": {
+        "candidate_lux": 636.2193465868943,
+        "absolute_error_lux": 31.56301934861324,
+        "allowed_error_lux": 30.232816361914054,
+        "reference_lux": 604.656327238281,
+        "tolerance_ratio": 1.0439986460664286,
+        "within_diagnostic_band": false
+      },
+      "reference_finite_direct_lux": 0.0,
+      "reference_reflected_solar_lux": 241.33359792187508,
+      "candidate_diffuse_ground_lux": 359.46779244529387,
+      "mf8_reflected_solar_lux": 276.7515541416004,
+      "mf2": {
+        "candidate_lux": 615.4555416066626,
+        "absolute_error_lux": 10.799214368381513,
+        "allowed_error_lux": 30.232816361914054,
+        "reference_lux": 604.656327238281,
+        "tolerance_ratio": 0.35720173202209105,
+        "within_diagnostic_band": true
+      },
+      "candidate_finite_direct_lux": 0.0
+    },
+    {
+      "interval_index": 8504,
+      "sensor_index_zero_based": 13,
+      "mf2_reflected_solar_lux": 211.81126891255602,
+      "reference_diffuse_ground_lux": 388.9234107031252,
+      "sensor_id": "s000014",
+      "mf8": {
+        "candidate_lux": 548.0618010063041,
+        "absolute_error_lux": 58.49118436088361,
+        "allowed_error_lux": 30.327649268359387,
+        "reference_lux": 606.5529853671877,
+        "tolerance_ratio": 1.9286422051150212,
+        "within_diagnostic_band": false
+      },
+      "reference_finite_direct_lux": 0.0,
+      "reference_reflected_solar_lux": 217.62957466406252,
+      "candidate_diffuse_ground_lux": 385.1313101510659,
+      "mf8_reflected_solar_lux": 162.93049085523813,
+      "mf2": {
+        "candidate_lux": 596.942579063622,
+        "absolute_error_lux": 9.610406303565696,
+        "allowed_error_lux": 30.327649268359387,
+        "reference_lux": 606.5529853671877,
+        "tolerance_ratio": 0.31688596166904903,
+        "within_diagnostic_band": true
+      },
+      "candidate_finite_direct_lux": 0.0
+    }
+  ],
+  "retained_diffuse_finite_policy": "The strict reader binds unchanged higher-MF2 diffuse/ground and finite-direct arrays and identical continuous primary receipts. Only the solar coefficient binning and matching solar matrix use MF8.",
+  "per_bin_audit": {
+    "sha256": "674f0ef27646bb01b96b646c4f233516b0a4c0ba5ea3a2e3bbf74c5cb708650b",
+    "bytes": 2498585,
+    "source_sha256": "60b12b3740a3528e8b79fa1da5c4191b52425ee1474fa524e984e439e41b1c0c",
+    "coefficient_sum_max_absolute_difference": {
+      "full": 3.408131554749616e-07,
+      "direct": 1.891000001030818e-07
+    },
+    "methods": [
+      {
+        "basis_mf": 2,
+        "case_solar_energy": [
+          {
+            "interval_index": 1904,
+            "active_bin_indices": [
+              198,
+              254,
+              255,
+              303
+            ],
+            "integrated_solar_rgb": [
+              29.95354964118451,
+              29.95354964118451,
+              29.95354964118451
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              29.93273114675462,
+              29.93273114675462,
+              29.93273114675462
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 1908,
+            "active_bin_indices": [
+              516,
+              517,
+              540,
+              541
+            ],
+            "integrated_solar_rgb": [
+              145.51281451247633,
+              145.51281451247633,
+              145.51281451247633
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              145.4496926749657,
+              145.4496926749657,
+              145.4496926749657
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 1912,
+            "active_bin_indices": [
+              224,
+              275,
+              276,
+              323
+            ],
+            "integrated_solar_rgb": [
+              123.07905564084649,
+              123.07905564084649,
+              123.07905564084649
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              123.15646875095224,
+              123.15646875095224,
+              123.15646875095224
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 4112,
+            "active_bin_indices": [
+              299,
+              300,
+              347,
+              348
+            ],
+            "integrated_solar_rgb": [
+              106.5311498194933,
+              106.5311498194933,
+              106.5311498194933
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              106.50451795405198,
+              106.50451795405198,
+              106.50451795405198
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 4116,
+            "active_bin_indices": [
+              574,
+              575,
+              576,
+              577
+            ],
+            "integrated_solar_rgb": [
+              112.09563670679927,
+              112.09563670679927,
+              112.09563670679927
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              112.07782393505533,
+              112.07782393505533,
+              112.07782393505533
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 4120,
+            "active_bin_indices": [
+              279,
+              326,
+              327,
+              375
+            ],
+            "integrated_solar_rgb": [
+              89.65869224630296,
+              89.65869224630296,
+              89.65869224630296
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              89.71663286493211,
+              89.71663286493211,
+              89.71663286493211
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 6320,
+            "active_bin_indices": [
+              254,
+              255,
+              302,
+              303
+            ],
+            "integrated_solar_rgb": [
+              317.71015542559326,
+              317.71015542559326,
+              317.71015542559326
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              317.6104737710816,
+              317.6104737710816,
+              317.6104737710816
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 6324,
+            "active_bin_indices": [
+              517,
+              518,
+              541,
+              542
+            ],
+            "integrated_solar_rgb": [
+              276.26505865715444,
+              276.26505865715444,
+              276.26505865715444
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              276.1505146441054,
+              276.1505146441054,
+              276.1505146441054
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 6328,
+            "active_bin_indices": [
+              224,
+              225,
+              275,
+              276
+            ],
+            "integrated_solar_rgb": [
+              132.0355482213199,
+              132.0355482213199,
+              132.0355482213199
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              131.99219774522587,
+              131.99219774522587,
+              131.99219774522587
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 8504,
+            "active_bin_indices": [
+              141,
+              142,
+              143,
+              202
+            ],
+            "integrated_solar_rgb": [
+              289.6812248416245,
+              289.6812248416245,
+              289.6812248416245
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              289.8798781582844,
+              289.8798781582844,
+              289.8798781582844
+            ],
+            "failure_count": 1
+          },
+          {
+            "interval_index": 8508,
+            "active_bin_indices": [
+              361,
+              362,
+              409,
+              410
+            ],
+            "integrated_solar_rgb": [
+              363.5043187905103,
+              363.5043187905103,
+              363.5043187905103
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              363.5562645413044,
+              363.5562645413044,
+              363.5562645413044
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 8512,
+            "active_bin_indices": [
+              100,
+              101,
+              160,
+              161
+            ],
+            "integrated_solar_rgb": [
+              116.55012656003237,
+              116.55012656003237,
+              116.55012656003237
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              116.56365557830193,
+              116.56365557830193,
+              116.56365557830193
+            ],
+            "failure_count": 0
+          }
+        ],
+        "all_failed_sensors_union_and_prior_MF4_failure": [
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000009",
+            "native_product_reflected_solar_lux": 567.7329132518868,
+            "reference_reflected_solar_lux": 456.8607217929687,
+            "largest_bin_fraction": 0.4616169657531945,
+            "product_formatting_delta_lux": -0.0001801753651307081,
+            "bins": [
+              {
+                "index": 141,
+                "contribution_lux": 58.3093031841408,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.2137517262674541,
+                  0.2137517262674541,
+                  0.2137517262674541
+                ]
+              },
+              {
+                "index": 142,
+                "contribution_lux": 262.0750616015522,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.3709220109319505,
+                  0.3709220109319505,
+                  0.3709220109319505
+                ]
+              },
+              {
+                "index": 143,
+                "contribution_lux": 153.00306891467224,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.6730590486004899,
+                  0.6730590486004899,
+                  0.6730590486004899
+                ]
+              },
+              {
+                "index": 202,
+                "contribution_lux": 94.34529937615642,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.22338545102390767,
+                  0.22338545102390767,
+                  0.22338545102390767
+                ]
+              }
+            ]
+          },
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000011",
+            "native_product_reflected_solar_lux": 300.38764911244874,
+            "reference_reflected_solar_lux": 271.80477141796865,
+            "largest_bin_fraction": 0.4687903181583605,
+            "product_formatting_delta_lux": -2.080676779314672e-06,
+            "bins": [
+              {
+                "index": 141,
+                "contribution_lux": 42.90919038723696,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.15729760119145722,
+                  0.15729760119145722,
+                  0.15729760119145722
+                ]
+              },
+              {
+                "index": 142,
+                "contribution_lux": 140.81882062286567,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.199304732786485,
+                  0.199304732786485,
+                  0.199304732786485
+                ]
+              },
+              {
+                "index": 143,
+                "contribution_lux": 50.828562605995174,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.22359436468820343,
+                  0.22359436468820343,
+                  0.22359436468820343
+                ]
+              },
+              {
+                "index": 202,
+                "contribution_lux": 65.83107341567414,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.15587108338822941,
+                  0.15587108338822941,
+                  0.15587108338822941
+                ]
+              }
+            ]
+          },
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000012",
+            "native_product_reflected_solar_lux": 255.98774916136864,
+            "reference_reflected_solar_lux": 241.33359792187508,
+            "largest_bin_fraction": 0.46210144248414053,
+            "product_formatting_delta_lux": -1.765763568073453e-05,
+            "bins": [
+              {
+                "index": 141,
+                "contribution_lux": 37.344644960026166,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.13689894907236483,
+                  0.13689894907236483,
+                  0.13689894907236483
+                ]
+              },
+              {
+                "index": 142,
+                "contribution_lux": 118.29229998611787,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.1674223312988301,
+                  0.1674223312988301,
+                  0.1674223312988301
+                ]
+              },
+              {
+                "index": 143,
+                "contribution_lux": 43.84269020140368,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.19286357825606362,
+                  0.19286357825606362,
+                  0.19286357825606362
+                ]
+              },
+              {
+                "index": 202,
+                "contribution_lux": 56.50809635618524,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.1337966668662569,
+                  0.1337966668662569,
+                  0.1337966668662569
+                ]
+              }
+            ]
+          },
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000014",
+            "native_product_reflected_solar_lux": 211.81126891255602,
+            "reference_reflected_solar_lux": 217.62957466406252,
+            "largest_bin_fraction": 0.46519756056700756,
+            "product_formatting_delta_lux": 1.92322019643143e-05,
+            "bins": [
+              {
+                "index": 141,
+                "contribution_lux": 29.397416640075804,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.1077657974195936,
+                  0.1077657974195936,
+                  0.1077657974195936
+                ]
+              },
+              {
+                "index": 142,
+                "contribution_lux": 98.53409454549694,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.13945800211140041,
+                  0.13945800211140041,
+                  0.13945800211140041
+                ]
+              },
+              {
+                "index": 143,
+                "contribution_lux": 42.14708424498559,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.1854046237401608,
+                  0.1854046237401608,
+                  0.1854046237401608
+                ]
+              },
+              {
+                "index": 202,
+                "contribution_lux": 41.73269271419964,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.0988123038036559,
+                  0.0988123038036559,
+                  0.0988123038036559
+                ]
+              }
+            ]
+          }
+        ],
+        "negative_active_bin_count": 0,
+        "maximum_independent_product_ratio": 0.049429563742778994
+      },
+      {
+        "basis_mf": 8,
+        "case_solar_energy": [
+          {
+            "interval_index": 1904,
+            "active_bin_indices": [
+              3895,
+              3896,
+              4087,
+              4088
+            ],
+            "integrated_solar_rgb": [
+              29.923470980138518,
+              29.923470980138518,
+              29.923470980138518
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              29.93273114675462,
+              29.93273114675462,
+              29.93273114675462
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 1908,
+            "active_bin_indices": [
+              8209,
+              8304,
+              8305,
+              8306
+            ],
+            "integrated_solar_rgb": [
+              145.36372288130224,
+              145.36372288130224,
+              145.36372288130224
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              145.4496926749657,
+              145.4496926749657,
+              145.4496926749657
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 1912,
+            "active_bin_indices": [
+              3978,
+              3979,
+              4170,
+              4171
+            ],
+            "integrated_solar_rgb": [
+              123.14576602075249,
+              123.14576602075249,
+              123.14576602075249
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              123.15646875095224,
+              123.15646875095224,
+              123.15646875095224
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 4112,
+            "active_bin_indices": [
+              5033,
+              5034,
+              5225,
+              5226
+            ],
+            "integrated_solar_rgb": [
+              106.45595274399966,
+              106.45595274399966,
+              106.45595274399966
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              106.50451795405198,
+              106.50451795405198,
+              106.50451795405198
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 4116,
+            "active_bin_indices": [
+              9209,
+              9210,
+              9211,
+              9212
+            ],
+            "integrated_solar_rgb": [
+              112.08598513621837,
+              112.08598513621837,
+              112.08598513621837
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              112.07782393505533,
+              112.07782393505533,
+              112.07782393505533
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 4120,
+            "active_bin_indices": [
+              4760,
+              4761,
+              4952,
+              4953
+            ],
+            "integrated_solar_rgb": [
+              89.662815106567,
+              89.662815106567,
+              89.662815106567
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              89.71663286493211,
+              89.71663286493211,
+              89.71663286493211
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 6320,
+            "active_bin_indices": [
+              4280,
+              4281,
+              4472,
+              4473
+            ],
+            "integrated_solar_rgb": [
+              317.6503555267118,
+              317.6503555267118,
+              317.6503555267118
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              317.6104737710816,
+              317.6104737710816,
+              317.6104737710816
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 6324,
+            "active_bin_indices": [
+              8211,
+              8212,
+              8307,
+              8308
+            ],
+            "integrated_solar_rgb": [
+              276.0562288982328,
+              276.0562288982328,
+              276.0562288982328
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              276.1505146441054,
+              276.1505146441054,
+              276.1505146441054
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 6328,
+            "active_bin_indices": [
+              3533,
+              3534,
+              3773,
+              3774
+            ],
+            "integrated_solar_rgb": [
+              131.95955324918032,
+              131.95955324918032,
+              131.95955324918032
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              131.99219774522587,
+              131.99219774522587,
+              131.99219774522587
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 8504,
+            "active_bin_indices": [
+              2484,
+              2485,
+              2724,
+              2725
+            ],
+            "integrated_solar_rgb": [
+              290.2708850102499,
+              290.2708850102499,
+              290.2708850102499
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              289.8798781582844,
+              289.8798781582844,
+              289.8798781582844
+            ],
+            "failure_count": 3
+          },
+          {
+            "interval_index": 8508,
+            "active_bin_indices": [
+              6050,
+              6051,
+              6242,
+              6243
+            ],
+            "integrated_solar_rgb": [
+              364.16965059470385,
+              364.16965059470385,
+              364.16965059470385
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              363.5562645413044,
+              363.5562645413044,
+              363.5562645413044
+            ],
+            "failure_count": 0
+          },
+          {
+            "interval_index": 8512,
+            "active_bin_indices": [
+              2078,
+              2079,
+              2080,
+              2319
+            ],
+            "integrated_solar_rgb": [
+              116.54031215584837,
+              116.54031215584837,
+              116.54031215584837
+            ],
+            "printed_source_small_angle_energy_rgb": [
+              116.56365557830193,
+              116.56365557830193,
+              116.56365557830193
+            ],
+            "failure_count": 0
+          }
+        ],
+        "all_failed_sensors_union_and_prior_MF4_failure": [
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000009",
+            "native_product_reflected_solar_lux": 520.4915960553562,
+            "reference_reflected_solar_lux": 456.8607217929687,
+            "largest_bin_fraction": 0.299254683085273,
+            "product_formatting_delta_lux": -1.9850781427521724e-05,
+            "bins": [
+              {
+                "index": 2484,
+                "contribution_lux": 127.29366761767686,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.3270408115913072,
+                  0.3270408115913072,
+                  0.3270408115913072
+                ]
+              },
+              {
+                "index": 2485,
+                "contribution_lux": 155.75954168565426,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.374880798287639,
+                  0.374880798287639,
+                  0.374880798287639
+                ]
+              },
+              {
+                "index": 2724,
+                "contribution_lux": 113.11741550248325,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.28265000859660544,
+                  0.28265000859660544,
+                  0.28265000859660544
+                ]
+              },
+              {
+                "index": 2725,
+                "contribution_lux": 124.32095139876041,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.29087633781612265,
+                  0.29087633781612265,
+                  0.29087633781612265
+                ]
+              }
+            ]
+          },
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000011",
+            "native_product_reflected_solar_lux": 299.72723104463347,
+            "reference_reflected_solar_lux": 271.80477141796865,
+            "largest_bin_fraction": 0.33958666874233745,
+            "product_formatting_delta_lux": 1.5858131405366294e-05,
+            "bins": [
+              {
+                "index": 2484,
+                "contribution_lux": 58.758775600832855,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.15096208649061926,
+                  0.15096208649061926,
+                  0.15096208649061926
+                ]
+              },
+              {
+                "index": 2485,
+                "contribution_lux": 101.78337730702201,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.24497140479697926,
+                  0.24497140479697926,
+                  0.24497140479697926
+                ]
+              },
+              {
+                "index": 2724,
+                "contribution_lux": 65.68905445785295,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.16413928593345045,
+                  0.16413928593345045,
+                  0.16413928593345045
+                ]
+              },
+              {
+                "index": 2725,
+                "contribution_lux": 73.49603953705704,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.17196022540044095,
+                  0.17196022540044095,
+                  0.17196022540044095
+                ]
+              }
+            ]
+          },
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000012",
+            "native_product_reflected_solar_lux": 276.7515541416004,
+            "reference_reflected_solar_lux": 241.33359792187508,
+            "largest_bin_fraction": 0.3132684070300618,
+            "product_formatting_delta_lux": 1.2933936659464962e-06,
+            "bins": [
+              {
+                "index": 2484,
+                "contribution_lux": 61.645804262485505,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.15837939337056603,
+                  0.15837939337056603,
+                  0.15837939337056603
+                ]
+              },
+              {
+                "index": 2485,
+                "contribution_lux": 86.69751891421244,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.2086628834958306,
+                  0.2086628834958306,
+                  0.2086628834958306
+                ]
+              },
+              {
+                "index": 2724,
+                "contribution_lux": 50.046507496791726,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.1250527667323492,
+                  0.1250527667323492,
+                  0.1250527667323492
+                ]
+              },
+              {
+                "index": 2725,
+                "contribution_lux": 78.36172476150442,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.18334457118551822,
+                  0.18334457118551822,
+                  0.18334457118551822
+                ]
+              }
+            ]
+          },
+          {
+            "interval_index": 8504,
+            "sensor_id": "s000014",
+            "native_product_reflected_solar_lux": 162.93049085523813,
+            "reference_reflected_solar_lux": 217.62957466406252,
+            "largest_bin_fraction": 0.30845374236141215,
+            "product_formatting_delta_lux": 1.2416579494356483e-05,
+            "bins": [
+              {
+                "index": 2484,
+                "contribution_lux": 42.90575450375526,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.11023276363589461,
+                  0.11023276363589461,
+                  0.11023276363589461
+                ]
+              },
+              {
+                "index": 2485,
+                "contribution_lux": 50.25652347902045,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.12095699202170852,
+                  0.12095699202170852,
+                  0.12095699202170852
+                ]
+              },
+              {
+                "index": 2724,
+                "contribution_lux": 35.659919706188575,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.08910455182108712,
+                  0.08910455182108712,
+                  0.08910455182108712
+                ]
+              },
+              {
+                "index": 2725,
+                "contribution_lux": 34.10830558285335,
+                "indirect_coefficient_per_sr_rgb": [
+                  0.07980391804781921,
+                  0.07980391804781921,
+                  0.07980391804781921
+                ]
+              }
+            ]
+          }
+        ],
+        "negative_active_bin_count": 0,
+        "maximum_independent_product_ratio": 0.05400407770738156
+      }
+    ]
+  },
+  "resources": {
+    "process_count": 29,
+    "all_completed": true,
+    "full_transport_seconds": 2160.0039975,
+    "sum_process_wall_seconds": 2175.7194891,
+    "sampled_max_runner_plus_engine_bytes": 429387776,
+    "sampled_max_scratch_bytes": 73520956,
+    "closed_top_level_bytes": 73814086,
+    "limits": {
+      "memory_bytes": 2147483648,
+      "cleanup_seconds": 5,
+      "timeout_seconds": 7200.0,
+      "file_bytes": 536870912,
+      "scratch_bytes": 2147483648
+    },
+    "concurrency": "Overlapped higher-MF2 B during most of full transport; observed duration is not an isolated benchmark or a 256-sensor estimate."
+  },
+  "annual_storage_constraint": {
+    "minimum_full8760_MF8_ASCII_bytes_before_header": 565266196,
+    "unchanged_single_file_cap_bytes": 536870912,
+    "excess_bytes": 28395284,
+    "full_year_MF8_generated": false
+  },
+  "interpretation": [
+    "MF2, MF4 and MF8 produce one, two and three failing A values respectively; finer solar basis is not demonstrated to converge under this fixed coefficient sampler.",
+    "Nearly conserved sums of coefficient bins and identical primary byte receipts support preserving the retained diffuse and finite terms; they do not establish angular sampling convergence.",
+    "The coefficient files retain only accumulated bins. No sampling variance or confidence interval can be recovered from them.",
+    "The next method decision must account for the failed controlled-reference depth sensitivity and the unchanged full-year 2 percentage-point convergence requirement."
+  ],
+  "overall_reference_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "profile_adopted": false,
+  "release_acceptance_complete": false
+}

@@ -1,0 +1,352 @@
+{
+  "schema_version": "greenlens.higher-MF2-B-diagnostic-summary.v1",
+  "recorded_utc": "2026-10-11T16:56:06.728839+00:00",
+  "scope": "Compact derivative of the strict read-only comparison. All twelve candidate cases were validated, but only the listed internally converged reference cases are compared. Required family sensitivities and annual convergence remain separate.",
+  "strict_report": {
+    "basename": "higher-available-comparison.json",
+    "sha256": "91fe711cd384cc36cfd3db9dd68ad3c80b415f12aa1fe8b48e1c518ab157173f",
+    "bytes": 306206,
+    "source_sha256": {
+      "diagnostic": "b13e5225c6d23c0f1e1a5ed6d41d9c0a152bf6b840ebd5119d6d2df62215a7e5",
+      "paired_reader": "e8f5c66e605d392dc7bbd4c9e5e731f43a9003aef2cd3b069b883ab8e4c9f0c8",
+      "reference_reader": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a"
+    },
+    "hosted_coverage_sha256": "0a20b9fcefc85d6d83a93d60f446f0b5ace86669c807611e05174720d1aae89c"
+  },
+  "candidate_declaration_sha256": "6a16ae5a4a5a622fac83669d33159fd2fc3a0b33a7e4998971698a954964b98b",
+  "candidate_report_sha256": "e464449f185ad23f3ef1a89f48c45c7aa537817cdb4808a5221c020d0a22b421",
+  "candidate_processes_sha256": "7803432adab1ef08b2f89018906a773d9a62299918bbda3b7d774963c0c11138",
+  "profile": {
+    "sky_basis_mf": 2,
+    "primary_count": 65536,
+    "secondary_divisions": 128,
+    "full_ambient_bounces": 8,
+    "direct_ambient_bounces": 0,
+    "receiver_scale": 100,
+    "finite_samples": 4096,
+    "primary_rule": "Hammersley cosine hemisphere: radius=sqrt((i+0.5)/N), azimuth=2*pi*base2_radical_inverse(i), z=sqrt(1-radius^2); sensor-major, i=0..N-1; no rotation/scramble; sensor origin+1e-4 upward; identical uninterrupted full/direct streams",
+    "conversion": "pi/100 times full coefficient diffuse product plus pi/100 times full-minus-direct solar product plus finite direct",
+    "base_arguments": [
+      "-n",
+      "1",
+      "-faa",
+      "-y",
+      "24",
+      "-ad",
+      "128",
+      "-as",
+      "0",
+      "-aa",
+      "0",
+      "-ar",
+      "256",
+      "-av",
+      "0",
+      "0",
+      "0",
+      "-lw",
+      "1e-9",
+      "-lr",
+      "-16",
+      "-dt",
+      "0",
+      "-dc",
+      "1",
+      "-dj",
+      "0",
+      "-ds",
+      "0.05",
+      "-st",
+      "0",
+      "-ss",
+      "0",
+      "-u-",
+      "-V+",
+      "-c",
+      "65536",
+      "-e",
+      "MF:2",
+      "-f",
+      "reinhart.cal",
+      "-b",
+      "rbin",
+      "-bn",
+      "Nrbins",
+      "-m",
+      "sky_glow"
+    ],
+    "ray_arguments": [
+      "-h",
+      "-faa",
+      "-ov",
+      "-n",
+      "1",
+      "-ab",
+      "0",
+      "-ad",
+      "1",
+      "-as",
+      "0",
+      "-aa",
+      "0",
+      "-av",
+      "0",
+      "0",
+      "0",
+      "-lw",
+      "1e-9",
+      "-lr",
+      "16",
+      "-dt",
+      "0",
+      "-dc",
+      "1",
+      "-dj",
+      "0",
+      "-ds",
+      "0.05",
+      "-st",
+      "0",
+      "-ss",
+      "0",
+      "-u-"
+    ],
+    "nonnegative_policy": "Reject negative coefficient and assembled reflected terms; retain every failed value, never clamp",
+    "maximum_process_seconds": 7200,
+    "maximum_runner_plus_engine_working_set_bytes": 2147483648,
+    "maximum_scratch_bytes": 2147483648,
+    "maximum_single_file_bytes": 536870912,
+    "harness_sha256": "1d519c54b493c80e77536db8ea86a79cc594e9120674df398ccd8694135837d2",
+    "primary_helper_sha256": "49ccb427479ee2951c1b94753dafecd318b519511c3aca7c6b629eed695045cd",
+    "finite_kernel_sha256": "2ad71fb2d54b64c984ccc669a0507dc892e5d97e7d8c14e0babbcb00162abbf7",
+    "process_helper_sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "native_process_helper_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b"
+  },
+  "primary_receipt": {
+    "Bytes": 161415784,
+    "Rays": 1572864,
+    "Sha256": "5e3e7df2ea3c4d8df982d00a19190f77c8e82115ecddb812f86e7d2c3892d4b2"
+  },
+  "reference_bindings": [
+    {
+      "report_sha256": "635eb2c488c7ab5a358944e4435ddd529823c5646425f0ac8cdb2696aaeb120f",
+      "processes_sha256": "036a35d9932a5246aa0fe5849e3641a41ab110eaef935157f3823fd1e91722e5",
+      "declaration_sha256": "931fae7924adc14312021730497209d43b68589198e586bfaa3d879124d760fe",
+      "interval_index": 1904
+    },
+    {
+      "report_sha256": "defcc1be258c59094e8462ce6a15d162a1f3298a2c93c3168f50458314f9e4c0",
+      "processes_sha256": "058358d5b1f73415bf3f7a50ee3477974acaaab65f36f1d76803dfe802bed0a7",
+      "declaration_sha256": "a15bce4a1b1f5611ee81c48292a913b42dcd4ae2529994df38ac1ba43736f808",
+      "interval_index": 4112
+    },
+    {
+      "report_sha256": "51b35ed0bab20d9a236374bbd18e9c49855ba81dd58eab695fdb1599f7ac1d42",
+      "processes_sha256": "7564d3ddbc48d2e5ee5136c9de3af4aa0cff7664cb7deb8bbc34464614b53c3f",
+      "declaration_sha256": "e573d1b33014a8db3ac52e12902d6f92729918ed9696f6aa7f09057cb47b136f",
+      "interval_index": 8512
+    },
+    {
+      "report_sha256": "15e0526866531449ce9739e05eece45997a85439dbe87f80a4f5bf8ea4248a14",
+      "processes_sha256": "0a2a096753315b0250834ab91d21bdd5d35e6dbb7c21d28257300fddb6f3785f",
+      "declaration_sha256": "bd6991a472daac23e349ece7fb7f037700034324d6040bf93182880f712eae80",
+      "interval_index": 1908
+    },
+    {
+      "report_sha256": "5c9324af7abacc8bce7e75206b970708b372787553596f67f9eada427da6ca5c",
+      "processes_sha256": "a0d5c4617204ba83134af8a92fbf595e03e903be7506dc67bf779dce9ad6c908",
+      "declaration_sha256": "f255cebb385709379e67dfe8e5fd654ffc35d68abad8b9f091adc33795adc476",
+      "interval_index": 1912
+    },
+    {
+      "report_sha256": "3306837ea86801faeda761d18cf12a85b49ff8fbbf0140e8dc0d5d2cb7e67b31",
+      "processes_sha256": "b37d3ad8ddb593d760e2c983cd6c65eb8e963a39aa952a24ca88999472a54b17",
+      "declaration_sha256": "659b7a1036117bfd474b15933d84e0e55aeb20e7a78c5c4f2c71db64691a6e33",
+      "interval_index": 4116
+    },
+    {
+      "report_sha256": "b9f3dcfa030dbf4c91c88948cb79ff06c5c561dd6f6e660a85cdd3a1dd31efc6",
+      "processes_sha256": "6dc8b4b4af43739840ce18b6c13fe46f80b1b4f9d70d218c64fec0e4b1486cea",
+      "declaration_sha256": "216685e72d8b4e7e26a70b7cccc32d495a61ad53fbfb7d21a8995a9854b37fd1",
+      "interval_index": 4120
+    },
+    {
+      "report_sha256": "013482e2335e3446736d42740ead55e0efe814e0c93c8104bd8799b2458e8cad",
+      "processes_sha256": "a3855cb5998be01a209b946729c0244066821ce035cf1df70afd0db1370f6926",
+      "declaration_sha256": "556ce6136b4575d6de777e4734870aa9cf0e94613cdedf0bcbd9da1ee48d5a5d",
+      "interval_index": 6320
+    },
+    {
+      "report_sha256": "0cb12207da5cb73a238a5ce7ca0e606cd9a370fe562f476ca9ada6629ce72a8f",
+      "processes_sha256": "ec7f67ad0064600f22c1cc8054961a85b97de0f7e3f3c2fc7233947c0ad426f7",
+      "declaration_sha256": "42ba3f2b5174c497a47fd4a3899721691a5e00246e49d190303a05402bca4017",
+      "interval_index": 6328
+    },
+    {
+      "report_sha256": "34f7965510eccef3bcdd86f4831f29a53d10e913fff868cb7fe8ce3eda0cccc4",
+      "processes_sha256": "c3e890c289275929a6beb955c6e3a886c56956da079e8c5a2fa928f017697d1b",
+      "declaration_sha256": "9a82a0f7824d54307d5367a9020186b1b0638ed5be0350f27f7bee492df51dd3",
+      "interval_index": 6324
+    },
+    {
+      "report_sha256": "6c934dd7f9dab999b91a2537f8f90d04d2f090ce259a1d187e63453b5645373b",
+      "processes_sha256": "68ec92ef6bc4e7b86cc88b50bfeb5d59f4a8c6369f0a222d383b7a2b5bad7305",
+      "declaration_sha256": "33c4ab616078ce659e54de07350021966a35ffe249256b2e6a72100fabef1450",
+      "interval_index": 8504
+    },
+    {
+      "report_sha256": "2316912f269ab0c00f0d9069b4142c1cb8220ac79cccb278e7d0a2649c1d3542",
+      "processes_sha256": "b187e3b9977f3fa86c1d7b02ea535e2a9027d0c957c0e9f2eb9be6dbae90a7d8",
+      "declaration_sha256": "7b6b034fab1c52f876d17457be76adbdbc447c41a242051e35b44485fe52977a",
+      "interval_index": 8508
+    }
+  ],
+  "cases": [
+    {
+      "interval_index": 1904,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.53889596901234
+    },
+    {
+      "interval_index": 1908,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.5716023608841274
+    },
+    {
+      "interval_index": 1912,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.4239252360232181
+    },
+    {
+      "interval_index": 4112,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.4670638091034003
+    },
+    {
+      "interval_index": 4116,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.5152525726200702
+    },
+    {
+      "interval_index": 4120,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.47830567527436685
+    },
+    {
+      "interval_index": 6320,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.8196266966514263
+    },
+    {
+      "interval_index": 6324,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.5170834582780867
+    },
+    {
+      "interval_index": 6328,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.4220900234080038
+    },
+    {
+      "interval_index": 8504,
+      "sensor_count": 24,
+      "failure_count": 1,
+      "maximum_tolerance_ratio": 1.2424039097251407
+    },
+    {
+      "interval_index": 8508,
+      "sensor_count": 24,
+      "failure_count": 0,
+      "maximum_tolerance_ratio": 0.4723581022380868
+    },
+    {
+      "interval_index": 8512,
+      "sensor_count": 24,
+      "failure_count": 1,
+      "maximum_tolerance_ratio": 1.0025160275521559
+    }
+  ],
+  "compared_values": 288,
+  "failure_count": 2,
+  "maximum_tolerance_ratio": 1.2424039097251407,
+  "failed_values": [
+    {
+      "interval_index": 8504,
+      "candidate_reflected_solar_lux": 372.3786170171299,
+      "reference_lux": 983.1257079218755,
+      "candidate_rgb": [
+        5.833506531204174,
+        5.833506531204174,
+        5.833506531204174
+      ],
+      "candidate_finite_direct_lux": 0.0,
+      "reference_rgb": [
+        5.492322390625002,
+        5.492322390625002,
+        5.492322390625002
+      ],
+      "within_diagnostic_band": false,
+      "allowed_error_lux": 49.15628539609378,
+      "sensor_id": "s000009",
+      "tolerance_ratio": 1.2424039097251407,
+      "candidate_lux": 1044.1976690855472,
+      "reference_reflected_solar_lux": 318.02766942187486,
+      "reference_diffuse_ground_lux": 665.0980385000007,
+      "reference_finite_direct_lux": 0.0,
+      "absolute_error_lux": 61.071961163671745,
+      "candidate_diffuse_ground_lux": 671.8190520684171,
+      "sensor_index_zero_based": 8
+    },
+    {
+      "interval_index": 8512,
+      "candidate_reflected_solar_lux": 58.88225409743634,
+      "reference_lux": 194.22860959374998,
+      "candidate_rgb": [
+        1.1394663368720401,
+        1.1394663368720401,
+        1.1394663368720401
+      ],
+      "candidate_finite_direct_lux": 0.0,
+      "reference_rgb": [
+        1.0850760312499999,
+        1.0850760312499999,
+        1.0850760312499999
+      ],
+      "within_diagnostic_band": false,
+      "allowed_error_lux": 9.7114304796875,
+      "sensor_id": "s000017",
+      "tolerance_ratio": 1.0025160275521559,
+      "candidate_lux": 203.96447430009522,
+      "reference_reflected_solar_lux": 51.95405120078125,
+      "reference_diffuse_ground_lux": 142.27455839296871,
+      "reference_finite_direct_lux": 0.0,
+      "absolute_error_lux": 9.73586470634524,
+      "candidate_diffuse_ground_lux": 145.08222020265885,
+      "sensor_index_zero_based": 16
+    }
+  ],
+  "resources": {
+    "process_count": 19,
+    "all_processes_completed": true,
+    "full_transport_seconds": 2330.2774629,
+    "sum_process_wall_seconds": 2353.5621288,
+    "sampled_max_runner_plus_engine_bytes": 545656832,
+    "sampled_max_scratch_bytes": 145259093,
+    "closed_top_level_bytes": 145283064,
+    "concurrency": "The full transport overlapped the separately declared MF8 A research transport for part of its run. Observed wall time is not an isolated benchmark or a 256-sensor estimate."
+  },
+  "comparison_band": "max(5 lx, 5% of reference), unchanged",
+  "overall_reference_qualified": false,
+  "candidate_accuracy_accepted": false,
+  "profile_adopted": false,
+  "release_acceptance_complete": false
+}

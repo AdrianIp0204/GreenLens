@@ -20,6 +20,11 @@ docs/evidence/v0.3-native/candidate05-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate06-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate07-*.json -text -whitespace
 docs/evidence/v0.3-engine/higher-MF2-MF4-A-all12-summary.json -text -whitespace
+docs/evidence/v0.3-engine/higher-MF2-B-all12-summary.json -text -whitespace
+docs/evidence/v0.3-engine/MF8-A-all12-and-bins-summary.json -text -whitespace
+docs/evidence/v0.3-engine/final24-baseline-qualification.json -text -whitespace
+docs/evidence/v0.3-engine/reference-A-depth-components.json -text -whitespace
+docs/evidence/v0.3-engine/reference-A-depth-prefix-diagnostic.json -text -whitespace
 docs/evidence/v0.3-engine/MF8-annual-size-lower-bound.json -text -whitespace
 docs/evidence/v0.3-engine/hosted-twelve-case-qualification.json -text -whitespace
 docs/evidence/v0.3-ci/final-main-596fde6.json -text -whitespace

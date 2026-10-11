@@ -1,0 +1,2193 @@
+{
+  "schema_version": "greenlens.reference-sensitivity-component-audit.v1",
+  "recorded_utc": "2026-10-11T16:54:02.699330+00:00",
+  "scope": "Read-only independent arithmetic on strict-reader recomputed native arrays. No engine rerun, threshold change, reference family qualification or candidate acceptance.",
+  "workflow_run": 38153686457,
+  "workflow_commit": "3821d3f5215e49d0c9c2aea1e754256863f2c671",
+  "artifact_id": 11708299280,
+  "artifact_sha256": "a111ed8c1c2402ab07718fff86ebeffbab7a43a929238dde5e2861f46fbfa12d",
+  "audit_sha256": "cd58f859ddc6b25e871ac91d98202244091517a445e799a3e78edb86aa683921",
+  "strict_baseline_sha256": "12fd70055867f266fafa8a7e606fba6fac5686c93d8a474ae652f3de284aa62b",
+  "strict_variant_sha256": "6fc9c6e7f7cfce8f89dc10027878a29f113744942793f22b838408df1d7b58cf",
+  "analysis_script_sha256": "5749ce1fc2ed1767210d4a2b086843c8e8a230f5b152e0fc0cd45ae17cd9bac4",
+  "alternative": "A",
+  "interval_index": 4116,
+  "variant": {
+    "name": "depth10-24",
+    "scale": 100,
+    "lr": -24,
+    "lw": "1e-9",
+    "ab": 10
+  },
+  "sensor_count": 24,
+  "failed_sensor_count": 10,
+  "failure_sensor_ids": [
+    "s000008",
+    "s000012",
+    "s000013",
+    "s000015",
+    "s000016",
+    "s000018",
+    "s000019",
+    "s000020",
+    "s000022",
+    "s000023"
+  ],
+  "all_sensor_delta_direction_counts": {
+    "negative": 20,
+    "positive": 4,
+    "zero": 0
+  },
+  "failed_sensor_delta_direction_counts": {
+    "negative": 9,
+    "positive": 1,
+    "zero": 0
+  },
+  "maximum_error_to_tolerance_ratio": 2.246835278823547,
+  "maximum_absolute_difference_lux": 10.755264868016411,
+  "mean_signed_difference_lux": -3.85969041055154,
+  "all_centroid_and_finite_corrections_unchanged": true,
+  "maximum_solar_component_absolute_delta_lux": 0.002814085493901875,
+  "rows": [
+    {
+      "sensor_id": "s000001",
+      "sensor_index": 0,
+      "baseline_lux": 1228.600160559406,
+      "variant_lux": 1227.1537850065915,
+      "delta_lux": -1.4463755528145157,
+      "relative_difference_percent": -0.11772548948357228,
+      "allowed_difference_lux": 12.28600160559406,
+      "error_to_tolerance_ratio": 0.11772548948357227,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            6.863687847656252,
+            6.863687847656252,
+            6.863687847656252
+          ],
+          "variant_rgb": [
+            6.855607347656246,
+            6.855607347656246,
+            6.855607347656246
+          ],
+          "delta_rgb": [
+            -0.008080500000006374,
+            -0.008080500000006374,
+            -0.008080500000006374
+          ],
+          "delta_lux": -1.446409500001141
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            2.0016165898437502e-07,
+            2.0016165898437502e-07,
+            2.0016165898437502e-07
+          ],
+          "variant_rgb": [
+            3.8981074691406256e-07,
+            3.8981074691406256e-07,
+            3.8981074691406256e-07
+          ],
+          "delta_rgb": [
+            1.8964908792968754e-07,
+            1.8964908792968754e-07,
+            1.8964908792968754e-07
+          ],
+          "delta_lux": 3.394718673941407e-05
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000002",
+      "sensor_index": 1,
+      "baseline_lux": 3507.3881898061377,
+      "variant_lux": 3502.5304011624844,
+      "delta_lux": -4.8577886436532935,
+      "relative_difference_percent": -0.13850159665166106,
+      "allowed_difference_lux": 35.07388189806138,
+      "error_to_tolerance_ratio": 0.13850159665166106,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            19.59434671875,
+            19.59434671875,
+            19.59434671875
+          ],
+          "variant_rgb": [
+            19.567208828125,
+            19.567208828125,
+            19.567208828125
+          ],
+          "delta_rgb": [
+            -0.027137890624999272,
+            -0.027137890624999272,
+            -0.027137890624999272
+          ],
+          "delta_lux": -4.85768242187487
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            7.103345671875e-07,
+            7.103345671875e-07,
+            7.103345671875e-07
+          ],
+          "variant_rgb": [
+            1.1691681199218749e-07,
+            1.1691681199218749e-07,
+            1.1691681199218749e-07
+          ],
+          "delta_rgb": [
+            -5.934177551953125e-07,
+            -5.934177551953125e-07,
+            -5.934177551953125e-07
+          ],
+          "delta_lux": -0.00010622177817996094
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000003",
+      "sensor_index": 2,
+      "baseline_lux": 3566.5238276713785,
+      "variant_lux": 3561.030722571058,
+      "delta_lux": -5.493105100320463,
+      "relative_difference_percent": -0.15401846071240102,
+      "allowed_difference_lux": 35.66523827671379,
+      "error_to_tolerance_ratio": 0.154018460712401,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            19.924714062500005,
+            19.924714062500005,
+            19.924714062500005
+          ],
+          "variant_rgb": [
+            19.894026289062502,
+            19.894026289062502,
+            19.894026289062502
+          ],
+          "delta_rgb": [
+            -0.03068777343750284,
+            -0.03068777343750284,
+            -0.03068777343750284
+          ],
+          "delta_lux": -5.4931114453130085
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            5.8569148828124995e-08,
+            5.8569148828124995e-08,
+            5.8569148828124995e-08
+          ],
+          "variant_rgb": [
+            9.401603277343751e-08,
+            9.401603277343751e-08,
+            9.401603277343751e-08
+          ],
+          "delta_rgb": [
+            3.544688394531251e-08,
+            3.544688394531251e-08,
+            3.544688394531251e-08
+          ],
+          "delta_lux": 6.34499222621094e-06
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000004",
+      "sensor_index": 3,
+      "baseline_lux": 1319.9250389214808,
+      "variant_lux": 1309.1697740534644,
+      "delta_lux": -10.755264868016411,
+      "relative_difference_percent": -0.8148390666794689,
+      "allowed_difference_lux": 13.199250389214809,
+      "error_to_tolerance_ratio": 0.8148390666794688,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            7.373870980468748,
+            7.373870980468748,
+            7.373870980468748
+          ],
+          "variant_rgb": [
+            7.313797562499998,
+            7.313797562499998,
+            7.313797562499998
+          ],
+          "delta_rgb": [
+            -0.06007341796875032,
+            -0.06007341796875032,
+            -0.06007341796875032
+          ],
+          "delta_lux": -10.753141816406309
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            1.1918533937109375e-05,
+            1.1918533937109375e-05,
+            1.1918533937109375e-05
+          ],
+          "variant_rgb": [
+            5.791041734375e-08,
+            5.791041734375e-08,
+            5.791041734375e-08
+          ],
+          "delta_rgb": [
+            -1.1860623519765624e-05,
+            -1.1860623519765624e-05,
+            -1.1860623519765624e-05
+          ],
+          "delta_lux": -0.002123051610038047
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000005",
+      "sensor_index": 4,
+      "baseline_lux": 843.0910909282468,
+      "variant_lux": 846.9002163628417,
+      "delta_lux": 3.8091254345948755,
+      "relative_difference_percent": 0.45180473089817763,
+      "allowed_difference_lux": 8.430910909282469,
+      "error_to_tolerance_ratio": 0.4518047308981776,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            4.71000578515625,
+            4.71000578515625,
+            4.71000578515625
+          ],
+          "variant_rgb": [
+            4.731285921874998,
+            4.731285921874998,
+            4.731285921874998
+          ],
+          "delta_rgb": [
+            0.021280136718748288,
+            0.021280136718748288,
+            0.021280136718748288
+          ],
+          "delta_lux": 3.8091444726559436
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            3.09414961328125e-07,
+            3.09414961328125e-07,
+            3.09414961328125e-07
+          ],
+          "variant_rgb": [
+            2.0305707808593748e-07,
+            2.0305707808593748e-07,
+            2.0305707808593748e-07
+          ],
+          "delta_rgb": [
+            -1.0635788324218753e-07,
+            -1.0635788324218753e-07,
+            -1.0635788324218753e-07
+          ],
+          "delta_lux": -1.903806110035157e-05
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000006",
+      "sensor_index": 5,
+      "baseline_lux": 1257.6879397126793,
+      "variant_lux": 1253.0418207435846,
+      "delta_lux": -4.646118969094687,
+      "relative_difference_percent": -0.36941747013620085,
+      "allowed_difference_lux": 12.576879397126794,
+      "error_to_tolerance_ratio": 0.3694174701362008,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            7.026189238281247,
+            7.026189238281247,
+            7.026189238281247
+          ],
+          "variant_rgb": [
+            7.000233480468751,
+            7.000233480468751,
+            7.000233480468751
+          ],
+          "delta_rgb": [
+            -0.02595575781249604,
+            -0.02595575781249604,
+            -0.02595575781249604
+          ],
+          "delta_lux": -4.646080648436792
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            3.6905215657031255e-07,
+            3.6905215657031255e-07,
+            3.6905215657031255e-07
+          ],
+          "variant_rgb": [
+            1.5497026937499998e-07,
+            1.5497026937499998e-07,
+            1.5497026937499998e-07
+          ],
+          "delta_rgb": [
+            -2.1408188719531257e-07,
+            -2.1408188719531257e-07,
+            -2.1408188719531257e-07
+          ],
+          "delta_lux": -3.8320657807960953e-05
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000007",
+      "sensor_index": 6,
+      "baseline_lux": 1272.1282957414749,
+      "variant_lux": 1263.3127710993626,
+      "delta_lux": -8.815524642112223,
+      "relative_difference_percent": -0.6929744957032019,
+      "allowed_difference_lux": 12.721282957414749,
+      "error_to_tolerance_ratio": 0.6929744957032019,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            7.106861828125,
+            7.106861828125,
+            7.106861828125
+          ],
+          "variant_rgb": [
+            7.057613113281242,
+            7.057613113281242,
+            7.057613113281242
+          ],
+          "delta_rgb": [
+            -0.049248714843757924,
+            -0.049248714843757924,
+            -0.049248714843757924
+          ],
+          "delta_lux": -8.815519957032668
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            1.5925754105468748e-07,
+            1.5925754105468748e-07,
+            1.5925754105468748e-07
+          ],
+          "variant_rgb": [
+            1.33083911875e-07,
+            1.33083911875e-07,
+            1.33083911875e-07
+          ],
+          "delta_rgb": [
+            -2.617362917968749e-08,
+            -2.617362917968749e-08,
+            -2.617362917968749e-08
+          ],
+          "delta_lux": -4.6850796231640615e-06
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000008",
+      "sensor_index": 7,
+      "baseline_lux": 880.0769496620512,
+      "variant_lux": 870.706965608094,
+      "delta_lux": -9.369984053957182,
+      "relative_difference_percent": -1.0646778168153646,
+      "allowed_difference_lux": 8.800769496620513,
+      "error_to_tolerance_ratio": 1.0646778168153646,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            4.91663078515625,
+            4.91663078515625,
+            4.91663078515625
+          ],
+          "variant_rgb": [
+            4.8642846875000005,
+            4.8642846875000005,
+            4.8642846875000005
+          ],
+          "delta_rgb": [
+            -0.05234609765624931,
+            -0.05234609765624931,
+            -0.05234609765624931
+          ],
+          "delta_lux": -9.369951480468627
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            2.1854235937500007e-07,
+            2.1854235937500007e-07,
+            2.1854235937500007e-07
+          ],
+          "variant_rgb": [
+            3.6567563636718746e-08,
+            3.6567563636718746e-08,
+            3.6567563636718746e-08
+          ],
+          "delta_rgb": [
+            -1.8197479573828134e-07,
+            -1.8197479573828134e-07,
+            -1.8197479573828134e-07
+          ],
+          "delta_lux": -3.257348843715236e-05
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000009",
+      "sensor_index": 8,
+      "baseline_lux": 531.525156101098,
+      "variant_lux": 533.8659695660733,
+      "delta_lux": 2.3408134649753265,
+      "relative_difference_percent": 0.44039561215614326,
+      "allowed_difference_lux": 5.31525156101098,
+      "error_to_tolerance_ratio": 0.44039561215614326,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            2.9694089062499995,
+            2.9694089062499995,
+            2.9694089062499995
+          ],
+          "variant_rgb": [
+            2.9824854140625003,
+            2.9824854140625003,
+            2.9824854140625003
+          ],
+          "delta_rgb": [
+            0.013076507812500804,
+            0.013076507812500804,
+            0.013076507812500804
+          ],
+          "delta_lux": 2.3406948984376443
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            5.373644401953125e-06,
+            5.373644401953125e-06,
+            5.373644401953125e-06
+          ],
+          "variant_rgb": [
+            6.03602729475e-06,
+            6.03602729475e-06,
+            6.03602729475e-06
+          ],
+          "delta_rgb": [
+            6.62382892796875e-07,
+            6.62382892796875e-07,
+            6.62382892796875e-07
+          ],
+          "delta_lux": 0.00011856653781064063
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000010",
+      "sensor_index": 9,
+      "baseline_lux": 641.6505489156144,
+      "variant_lux": 638.0805194496374,
+      "delta_lux": -3.5700294659769725,
+      "relative_difference_percent": -0.5563822039909887,
+      "allowed_difference_lux": 6.416505489156144,
+      "error_to_tolerance_ratio": 0.5563822039909887,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            3.584639910156249,
+            3.584639910156249,
+            3.584639910156249
+          ],
+          "variant_rgb": [
+            3.5646947148437493,
+            3.5646947148437493,
+            3.5646947148437493
+          ],
+          "delta_rgb": [
+            -0.01994519531249983,
+            -0.01994519531249983,
+            -0.01994519531249983
+          ],
+          "delta_lux": -3.5701899609374697
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            2.791980859375e-08,
+            2.791980859375e-08,
+            2.791980859375e-08
+          ],
+          "variant_rgb": [
+            9.245396993164064e-07,
+            9.245396993164064e-07,
+            9.245396993164064e-07
+          ],
+          "delta_rgb": [
+            8.966198907226564e-07,
+            8.966198907226564e-07,
+            8.966198907226564e-07
+          ],
+          "delta_lux": 0.0001604949604393555
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000011",
+      "sensor_index": 10,
+      "baseline_lux": 644.4391959823528,
+      "variant_lux": 639.697274389046,
+      "delta_lux": -4.741921593306756,
+      "relative_difference_percent": -0.7358214123022723,
+      "allowed_difference_lux": 6.444391959823528,
+      "error_to_tolerance_ratio": 0.7358214123022723,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            3.600203078125,
+            3.600203078125,
+            3.600203078125
+          ],
+          "variant_rgb": [
+            3.5737276171874983,
+            3.5737276171874983,
+            3.5737276171874983
+          ],
+          "delta_rgb": [
+            -0.026475460937501527,
+            -0.026475460937501527,
+            -0.026475460937501527
+          ],
+          "delta_lux": -4.739107507812774
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            1.589384345121094e-05,
+            1.589384345121094e-05,
+            1.589384345121094e-05
+          ],
+          "variant_rgb": [
+            1.726954405859375e-07,
+            1.726954405859375e-07,
+            1.726954405859375e-07
+          ],
+          "delta_rgb": [
+            -1.5721148010625e-05,
+            -1.5721148010625e-05,
+            -1.5721148010625e-05
+          ],
+          "delta_lux": -0.002814085493901875
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000012",
+      "sensor_index": 11,
+      "baseline_lux": 552.5718112308537,
+      "variant_lux": 542.4880560424015,
+      "delta_lux": -10.083755188452187,
+      "relative_difference_percent": -1.824876872743585,
+      "allowed_difference_lux": 5.525718112308537,
+      "error_to_tolerance_ratio": 1.8248768727435847,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            3.086987898437499,
+            3.086987898437499,
+            3.086987898437499
+          ],
+          "variant_rgb": [
+            3.0306581796875,
+            3.0306581796875,
+            3.0306581796875
+          ],
+          "delta_rgb": [
+            -0.05632971874999937,
+            -0.05632971874999937,
+            -0.05632971874999937
+          ],
+          "delta_lux": -10.083019656249887
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            5.460394085429687e-06,
+            5.460394085429687e-06,
+            5.460394085429687e-06
+          ],
+          "variant_rgb": [
+            1.351275637109375e-06,
+            1.351275637109375e-06,
+            1.351275637109375e-06
+          ],
+          "delta_rgb": [
+            -4.1091184483203125e-06,
+            -4.1091184483203125e-06,
+            -4.1091184483203125e-06
+          ],
+          "delta_lux": -0.0007355322022493359
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000013",
+      "sensor_index": 12,
+      "baseline_lux": 360.8208816585999,
+      "variant_lux": 365.1497770585496,
+      "delta_lux": 4.328895399949715,
+      "relative_difference_percent": 1.1997352758662159,
+      "allowed_difference_lux": 3.608208816585999,
+      "error_to_tolerance_ratio": 1.1997352758662156,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            2.0157590859375003,
+            2.0157590859375003,
+            2.0157590859375003
+          ],
+          "variant_rgb": [
+            2.0399428828124995,
+            2.0399428828124995,
+            2.0399428828124995
+          ],
+          "delta_rgb": [
+            0.024183796874999164,
+            0.024183796874999164,
+            0.024183796874999164
+          ],
+          "delta_lux": 4.328899640624851
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            2.9473672187500002e-08,
+            2.9473672187500002e-08,
+            2.9473672187500002e-08
+          ],
+          "variant_rgb": [
+            5.78275e-09,
+            5.78275e-09,
+            5.78275e-09
+          ],
+          "delta_rgb": [
+            -2.3690922187500002e-08,
+            -2.3690922187500002e-08,
+            -2.3690922187500002e-08
+          ],
+          "delta_lux": -4.240675071562501e-06
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000014",
+      "sensor_index": 13,
+      "baseline_lux": 407.1196944846362,
+      "variant_lux": 403.4103136811704,
+      "delta_lux": -3.7093808034658196,
+      "relative_difference_percent": -0.9111278215517041,
+      "allowed_difference_lux": 4.0711969448463625,
+      "error_to_tolerance_ratio": 0.9111278215517041,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            2.274411593750001,
+            2.274411593750001,
+            2.274411593750001
+          ],
+          "variant_rgb": [
+            2.2536874687500004,
+            2.2536874687500004,
+            2.2536874687500004
+          ],
+          "delta_rgb": [
+            -0.020724125000000537,
+            -0.020724125000000537,
+            -0.020724125000000537
+          ],
+          "delta_lux": -3.7096183750000966
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            1.0728148632812501e-07,
+            1.0728148632812501e-07,
+            1.0728148632812501e-07
+          ],
+          "variant_rgb": [
+            1.43449676171875e-06,
+            1.43449676171875e-06,
+            1.43449676171875e-06
+          ],
+          "delta_rgb": [
+            1.327215275390625e-06,
+            1.327215275390625e-06,
+            1.327215275390625e-06
+          ],
+          "delta_lux": 0.00023757153429492187
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000015",
+      "sensor_index": 14,
+      "baseline_lux": 408.2374902352037,
+      "variant_lux": 403.1470132210323,
+      "delta_lux": -5.090477014171427,
+      "relative_difference_percent": -1.2469401110707832,
+      "allowed_difference_lux": 4.082374902352037,
+      "error_to_tolerance_ratio": 1.2469401110707832,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            2.280656296875001,
+            2.280656296875001,
+            2.280656296875001
+          ],
+          "variant_rgb": [
+            2.2522033359374993,
+            2.2522033359374993,
+            2.2522033359374993
+          ],
+          "delta_rgb": [
+            -0.028452960937501715,
+            -0.028452960937501715,
+            -0.028452960937501715
+          ],
+          "delta_lux": -5.093080007812807
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            7.315406988281251e-08,
+            7.315406988281251e-08,
+            7.315406988281251e-08
+          ],
+          "variant_rgb": [
+            1.4615017988082032e-05,
+            1.4615017988082032e-05,
+            1.4615017988082032e-05
+          ],
+          "delta_rgb": [
+            1.454186391819922e-05,
+            1.454186391819922e-05,
+            1.454186391819922e-05
+          ],
+          "delta_lux": 0.00260299364135766
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000016",
+      "sensor_index": 15,
+      "baseline_lux": 372.47036458481637,
+      "variant_lux": 366.68612143151466,
+      "delta_lux": -5.784243153301702,
+      "relative_difference_percent": -1.5529405029979384,
+      "allowed_difference_lux": 3.7247036458481637,
+      "error_to_tolerance_ratio": 1.5529405029979384,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            2.0808399296875004,
+            2.0808399296875004,
+            2.0808399296875004
+          ],
+          "variant_rgb": [
+            2.04852569140625,
+            2.04852569140625,
+            2.04852569140625
+          ],
+          "delta_rgb": [
+            -0.03231423828125024,
+            -0.03231423828125024,
+            -0.03231423828125024
+          ],
+          "delta_lux": -5.784248652343793
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            9.592599878906249e-08,
+            9.592599878906249e-08,
+            9.592599878906249e-08
+          ],
+          "variant_rgb": [
+            1.266469045703125e-07,
+            1.266469045703125e-07,
+            1.266469045703125e-07
+          ],
+          "delta_rgb": [
+            3.072090578125001e-08,
+            3.072090578125001e-08,
+            3.072090578125001e-08
+          ],
+          "delta_lux": 5.499042134843752e-06
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000017",
+      "sensor_index": 16,
+      "baseline_lux": 262.39424228821014,
+      "variant_lux": 261.3994646214307,
+      "delta_lux": -0.9947776667794415,
+      "relative_difference_percent": -0.37911566126774676,
+      "allowed_difference_lux": 2.6239424228821013,
+      "error_to_tolerance_ratio": 0.37911566126774676,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.46588953125,
+            1.46588953125,
+            1.46588953125
+          ],
+          "variant_rgb": [
+            1.4603215117187502,
+            1.4603215117187502,
+            1.4603215117187502
+          ],
+          "delta_rgb": [
+            -0.005568019531249746,
+            -0.005568019531249746,
+            -0.005568019531249746
+          ],
+          "delta_lux": -0.9966754960937045
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            9.047184478125001e-08,
+            9.047184478125001e-08,
+            9.047184478125001e-08
+          ],
+          "variant_rgb": [
+            1.0692870247968748e-05,
+            1.0692870247968748e-05,
+            1.0692870247968748e-05
+          ],
+          "delta_rgb": [
+            1.0602398403187498e-05,
+            1.0602398403187498e-05,
+            1.0602398403187498e-05
+          ],
+          "delta_lux": 0.0018978293141705621
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000018",
+      "sensor_index": 17,
+      "baseline_lux": 285.550390814891,
+      "variant_lux": 281.4493508929256,
+      "delta_lux": -4.101039921965366,
+      "relative_difference_percent": -1.4361878161896404,
+      "allowed_difference_lux": 2.85550390814891,
+      "error_to_tolerance_ratio": 1.4361878161896404,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.5952482812500008,
+            1.5952482812500008,
+            1.5952482812500008
+          ],
+          "variant_rgb": [
+            1.5723427187499996,
+            1.5723427187499996,
+            1.5723427187499996
+          ],
+          "delta_rgb": [
+            -0.022905562500001198,
+            -0.022905562500001198,
+            -0.022905562500001198
+          ],
+          "delta_lux": -4.100095687500215
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            5.2987214571484374e-06,
+            5.2987214571484374e-06,
+            5.2987214571484374e-06
+          ],
+          "variant_rgb": [
+            2.3668579375e-08,
+            2.3668579375e-08,
+            2.3668579375e-08
+          ],
+          "delta_rgb": [
+            -5.275052877773437e-06,
+            -5.275052877773437e-06,
+            -5.275052877773437e-06
+          ],
+          "delta_lux": -0.0009442344651214453
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000019",
+      "sensor_index": 18,
+      "baseline_lux": 286.6977537392475,
+      "variant_lux": 281.38533805398674,
+      "delta_lux": -5.31241568526076,
+      "relative_difference_percent": -1.85296732045289,
+      "allowed_difference_lux": 2.8669775373924753,
+      "error_to_tolerance_ratio": 1.8529673204528898,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.6016620742187493,
+            1.6016620742187493,
+            1.6016620742187493
+          ],
+          "variant_rgb": [
+            1.5719850546875003,
+            1.5719850546875003,
+            1.5719850546875003
+          ],
+          "delta_rgb": [
+            -0.029677019531249016,
+            -0.029677019531249016,
+            -0.029677019531249016
+          ],
+          "delta_lux": -5.312186496093574
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            1.3544921306640626e-06,
+            1.3544921306640626e-06,
+            1.3544921306640626e-06
+          ],
+          "variant_rgb": [
+            7.410572183593751e-08,
+            7.410572183593751e-08,
+            7.410572183593751e-08
+          ],
+          "delta_rgb": [
+            -1.280386408828125e-06,
+            -1.280386408828125e-06,
+            -1.280386408828125e-06
+          ],
+          "delta_lux": -0.00022918916718023437
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000020",
+      "sensor_index": 19,
+      "baseline_lux": 268.5088190523969,
+      "variant_lux": 263.56788527825364,
+      "delta_lux": -4.940933774143275,
+      "relative_difference_percent": -1.8401383580548611,
+      "allowed_difference_lux": 2.6850881905239694,
+      "error_to_tolerance_ratio": 1.8401383580548611,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.50004915234375,
+            1.50004915234375,
+            1.50004915234375
+          ],
+          "variant_rgb": [
+            1.4724461445312502,
+            1.4724461445312502,
+            1.4724461445312502
+          ],
+          "delta_rgb": [
+            -0.027603007812499802,
+            -0.027603007812499802,
+            -0.027603007812499802
+          ],
+          "delta_lux": -4.940938398437464
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            1.16105394921875e-07,
+            1.16105394921875e-07,
+            1.16105394921875e-07
+          ],
+          "variant_rgb": [
+            1.41939440625e-07,
+            1.41939440625e-07,
+            1.41939440625e-07
+          ],
+          "delta_rgb": [
+            2.583404570312501e-08,
+            2.583404570312501e-08,
+            2.583404570312501e-08
+          ],
+          "delta_lux": 4.624294180859377e-06
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000021",
+      "sensor_index": 20,
+      "baseline_lux": 214.67903620219124,
+      "variant_lux": 215.62870222608666,
+      "delta_lux": 0.9496660238954178,
+      "relative_difference_percent": 0.4423655149080292,
+      "allowed_difference_lux": 2.1467903620219126,
+      "error_to_tolerance_ratio": 0.44236551490802917,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.1993241874999994,
+            1.1993241874999994,
+            1.1993241874999994
+          ],
+          "variant_rgb": [
+            1.204628718749999,
+            1.204628718749999,
+            1.204628718749999
+          ],
+          "delta_rgb": [
+            0.005304531249999744,
+            0.005304531249999744,
+            0.005304531249999744
+          ],
+          "delta_lux": 0.9495110937499542
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            3.70932477609375e-08,
+            3.70932477609375e-08,
+            3.70932477609375e-08
+          ],
+          "variant_rgb": [
+            9.026247866796875e-07,
+            9.026247866796875e-07,
+            9.026247866796875e-07
+          ],
+          "delta_rgb": [
+            8.6553153891875e-07,
+            8.6553153891875e-07,
+            8.6553153891875e-07
+          ],
+          "delta_lux": 0.00015493014546645625
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000022",
+      "sensor_index": 21,
+      "baseline_lux": 233.5248915385483,
+      "variant_lux": 230.23202436220473,
+      "delta_lux": -3.2928671763435773,
+      "relative_difference_percent": -1.410071172562784,
+      "allowed_difference_lux": 2.335248915385483,
+      "error_to_tolerance_ratio": 1.410071172562784,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.3046083242187492,
+            1.3046083242187492,
+            1.3046083242187492
+          ],
+          "variant_rgb": [
+            1.2862111874999997,
+            1.2862111874999997,
+            1.2862111874999997
+          ],
+          "delta_rgb": [
+            -0.01839713671874943,
+            -0.01839713671874943,
+            -0.01839713671874943
+          ],
+          "delta_lux": -3.293087472656148
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            8.3988391015625e-09,
+            8.3988391015625e-09,
+            8.3988391015625e-09
+          ],
+          "variant_rgb": [
+            1.23910449578125e-06,
+            1.23910449578125e-06,
+            1.23910449578125e-06
+          ],
+          "delta_rgb": [
+            1.2307056566796875e-06,
+            1.2307056566796875e-06,
+            1.2307056566796875e-06
+          ],
+          "delta_lux": 0.0002202963125456641
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000023",
+      "sensor_index": 22,
+      "baseline_lux": 236.492132048638,
+      "variant_lux": 231.17854339412725,
+      "delta_lux": -5.313588654510767,
+      "relative_difference_percent": -2.246835278823547,
+      "allowed_difference_lux": 2.3649213204863804,
+      "error_to_tolerance_ratio": 2.246835278823547,
+      "passed": false,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.3211796875000001,
+            1.3211796875000001,
+            1.3211796875000001
+          ],
+          "variant_rgb": [
+            1.2915001015625007,
+            1.2915001015625007,
+            1.2915001015625007
+          ],
+          "delta_rgb": [
+            -0.02967958593749942,
+            -0.02967958593749942,
+            -0.02967958593749942
+          ],
+          "delta_lux": -5.312645882812396
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            5.407743787539061e-06,
+            5.407743787539061e-06,
+            5.407743787539061e-06
+          ],
+          "variant_rgb": [
+            1.4086279101562497e-07,
+            1.4086279101562497e-07,
+            1.4086279101562497e-07
+          ],
+          "delta_rgb": [
+            -5.2668809965234355e-06,
+            -5.2668809965234355e-06,
+            -5.2668809965234355e-06
+          ],
+          "delta_lux": -0.000942771698377695
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    },
+    {
+      "sensor_id": "s000024",
+      "sensor_index": 23,
+      "baseline_lux": 218.72043279478265,
+      "variant_lux": 216.97895454577719,
+      "delta_lux": -1.7414782490054677,
+      "relative_difference_percent": -0.7962119618880933,
+      "allowed_difference_lux": 2.1872043279478266,
+      "error_to_tolerance_ratio": 0.7962119618880933,
+      "passed": true,
+      "components": {
+        "diffuse_rgb": {
+          "baseline_rgb": [
+            1.2218996445312498,
+            1.2218996445312498,
+            1.2218996445312498
+          ],
+          "variant_rgb": [
+            1.2121728710937507,
+            1.2121728710937507,
+            1.2121728710937507
+          ],
+          "delta_rgb": [
+            -0.009726773437499059,
+            -0.009726773437499059,
+            -0.009726773437499059
+          ],
+          "delta_lux": -1.7410924453123315
+        },
+        "full_solar_rgb": {
+          "baseline_rgb": [
+            2.214657480078125e-06,
+            2.214657480078125e-06,
+            2.214657480078125e-06
+          ],
+          "variant_rgb": [
+            5.9329585546874996e-08,
+            5.9329585546874996e-08,
+            5.9329585546874996e-08
+          ],
+          "delta_rgb": [
+            -2.15532789453125e-06,
+            -2.15532789453125e-06,
+            -2.15532789453125e-06
+          ],
+          "delta_lux": -0.0003858036931210937
+        },
+        "centroid_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        },
+        "finite_direct_rgb": {
+          "baseline_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "variant_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_rgb": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "delta_lux": 0.0
+        }
+      }
+    }
+  ],
+  "verified_processes": [
+    {
+      "executable": "oconv.exe",
+      "arguments": [
+        "-f",
+        "scene.rad",
+        "depth10-24.rad"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T16:18:24.1270156Z",
+      "finished_utc": "2026-10-11T16:18:24.1830315Z",
+      "wall_seconds": 0.030393,
+      "sampled_peak_working_set_bytes": null,
+      "sampled_runner_plus_engine_peak_bytes": 351649792,
+      "sampled_scratch_peak_bytes": 4571209,
+      "output_bytes": 2205,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "timeout_seconds": 7200.0,
+        "file_bytes": 536870912,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    },
+    {
+      "executable": "rcontrib.exe",
+      "arguments": [
+        "-I+",
+        "-h",
+        "-faa",
+        "-n",
+        "1",
+        "-ab",
+        "10",
+        "-ad",
+        "8192",
+        "-as",
+        "0",
+        "-aa",
+        "0",
+        "-ar",
+        "256",
+        "-av",
+        "0",
+        "0",
+        "0",
+        "-lw",
+        "1e-9",
+        "-lr",
+        "-24",
+        "-dt",
+        "0",
+        "-dc",
+        "1",
+        "-dj",
+        "0",
+        "-ds",
+        "0.05",
+        "-st",
+        "0",
+        "-ss",
+        "0",
+        "-u-",
+        "-c",
+        "1",
+        "-V+",
+        "-y",
+        "6144",
+        "-m",
+        "sky_glow",
+        "-m",
+        "solar246990",
+        "depth10-24.oct"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-11T16:18:24.2035626Z",
+      "finished_utc": "2026-10-11T16:42:32.1289537Z",
+      "wall_seconds": 1447.9361605,
+      "sampled_peak_working_set_bytes": 6402048,
+      "sampled_runner_plus_engine_peak_bytes": 375480320,
+      "sampled_scratch_peak_bytes": 5063376,
+      "output_bytes": 491520,
+      "terminated_tree_reason": null,
+      "limits": {
+        "scratch_bytes": 2147483648,
+        "timeout_seconds": 7200.0,
+        "file_bytes": 536870912,
+        "memory_bytes": 2147483648
+      },
+      "completed": true
+    }
+  ],
+  "numerical_variant_complete": true,
+  "variant_qualified": false,
+  "reference_family_qualified": false,
+  "candidate_accepted": false,
+  "release_complete": false
+}

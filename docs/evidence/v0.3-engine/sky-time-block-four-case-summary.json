@@ -1,0 +1,444 @@
+{
+  "schema_version": "greenlens.sky-time-block-native-summary.research.v1",
+  "recorded_utc": "2026-10-11T18:27:59.344444+00:00",
+  "status": "complete_native_generator_source_order_and_product_integration_equality",
+  "scope": "Pinned native Radiance full8760-column versus fixed512-target-hour block generator/source/product integration. Three original non-gray coefficient rows test indexing and matrix products; no room transport is executed.",
+  "fixed_protocol": {
+    "case_order": [
+      "reviewed-MF2",
+      "reviewed-MF4",
+      "synthetic-stress-MF2",
+      "synthetic-stress-MF4"
+    ],
+    "block_target_intervals": 512,
+    "block_count": 18,
+    "final_block_targets": 56,
+    "preceding_context_rows": 2,
+    "first_block_previous_year_padding": false,
+    "coefficient_bytes_identical_full_and_blocks": true,
+    "target_numerical_tolerance": 0,
+    "target_source_primitives_and_global_order": "exact after newline normalization only",
+    "warmup_policy": "Parse all context; preserve source geometry/emission/order, retain and discard any context-only RGB differences. Require complete target RGB/source identity.",
+    "sequential_cases": true,
+    "simultaneous_owned_children": 1
+  },
+  "identity": {
+    "recipe_sha256": "835e02d12c8013b0b02a52d5e42347dd9f517e741f61b896ffa0deb6468ab840",
+    "launcher_pins_sha256": "d7b5c27cfd8d91a60e61ca8c9d9438ba09ccbb85d61e9987475c5c83cfea4e10",
+    "successful_source_sha256": {
+      "run-native-sky-chunks.ps1": "050afb07665f2b50c051e0aa66ca0aef5c2d08f72f623f754c4ad648830d842b",
+      "native_audit.py": "4aa2ef6b485a7c813d7cd9ff0d0596babcd8adf50f000b34bd9601dfab5370bf",
+      "sky_chunks.py": "0a5d106db227754c8f0df725a12ea2c41dfa3cf4df4d3b77349205eff775aad5",
+      "prepare_native_recipe.py": "1bbfc5c104d78807f34bdaf554624350d57f4b4805ec67562c55772763224436",
+      "test_sky_chunks.py": "791cbd04c11206f5503a665f4e197ff632e4cf4a87bd717e0f0dd41877d8c354",
+      "supervisor-readable/annual-paired-process.ps1": "d9973386e620d5cb78b328447e1ef76dcac2a1065f21643272ec5b638a866c23",
+      "supervisor-readable/annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b"
+    },
+    "original_supervisor_preserved_sha256": {
+      "annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+      "annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b"
+    },
+    "engine_tag": "rad6R0P2",
+    "engine_archive_sha256": "c4f02efcb4a33f4a43b7ce0ba58100544abc317a1be61f7b0425a64a66eb8a09",
+    "engine_executables": {
+      "gendaymtx.exe": {
+        "sha256": "07a022f4569c7815bba868148add3706aa0e120622f0e8e7c7029e7947af527d",
+        "bytes": 40960
+      },
+      "dctimestep.exe": {
+        "sha256": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05",
+        "bytes": 108032
+      }
+    },
+    "engine_libraries": {
+      "rayinit.cal": {
+        "sha256": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+        "bytes": 5723
+      },
+      "skybright.cal": {
+        "sha256": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454",
+        "bytes": 1138
+      },
+      "reinhart.cal": {
+        "sha256": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934",
+        "bytes": 978
+      }
+    },
+    "reviewed_weather_binding": {
+      "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+      "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+      "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+      "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+    },
+    "raw_compact_audit_sha256": "142e2eb3c2a2227fabf2ebb58e9d4b62455ad179befbb712fdfa58a33d973f29",
+    "roundtrip_completion": {
+      "sha256": "f74894a273a01cce8596b3f3cafab0624a331ab74d48132c3b4fca6a681d77aa",
+      "bytes": 2333
+    },
+    "public_summary_generator_sha256": "55557c5d5fb5c35a81942c5cdd9552d4bbbca5fd570cd832c1f305f40f395e16"
+  },
+  "preserved_attempt01": {
+    "failure": {
+      "sha256": "37cd0d5a8682c0ce35776e710153261e87c88081c34b10fb2b683e499c375fac",
+      "bytes": 1316
+    },
+    "processes": {
+      "sha256": "fdb21e8cca66f3bf32c31aae85a18549479ee2f6cb638db442eb2bcce7b80309",
+      "bytes": 10679
+    },
+    "successful_native_processes": 6,
+    "failed_auditors": 1,
+    "completed_cases": 0,
+    "reason": "Auditor could not read its owned stdout while supervisor held an exclusive file handle. Separate copied supervisor now permits read-only sharing; numerical recipe unchanged.",
+    "launcher_pins_sha256": "79d551ccbbbcb6263870a9983908b66be6fc7baf0e909a7ef272add68dbc0c1c",
+    "remedy": "Changed only copied PowerShell supervisor stdout from exclusive File.Create to FileStream(Create,Write,FileShare.Read). Concurrent writes/deletion remain excluded. Native C# helper and numerical inputs/settings unchanged.",
+    "original_failure_outputs_and_sources_unchanged": true,
+    "retry_in_fresh_directory": true,
+    "guard_evidence": "Real child-read-own-open-stdout regression and18 orchestration guards passed, including active/orphan cancellation and nonzero helper exit. Independent reviewer reran all18."
+  },
+  "cases": [
+    {
+      "case": "reviewed-MF2",
+      "weather": "reviewed",
+      "basis": 2,
+      "complete": true,
+      "intervals": 8760,
+      "blocks": 18,
+      "fixture_coefficient_rows": 3,
+      "sky_rgb_scalars_compared": 30379680,
+      "product_rgb_scalars_compared": 236520,
+      "numerical_mismatches": 0,
+      "maximum_target_difference": 0,
+      "exact_target_solar_source_count": 4411,
+      "discarded_warmup_rgb_difference_count": 16,
+      "native_processes": {
+        "gendaymtx": 39,
+        "dctimestep": 57,
+        "total": 96
+      },
+      "supervised_auditor_processes": 20,
+      "all_required_exits_zero": true,
+      "all_jobs_empty": true,
+      "all_streams_settled": true,
+      "first_process_started_utc": "2026-10-11T16:59:17.1288122Z",
+      "last_process_finished_utc": "2026-10-11T17:07:49.3031706Z",
+      "timing_seconds": {
+        "complete_case": 513.7581478,
+        "native_process_sum": 53.7282055,
+        "auditor_process_sum": 403.9851111,
+        "other_orchestration_setup_disposal": 56.044831199999976
+      },
+      "observed_resources_bytes": {
+        "peak_sampled_runner_plus_job": 289796096,
+        "peak_sampled_live_scratch": 109394260
+      },
+      "sealed_records": {
+        "completion": {
+          "sha256": "428eb480714969d3ac06249768a1d7ba63202fea573287485d753aa914abf600",
+          "bytes": 372
+        },
+        "equality": {
+          "sha256": "5b870b6b4d81403882b58b407d31ffa7993722bf75203235df348716e1bb96de",
+          "bytes": 6469
+        },
+        "processes": {
+          "sha256": "7467714aacfcb32dcf6123d9d8c32a4433aede55ce52bd38381b3b5abd18cbf3",
+          "bytes": 141176
+        }
+      },
+      "assembled_product_seals": {
+        "diffuse": {
+          "sha256": "0a1b03b1ff6cb245f2e950d1ea6895305d2129e436253d53cc789c0be8773550",
+          "bytes": 630720
+        },
+        "solar-full": {
+          "sha256": "6598bbc5a07dc6a6854cdf7805af6443cbaf1386675e5ae4754a710a062f9afc",
+          "bytes": 630720
+        },
+        "solar-direct": {
+          "sha256": "5e25aca4ee99db931a6767f196a67c7ada6d01986760cc2c11cee853cdc6cf2a",
+          "bytes": 630720
+        }
+      },
+      "independent_completed_case_audit": {
+        "sha256": "2d6b7051aa7e4eb32d563df9a32c9ef1a1b3de7bb96c7994d94a31225bb13f46",
+        "bytes": 1550,
+        "scope": "Recomputed all236520 retained full-oracle-product scalars against assembled f64 with exact zero difference; checked18 block seals and116 successful process/resource records. Does not recompare deleted transient sky matrices."
+      }
+    },
+    {
+      "case": "reviewed-MF4",
+      "weather": "reviewed",
+      "basis": 4,
+      "complete": true,
+      "intervals": 8760,
+      "blocks": 18,
+      "fixture_coefficient_rows": 3,
+      "sky_rgb_scalars_compared": 121203360,
+      "product_rgb_scalars_compared": 236520,
+      "numerical_mismatches": 0,
+      "maximum_target_difference": 0,
+      "exact_target_solar_source_count": 4411,
+      "discarded_warmup_rgb_difference_count": 16,
+      "native_processes": {
+        "gendaymtx": 39,
+        "dctimestep": 57,
+        "total": 96
+      },
+      "supervised_auditor_processes": 20,
+      "all_required_exits_zero": true,
+      "all_jobs_empty": true,
+      "all_streams_settled": true,
+      "first_process_started_utc": "2026-10-11T17:07:50.4458123Z",
+      "last_process_finished_utc": "2026-10-11T17:39:07.8316601Z",
+      "timing_seconds": {
+        "complete_case": 1878.4112632,
+        "native_process_sum": 172.8655113,
+        "auditor_process_sum": 1646.3293746,
+        "other_orchestration_setup_disposal": 59.21637729999998
+      },
+      "observed_resources_bytes": {
+        "peak_sampled_runner_plus_job": 466501632,
+        "peak_sampled_live_scratch": 403278533
+      },
+      "sealed_records": {
+        "completion": {
+          "sha256": "2bb117f5c832054cd6a5a56cdb81d4d9bd0220eb10cba27cabc5309f16f1ce75",
+          "bytes": 373
+        },
+        "equality": {
+          "sha256": "49911f3b748d8f48f988e0be5ef594ba4d99da68c5df88870f8896e1de0ae536",
+          "bytes": 6470
+        },
+        "processes": {
+          "sha256": "17a71733159979d2bc0fcbfa74909442e5252a3c849086aa8eb858aca510b266",
+          "bytes": 141284
+        }
+      },
+      "assembled_product_seals": {
+        "diffuse": {
+          "sha256": "58180595ab99303381ef37914ed78acc53798a233719c3f6708566d9320f20ac",
+          "bytes": 630720
+        },
+        "solar-full": {
+          "sha256": "b0a29bd8ddbd79e5866e22ac24d343c1470be42c366ef992cb7466649f479271",
+          "bytes": 630720
+        },
+        "solar-direct": {
+          "sha256": "4fcc56393682f4b0c1260662e9f5a5272696db373815bd740c8706ebc53732e4",
+          "bytes": 630720
+        }
+      },
+      "independent_completed_case_audit": {
+        "sha256": "f9e9646e1d37d3d91d88f11b69ead7b839fcbcbb68ff33c3b936fd41ac7f411e",
+        "bytes": 2084,
+        "scope": "Recomputed all236520 retained full-oracle-product scalars against assembled f64 with exact zero difference; checked18 block seals and116 successful process/resource records. Does not recompare deleted transient sky matrices."
+      }
+    },
+    {
+      "case": "synthetic-stress-MF2",
+      "weather": "synthetic-stress",
+      "basis": 2,
+      "complete": true,
+      "intervals": 8760,
+      "blocks": 18,
+      "fixture_coefficient_rows": 3,
+      "sky_rgb_scalars_compared": 30379680,
+      "product_rgb_scalars_compared": 236520,
+      "numerical_mismatches": 0,
+      "maximum_target_difference": 0,
+      "exact_target_solar_source_count": 4412,
+      "discarded_warmup_rgb_difference_count": 19,
+      "native_processes": {
+        "gendaymtx": 39,
+        "dctimestep": 57,
+        "total": 96
+      },
+      "supervised_auditor_processes": 20,
+      "all_required_exits_zero": true,
+      "all_jobs_empty": true,
+      "all_streams_settled": true,
+      "first_process_started_utc": "2026-10-11T17:39:09.1877786Z",
+      "last_process_finished_utc": "2026-10-11T17:49:05.4498132Z",
+      "timing_seconds": {
+        "complete_case": 597.0950444,
+        "native_process_sum": 63.33929,
+        "auditor_process_sum": 478.834245,
+        "other_orchestration_setup_disposal": 54.92150939999999
+      },
+      "observed_resources_bytes": {
+        "peak_sampled_runner_plus_job": 291680256,
+        "peak_sampled_live_scratch": 121509378
+      },
+      "sealed_records": {
+        "completion": {
+          "sha256": "d5982a51e8497126566fd14c2a36565cab1b05415a0d270f34cf78d8cf3a3b61",
+          "bytes": 388
+        },
+        "equality": {
+          "sha256": "184a291f48d1e76c061c9980df7716a89166bf00e207b082cb6a1e814e3ba6a2",
+          "bytes": 6478
+        },
+        "processes": {
+          "sha256": "4a9c3590136e26ba9d3c70798caafc48d48cf5817f1d59c00d1899fafd49dc26",
+          "bytes": 1121230
+        }
+      },
+      "assembled_product_seals": {
+        "diffuse": {
+          "sha256": "46842dcc8953179fc5937baae7ff5e488f28610d7cd389fbb6de29df408c001e",
+          "bytes": 630720
+        },
+        "solar-full": {
+          "sha256": "7dc752f8c8bc1f9d689af05dbce75a89ec33b00a20904c7261441539b0b6fa37",
+          "bytes": 630720
+        },
+        "solar-direct": {
+          "sha256": "b58315efd04e8de997e3436c40709563301e42599a65f5b844a199e291d5003d",
+          "bytes": 630720
+        }
+      },
+      "independent_completed_case_audit": {
+        "sha256": "561a2e46d730eea9941f06fc941b6c04274fb348ae2bf6398677344c5ef8bb34",
+        "bytes": 2100,
+        "scope": "Recomputed all236520 retained full-oracle-product scalars against assembled f64 with exact zero difference; checked18 block seals and116 successful process/resource records. Does not recompare deleted transient sky matrices."
+      }
+    },
+    {
+      "case": "synthetic-stress-MF4",
+      "weather": "synthetic-stress",
+      "basis": 4,
+      "complete": true,
+      "intervals": 8760,
+      "blocks": 18,
+      "fixture_coefficient_rows": 3,
+      "sky_rgb_scalars_compared": 121203360,
+      "product_rgb_scalars_compared": 236520,
+      "numerical_mismatches": 0,
+      "maximum_target_difference": 0,
+      "exact_target_solar_source_count": 4412,
+      "discarded_warmup_rgb_difference_count": 19,
+      "native_processes": {
+        "gendaymtx": 39,
+        "dctimestep": 57,
+        "total": 96
+      },
+      "supervised_auditor_processes": 20,
+      "all_required_exits_zero": true,
+      "all_jobs_empty": true,
+      "all_streams_settled": true,
+      "first_process_started_utc": "2026-10-11T17:49:06.2316650Z",
+      "last_process_finished_utc": "2026-10-11T18:23:24.7998073Z",
+      "timing_seconds": {
+        "complete_case": 2059.3339493,
+        "native_process_sum": 193.4745619,
+        "auditor_process_sum": 1806.2345139,
+        "other_orchestration_setup_disposal": 59.62487349999992
+      },
+      "observed_resources_bytes": {
+        "peak_sampled_runner_plus_job": 475447296,
+        "peak_sampled_live_scratch": 458910889
+      },
+      "sealed_records": {
+        "completion": {
+          "sha256": "b488a30eb7894826c4e165d8bc4b446c770d757ba187afc87bb90927ab6b312f",
+          "bytes": 389
+        },
+        "equality": {
+          "sha256": "ee92d583be1a40f7d6fbef43b42593a933b244bd985f1781049d666ee7af6c7b",
+          "bytes": 6479
+        },
+        "processes": {
+          "sha256": "98c2da5334d2f0c99a6178e6c4937c41ac1bbcff96dc482e15176660092d4158",
+          "bytes": 1121305
+        }
+      },
+      "assembled_product_seals": {
+        "diffuse": {
+          "sha256": "6d70c9646acfe2ebc1bdacca2cd33c980be814b3685d61a1724ec8e169eb0f1d",
+          "bytes": 630720
+        },
+        "solar-full": {
+          "sha256": "1258f752daa69d87f111ce1382cc6f971278373267a6b2b7c2445f6dbce656ab",
+          "bytes": 630720
+        },
+        "solar-direct": {
+          "sha256": "e0ef9817e29529e432a322beb4db6e6bd707c1225934fffbac203010265102ca",
+          "bytes": 630720
+        }
+      },
+      "independent_completed_case_audit": {
+        "sha256": "6607b692550b8ae566af70c40028d34c048e2186ee0f1c7e8f50635fe7082613",
+        "bytes": 2100,
+        "scope": "Recomputed all236520 retained full-oracle-product scalars against assembled f64 with exact zero difference; checked18 block seals and116 successful process/resource records. Does not recompare deleted transient sky matrices."
+      }
+    }
+  ],
+  "aggregate": {
+    "completed_cases": 4,
+    "completed_blocks": 72,
+    "sky_rgb_scalars_compared": 303166080,
+    "product_rgb_scalars_compared": 946080,
+    "numerical_mismatches": 0,
+    "maximum_target_difference": 0,
+    "native_processes": 384,
+    "supervised_auditors": 80,
+    "complete_case_wall_seconds_sum": 5048.5984047,
+    "native_process_wall_seconds_sum": 483.4075687,
+    "auditor_process_wall_seconds_sum": 4335.3832446
+  },
+  "unchanged_limits": {
+    "each_file_bytes": 536870912,
+    "live_case_scratch_bytes": 2147483648,
+    "observed_runner_plus_job_bytes": 2147483648,
+    "research_aggregate_case_seconds": 7200,
+    "child_seconds": "min(7200, remaining aggregate case budget)",
+    "cleanup_seconds": 5,
+    "deadline_scope": "7200s aggregate per research case was explicitly declared. Existing application policy is7200s per process; no whole-annual production deadline is inferred."
+  },
+  "measurement_limitations": [
+    "Memory and live opened-file sizes are sampled observations, not continuous peaks. Cadence includes full scan plus20ms sleep.",
+    "Native and auditor wall-time sums are reported separately; complete-case wall time also includes setup, source checks and disposal.",
+    "Shared workstation, not an isolated benchmark; unrelated concurrent work was not quantified. Hardware inventory was read after completion.",
+    "Live pinned auditors compared every target sky cell before allowed transient disposal. Later independent audits recomputed retained products and checked seals/process records, not removed sky files."
+  ],
+  "hardware_context": {
+    "schema_version": "greenlens.research-hardware-context.v1",
+    "observed_utc": "2026-10-11T18:26:45.9068615Z",
+    "os": {
+      "Caption": "Microsoft Windows 11 Home",
+      "Version": "10.0.26200",
+      "BuildNumber": "26200",
+      "OSArchitecture": "64-bit"
+    },
+    "processors": [
+      {
+        "Name": "13th Gen Intel(R) Core(TM) i7-13650HX",
+        "NumberOfCores": 14,
+        "NumberOfLogicalProcessors": 20
+      }
+    ],
+    "memory_bytes": 25463480320,
+    "scope": "Post-run read-only hardware inventory; no hostname, serial number, account, network or filesystem configuration retained. Not an isolated performance benchmark."
+  },
+  "unestablished": {
+    "physical_transport_accuracy": true,
+    "reference_family_qualification": true,
+    "annual_profile_qualification": true,
+    "native_256_sensor_execution": true,
+    "MF8_full_year_native_equality": true,
+    "source_or_sensor_partition_equivalence": true
+  },
+  "limits_of_interpretation": [
+    "This is adapter/generator integration evidence, not independent validation of arbitrary building predictions.",
+    "No Radiance room transport, controlled-reference qualification or physical-convergence failure was repaired or accepted by this result.",
+    "Three original coefficient rows do not demonstrate256-sensor runtime or storage execution.",
+    "MF8 was excluded: its format-derived minimum full-year ASCII matrix565266196bytes exceeds the512MiB file cap. No cap was raised.",
+    "Any source or sensor partition would require a new physical method identity and separate qualification, including annual/selected-hour canonical-group behavior.",
+    "Python is external research tooling only. Application runtime remains Rust with no required Python."
+  ],
+  "physical_accuracy_accepted": false,
+  "profile_adopted": false,
+  "production_adopted": false,
+  "release_complete": false
+}

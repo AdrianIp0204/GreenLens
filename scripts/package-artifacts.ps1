@@ -120,6 +120,8 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-ci/superseded-main-d7d74a3.json',
         'docs/evidence/v0.3-ci/final-main-b813b06.json',
         'docs/evidence/v0.3-ci/selected-hour-b813b06.json',
+        'docs/evidence/v0.3-ci/final-main-34a3d53.json',
+        'docs/evidence/v0.3-ci/selected-hour-34a3d53.json',
         'docs/evidence/v0.3-native/candidate06-selected-hour-observation.json',
         'docs/evidence/v0.3-native/candidate06-selected-hour-audit.json',
         'docs/evidence/v0.3-native/candidate06-selected-hour-exported.png',

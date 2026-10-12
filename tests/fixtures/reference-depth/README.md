@@ -109,3 +109,128 @@ foreach ($setting in @(@{id='A4116';hour=4116;sun='solar246990'},@{id='B8512';ho
 Require successful process completion, exact 6,144×6 finite nonnegative output and every hash/identity check before calculating a new result. Use the same `Read`, `Calculate` and `CompareWithScale` calls on the newly completed file paths. Preserve any changed raw hash and every comparison; bitwise historical equality must be tested, not assumed on other platforms/builds. No negative correction is clamped.
 
 This reduced fixture replays already sealed hourly angular fields. It does not regenerate annual weather, establish angular solar visibility, requalify the reference family, or replace the separate external-primary prerequisite. The complete original audits remain [A components](../../../docs/evidence/v0.3-engine/reference-A-depth-components.json) and [B components](../../../docs/evidence/v0.3-engine/reference-B-depth-components.json). Their full 24-row arrays preserve all components and failures; the compact fixture adds the physical input and complete original raw-output closure.
+
+## Separate external-primary transport reproduction
+
+This optional manual reproduction is **not** the eight-process historical `-I+` replay above, the original strict 42-stage driver, or a new qualification. It reproduces exactly the first 13 native stages of the declared external-primary protocol: both cases at N=16,384, followed by A at N=32,768, with all 24 sensors, both complete primary blocks and both full depths plus matched black controls. Those stages supply the fixed 144 A adjacent-N comparisons. A passing subset grants nothing; the other 864 R1 predicates and every R2 predicate remain unevaluated here. Do not run concurrently with an active scientific job.
+
+Use the existing setup/verification definitions above, pinned Radiance installation and a fresh native PowerShell 7.2+ process. The physical scenes, hourly sky fields, sensors and notices are already in this fixture. The exact black scenes and source-scale aliases are in `scripts/annual-reference-prerequisite/derived-inputs`. The two additional `external-primary/*-finite-original.json` files total 2,016 bytes: they are exact copies of the immutable finite4096 inputs, with all 144 RGB channels also present in the published historical component records. `external-primary/manifest.json` pins those bytes and the interpreter. Scene/sensor/finite files are Apache-2.0; the existing Radiance and weather attribution requirements remain unchanged.
+
+The following uses existing supervisor, producer and archive helpers. It keeps both original ASCII and verified gzip in this deliberately small prefix: at most 566,231,040 raw bytes for A and 188,743,680 for B, before gzip/logs. It does **not** simulate the original driver's duplicate-prune records. All files still count toward the same 2 GiB owned-case cap; insufficient reserve, any failure, or the 12-hour deadline stops the manual reproduction without retries.
+
+```powershell
+$src = Join-Path $repo 'scripts/annual-reference-prerequisite'
+if ((Hash "$src/proposal.json") -cne 'a74e9e574cae8ad12806c8b0caadb22a3b7dd99eb30c7af916147517d1e3c6bf' -or
+    (Hash "$src/runtime-pins.json") -cne '34664d92b10b5d9e0661701c692ab1fb3b9cad99517ce49d3b4e46b5e3239fad') { throw 'Protocol differs' }
+$plan = Get-Content "$src/proposal.json" -Raw | ConvertFrom-Json -AsHashtable
+$pins = Get-Content "$src/runtime-pins.json" -Raw | ConvertFrom-Json -AsHashtable
+foreach ($p in $pins.draft.GetEnumerator()) { if ((Hash (Join-Path $src $p.Key)) -cne $p.Value) { throw 'Runtime differs' } }
+foreach ($p in $pins.repository.GetEnumerator()) { if ((Hash (Join-Path $repo $p.Key)) -cne $p.Value) { throw 'Trusted source differs' } }
+$extra = Get-Content "$fixture/external-primary/manifest.json" -Raw | ConvertFrom-Json -AsHashtable
+foreach ($p in $extra.files.GetEnumerator()) { if ((Hash "$fixture/external-primary/$($p.Key)") -cne $p.Value.sha256) { throw 'Finite input differs' } }
+$Python = (Get-Command python.exe -ErrorAction Stop).Source
+if ((Hash $Python) -cne $extra.python.sha256) { throw 'Use the declared research Python interpreter' }
+$EngineRoot = Join-Path $env:LOCALAPPDATA 'GreenLens/engines/radiance-6.0.2/package'
+foreach ($p in $m.engine_sha256.GetEnumerator()) {
+    $sub = if ($p.Key.EndsWith('.exe')) { 'bin' } else { 'lib' }
+    if ((Hash "$EngineRoot/$sub/$($p.Key)") -cne $p.Value) { throw 'Engine/library differs' }
+}
+. (Join-Path $repo 'scripts/annual-paired-process.ps1')
+Add-Type -LiteralPath "$src/reference_primary.cs"
+$prefixRoot = Join-Path $env:LOCALAPPDATA ("GreenLens/verification/reference prefix reproduction " + [guid]::NewGuid().ToString('N'))
+New-Item -ItemType Directory -Path $prefixRoot | Out-Null
+$cache = Join-Path $prefixRoot 'absent-bytecode-cache'
+$native = @{}; $post = @{}; $folders = @{}
+foreach ($id in @('A4116','B8512')) {
+    $case = @($m.cases | Where-Object { $_.case -ceq $id })[0]
+    $folders[$id] = New-CaseInputs $prefixRoot $case
+    $declared = @($plan.cases | Where-Object { "$($_.alternative)$($_.interval_index)" -ceq $id })[0]
+    foreach ($p in $declared.derived_members.GetEnumerator()) {
+        $from = "$src/derived-inputs/$id/$($p.Key)"
+        if ((Hash $from) -cne $p.Value.sha256) { throw 'Derived input differs' }
+        Copy-Item -LiteralPath $from -Destination "$($folders[$id])/$($p.Key)"
+    }
+    Copy-Item -LiteralPath "$fixture/external-primary/$id-finite-original.json" -Destination "$($folders[$id])/finite-original.json"
+    $native[$id] = [Collections.Generic.List[object]]::new(); $post[$id] = [Collections.Generic.List[object]]::new()
+}
+$sensorText = [IO.File]::ReadAllText("$fixture/shared/sensors.pts")
+$expectedReceipts=@{}
+foreach ($n in @(16384,32768)) {
+    $expectedReceipts[$n]=[GreenLensReferenceStream.HammersleyProducer]::new($sensorText,$n).GenerateAsync([IO.Stream]::Null,[Threading.CancellationToken]::None).GetAwaiter().GetResult()
+}
+# Fixed bounded receipt preparation precedes native timing, as in the original driver.
+$clock = [Diagnostics.Stopwatch]::StartNew()
+function Remaining { $v=43200-$clock.Elapsed.TotalSeconds; if ($v -le 0) { throw '12-hour deadline' }; [Math]::Min(7200.,$v) }
+function CheckCaseBudget([string]$dir) {
+    $size=0L
+    foreach ($f in [IO.Directory]::EnumerateFiles($dir)) {
+        $bytes=[GreenLensPairedProcess.NativeProcess]::FileSize($f)
+        if ($bytes -gt 536870912) { throw 'Single-file cap' }; $size += $bytes
+    }
+    if ($size -gt 2147483648) { throw 'Owned-case cap' }
+}
+# Exact original order and output names, restricted to ordinals 1 through 13.
+foreach ($stage in @($plan.stages | Where-Object { $_.ordinal -le 13 })) {
+    $OutputDirectory = $folders[$stage.case]; $records = $native[$stage.case]
+    $size=0L; foreach ($f in [IO.Directory]::EnumerateFiles($OutputDirectory)) { $size += [GreenLensPairedProcess.NativeProcess]::FileSize($f) }
+    if ($size+1073741824 -gt 2147483648) { throw 'Insufficient raw-plus-gzip reserve' }
+    $h = if ($stage.case -ceq 'A4116') { 4116 } else { 8512 }
+    $sun = if ($h -eq 4116) { 'solar246990' } else { 'solar510750' }
+    if ($stage.executable -ceq 'oconv.exe') {
+        $scene = if ($stage.ordinal -in @(2,4)) { 'scene-black.rad' } else { 'scene.rad' }
+        $argv = @('-f',$scene,"hour-$h-scale100.rad")
+    } else {
+        $n = [int]$stage.primary_count_per_sensor_per_block
+        $ab = $stage.id.Substring($stage.id.LastIndexOf('-ab')+3)
+        $octree = if ($ab -ceq '0') { "hour-$h-scale100-black.oct" } else { "hour-$h-scale100.oct" }
+        $argv = @('-h','-faa','-n','1','-ab',$ab,'-ad','128','-as','0','-aa','0','-ar','256','-av','0','0','0','-lw','1e-9','-lr','-16','-dt','0','-dc','1','-dj','0','-ds','0.05','-st','0','-ss','0','-u-','-c','1','-V+','-y',"$(48L*$n)",'-m','sky_glow','-m',$sun,$octree)
+    }
+    if (($argv | ConvertTo-Json -Compress) -cne ($stage.argv | ConvertTo-Json -Compress)) { throw 'Literal argument order differs' }
+    $call = @{Executable="$EngineRoot/bin/$($stage.executable)";Name=[IO.Path]::GetFileNameWithoutExtension($stage.executable);Arguments=$argv;Output=$stage.output;TimeoutSeconds=(Remaining)}
+    if ($stage.executable -ceq 'rcontrib.exe') { $call.InputProducer=[GreenLensReferenceStream.HammersleyProducer]::new($sensorText,$n) }
+    $receipt = Invoke-PairedProcess @call
+    Copy-Item "$OutputDirectory/processes.json" "$OutputDirectory/native-processes.json"
+    CheckCaseBudget $OutputDirectory
+    if ($stage.executable -ceq 'rcontrib.exe') {
+        $expected=$expectedReceipts[$n]
+        if ($receipt.Sha256 -cne $expected.Sha256 -or $receipt.Bytes -ne $expected.Bytes -or $receipt.Rays -ne 48L*$n) { throw 'Primary stream differs' }
+        if (Test-Path -LiteralPath $cache) { throw 'Bytecode cache must be absent' }
+        $records=$post[$stage.case]; $seconds=Remaining
+        Invoke-PairedProcess -Executable $Python -Name 'research-python' -Arguments @('-B','-X','utf8','-X',"pycache_prefix=$cache","$src/reference_stream.py",'archive','--root',$OutputDirectory,'--name',$stage.output,'--N',"$n",'--scale','100','--seconds',([Math]::Max(.001,$seconds-1)).ToString('R',[Globalization.CultureInfo]::InvariantCulture)) -Output "$($stage.output).archive.json" -TimeoutSeconds $seconds
+        if (Test-Path -LiteralPath $cache) { throw 'Bytecode cache must remain absent' }
+        Copy-Item "$OutputDirectory/processes.json" "$OutputDirectory/postprocesses.json"
+        CheckCaseBudget $OutputDirectory
+    }
+}
+# Inline use of the existing readers, under the SAME decreasing global budget.
+$audit=@'
+import json,pathlib,sys,time
+sys.path.insert(0,sys.argv[1])
+import reference_stream as S, reference_report as R
+root=pathlib.Path(sys.argv[2]); end=time.monotonic()+float(sys.argv[3])
+folder=root/'A4116'; S.inventory(folder); summaries={}; assemblies={}; checks=[]
+finite=R.load(folder/'finite-original.json')
+for n in (16384,32768):
+    for ab in (0,8,9):
+        receipt=R.load(folder/f'A4116-base-N{n}-ab{ab}.rgb.archive.json')
+        summaries[n,ab]=R.expected(S.read_archive(folder,receipt,end),n,100)
+    for ab in (8,9): assemblies[n,ab]=S.assemble(summaries[n,ab],summaries[n,0],finite)
+for ab in (8,9):
+    checks += S.compare(assemblies[16384,ab]['mean_rows'],assemblies[32768,ab]['mean_rows'],label=f'A4116/N16384-32768/ab{ab}')
+S.require(len(checks)==144,'Exact subset count'); S.inventory(folder); S.deadline(end)
+print(json.dumps({'scope':'manual physical prefix reproduction, not the strict provenance audit','assemblies':[{'N':n,'ab':ab,**v} for (n,ab),v in assemblies.items()],'checks':checks,'negative_results':[{'N':n,'ab':ab,'blocks':v['negative_sensor_blocks']} for (n,ab),v in assemblies.items() if not v['completed']],'R1_complete':False,'remaining_R1_predicates_not_evaluated':864,'reference_family_qualified':False,'accuracy_accepted':False},allow_nan=False))
+'@
+if (Test-Path -LiteralPath $cache) { throw 'Bytecode cache must remain absent' }
+$OutputDirectory=$prefixRoot; $records=[Collections.Generic.List[object]]::new(); $seconds=Remaining
+Invoke-PairedProcess -Executable $Python -Name 'research-python' -Arguments @('-B','-X','utf8','-X',"pycache_prefix=$cache",'-c',$audit,$src,$prefixRoot,([Math]::Max(.001,$seconds-1)).ToString('R',[Globalization.CultureInfo]::InvariantCulture)) -Output 'prefix-checks.json' -TimeoutSeconds $seconds
+foreach ($dir in $folders.Values) { CheckCaseBudget $dir }
+CheckCaseBudget $prefixRoot
+if (Test-Path -LiteralPath $cache) { throw 'Bytecode cache must remain absent' }
+$null=Remaining
+```
+
+The producer supplies block→sensor→ray order, each block covering the **entire** cosine hemisphere. N=16,384 is not a prefix of N=32,768. For each closed archive, use the pinned `reference_stream.read_archive` and `reference_report.expected(summary,N,100)`, then `reference_stream.assemble(full,black,finite)`. The assembly is `full.diffuse + full.solar − black.solar + original finite4096`, with pi/100 applied once by the streaming collector. Do not subtract the black diffuse channel or use the old irradiance centroid control. Keep negative residuals as failures.
+
+The inline comparison preserves A's equal-two-block mean rows for N=16,384 versus N=32,768 at ab=8 and ab=9, every sensor/component row and the later-count component denominator. It yields exactly 144 predicates at `max(0.1 lx, 1% of the later component)`. B's complete N=16,384 streams are retained without inventing a B adjacent-N result. Record all primary/native/archive receipts and all raw hashes; disagreement with the retained run is evidence, not a reason to choose other settings. Recheck copied input and helper hashes before interpreting a result; this snippet does not provide the original driver's full identity closure.
+
+This compact reproduction intentionally cannot invoke the original strict inspector or `run-reference.ps1`: their exact 24-member-per-case original baseline closure includes full-year matrices, weather/model, historical raw outputs and source/process declarations (64,379,016 bytes for A; 64,385,476 for B, before derived files). Those files and hashes remain enumerated in the sealed proposal. A compact transport replay does not replace that provenance check, complete R1/R2, qualify the reference family, or validate solar angular physics.

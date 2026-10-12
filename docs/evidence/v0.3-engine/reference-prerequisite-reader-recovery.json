@@ -1,0 +1,103 @@
+{
+  "schema_version": "greenlens.reference-rejection-checkpoint-path-recovery.v1",
+  "recorded_utc": "2026-10-12T06:37:02.125779+00:00",
+  "purpose": "Narrow read-only inspector path-identity repair, not a scientific or runtime change",
+  "original_inspector_sha256": "e65b2d39eba06c34e51bf137d8acb7fcb170be5b0aa4e64ec158dd98480c9496",
+  "recovery_inspector_sha256": "295a88881b462a845cd6f00d946a39f19b7da536d843b50476003621c282a1ab",
+  "original_proposal_sha256": "a74e9e574cae8ad12806c8b0caadb22a3b7dd99eb30c7af916147517d1e3c6bf",
+  "original_execution_declaration_sha256": "86f0a07407abf8326571bedaa5e5cbccb9b24d6f65ef5bda3546340d55550c62",
+  "original_runtime_pins_sha256": "34664d92b10b5d9e0661701c692ab1fb3b9cad99517ce49d3b4e46b5e3239fad",
+  "failure": {
+    "type": "ValueError",
+    "message": "Archive arguments",
+    "before_numerical_archive_read": true,
+    "original_attempt_preserved": true,
+    "members": {
+      "checkpoint.json": {
+        "sha256": "1d17608560492b6ee0e3fe08574fe84d5041710eb93f8cdaf03985e1158c01ac",
+        "bytes": 393
+      },
+      "invocation.json": {
+        "sha256": "18a687ef292ba18c7ae600dd942690767ab7b956f65336d100c7fb543b1cb03c",
+        "bytes": 1555
+      },
+      "processes.json": {
+        "sha256": "3a3f4bc23e46f013466fea5caef523f6f637a1de312685d34bcfa1f36c4daa1d",
+        "bytes": 3183
+      }
+    }
+  },
+  "cause": "Windows packaged-app storage virtualization: the recorded logical application-data directory and its filesystem-resolved physical directory refer to the same directory, but literal strings differ. No machine-specific rewrite or generic string relaxation is used.",
+  "change": "Only archive --root is passed through the existing absolute no-reparse directory validation and compared by canonical directory identity. Argument count, all other tokens, ordering, source/engine/input/hash/process/receipt checks, normalization, all144 predicates and original deadline stay unchanged.",
+  "metadata_observation": {
+    "snapshot_sha256": "8d8c2f12231ecc3513542f67334155e2bda18e6c5f74ba82bdcea8a6c969d0f5",
+    "snapshot_bytes": 9683,
+    "snapshot_retained": "postprocesses-observed.json",
+    "archives": [
+      {
+        "archive": "A4116-base-N16384-ab0.rgb",
+        "only_differing_argument": "--root value",
+        "logical_and_resolved_same_directory": true,
+        "samefile": true,
+        "original_process_completed": true
+      },
+      {
+        "archive": "A4116-base-N16384-ab8.rgb",
+        "only_differing_argument": "--root value",
+        "logical_and_resolved_same_directory": true,
+        "samefile": true,
+        "original_process_completed": true
+      },
+      {
+        "archive": "A4116-base-N16384-ab9.rgb",
+        "only_differing_argument": "--root value",
+        "logical_and_resolved_same_directory": true,
+        "samefile": true,
+        "original_process_completed": true
+      },
+      {
+        "archive": "A4116-base-N32768-ab0.rgb",
+        "only_differing_argument": "--root value",
+        "logical_and_resolved_same_directory": true,
+        "samefile": true,
+        "original_process_completed": true
+      },
+      {
+        "archive": "A4116-base-N32768-ab8.rgb",
+        "only_differing_argument": "--root value",
+        "logical_and_resolved_same_directory": true,
+        "samefile": true,
+        "original_process_completed": true
+      },
+      {
+        "archive": "A4116-base-N32768-ab9.rgb",
+        "only_differing_argument": "--root value",
+        "logical_and_resolved_same_directory": true,
+        "samefile": true,
+        "original_process_completed": true
+      }
+    ],
+    "numerical_arrays_read": false
+  },
+  "tests": [
+    {
+      "file": "path-tests-20261012T063612846754Z.json",
+      "sha256": "902fd5c74937a9765d1f4d5d73778f4a0c9469881a81ff0918c40e51a242d9b6",
+      "tests": 6,
+      "passed": true,
+      "scope": "Actual external temporary path-alias identity plus synthetic mutation guards; no numerical archive reads or engine execution"
+    },
+    {
+      "file": "pure-tests-20261012T063614053668Z.json",
+      "sha256": "175002ae17b28855553da2cbce144e612488ac7461dc0aecaa2d66ac6e582811",
+      "tests": 13,
+      "passed": true,
+      "scope": "Synthetic/structural tests only; no experiment numerical data or native processes"
+    }
+  ],
+  "retry_policy": "Native owner may launch only a fresh supervised read-only inspection using the recovery inspector, under the unchanged original deadline. Original driver remains untouched; no extra engine, rerun, qualification, or cancellation authority follows from this record.",
+  "native_processes_started": 0,
+  "scientific_predicates_changed": false,
+  "source_or_input_bytes_changed": false,
+  "reference_family_qualified": false
+}

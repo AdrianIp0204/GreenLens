@@ -1,0 +1,35 @@
+{
+  "schema": "greenlens.public-external-primary-finite-inputs.v1",
+  "purpose": "Additional exact finite inputs for the scoped first13-stage physical transport reproduction; not a replacement baseline/provenance closure",
+  "original_execution_declaration_sha256": "86f0a07407abf8326571bedaa5e5cbccb9b24d6f65ef5bda3546340d55550c62",
+  "proposal_sha256": "a74e9e574cae8ad12806c8b0caadb22a3b7dd99eb30c7af916147517d1e3c6bf",
+  "runtime_pins_sha256": "34664d92b10b5d9e0661701c692ab1fb3b9cad99517ce49d3b4e46b5e3239fad",
+  "python": {
+    "sha256": "cce21c0e8710e304273e98ac4b2b0f5aceb639acbcd2343cbaa5c4e81619c45b",
+    "application_dependency": false,
+    "version": "Python 3.14.3",
+    "research_only": true
+  },
+  "files": {
+    "A4116-finite-original.json": {
+      "sha256": "6c541435e8c20fd83c31c0a6a00b698d7ad099a532eb6e0ae7bbc420666b10f9",
+      "bytes": 963,
+      "channels": 3,
+      "component": "original unscaled finite4096 sensor irradianceRGB",
+      "rows": 24,
+      "source_case": "A4116"
+    },
+    "B8512-finite-original.json": {
+      "sha256": "a56c4a081682e8bec29f21063e8d57700e7af949a9d7dd511a9701e963fa67c0",
+      "bytes": 1053,
+      "channels": 3,
+      "component": "original unscaled finite4096 sensor irradianceRGB",
+      "rows": 24,
+      "source_case": "B8512"
+    }
+  },
+  "license": "Apache-2.0 for original synthetic-scene numeric outputs; retain original hourly weather and Radiance notices alongside physical inputs",
+  "reference_family_qualified": false,
+  "accuracy_accepted": false,
+  "native_processes_started": 0
+}

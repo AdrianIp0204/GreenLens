@@ -15,6 +15,7 @@ async function component(path){
     const specifier=match[2];let target;
     if(specifier.endsWith('/WeatherCalendarPicker'))target='data:text/javascript,export function WeatherCalendarPicker(){return null}';
     else if(specifier.endsWith('/AnalysisContent'))target=await component('../src/workspace/AnalysisContent.tsx');
+    else if(specifier.endsWith('/QualificationStatus'))target=await component('../src/workspace/QualificationStatus.tsx');
     else target=specifier.startsWith('.')?new URL(specifier,url).href:import.meta.resolve(specifier);
     linked=linked.replace(match[0],`from ${JSON.stringify(target)}`);
   }

@@ -182,7 +182,8 @@ export function ClimateStudyPanel({ study, weather, path, disabled, onCommitStud
           {!weather.length && <p className="climate-muted">Import one complete non-leap hourly EPW year below.</p>}
           {assetError && <p className="climate-error">{assetError}</p>}
           {inspectedAsset && <details className="climate-details"><summary>{inspectedAsset.inspection.location.city} · weather and source details</summary><Quality inspection={inspectedAsset.inspection}/><p>{inspectedAsset.asset.source.citation}</p><p>License: {inspectedAsset.asset.source.license}. {inspectedAsset.asset.source.rights_note}</p>{inspectedAsset.asset.source.synthetic_non_climatic && <p className="climate-quality-warning">Synthetic fixture; not climatic data.</p>}</details>}
-          <label>Numerical profile<select value={draft.profile} onChange={event => update('profile', event.target.value as StudyDraft['profile'])}><option value="shipping">Shipping</option><option value="reference">Reference — higher sampling</option></select></label>
+          <label>Numerical profile<select value={draft.profile} onChange={event => update('profile', event.target.value as StudyDraft['profile'])}><option value="shipping">Candidate profile</option><option value="reference">Higher-sampling comparison profile</option></select></label>
+          <p className="panel-note">These profile names describe sampling settings, not accuracy ratings. Each result displays its method-specific scientific qualification separately from calculation completion.</p>
           {draft.mode === 'weather_hour' && <>
             <WeatherCalendarPicker path={path} weatherId={selectedId||null} current={currentInterval} disabled={locked} onSelect={index=>update('interval',String(index))}/>
             <label>Weather interval index (0–8759)<input inputMode="numeric" value={draft.interval} onChange={event => update('interval', event.target.value)}/></label>
@@ -220,7 +221,7 @@ export function ClimateStudyPanel({ study, weather, path, disabled, onCommitStud
         <div className="climate-actions"><button type="button" className="primary" disabled={!source.citation.trim() || !source.license.trim() || !source.rights_note.trim()} onClick={() => void importFile()}>Retain weather in project</button></div>
       </div></>}
     </fieldset></div>}
-    <details className="climate-details"><summary>Scope and limitations</summary><p>Climate studies use fixed geometry and shading, one simplified glass pane, 8,760 non-leap hourly intervals and at most 256 sensors. Reference sampling is slower; it is not a guarantee of accuracy for arbitrary buildings.</p><p>Schedule and threshold changes can derive new metrics from matching annual evidence without repeating light transport. Weather-hour changes select a different calculation input; inspecting another hour of an existing annual run does not.</p><p>Metrics are not sDA, ASE, criterion evaluations or certification. The static overcast study has no simulated date or weather sequence.</p></details>
+    <details className="climate-details"><summary>Scope and limitations</summary><p>Climate studies use fixed geometry and shading, one simplified glass pane, 8,760 non-leap hourly intervals and at most 256 sensors. Higher sampling is slower; it is not a guarantee of accuracy for arbitrary buildings.</p><p>Schedule and threshold changes can derive new metrics from matching annual evidence without repeating light transport. Weather-hour changes select a different calculation input; inspecting another hour of an existing annual run does not.</p><p>Metrics are not sDA, ASE, criterion evaluations or certification. The static overcast study has no simulated date or weather sequence.</p></details>
   </section>;
 }
 

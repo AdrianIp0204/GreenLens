@@ -528,6 +528,18 @@ async fn start_study(
 }
 
 #[tauri::command]
+async fn climate_assessment(
+    path: String,
+    project: Project,
+    run_id: String,
+) -> CommandResult<greenlens_runner::qualification::RunAssessment> {
+    blocking(move || {
+        greenlens_runner::qualification::assess_climate(Path::new(&path), &project, &run_id)
+    })
+    .await
+}
+
+#[tauri::command]
 async fn current_climate_result(
     path: String,
     project: Project,
@@ -651,6 +663,7 @@ pub fn run() {
             study_restore,
             start_study,
             current_climate_result,
+            climate_assessment,
             climate_result_values,
             climate_sensor_series,
             climate_derive_metrics,

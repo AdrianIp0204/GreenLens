@@ -100,6 +100,17 @@ fn selected_export_roundtrips_reader_with_retained_weather_and_offline_report() 
     let temp = tempdir().unwrap();
     let source = temp.path().join("source");
     let (_, records) = fixture_project(&source);
+    let original_bytes: Vec<_> = records
+        .iter()
+        .map(|run| {
+            let dir = source.join("runs").join(&run.id);
+            let sums: Checksums = read_json(&dir.join("checksums.json")).unwrap();
+            sums.sha256
+                .keys()
+                .map(|name| (name.clone(), fs::read(dir.join(name)).unwrap()))
+                .collect::<Vec<_>>()
+        })
+        .collect();
     let package = temp.path().join("selected.zip");
     export_selected(
         &source,
@@ -125,14 +136,88 @@ fn selected_export_roundtrips_reader_with_retained_weather_and_offline_report() 
     assert!(report.contains("Daylight-saving adjustment applied: no"));
     assert!(report.contains("Radiation policy:"));
     assert!(report.contains("Complete validated time-normalization policy"));
+    assert!(report.contains("GreenLens · selected evidence"));
+    assert!(report.contains("Model +Y ↑; window facade ↓"));
+    assert!(!report.contains("Metric settings match:"));
+    assert!(!report.contains("Â"));
+    assert!(!report.contains("â€"));
+    assert_eq!(
+        report
+            .matches("<h3>Scientific qualification unassessed · Candidate profile</h3>")
+            .count(),
+        4
+    ); // each run and each comparison side, outside collapsed details
+    assert!(report.contains("Full retained evidence checks passed"));
+    let supplement: Value = read_json(&extracted.join("qualification.json")).unwrap();
+    assert_eq!(supplement["assessments"].as_object().unwrap().len(), 2);
+    for (run, members) in records.iter().zip(&original_bytes) {
+        assert_eq!(
+            supplement["assessments"][&run.id]["record_sha256"],
+            canonical_hash(run).unwrap()
+        );
+        for (name, bytes) in members {
+            assert_eq!(
+                &fs::read(
+                    temp.path()
+                        .join("source-unavailable")
+                        .join("runs")
+                        .join(&run.id)
+                        .join(name)
+                )
+                .unwrap(),
+                bytes,
+                "original unchanged {name}"
+            );
+            assert_eq!(
+                &fs::read(extracted.join("runs").join(&run.id).join(name)).unwrap(),
+                bytes,
+                "immutable {name}"
+            );
+        }
+    }
     let comparisons: Value = read_json(&extracted.join("comparisons.json")).unwrap();
     assert_eq!(comparisons["climate"].as_array().unwrap().len(), 1);
     assert_eq!(comparisons["climate"][0]["a_id"], records[0].id);
     assert_eq!(comparisons["climate"][0]["b_id"], records[1].id);
+    assert_eq!(
+        comparisons["climate"][0]["a_assessment"]["scientific_qualification"]["status"],
+        "unassessed"
+    );
+    assert_eq!(
+        comparisons["climate"][0]["b_assessment"]["scientific_qualification"]["status"],
+        "unassessed"
+    );
+    // Even a coherently re-sealed imported assessment is merely commentary.
+    let mut forged = supplement;
+    for assessment in forged["assessments"].as_object_mut().unwrap().values_mut() {
+        assessment["scientific_qualification"]["status"] = json!("limited_qualified");
+    }
+    write_json(&extracted.join("qualification.json"), &forged).unwrap();
+    let root_seal: Checksums = read_json(&extracted.join("checksums.json")).unwrap();
+    seal(
+        &extracted,
+        &root_seal
+            .sha256
+            .keys()
+            .map(String::as_str)
+            .collect::<Vec<_>>(),
+    )
+    .unwrap();
+    assert!(crate::open_project(&extracted)
+        .unwrap()
+        .climate_assessments
+        .values()
+        .all(|value| value.scientific_qualification.status
+            == crate::qualification::QualificationStatus::Unassessed));
     let single = temp.path().join("single.zip");
     export_selected(&extracted, &single, std::slice::from_ref(&records[0].id)).unwrap();
     let single_root = temp.path().join("single");
     extract_package(&single, &single_root).unwrap();
+    let recalculated: Value = read_json(&single_root.join("qualification.json")).unwrap();
+    assert_eq!(
+        recalculated["assessments"][&records[0].id]["scientific_qualification"]["status"],
+        "unassessed"
+    );
     assert_eq!(
         crate::open_project(&single_root)
             .unwrap()
@@ -140,6 +225,52 @@ fn selected_export_roundtrips_reader_with_retained_weather_and_offline_report() 
             .len(),
         1
     );
+}
+
+#[test]
+fn standalone_assessment_labels_all_three_statuses_without_implying_general_acceptance() {
+    use crate::qualification::*;
+    let temporary = tempdir().unwrap();
+    let record = climate::tests::fixture(temporary.path(), false);
+    let mut assessment = from_record(
+        &record,
+        None,
+        EvidenceIntegrity::FullRetainedEvidenceChecked,
+    )
+    .unwrap();
+    for (status, expected) in [
+        (
+            QualificationStatus::Failed,
+            "Failed scientific qualification",
+        ),
+        (
+            QualificationStatus::Unassessed,
+            "Scientific qualification unassessed",
+        ),
+        (
+            QualificationStatus::LimitedQualified,
+            "Limited scientific qualification",
+        ),
+    ] {
+        // Synthetic presentation input only; positive production registry is empty.
+        assessment.scientific_qualification.status = status;
+        assessment.scientific_qualification.reason = "<scope> only".into();
+        assessment.scientific_qualification.evidence = vec![QualificationEvidence {
+            id: "synthetic-fixture-only".into(),
+            sha256: "0".repeat(64),
+            tested_scope: "one exact synthetic condition".into(),
+            outcome: status,
+            reason: "Test presentation only".into(),
+        }];
+        let mut html = Html(String::new());
+        render_assessment(&mut html, &assessment).unwrap();
+        assert!(html.0.contains(expected));
+        assert!(html.0.contains("&lt;scope&gt; only"));
+        assert!(html.0.contains("synthetic-fixture-only"));
+        assert!(html.0.contains("one exact synthetic condition"));
+        assert!(!html.0.contains("<details>"));
+        assert!(html.0.contains("do not establish scientific qualification"));
+    }
 }
 
 #[test]

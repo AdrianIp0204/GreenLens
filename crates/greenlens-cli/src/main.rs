@@ -138,6 +138,8 @@ enum WeatherCommand {
 }
 #[derive(Subcommand)]
 enum StudyCommand {
+    /// Inspect complete retained climate evidence and its separate qualification.
+    Inspect { project: PathBuf, run: String },
     Compare {
         project: PathBuf,
         a: String,
@@ -190,6 +192,15 @@ impl From<ClimateField> for greenlens_runner::studies::ResultField {
 fn execute() -> Result<()> {
     match Cli::parse().command {
         Command::Study { command } => match command {
+            StudyCommand::Inspect { project, run } => {
+                let manifest = read_json(&greenlens_runner::persistence::regular_child(
+                    &project,
+                    "project.json",
+                )?)?;
+                let assessment =
+                    greenlens_runner::qualification::inspect_climate(&project, &manifest, &run)?;
+                println!("{}", serde_json::to_string_pretty(&assessment)?);
+            }
             StudyCommand::Compare {
                 project,
                 a,
@@ -205,16 +216,13 @@ fn execute() -> Result<()> {
                     .runs;
                 let a = runs.iter().find(|r| r.id == a).context("Unknown A run")?;
                 let b = runs.iter().find(|r| r.id == b).context("Unknown B run")?;
-                println!(
-                    "{}",
-                    serde_json::to_string_pretty(&greenlens_runner::studies::compare(
-                        &project,
-                        a,
-                        b,
-                        field.into(),
-                        interval
-                    )?)?
-                );
+                let mut comparison =
+                    greenlens_runner::studies::compare(&project, a, b, field.into(), interval)?;
+                comparison.a.assessment =
+                    greenlens_runner::qualification::assess_climate(&project, &manifest, &a.id)?;
+                comparison.b.assessment =
+                    greenlens_runner::qualification::assess_climate(&project, &manifest, &b.id)?;
+                println!("{}", serde_json::to_string_pretty(&comparison)?);
             }
             StudyCommand::Configure {
                 project,
@@ -316,7 +324,7 @@ fn execute() -> Result<()> {
                 .iter()
                 .find(|r| r.id == run)
                 .context("Unknown climate run")?;
-            let value = if let Some(hour) = hour {
+            let mut value = if let Some(hour) = hour {
                 serde_json::to_value(greenlens_runner::studies::result_values(
                     &project,
                     summary,
@@ -339,6 +347,9 @@ fn execute() -> Result<()> {
                     &project, summary,
                 )?)?
             };
+            value["assessment"] = serde_json::to_value(
+                greenlens_runner::qualification::assess_climate(&project, &manifest, &run)?,
+            )?;
             println!("{}", serde_json::to_string_pretty(&value)?);
         }
         Command::Weather { command } => {

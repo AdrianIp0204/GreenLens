@@ -26,13 +26,15 @@ async function load(relative){
   const linked=code.replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_q,specifier)=>{
     if(['react','@tauri-apps/api/core','@tauri-apps/api/window','../viewport/types','./AnalysisContent'].includes(specifier))return `const ${binding.replace(/\bas\b/g,':')}=globalThis.__greenlensLoadingHost;`;
     const target=specifier.startsWith('.')?new URL(specifier,url).href:import.meta.resolve(specifier);
+    if(specifier==='./QualificationStatus')return `const QualificationStatus=globalThis.__greenlensLoadingHost.QualificationStatus;`;
     if(specifier==='./WeatherCalendarPicker')return `const WeatherCalendarPicker=globalThis.__greenlensLoadingHost.WeatherCalendarPicker;`;
     return `import ${binding} from ${JSON.stringify(target)};`;
   }).replace(/import\s+['"][^'"]+\.css['"];?/g,'');
   return import(`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`);
 }
 const {useDocument}=await load('../src/workspace/useDocument.ts');
-const {useClimateResults}=await load('../src/workspace/useClimateResults.ts');
+const {useClimateResults,useClimateAssessment}=await load('../src/workspace/useClimateResults.ts');
+host.QualificationStatus=(await load('../src/workspace/QualificationStatus.tsx')).QualificationStatus;
 const {ClimateResultsContent}=await load('../src/workspace/ClimateResultsContent.tsx');
 const {WeatherCalendarPicker}=await load('../src/workspace/WeatherCalendarPicker.tsx');
 host.WeatherCalendarPicker=WeatherCalendarPicker;
@@ -48,6 +50,30 @@ const condition={run,summary,physical_input_hash:'physics',metrics_current:true}
 const project={schema_version:'0.3.0',id:'document',name:'Mock document',alternatives:[{id:'A',model:fixture.model}],runs:[],climate:{weather:[{id:'weather'}],studies:{A:study},runs:[summary]}};
 let revision=0;
 const projectView=p=>({project:structuredClone(p),revision:String(++revision),results:[],climate_results:[run]});
+
+test('qualification read survives display-only changes but invalidates edits and ignores late replies',async()=>{
+  reset();const old=deferred(),fresh=deferred();let index=0;
+  reply=(command)=>{assert.equal(command,'climate_assessment');return ++index===1?old.promise:fresh.promise;};
+  let currentProject=structuredClone(project);
+  const draw=()=>useClimateAssessment('saved-project',currentProject,summary);
+  let result=render(draw);assert.equal(result.assessment,null);
+  currentProject={...currentProject,display_state:{cameras:{top:'changed'},selected:'window'}};
+  result=render(draw);assert.equal(index,1,'display state does not request another assessment');
+  currentProject={...currentProject,alternatives:[{...currentProject.alternatives[0],model:{...fixture.model,name:'edited context'}}]};
+  result=render(draw);assert.equal(index,2);assert.equal(result.assessment,null);
+  const assessed={run_id:summary.id,record_sha256:summary.record_sha256,scientific_qualification:{status:'failed'}};
+  fresh.resolve(assessed);result=await flush(draw);assert.equal(result.assessment,assessed);
+  old.resolve({...assessed,scientific_qualification:{status:'limited_qualified'}});
+  result=await flush(draw);assert.equal(result.assessment,assessed,'obsolete success cannot replace the fresh failure');
+});
+test('qualification never displays another immutable record or a failed assessment request',async()=>{
+  for(const response of [{run_id:summary.id,record_sha256:'wrong-seal'},new Error('Retained metadata checksum mismatch')]){
+    reset();reply=async()=>{if(response instanceof Error)throw response;return response;};
+    const draw=()=>useClimateAssessment('saved-project',project,summary);
+    render(draw);const result=await flush(draw);
+    assert.equal(result.assessment,null);assert.match(result.error,/selected immutable snapshot|checksum mismatch/);
+  }
+});
 const values=interval=>({run_id:run.id,field:'illuminance',interval_index:interval,sensor_ids:run.series.sensor_ids,values:run.series.sensor_ids.map(()=>interval),statistics:{min:interval,mean:interval,max:interval},units:'lx'});
 const weather=interval=>({run_id:run.id,record_sha256:summary.record_sha256,interval:{index:interval},hour:{index:interval,month:3,day:21,hour_ending:interval===1919?24:13}});
 function nodes(tree){return !tree||typeof tree!=='object'?[]:Array.isArray(tree)?tree.flatMap(nodes):[tree,...nodes(tree.props?.children)];}

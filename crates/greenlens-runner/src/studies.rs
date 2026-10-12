@@ -448,6 +448,7 @@ pub struct DerivedMetrics {
     pub metric_identity: String,
     pub settings: MetricSettings,
     pub metrics: Vec<SensorMetrics>,
+    pub assessment: crate::qualification::RunAssessment,
 }
 pub fn derive_metrics(
     root: &Path,
@@ -460,6 +461,11 @@ pub fn derive_metrics(
         "Annual metrics require a complete year"
     );
     Ok(DerivedMetrics {
+        assessment: crate::qualification::from_record(
+            &record,
+            None,
+            crate::qualification::EvidenceIntegrity::SealedMetadataChecked,
+        )?,
         run_id: record.id.clone(),
         metric_identity: settings.identity(&climate::physical_result_fingerprint(&record)?)?,
         metrics: series.metrics(&settings)?,
@@ -499,6 +505,7 @@ pub struct ClimateValues {
     pub sensor_ids: Vec<String>,
     pub values: Vec<f64>,
     pub statistics: Value,
+    pub assessment: crate::qualification::RunAssessment,
 }
 pub fn result_values(
     root: &Path,
@@ -546,6 +553,11 @@ pub fn result_values(
         }
     };
     Ok(ClimateValues {
+        assessment: crate::qualification::from_record(
+            &record,
+            None,
+            crate::qualification::EvidenceIntegrity::SealedMetadataChecked,
+        )?,
         run_id: record.id,
         field,
         units: if matches!(field, ResultField::Illuminance) {
@@ -680,6 +692,7 @@ pub struct CurrentClimateResult {
     pub stored_metric_identity: Option<String>,
     pub requested_metric_identity: Option<String>,
     pub metrics_current: bool,
+    pub assessment: Option<crate::qualification::RunAssessment>,
 }
 
 /// Choose by verified completion time, then by manifest order for an exact tie.
@@ -700,6 +713,7 @@ pub fn current_from_records(
         stored_metric_identity: None,
         requested_metric_identity: None,
         metrics_current: false,
+        assessment: None,
     };
     if matches!(study.calculation, StudyMode::StaticOvercast) {
         return Ok(result);
@@ -731,6 +745,21 @@ pub fn current_from_records(
                 result.stored_metric_identity == result.requested_metric_identity;
         }
         result.summary = Some(climate::summary(record)?);
+        let mut assessment = crate::qualification::from_record(
+            record,
+            None,
+            crate::qualification::EvidenceIntegrity::ValidatedRecordOnly,
+        )?;
+        assessment.current_input_relation.physical = crate::qualification::InputRelation::Matches;
+        assessment.current_input_relation.metrics =
+            if !matches!(study.calculation, StudyMode::Annual { .. }) {
+                crate::qualification::InputRelation::NotApplicable
+            } else if result.metrics_current {
+                crate::qualification::InputRelation::Matches
+            } else {
+                crate::qualification::InputRelation::Differs
+            };
+        result.assessment = Some(assessment);
         result.run = Some(record.clone());
     }
     Ok(result)
@@ -767,7 +796,12 @@ pub fn current_result(
         })
         .transpose()?
         .unwrap_or_default();
-    current_from_records(model, alternative, study, &records)
+    let mut result = current_from_records(model, alternative, study, &records)?;
+    if let Some(assessment) = &mut result.assessment {
+        assessment.evidence_integrity =
+            crate::qualification::EvidenceIntegrity::SealedMetadataChecked;
+    }
+    Ok(result)
 }
 
 #[cfg(test)]
@@ -832,6 +866,28 @@ mod current_result_tests {
             revised.requested_metric_identity
         );
         assert!(!revised.metrics_current);
+        let original_assessment = current.assessment.unwrap();
+        let derived_assessment = revised.assessment.unwrap();
+        assert_eq!(
+            original_assessment.current_input_relation.metrics,
+            crate::qualification::InputRelation::Matches
+        );
+        assert_eq!(
+            derived_assessment.current_input_relation.physical,
+            crate::qualification::InputRelation::Matches
+        );
+        assert_eq!(
+            derived_assessment.current_input_relation.metrics,
+            crate::qualification::InputRelation::Differs
+        );
+        assert_eq!(
+            original_assessment.scientific_qualification.status,
+            derived_assessment.scientific_qualification.status
+        );
+        assert_eq!(
+            derived_assessment.evidence_integrity,
+            crate::qualification::EvidenceIntegrity::ValidatedRecordOnly
+        );
     }
 
     #[test]

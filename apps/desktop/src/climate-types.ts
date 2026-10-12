@@ -111,13 +111,32 @@ export interface ClimateRunRecord {
   model: Model; validated: ValidatedModel; study: Study; weather_asset: WeatherAsset;
   series: TimeSeriesManifest; metrics: SensorMetrics[] | null; provenance: Record<string, unknown>;
 }
+/** Supplementary Rust assessment; never inserted into immutable run evidence. */
+export interface RunAssessment {
+  schema_version: string; run_id: string; record_sha256: string; recipe_sha256: string;
+  process_completion: 'retained_successful_exit_records';
+  evidence_integrity: 'validated_record_only' | 'sealed_metadata_checked' | 'full_retained_evidence_checked';
+  current_input_relation: {
+    physical: 'matches' | 'differs' | 'not_applicable' | 'not_compared';
+    metrics: 'matches' | 'differs' | 'not_applicable' | 'not_compared';
+  };
+  scientific_qualification: {
+    status: 'failed' | 'unassessed' | 'limited_qualified';
+    registry_version: string; registry_sha256: string;
+    identity: { method_version: string; adapter_version: string; profile: unknown; profile_sha256: string; engine: unknown; engine_sha256: string; recipe_contract_sha256: string; physical_input_hash: string | null; scope: string };
+    profile_display_name: string; reason: string;
+    evidence: { id: string; sha256: string; tested_scope: string; outcome: string; reason: string }[];
+    limitations: string[];
+  };
+}
 export type ClimateProjectDocument = Project & { climate?: ClimateProject | null };
 export type ClimateProjectView = Omit<ProjectView, 'project'> & {
-  project: ClimateProjectDocument; climate_results: ClimateRunRecord[];
+  project: ClimateProjectDocument; climate_results: ClimateRunRecord[]; climate_assessments: Record<string,RunAssessment>;
 };
 /** The existing shared job and close/save guards cover both result kinds. */
 export type ClimateJobStatus = JobStatus & { climate_result?: ClimateRunRecord | null };
 export interface CurrentClimateResult {
+  assessment: RunAssessment | null;
   physical_input_hash: string; summary: ClimateRunSummary | null; run: ClimateRunRecord | null;
   stored_metric_identity: string | null; requested_metric_identity: string | null;
   /** False when no matching annual metrics exist, including selected-hour mode. */
@@ -125,6 +144,7 @@ export interface CurrentClimateResult {
 }
 export type ResultField = 'illuminance' | 'da' | 'cda' | 'udi' | 'underlit' | 'overlit';
 export interface ClimateValues {
+  assessment: RunAssessment;
   run_id: string; field: ResultField; units: 'lx' | '% of occupied time';
   interval_index: number | null; metric_identity: string | null;
   sensor_ids: string[]; values: number[]; statistics: Statistics;
@@ -136,6 +156,7 @@ export interface ClimateSensorSeries {
   values: number[];
 }
 export interface DerivedMetrics {
+  assessment: RunAssessment;
   run_id: string; metric_identity: string; settings: MetricSettings; metrics: SensorMetrics[];
 }
 export interface ClimateComparison {
@@ -146,6 +167,9 @@ export interface ClimateComparison {
 
 /** Invoke argument names are camelCase; serialized Rust result fields stay snake_case. */
 export interface ClimateCommands {
+  climate_assessment: {
+    args: { path: string; project: ClimateProjectDocument; runId: string }; result: RunAssessment;
+  };
   export_project: {
     args: { path: string; destination: string; selectedRuns?: string[] | null };
     result: { path: string };

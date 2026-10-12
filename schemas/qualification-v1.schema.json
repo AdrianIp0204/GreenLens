@@ -1,0 +1,243 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greenlens.org/schemas/qualification-v1.schema.json",
+  "title": "Supplemental climate qualification (never immutable run evidence)",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/assessment"
+    },
+    {
+      "$ref": "#/$defs/supplement"
+    }
+  ],
+  "$defs": {
+    "status": {
+      "enum": [
+        "failed",
+        "unassessed",
+        "limited_qualified"
+      ]
+    },
+    "relation": {
+      "enum": [
+        "matches",
+        "differs",
+        "not_applicable",
+        "not_compared"
+      ]
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method_version",
+        "adapter_version",
+        "profile",
+        "profile_sha256",
+        "engine",
+        "engine_sha256",
+        "recipe_contract_sha256",
+        "physical_input_hash",
+        "scope"
+      ],
+      "properties": {
+        "method_version": {
+          "type": "string"
+        },
+        "adapter_version": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "object"
+        },
+        "profile_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "engine": {
+          "type": "object"
+        },
+        "engine_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "recipe_contract_sha256": {
+          "type": "string"
+        },
+        "physical_input_hash": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scope": {
+          "type": "string"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "sha256",
+        "tested_scope",
+        "outcome",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "tested_scope": {
+          "type": "string"
+        },
+        "outcome": {
+          "$ref": "#/$defs/status"
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "scientific": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "registry_version",
+        "registry_sha256",
+        "identity",
+        "profile_display_name",
+        "reason",
+        "evidence",
+        "limitations"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/status"
+        },
+        "registry_version": {
+          "type": "string"
+        },
+        "registry_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "identity": {
+          "$ref": "#/$defs/identity"
+        },
+        "profile_display_name": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/evidence"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "assessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "run_id",
+        "record_sha256",
+        "recipe_sha256",
+        "process_completion",
+        "evidence_integrity",
+        "current_input_relation",
+        "scientific_qualification"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "greenlens.run-assessment.v1"
+        },
+        "run_id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "recipe_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "process_completion": {
+          "const": "retained_successful_exit_records"
+        },
+        "evidence_integrity": {
+          "enum": [
+            "validated_record_only",
+            "sealed_metadata_checked",
+            "full_retained_evidence_checked"
+          ]
+        },
+        "current_input_relation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "physical",
+            "metrics"
+          ],
+          "properties": {
+            "physical": {
+              "$ref": "#/$defs/relation"
+            },
+            "metrics": {
+              "$ref": "#/$defs/relation"
+            }
+          }
+        },
+        "scientific_qualification": {
+          "$ref": "#/$defs/scientific"
+        }
+      }
+    },
+    "supplement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "authority",
+        "assessments"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "greenlens.qualification-supplement.v1"
+        },
+        "authority": {
+          "type": "string"
+        },
+        "assessments": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/assessment"
+          }
+        }
+      }
+    }
+  }
+}

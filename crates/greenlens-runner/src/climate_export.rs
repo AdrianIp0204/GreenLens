@@ -101,6 +101,7 @@ pub fn export_selected(path: &Path, destination: &Path, ids: &[String]) -> Resul
     }
     for generated in [
         "comparisons.json",
+        "qualification.json",
         "report.html",
         "REPLAY.txt",
         "checksums.json",
@@ -125,7 +126,23 @@ pub fn export_selected(path: &Path, destination: &Path, ids: &[String]) -> Resul
     write_json(&staging.join("project.json"), &project)?;
     let view = crate::open_project(&staging)?;
     let static_comparisons = crate::latest_compatible_comparisons(&view.results)?;
-    let climate_comparisons = comparison_pairs(&staging, &view.climate_results)?;
+    let mut climate_comparisons = comparison_pairs(&staging, &view.climate_results)?;
+    for pair in &mut climate_comparisons {
+        for (side, id_key) in [("a_assessment", "a_id"), ("b_assessment", "b_id")] {
+            pair[side] = serde_json::to_value(
+                &view.climate_assessments[pair[id_key].as_str().context("Missing pair ID")?],
+            )?;
+        }
+    }
+    write_json(
+        &staging.join("qualification.json"),
+        &json!({
+            "schema_version":"greenlens.qualification-supplement.v1",
+            "authority":"Compiled application registry; imported supplements are not trusted. Reopening or replaying recalculates assessments without changing immutable runs.",
+            "assessments":view.climate_assessments
+        }),
+    )?;
+    files.push("qualification.json".into());
     write_json(
         &staging.join("comparisons.json"),
         &json!({
@@ -351,7 +368,7 @@ fn heatmap(
 }
 fn render_report(root: &Path, view: &ProjectView, comparisons: &[Value]) -> Result<String> {
     let mut html = Html(String::new());
-    write!(html,"<!doctype html><html lang='en'><meta charset='utf-8'><meta name='viewport' content='width=device-width'><title>GreenLens selected evidence</title><style>body{{font:16px system-ui;color:#192d29;background:#f7f8f3;margin:3rem auto;max-width:1100px;padding:0 24px}}p{{line-height:1.6}}h2{{border-top:1px solid #bbc9c1;padding-top:24px}}svg{{display:block;width:100%;max-width:550px;background:#e1e6de}}table{{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}}td,th{{padding:7px;border-bottom:1px solid #ccc;text-align:right}}pre{{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}}</style><h1>GreenLens · selected evidence</h1><p>{}</p><p>Immutable selected history; current document inputs may differ. Local calculations use fixed geometry, neutral materials and simplified equivalent glass. Metrics are not certification; analytical fixtures establish limited behavior, and adapter replay is integration verification.</p>",escape(&view.project.name))?;
+    write!(html,"<!doctype html><html lang='en'><meta charset='utf-8'><meta name='viewport' content='width=device-width'><title>GreenLens selected evidence</title><style>body{{font:16px system-ui;color:#192d29;background:#f7f8f3;margin:3rem auto;max-width:1100px;padding:0 24px}}p{{line-height:1.6}}h2{{border-top:1px solid #bbc9c1;padding-top:24px}}.qualification{{border:2px solid #937126;background:#fff8df;padding:12px 18px;margin:18px 0}}.qualification.failed{{border-color:#a3372b;background:#fff0ed}}.qualification.limited{{border-color:#506d86;background:#eef4fa}}.qualification h3{{margin-top:0}}svg{{display:block;width:100%;max-width:550px;background:#e1e6de}}table{{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}}td,th{{padding:7px;border-bottom:1px solid #ccc;text-align:right}}pre{{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px}}</style><h1>GreenLens · selected evidence</h1><p>{}</p><p>Immutable selected history; current document inputs may differ. Local calculations use fixed geometry, neutral materials and simplified equivalent glass. Metrics are not certification; analytical fixtures establish limited behavior, and adapter replay is integration verification.</p>",escape(&view.project.name))?;
     if !view.results.is_empty() {
         html.write_str("<p><a href='static-report.html'>Static overcast evidence, heatmaps and comparisons</a></p>")?;
     }
@@ -371,22 +388,8 @@ fn render_report(root: &Path, view: &ProjectView, comparisons: &[Value]) -> Resu
         let (_, weather) = weather::open(&dir.join("weather"))?;
         let interval = preview_interval(run);
         let hour = &weather.data.hours[interval];
-        let current_model = view
-            .project
-            .alternatives
-            .iter()
-            .find(|a| a.id == run.alternative_id)
-            .context("Unknown report alternative")?;
-        let current_study = &view
-            .project
-            .climate
-            .as_ref()
-            .context("Missing climate project")?
-            .studies[&run.alternative_id];
-        let physical_current = !crate::studies::is_stale(run, &current_model.model, current_study)?;
-        let metric_current =
-            canonical_hash(&current_study.metrics)? == canonical_hash(&run.study.metrics)?;
-        write!(html,"<h2>{} · run {}</h2><p><strong>{}</strong></p><p>Physical inputs match current document: {}. Metric settings match: {}. {} sensors; {} retained intervals. UTC run timestamps: {} to {}.</p><p>Weather: {}. Fixed UTC offset {} minutes; source-year labels do not define a real calendar or weekdays.</p><details><summary>Weather attribution, assumptions and warnings</summary><pre>{}</pre><pre>{}</pre></details>",escape(&run.alternative_id),escape(&run.id),escape(run.provenance["calculation_label"].as_str().unwrap_or("")),physical_current,metric_current,run.series.sensor_ids.len(),run.series.interval_count,escape(run.provenance["started_utc"].as_str().unwrap_or("")),escape(run.provenance["finished_utc"].as_str().unwrap_or("")),escape(&run.weather_asset.source.citation),weather.data.location.utc_offset_minutes,escape(&run.weather_asset.source.rights_note),escape(&serde_json::to_string_pretty(&weather.data.warnings)?))?;
+        write!(html,"<h2>{} · run {}</h2><p><strong>{}</strong></p><p>{} sensors; {} retained intervals. UTC run timestamps: {} to {}.</p><p>Weather: {}. Fixed UTC offset {} minutes; source-year labels do not define a real calendar or weekdays.</p><details><summary>Weather attribution, assumptions and warnings</summary><pre>{}</pre><pre>{}</pre></details>",escape(&run.alternative_id),escape(&run.id),escape(run.provenance["calculation_label"].as_str().unwrap_or("")),run.series.sensor_ids.len(),run.series.interval_count,escape(run.provenance["started_utc"].as_str().unwrap_or("")),escape(run.provenance["finished_utc"].as_str().unwrap_or("")),escape(&run.weather_asset.source.citation),weather.data.location.utc_offset_minutes,escape(&run.weather_asset.source.rights_note),escape(&serde_json::to_string_pretty(&weather.data.warnings)?))?;
+        render_assessment(&mut html, &view.climate_assessments[&run.id])?;
         weather_policy(&mut html, &weather.data)?;
         write!(html,"<h3>Hourly illuminance preview · interval {interval}</h3><p>Month/day {}/{}, hour-ending {} in local standard time; midpoint {:02}:30. Source-year label {} is provenance. {} This is one hourly preview, not an annual illuminance aggregate.</p>",hour.month,hour.day,hour.hour_ending,hour.hour_ending-1,hour.source_year,if run.series.interval_count==1 {"The selected calculation interval is shown."} else {"The offline report explicitly previews January 1 interval 12; all 8,760 intervals remain in the retained series."})?;
         let preview = &previews[&run.id];
@@ -441,6 +444,13 @@ fn render_report(root: &Path, view: &ProjectView, comparisons: &[Value]) -> Resu
     }
     html.write_str("<h2>Compatible historical comparisons</h2><p>Each pair uses the latest selected A and B within matching physical/metric conditions. Hourly previews share a lux scale; annual metric deltas are percentage points. No resampling or Cartesian history expansion is performed.</p>")?;
     for comparison in comparisons {
+        for key in ["a_id", "b_id"] {
+            let id = comparison[key]
+                .as_str()
+                .context("Missing comparison side")?;
+            write!(html, "<h3>Comparison side · {}</h3>", escape(id))?;
+            render_assessment(&mut html, &view.climate_assessments[id])?;
+        }
         write!(
             html,
             "<details><summary>{} → {}</summary><pre>{}</pre></details>",
@@ -451,6 +461,50 @@ fn render_report(root: &Path, view: &ProjectView, comparisons: &[Value]) -> Resu
     }
     html.write_str("<h2>Replay</h2><p>See REPLAY.txt. Open this report offline; it contains no executable scripts or network dependencies. Original and normalized weather, per-run licensing, text engine inputs, bounded raw RGB/lux chunks, logs, resource observations and provenance remain in the package. Regenerate disposable engine matrices and octrees through GreenLens only.</p></html>")?;
     Ok(html.0)
+}
+
+fn render_assessment(
+    html: &mut Html,
+    assessment: &crate::qualification::RunAssessment,
+) -> Result<()> {
+    use crate::qualification::{EvidenceIntegrity, InputRelation, QualificationStatus};
+    let scientific = &assessment.scientific_qualification;
+    let status = match scientific.status {
+        QualificationStatus::Failed => "Failed scientific qualification",
+        QualificationStatus::Unassessed => "Scientific qualification unassessed",
+        QualificationStatus::LimitedQualified => "Limited scientific qualification",
+    };
+    let status_class = match scientific.status {
+        QualificationStatus::Failed => "failed",
+        QualificationStatus::Unassessed => "unassessed",
+        QualificationStatus::LimitedQualified => "limited",
+    };
+    let integrity = match assessment.evidence_integrity {
+        EvidenceIntegrity::ValidatedRecordOnly => "Record metadata validated; files not checked",
+        EvidenceIntegrity::SealedMetadataChecked => {
+            "Sealed result metadata checked; full retained evidence not scanned"
+        }
+        EvidenceIntegrity::FullRetainedEvidenceChecked => "Full retained evidence checks passed",
+    };
+    let relation = |value| match value {
+        InputRelation::Matches => "matches",
+        InputRelation::Differs => "differs",
+        InputRelation::NotApplicable => "not applicable",
+        InputRelation::NotCompared => "not compared",
+    };
+    write!(html, "<section class='qualification {status_class}'><h3>{status} · {}</h3><p>{}</p><p>Process completion: retained successful exit records. Evidence integrity: {integrity}. Current physical inputs: {}; current metric settings: {}.</p><p>Method: {}. Registry: {}.</p>", escape(&scientific.profile_display_name), escape(&scientific.reason), relation(assessment.current_input_relation.physical), relation(assessment.current_input_relation.metrics), escape(&scientific.identity.method_version), escape(&scientific.registry_version))?;
+    for evidence in &scientific.evidence {
+        write!(
+            html,
+            "<p>Evidence ID: {} (SHA-256 {}). Tested scope: {}. {}</p>",
+            escape(&evidence.id),
+            escape(&evidence.sha256),
+            escape(&evidence.tested_scope),
+            escape(&evidence.reason)
+        )?;
+    }
+    html.write_str("<p>Successful execution, integrity checks, current inputs and replay agreement do not establish scientific qualification. Assessment is supplemental; original run bytes and historical identities are unchanged. Full machine-readable assessments, profiles, engine inventories and recipe pins are in qualification.json.</p></section>")?;
+    Ok(())
 }
 
 fn compare_stream(reference: &SeriesReader, combined: &Path, cancel: &AtomicBool) -> Result<Value> {

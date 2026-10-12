@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { invoke } from '@tauri-apps/api/core';
-import type { ClimateComparison, ClimateProjectDocument, ClimateRunRecord, ClimateRunSummary, ClimateSensorSeries, ClimateValues, CurrentClimateResult, ResultField, Study, RunWeatherIntervalView } from '../climate-types';
+import type { ClimateComparison, ClimateProjectDocument, ClimateRunRecord, ClimateRunSummary, ClimateSensorSeries, ClimateValues, CurrentClimateResult, ResultField, Study, RunWeatherIntervalView, RunAssessment } from '../climate-types';
 import type { ValidatedModel } from '../types';
 import { climateGeometryMatches, climateOverlayMatches, climateRequestKey, ClimateRequestGate, climateSeriesSensor, displayedMetricSettings } from './climate-presentation.mjs';
 import { climateRelationKey, selectedRecordProject, selectedPairProject, selectedPairRelation, snapshotDisplayContext, snapshotDisplayScale } from './climate-pair-context.mjs';
@@ -21,6 +21,19 @@ export function useRunWeatherView(path:string,summary:ClimateRunSummary|null,int
   },70);return()=>{live=false;window.clearTimeout(timer);};},[key]);
   return state?.key===key?state:null;
 }
+export function useClimateAssessment(path:string,project:ClimateProjectDocument|null,summary:ClimateRunSummary|null) {
+  // Display hour, selection, cameras and panels do not trigger an assessment read.
+  const key=JSON.stringify([climateRelationKey(path,project),summary?.id,summary?.record_sha256]);
+  const [state,setState]=useState<{key:string;assessment:RunAssessment|null;error:string}|null>(null);
+  useEffect(()=>{let live=true;if(!path||!project||!summary)return;
+    invoke<RunAssessment>('climate_assessment',{path,project,runId:summary.id}).then(assessment=>{
+      if(assessment.run_id!==summary.id||assessment.record_sha256!==summary.record_sha256)throw new Error('Assessment does not identify the selected immutable snapshot.');
+      if(live)setState({key,assessment,error:''});
+    }).catch(error=>live&&setState({key,assessment:null,error:String(error)}));
+    return()=>{live=false;};
+  },[key]);
+  return state?.key===key?state:{assessment:null,error:''};
+}
 export function useClimateResults(options:Options) {
   const {documentId,path,project,alternative,study,current,currentLoading=false,records,validated,selection}=options;
   const context=`${documentId}:${alternative}`;
@@ -29,6 +42,7 @@ export function useClimateResults(options:Options) {
   const update=(patch:Partial<typeof display>)=>setDisplay({...view,...patch,context});
   const run=view.runId==='current'?current?.run??null:records.find(r=>r.id===view.runId&&r.alternative_id===alternative)??null;
   const summary=project?.climate?.runs.find(r=>r.id===run?.id)??null;
+  const qualification=useClimateAssessment(path,project,summary);
   const {annual,field,interval}=snapshotDisplayContext(run,view);
   const settings=displayedMetricSettings(view.runId,study,run);
   const key=climateRequestKey(path,summary,field,interval,settings);
@@ -77,6 +91,8 @@ export function useClimateResults(options:Options) {
   const selected=pair.documentId===documentId?pair:{documentId,aId:null,bId:null};
   const a=available.find(r=>r.id===selected.aId)??(!selected.aId?[...available].reverse().find(r=>r.alternative_id==='A'):null)??null;
   const b=available.find(r=>r.id===selected.bId)??(!selected.bId?[...available].reverse().find(r=>r.alternative_id==='B'):null)??null;
+  const qualificationA=useClimateAssessment(path,project,a);
+  const qualificationB=useClimateAssessment(path,project,b);
   useEffect(()=>{setPair({documentId,aId:a?.id??selected.aId,bId:b?.id??selected.bId});},[documentId,a?.id,b?.id]);
   const pairA=records.find(r=>r.id===a?.id)??null;
   const [pairDisplay,setPairDisplay]=useState({documentId,field:'illuminance' as ResultField,interval:1908});
@@ -105,7 +121,7 @@ export function useClimateResults(options:Options) {
     return()=>{live=false;};},[conditionsKey]);
   const activeConditions=conditions?.key===conditionsKey?conditions:null;
   const pairRelation=(side:'A'|'B')=>selectedPairRelation(side==='A'?a:b,activeConditions?.values[side],activeConditions?.error);
-  return {path,run,summary,selectedRunId:view.runId,selectRun:(runId:string)=>update({runId}),field,setField:(field:ResultField)=>update({field}),
+  return {path,run,summary,qualification,qualificationA,qualificationB,selectedRunId:view.runId,selectRun:(runId:string)=>update({runId}),field,setField:(field:ResultField)=>update({field}),
     interval,setInterval:(interval:number)=>update({interval}),annual,values,canOverlay,matchesCurrentGeometry,checkingRelationship,selectedRelation,loading:Boolean(key&&!result),error:result?.error??'',
     scale:snapshotDisplayScale(field,values),metricSettings:settings,
     weather:weatherView?.value??null,weatherError:weatherView?.error??'',sensorSeries:sensorSeries?.value??null,seriesError:sensorSeries?.error??'',sensorId,

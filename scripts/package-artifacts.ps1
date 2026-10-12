@@ -9,7 +9,7 @@ function Get-PackageDocumentPaths {
         'docs/scientific-validation.md','docs/dependencies.md','docs/windows-runtime.md',
         'docs/windows-installer.md','docs/workspace-guide.md','docs/rhino-interaction-matrix.md',
         'docs/v0.2-native-verification.md','docs/images/v0.2/README.md','docs/v0.3-spec.md',
-        'docs/v0.3-implementation-plan.md','docs/v0.3-scientific-method.md',
+        'docs/v0.3-implementation-plan.md','docs/v0.3-scientific-method.md','docs/v0.3-qualification-continuation.md',
         'docs/v0.3-weather-sources.md','docs/v0.3-contracts.md','docs/v0.3-usage.md','docs/v0.3-status.md',
         'docs/v0.3-native-verification.md','docs/v0.3-ci-package-validation.md','docs/progress.md',
         'docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md',
@@ -78,6 +78,7 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-ci/final-main-890166b.json',
         'docs/evidence/v0.3-ci/final-main-19f0bbe.json',
         'docs/evidence/v0.3-ci/final-main-5cde6dc.json',
+        'docs/evidence/v0.3-ci/final-main-572f0b7.json',
         'docs/evidence/v0.3-native/candidate06-selected-hour-observation.json',
         'docs/evidence/v0.3-native/candidate06-selected-hour-audit.json',
         'docs/evidence/v0.3-native/candidate06-selected-hour-exported.png',
@@ -143,6 +144,7 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-engine/paired-primary-coupling.json',
         'dependencies/radiance.json','dependencies/weather.json',
         'schemas/primary-streams-v1.schema.json',
+        'schemas/qualification-v1.schema.json','crates/greenlens-runner/src/qualification-registry.json',
         'third-party/Radiance-LICENSE.txt','third-party/Radiance-gendaymtx-NOTICE.txt'
     )
 }
@@ -168,28 +170,53 @@ function Assert-PackageDocumentLinks([string]$Root) {
     return $checked
 }
 
+function Assert-PackageDocumentSizes([long[]]$FileBytes, [long]$GeneratedIndexBytes) {
+    # Offline distribution documentation only. Scientific archive/process bounds
+    # are separate Rust policies and are not changed by this selection budget.
+    $bytes = 0L
+    foreach ($size in @($FileBytes) + @($GeneratedIndexBytes)) {
+        if ($size -lt 0 -or $size -gt 2MB) { throw 'Expected a compact documentation file within 2 MiB.' }
+        if ($bytes -gt 12MB - $size) { throw 'Review the explicit documentation selection before exceeding 12 MiB, including its generated index.' }
+        $bytes += $size
+    }
+    return $bytes
+}
+
+function Get-PackageContentsBytes([int]$Links) {
+    $contents = @"
+# Packaged documentation
+
+The selected guides, method/reference declarations, data inventories and compact linked numerical records are included for offline reading. Local inline Markdown links in these guides were checked before packaging ($Links links).
+
+This explicit documentation selection, including this index, is limited to 12 MiB total and 2 MiB per file. The reviewed documentation allowance preserves linked historical outcomes; it does not change scientific evidence archive, process, or runtime resource limits.
+
+This is not a source checkout or a complete historical evidence archive. Backtick command examples, source-only verification scripts, historical screenshot filenames, upstream URLs and local build/output paths can require the repository or separately retained artifacts. The linked research script is retained as readable source; its development dependencies are not a runtime requirement or a bundled verification toolchain. Large matrices, octrees, evidence ZIPs and engine binaries are excluded.
+"@
+    return ,([Text.UTF8Encoding]::new($false).GetBytes($contents.Replace("`r`n", "`n") + "`n"))
+}
+
 function Copy-PackageDocuments([string]$Source, [string]$Destination) {
     $paths = @(Get-PackageDocumentPaths)
-    $bytes = 0L
-    foreach ($path in $paths) {
-        $file = Get-Item -LiteralPath (Join-Path $Source $path)
-        if ($file.PSIsContainer -or $file.Length -gt 2MB) { throw "Expected a compact documentation file: $path" }
-        $bytes += $file.Length
-    }
-    if ($bytes -gt 8MB) { throw 'Review the explicit documentation selection before exceeding 8 MiB.' }
+    $files = @($paths | ForEach-Object {
+        $file = Get-Item -LiteralPath (Join-Path $Source $_)
+        if ($file.PSIsContainer) { throw "Expected a compact documentation file: $_" }
+        $file
+    })
+    # Reject oversize source selections before creating/copying any destination.
+    $sizes = @($files | ForEach-Object { $_.Length })
+    $null = Assert-PackageDocumentSizes -FileBytes $sizes -GeneratedIndexBytes 0
+    $links = Assert-PackageDocumentLinks $Source
+    $indexBytes = Get-PackageContentsBytes $links
+    $null = Assert-PackageDocumentSizes -FileBytes $sizes -GeneratedIndexBytes $indexBytes.Length
     foreach ($path in $paths) {
         $destinationPath = Join-Path $Destination $path
         New-Item -ItemType Directory -Path (Split-Path -Parent $destinationPath) -Force | Out-Null
         Copy-Item -LiteralPath (Join-Path $Source $path) -Destination $destinationPath
     }
-    $links = Assert-PackageDocumentLinks $Destination
-    @"
-# Packaged documentation
-
-The selected guides, method/reference declarations, data inventories and compact linked numerical records are included for offline reading. Local inline Markdown links in these guides were checked before packaging ($links links).
-
-This is not a source checkout or a complete historical evidence archive. Backtick command examples, source-only verification scripts, historical screenshot filenames, upstream URLs and local build/output paths can require the repository or separately retained artifacts. The linked research script is retained as readable source; its development dependencies are not a runtime requirement or a bundled verification toolchain. Large matrices, octrees, evidence ZIPs and engine binaries are excluded.
-"@ | Set-Content -LiteralPath (Join-Path $Destination 'docs/PACKAGE-CONTENTS.md') -Encoding utf8
+    if ((Assert-PackageDocumentLinks $Destination) -ne $links) { throw 'Packaged documentation link count changed while copying.' }
+    [IO.File]::WriteAllBytes((Join-Path $Destination 'docs/PACKAGE-CONTENTS.md'), $indexBytes)
+    $copiedSizes = @($paths | ForEach-Object { (Get-Item -LiteralPath (Join-Path $Destination $_)).Length })
+    $null = Assert-PackageDocumentSizes -FileBytes $copiedSizes -GeneratedIndexBytes $indexBytes.Length
 }
 
 if ($FunctionsOnly) { return }

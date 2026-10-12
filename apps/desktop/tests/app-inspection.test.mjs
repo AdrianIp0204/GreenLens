@@ -20,10 +20,10 @@ const host={...components,
   useHistoricalComparison:()=>({a:staticRun,b:null,comparison:null,comparisonError:'',comparing:false,selectRun(){}}),
   invoke:async()=>{throw new Error('Unexpected native service request from inspection');},isTauri:()=>false,getCurrentWindow(){throw new Error('Unexpected window operation');},
   semanticObjects:()=>[],objectLabel:id=>id,objectVisibility:()=>({visible:true,locked:false}),selectableIds:ids=>ids,
-  errorText:String,fmt:String,METHOD:'Static daylight illuminance under a prescribed CIE standard overcast sky.',
+  qualificationLabel:()=> 'Scientific qualification unassessed',errorText:String,fmt:String,METHOD:'Static daylight illuminance under a prescribed CIE standard overcast sky.',
 };
 globalThis.__greenlensAppInspectionHost=host;
-const mocked=new Set(['react','@tauri-apps/api/core','@tauri-apps/api/window','./viewport/entities','./workspace/useDocument','./workspace/useHistoricalComparison','./workspace/PropertiesPanel','./workspace/SelectionBar','./workspace/AnalysisContent','./workspace/ClimateStudyPanel','./workspace/useClimateResults','./workspace/ClimateResultsContent']);
+const mocked=new Set(['react','@tauri-apps/api/core','@tauri-apps/api/window','./viewport/entities','./workspace/useDocument','./workspace/useHistoricalComparison','./workspace/PropertiesPanel','./workspace/SelectionBar','./workspace/AnalysisContent','./workspace/ClimateStudyPanel','./workspace/useClimateResults','./workspace/ClimateResultsContent','./workspace/QualificationStatus']);
 const source=fs.readFileSync(new URL('../src/App.tsx',import.meta.url),'utf8');
 const {code}=await transformWithOxc(source,'App.tsx',{jsx:{runtime:'automatic'}});
 const linked=code.replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_quote,specifier)=>{

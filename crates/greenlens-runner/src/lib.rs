@@ -8,6 +8,7 @@ pub mod display;
 #[cfg(test)]
 mod document_tests;
 pub mod persistence;
+pub mod qualification;
 mod report;
 pub mod studies;
 #[cfg(test)]
@@ -82,6 +83,8 @@ pub struct ProjectView {
     pub results: Vec<RunRecord>,
     #[serde(default)]
     pub climate_results: Vec<climate::ClimateRunRecord>,
+    #[serde(default)]
+    pub climate_assessments: std::collections::BTreeMap<String, qualification::RunAssessment>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Comparison {
@@ -347,11 +350,14 @@ pub fn open_project(path: &Path) -> Result<ProjectView> {
     } else {
         vec![]
     };
+    let climate_assessments =
+        qualification::assessments_for_verified_view(&project, &climate_results)?;
     Ok(ProjectView {
         project,
         revision,
         results,
         climate_results,
+        climate_assessments,
     })
 }
 pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> Result<ProjectView> {
@@ -1104,6 +1110,6 @@ pub fn replay_with_cancel(
         cancel,
     )?);
     Ok(
-        json!({"verification":"same-engine integration, not independent physical validation","checks":checks,"passed":true}),
+        json!({"verification":"same-engine integration, not independent physical validation","checks":checks,"passed":true,"climate_assessments":view.climate_assessments}),
     )
 }

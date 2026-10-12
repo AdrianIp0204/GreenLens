@@ -1,5 +1,20 @@
 # Progress and acceptance evidence
 
+## 2026-10-12 local — qualification contract and presentation repair
+
+- Implemented a shared Rust supplementary assessment: retained process completion, actual integrity-check scope, current physical/metric relationships and exact method/profile/engine/recipe qualification. Failed historical profiles remain failed, unknown combinations unassessed, and limited positive fixtures cannot expand their tested input scope. The compiled registry does not mutate run evidence or trust imported assessments.
+- Implemented visible status/reasons/evidence IDs in the main climate result, viewport annotation, tables/series and both comparison sides; CLI result/comparison and `study inspect`; standalone HTML and sealed `qualification.json`. Display profile names describe sampling roles rather than accuracy. Historical serialized roles and replay dispatch are unchanged.
+- Verified locally: 135 frontend tests, TypeScript/production frontend build, all 91 runner tests, strict workspace Clippy and formatting. Report review caught an accidental Unicode encoding regression; the repaired full suite passes and includes readable formula/title/axis checks. Exact-profile, scoped-positive, unknown-identity, stale response, corrupt evidence and forged supplementary assessment regressions pass.
+- A corrected development CLI inspected the actual three retained candidate07 runs, copied and exported them. All three exact identities report failed qualification, and all 178 immutable files (44,920,485 bytes) remain unchanged. The 184-entry ZIP has 45,415,455 uncompressed bytes; all 183 seals pass and five standalone assessment panels cover the three runs and both comparison sides. This is inspection/export evidence, not a new simulation or installed check.
+- The separate offline documentation allowance is reviewed at 12 MiB including its generated index, with 2 MiB per file and boundary/pre-copy rejection tests. Scientific archive limits remain 64 MiB per entry and 256 MiB total. Packaging regression passes 171 exact files and 261 local links. Installed verification and clean release packaging remain pending at this checkpoint.
+- No new physics is adopted. The one proposed numerical reference is undergoing independent component-accounting review before its finite execution declaration. All prior scientific failures and the unavailable physical modifier observation remain release barriers.
+
+## 2026-10-12 local — qualification continuation started
+
+- Inspected clean `572f0b7`, current instructions, expected repository and retained v0.3 contracts/evidence. Refreshed CI `38172643306`: native, selected-hour and four annual jobs pass, convergence fails, replay skipped. No history was reset.
+- Persisted [bounded continuation and ownership](v0.3-qualification-continuation.md). Core owns Rust qualification/CLI/report and Cargo; root desktop/integration; engine proposes one finite reference/candidate investigation; toolchain independently reviews and retains CI evidence. No new engine execution is authorized internally until the finite scientific decision is reviewed and persisted.
+- Scientific acceptance remains failed/unqualified. Physical modifier observation remains unavailable. The unfinished v0.2 goal is preserved; this continuation follows repository tracking rather than replacing that goal.
+
 ## 2026-10-12 local — fixed permutation investigation closed
 
 - Hosted main CI completed: clean `5cde6dc` passes native foundations, selected-hour and all four annual execution jobs, but fails the same six annual metric comparisons; dependent replay is skipped. All 336 compact report rows match both prior checkpoints exactly. The [source-bound record](evidence/v0.3-ci/final-main-5cde6dc.json) is a digest/report audit, not another raw-array audit. Application source remains unchanged from candidate07.

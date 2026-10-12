@@ -492,7 +492,15 @@ fn render_assessment(
         InputRelation::NotApplicable => "not applicable",
         InputRelation::NotCompared => "not compared",
     };
-    write!(html, "<section class='qualification {status_class}'><h3>{status} · {}</h3><p>{}</p><p>Process completion: retained successful exit records. Evidence integrity: {integrity}. Current physical inputs: {}; current metric settings: {}.</p><p>Method: {}. Registry: {}.</p>", escape(&scientific.profile_display_name), escape(&scientific.reason), relation(assessment.current_input_relation.physical), relation(assessment.current_input_relation.metrics), escape(&scientific.identity.method_version), escape(&scientific.registry_version))?;
+    let metric_relation = match assessment.current_input_relation.metrics {
+        InputRelation::Matches => "current for these physical inputs and metric settings",
+        InputRelation::Differs => {
+            "not current for the present physical inputs and/or metric settings"
+        }
+        InputRelation::NotApplicable => "not applicable",
+        InputRelation::NotCompared => "not compared",
+    };
+    write!(html, "<section class='qualification {status_class}'><h3>{status} · {}</h3><p>{}</p><p>Process completion: retained successful exit records. Evidence integrity: {integrity}. Current physical inputs: {}; retained metric results: {metric_relation}.</p><p>Method: {}. Registry: {}.</p>", escape(&scientific.profile_display_name), escape(&scientific.reason), relation(assessment.current_input_relation.physical), escape(&scientific.identity.method_version), escape(&scientific.registry_version))?;
     for evidence in &scientific.evidence {
         write!(
             html,

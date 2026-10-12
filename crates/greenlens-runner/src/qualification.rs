@@ -42,6 +42,8 @@ pub enum InputRelation {
 #[serde(deny_unknown_fields)]
 pub struct CurrentInputRelation {
     pub physical: InputRelation,
+    /// Currency of the retained metric results: both physical identity and
+    /// metric settings must match. This is not settings equality alone.
     pub metrics: InputRelation,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]

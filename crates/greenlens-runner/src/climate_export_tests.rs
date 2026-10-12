@@ -238,6 +238,10 @@ fn standalone_assessment_labels_all_three_statuses_without_implying_general_acce
         EvidenceIntegrity::FullRetainedEvidenceChecked,
     )
     .unwrap();
+    // A geometry-only edit also makes retained metrics non-current, even when
+    // the saved schedule and thresholds are unchanged.
+    assessment.current_input_relation.physical = InputRelation::Differs;
+    assessment.current_input_relation.metrics = InputRelation::Differs;
     for (status, expected) in [
         (
             QualificationStatus::Failed,
@@ -270,6 +274,8 @@ fn standalone_assessment_labels_all_three_statuses_without_implying_general_acce
         assert!(html.0.contains("one exact synthetic condition"));
         assert!(!html.0.contains("<details>"));
         assert!(html.0.contains("do not establish scientific qualification"));
+        assert!(html.0.contains("retained metric results: not current for the present physical inputs and/or metric settings"));
+        assert!(!html.0.contains("current metric settings: differs"));
     }
 }
 

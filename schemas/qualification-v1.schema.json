@@ -207,6 +207,7 @@
               "$ref": "#/$defs/relation"
             },
             "metrics": {
+              "description": "Currency of retained metric results, requiring both matching physical inputs and metric settings. Not settings equality alone. Selected-hour results are not_applicable.",
               "$ref": "#/$defs/relation"
             }
           }

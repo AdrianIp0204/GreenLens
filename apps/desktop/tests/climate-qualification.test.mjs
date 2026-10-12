@@ -39,8 +39,18 @@ test('failed qualification remains visible next to successful execution and matc
   assert.match(html,/Numerical acceptance failed/);assert.match(html,/Six numerical checks failed/);
   assert.match(html,/process exits succeeded/);assert.match(html,/Match this snapshot/);
   assert.match(html,/Sealed metadata checked/);assert.match(html,/did not reread the full time series/);
-  assert.match(html,/Differ from current settings/);assert.match(html,/synthetic-evidence-1/);
+  assert.match(html,/Not current for the present physical inputs and\/or metric settings/);assert.match(html,/synthetic-evidence-1/);
   assert.match(html,/Original fixture only/);assert.match(html,/profile-seal/);assert.match(html,/engine-seal/);
+});
+test('geometry-only noncurrency does not claim saved metric settings changed',()=>{
+  const value=assessment('failed');
+  value.current_input_relation={physical:'differs',metrics:'differs'};
+  const html=markup(QualificationStatus,{assessment:value});
+  assert.match(html,/Retained metric results/);
+  assert.match(html,/Not current for the present physical inputs and\/or metric settings/);
+  assert.doesNotMatch(html,/Saved metric settings|Differ from current settings/);
+  value.current_input_relation={physical:'matches',metrics:'matches'};
+  assert.match(markup(QualificationStatus,{assessment:value}),/Current for these physical inputs and metric settings/);
 });
 test('unassessed, missing and unfamiliar statuses never become qualified',()=>{
   for(const value of [null,assessment('unassessed'),assessment('future_status')]){

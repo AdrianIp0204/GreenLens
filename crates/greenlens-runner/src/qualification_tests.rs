@@ -129,6 +129,70 @@ fn limited_fixture_success_requires_exact_input_scope_and_never_erases_failure()
 }
 
 #[test]
+fn geometry_only_edit_changes_metric_result_currency_without_changing_settings_or_evidence() {
+    let temporary = tempfile::tempdir().unwrap();
+    let record = climate::tests::fixture(temporary.path(), true);
+    let before = std::fs::read(temporary.path().join("results.json")).unwrap();
+    let mut project = crate::example();
+    project.schema_version = "0.3.0".into();
+    project.alternatives[0].model = record.model.clone();
+    let mut extension = climate::ClimateProject::default();
+    let weather_id = uuid::Uuid::new_v4().to_string();
+    extension.weather.push(climate::WeatherReference {
+        path: format!("weather/{weather_id}"),
+        id: weather_id,
+        binding: record.weather_asset.binding.clone(),
+    });
+    extension.studies.insert("A".into(), record.study.clone());
+    project.climate = Some(extension);
+    let assess = |project: &Project| {
+        from_record(
+            &record,
+            Some(project),
+            EvidenceIntegrity::ValidatedRecordOnly,
+        )
+        .unwrap()
+    };
+    let original = assess(&project);
+    assert_eq!(
+        original.current_input_relation.physical,
+        InputRelation::Matches
+    );
+    assert_eq!(
+        original.current_input_relation.metrics,
+        InputRelation::Matches
+    );
+
+    project.alternatives[0].model.window.width_m += 0.1;
+    assert_eq!(project.climate.as_ref().unwrap().studies["A"], record.study);
+    let edited = assess(&project);
+    assert_eq!(
+        edited.current_input_relation.physical,
+        InputRelation::Differs
+    );
+    assert_eq!(
+        edited.current_input_relation.metrics,
+        InputRelation::Differs
+    );
+    assert_eq!(edited.record_sha256, original.record_sha256);
+    assert_eq!(edited.recipe_sha256, original.recipe_sha256);
+    assert_eq!(
+        edited.scientific_qualification.status,
+        original.scientific_qualification.status
+    );
+
+    project.alternatives[0].model = record.model.clone();
+    assert_eq!(
+        assess(&project).current_input_relation.metrics,
+        InputRelation::Matches
+    );
+    assert_eq!(
+        std::fs::read(temporary.path().join("results.json")).unwrap(),
+        before
+    );
+}
+
+#[test]
 fn metadata_assessment_is_bounded_full_inspection_rejects_corrupt_chunks_without_mutation() {
     use crate::persistence::*;
     let temp = tempfile::tempdir().unwrap();

@@ -1,0 +1,484 @@
+{
+  "schema_version": "greenlens.candidate10-build-audit.v1",
+  "checked_utc": "2026-10-12T04:42:43.056744+00:00",
+  "passed": true,
+  "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+  "source_worktree_dirty": false,
+  "source_clean_before_and_after": true,
+  "application_version": "0.3.0",
+  "artifacts": [
+    {
+      "file": "greenlens.exe",
+      "bytes": 4925952,
+      "sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553"
+    },
+    {
+      "file": "greenlens-desktop.exe",
+      "bytes": 14626304,
+      "sha256": "b9f2504c04310b78fb957cc65d0d81e64e69d9dc48e12903d1ffab123c237866"
+    },
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "bytes": 3567411,
+      "sha256": "e5809e3b8eab1d6a0993eb38e1c8d7006a551f403ab3f671d0f4ad657903a1f6"
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 6865713,
+      "sha256": "3cf68e8532b384ddbc3266e0388774fa78ca855ac7cd2d5a858c8ec22c36be98"
+    }
+  ],
+  "builds": [
+    {
+      "exit_code": 0,
+      "stage": "cli-build",
+      "arguments": [
+        "build",
+        "--release",
+        "--locked",
+        "--offline",
+        "-p",
+        "greenlens-cli"
+      ],
+      "finished_utc": "2026-10-12T04:38:06.0099515Z",
+      "wall_seconds": 49.2144726,
+      "program": "cargo",
+      "started_utc": "2026-10-12T04:37:16.7954235Z"
+    },
+    {
+      "exit_code": 0,
+      "stage": "desktop-build",
+      "arguments": [
+        "run",
+        "tauri",
+        "--",
+        "build",
+        "--ci",
+        "--bundles",
+        "nsis",
+        "--",
+        "--locked",
+        "--offline"
+      ],
+      "finished_utc": "2026-10-12T04:42:05.0354488Z",
+      "wall_seconds": 237.7164346,
+      "program": "npm",
+      "started_utc": "2026-10-12T04:38:07.3189653Z"
+    }
+  ],
+  "tools": {
+    "node": "v24.14.0",
+    "npm": "11.9.0",
+    "cargo": "cargo 1.99.0 (5f94df478 2026-08-27)",
+    "rustc": "rustc 1.99.0 (b940084d7 2026-09-28)",
+    "msvc": "14.50.35717"
+  },
+  "hardware": {
+    "cpu_model": "13th Gen Intel(R) Core(TM) i7-13650HX",
+    "os": "Microsoft Windows 11 Home",
+    "os_version": "10.0.26200",
+    "installed_ram_bytes": 25463480320,
+    "logical_processors": 20.0,
+    "os_build": "26200",
+    "scope": "Hardware context only; no resource-sampling claim"
+  },
+  "concurrency": "One separately owned reference rcontrib workload active; sequential CLI/desktop compilation. This build starts no scientific process.",
+  "build_memory_and_cpu_sampling": "Not measured; build wall times describe this workload only.",
+  "commands": [
+    "process-local scripts/dev-env.ps1; GREENLENS_EXPECT_SOURCE_COMMIT=34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc; GREENLENS_EXPECT_SOURCE_DIRTY=false",
+    "cargo build --release --locked --offline -p greenlens-cli",
+    "npm run tauri -- build --ci --bundles nsis -- --locked --offline",
+    "node scripts/license-inventory.mjs --strict --check --installer-cache <reviewed NSIS cache>",
+    "scripts/test-package-documents.ps1",
+    "scripts/package-artifacts.ps1 -OutputDirectory <fresh candidate10 release directory>",
+    "dumpbin /dependents <frozen CLI and desktop>",
+    "7z l -slt <installer>; 7z x <installer> -o<fresh audit directory>",
+    "python -B audit-package.py <checkout> <audit directory> <release directory>",
+    "python -B audit-installer.py <checkout> <audit directory> <release directory>"
+  ],
+  "licenses": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "package": {
+    "cli_members": 230,
+    "source_files_copied_exactly": 229,
+    "total_uncompressed_bytes": 19446743,
+    "documents": {
+      "schema_version": "greenlens.package-document-check.v1",
+      "passed": true,
+      "source_files": 206,
+      "inline_local_links": 318,
+      "retained_bytes": 9707420.0,
+      "limits": {
+        "documentation_total_bytes": 12582912,
+        "document_file_bytes": 2097152,
+        "includes_generated_index": true
+      },
+      "exact_total_boundary_accepted": true,
+      "total_plus_one_rejected": true,
+      "file_plus_one_rejected": true,
+      "generated_index_plus_one_rejected": true,
+      "rejected_before_destination_creation": true,
+      "missing_link_rejected": true,
+      "outside_path_rejected": true,
+      "absolute_path_rejected": true,
+      "runtime_or_engine_executed": false
+    },
+    "installer_resources_exact": 31,
+    "reviewed_embedded_plugins_exact": 4,
+    "installer_payload_desktop": {
+      "bytes": 14626304,
+      "frozen_sha256": "b9f2504c04310b78fb957cc65d0d81e64e69d9dc48e12903d1ffab123c237866",
+      "embedded_sha256": "cd26720d2014c4ba80f65fba69d6fc46732b34144179d5fe05d58276d3faf023",
+      "differing_bytes": 3,
+      "difference": {
+        "offset": 11720864,
+        "unbundled_ascii": "UNK",
+        "nsis_ascii": "NSS"
+      },
+      "all_other_bytes_identical": true,
+      "tauri_marker_source_sha256": "5e12803d943b7728147c6223fe3e49ba532a0485b122fc47537398160f4092bc"
+    }
+  },
+  "imports": {
+    "cli": [
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "bcryptprimitives.dll",
+      "kernel32.dll",
+      "KERNEL32.dll",
+      "ntdll.dll",
+      "psapi.dll",
+      "VCRUNTIME140.dll"
+    ],
+    "desktop": [
+      "advapi32.dll",
+      "ADVAPI32.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "bcryptprimitives.dll",
+      "combase.dll",
+      "comctl32.dll",
+      "dwmapi.dll",
+      "gdi32.dll",
+      "imm32.dll",
+      "KERNEL32.dll",
+      "kernel32.dll",
+      "ntdll.dll",
+      "ole32.dll",
+      "oleaut32.dll",
+      "psapi.dll",
+      "shell32.dll",
+      "shlwapi.dll",
+      "user32.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll"
+    ]
+  },
+  "authenticode": [
+    {
+      "file": "greenlens.exe",
+      "status": "NotSigned"
+    },
+    {
+      "file": "greenlens-desktop.exe",
+      "status": "NotSigned"
+    },
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "status": "NotSigned"
+    }
+  ],
+  "retained_evidence": [
+    {
+      "file": "cli-help-check.json",
+      "sha256": "a4094a66ac680a4d3da4bbbe225c0987830ec6997fbb8c8183387defc545f16b"
+    },
+    {
+      "file": "cli-copy-help.txt",
+      "sha256": "b1bb5634f2b443be20d0f68c817300301a015ecd19b8b871895400b1fd456034"
+    },
+    {
+      "file": "cli-weather-attach-help.txt",
+      "sha256": "8beea65d9d0f0bce8f6d4d14f0617a92dde508630ea356ae0168b6dbf18fa5f6"
+    },
+    {
+      "file": "focused-check-context.json",
+      "sha256": "d517f7921d4fb18b672f5eae432a34bbf1138ad165e5e353944e794f0f1d3685"
+    },
+    {
+      "file": "frontend-tests.json",
+      "sha256": "734f32fc3cf092b6b0e4d0824135a917efbf8d6e9fb301c4546e2927f587a603"
+    },
+    {
+      "file": "frontend-tests.log",
+      "sha256": "aea1dc3498e0b1176695887684f683fbc36143b1980d7eac297b54377757e092"
+    },
+    {
+      "file": "frontend-check.json",
+      "sha256": "966359262e8cd9736b9e0ac93d27e868ffcfc2749d161083571b4a9f48fcb1d4"
+    },
+    {
+      "file": "frontend-check.log",
+      "sha256": "65208515b28a3cb79b4884f6fa2f6b4deb89f0fcf289fc4057f9ceb7fe4209ed"
+    },
+    {
+      "file": "build.ps1",
+      "sha256": "fbb618942636c4e84fd825c727f0c6a8c205ebf76aad1deae4ddfec5203eb37d"
+    },
+    {
+      "file": "start.json",
+      "sha256": "20ee15a7f9ad7701c80669c604b75f841d9e57e3c912fd4294c0000b2173e0d9"
+    },
+    {
+      "file": "build-inputs.json",
+      "sha256": "5cf526af52a3560ed651ba58d0065ab72b164afdb72b11ac92fe9755c6d78cd0"
+    },
+    {
+      "file": "build-finished.json",
+      "sha256": "8bf48c887d42bb5dc3fd897c2b55c38c22da1e4b582d71f22f4dadba72deb322"
+    },
+    {
+      "file": "cli-build.json",
+      "sha256": "e7f4a8c433ae792edb8303972c97fed330ff77fa527ab466eb875c20c71c0bd4"
+    },
+    {
+      "file": "desktop-build.json",
+      "sha256": "983731d868eac9bad3adb2ad8d163c810861648f4903071e029bf6029b889914"
+    },
+    {
+      "file": "cli-build.log",
+      "sha256": "f941fe5b427954964811742a4d6f26602b5e1aa94695706912d7c355e2ed2fc8"
+    },
+    {
+      "file": "desktop-build.log",
+      "sha256": "4130143c2a44837222e844e3afc70e4b548bc21f8ad2754b62556cf761339783"
+    },
+    {
+      "file": "cli-runner-build-output.txt",
+      "sha256": "6cbabee9367ef3b86db571635bb388c82e9ff1f6af4f7edb9e567d6802c8369e"
+    },
+    {
+      "file": "desktop-runner-build-output.txt",
+      "sha256": "6cbabee9367ef3b86db571635bb388c82e9ff1f6af4f7edb9e567d6802c8369e"
+    },
+    {
+      "file": "inventory-check-final.log",
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    },
+    {
+      "file": "package-documents.log",
+      "sha256": "90b566bbbb35f99d15ccffbf10dd0b4782654166d1549ce81678f4b268403040"
+    },
+    {
+      "file": "document-check.json",
+      "sha256": "aae267338ebff5a5952e94ebad438120732ca7705f7c2d199816b4c870b51c27"
+    },
+    {
+      "file": "package-audit.json",
+      "sha256": "e42c9498bd0fd5371029ec4730cfbd8e43238a3357c5ba77b755bb75a356bbf3"
+    },
+    {
+      "file": "installer-audit.json",
+      "sha256": "7d11f51580129bb4e1bfa05a99e257a8eb559e61d9d6edafa97813bfb9cc1727"
+    },
+    {
+      "file": "audit-package.py",
+      "sha256": "9aa3363e5fe311670c008f6a6502b5a55dd4516a26830a22526cdf24a865f448"
+    },
+    {
+      "file": "audit-installer.py",
+      "sha256": "773f331d9209182432cc07bf4dc4323ff556497123adb9276eac95c3ac934324"
+    },
+    {
+      "file": "signatures.json",
+      "sha256": "c4d55745ed4a53e8a92dad4652b28578b6c61b16235d8b94caad2a3b3f7e9cab"
+    },
+    {
+      "file": "final-integrity.json",
+      "sha256": "97428f786e569efeba5d478108724addf7dcb313011e6f1fe33c76563f2f0345"
+    },
+    {
+      "file": "hardware.json",
+      "sha256": "eca191e615eef59e38d3c0200a949a6370e0a7f08d2f6688f5db260b5631ac7a"
+    }
+  ],
+  "scope": "Clean-source release CLI and production NSIS build; exact archive members, source copies, retained notices, imports and installer payload checked. No installation, desktop launch, simulation or replay performed.",
+  "warnings": [
+    "Inherited npm msvs-version environment-config deprecation warning; no global setting changed."
+  ],
+  "runtime_requirements": [
+    "Windows x64 and Microsoft VC v14 x64 redistributable; CLI imports VCRUNTIME140.dll.",
+    "Desktop also imports VCRUNTIME140_1.dll and requires separately installed Microsoft Edge WebView2 runtime.",
+    "No separate clean-machine runtime test performed; static import inspection does not establish runtime portability.",
+    "Radiance engines remain separately installed; no engine binaries included."
+  ],
+  "installer_launched": false,
+  "desktop_launched": false,
+  "engine_executed": false,
+  "scientific_accuracy_accepted": false,
+  "release_acceptance_complete": false,
+  "cli_help_wording": {
+    "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+    "passed": true,
+    "initial_inspector_error": {
+      "exit_code": 2,
+      "message": "unrecognized subcommand 'project'",
+      "correction": "Use the documented top-level copy command; no product or binary change.",
+      "arguments": [
+        "project",
+        "copy",
+        "--help"
+      ]
+    },
+    "cli_sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553",
+    "schema_version": "greenlens.cli-help-wording.v1",
+    "commands": [
+      [
+        "copy",
+        "--help"
+      ],
+      [
+        "weather",
+        "attach",
+        "--help"
+      ]
+    ],
+    "engine_executed": false,
+    "help_files": [
+      {
+        "sha256": "b1bb5634f2b443be20d0f68c817300301a015ecd19b8b871895400b1fd456034",
+        "file": "cli-copy-help.txt"
+      },
+      {
+        "sha256": "8beea65d9d0f0bce8f6d4d14f0617a92dde508630ea356ae0168b6dbf18fa5f6",
+        "file": "cli-weather-attach-help.txt"
+      }
+    ]
+  },
+  "focused_check_context": {
+    "schema_version": "greenlens.candidate10-focused-check-context.v1",
+    "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+    "scope": "Focused precommit verification of the exact committed presentation-only changes; no numerical runtime behavior or immutable evidence changed.",
+    "changes": [
+      "UI and standalone report describe retained metric-result currency as physical inputs plus metric settings.",
+      "Rust comment and qualification schema description clarify the unchanged serialized metrics relation."
+    ],
+    "checks": [
+      {
+        "passed": 5,
+        "failed": 0,
+        "command": [
+          "cargo",
+          "test",
+          "-p",
+          "greenlens-runner",
+          "--lib",
+          "qualification::tests"
+        ]
+      },
+      {
+        "passed": 1,
+        "failed": 0,
+        "command": [
+          "cargo",
+          "test",
+          "-p",
+          "greenlens-runner",
+          "--lib",
+          "climate_export::tests::standalone_assessment_labels_all_three_statuses_without_implying_general_acceptance",
+          "--",
+          "--exact"
+        ]
+      },
+      {
+        "passed": 6,
+        "failed": 0,
+        "command": [
+          "node",
+          "--test",
+          "tests/climate-qualification.test.mjs"
+        ]
+      },
+      {
+        "exit_code": 0,
+        "command": [
+          "cargo",
+          "fmt",
+          "--all",
+          "--",
+          "--check"
+        ]
+      },
+      {
+        "exit_code": 0,
+        "command": [
+          "cargo",
+          "clippy",
+          "-p",
+          "greenlens-runner",
+          "--all-targets",
+          "--",
+          "-D",
+          "warnings"
+        ]
+      }
+    ],
+    "earlier_fixture_failure": {
+      "physics_or_tolerance_changed": false,
+      "product_defect": false,
+      "scope": "The new geometry-only test initially omitted its synthetic weather reference; the fixture was repaired to include the valid binding before the final five-test pass.",
+      "preserved_in_original_test_output": true
+    },
+    "completed_utc": "2026-10-12T04:32:55.3173263Z",
+    "new_engine_execution": false,
+    "scientific_acceptance_claimed": false
+  },
+  "frontend_checks": [
+    {
+      "exit_code": 0,
+      "stage": "frontend-tests",
+      "arguments": [
+        "test"
+      ],
+      "finished_utc": "2026-10-12T04:37:11.8720407Z",
+      "wall_seconds": 3.3386316,
+      "program": "npm",
+      "started_utc": "2026-10-12T04:37:08.5315206Z"
+    },
+    {
+      "exit_code": 0,
+      "stage": "frontend-check",
+      "arguments": [
+        "run",
+        "check"
+      ],
+      "finished_utc": "2026-10-12T04:37:15.6036443Z",
+      "wall_seconds": 2.3648676,
+      "program": "npm",
+      "started_utc": "2026-10-12T04:37:13.2387075Z"
+    }
+  ],
+  "frontend_test_counts": {
+    "passed": 136,
+    "failed": 0,
+    "skipped": 0
+  }
+}

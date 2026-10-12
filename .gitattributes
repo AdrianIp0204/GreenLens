@@ -81,3 +81,4 @@ docs/evidence/v0.3-ci/final-main-572f0b7.json -text -whitespace
 docs/evidence/v0.3-ci/superseded-main-d7d74a3.json -text -whitespace
 docs/evidence/v0.3-ci/final-main-b813b06.json -text -whitespace
 docs/evidence/v0.3-engine/reference-prerequisite-rejection-checkpoint.json -text -whitespace
+docs/evidence/v0.3-native/candidate10-*.json -text -whitespace

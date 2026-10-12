@@ -1,0 +1,527 @@
+{
+  "schema_version": "greenlens.candidate10-native-qualification-audit.v1",
+  "checked_utc": "2026-10-12T04:59:52.520300+00:00",
+  "passed": true,
+  "application_source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+  "application_source_dirty": false,
+  "cli_sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553",
+  "installed_desktop_sha256": "cd26720d2014c4ba80f65fba69d6fc46732b34144179d5fe05d58276d3faf023",
+  "zip": {
+    "file": "stale-native.zip",
+    "bytes": 6805818,
+    "sha256": "761e8668287ba503a6c2ee557ad23c5f59109923d2213bcca190f31a3d9799ca",
+    "members": 184,
+    "sealed_members": 183,
+    "uncompressed_bytes": 45415625,
+    "bounded_paths_and_5000_64MiB_256MiB_limits_checked": true
+  },
+  "immutable_evidence": {
+    "source_project_files": 179,
+    "copied_project_files": 179,
+    "unchanged_run_weather_files": 178,
+    "unchanged_run_weather_bytes": 44920485,
+    "nested_seal_entries_checked": 186,
+    "all_original_copy_and_zip_run_weather_bytes_identical": true,
+    "copied_project_manifest_equals_export": true,
+    "original_vs_copy_cameras_equal": true,
+    "count_explanation": "Two75-file annual runs, one23-file selected-hour run and five weather files make178 immutable files; project.json makes179 portable files. Ephemeral lock excluded.",
+    "all_178_original09_final10_edited_snapshot_and_export_bytes_identical": true
+  },
+  "arrays": {
+    "chunks_checked": 107,
+    "finite_rgb_lux_records": 420504,
+    "maximum_rgb_to_lux_arithmetic_difference": 0.0
+  },
+  "runs": [
+    {
+      "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "alternative": "A",
+      "calculation": {
+        "mode": "annual",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "profile": "shipping"
+      },
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 210240,
+      "record_sha256": "50b9336ea0f83c6232909f961f33357d91aee0e7307334315d045461ddda5452",
+      "recipe_sha256": "5a814d3500aa451e4456597bde6bc7c5be67121ecb50052d648c7b4a59250587",
+      "run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "differs",
+        "physical": "differs"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    },
+    {
+      "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "alternative": "B",
+      "calculation": {
+        "mode": "annual",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "profile": "shipping"
+      },
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 210240,
+      "record_sha256": "58fe0235610baa2931e9b23fcf529d59aa01f485974638f7c89c0bf756d708c0",
+      "recipe_sha256": "6a1984817a3382bce227bdc8c9cc60dddf389ab96448b2ec96778a6694d94bef",
+      "run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "matches",
+        "physical": "matches"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    },
+    {
+      "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+      "alternative": "A",
+      "calculation": {
+        "mode": "weather_hour",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "interval_index": 1908,
+        "profile": "shipping"
+      },
+      "interval_count": 1,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 24,
+      "record_sha256": "c98f13aabb72b50a06cce4cda805e7973c3ecad81a8b4e5a43db525f5ba67ff4",
+      "recipe_sha256": "7ab8c80a2214c94dc04d269420c06408167a1620260f6cf9e1c7dc53c12fdb3c",
+      "run_source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "not_applicable",
+        "physical": "differs"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    }
+  ],
+  "qualification": {
+    "supplement_sha256": "4836cdc2372afa067ec9a67e0f2b25a3ebd8b717aec8cac0d0073d1fcc8eedb8",
+    "registry_sha256": "eb03209f4577511232c8b43b00ad55344cb971533875173b03d7a544a37bb2b7",
+    "failed_exact_identities": 3,
+    "comparison_sides_exactly_match_supplement": 2,
+    "unknown_imported_supplements_authoritative": false
+  },
+  "report": {
+    "sha256": "ccebe942b5a99cadad18bd3cad65e47a9a5c424ac199abb2fbdb80f749d4d395",
+    "qualification_panels": 5,
+    "all_failed": true,
+    "visible_status_and_reason_text_and_styling_present": true,
+    "offline_no_scripts_or_external_assets": true,
+    "scope": "HTML structure/text and extracted bytes checked. New retained metric-result wording is correct for unchanged settings plus changed physical geometry. Browser observation is recorded separately by the operator.",
+    "extracted_members_exact": true
+  },
+  "cli_inspection": {
+    "processes": [
+      {
+        "output_sha256": "2bb4cf4d8eee10046f889dafe0fa4783074b5a790f6247264faee7e01b061543",
+        "wall_seconds": 0.7553648,
+        "exit_code": 0,
+        "finished_utc": "2026-10-12T04:57:15.7217373Z",
+        "arguments": [
+          "study",
+          "inspect",
+          "<candidate10 edited copied Climate evidence>",
+          "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128"
+        ],
+        "state": "edited",
+        "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+        "started_utc": "2026-10-12T04:57:14.9516161Z"
+      },
+      {
+        "output_sha256": "4e23bc1e0ebb4cdc918f20a7d6a4636eecc3f1e9d3f184a4d6cc22ae0ae41537",
+        "wall_seconds": 0.6947565,
+        "exit_code": 0,
+        "finished_utc": "2026-10-12T04:57:16.4471156Z",
+        "arguments": [
+          "study",
+          "inspect",
+          "<candidate10 edited copied Climate evidence>",
+          "2c436690-9ddc-4040-91f7-154b7b44b596"
+        ],
+        "state": "edited",
+        "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+        "started_utc": "2026-10-12T04:57:15.7522081Z"
+      },
+      {
+        "output_sha256": "8cff5124df69221b7267c897d1bf08b77e0a35b9be6e624a75040db8d994db20",
+        "wall_seconds": 0.3864848,
+        "exit_code": 0,
+        "finished_utc": "2026-10-12T04:57:16.8382166Z",
+        "arguments": [
+          "study",
+          "inspect",
+          "<candidate10 edited copied Climate evidence>",
+          "d2e0e9c6-e762-4326-94bf-5ed251bb4681"
+        ],
+        "state": "edited",
+        "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+        "started_utc": "2026-10-12T04:57:16.4516042Z"
+      },
+      {
+        "output_sha256": "2906e9913fbdeee847dd8442be1c0126125618c5c752e1b7aba061dbee735b5c",
+        "wall_seconds": 0.6594336,
+        "exit_code": 0,
+        "finished_utc": "2026-10-12T04:57:17.5003573Z",
+        "arguments": [
+          "study",
+          "inspect",
+          "<candidate10 restored copied Climate evidence>",
+          "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128"
+        ],
+        "state": "restored",
+        "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+        "started_utc": "2026-10-12T04:57:16.8407999Z"
+      },
+      {
+        "output_sha256": "4e23bc1e0ebb4cdc918f20a7d6a4636eecc3f1e9d3f184a4d6cc22ae0ae41537",
+        "wall_seconds": 0.5818467,
+        "exit_code": 0,
+        "finished_utc": "2026-10-12T04:57:18.0845709Z",
+        "arguments": [
+          "study",
+          "inspect",
+          "<candidate10 restored copied Climate evidence>",
+          "2c436690-9ddc-4040-91f7-154b7b44b596"
+        ],
+        "state": "restored",
+        "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+        "started_utc": "2026-10-12T04:57:17.5026331Z"
+      },
+      {
+        "output_sha256": "8cff5124df69221b7267c897d1bf08b77e0a35b9be6e624a75040db8d994db20",
+        "wall_seconds": 0.3423604,
+        "exit_code": 0,
+        "finished_utc": "2026-10-12T04:57:18.4294132Z",
+        "arguments": [
+          "study",
+          "inspect",
+          "<candidate10 restored copied Climate evidence>",
+          "d2e0e9c6-e762-4326-94bf-5ed251bb4681"
+        ],
+        "state": "restored",
+        "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+        "started_utc": "2026-10-12T04:57:18.0869462Z"
+      }
+    ],
+    "outcomes": [
+      {
+        "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+        "edited_relation": {
+          "physical": "differs",
+          "metrics": "differs"
+        },
+        "restored_relation": {
+          "physical": "matches",
+          "metrics": "matches"
+        },
+        "scientific_status_both": "failed",
+        "record_recipe_and_scientific_identity_unchanged": true,
+        "edited_output_sha256": "2bb4cf4d8eee10046f889dafe0fa4783074b5a790f6247264faee7e01b061543",
+        "restored_output_sha256": "2906e9913fbdeee847dd8442be1c0126125618c5c752e1b7aba061dbee735b5c"
+      },
+      {
+        "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+        "edited_relation": {
+          "physical": "matches",
+          "metrics": "matches"
+        },
+        "restored_relation": {
+          "physical": "matches",
+          "metrics": "matches"
+        },
+        "scientific_status_both": "failed",
+        "record_recipe_and_scientific_identity_unchanged": true,
+        "edited_output_sha256": "4e23bc1e0ebb4cdc918f20a7d6a4636eecc3f1e9d3f184a4d6cc22ae0ae41537",
+        "restored_output_sha256": "4e23bc1e0ebb4cdc918f20a7d6a4636eecc3f1e9d3f184a4d6cc22ae0ae41537"
+      },
+      {
+        "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+        "edited_relation": {
+          "physical": "differs",
+          "metrics": "not_applicable"
+        },
+        "restored_relation": {
+          "physical": "differs",
+          "metrics": "not_applicable"
+        },
+        "scientific_status_both": "failed",
+        "record_recipe_and_scientific_identity_unchanged": true,
+        "edited_output_sha256": "8cff5124df69221b7267c897d1bf08b77e0a35b9be6e624a75040db8d994db20",
+        "restored_output_sha256": "8cff5124df69221b7267c897d1bf08b77e0a35b9be6e624a75040db8d994db20"
+      }
+    ],
+    "edited_assessments_equal_native_export": true,
+    "hourly_not_applicable_explanation": "The current study is annual; the retained hourly run remains a physical/study mismatch and has no annual metric result in both states.",
+    "scope": "Distributed clean candidate10 CLI full retained-evidence reader; edited manifest only in separate audit copy, restored project read after native closure; no engine."
+  },
+  "export_origin": "installed native candidate10",
+  "engine_executed": false,
+  "replay_executed": false,
+  "scientific_qualification_accepted": false,
+  "release_complete": false,
+  "manifest_edit_and_undo": {
+    "only_edited_field": [
+      {
+        "path": "/alternatives/0/model/window/width_m",
+        "before": 1.8,
+        "after": 1.9
+      }
+    ],
+    "complete_climate_study_settings_weather_and_run_summaries_unchanged": true,
+    "before_native_manifest_sha256": "e1ee2240635f134ef165858333767186d442abf29e0572395d97178aa05a63d1",
+    "edited_manifest_sha256": "c3279dca777cfb0be2818dcb8441dd499c213c7453a59dd6da7c29089039c39f",
+    "after_undo_manifest_sha256": "e1ee2240635f134ef165858333767186d442abf29e0572395d97178aa05a63d1",
+    "live_project_manifest_sha256": "e1ee2240635f134ef165858333767186d442abf29e0572395d97178aa05a63d1",
+    "before_and_saved_undo_and_final_project_exact_bytes_equal": true,
+    "four_camera_states_unchanged": true,
+    "camera_count": 4,
+    "camera_sha256_sorted_compact_json": "737aa6f45524b6ae26c58bb871837430cd1abd471035ac8636ad026f1a78f2a2"
+  },
+  "screenshots": [
+    {
+      "file": "candidate10-current-metric-qualification.jpg",
+      "original_capture_basename": "current-metric-qualification.jpg",
+      "bytes": 166398,
+      "sha256": "86f84d4b555179a7b4aa2a5fadfec558edd7126a48dd086fe0f04214526414af",
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "unaltered_window_capture": true,
+      "description": "Initial annual A: current retained metrics and failed scientific qualification."
+    },
+    {
+      "file": "candidate10-stale-metric-qualification.jpg",
+      "original_capture_basename": "stale-metric-qualification.jpg",
+      "bytes": 164287,
+      "sha256": "5c7d1c21d675c159b4a0bd47af4b60bc443eb766f7c5325d41c37ce4d28523da",
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "unaltered_window_capture": true,
+      "description": "Window width accepted1.8 to1.9; geometry mismatch hides overlay; retained metric results are not current and scientific status remains failed."
+    },
+    {
+      "file": "candidate10-undo-metric-qualification.jpg",
+      "original_capture_basename": "undo-metric-qualification.jpg",
+      "bytes": 166143,
+      "sha256": "4bc78ef37b3578ef999ae65971c5db09382a24f61997717f0eb91cb6730195f2",
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "unaltered_window_capture": true,
+      "description": "Undo restores geometry and current retained metrics; failed scientific qualification remains."
+    },
+    {
+      "file": "candidate10-comparison-qualification.jpg",
+      "original_capture_basename": "comparison-qualification.jpg",
+      "bytes": 193542,
+      "sha256": "a52e1a1d9cf72fd63d9d6ba8eec018c58071b8bb8a7133c84d49155d6d47eaba",
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "unaltered_window_capture": true,
+      "description": "Restored annual A/B both match current study and both retain failed scientific qualification."
+    }
+  ],
+  "native_text_receipts": [
+    {
+      "file": "current-metric-qualification.txt",
+      "bytes": 4101,
+      "sha256": "c7e91a29a3f240873f51ab2030d26e9f9fdfc2adce9966bd08fbbb4866848b7e"
+    },
+    {
+      "file": "stale-metric-qualification.txt",
+      "bytes": 15960,
+      "sha256": "ff10ba5ed7dd2f08a08931b9d529ae36d458654906a623d94c0934ed33de9f91"
+    },
+    {
+      "file": "undo-metric-qualification.txt",
+      "bytes": 16030,
+      "sha256": "aeccc91b83b3d4739429bf9877499257f9772905f79181910b5656de9d6d9cd2"
+    },
+    {
+      "file": "comparison-qualification.txt",
+      "bytes": 28930,
+      "sha256": "ba8779e5d05a6ceac33d81e6e1616f3f50798aee856ec1ae39cf7bf0843e4ad5"
+    },
+    {
+      "file": "native-export-completed.txt",
+      "sha256": "88ea227bacf59a7c446732f9c5b45c37a974a4a3f162854d1565aa2b186e8f03"
+    }
+  ],
+  "native_operator_observations": {
+    "observer": "Native operator; retained screenshots and text independently inspected.",
+    "production_install": true,
+    "application_closed_after_observation": true,
+    "closure": "Operator confirmed closure and fresh window inventory with no GreenLens window.",
+    "accepted_geometry_edit": "Window width1.8 to1.9, saved; Undo and Save restore the exact manifest.",
+    "retained_qualification_remains_failed": true,
+    "native_export_all_three_runs_completed": true,
+    "not_exercised_here": [
+      "fresh simulation",
+      "cancellation",
+      "Save As",
+      "engine replay",
+      "new scientific acceptance"
+    ],
+    "camera_scope": "Persisted camera states are byte-equivalent through the snapshots. Operator observed unchanged viewports through edit/save/undo before comparison layout resizing; no continuous camera-engine assertion."
+  },
+  "inspector_attempts": [
+    {
+      "attempt": 1,
+      "outcome": "Stopped before final record on an incorrect text-capture serialization assumption.",
+      "cause": "Accessibility capture stores A, colon and failed label as separate text nodes; initial check expected one flat string.",
+      "repair": "Join ordered captured text nodes before checking each side label. Original capture and prior inspector source retained unchanged.",
+      "product_or_evidence_change": false
+    }
+  ],
+  "installation": {
+    "installed_sha256": "cd26720d2014c4ba80f65fba69d6fc46732b34144179d5fe05d58276d3faf023",
+    "started_utc": "2026-10-12T04:43:18.1385176+00:00",
+    "source": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+    "finished_utc": "2026-10-12T04:43:20.5116591+00:00",
+    "exit_code": 0
+  },
+  "build_record": {
+    "file": "candidate10-build-audit.json",
+    "sha256": "8967311c50f47d4a3c2f415f6d523949f1a44549be0267b4a1fde1c273a79763"
+  },
+  "artifacts": [
+    {
+      "file": "greenlens.exe",
+      "bytes": 4925952,
+      "sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553"
+    },
+    {
+      "file": "greenlens-desktop.exe",
+      "bytes": 14626304,
+      "sha256": "b9f2504c04310b78fb957cc65d0d81e64e69d9dc48e12903d1ffab123c237866"
+    },
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "bytes": 3567411,
+      "sha256": "e5809e3b8eab1d6a0993eb38e1c8d7006a551f403ab3f671d0f4ad657903a1f6"
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 6865713,
+      "sha256": "3cf68e8532b384ddbc3266e0388774fa78ca855ac7cd2d5a858c8ec22c36be98"
+    }
+  ],
+  "independent_package_review": {
+    "file": "audit.json",
+    "sha256": "cc3ea7e86d47cd4207c87357f4614e4affa7f76c0ccf61552c3c4146498e50c9",
+    "scope": "Separate exact package/source/resource/notices and marker-only payload audit."
+  },
+  "application_source_pins": [
+    {
+      "file": "crates/greenlens-runner/src/qualification.rs",
+      "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+      "git_blob_bytes_sha256": "6c42b6033b677efaa9bf946ee4904607b4dc9439ea3325992d7319171e5cbb1c"
+    },
+    {
+      "file": "crates/greenlens-runner/src/climate_export.rs",
+      "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+      "git_blob_bytes_sha256": "9920d5cdee8a6b730ffe1513ee6475c4c4bcd7f9a772c6128659279229c90b69"
+    },
+    {
+      "file": "apps/desktop/src/workspace/QualificationStatus.tsx",
+      "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+      "git_blob_bytes_sha256": "fb31eaf2d69a60acdc265d7bfacbc73b45e152333ac4ce8f6e77ac7ba21e620b"
+    },
+    {
+      "file": "schemas/qualification-v1.schema.json",
+      "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+      "git_blob_bytes_sha256": "9b54faee3df8d5f53114959cc0e807be931e7189915c0772a9ef076dd4fd6ec7"
+    }
+  ],
+  "scope": "Installed production candidate10 geometry-only currentness, native stale export and Undo observations plus independent full CLI reader, immutable bytes, archive, array and report-structure audit. No new engine run or scientific acceptance.",
+  "rendered_report_observation": {
+    "observer": "Native verification operator; separately reported browser observation.",
+    "observed_utc_approximate": "2026-10-12T04:58:00Z",
+    "report_sha256": "ccebe942b5a99cadad18bd3cad65e47a9a5c424ac199abb2fbdb80f749d4d395",
+    "rendering": "Unmodified extracted standalone HTML served on loopback127.0.0.1 in the in-app browser.",
+    "viewport_width": 1280,
+    "viewport_height": 720,
+    "document_scroll_width": 1265,
+    "failed_qualification_panels_visually_inspected": 5,
+    "panels_scrolled_individually": true,
+    "annual_A_and_comparison_A_not_current_wording_visible": true,
+    "annual_B_current_wording_visible": true,
+    "hourly_not_applicable_visible": true,
+    "scripts": 0,
+    "report_http_status": 200,
+    "favicon_http_status": 404,
+    "browser_screenshot_retained": false,
+    "application_development_server": false,
+    "tab_closed_and_static_server_stopped": true,
+    "engine_or_replay_executed": false
+  },
+  "retained_external_audit": [
+    {
+      "file": "export-audit.py",
+      "sha256": "75e988e67ad718fd0b48119a59cf7bdfb495c940e5d791bae6eabc3be60660aa"
+    },
+    {
+      "file": "export-integrity-audit.json",
+      "sha256": "f2d69b8a263c5e8f0a2f720ec89051d92ce52c7041ec602b08081cf1faf29763"
+    },
+    {
+      "file": "export-inventory.json",
+      "sha256": "a7cb131ae95b3f41c2f96a9af6b001d5f6e53c715a846b45c3a38ef19253f785"
+    },
+    {
+      "file": "postclose-inventory.json",
+      "sha256": "7683f44ef5dae483174785bcae9ce14e54c4cd48774daec4268d6c0c6df2941a"
+    },
+    {
+      "file": "finalize-native-audit.py",
+      "sha256": "231765c7bec9a304ce0ea72ddeea651020305e15fe0a4d57bd813e8158106574"
+    },
+    {
+      "file": "finalize-native-audit-attempt1.py",
+      "sha256": "c3de1eafeb791476df102945d4ba591fc7aad94bbcec6d0b9084a68c5eb4aa08"
+    },
+    {
+      "file": "cli-inspection-processes.json",
+      "sha256": "d53c74391042f99f0f2f9b11b52bc3e0e852a42fa0309ea69f7ae622cfc995bf"
+    }
+  ]
+}

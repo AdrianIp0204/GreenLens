@@ -46,7 +46,7 @@ enum Command {
     Example {
         project: PathBuf,
     },
-    /// Save As a complete verified portable copy, including immutable run evidence.
+    /// Save As a complete integrity-checked portable copy, including immutable run evidence.
     Copy {
         project: PathBuf,
         destination: PathBuf,
@@ -113,7 +113,7 @@ enum WeatherCommand {
     Synthetic {
         destination: PathBuf,
     },
-    /// Copy a verified weather asset into a saved portable project.
+    /// Copy an integrity-checked weather asset into a saved portable project.
     Attach {
         project: PathBuf,
         asset: PathBuf,

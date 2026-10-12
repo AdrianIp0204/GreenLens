@@ -1,0 +1,587 @@
+{
+  "schema_version": "greenlens.candidate08-selected-hour-replay.v1",
+  "checked_utc": "2026-10-12T03:41:22.892639+00:00",
+  "passed": true,
+  "scope": "One retained selected-hour replay through the distributed candidate08 CLI. This is same-engine integration and supplemental assessment reader/export evidence, not independent physical accuracy or annual convergence.",
+  "application_source_commit": "58c198bd094f87bdf59da8d516a53862fa8d6889",
+  "application_source_dirty": false,
+  "cli_sha256": "ca762c6c3346100699e9fa30f248bc2ed9bf38ed69ee08b805b1f7b148f03fb2",
+  "historical_run_source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+  "historical_run_source_dirty": false,
+  "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+  "interval_index": 1908,
+  "sensors": 24,
+  "package": {
+    "sha256": "3b5d33e56bc7967f4cc681631b4cb8aeb32600193c050bc1e726b3d24ffbb024",
+    "bytes": 1199409,
+    "members": 34,
+    "sealed_members": 33,
+    "uncompressed_bytes": 12695284,
+    "immutable_source_members_identical": 28,
+    "qualification_status": "failed",
+    "run_ids": [
+      "d2e0e9c6-e762-4326-94bf-5ed251bb4681"
+    ]
+  },
+  "qualification_after_fresh_replay_read": "failed",
+  "recalculated_assessment_matches_selected_export": true,
+  "method": "perez-epw-dewpoint3-reinhart-hammersley-indirect-finite-direct/5",
+  "complete_profile": {
+    "name": "shipping",
+    "sky_basis_mf": 2,
+    "ambient_bounces": 7,
+    "ambient_divisions": 64,
+    "direct_ambient_divisions": 64,
+    "direct_solar_samples": 1024,
+    "ambient_supersamples": 0,
+    "ambient_accuracy": 0.0,
+    "ambient_resolution": 256,
+    "ambient_value": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "limit_weight": 1e-09,
+    "ray_depth": -16,
+    "direct_threshold": 0.0,
+    "direct_certainty": 1.0,
+    "direct_jitter": 0.0,
+    "direct_size": 0.05,
+    "specular_threshold": 0.0,
+    "specular_sampling": 0.0,
+    "uncorrelated_random_sampling": false,
+    "workers": 1,
+    "coefficient_receiver_scale": 100.0,
+    "external_primary": {
+      "generator_version": "greenlens.hammersley-cosine-primary.v1",
+      "encoding_version": "greenlens.primary-ascii-e17-lf.v1",
+      "count": 16384
+    }
+  },
+  "engine": {
+    "version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+    "package_sha256": "c4f02efcb4a33f4a43b7ce0ba58100544abc317a1be61f7b0425a64a66eb8a09",
+    "fingerprint": "2cfbc0bca440830141fcaae0574d54606cd32dd0d7b56f57ab6135493b424e04",
+    "executable_sha256": {
+      "dctimestep.exe": "ccd4ee7b89c73f752419642dc10f93e13b6c75b407f0e12775f5056ec7f1ab05",
+      "gendaymtx.exe": "07a022f4569c7815bba868148add3706aa0e120622f0e8e7c7029e7947af527d",
+      "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+      "rcontrib.exe": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+      "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9"
+    },
+    "library_files_hashed": 147,
+    "complete_engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144"
+  },
+  "immutable_evidence": {
+    "project_files_unchanged": 179,
+    "run_weather_files_unchanged": 178,
+    "all_package_and_extracted_members_exact": true,
+    "source_and_engine_hashes_equal_before_after": true,
+    "native_three_run_export_untouched": true,
+    "native_three_run_export_sha256": "8a4d4256bf7b533a7a2c42611fd3966bcbac5545d0254f9e29572f009a2d9995"
+  },
+  "recipe": {
+    "schema": "greenlens.annual-recipe.v5",
+    "historical_recipe_sha256": "7ab8c80a2214c94dc04d269420c06408167a1620260f6cf9e1c7dc53c12fdb3c",
+    "replay_recipe_sha256": "3d79768de1b70ed44e607a7c80bcd02f7b0bdb878b13fa25bb9180d09dd4aece",
+    "all_physical_recipe_fields_equal": true,
+    "all_nine_native_process_executables_and_arguments_equal": true,
+    "all_native_process_exit_codes_zero": true,
+    "primary_contract_and_both_input_receipts_equal": true,
+    "primary_input_receipt": {
+      "bytes": 54034456,
+      "records": 393216,
+      "sha256": "30b372682d9a64975b87347008b7e74ff5a26bf13c95a4b3cdbe24ab92dd842e"
+    },
+    "full_and_direct_matrix_hashes_checked": true
+  },
+  "comparison": {
+    "values_checked": 24,
+    "all_passed": true,
+    "maximum_absolute_error_lux": 0.0,
+    "maximum_tolerance_ratio": 0.0,
+    "tolerance": "max(0.5 lx, 0.5% of each retained reference)",
+    "values": [
+      {
+        "sensor_id": "s000001",
+        "reference_lux": 1865.2190694673875,
+        "replay_lux": 1865.2190694673875,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 9.326095347336938,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000002",
+        "reference_lux": 6850.47264206223,
+        "replay_lux": 6850.47264206223,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 34.25236321031115,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000003",
+        "reference_lux": 6850.233083056022,
+        "replay_lux": 6850.233083056022,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 34.25116541528011,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000004",
+        "reference_lux": 1867.7319422203818,
+        "replay_lux": 1867.7319422203818,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 9.33865971110191,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000005",
+        "reference_lux": 1356.0903531622116,
+        "replay_lux": 1356.0903531622116,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 6.780451765811058,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000006",
+        "reference_lux": 2200.3060139816216,
+        "replay_lux": 2200.3060139816216,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 11.001530069908108,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000007",
+        "reference_lux": 2236.3354635770957,
+        "replay_lux": 2236.3354635770957,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 11.181677317885478,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000008",
+        "reference_lux": 1345.8711989631433,
+        "replay_lux": 1345.8711989631433,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 6.729355994815717,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000009",
+        "reference_lux": 818.7793811390325,
+        "replay_lux": 818.7793811390325,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 4.093896905695162,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000010",
+        "reference_lux": 1025.2043794881602,
+        "replay_lux": 1025.2043794881602,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 5.1260218974408005,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000011",
+        "reference_lux": 1011.5165683358409,
+        "replay_lux": 1011.5165683358409,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 5.057582841679205,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000012",
+        "reference_lux": 792.5388917526072,
+        "replay_lux": 792.5388917526072,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 3.9626944587630364,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000013",
+        "reference_lux": 537.0232875245985,
+        "replay_lux": 537.0232875245985,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 2.6851164376229923,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000014",
+        "reference_lux": 594.533189053168,
+        "replay_lux": 594.533189053168,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 2.9726659452658404,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000015",
+        "reference_lux": 597.0596705572192,
+        "replay_lux": 597.0596705572192,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 2.985298352786096,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000016",
+        "reference_lux": 531.9400141164149,
+        "replay_lux": 531.9400141164149,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 2.6597000705820744,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000017",
+        "reference_lux": 387.1238449969168,
+        "replay_lux": 387.1238449969168,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 1.9356192249845838,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000018",
+        "reference_lux": 404.5666704666673,
+        "replay_lux": 404.5666704666673,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 2.0228333523333366,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000019",
+        "reference_lux": 402.8984231609792,
+        "replay_lux": 402.8984231609792,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 2.014492115804896,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000020",
+        "reference_lux": 367.9223021442046,
+        "replay_lux": 367.9223021442046,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 1.839611510721023,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000021",
+        "reference_lux": 300.7890622810182,
+        "replay_lux": 300.7890622810182,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 1.503945311405091,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000022",
+        "reference_lux": 311.1619897435775,
+        "replay_lux": 311.1619897435775,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 1.5558099487178876,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000023",
+        "reference_lux": 313.24488782113576,
+        "replay_lux": 313.24488782113576,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 1.5662244391056788,
+        "passed": true
+      },
+      {
+        "sensor_id": "s000024",
+        "reference_lux": 298.4404730211534,
+        "replay_lux": 298.4404730211534,
+        "absolute_error_lux": 0.0,
+        "tolerance_lux": 1.4922023651057672,
+        "passed": true
+      }
+    ],
+    "scope": "24 converted-lux comparisons; all 72 replay RGB channels also finite and nonnegative. RGB equality is not the replay acceptance criterion."
+  },
+  "supervision": {
+    "supervisor_sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "native_supervisor_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "processes": [
+      {
+        "executable": "greenlens-export.exe",
+        "arguments": [
+          "export",
+          "<candidate08 copied Climate evidence>",
+          "<fresh selected-hour evidence ZIP>",
+          "--run",
+          "d2e0e9c6-e762-4326-94bf-5ed251bb4681"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "started_utc": "2026-10-12T03:36:14.5440902Z",
+        "finished_utc": "2026-10-12T03:36:18.0314796Z",
+        "wall_seconds": 3.46575,
+        "sampled_peak_working_set_bytes": 28073984,
+        "sampled_runner_plus_engine_peak_bytes": 220397568,
+        "sampled_scratch_peak_bytes": 1292246,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 168,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "scratch_bytes": 2147483648,
+          "file_bytes": 536870912,
+          "memory_bytes": 2147483648,
+          "cleanup_seconds": 5,
+          "timeout_seconds": 120.0
+        },
+        "completed": true,
+        "exact_argument_array_sha256": "ee5a19dd76bbdef7d59211fb79ac686893899dcb28c47508139024ab0386201e"
+      },
+      {
+        "executable": "greenlens-replay.exe",
+        "arguments": [
+          "replay",
+          "<fresh selected-hour evidence ZIP>",
+          "--engine-dir",
+          "<pinned Radiance package>"
+        ],
+        "exit_code": 0,
+        "stderr": "",
+        "started_utc": "2026-10-12T03:36:19.1969053Z",
+        "finished_utc": "2026-10-12T03:40:27.7482046Z",
+        "wall_seconds": 248.5368753,
+        "sampled_peak_working_set_bytes": 32743424,
+        "sampled_runner_plus_engine_peak_bytes": 230809600,
+        "sampled_scratch_peak_bytes": 1330379,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 25578,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "scratch_bytes": 2147483648,
+          "file_bytes": 536870912,
+          "memory_bytes": 2147483648,
+          "cleanup_seconds": 5,
+          "timeout_seconds": 1200.0
+        },
+        "completed": true,
+        "exact_argument_array_sha256": "ff0ff477b7c5cef4da7b3c0bb84c96182bf01c42b2759b1b83c0da89d88227e7"
+      }
+    ],
+    "scope": "Atomic parent Job contains CLI and descendants; timeout covers parent, descendants and streams with bounded cleanup. Outer scratch measurement covers immediate audit-directory files. Application annual resources separately cover its complete owned simulation scratch.",
+    "concurrency": "Sole assigned scientific engine workload; reference prerequisite waits for this slot."
+  },
+  "annual_resources": {
+    "schema_version": "greenlens.annual-resources.v1",
+    "measurement_policy": "Native Windows GetProcessMemoryInfo: lifetime peak working set of each engine child and sampled runner+child working sets retained in annual process measurements. Streamed coefficient calls additionally retain sampled runner+whole-Job working sets with atomic Job assignment in annual-primary-streams.json; file-backed stages supervise one trusted worker. Complete owned scratch sizes use opened file handles. Sampling loops include scan/query time and a 20ms sleep, not a guaranteed 20ms cadence; shared pages are counted across processes and working sets are not private memory. Every method-5 process has a 7200-second deadline.",
+    "started_utc": "2026-10-12T03:36:20.615512700+00:00",
+    "finished_utc": "2026-10-12T03:40:27.427142900+00:00",
+    "total_wall_ms": 246811,
+    "peak_engine_working_set_bytes": 6275072,
+    "peak_observed_runner_plus_engine_working_set_bytes": 17907712,
+    "peak_scratch_bytes": 1181152,
+    "max_scratch_bytes": 2147483648,
+    "max_matrix_bytes": 536870912,
+    "max_observed_working_set_bytes": 2147483648,
+    "processes": [
+      {
+        "executable": "gendaymtx.exe",
+        "started_utc": "2026-10-12T03:36:20.628565700+00:00",
+        "finished_utc": "2026-10-12T03:36:20.801909700+00:00",
+        "elapsed_ms": 173,
+        "peak_child_working_set_bytes": 5283840,
+        "peak_observed_runner_plus_child_working_set_bytes": 16625664,
+        "peak_scratch_bytes": 30821,
+        "output_bytes": 27549,
+        "samples": 7
+      },
+      {
+        "executable": "gendaymtx.exe",
+        "started_utc": "2026-10-12T03:36:20.816757500+00:00",
+        "finished_utc": "2026-10-12T03:36:20.971059800+00:00",
+        "elapsed_ms": 154,
+        "peak_child_working_set_bytes": 5349376,
+        "peak_observed_runner_plus_child_working_set_bytes": 16740352,
+        "peak_scratch_bytes": 46949,
+        "output_bytes": 13724,
+        "samples": 6
+      },
+      {
+        "executable": "oconv.exe",
+        "started_utc": "2026-10-12T03:36:20.987747+00:00",
+        "finished_utc": "2026-10-12T03:36:21.161727800+00:00",
+        "elapsed_ms": 173,
+        "peak_child_working_set_bytes": 5398528,
+        "peak_observed_runner_plus_child_working_set_bytes": 16793600,
+        "peak_scratch_bytes": 50691,
+        "output_bytes": 2125,
+        "samples": 6
+      },
+      {
+        "executable": "oconv.exe",
+        "started_utc": "2026-10-12T03:36:21.179587500+00:00",
+        "finished_utc": "2026-10-12T03:36:21.442222700+00:00",
+        "elapsed_ms": 262,
+        "peak_child_working_set_bytes": 5398528,
+        "peak_observed_runner_plus_child_working_set_bytes": 16793600,
+        "peak_scratch_bytes": 53477,
+        "output_bytes": 2090,
+        "samples": 5
+      },
+      {
+        "executable": "rcontrib.exe",
+        "started_utc": "2026-10-12T03:36:21.461064800+00:00",
+        "finished_utc": "2026-10-12T03:40:03.127788+00:00",
+        "elapsed_ms": 221666,
+        "peak_child_working_set_bytes": 6275072,
+        "peak_observed_runner_plus_child_working_set_bytes": 17907712,
+        "peak_scratch_bytes": 596317,
+        "output_bytes": 541492,
+        "samples": 8316
+      },
+      {
+        "executable": "dctimestep.exe",
+        "started_utc": "2026-10-12T03:40:03.150480900+00:00",
+        "finished_utc": "2026-10-12T03:40:03.330023+00:00",
+        "elapsed_ms": 179,
+        "peak_child_working_set_bytes": 5259264,
+        "peak_observed_runner_plus_child_working_set_bytes": 16961536,
+        "peak_scratch_bytes": 602209,
+        "output_bytes": 2999,
+        "samples": 6
+      },
+      {
+        "executable": "rcontrib.exe",
+        "started_utc": "2026-10-12T03:40:03.359117500+00:00",
+        "finished_utc": "2026-10-12T03:40:26.838611+00:00",
+        "elapsed_ms": 23479,
+        "peak_child_working_set_bytes": 6148096,
+        "peak_observed_runner_plus_child_working_set_bytes": 17850368,
+        "peak_scratch_bytes": 1145091,
+        "output_bytes": 541492,
+        "samples": 846
+      },
+      {
+        "executable": "dctimestep.exe",
+        "started_utc": "2026-10-12T03:40:26.877931900+00:00",
+        "finished_utc": "2026-10-12T03:40:27.056279+00:00",
+        "elapsed_ms": 178,
+        "peak_child_working_set_bytes": 5255168,
+        "peak_observed_runner_plus_child_working_set_bytes": 16973824,
+        "peak_scratch_bytes": 1150328,
+        "output_bytes": 3005,
+        "samples": 6
+      },
+      {
+        "executable": "dctimestep.exe",
+        "started_utc": "2026-10-12T03:40:27.083395500+00:00",
+        "finished_utc": "2026-10-12T03:40:27.375902400+00:00",
+        "elapsed_ms": 292,
+        "peak_child_working_set_bytes": 5283840,
+        "peak_observed_runner_plus_child_working_set_bytes": 17006592,
+        "peak_scratch_bytes": 1154057,
+        "output_bytes": 3012,
+        "samples": 5
+      }
+    ]
+  },
+  "primary_stream_resources": [
+    {
+      "schema_version": "greenlens.stream-resources.v2",
+      "sampled_peak_job_plus_runner_working_set_bytes": 25346048,
+      "peak_child_working_set_bytes": 6275072,
+      "sampled_peak_runner_plus_child_working_set_bytes": 17907712,
+      "peak_scratch_bytes": 596317,
+      "samples": 8316,
+      "zero_progress_writes": 7463,
+      "partial_writes": 0,
+      "atomic_job_assignment": true
+    },
+    {
+      "schema_version": "greenlens.stream-resources.v2",
+      "sampled_peak_job_plus_runner_working_set_bytes": 25305088,
+      "peak_child_working_set_bytes": 6148096,
+      "sampled_peak_runner_plus_child_working_set_bytes": 17850368,
+      "peak_scratch_bytes": 1145091,
+      "samples": 846,
+      "zero_progress_writes": 1,
+      "partial_writes": 0,
+      "atomic_job_assignment": true
+    }
+  ],
+  "closed_scratch": {
+    "files": 37,
+    "bytes": 1181152,
+    "maximum_file_bytes": 541492
+  },
+  "retained_external_files": [
+    {
+      "file": "before.json",
+      "bytes": 50751,
+      "sha256": "6f201148a3aa83aec551a02b09aeb19ef81f0228f4b8088b1ebb10563ea10f4e"
+    },
+    {
+      "file": "preflight.py",
+      "bytes": 4091,
+      "sha256": "acb2c589e0c1ecbfc95bd7214c3783e005a8b5aa54c2226a69f0e3b7ddfb4dae"
+    },
+    {
+      "file": "run.ps1",
+      "bytes": 1510,
+      "sha256": "0e91fb61e1b3bd71efc13ee8d08a8a77ce94e0fa4ef64f9e50977c414b67fb09"
+    },
+    {
+      "file": "audit-replay.py",
+      "bytes": 11732,
+      "sha256": "1ee14af530144cae1e2e24091068b8aefa09add2424a5d7500ed96d0034b463d"
+    },
+    {
+      "file": "package-preflight.json",
+      "bytes": 333,
+      "sha256": "12ed0879100e52442e01576905bd3d3dba1b84c8885eab3e6aa856306c2c5e94"
+    },
+    {
+      "file": "processes.json",
+      "bytes": 2488,
+      "sha256": "bed37df9491916666dd104a4e6081d84bb4004862b7aedd164895693dcec76ee"
+    },
+    {
+      "file": "completion.json",
+      "bytes": 179,
+      "sha256": "9175e9e06c353ab2c09890df6ed7f70082bef7311c355524c5a51b339702ab1d"
+    },
+    {
+      "file": "replay.json",
+      "bytes": 25578,
+      "sha256": "2ffac4edb5f104feb5837ff2ffde4f90f78c6143204aadc89269142c77e011de"
+    },
+    {
+      "file": "annual-recipe.json",
+      "bytes": 23238,
+      "sha256": "3d79768de1b70ed44e607a7c80bcd02f7b0bdb878b13fa25bb9180d09dd4aece"
+    },
+    {
+      "file": "annual-primary-streams.json",
+      "bytes": 1901,
+      "sha256": "60b61d7aa98d85d77c89800431909a765e374e522f1435350e6bbb77413d0e46"
+    },
+    {
+      "file": "annual-resources.json",
+      "bytes": 4682,
+      "sha256": "bdb01b24ce282f129e10983e59ad86bcc7e15605596242859f237b051f05ef02"
+    },
+    {
+      "file": "annual-combined.f64",
+      "bytes": 576,
+      "sha256": "f4c1641165c240acaf50f0d68c5b24d7098c3d76fedb29466c1978f9116c3703"
+    }
+  ],
+  "preflight_repair": "Initial path assumption omitted the installed package subdirectory; preflight stopped before child launch. Initial scripts remain retained. No simulation/profile change or scientific rerun resulted.",
+  "annual_rerun": false,
+  "scientific_accuracy_accepted": false,
+  "release_acceptance_complete": false,
+  "auditor_assumption_repair": "Initial post-run auditor required file-backed resource finish/elapsed to equal process completion exactly; these observations intentionally finish before diagnostic writes. The failed auditor remains retained. Streamed process indices4/6 must and do match exactly; other measurements share process start and finish within recorded process completion. No output or tolerance changed."
+}

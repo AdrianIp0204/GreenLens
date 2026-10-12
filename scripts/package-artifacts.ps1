@@ -56,6 +56,7 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-native/candidate08-native-qualification.json',
         'docs/evidence/v0.3-native/candidate08-hourly-qualification.jpg',
         'docs/evidence/v0.3-native/candidate08-comparison-qualification.jpg',
+        'docs/evidence/v0.3-integration/candidate08-selected-hour-replay.json',
         'docs/evidence/v0.3-engine/higher-MF2-MF4-A-all12-summary.json',
         'docs/evidence/v0.3-engine/higher-MF2-B-all12-summary.json',
         'docs/evidence/v0.3-engine/MF8-A-all12-and-bins-summary.json',

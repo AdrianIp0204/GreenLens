@@ -42,6 +42,6 @@ export default function SceneView(props: SceneViewProps) {
     {overlay.preview && <div className="gl-drag-preview" role="status">{overlay.preview}</div>}
     {error && <div className="gl-viewport-error" role="alert">{error}</div>}
     {!props.validated && !error && <div className="gl-viewport-error">Open or create a validated document.</div>}
-    {props.display.mode === 'analysis' && !props.lux && <div className="gl-analysis-empty" role={props.resultLoading?'status':undefined}>{props.resultLoading?'Reading verified result · geometry retained':'No matching completed result · geometry only'}</div>}
+    {props.display.mode === 'analysis' && !props.lux && <div className="gl-analysis-empty" role={props.resultLoading?'status':undefined}>{props.resultLoading?'Reading saved result · geometry retained':'No matching completed result · geometry only'}</div>}
   </div>;
 }

@@ -162,7 +162,7 @@ export function useDocument() {
       discard:async()=>{discardPending=true;},
       proceed:async()=>{
         if(kind==='New'){await invoke<Project>('example');await invoke('discard_job');await newDocument();}
-        else if(kind==='Open'&&selected){const value=await invoke<ProjectView>('open_project',{path:selected});await invoke('discard_job');setJob(null);state.current.job=null;setCollectionError(false);acceptProject(value,selected,true);setMessage('Project opened; immutable run evidence verified.');}
+        else if(kind==='Open'&&selected){const value=await invoke<ProjectView>('open_project',{path:selected});await invoke('discard_job');setJob(null);state.current.job=null;setCollectionError(false);acceptProject(value,selected,true);setMessage('Project opened; run metadata integrity checked.');}
         else {await invoke('prepare_close',{discardPending});closing.current=true;try{await getCurrentWindow().destroy();}catch(e){closing.current=false;throw e;}}
       }});
   });

@@ -1,0 +1,264 @@
+{
+  "schema_version": "greenlens.candidate10-final-distribution.v1",
+  "checked_utc": "2026-10-12T13:31:03.530476Z",
+  "integrity_checks_passed": true,
+  "application_version": "0.3.0",
+  "release_directory": "20261012-candidate10-qualification-final",
+  "refresh_kind": "Package-only documentation refresh; original candidate10 distribution preserved.",
+  "binary_identity": {
+    "source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+    "source_worktree_dirty_at_build": false,
+    "cli_and_installer_reused_exactly": true,
+    "prior_build_audit": {
+      "file": "docs/evidence/v0.3-native/candidate10-build-audit.json",
+      "bytes": 15726,
+      "sha256": "8967311c50f47d4a3c2f415f6d523949f1a44549be0267b4a1fde1c273a79763"
+    },
+    "installer_embedded_resources_remain_at_binary_source": true,
+    "retained_installer_resource_count": 31,
+    "retained_embedded_plugin_count": 4,
+    "desktop_payload": {
+      "bytes": 14626304,
+      "frozen_sha256": "b9f2504c04310b78fb957cc65d0d81e64e69d9dc48e12903d1ffab123c237866",
+      "embedded_sha256": "cd26720d2014c4ba80f65fba69d6fc46732b34144179d5fe05d58276d3faf023",
+      "differing_bytes": 3,
+      "difference": {
+        "offset": 11720864,
+        "unbundled_ascii": "UNK",
+        "nsis_ascii": "NSS"
+      },
+      "all_other_bytes_identical": true,
+      "tauri_marker_source_sha256": "5e12803d943b7728147c6223fe3e49ba532a0485b122fc47537398160f4092bc"
+    }
+  },
+  "documentation_identity": {
+    "source_commit": "a65ceae589c0df60f6386ffac4a9c7abc6e9b801",
+    "source_worktree_dirty_before_and_after_packaging": false,
+    "selected_files": 226,
+    "local_markdown_links_checked": 370,
+    "selected_bytes_including_generated_index": 11479282,
+    "largest_selected_file_bytes": 913977,
+    "limits": {
+      "selected_document_total_bytes": 12582912,
+      "individual_selected_file_bytes": 2097152
+    },
+    "scope": "Explicit documentation/source/data selection and generated index in the CLI archive; no change to the installer embedded resources or scientific archive/runtime caps.",
+    "terminal_record": {
+      "file": "docs/evidence/v0.3-engine/reference-prerequisite-terminal.json",
+      "bytes": 913977,
+      "sha256": "49a023a6f715197d6b335a1be893a53a3b502a5b62638d7932150e20c4f7d41b"
+    },
+    "delta_from_original_candidate10": {
+      "added_files": 20,
+      "changed_files": 11,
+      "removed_files": 0,
+      "receipt": {
+        "file": "documentation-delta.json",
+        "bytes": 1908,
+        "sha256": "1357d1e004b48f72004803eda82c43dd0c3e1030ec265897a2b27ee3731d358f"
+      }
+    }
+  },
+  "execution": {
+    "started_utc": "2026-10-12T13:28:53.8364098Z",
+    "finished_utc": "2026-10-12T13:28:58.6345924Z",
+    "wall_seconds": 4.7961376,
+    "command": [
+      "scripts/package-artifacts.ps1",
+      "-OutputDirectory",
+      "<release-base>/20261012-candidate10-qualification-final"
+    ],
+    "package_script_sha256": "ae45cb3fd79dda72845edda2413769ee3f70fc3e33a1a824801edeaa935fbfa7",
+    "process_local_cargo_target": "Existing candidate10 build cache; cached CLI and installer hashes checked before copy.",
+    "nested_command": [
+      "greenlens.exe",
+      "--version"
+    ],
+    "memory_or_cpu_sampling": "Not measured; packaging wall time only.",
+    "builds_or_cargo": false,
+    "engine_execution": false,
+    "installation_or_desktop_launch": false,
+    "replay_or_ci_rerun": false
+  },
+  "artifacts": [
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64/greenlens.exe",
+      "bytes": 4925952,
+      "sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553"
+    },
+    {
+      "file": "checksums.json",
+      "bytes": 465,
+      "sha256": "73a32fad57849e4d286f220643aa94d7502abd91b1eb91fea9739762bb369bb5"
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 7615237,
+      "sha256": "82687abb728f5c821955185ed1ce0be336ede071751b3e93f4607ed830c752f5"
+    },
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "bytes": 3567411,
+      "sha256": "e5809e3b8eab1d6a0993eb38e1c8d7006a551f403ab3f671d0f4ad657903a1f6"
+    }
+  ],
+  "cli_archive": {
+    "file_member_count": 250,
+    "directory_entry_count": 7,
+    "total_uncompressed_file_bytes": 21218605,
+    "largest_member_file_bytes": 4925952,
+    "exact_frozen_binary_members": 1,
+    "exact_checkout_source_members": 248,
+    "exact_generated_index_members": 1,
+    "all_member_names_relative_unique_casefold_safe": true,
+    "encrypted_or_symlink_members": false,
+    "every_member_crc_size_bytes_and_hash_checked": true,
+    "every_member_equals_extracted_and_expected_source": true,
+    "inventory": {
+      "file": "member-inventory.json",
+      "bytes": 108205,
+      "sha256": "6a2362340b83a60702f6b23a7ab597028df2bee170603f4d2d2ab4815050d34f"
+    },
+    "engine_binaries_included": false
+  },
+  "original_distribution_preservation": {
+    "directory": "20261012-candidate10-34a3d53",
+    "file_count": 233,
+    "bytes": 29880332,
+    "all_relative_names_sizes_sha256_unchanged": true,
+    "original_cli_zip": {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 6865713,
+      "sha256": "3cf68e8532b384ddbc3266e0388774fa78ca855ac7cd2d5a858c8ec22c36be98"
+    },
+    "before_receipt": {
+      "file": "original-distribution-before.json",
+      "bytes": 49465,
+      "sha256": "fe5221a60b5663a56e6e0d1bf7d1f792090ced489102c0e15186b5b5642ddfda"
+    },
+    "after_receipt": {
+      "file": "original-distribution-after.json",
+      "bytes": 49465,
+      "sha256": "fe5221a60b5663a56e6e0d1bf7d1f792090ced489102c0e15186b5b5642ddfda"
+    }
+  },
+  "dependencies": {
+    "packages": 358,
+    "retained_notice_texts": 196,
+    "review_gaps": [],
+    "source_seals": [
+      {
+        "file": "Cargo.lock",
+        "bytes": 111442,
+        "sha256": "fa93b50ea4fe36a31a18356371009ddb52b1cbd95b6c87aefa138d9260af3b95"
+      },
+      {
+        "file": "apps/desktop/package-lock.json",
+        "bytes": 50814,
+        "sha256": "36311361488cc951858b9b03ffb6320095bd50b11703462820a62a8b87a43db0"
+      },
+      {
+        "file": "dependencies/resolved-inventory.json",
+        "bytes": 506282,
+        "sha256": "ab1d74d2cff95a34e601c99d8111c3cd426befd524d7e285ad25a00f5a09e3c4"
+      },
+      {
+        "file": "dependencies/license-supplements.json",
+        "bytes": 11049,
+        "sha256": "43700be5416586f89c1513cec10e1c200b5f8b4ebdd22b08a26dda5d64f3de01"
+      },
+      {
+        "file": "third-party/generated-notices.txt",
+        "bytes": 2379904,
+        "sha256": "c812d796d9e17fc35a557af898d35a3e97f16af05204681401b8ca8624fe7e00"
+      },
+      {
+        "file": "crates/greenlens-runner/src/qualification-registry.json",
+        "bytes": 25359,
+        "sha256": "eb03209f4577511232c8b43b00ad55344cb971533875173b03d7a544a37bb2b7"
+      },
+      {
+        "file": "scripts/package-artifacts.ps1",
+        "bytes": 23797,
+        "sha256": "ae45cb3fd79dda72845edda2413769ee3f70fc3e33a1a824801edeaa935fbfa7"
+      }
+    ],
+    "verification_scope": "Rehashed unchanged locks, resolved inventory, supplements and notices; inherited exact candidate10 strict license/cache/import proof. No new dependency generator, installer extraction or build executed.",
+    "prior_strict_inventory_check": {
+      "file": "inventory-check-final.log",
+      "bytes": 147,
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    },
+    "runtime_requirements": [
+      "Windows x64 and Microsoft VC v14 x64 redistributable; CLI imports VCRUNTIME140.dll.",
+      "Desktop also imports VCRUNTIME140_1.dll and requires separately installed Microsoft Edge WebView2 runtime.",
+      "No separate clean-machine runtime test performed; static import inspection does not establish runtime portability.",
+      "Radiance engines remain separately installed; no engine binaries included."
+    ],
+    "signed": false
+  },
+  "retained_audit_receipts": [
+    {
+      "file": "inventory-check-final.log",
+      "bytes": 147,
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    },
+    {
+      "file": "cli-imports.txt",
+      "bytes": 804,
+      "sha256": "70647fc41935e314472a8d9a521497d7503c4b36e9dc1f9ab64818d7ccdd2716"
+    },
+    {
+      "file": "desktop-imports.txt",
+      "bytes": 1139,
+      "sha256": "d34cc116bf4cc7acb371b7fa11c4b1d8f3e1bbbcdb5af74e7f9ac4e9bc29077f"
+    },
+    {
+      "file": "desktop-runner-build-output.txt",
+      "bytes": 539,
+      "sha256": "6cbabee9367ef3b86db571635bb388c82e9ff1f6af4f7edb9e567d6802c8369e"
+    },
+    {
+      "file": "installer-audit.json",
+      "bytes": 7948,
+      "sha256": "7d11f51580129bb4e1bfa05a99e257a8eb559e61d9d6edafa97813bfb9cc1727"
+    },
+    {
+      "file": "original-package-audit.json",
+      "bytes": 53675,
+      "sha256": "e42c9498bd0fd5371029ec4730cfbd8e43238a3357c5ba77b755bb75a356bbf3"
+    },
+    {
+      "file": "original-distribution-before.json",
+      "bytes": 49465,
+      "sha256": "fe5221a60b5663a56e6e0d1bf7d1f792090ced489102c0e15186b5b5642ddfda"
+    },
+    {
+      "file": "original-distribution-after.json",
+      "bytes": 49465,
+      "sha256": "fe5221a60b5663a56e6e0d1bf7d1f792090ced489102c0e15186b5b5642ddfda"
+    },
+    {
+      "file": "document-paths.json",
+      "bytes": 13463,
+      "sha256": "3368b0b881bc327aacf576e25cccacff8ad34963a22a6657f35e205fd575b8e3"
+    },
+    {
+      "file": "expected-PACKAGE-CONTENTS.md",
+      "bytes": 1216,
+      "sha256": "7015e46521c6fece958a0257dd981e6b3c1704b8bf38a22527ce6ca47cbf334b"
+    },
+    {
+      "file": "audit-final-package.py",
+      "bytes": 11953,
+      "sha256": "7e54d5a493278271f4c1d4d408c7a1a188150d6d8771282b07fa31a73cf5e033"
+    }
+  ],
+  "sidecar_policy": "Produced after packaging; this record is intentionally outside its own ZIP/hash closure.",
+  "scientific_scope": {
+    "new_scientific_checks": false,
+    "reference_prerequisite_R1": "Failed: 36 of 1008 original predicates; R2 and conditional candidate not executed.",
+    "scientific_accuracy_accepted": false,
+    "release_acceptance_complete": false
+  }
+}

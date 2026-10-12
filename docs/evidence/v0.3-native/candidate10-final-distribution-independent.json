@@ -1,0 +1,76 @@
+{
+  "schema": "greenlens.final-qualification-package-independent.v1",
+  "checked_utc": "2026-10-12T13:32:45.682596Z",
+  "passed": true,
+  "binary_source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+  "documentation_source_commit": "a65ceae589c0df60f6386ffac4a9c7abc6e9b801",
+  "tracked_source_unchanged": true,
+  "review_status_note": "Known newly generated distribution sidecar is untracked outside the package; packaged sources remain exact committed a65ceae bytes.",
+  "artifacts": [
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "sha256": "e5809e3b8eab1d6a0993eb38e1c8d7006a551f403ab3f671d0f4ad657903a1f6"
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "sha256": "82687abb728f5c821955185ed1ce0be336ede071751b3e93f4607ed830c752f5"
+    }
+  ],
+  "cli_sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553",
+  "zip_bytes": 7615237,
+  "zip_file_members": 250,
+  "exact_source_copies": 249,
+  "actual_uncompressed_bytes": 21218605,
+  "all_member_paths_safe_and_unique": true,
+  "all_members_read_to_eof_crc_checked": true,
+  "member_inventory": {
+    "sha256": "d6ca01b84f5cdfdb42885897700d4dc52a2ebd1d33f1682538f02d0a1fdc5881",
+    "bytes": 54259
+  },
+  "documentation": {
+    "selected_files": 226,
+    "local_links": 370,
+    "bytes_including_generated_index": 11479282,
+    "generated_index_exact": true,
+    "file_cap_bytes": 2097152,
+    "documentation_cap_bytes": 12582912
+  },
+  "terminal_record": {
+    "sha256": "49a023a6f715197d6b335a1be893a53a3b502a5b62638d7932150e20c4f7d41b",
+    "bytes": 913977
+  },
+  "strict_license_inventory": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "notice_bytes_unchanged": true,
+  "original_candidate10_release_all_230_members_and_artifacts_unchanged": true,
+  "original_build_audit": {
+    "sha256": "8967311c50f47d4a3c2f415f6d523949f1a44549be0267b4a1fde1c273a79763",
+    "bytes": 15726
+  },
+  "original_installer_audit": {
+    "sha256": "7d11f51580129bb4e1bfa05a99e257a8eb559e61d9d6edafa97813bfb9cc1727",
+    "bytes": 7948
+  },
+  "installer_review_scope": "Final installer is byte-identical to the original candidate10 NSIS. Reuses the sealed31-resource/4-plugin extraction and installed-marker audit; no new extraction or installation. Installer embedded documentation remains its original build snapshot; refreshed documentation is in this CLI ZIP.",
+  "scientific_qualification": false,
+  "new_build_engine_replay_install_or_app_execution": false,
+  "scope": "Independent bounded package ZIP/actual-decompression/member-byte/source/notices/document-link/previous-release integrity audit. No numerical or release acceptance.",
+  "audit_source_sha256": "b49abe97cd5b29ab578c666701a9c81fbb42fd136bc9a82a5a4432efac6a359f",
+  "exact_checkout_source_members": 248,
+  "exact_frozen_binary_members": 1,
+  "exact_generated_index_members": 1,
+  "owner_distribution_sidecar": {
+    "sha256": "418fdd3d8308266de1114b85f50e79ed94e86eb80fd82f583cb53d0044d59925",
+    "bytes": 10043,
+    "member_inventory_reconciled_exactly": true
+  },
+  "original_distribution_files_rechecked": 233,
+  "sidecar_policy": "Created after packaging and intentionally outside its own ZIP/hash closure. Does not refresh installer embedded documents or establish scientific qualification.",
+  "final_reconciled_utc": "2026-10-12T13:34:00.929189Z"
+}

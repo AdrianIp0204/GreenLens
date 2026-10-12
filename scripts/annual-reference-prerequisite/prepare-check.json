@@ -1,0 +1,45 @@
+{
+  "schema": "greenlens.reference-prerequisite-prepare-check.v1",
+  "scope": "Actual retained A4116/B8512 inputs, strict baseline recomputation and complete primary receipts; no native execution.",
+  "execution_declaration_sha256": "6eec8c08ce13972722d3d42cf3d6f151039bfc737fea1c9190fe801db5d0774a",
+  "declared_utc": "2026-10-12T03:28:50.7827721Z",
+  "execution_requested": false,
+  "native_processes_started": 0,
+  "proposal_sha256": "a74e9e574cae8ad12806c8b0caadb22a3b7dd99eb30c7af916147517d1e3c6bf",
+  "runtime_pins_sha256": "34664d92b10b5d9e0661701c692ab1fb3b9cad99517ce49d3b4e46b5e3239fad",
+  "source_review_sha256": "05440f907a592920164363c7fad73dbdd7d0e61ae918ca891fa7cd2088b0018e",
+  "primary_receipts": {
+    "16384": {
+      "Bytes": 80711216,
+      "Rays": 786432,
+      "Sha256": "16c948011067ec7fee69e4cafd9af8700efc728c52e406517efdcc4ad82c88db"
+    },
+    "32768": {
+      "Bytes": 161374864,
+      "Rays": 1572864,
+      "Sha256": "0b31259a1174aef0c651be9c0f1b9707b824c8819b109cb36a6bf0ff852d0438"
+    },
+    "65536": {
+      "Bytes": 322831568,
+      "Rays": 3145728,
+      "Sha256": "00c7fc5323d9c9a08eac29ac47700474b8a5feb5e841cda14632f4d105c05a98"
+    }
+  },
+  "finite_sha256": {
+    "A4116": "6c541435e8c20fd83c31c0a6a00b698d7ad099a532eb6e0ae7bbc420666b10f9",
+    "B8512": "a56c4a081682e8bec29f21063e8d57700e7af949a9d7dd511a9701e963fa67c0"
+  },
+  "fresh_baseline_reader_sha256": {
+    "A4116": "1f139d920ddbc9bf4709a31d4ca942d5536991dbd1f57023b99fb333a2514ebf",
+    "B8512": "d5b9d758482a1059a5cffcd97cfe02345f24e991c0e3b2285ee0062346ef4970"
+  },
+  "trusted_reader_source_manifest_sha256": "aeb30ecb6c89ed65ce0d757b3d95736938f69671959d4e839bc70f88944ce276",
+  "trusted_reader_source_count": 18,
+  "python": {
+    "sha256": "cce21c0e8710e304273e98ac4b2b0f5aceb639acbcd2343cbaa5c4e81619c45b",
+    "version": "Python 3.14.3"
+  },
+  "reference_family_qualified": false,
+  "accuracy_accepted": false,
+  "release_accepted": false
+}

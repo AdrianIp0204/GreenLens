@@ -20,7 +20,20 @@ foreach ($invalid in @(
 }
 Copy-PackageDocuments -Source $sourceRoot -Destination $destination
 $paths = @(Get-PackageDocumentPaths)
-foreach ($required in @('docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md','docs/v0.3-engine-investigation.json','scripts/annual-validation-plan.json','dependencies/weather.json','docs/v0.3-paired-adapter-integration.md','docs/evidence/v0.3-engine/rust-primary-stream-bridge.json','docs/evidence/v0.3-engine/hammersley-candidate-transport.json','schemas/primary-streams-v1.schema.json','docs/v0.3-qualification-continuation.md','schemas/qualification-v1.schema.json','crates/greenlens-runner/src/qualification-registry.json','docs/evidence/v0.3-ci/final-main-572f0b7.json')) {
+foreach ($required in @(
+    'docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md','docs/v0.3-engine-investigation.json',
+    'scripts/annual-validation-plan.json','dependencies/weather.json','docs/v0.3-paired-adapter-integration.md',
+    'docs/evidence/v0.3-engine/rust-primary-stream-bridge.json','docs/evidence/v0.3-engine/hammersley-candidate-transport.json',
+    'schemas/primary-streams-v1.schema.json','docs/v0.3-qualification-continuation.md',
+    'schemas/qualification-v1.schema.json','crates/greenlens-runner/src/qualification-registry.json',
+    'docs/evidence/v0.3-ci/final-main-572f0b7.json',
+    'scripts/annual-reference-prerequisite/README.md','scripts/annual-reference-prerequisite/proposal.json',
+    'scripts/annual-reference-prerequisite/decision.md','scripts/annual-reference-prerequisite/runtime-pins.json',
+    'scripts/annual-reference-prerequisite/guard-review.json','scripts/annual-reference-prerequisite/prepare-check.json',
+    'scripts/annual-reference-prerequisite/portable-test-check.json',
+    'docs/evidence/v0.3-native/candidate08-build-audit.json','docs/evidence/v0.3-native/candidate08-native-qualification.json',
+    'docs/evidence/v0.3-native/candidate08-hourly-qualification.jpg','docs/evidence/v0.3-native/candidate08-comparison-qualification.jpg'
+)) {
     if ($required -notin $paths) { throw "Required reference document omitted: $required" }
 }
 foreach ($path in $paths) {

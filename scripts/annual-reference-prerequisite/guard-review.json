@@ -1,0 +1,77 @@
+{
+  "schema": "greenlens.reference-prerequisite-independent-guard-review.v1",
+  "checked_utc": "2026-10-12T03:27:56.0201846+00:00",
+  "review_complete": true,
+  "concrete_open_findings": [],
+  "scope": "Bounded source, byte, argument and original synthetic guard review only. No Radiance or scientific acceptance.",
+  "native_recipe_maximum_stages": 42,
+  "black_rgb_spans": {
+    "B": 30,
+    "A": 27
+  },
+  "stream_report_tests": 33,
+  "producer_checks": 8,
+  "producer_rows_checked": 458752,
+  "real_synthetic_archive_child": {
+    "atomic_job_completed": true,
+    "raw_preserved_until_parent_prune": true,
+    "wall_seconds": 15.189,
+    "raw_bytes": 9437184,
+    "rows": 786432
+  },
+  "predicate_counts": {
+    "R2_each_other": 48,
+    "R2_scale": 1152,
+    "R1": 1008
+  },
+  "source_sha256": {
+    "test-reference-primary.ps1": "5522b90cd12c6a1339e3848651f6576d5d445d5e26479360df838e0b7bab4c19",
+    "reference_primary.cs": "606c016146d40af35e259c38cee58c3fb81195f9e6654bd0dad7c55592a0f058",
+    "run-reference.ps1": "aa3bffd2afe75edbab826ddcc2cc506b0f0a4bdadc15fc7307795178fd277586",
+    "reference_report.py": "5133935fbc1c6dd0bc67e95828ab44d70842f7f3fb749aeb011d445567ece425",
+    "proposal.public.json": "a74e9e574cae8ad12806c8b0caadb22a3b7dd99eb30c7af916147517d1e3c6bf",
+    "test-reference-stream.py": "43b5af86bd18f391e268c73ae8b1bac49758d21f63daad994e7747cd2ab55193",
+    "runtime-pins.json": "34664d92b10b5d9e0661701c692ab1fb3b9cad99517ce49d3b4e46b5e3239fad",
+    "reference_stream.py": "d165e5be603f68ecf56358395bb3fb0e2a4a6c74221beab535652880b5c5fba3"
+  },
+  "records": [
+    {
+      "file": "reference proposal independent 050e3aeb533d413c880282500a61dcd0 空間/review.json",
+      "sha256": "6e19bcd959918c964b3ff73a666afdb7a15a6db1c45f3335fc676ca926d6d567",
+      "bytes": 3507
+    },
+    {
+      "file": "reference stream guards b10082e3eb08435b8f1e680cb58ade21 空間/tests.json",
+      "sha256": "e5bda0dca485e2361ce7cce9948eaa312d0f71ee3585a0bd772cd86edb03a5a0",
+      "bytes": 4127
+    },
+    {
+      "file": "reference primary guards 88ab627af79144acbc569d5256286975 空間/tests.json",
+      "sha256": "d16439197cb99ae4e9c4cf1e06ef2dadddcd4e3da96cfd0862b783ae2d163215",
+      "bytes": 2109
+    },
+    {
+      "file": "reference archive supervised synthetic b1fd1131ed304197b6681fa24338c5bf 空間/test-result.json",
+      "sha256": "5ec130665211a1a9671558afac945bda37d3282a01c89b4d7e8f03dc8b00581b",
+      "bytes": 2287
+    }
+  ],
+  "closed_findings": [
+    "Non-scale R2 gates declared total only; all component values retained",
+    "Fixed N/24 sensors/2 blocks/source scale checked",
+    "Fresh absent Python bytecode prefix with before/after guards",
+    "Input/engine/Python pins checked per-stage and at finalization",
+    "Global remaining deadline rechecked after final hash work",
+    "Archive child preserves raw; verified duplicate removed only after child/streams close"
+  ],
+  "limitations": [
+    "Only pinned closed-room/single-pane/zero-specular-plastic black control reviewed",
+    "Two repeated complete blocks are not independent confidence samples",
+    "Original failed protocols remain immutable",
+    "Final integrated PrepareOnly and any native launch are separately recorded by execution owner"
+  ],
+  "preserved_red_regression": "reference stream guards 11c6b0298a3d47a6bf0c4532c722a21a 空間/tests.json",
+  "reference_family_qualified": false,
+  "scientific_accuracy_accepted": false,
+  "engines_started_by_reviewer": 0
+}

@@ -19,6 +19,8 @@ docs/evidence/v0.3-integration/*.json -text -whitespace
 docs/evidence/v0.3-native/candidate05-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate06-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate07-*.json -text -whitespace
+docs/evidence/v0.3-native/candidate08-*.json -text -whitespace
+*.jpg binary
 docs/evidence/v0.3-engine/higher-MF2-MF4-A-all12-summary.json -text -whitespace
 docs/evidence/v0.3-engine/higher-MF2-B-all12-summary.json -text -whitespace
 docs/evidence/v0.3-engine/MF8-A-all12-and-bins-summary.json -text -whitespace

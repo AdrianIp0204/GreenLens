@@ -1,0 +1,337 @@
+{
+  "schema_version": "greenlens.candidate08-native-qualification-audit.v1",
+  "checked_utc": "2026-10-12T03:30:46.398189+00:00",
+  "passed": true,
+  "application_source_commit": "58c198bd094f87bdf59da8d516a53862fa8d6889",
+  "application_source_dirty": false,
+  "cli_sha256": "ca762c6c3346100699e9fa30f248bc2ed9bf38ed69ee08b805b1f7b148f03fb2",
+  "installed_desktop_sha256": "fb115c808ca15aabb354f03e11b26a56df07d600a0ebf38a4ff45e8edf648e55",
+  "zip": {
+    "file": "native-three-run.zip",
+    "bytes": 6805750,
+    "sha256": "8a4d4256bf7b533a7a2c42611fd3966bcbac5545d0254f9e29572f009a2d9995",
+    "members": 184,
+    "sealed_members": 183,
+    "uncompressed_bytes": 45415455,
+    "bounded_paths_and_5000_64MiB_256MiB_limits_checked": true
+  },
+  "immutable_evidence": {
+    "source_project_files": 179,
+    "copied_project_files": 179,
+    "unchanged_run_weather_files": 178,
+    "unchanged_run_weather_bytes": 44920485,
+    "nested_seal_entries_checked": 186,
+    "all_original_copy_and_zip_run_weather_bytes_identical": true,
+    "copied_project_manifest_equals_export": true,
+    "original_vs_copy_cameras_equal": true,
+    "count_explanation": "Two 75-file annual runs + one 23-file selected-hour run + five current-weather files = 178 immutable evidence files; project.json makes 179 portable project files. The ephemeral .greenlens.lock is excluded.",
+    "before_after_cli_source_and_copy_inventories_equal": true,
+    "all_184_extracted_export_members_unchanged_after_cli": true,
+    "manifest_sha256": "45e5696e998134f35a4a79db35ba326fd4560d22cfe2728d2cd96103a5878cfc",
+    "qualification_supplement_did_not_rewrite_run_or_weather_bytes": true
+  },
+  "arrays": {
+    "chunks_checked": 107,
+    "finite_rgb_lux_records": 420504,
+    "maximum_rgb_to_lux_arithmetic_difference": 0.0
+  },
+  "runs": [
+    {
+      "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "alternative": "A",
+      "calculation": {
+        "mode": "annual",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "profile": "shipping"
+      },
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 210240,
+      "record_sha256": "50b9336ea0f83c6232909f961f33357d91aee0e7307334315d045461ddda5452",
+      "recipe_sha256": "5a814d3500aa451e4456597bde6bc7c5be67121ecb50052d648c7b4a59250587",
+      "run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "differs",
+        "physical": "differs"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    },
+    {
+      "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "alternative": "B",
+      "calculation": {
+        "mode": "annual",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "profile": "shipping"
+      },
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 210240,
+      "record_sha256": "58fe0235610baa2931e9b23fcf529d59aa01f485974638f7c89c0bf756d708c0",
+      "recipe_sha256": "6a1984817a3382bce227bdc8c9cc60dddf389ab96448b2ec96778a6694d94bef",
+      "run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "matches",
+        "physical": "matches"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    },
+    {
+      "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+      "alternative": "A",
+      "calculation": {
+        "mode": "weather_hour",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "interval_index": 1908,
+        "profile": "shipping"
+      },
+      "interval_count": 1,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 24,
+      "record_sha256": "c98f13aabb72b50a06cce4cda805e7973c3ecad81a8b4e5a43db525f5ba67ff4",
+      "recipe_sha256": "7ab8c80a2214c94dc04d269420c06408167a1620260f6cf9e1c7dc53c12fdb3c",
+      "run_source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "not_applicable",
+        "physical": "matches"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    }
+  ],
+  "qualification": {
+    "supplement_sha256": "3235fb458c943851d5cedcdcf1f9d6f3a7bfbc9712c72504aafd5180bc210d2e",
+    "registry_sha256": "eb03209f4577511232c8b43b00ad55344cb971533875173b03d7a544a37bb2b7",
+    "failed_exact_identities": 3,
+    "comparison_sides_exactly_match_supplement": 2,
+    "unknown_imported_supplements_authoritative": false
+  },
+  "report": {
+    "sha256": "f167afe624f5b83679b98d4662c66c80eb1271a26e5a4dce23842c15976ccb52",
+    "qualification_panels": 5,
+    "all_failed": true,
+    "visible_status_and_reason_text_and_styling_present": true,
+    "offline_no_scripts_or_external_assets": true,
+    "scope": "HTML content and structure checked; browser rendering is a separate observation.",
+    "render_observation": {
+      "observer": "Native verification operator",
+      "transport": "Static report files served on loopback 127.0.0.1 and rendered in an actual browser; no application development server.",
+      "html_bytes_unchanged": true,
+      "all_five_qualification_panels_displayed_outside_collapsed_details": true,
+      "visible": [
+        "failed heading",
+        "tested scope and failure reason",
+        "completed execution",
+        "full retained-evidence integrity",
+        "current-input mismatch"
+      ],
+      "scripts": 0,
+      "external_assets": 0,
+      "viewport_css_pixels": [
+        638,
+        668
+      ],
+      "document_width_css_pixels": 702,
+      "limitation": "Unwrapped summary JSON causes horizontal overflow at this narrow viewport; the qualification warning wraps and remains readable.",
+      "local_browser_screenshot_saved": false,
+      "file_url_render_claimed": false
+    }
+  },
+  "cli_inspection": {
+    "processes": [
+      {
+        "wall_seconds": 0.9704845,
+        "started_utc": "2026-10-12T03:25:48.1969253Z",
+        "command": "greenlens study inspect <validated extracted export> 10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+        "finished_utc": "2026-10-12T03:25:49.1811650Z",
+        "exit_code": 0,
+        "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128"
+      },
+      {
+        "wall_seconds": 0.8444344,
+        "started_utc": "2026-10-12T03:25:49.2442023Z",
+        "command": "greenlens study inspect <validated extracted export> 2c436690-9ddc-4040-91f7-154b7b44b596",
+        "finished_utc": "2026-10-12T03:25:50.0888017Z",
+        "exit_code": 0,
+        "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596"
+      },
+      {
+        "wall_seconds": 0.4023065,
+        "started_utc": "2026-10-12T03:25:50.0945189Z",
+        "command": "greenlens study inspect <validated extracted export> d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+        "finished_utc": "2026-10-12T03:25:50.4969323Z",
+        "exit_code": 0,
+        "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681"
+      }
+    ],
+    "outputs": [
+      {
+        "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+        "sha256": "2bb4cf4d8eee10046f889dafe0fa4783074b5a790f6247264faee7e01b061543",
+        "matches_export_assessment_exactly": true
+      },
+      {
+        "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+        "sha256": "4e23bc1e0ebb4cdc918f20a7d6a4636eecc3f1e9d3f184a4d6cc22ae0ae41537",
+        "matches_export_assessment_exactly": true
+      },
+      {
+        "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+        "sha256": "bc18d524338dca6b5fb91752922ad3b22f9488c347e1d4c35bd177b9077f9fd6",
+        "matches_export_assessment_exactly": true
+      }
+    ],
+    "all_three_full_evidence_assessments_equal_export_exactly": true,
+    "scope": "Distributed clean candidate08 CLI; shared Rust full retained-evidence reader executed for each run; no engine invocation."
+  },
+  "engine_executed": false,
+  "replay_executed": false,
+  "scientific_qualification_accepted": false,
+  "release_complete": false,
+  "scope": "Installed production candidate08 operator observations plus independent read-only byte/shape/qualification/export/CLI audit; successful evidence checks do not establish numerical accuracy.",
+  "cli_comparison": {
+    "process": {
+      "command": "greenlens study compare <validated extracted export> <annual A> <annual B> --field da",
+      "exit_code": 0,
+      "wall_seconds": 0.2580513
+    },
+    "output_sha256": "4bf76c9bc52420154be1e9429c22ad408c60737d861f901f16b90dbee813e7c0",
+    "field": "da",
+    "values_per_side": 24,
+    "both_assessments_equal_export_except_explicit_sealed_metadata_integrity_scope": true,
+    "all_24_deltas_equal_B_minus_A": true,
+    "delta_statistics": {
+      "count": 24,
+      "max": -0.30136986301369006,
+      "mean": -5.482876712328768,
+      "min": -13.726027397260282
+    },
+    "units": "percentage points",
+    "shared_scale_maximum": 100.0
+  },
+  "native_operator_observations": {
+    "application_closed_after_export": true,
+    "production_install": true,
+    "retained_project_opened": true,
+    "new_simulation_performed": false,
+    "observed": [
+      "Selected-hour A heatmap has a visible failed qualification warning and separate process, integrity, current-input and scientific-status axes.",
+      "Desktop bounded reads explicitly report sealed metadata checks, not a fresh complete time-series reread.",
+      "Historical annual A differs from the current selected-hour study; annual B matches. Both comparison sides retain failed status.",
+      "DA comparison uses a shared 0 to 100 percent scale; displayed B minus A mean is -5.48 percentage points.",
+      "Sensor table and saved sensor series also show failed status.",
+      "Registered Export action and native file dialog exported all three runs; application returned Ready with portable evidence ZIP and offline report exported."
+    ],
+    "not_exercised_here": [
+      "fresh simulation",
+      "cancellation",
+      "Save As",
+      "physical modifier gestures"
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "candidate08-hourly-qualification.jpg",
+      "sha256": "82db447c351a05786419149571f620d1b61565ed7c1bcaf953e76b9ca0021942",
+      "bytes": 162255,
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "original_capture_basename": "01-hourly-qualification.png",
+      "public_extension_matches_actual_bytes": true,
+      "description": "Installed selected-hour A result, interval 1908, failed qualification beside heatmap; four assessment axes and evidence reason visible.",
+      "unaltered_window_capture": true
+    },
+    {
+      "file": "candidate08-comparison-qualification.jpg",
+      "sha256": "e245f24f053f255d91398cd9254d3ed52522fdd9424fc2d3104ef712701e34ee",
+      "bytes": 192478,
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "original_capture_basename": "02-comparison-qualification.png",
+      "public_extension_matches_actual_bytes": true,
+      "description": "Installed historical annual A/B comparison; both failed qualification panels visible; A differs from current study while B matches.",
+      "unaltered_window_capture": true
+    }
+  ],
+  "replay": {
+    "executed": false,
+    "smallest_followup": "After separate authorization, export only retained selected-hour run d2e0e9c6-e762-4326-94bf-5ed251bb4681 with distributed candidate08 CLI and replay that fresh package with the pinned engine. This exercises the new supplemental member and reader/recalculation path with 24 values, without rerunning both historical annual runs.",
+    "does_not_attest": "No candidate08 engine replay or new annual scientific acceptance is claimed."
+  },
+  "build_record": {
+    "file": "candidate08-build-audit.json",
+    "sha256": "d59e9052b837eab0ab3d44d934d70488cf96ef8b6f0838092efeea53287daa62"
+  },
+  "retained_external_audit": [
+    {
+      "file": "audit.py",
+      "sha256": "ed51892eea3ff8f5dfddad8a0dc858e8d2ce1ff367797bd83f47e1dc8b20fc3e"
+    },
+    {
+      "file": "finalize-audit.py",
+      "sha256": "971e0e31cdabdbf53e04db8fe64742942a5493d5b6ea419791ac469ab02726ab"
+    },
+    {
+      "file": "integrity-audit.json",
+      "sha256": "8b3c11b0bf40a151587c97b34c655b36c416393a687c927d872956ec71ee797f"
+    },
+    {
+      "file": "before-inventory.json",
+      "sha256": "7cc6f460f2c768d8421b0c8615b94bb62e6dee5627a5b1e1706a79e7f5afe9a0"
+    },
+    {
+      "file": "cli-inspection-processes.json",
+      "sha256": "0d682d05e72046168e7cce6d177eebb1cc032f70583f2cb4c4a0a16b2ee82cd1"
+    },
+    {
+      "file": "cli-comparison-process.json",
+      "sha256": "33c85c8315c82d329d96a77103caabdefa925fa000d22b9aea2252ba7985ba6e"
+    },
+    {
+      "file": "cli-compare-da.json",
+      "sha256": "4bf76c9bc52420154be1e9429c22ad408c60737d861f901f16b90dbee813e7c0"
+    }
+  ],
+  "audit_assumption_repairs": [
+    "Initial audit expected the transient .greenlens.lock in the ZIP; it is correctly excluded. The failed script was preserved before this scoped correction.",
+    "Initial report-text assertion expected a different heading word order; the actual readable heading is Failed scientific qualification. The failed script was preserved. No export or result bytes changed.",
+    "Native capture files named .png contain JPEG/JFIF bytes. The initial PNG assertion was preserved; public copies use .jpg without conversion or byte changes."
+  ]
+}

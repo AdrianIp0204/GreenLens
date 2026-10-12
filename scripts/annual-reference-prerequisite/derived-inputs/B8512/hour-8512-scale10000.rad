@@ -1,0 +1,22 @@
+void brightdata distribution
+4 noop hour-8512.dat matched-basis.cal rbin
+0
+0
+distribution glow sky_glow
+0
+0
+4 10000 10000 10000 0
+sky_glow source dome
+0
+0
+4 0 0 1 360
+void light solar510750
+0
+0
+3
+17150000000 17150000000 17150000000
+
+solar510750 source sun510750
+0
+0
+4 -0.812628 -0.529752 0.242895 0.5330

@@ -23,6 +23,9 @@ jobs:
           node-version: '24'
           cache: npm
           cache-dependency-path: apps/desktop/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
       - name: Native development environment and pinned toolchain
         run: |
           $evidence = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-native 空間'
@@ -102,6 +105,17 @@ jobs:
             pwsh -NoProfile -File "scripts/$name.ps1" 2>&1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE "$name.txt")
             if ($LASTEXITCODE -ne 0) { throw "Required bounded harness regression failed: $name" }
           }
+          # Pure ASCII/gzip/report and primary-direction fixtures only. The
+          # reference-prerequisite scientific driver is never invoked here.
+          python --version
+          if ($LASTEXITCODE -ne 0) { throw 'Required development-only Python is unavailable' }
+          $cachePrefix = Join-Path $env:RUNNER_TEMP ('reference-pure-cache-' + [guid]::NewGuid().ToString('N'))
+          if (Test-Path -LiteralPath $cachePrefix) { throw 'Pure-test bytecode prefix must be absent' }
+          python -B -X utf8 -X "pycache_prefix=$cachePrefix" scripts/annual-reference-prerequisite/test-reference-stream.py 2>&1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'reference-prerequisite-stream-tests.txt')
+          if ($LASTEXITCODE -ne 0) { throw 'Reference-prerequisite ASCII/gzip/report guards failed' }
+          if (Test-Path -LiteralPath $cachePrefix) { throw 'Pure tests unexpectedly created bytecode' }
+          pwsh -NoProfile -File scripts/annual-reference-prerequisite/test-reference-primary.ps1 -OutputDirectory (Join-Path $env:CI_EVIDENCE 'reference-prerequisite-primary') 2>&1 | Tee-Object -FilePath (Join-Path $env:CI_EVIDENCE 'reference-prerequisite-primary-tests.txt')
+          if ($LASTEXITCODE -ne 0) { throw 'Reference-prerequisite primary-direction guards failed' }
           'Harness arithmetic, identity and synthetic lifecycle checks are not full scientific reference qualification.' >> $env:GITHUB_STEP_SUMMARY
       - name: Required independent finite overhang and context edges
         run: |
@@ -186,7 +200,7 @@ jobs:
           $roots = @((Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-native 空間'),(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/required-scientific-suite'))
           # Only these owned helper fixtures, created during this job, are added.
           # The same file/count/total caps and extension filters below still apply.
-          $prefixes = @('matched evidence regression ','reference supervisor ','reference process regression ','reference scheduling regression ','Rust primary bridge ','paired-comparator-synthetic-','sensitivity-shards-')
+          $prefixes = @('matched evidence regression ','reference supervisor ','reference process regression ','reference scheduling regression ','Rust primary bridge ','paired-comparator-synthetic-','sensitivity-shards-','reference stream guards ')
           if ($env:CI_JOB_STARTED_UTC) {
             $began = [DateTimeOffset]::Parse($env:CI_JOB_STARTED_UTC).UtcDateTime
             foreach ($directory in Get-ChildItem (Join-Path $env:LOCALAPPDATA 'GreenLens/verification') -Directory -ErrorAction SilentlyContinue) {

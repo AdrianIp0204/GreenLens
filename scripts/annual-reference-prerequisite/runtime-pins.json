@@ -1,0 +1,30 @@
+{
+  "schema": "greenlens.reference-prerequisite-runtime-pins.v1",
+  "draft": {
+    "reference_stream.py": "d165e5be603f68ecf56358395bb3fb0e2a4a6c74221beab535652880b5c5fba3",
+    "reference_report.py": "5133935fbc1c6dd0bc67e95828ab44d70842f7f3fb749aeb011d445567ece425",
+    "reference_primary.cs": "606c016146d40af35e259c38cee58c3fb81195f9e6654bd0dad7c55592a0f058",
+    "run-reference.ps1": "aa3bffd2afe75edbab826ddcc2cc506b0f0a4bdadc15fc7307795178fd277586",
+    "legacy-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7"
+  },
+  "repository": {
+    "scripts/annual-collect-reference.ps1": "62e6c649283a34ed0cffdab83298043e1a200258634f066d706ab3ffb167bf9a",
+    "scripts/annual-reference-identity.ps1": "9a83f28530756ed89c39c9c0eb533a90ff758abb6709bebad8a97f9c6bde19b8",
+    "scripts/annual-reference-recovery.ps1": "e5c8f376e37569f528d94f93af3cfa943e64621cb0e9bc2fd4596a15291ea123",
+    "scripts/annual-reference-sensitivity.ps1": "65367321decb8b22dcea3c6e315ec0b405f7f03983c039c197df1baa00676566",
+    "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+    "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+    "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+    "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+    "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+    "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+    "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+    "scripts/annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "scripts/annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "scripts/annual-paired-primary-stream.cs": "49ccb427479ee2951c1b94753dafecd318b519511c3aca7c6b629eed695045cd",
+    "docs/v0.3-reference-protocol.md": "ffd00b81dc069ffab49e8b105b89fb252bc1c045ebdfbefa9c73eb6ab887e681",
+    "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+    "examples/synthetic-a.json": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+    "examples/synthetic-b.json": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf"
+  }
+}

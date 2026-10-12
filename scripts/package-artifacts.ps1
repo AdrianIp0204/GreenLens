@@ -13,6 +13,13 @@ function Get-PackageDocumentPaths {
         'docs/v0.3-weather-sources.md','docs/v0.3-contracts.md','docs/v0.3-usage.md','docs/v0.3-status.md',
         'docs/v0.3-native-verification.md','docs/v0.3-ci-package-validation.md','docs/progress.md',
         'docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md',
+        'scripts/annual-reference-prerequisite/README.md',
+        'scripts/annual-reference-prerequisite/proposal.json',
+        'scripts/annual-reference-prerequisite/decision.md',
+        'scripts/annual-reference-prerequisite/runtime-pins.json',
+        'scripts/annual-reference-prerequisite/guard-review.json',
+        'scripts/annual-reference-prerequisite/prepare-check.json',
+        'scripts/annual-reference-prerequisite/portable-test-check.json',
         'docs/v0.3-paired-adapter-integration.md','docs/v0.3-paired-hammersley-investigation.md',
         'docs/v0.3-stream-supervision.md','docs/v0.3-paired-process-supervision.md',
         'docs/v0.3-aperture-primary-quadrature.md',
@@ -45,6 +52,10 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-native/candidate07-layout-observation.json',
         'docs/evidence/v0.3-native/candidate07-maximized-diagnostics.png',
         'docs/evidence/v0.3-native/candidate07-compact-table-diagnostics.png',
+        'docs/evidence/v0.3-native/candidate08-build-audit.json',
+        'docs/evidence/v0.3-native/candidate08-native-qualification.json',
+        'docs/evidence/v0.3-native/candidate08-hourly-qualification.jpg',
+        'docs/evidence/v0.3-native/candidate08-comparison-qualification.jpg',
         'docs/evidence/v0.3-engine/higher-MF2-MF4-A-all12-summary.json',
         'docs/evidence/v0.3-engine/higher-MF2-B-all12-summary.json',
         'docs/evidence/v0.3-engine/MF8-A-all12-and-bins-summary.json',
@@ -190,7 +201,7 @@ The selected guides, method/reference declarations, data inventories and compact
 
 This explicit documentation selection, including this index, is limited to 12 MiB total and 2 MiB per file. The reviewed documentation allowance preserves linked historical outcomes; it does not change scientific evidence archive, process, or runtime resource limits.
 
-This is not a source checkout or a complete historical evidence archive. Backtick command examples, source-only verification scripts, historical screenshot filenames, upstream URLs and local build/output paths can require the repository or separately retained artifacts. The linked research script is retained as readable source; its development dependencies are not a runtime requirement or a bundled verification toolchain. Large matrices, octrees, evidence ZIPs and engine binaries are excluded.
+This is not a source checkout or a complete historical evidence archive. Backtick command examples, source-only verification scripts, historical screenshot filenames, upstream URLs and local build/output paths can require the repository or separately retained artifacts. Selected research scripts are retained as readable source; their development dependencies are not a runtime requirement or a bundled verification toolchain. The reference-prerequisite declarations, source pins and preparation records are included for inspection; executing their commands requires the separately reviewed source checkout and inputs. Large matrices, octrees, evidence ZIPs and engine binaries are excluded.
 "@
     return ,([Text.UTF8Encoding]::new($false).GetBytes($contents.Replace("`r`n", "`n") + "`n"))
 }

@@ -1,0 +1,19 @@
+{
+  "schema": "greenlens.reference-prerequisite-portable-test-addendum.v1",
+  "scope": "Only test input filename proposal.public.json to proposal.json (two occurrences); runtime/scientific source unchanged.",
+  "antecedent_guard_review_sha256": "05440f907a592920164363c7fad73dbdd7d0e61ae918ca891fa7cd2088b0018e",
+  "portable_test_sha256": "a497c82552fd9236f4b97ea2611cd2b6d2852e468c09355341d5fb87576dc929",
+  "tests_record_sha256": "f3ad487e1742919995940ef7701f8c676aa53838f5a3fcbdeb953ab046fd4d8b",
+  "tests": 33,
+  "passed": true,
+  "source_sha256": {
+    "reference_stream.py": "d165e5be603f68ecf56358395bb3fb0e2a4a6c74221beab535652880b5c5fba3",
+    "reference_report.py": "5133935fbc1c6dd0bc67e95828ab44d70842f7f3fb749aeb011d445567ece425",
+    "proposal.json": "a74e9e574cae8ad12806c8b0caadb22a3b7dd99eb30c7af916147517d1e3c6bf"
+  },
+  "runtime_pins_sha256": "34664d92b10b5d9e0661701c692ab1fb3b9cad99517ce49d3b4e46b5e3239fad",
+  "invocation": "python -B -X utf8 -X pycache_prefix=<fresh-absent-directory> scripts/annual-reference-prerequisite/test-reference-stream.py",
+  "printing_note": "First portable run completed all33 checks but its final Unicode evidence path print failed under cp1252; preserved. Explicit UTF8 invocation completed successfully.",
+  "native_processes_started": 0,
+  "reference_family_qualified": false
+}

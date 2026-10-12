@@ -1,0 +1,75 @@
+# Same-sky reference protocol — recipe frozen, execution unqualified
+
+This protocol defines how to qualify a numerical reference before comparing a candidate climate adapter with it. It does not accept a production profile, replace independent analytical fixtures or change any release tolerance. The [method](v0.3-scientific-method.md), [retained investigation](v0.3-engine-investigation.md) and [release specification](v0.3-spec.md) remain authoritative for their respective scopes.
+
+Status on 11 October 2026: the positive-depth/high-sampling reference has failed convergence. Negative-depth and repeated moderate-sampling probes at one sensor are promising but do not qualify a full reference. The investigator and independent reviewer have agreed the reference-only recipe below before inspecting full-grid candidate agreement. Its numerical settings are frozen; the executable harness, exact input identities and complete argument arrays must still pass review and be sealed in an execution declaration before execution. No full-grid pass or accepted production profile is claimed here.
+
+## Fixed inputs and coverage
+
+Use the original [predeclared interval plan](../scripts/annual-validation-plan.json), both documented synthetic alternatives, and all 24 sensors from the actual annual example. The 1.0 m requested grid produces stable IDs `s000001` through `s000024`; retain their authoritative coordinates, directions and order rather than regenerating selected points separately. Alternative A has no overhang; B has the documented 0.60 m overhang. Retain complete normalized model and scene hashes for both, plus the common sensor hash. Do not omit, replace or move a difficult sensor.
+
+| Weather day | Hour-ending labels | Zero-based interval indices |
+| --- | --- | --- |
+| March 21 | 9, 13, 17 | 1904, 1908, 1912 |
+| June 21 | 9, 13, 17 | 4112, 4116, 4120 |
+| September 21 | 9, 13, 17 | 6320, 6324, 6328 |
+| December 21 | 9, 13, 17 | 8504, 8508, 8512 |
+
+This requires 576 sensor/hour comparisons before any condition-coverage additions. Preserve the original plan's deterministic rule for appending missing clear/mixed/overcast conditions from weather alone. Never select hours using candidate agreement. Additional shadow-edge fixtures remain separate requirements.
+
+An input-only check of the pinned original EPW confirms that the fixed 12 already contain all three classes: interval 1904 is overcast; 6320, 8504, 8508 and 8512 are clear; the other seven are mixed under the original DNI/DHI rule. All 12 have DHI at least 50 W/m². Thus no coverage addition is needed for this exact weather file. The harness must recompute and retain this check from its bound weather input; this is weather classification, not a simulation result.
+
+Use the reviewed EPW in [the weather inventory](../dependencies/weather.json): original SHA-256 `60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8`, normalized SHA-256 `5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed`, and time-axis SHA-256 `f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f`. Retain `greenlens.pvgis_tmy_epw_midpoint.v1`, original source years, local-standard midpoint interpretation and the required preceding dew-point context. Bind each generated sky column and solar source to its original interval index.
+
+## Reference construction and numerical identity
+
+Trace the identical generated patch-radiance distribution and explicit solar source, not a different sky model. Retain all three RGB channels. An explicitly neutral fixture may use one distribution only after checking equality of its channels; general normalization must not assume gray. The generated diffuse matrix includes the entire luminous ground. Do not add another ground source or polygon.
+
+The reference evaluates the actual sky/source scene directly, without multiplying the candidate's transport coefficients. Preserve separate diffuse/ground and explicit-solar contribution bins. For the finite-disc comparison, subtract the independently traced centroid-direct term and add the declared high-quality finite-disc direct term. Preserve each component and the assembled RGB/lux vector so cancellation of component errors cannot conceal a defect. A scaled contribution reference remains same-engine tracing, not independent validation of Radiance. Check its moderate-sampling direct-trace equivalence separately; the old high-sampling `rtrace` sum is not an automatic gold standard.
+
+The reference uses `ad=8192`, `ab=9`, `lr=-16`, `lw=1e-9`, and actual sky/source scale 100. The independent direct correction retains `ab=0` centroid subtraction plus the existing 4,096-direction finite-disc reference. Freeze complete arguments, source order, engine/library hashes, harness/source identity, sensor order, grouping and exact normalization before execution. Bind the sky-basis multiplicity to the actual original job and its recipe; a same-sky result for one basis does not qualify a different basis. A nominal product of ambient divisions and primary repeats is not an actual ray count or proof of equivalent sampling.
+
+The [pinned recursion code](https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/rt/raytrace.c) and [manual](https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/doc/man/man1/rtrace.1) distinguish deterministic weight termination with positive `-lr` from Russian roulette with negative `-lr`; the latter retains the absolute reflection-depth cap and promotes surviving low-weight contributions. The ambient-bounce cap still applies. Source scaling cannot repair cumulative path-weight termination. The [ambient implementation](https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/rt/ambcomp.c) also changes deeper hemisphere sampling with ray weight and `ad × lw`. Repetition cannot by itself remove a common truncation bias.
+
+Use contribution mode with a declared positive source scale only after its normalization checks pass. Multiply every relevant luminous RGB source by the same scalar and divide the resulting RGB bins by that scalar in double precision; do not alter weather, materials, sensor positions or directions. There is no additional factor of pi after `-I+`. The [contribution callback](https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/rt/rcontrib.c) applies a local-ray threshold before accumulating into double bins. Its behavior differs from cumulative path-weight termination, and scale invariance at one point does not establish it for all scenes.
+
+## Repeat ladder and convergence
+
+The execution unit is one alternative and one fixed weather interval, always with all 24 sensors. Use one engine worker per process, explicit ASCII RGB, no reused ambient cache and fixed `-ad 8192`. Use `-c 1` records in round-major order: all 24 ordered sensor records for round 1, then all 24 for round 2, and so on. Retain per-primary bins and compute sensor means in double precision. This permits both nested repeat rungs and disjoint-block checks from a continuous sampling stream. The initial continuous stream has 256 rounds (6,144 primary records), from which the 64, 128 and 256 prefix means are computed. The only allowed escalation is 512 rounds (12,288 primary records).
+
+Repeated starts of the same deterministic `-u-` command are not independent samples: the [pinned initializer](https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/src/rt/rcmain.c) uses the same seed. An escalation reruns the exact continuous stream from its beginning through round 512, verifies that the first 256 rounds reproduce the retained prefix, and uses that prefix only once. This protocol does not substitute native `-c N` grouping for individual records. Deterministic disjoint blocks are convergence diagnostics, not an assertion of independent identically distributed samples or a statistical confidence interval.
+
+Before execution, the investigator and reviewer must seal these fields in the machine-readable declaration:
+
+- Fixed `ad=8192`, `ab=9`, `lr=-16`, `lw=1e-9`, source scale 100, finite-disc reference count 4,096, and complete argument arrays (including otherwise default-sensitive settings).
+- Fixed rungs 64/128/256 with the sole optional 512 escalation; exact round-major input order and six output components per primary (diffuse/ground RGB followed by explicit-solar RGB).
+- The sensitivity scope and variants below, all declared before candidate agreement is inspected.
+- Actual engine/library, harness, weather, scene, sensor and sky/source hashes; bounded process timeout and resource limits; output hashes and identities of unmodified candidate arrays held separately for later comparison.
+
+The two-sensor coefficient pilot measured 116.337 s for `8192 × 128` at `ab=8`, and 247.160 s for `65536 × 32` at `ab=9`; a separate one-point same-sky `8192 × 64`, `ab=9` probe took 36.351 s. These are observations of different workloads, not full-grid timings. The investigator estimates about 46–58 minutes for one 24-sensor, 256-round reference case; the estimate remains unverified. The coefficient pilot changes ambient divisions and is not this repeat-convergence ladder. Independent cases may run concurrently only under explicit bounded supervision and resource caps; concurrency must not change each case's one-worker order.
+
+The full-grid reference criterion is **`abs(E_high − E_low) <= max(0.1 lx, 0.01 × E_high)` for every sensor**, at two successive repeat transitions: 64→128 and 128→256 initially, or 128→256 and 256→512 after escalation. The 0.1 lx absolute floor is 2% of the release's 5 lx matched-sky absolute allowance. This is a newly declared diagnostic criterion, distinct from release acceptance; it does not alter the earlier one-point probes' original 1% relative criterion or reinterpret their failures. Use the higher rung as the reference side. Report every RGB component, lux value, difference and allowed error, including zeros.
+
+Also compare the first and second halves of the selected final rung (rounds 1–128 versus 129–256, or 1–256 versus 257–512). Use `max(0.1 lx, 0.01 × E_final)` for the difference between those block means, retaining each mean separately; the complete final mean supplies a symmetric, fixed denominator. Two correlated nested means alone cannot qualify a reference. A failing case may advance only through the sealed reference-only ladder, with all 24 sensors together; it may not gain a bespoke setting because a candidate misses its target. Stop at 512 and report unqualified reference evidence if convergence fails. Do not add rungs silently or discard inconvenient blocks. Complete the other declared cases and preserve all failures.
+
+## Fixed sensitivity checks and their limits
+
+Run all 24 sensors for **B at interval 8512** and **A at interval 4116**, using each case's qualified final baseline repeat count. These fixed winter/overhang and summer/unshaded cases test distinct conditions, including the retained difficult winter case. This is a declared limited sensitivity sample, not proof that no systematic bias exists at the other 528 sensor/hour values. All 576 still require repeat convergence. Do not select sensitivity sensors or intervals from subsequent candidate agreement.
+
+Run three separate variants, changing only the specified baseline settings:
+
+| Variant | Change from baseline | Required comparison |
+| --- | --- | --- |
+| Source scale | 100→10,000; divide each result by its actual scale in double precision | Each normalized positive RGB component/bin agrees within `1e-5` relative to baseline; both zero otherwise |
+| Ray-weight sensitivity | `lw=1e-10`, retaining `ab=9`, `lr=-16`, scale 100 | Each assembled sensor illuminance within `max(0.1 lx, 0.01 × E_baseline)` |
+| Depth sensitivity | `ab=10` and `lr=-24` together, retaining `lw=1e-9`, scale 100 | Each assembled sensor illuminance within `max(0.1 lx, 0.01 × E_baseline)` |
+
+Use identical round ordering, complete component reports and unchanged direct correction. The combined depth variant checks the selected deeper configuration; it cannot identify the individual effect of each cap. If a variant fails, the affected reference family remains unqualified; retain the failure rather than adjusting the candidate or adding an unannounced reference setting. A new diagnostic proposal may follow, but it is not a pass under this sealed protocol. Repetition alone cannot remove a material common truncation bias.
+
+## Candidate comparison and evidence
+
+Seal the qualified reference arrays before comparing candidate results. The release requirement remains **`max(5 lx, 5% of reference)` at every sensor/hour**, for both alternatives. Do not add reference uncertainty to that tolerance. Full-year shipping/reference metrics retain their separate 2-percentage-point limit, and replay retains its own integration tolerance. Reference convergence, matched-hour agreement, annual convergence and replay each need separate evidence.
+
+The report must contain the fixed declaration, actual complete process arguments/exits/UTC timestamps, executable/library and all input/output hashes, primary-record shape and ordering, every convergence rung/block/component, source-scale/depth/weight checks, resource measurements, all failures and any predeclared escalation used. Reject missing, duplicate, truncated, nonfinite or negative outputs. Respect the existing 2 GiB scratch, 512 MiB per generated file and 2 GiB observed runner-plus-engine working-set caps; retain bounded failure records. Exercise spaces and non-ASCII paths. No commands are loaded from an imported recipe.
+
+The numerical recipe is agreed; the actual declaration, harness review and execution results are pending. The existence of this protocol, successful small fixtures or a one-point negative-depth result cannot mark the full reference or a production profile accepted.

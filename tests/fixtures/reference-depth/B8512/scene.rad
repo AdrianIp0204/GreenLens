@@ -1,0 +1,133 @@
+# GreenLens generated validated metre geometry; no embedded commands
+void plastic material_0
+0
+0
+5 0.2 0.2 0.2 0 0
+material_0 polygon surface_0
+0
+0
+12
+0 0 0
+4 0 0
+4 6 0
+0 6 0
+void plastic material_1
+0
+0
+5 0.8 0.8 0.8 0 0
+material_1 polygon surface_1
+0
+0
+12
+0 0 3
+0 6 3
+4 6 3
+4 0 3
+void plastic material_2
+0
+0
+5 0.5 0.5 0.5 0 0
+material_2 polygon surface_2
+0
+0
+12
+0 0 0
+0 6 0
+0 6 3
+0 0 3
+void plastic material_3
+0
+0
+5 0.5 0.5 0.5 0 0
+material_3 polygon surface_3
+0
+0
+12
+4 0 0
+4 0 3
+4 6 3
+4 6 0
+void plastic material_4
+0
+0
+5 0.5 0.5 0.5 0 0
+material_4 polygon surface_4
+0
+0
+12
+0 6 0
+4 6 0
+4 6 3
+0 6 3
+void plastic material_5
+0
+0
+5 0.5 0.5 0.5 0 0
+material_5 polygon surface_5
+0
+0
+12
+0 0 0
+0 0 0.9
+4 0 0.9
+4 0 0
+void plastic material_6
+0
+0
+5 0.5 0.5 0.5 0 0
+material_6 polygon surface_6
+0
+0
+12
+0 0 2.4
+0 0 3
+4 0 3
+4 0 2.4
+void plastic material_7
+0
+0
+5 0.5 0.5 0.5 0 0
+material_7 polygon surface_7
+0
+0
+12
+0 0 0.9
+0 0 2.4
+1.1 0 2.4
+1.1 0 0.9
+void plastic material_8
+0
+0
+5 0.5 0.5 0.5 0 0
+material_8 polygon surface_8
+0
+0
+12
+2.9 0 0.9
+2.9 0 2.4
+4 0 2.4
+4 0 0.9
+void glass material_9
+0
+0
+4 0.6540474888954341 0.6540474888954341 0.6540474888954341 1.52
+material_9 polygon surface_9
+0
+0
+12
+1.1 0 0.9
+2.9 0 0.9
+2.9 0 2.4
+1.1 0 2.4
+void plastic material_10
+0
+0
+5 0.5 0.5 0.5 0 0
+material_10 polygon surface_10
+0
+0
+12
+1.1 -0.6 2.4
+2.9 -0.6 2.4
+2.9 0 2.4
+1.1 0 2.4

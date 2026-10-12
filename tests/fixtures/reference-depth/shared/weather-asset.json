@@ -1,0 +1,17 @@
+{
+  "schema_version": "greenlens.weather-asset.v0.3",
+  "binding": {
+    "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+    "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+    "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+    "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+  },
+  "profile": "pvgis_tmy",
+  "source": {
+    "citation": "European Commission, Joint Research Centre, PVGIS 5.3 ERA5 typical year at 22.30 N, 114.17 E, source period 2005-2023, terrain horizon disabled; acquired 2026-10-11. Huld, T.; Paietta, E.; Zangheri, P.; Pinedo Pascua, I. (2017), Typical Meteorological Data access service, DOI 10.2905/JRC.FDTQ22G. Reanalysis-derived typical weather, not station observations or an actual calendar year.",
+    "source_url": "https://re.jrc.ec.europa.eu/api/v5_3/tmy?lat=22.3&lon=114.17&outputformat=epw&startyear=2005&endyear=2023&usehorizon=0",
+    "license": "LicenseRef-European-Commission-Reuse-Notice; underlying ERA5 source catalogue CC-BY",
+    "rights_note": "JRC dataset catalogue https://data.jrc.ec.europa.eu/dataset/jrc-tmy-tmy-download-service authorizes reuse with attribution under the European Commission reuse notice. PVGIS usage conditions https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/general-information/usage-conditions-data-protection_en place no use restrictions on supplied information. Retain source attribution and identify modifications. Original EPW SHA256 60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8 remains unchanged. GreenLens canonical EPW changes the hourly minute marker from 0 to 60, singular HOLIDAYS/DAYLIGHT SAVING to plural SAVINGS, trims CSV padding, removes an optional BOM and uses LF; all source values/years retained. Contains modified Copernicus Climate Change Service information 2026. Neither the European Commission nor ECMWF is responsible for any use that may be made of the Copernicus information or data it contains. ERA5 source citation: Copernicus Climate Change Service (2023), ERA5 hourly data on single levels from 1940 to present, C3S Climate Data Store, DOI 10.24381/cds.adbb2d47; produced by Hersbach et al. and ECMWF/Copernicus contributors. Source catalogue https://cds.climate.copernicus.eu/datasets/reanalysis-era5-single-levels?tab=overview lists CC-BY licensing. No rights are asserted for unrelated EPWs, standards or branding. Required daylight fields validated; negative unused infrared/wind values retained as quality warnings. Separate PVGIS JSON radiation is not substituted.",
+    "synthetic_non_climatic": false
+  }
+}

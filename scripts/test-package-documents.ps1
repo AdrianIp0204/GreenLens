@@ -31,6 +31,11 @@ foreach ($required in @(
     'scripts/annual-reference-prerequisite/decision.md','scripts/annual-reference-prerequisite/runtime-pins.json',
     'scripts/annual-reference-prerequisite/guard-review.json','scripts/annual-reference-prerequisite/prepare-check.json',
     'scripts/annual-reference-prerequisite/portable-test-check.json',
+    'docs/evidence/v0.3-engine/reference-prerequisite-rejection-checkpoint.json',
+    'tests/fixtures/reference-depth/README.md','tests/fixtures/reference-depth/manifest.json',
+    'tests/fixtures/reference-depth/shared/weather-asset.json',
+    'tests/fixtures/reference-depth/A4116/baseline.rgb.gz','tests/fixtures/reference-depth/A4116/depth.rgb.gz',
+    'tests/fixtures/reference-depth/B8512/baseline.rgb.gz','tests/fixtures/reference-depth/B8512/depth.rgb.gz',
     'docs/evidence/v0.3-native/candidate08-build-audit.json','docs/evidence/v0.3-native/candidate08-native-qualification.json',
     'docs/evidence/v0.3-native/candidate08-hourly-qualification.jpg','docs/evidence/v0.3-native/candidate08-comparison-qualification.jpg'
 )) {

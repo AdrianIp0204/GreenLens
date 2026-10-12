@@ -1,0 +1,463 @@
+{
+  "schema_version": "greenlens.candidate09-native-qualification-audit.v1",
+  "checked_utc": "2026-10-12T04:07:24.604286+00:00",
+  "passed": true,
+  "application_source_commit": "b813b0691dde93290fcb593920b0c7eed5dec0e1",
+  "application_source_dirty": false,
+  "cli_sha256": "acec6869d1f71896ffabb44415717791082f3aeed312f595491fad380ffd6dab",
+  "installed_desktop_sha256": "3e062c44c0b73163c99a732cbf646134aa5f1a1d1aaf3c08b774aa0afcb59b8b",
+  "zip": {
+    "file": "cli-three-run.zip",
+    "bytes": 6805750,
+    "sha256": "8a4d4256bf7b533a7a2c42611fd3966bcbac5545d0254f9e29572f009a2d9995",
+    "members": 184,
+    "sealed_members": 183,
+    "uncompressed_bytes": 45415455,
+    "bounded_paths_and_5000_64MiB_256MiB_limits_checked": true
+  },
+  "immutable_evidence": {
+    "source_project_files": 179,
+    "copied_project_files": 179,
+    "unchanged_run_weather_files": 178,
+    "unchanged_run_weather_bytes": 44920485,
+    "nested_seal_entries_checked": 186,
+    "all_original_copy_and_zip_run_weather_bytes_identical": true,
+    "copied_project_manifest_equals_export": true,
+    "original_vs_copy_cameras_equal": true,
+    "count_explanation": "Two 75-file annual runs + one 23-file selected-hour run + five current-weather files = 178 immutable evidence files; project.json makes 179 portable files. Ephemeral .greenlens.lock excluded.",
+    "all_179_source08_copy09_files_identical_before_and_after_native_and_cli": true,
+    "manifest_sha256": "45e5696e998134f35a4a79db35ba326fd4560d22cfe2728d2cd96103a5878cfc",
+    "cameras_sha256_canonical_sorted_compact_json": "737aa6f45524b6ae26c58bb871837430cd1abd471035ac8636ad026f1a78f2a2",
+    "camera_count": 4,
+    "camera_hash_encoding": "UTF-8, sorted object keys, compact JSON separators; array order unchanged.",
+    "qualification_supplement_did_not_rewrite_run_or_weather_bytes": true
+  },
+  "arrays": {
+    "chunks_checked": 107,
+    "finite_rgb_lux_records": 420504,
+    "maximum_rgb_to_lux_arithmetic_difference": 0.0
+  },
+  "runs": [
+    {
+      "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "alternative": "A",
+      "calculation": {
+        "mode": "annual",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "profile": "shipping"
+      },
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 210240,
+      "record_sha256": "50b9336ea0f83c6232909f961f33357d91aee0e7307334315d045461ddda5452",
+      "recipe_sha256": "5a814d3500aa451e4456597bde6bc7c5be67121ecb50052d648c7b4a59250587",
+      "run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "differs",
+        "physical": "differs"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    },
+    {
+      "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "alternative": "B",
+      "calculation": {
+        "mode": "annual",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "profile": "shipping"
+      },
+      "interval_count": 8760,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 210240,
+      "record_sha256": "58fe0235610baa2931e9b23fcf529d59aa01f485974638f7c89c0bf756d708c0",
+      "recipe_sha256": "6a1984817a3382bce227bdc8c9cc60dddf389ab96448b2ec96778a6694d94bef",
+      "run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "matches",
+        "physical": "matches"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    },
+    {
+      "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+      "alternative": "A",
+      "calculation": {
+        "mode": "weather_hour",
+        "weather": {
+          "original_sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+          "normalized_sha256": "5dec99cf1e82f5492f62640241618d2b591bc8852145a5c7a56ea5d60c4e82ed",
+          "time_axis_sha256": "f11e5fbc0273736b9a9f08afa8ea06503706a1c6489ca123ff5b2e260b893d2f",
+          "interpretation": "greenlens.pvgis_tmy_epw_midpoint.v1"
+        },
+        "interval_index": 1908,
+        "profile": "shipping"
+      },
+      "interval_count": 1,
+      "sensor_count": 24,
+      "finite_rgb_lux_records": 24,
+      "record_sha256": "c98f13aabb72b50a06cce4cda805e7973c3ecad81a8b4e5a43db525f5ba67ff4",
+      "recipe_sha256": "7ab8c80a2214c94dc04d269420c06408167a1620260f6cf9e1c7dc53c12fdb3c",
+      "run_source_commit": "596fde6ed9c43b8bbd4e347cd8bee980b0a1bb93",
+      "run_source_dirty": false,
+      "qualification": "failed",
+      "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+      "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+      "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+      "current_input_relation": {
+        "metrics": "not_applicable",
+        "physical": "matches"
+      },
+      "evidence_ids": [
+        "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json"
+      ]
+    }
+  ],
+  "qualification": {
+    "supplement_sha256": "3235fb458c943851d5cedcdcf1f9d6f3a7bfbc9712c72504aafd5180bc210d2e",
+    "registry_sha256": "eb03209f4577511232c8b43b00ad55344cb971533875173b03d7a544a37bb2b7",
+    "failed_exact_identities": 3,
+    "comparison_sides_exactly_match_supplement": 2,
+    "unknown_imported_supplements_authoritative": false
+  },
+  "report": {
+    "sha256": "f167afe624f5b83679b98d4662c66c80eb1271a26e5a4dce23842c15976ccb52",
+    "qualification_panels": 5,
+    "all_failed": true,
+    "visible_status_and_reason_text_and_styling_present": true,
+    "offline_no_scripts_or_external_assets": true,
+    "scope": "Content, styling and structure checked. Byte-identical to candidate08 report; no new browser-render observation."
+  },
+  "cli_inspection": {
+    "processes": [
+      {
+        "started_utc": "2026-10-12T04:06:03.8908621Z",
+        "finished_utc": "2026-10-12T04:06:04.8654696Z",
+        "wall_seconds": 0.9538597,
+        "exit_code": 0,
+        "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+        "command": [
+          "study",
+          "inspect",
+          "<candidate09 copied Climate evidence>",
+          "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128"
+        ]
+      },
+      {
+        "started_utc": "2026-10-12T04:06:04.8745371Z",
+        "finished_utc": "2026-10-12T04:06:05.6897880Z",
+        "wall_seconds": 0.8143839,
+        "exit_code": 0,
+        "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+        "command": [
+          "study",
+          "inspect",
+          "<candidate09 copied Climate evidence>",
+          "2c436690-9ddc-4040-91f7-154b7b44b596"
+        ]
+      },
+      {
+        "started_utc": "2026-10-12T04:06:05.6898769Z",
+        "finished_utc": "2026-10-12T04:06:06.2599588Z",
+        "wall_seconds": 0.5699459,
+        "exit_code": 0,
+        "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+        "command": [
+          "study",
+          "inspect",
+          "<candidate09 copied Climate evidence>",
+          "d2e0e9c6-e762-4326-94bf-5ed251bb4681"
+        ]
+      }
+    ],
+    "outputs": [
+      {
+        "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+        "output_sha256": "2bb4cf4d8eee10046f889dafe0fa4783074b5a790f6247264faee7e01b061543",
+        "matches_export_and_pre_native_assessment_exactly": true
+      },
+      {
+        "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+        "output_sha256": "4e23bc1e0ebb4cdc918f20a7d6a4636eecc3f1e9d3f184a4d6cc22ae0ae41537",
+        "matches_export_and_pre_native_assessment_exactly": true
+      },
+      {
+        "run_id": "d2e0e9c6-e762-4326-94bf-5ed251bb4681",
+        "output_sha256": "bc18d524338dca6b5fb91752922ad3b22f9488c347e1d4c35bd177b9077f9fd6",
+        "matches_export_and_pre_native_assessment_exactly": true
+      }
+    ],
+    "all_three_full_evidence_assessments_equal_export_exactly": true,
+    "scope": "Distributed clean candidate09 CLI after native closure; shared Rust full retained-evidence reader executed for each run; no engine."
+  },
+  "engine_executed": false,
+  "replay_executed": false,
+  "scientific_qualification_accepted": false,
+  "release_complete": false,
+  "candidate08_export_comparison": {
+    "previous_native_export_sha256": "8a4d4256bf7b533a7a2c42611fd3966bcbac5545d0254f9e29572f009a2d9995",
+    "new_cli_export_sha256": "8a4d4256bf7b533a7a2c42611fd3966bcbac5545d0254f9e29572f009a2d9995",
+    "entire_zip_byte_equal": true,
+    "ordered_member_count": 184,
+    "changed_member_count": 0,
+    "changed_members": [],
+    "claim": "Fresh candidate09 CLI export is byte-identical to the retained candidate08 native export. No new browser-render observation is claimed."
+  },
+  "unchanged_shared_rust_reader_export_qualification": [
+    {
+      "file": "crates/greenlens-runner/src/climate_export.rs",
+      "source_bytes_sha256": "dd27c5755024fb320ba68f87133e2ce05a0441f835190386786a52df5df8cf33",
+      "unchanged_between_candidate08_and_candidate09": true
+    },
+    {
+      "file": "crates/greenlens-runner/src/climate.rs",
+      "source_bytes_sha256": "deb6cfe74141a0f53a51fe11bf1a909e2d9de74dd2045189132f545f3dbda931",
+      "unchanged_between_candidate08_and_candidate09": true
+    },
+    {
+      "file": "crates/greenlens-runner/src/qualification.rs",
+      "source_bytes_sha256": "d5dca736de7e921c31753cc38d73838d1e4abf760faa5f3d600302535084b3b8",
+      "unchanged_between_candidate08_and_candidate09": true
+    },
+    {
+      "file": "crates/greenlens-runner/src/qualification-registry.json",
+      "source_bytes_sha256": "eb03209f4577511232c8b43b00ad55344cb971533875173b03d7a544a37bb2b7",
+      "unchanged_between_candidate08_and_candidate09": true
+    }
+  ],
+  "cli_export_process": {
+    "arguments": [
+      "export",
+      "<candidate09 copied Climate evidence>",
+      "<new external cli-three-run.zip>",
+      "--run",
+      "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "--run",
+      "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "--run",
+      "d2e0e9c6-e762-4326-94bf-5ed251bb4681"
+    ],
+    "exit_code": 0,
+    "wall_seconds": 7.5422275,
+    "started_utc": "2026-10-12T04:02:38.4656418Z",
+    "cli_sha256": "acec6869d1f71896ffabb44415717791082f3aeed312f595491fad380ffd6dab",
+    "finished_utc": "2026-10-12T04:02:46.0154691Z"
+  },
+  "cli_help": {
+    "project_copy": {
+      "command": [
+        "project",
+        "copy",
+        "--help"
+      ],
+      "sha256": "b1bb5634f2b443be20d0f68c817300301a015ecd19b8b871895400b1fd456034",
+      "precise_integrity_checked_wording": true
+    },
+    "weather_attach": {
+      "command": [
+        "weather",
+        "attach",
+        "--help"
+      ],
+      "sha256": "8beea65d9d0f0bce8f6d4d14f0617a92dde508630ea356ae0168b6dbf18fa5f6",
+      "precise_integrity_checked_wording": true
+    }
+  },
+  "native_comparison_text_arithmetic": {
+    "interval_index": 1908,
+    "paired_sensor_rows": 24,
+    "displayed_values_compared": 72,
+    "rounding_tolerance_lux": 0.0005,
+    "maximum_display_rounding_difference_lux": 0.0004885487424530766,
+    "shared_scale_maximum_lux": 6850.47264206223,
+    "observed_shared_scale_two_decimal_lux": 6850.47,
+    "meaning": "Existing retained values compared to text capture, not a new simulation."
+  },
+  "native_operator_observations": {
+    "observer": "Native verification operator; screenshot and captured text inspected independently.",
+    "production_install": true,
+    "origin": "tauri.localhost",
+    "application_development_server": false,
+    "application_closed_after_observation": true,
+    "closure": "Alt-F4, then a fresh window inventory found no GreenLens window.",
+    "retained_project_opened": true,
+    "status": "Project opened; run metadata integrity checked.",
+    "observed": [
+      "Selected-hour A, interval1908, shows 24 sensors and failed qualification beside the heatmap, including reason, Candidate profile and evidence ID.",
+      "Both historical annual comparison sides show failed qualification. A is explicitly a current-study mismatch and B matches.",
+      "Compatible hourly comparison at1908 shows24 paired rows on a shared scale ending6850.47lx. Main selected-hour selection remains unchanged."
+    ],
+    "interaction_recovery": "Initial dropdown accessibility action reached a non-target popup; activation/refocus and keyboard End then Return selected the intended snapshot. No project data mutations were observed or found by the byte audit.",
+    "not_exercised_here": [
+      "fresh simulation",
+      "cancellation",
+      "Save As",
+      "physical modifier gestures",
+      "native export",
+      "new browser report render",
+      "engine replay"
+    ]
+  },
+  "screenshots": [
+    {
+      "file": "candidate09-open-qualification.jpg",
+      "sha256": "6b9cc8206b3598f308f1a670f6bf2b50a9d27a592999898fa02f62bfbac2e21b",
+      "bytes": 161974,
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "original_capture_basename": "01-open-qualification.jpg",
+      "unaltered_window_capture": true,
+      "description": "Installed selected-hour A result and exact metadata-integrity status; failed qualification beside heatmap."
+    },
+    {
+      "file": "candidate09-comparison-qualification.jpg",
+      "sha256": "de705b366b3274fe9388675640ac373850005283ab0cac8fcfe781dc7d8dba94",
+      "bytes": 192292,
+      "width": 1442,
+      "height": 864,
+      "media_type": "image/jpeg",
+      "original_capture_basename": "02-comparison-qualification.jpg",
+      "unaltered_window_capture": true,
+      "description": "Installed annual A/B snapshot selection, both failed qualification panels, explicit A mismatch and B match."
+    }
+  ],
+  "native_text_receipts": [
+    {
+      "file": "01-open-qualification-text.txt",
+      "bytes": 2394,
+      "sha256": "0db87a2543e16adfc96e28b616a1d9b2b9bc6c6993d6703458e0879fd09cb5e8"
+    },
+    {
+      "file": "02-comparison-qualification-text.txt",
+      "bytes": 5791,
+      "sha256": "3946a9f4c88a5b6ce1b31e10f431eb19c72f1325be7f3f9a4d9cb080d3ba0941"
+    }
+  ],
+  "installation": {
+    "source_commit": "b813b0691dde93290fcb593920b0c7eed5dec0e1",
+    "started_utc": "2026-10-12T03:53:43.0824870Z",
+    "finished_utc": "2026-10-12T03:53:45.5852761Z",
+    "exit_code": 0,
+    "installed_sha256": "3e062c44c0b73163c99a732cbf646134aa5f1a1d1aaf3c08b774aa0afcb59b8b"
+  },
+  "build_record": {
+    "file": "candidate09-build-audit.json",
+    "sha256": "dc7fdb0b7c38e02ee639e1a0a4d75b0348ba6c20ea59f78ede837f2b4159496d"
+  },
+  "artifacts": [
+    {
+      "file": "greenlens.exe",
+      "bytes": 4925952,
+      "sha256": "acec6869d1f71896ffabb44415717791082f3aeed312f595491fad380ffd6dab"
+    },
+    {
+      "file": "greenlens-desktop.exe",
+      "bytes": 14625792,
+      "sha256": "df1f5ac36876598001dd9d9021659271c1bafd2673a23560dd2ee2d0c3de5107"
+    },
+    {
+      "file": "GreenLens_0.3.0_x64-setup.exe",
+      "bytes": 3566146,
+      "sha256": "63e357a0793abe9bd61fb115e351f06173e9c814c63ba1bbcee84cd7cba370cf"
+    },
+    {
+      "file": "GreenLens-CLI-0.3.0-windows-x64.zip",
+      "bytes": 6274166,
+      "sha256": "0107a2861efd10dfc71b1bdbcbbbaa520a203ccd798812967d1960421e41cb57"
+    }
+  ],
+  "independent_package_review": {
+    "file": "audit.json",
+    "sha256": "b5c559b94fa191e99d58681d45437449e9d3ba3e2eabb6e6d4af23b63f4d42e8",
+    "scope": "Separate read-only rehash of package artifacts, source inputs, resources, notices and marker-only installed-payload difference."
+  },
+  "scope": "Installed production candidate09 observations plus independent copied-project, full CLI reader, export and byte audit. Candidate09 changes presentation wording; no new numerical acceptance or engine replay.",
+  "replay": {
+    "executed": false,
+    "prior_separate_candidate08_record": "docs/evidence/v0.3-integration/candidate08-selected-hour-replay.json",
+    "prior_record_sha256": "db473261e7463ce2a9fa9aa86631fef721b66962269383b49b203b167b5e9af3",
+    "prior_replay_not_relabelled_candidate09": true
+  },
+  "retained_external_audit": [
+    {
+      "file": "before-audit.py",
+      "sha256": "31b5015bedc74ec450fdb9e0d5cab1abb19108a4aa8a59b02481b2bd4ed329a8"
+    },
+    {
+      "file": "before-audit.json",
+      "sha256": "ce7b875af9b50a703c1a6f2310c6c1ffd8caf5126e9106179d924f5b3cfa8417"
+    },
+    {
+      "file": "before-inventory.json",
+      "sha256": "80e29165e4ba56c1bf706077a056b2cd1ae6ade87c78c0e2b91af8e8331187b2"
+    },
+    {
+      "file": "export-audit.py",
+      "sha256": "9eda5597f59509d444dbda8e294f1b234d5055f6a5a72f45dfa60fd1181f7750"
+    },
+    {
+      "file": "export-integrity-audit.json",
+      "sha256": "9622eeed068d7db89442d7edad81f0553dbbef97874316d47fd7e759f01cbc4c"
+    },
+    {
+      "file": "export-inventory.json",
+      "sha256": "7cc6f460f2c768d8421b0c8615b94bb62e6dee5627a5b1e1706a79e7f5afe9a0"
+    },
+    {
+      "file": "postclose-inventory.json",
+      "sha256": "80e29165e4ba56c1bf706077a056b2cd1ae6ade87c78c0e2b91af8e8331187b2"
+    },
+    {
+      "file": "finalize-native-audit.py",
+      "sha256": "8a307950437249a5e890fd9768b0cdc0824eb31824485d1443a2320bf4464684"
+    },
+    {
+      "file": "cli-check.json",
+      "sha256": "f1b1a25c8033f1915f23ad4aafb8ff8a97b39df48c681bc0335e8ed06023a6e3"
+    },
+    {
+      "file": "cli-inspection-processes.json",
+      "sha256": "0a9980425d0414e7a4b9272c56866326d64f1a2b119787450ed9815b9dd5d694"
+    },
+    {
+      "file": "postclose-cli-inspection-processes.json",
+      "sha256": "2a20191062a55b0b93c3a500fde6709dfe32fc73c85d0eba13607f74ec5bdc1c"
+    },
+    {
+      "file": "export-process.json",
+      "sha256": "2edd9d548af6780f9b6df2ca8b47de771982af603b3c885aeb2ad30251f0b98f"
+    },
+    {
+      "file": "cli-copy-help.txt",
+      "sha256": "b1bb5634f2b443be20d0f68c817300301a015ecd19b8b871895400b1fd456034"
+    },
+    {
+      "file": "cli-weather-attach-help.txt",
+      "sha256": "8beea65d9d0f0bce8f6d4d14f0617a92dde508630ea356ae0168b6dbf18fa5f6"
+    }
+  ]
+}

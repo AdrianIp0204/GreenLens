@@ -1,0 +1,212 @@
+{
+  "schema": "greenlens.reference-prerequisite-rejection-checkpoint.v1",
+  "declared_utc": "2026-10-12T04:25:21.060393Z",
+  "status": "prospective_rejection_only_scheduling_amendment",
+  "authorization": "Root authorized this one rejection-only inspection after ordinal13. Native owner retains process/tree control. No added native stages, settings, cases or acceptance authority.",
+  "original_contract": {
+    "proposal_path": "scripts/annual-reference-prerequisite/proposal.json",
+    "proposal_sha256": "a74e9e574cae8ad12806c8b0caadb22a3b7dd99eb30c7af916147517d1e3c6bf",
+    "execution_declaration_sha256": "86f0a07407abf8326571bedaa5e5cbccb9b24d6f65ef5bda3546340d55550c62",
+    "runtime_pins_path": "scripts/annual-reference-prerequisite/runtime-pins.json",
+    "runtime_pins_sha256": "34664d92b10b5d9e0661701c692ab1fb3b9cad99517ce49d3b4e46b5e3239fad",
+    "runtime_sources_sha256": {
+      "reference_stream.py": "d165e5be603f68ecf56358395bb3fb0e2a4a6c74221beab535652880b5c5fba3",
+      "reference_report.py": "5133935fbc1c6dd0bc67e95828ab44d70842f7f3fb749aeb011d445567ece425",
+      "reference_primary.cs": "606c016146d40af35e259c38cee58c3fb81195f9e6654bd0dad7c55592a0f058",
+      "run-reference.ps1": "aa3bffd2afe75edbab826ddcc2cc506b0f0a4bdadc15fc7307795178fd277586",
+      "legacy-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7"
+    },
+    "original_driver_unchanged": true,
+    "native_stage_cap": 42,
+    "original_R1_gate_ordinal": 22
+  },
+  "predata_observation": {
+    "metadata_checkpoint_sha256": "9ec03327ff5de740b7fc1385bd01672b337f57b6316539045d842b14c21c80f6",
+    "recorded_utc": "2026-10-12T04:17:24.1221137Z",
+    "closed_native_ordinals": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "closed_archive_ordinals": [
+      5
+    ],
+    "active_ordinal": 6,
+    "active_case": "A4116",
+    "active_N": 16384,
+    "active_ab": 9,
+    "N32768_completed": false,
+    "active_numeric_outputs_read": false,
+    "native_or_source_mutation": false
+  },
+  "logical_basis": "Original R1 is a conjunction of 1008 fixed predicates. These 144 predicates use complete N16384 and N32768 results; a later N65536 result cannot change any of them. Therefore any failure rejects that same prerequisite without evaluating the other 864.",
+  "checkpoint": {
+    "case": "A4116",
+    "trigger": "After successful natural closure, exact receipt, complete lossless archive and verified duplicate pruning of ordinal13; do not inspect partial RGB files.",
+    "required_A_native_ordinals": [
+      1,
+      2,
+      5,
+      6,
+      7,
+      11,
+      12,
+      13
+    ],
+    "archive_names": [
+      "A4116-base-N16384-ab0.rgb.gz",
+      "A4116-base-N16384-ab8.rgb.gz",
+      "A4116-base-N16384-ab9.rgb.gz",
+      "A4116-base-N32768-ab0.rgb.gz",
+      "A4116-base-N32768-ab8.rgb.gz",
+      "A4116-base-N32768-ab9.rgb.gz"
+    ],
+    "N_domains": [
+      16384,
+      32768
+    ],
+    "full_depths": [
+      8,
+      9
+    ],
+    "matched_black_control_depth": 0,
+    "sensor_ids": "s000001 through s000024 in original order",
+    "blocks": 2,
+    "primary_order": "Two complete identical sensor-major blocks, with all N directions per sensor; each N is a separately defined full domain. No nested-prefix interpretation.",
+    "source_scale": 100,
+    "raw_channels": 6,
+    "normalization": "Each block and sensor: pi*sum(N radiance values)/N/100, once; sky RGB then solar RGB.",
+    "assembly": "Unchanged reference_stream.assemble: diffuse + (full solar - matched black-opaque ab0 solar) + authenticated original finite direct; block means then two-block mean. No clamp.",
+    "components": [
+      "diffuse_lux",
+      "reflected_solar_lux",
+      "total_lux"
+    ],
+    "predicate_count": 144,
+    "predicate": "abs(lower_N_component - higher_N_component) <= max(0.1 lx, 0.01*higher_N_component)",
+    "denominator": "Complete two-block N32768 component mean, exactly as original reference_stream.compare; never lower-N or total when comparing components.",
+    "remaining_R1_criteria": 864
+  },
+  "decisions": {
+    "failed_any_144": "Reject prerequisite; native owner stops further engine work using existing owned process-tree control. Retain all 144 values and failures. Remaining 864: NOT EVALUATED.",
+    "negative_assembly": "Reject prerequisite with separate negative-result diagnosis; preserve signed values, do not clamp.",
+    "integrity_or_resource_failure": "Stop with separate integrity/resource error; do not report a numerical tolerance failure or successful inspection.",
+    "passed_all_144": "Continue only the original schedule, ordinal22 R1 gate and original conditional R2 gates. No estimator, reference-family, candidate, accuracy or release acceptance.",
+    "raced_later_stage": "Record actual observed state and exact original output/record hashes. An interrupted ordinal14 is partial/cancelled; a naturally successful closed stage is successful but unused. Do not reclassify successful evidence or silently delete partials.",
+    "remaining_label": "NOT EVALUATED, not necessarily NOT EXECUTED: some B data may already exist."
+  },
+  "integrity_and_completion_checks": [
+    "Exact proposal, execution declaration, runtime pins, five runtime sources and eighteen trusted-reader sources; no retained commands or code executed.",
+    "Exact 27 A physical input files, original finite RGB and fresh baseline-read seals; exact six pinned executable/library identities.",
+    "Exact eight A command arrays, chronological successful exit0, completed Job-empty and settled streams; declared caps and typed generated byte/ray/SHA receipts.",
+    "Exactly one closed archive process per required output with trusted pinned Python/helper arguments; original N/scale and resource/time limits.",
+    "Each gzip byte hash, exact decompressed raw hash/count/order/six finite nonnegative channels, exact independently recomputed summary, prune-receipt hash and raw-duplicate absence.",
+    "Full four assemblies and all144 unique label/sensor/component checks; unknown/missing/reordered data rejects.",
+    "Exact metadata snapshot bytes retained externally with snapshot hashes, so later driver appends cannot erase the inspected records.",
+    "Rehash all closed members/current trusted helpers/engine pins; -B and fresh absent pycache prefix checked before import and after inspection."
+  ],
+  "deadline_and_resources": {
+    "original_experiment_seconds": 43200,
+    "conservative_absolute_deadline_utc": "2026-10-12T15:41:38.4557724Z",
+    "time_authority": "Minimum of original driver remaining monotonic budget, 7200 seconds, and conservative execution-declaration UTC+43200 minus current UTC. Inspector applies its own monotonically decreasing bound and absolute deadline; it never resets or extends the driver deadline.",
+    "inspection_launcher": "Existing pinned atomic Windows Job supervisor, one bounded research Python child, flat fresh external output directory; no Radiance child launched by inspector.",
+    "process_seconds_max": 7200,
+    "cleanup_seconds": 5,
+    "memory_bytes": 2147483648,
+    "owned_scratch_bytes": 2147483648,
+    "single_file_bytes": 536870912,
+    "all_case_bytes_still_count": true,
+    "postprocessing_in_global_budget": true,
+    "preserve_original_elapsed_clock": true
+  },
+  "external_inspection": {
+    "filename": "inspect-checkpoint.py",
+    "bytes": 15402,
+    "sha256": "e65b2d39eba06c34e51bf137d8acb7fcb170be5b0aa4e64ec158dd98480c9496",
+    "not_a_repository_or_native_driver": true,
+    "trusted_helper_paths": [
+      "scripts/annual-reference-prerequisite/reference_stream.py",
+      "scripts/annual-reference-prerequisite/reference_report.py"
+    ],
+    "argument_array": [
+      "-B",
+      "-X",
+      "utf8",
+      "-X",
+      "pycache_prefix=<fresh absent external path>",
+      "<reviewed external inspect-checkpoint.py>",
+      "--root",
+      "<unchanged experiment root>",
+      "--trusted-source",
+      "<trusted checkout>/scripts/annual-reference-prerequisite",
+      "--engine-root",
+      "<pinned Radiance package>",
+      "--remaining-seconds",
+      "<minimum original remaining budget>",
+      "--output",
+      "<fresh external output>/checkpoint.json"
+    ],
+    "interpreter": "Exact Python executable SHA from original execution declaration; inspector checks sys.executable.",
+    "source_readable_recipe": [
+      "After all metadata/source/input/Job/receipt gates, import unchanged trusted reference_stream as S and reference_report as R.",
+      "For N in (16384,32768), ab in (0,8,9): summary[(N,ab)] = R.expected(S.read_archive(A4116, exact_archive_receipt, unchanged_remaining_deadline), N, 100).",
+      "For N in (16384,32768), ab in (8,9): assembly[(N,ab)] = S.assemble(summary[(N,ab)], summary[(N,0)], authenticated_original_finite_rgb).",
+      "For ab in (8,9): checks.extend(S.compare(assembly[(16384,ab)]['mean_rows'], assembly[(32768,ab)]['mean_rows'], label=f'A4116/N16384-32768/ab{ab}')).",
+      "Require exactly all 144 distinct expected (label,sensor_id,component) keys. Preserve every row, all negative diagnostics and false qualification flags.",
+      "Return reject_prerequisite if any comparison fails or assembly is negative; otherwise continue_original_schedule. Inspector neither launches nor cancels native processes."
+    ]
+  },
+  "preexecution_tests": {
+    "scope": "Synthetic/structural only; no live experimental numerical data, Radiance or native acceptance.",
+    "test_source_filename": "test-checkpoint.py",
+    "test_source_sha256": "6535d047f342ac7f48951de522f647a40387cf21bbc88b75756dc14962b3b1be",
+    "report_filename": "pure-tests-20261012T042411089326Z.json",
+    "report_sha256": "54a7844d50d2e4007d822305889e77b4a52ecf066c67a74a8198478bf9a9a8e2",
+    "test_methods": 13,
+    "passed": true,
+    "wall_seconds": 0.08365669997874647,
+    "covered": [
+      "exact144 membership",
+      "later-N denominator",
+      "inclusive boundary",
+      "single last-sensor component failure",
+      "negative assembly rejection",
+      "missing/extra/reordered sensor data",
+      "nonfinite numeric rejection",
+      "unsettled/failed process and caps",
+      "typed/null receipts",
+      "source pins/no process-launch APIs",
+      "fresh absent bytecode guard",
+      "exact metadata snapshot retention"
+    ]
+  },
+  "actual_checkpoint_executed": false,
+  "new_native_processes": 0,
+  "R1_complete": false,
+  "estimator_eligible": false,
+  "reference_family_qualified": false,
+  "accuracy_accepted": false,
+  "release_accepted": false,
+  "sealing_observation": {
+    "checkpoint_sha256": "c010d8e896fd518965c928774beb7b9ed13c5c8286822fb05a6f82bbcd430f96",
+    "schema": "greenlens.reference-amendment-sealing-metadata.v1",
+    "recorded_utc": "2026-10-12T04:24:43.2252919Z",
+    "closed_native_records_by_case": {
+      "A4116": 4,
+      "B8512": 2
+    },
+    "N32768_or_larger_closed_records": [],
+    "numeric_outputs_read": false,
+    "source_or_process_changes": false,
+    "execution_declaration_sha256": "86f0a07407abf8326571bedaa5e5cbccb9b24d6f65ef5bda3546340d55550c62"
+  },
+  "independent_review": {
+    "scope": "Read-only inspector source and synthetic tests; no live arrays",
+    "reviewed_inspector_sha256": "e65b2d39eba06c34e51bf137d8acb7fcb170be5b0aa4e64ec158dd98480c9496",
+    "outcome": "No concrete numerical/order/closed-stage blocker. Bytecode-cache guard and exact append-safe metadata snapshot retention findings were closed before final seal.",
+    "reviewer_independent_pure_tests": 12,
+    "final_owner_pure_tests": 13
+  }
+}

@@ -1,0 +1,524 @@
+{
+  "schema": "greenlens.public-retained-depth-fixture.v1",
+  "created_utc": "2026-10-12T04:14:00.708472+00:00",
+  "purpose": "Original A4116/B8512 baseline versus combined-depth sensitivity. Not a new protocol, candidate, requalification or execution authorization.",
+  "preparation_only": true,
+  "new_engine_processes": 0,
+  "inventory_antecedent_sha256": "1f565173c056aa3438ec9c3a7d7fc97e26ae2da6c212b0a0470bc5f67e85ab20",
+  "physical_unique_files": 8,
+  "physical_bytes": 10373,
+  "attribution_bytes": 2711,
+  "files": {
+    "shared/sensors.pts": {
+      "bytes": 752,
+      "sha256": "3f88226c4a2895f01a5d2dc413e45c4bec03a1d4340e4bc763657c8268ac8446"
+    },
+    "shared/matched-basis.cal": {
+      "bytes": 949,
+      "sha256": "a8140c3043ffc1a26da5a0527db11d8a0e56298d394a3df6b42819f38f861415"
+    },
+    "shared/weather-asset.json": {
+      "bytes": 2711,
+      "sha256": "34c27c50fad3f370682dad834b645a06ffb6c88164f47e74c37e9402ed35e8ba"
+    },
+    "A4116/scene.rad": {
+      "bytes": 1221,
+      "sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57"
+    },
+    "A4116/hour-4116-scaled.rad": {
+      "bytes": 290,
+      "sha256": "42571f27ae2e1d66fae7adf3ac945bc8f551d85a9a4917d950b2ce68f4d2f1bc"
+    },
+    "A4116/hour-4116.dat": {
+      "bytes": 2731,
+      "sha256": "5f4c3e459f94ca8ec93e78827b4b2b7dc5d381ca4b2b0ca5c15012e31e32c7dd"
+    },
+    "A4116/baseline.rgb.gz": {
+      "bytes": 48878,
+      "sha256": "3e0a8e2e4bbf233087f788a7f35572285acb77f04c40a956502dfc3e4d4c5e40"
+    },
+    "A4116/depth.rgb.gz": {
+      "bytes": 48911,
+      "sha256": "f056ded9b348f06e7995243613a0f741b8699ad94cfba898b68c52a1fb4028a7"
+    },
+    "B8512/scene.rad": {
+      "bytes": 1352,
+      "sha256": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8"
+    },
+    "B8512/hour-8512-scaled.rad": {
+      "bytes": 291,
+      "sha256": "11b153fcd366a2993b457bfae9753ea4a3db564caf694c00d87d803871fa6619"
+    },
+    "B8512/hour-8512.dat": {
+      "bytes": 2787,
+      "sha256": "79673bd5b70d82981959947316c9a22ba9e8e906c71319f268be0e8fe77fbcf3"
+    },
+    "B8512/baseline.rgb.gz": {
+      "bytes": 89921,
+      "sha256": "275413ab6dffe82c91486196c6ad1e656f07c61de085705c4d3bc83ff8f51fc7"
+    },
+    "B8512/depth.rgb.gz": {
+      "bytes": 89846,
+      "sha256": "99e9aa93ea2ef8aec10e1b6c5a0c32a1bd61916062efa545f8cfa9facc5a5c71"
+    }
+  },
+  "cases": [
+    {
+      "case": "A4116",
+      "members": {
+        "scene.rad": {
+          "bytes": 1221,
+          "sha256": "ed57f9ef3d843906fac9223b4dd9c0073da410504fa640a161a410fa833a0c57"
+        },
+        "hour-4116-scaled.rad": {
+          "bytes": 290,
+          "sha256": "42571f27ae2e1d66fae7adf3ac945bc8f551d85a9a4917d950b2ce68f4d2f1bc"
+        },
+        "hour-4116.dat": {
+          "bytes": 2731,
+          "sha256": "5f4c3e459f94ca8ec93e78827b4b2b7dc5d381ca4b2b0ca5c15012e31e32c7dd"
+        }
+      },
+      "original_declaration_sha256": "27da02f5f2d1264b06778522e41b8f7f709427fa199b4c6702e5a13650d2c74a",
+      "baseline_raw_sha256": "ef51455ae31d9e156d89f8ebb3932f3a3ef02a18ce515ec7ae4333a35d9520e6",
+      "depth_raw_sha256": "9b4a1439e1f3f659cee70629a4b250356e0320268f352c918d2796e175c2b7ce",
+      "raw_bytes_per_stream": 491520,
+      "input_repeat_rule": "sensors.pts exact LF bytes repeated256 times; round-major all24; exactly6144 rows",
+      "repeated_input_sha256": "437433d73bffb1350986f8000356c41af0940b5db6449c566965c1693d1ef101",
+      "repeated_input_bytes": 192512,
+      "commands": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "hour-4116-scaled.rad"
+          ],
+          "output": "hour-4116.oct"
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-h",
+            "-faa",
+            "-n",
+            "1",
+            "-ab",
+            "9",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "1",
+            "-V+",
+            "-y",
+            "6144",
+            "-m",
+            "sky_glow",
+            "-m",
+            "solar246990",
+            "hour-4116.oct"
+          ],
+          "input": "hour-4116-rounds256.pts",
+          "output": "hour-4116-rounds256.rgb"
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "depth10-24.rad"
+          ],
+          "output": "depth10-24.oct"
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-h",
+            "-faa",
+            "-n",
+            "1",
+            "-ab",
+            "10",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-24",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "1",
+            "-V+",
+            "-y",
+            "6144",
+            "-m",
+            "sky_glow",
+            "-m",
+            "solar246990",
+            "depth10-24.oct"
+          ],
+          "input": "hour-4116-rounds256.pts",
+          "output": "depth10-24.rgb"
+        }
+      ],
+      "depth_source_alias": {
+        "name": "depth10-24.rad",
+        "copy_exact_from": "hour-4116-scaled.rad"
+      },
+      "published_expected_components": {
+        "path": "docs/evidence/v0.3-engine/reference-A-depth-components.json",
+        "sha256": "d53249077bc65d8a1cf7b683d4410da5cd453fcb3f5964ff77ff6b022dc0334a",
+        "failed_sensor_count": 10
+      },
+      "collector": "Use existing annual-reference-aggregation.cs: Read6144*6, Calculate24/first0/rounds256/scale100, CompareWithScale(baseline,depth,baseline). Supply unchanged centroid_direct_rgb/finite_direct_rgb from the pinned public component record for every sensor. These are authenticated reused components, not a new finite-direct run.",
+      "expected_failures": {
+        "sensor_ids": [
+          "s000008",
+          "s000012",
+          "s000013",
+          "s000015",
+          "s000016",
+          "s000018",
+          "s000019",
+          "s000020",
+          "s000022",
+          "s000023"
+        ],
+        "mean_signed_delta_lux": -3.85969041055154,
+        "max_absolute_delta_lux": 10.755264868016411,
+        "max_error_to_tolerance_ratio": 2.246835278823547,
+        "tolerance": "max(0.1 lx,0.01*baseline total lx); exact original baseline denominator"
+      },
+      "retained_outputs": [
+        {
+          "role": "baseline",
+          "path": "A4116/baseline.rgb.gz",
+          "gzip_sha256": "3e0a8e2e4bbf233087f788a7f35572285acb77f04c40a956502dfc3e4d4c5e40",
+          "gzip_bytes": 48878,
+          "raw_sha256": "ef51455ae31d9e156d89f8ebb3932f3a3ef02a18ce515ec7ae4333a35d9520e6",
+          "raw_bytes": 491520,
+          "rows": 6144,
+          "channels": 6,
+          "numeric_values": 36864
+        },
+        {
+          "role": "depth",
+          "path": "A4116/depth.rgb.gz",
+          "gzip_sha256": "f056ded9b348f06e7995243613a0f741b8699ad94cfba898b68c52a1fb4028a7",
+          "gzip_bytes": 48911,
+          "raw_sha256": "9b4a1439e1f3f659cee70629a4b250356e0320268f352c918d2796e175c2b7ce",
+          "raw_bytes": 491520,
+          "rows": 6144,
+          "channels": 6,
+          "numeric_values": 36864
+        }
+      ]
+    },
+    {
+      "case": "B8512",
+      "members": {
+        "scene.rad": {
+          "bytes": 1352,
+          "sha256": "36cf2b4e92e377f57e34f3e623aec47c281172ac1b434b3c7b3d7b23a966d7a8"
+        },
+        "hour-8512-scaled.rad": {
+          "bytes": 291,
+          "sha256": "11b153fcd366a2993b457bfae9753ea4a3db564caf694c00d87d803871fa6619"
+        },
+        "hour-8512.dat": {
+          "bytes": 2787,
+          "sha256": "79673bd5b70d82981959947316c9a22ba9e8e906c71319f268be0e8fe77fbcf3"
+        }
+      },
+      "original_declaration_sha256": "e573d1b33014a8db3ac52e12902d6f92729918ed9696f6aa7f09057cb47b136f",
+      "baseline_raw_sha256": "642000813505a1db8fade62404ca68bd4f4b27359d03d1185f35efcc261a774a",
+      "depth_raw_sha256": "8587f5c4b8aa7d6cb8d5b6137074e51fd30b487c83746dad02a27874427e65f0",
+      "raw_bytes_per_stream": 491520,
+      "input_repeat_rule": "sensors.pts exact LF bytes repeated256 times; round-major all24; exactly6144 rows",
+      "repeated_input_sha256": "437433d73bffb1350986f8000356c41af0940b5db6449c566965c1693d1ef101",
+      "repeated_input_bytes": 192512,
+      "commands": [
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "hour-8512-scaled.rad"
+          ],
+          "output": "hour-8512.oct"
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-h",
+            "-faa",
+            "-n",
+            "1",
+            "-ab",
+            "9",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-16",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "1",
+            "-V+",
+            "-y",
+            "6144",
+            "-m",
+            "sky_glow",
+            "-m",
+            "solar510750",
+            "hour-8512.oct"
+          ],
+          "input": "hour-8512-rounds256.pts",
+          "output": "hour-8512-rounds256.rgb"
+        },
+        {
+          "executable": "oconv.exe",
+          "arguments": [
+            "-f",
+            "scene.rad",
+            "depth10-24.rad"
+          ],
+          "output": "depth10-24.oct"
+        },
+        {
+          "executable": "rcontrib.exe",
+          "arguments": [
+            "-I+",
+            "-h",
+            "-faa",
+            "-n",
+            "1",
+            "-ab",
+            "10",
+            "-ad",
+            "8192",
+            "-as",
+            "0",
+            "-aa",
+            "0",
+            "-ar",
+            "256",
+            "-av",
+            "0",
+            "0",
+            "0",
+            "-lw",
+            "1e-9",
+            "-lr",
+            "-24",
+            "-dt",
+            "0",
+            "-dc",
+            "1",
+            "-dj",
+            "0",
+            "-ds",
+            "0.05",
+            "-st",
+            "0",
+            "-ss",
+            "0",
+            "-u-",
+            "-c",
+            "1",
+            "-V+",
+            "-y",
+            "6144",
+            "-m",
+            "sky_glow",
+            "-m",
+            "solar510750",
+            "depth10-24.oct"
+          ],
+          "input": "hour-8512-rounds256.pts",
+          "output": "depth10-24.rgb"
+        }
+      ],
+      "depth_source_alias": {
+        "name": "depth10-24.rad",
+        "copy_exact_from": "hour-8512-scaled.rad"
+      },
+      "published_expected_components": {
+        "path": "docs/evidence/v0.3-engine/reference-B-depth-components.json",
+        "sha256": "d1e70ae03e01a53104f20c36636a78b0778b311a54f1e90deeb325ab42a23a55",
+        "failed_sensor_count": 10
+      },
+      "collector": "Use existing annual-reference-aggregation.cs: Read6144*6, Calculate24/first0/rounds256/scale100, CompareWithScale(baseline,depth,baseline). Supply unchanged centroid_direct_rgb/finite_direct_rgb from the pinned public component record for every sensor. These are authenticated reused components, not a new finite-direct run.",
+      "expected_failures": {
+        "sensor_ids": [
+          "s000012",
+          "s000014",
+          "s000015",
+          "s000016",
+          "s000017",
+          "s000018",
+          "s000019",
+          "s000020",
+          "s000022",
+          "s000023"
+        ],
+        "mean_signed_delta_lux": -3.729371808707372,
+        "max_absolute_delta_lux": 8.436012267968295,
+        "max_error_to_tolerance_ratio": 2.6548741511963754,
+        "tolerance": "max(0.1 lx,0.01*baseline total lx); exact original baseline denominator"
+      },
+      "retained_outputs": [
+        {
+          "role": "baseline",
+          "path": "B8512/baseline.rgb.gz",
+          "gzip_sha256": "275413ab6dffe82c91486196c6ad1e656f07c61de085705c4d3bc83ff8f51fc7",
+          "gzip_bytes": 89921,
+          "raw_sha256": "642000813505a1db8fade62404ca68bd4f4b27359d03d1185f35efcc261a774a",
+          "raw_bytes": 491520,
+          "rows": 6144,
+          "channels": 6,
+          "numeric_values": 36864
+        },
+        {
+          "role": "depth",
+          "path": "B8512/depth.rgb.gz",
+          "gzip_sha256": "99e9aa93ea2ef8aec10e1b6c5a0c32a1bd61916062efa545f8cfa9facc5a5c71",
+          "gzip_bytes": 89846,
+          "raw_sha256": "8587f5c4b8aa7d6cb8d5b6137074e51fd30b487c83746dad02a27874427e65f0",
+          "raw_bytes": 491520,
+          "rows": 6144,
+          "channels": 6,
+          "numeric_values": 36864
+        }
+      ]
+    }
+  ],
+  "native_roles": 8,
+  "native_processes_executed_during_packaging": 0,
+  "limits": {
+    "seconds_per_process": 7200,
+    "workers": 1,
+    "memory_bytes": 2147483648,
+    "scratch_bytes": 2147483648,
+    "file_bytes": 536870912
+  },
+  "helper_sha256": {
+    "scripts/annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+    "scripts/annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+    "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84"
+  },
+  "engine_sha256": {
+    "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+    "rcontrib.exe": "0e622eb168ce5ba30bfad2d154bf64bc4555d1663f1d20c9c1a833f947816975",
+    "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+    "rayinit.cal": "293b321513e9fedce90ad6e88f2ef00d6e9184d0581e8fdeb111fd05fa32ae60",
+    "skybright.cal": "323d4762faa32b6a0ee086d97df6b04ba39416385af927247265de6d428fe454",
+    "reinhart.cal": "1517d597e34673bd8c5cfcea79850520ac272c7f5229df22401537f0b7c82934"
+  },
+  "working_directory": "Fresh owned case directory containing scene.rad, matching hour .rad/.dat, matched-basis.cal and sensors.pts. Shared files copied byte-for-byte; do not run from checkout.",
+  "child_raypath": ".;<externally installed pinned engine>/lib, set only on the child by existing supervisor",
+  "input_order": "sensors.pts exact bytes repeated256 times; 24 sensors in retained order each round, no origin change",
+  "aggregation": "I+ output: divide each source bin by256*100; diffuse+fullSolar-originalCentroidDirect+originalFinite4096. No pi multiplier. Reused direct/finite arrays are pinned published components, not freshly computed transport.",
+  "retained_raw": {
+    "gzip_files": 4,
+    "combined_gzip_bytes": 277556,
+    "uncompressed_bytes": 1966080,
+    "exact_byte_verification": "Each gzip was independently reopened/decompressed and compared byte-for-byte and by SHA256 before packaging.",
+    "raw_origin": "Historical actual native outputs, not synthetic; original full process/source audits stay linked through component evidence."
+  },
+  "scope_limits": [
+    "Same physical inputs/settings are reproducible without the private full-baseline archives. Rebuilding the original annual weather provenance and strict full-family collector requires the larger original bundle; do not claim that from this reduced reproduction.",
+    "The two existing depth endpoints fail10/24 each. Internal repeat stability is not physical truth. The family remains unqualified.",
+    "This fixture preserves the old I+ estimator, effective ray origins and centroid source. It is distinct from the running external-primary prerequisite.",
+    "Identical source text has two octree roles to preserve original argument arrays; no reuse optimization.",
+    "No annual weather reconstruction, angular-source qualification, new candidate or native run is implied."
+  ],
+  "rights": [
+    "Original scene/sensors Apache-2.0; retain project LICENSE.",
+    "matched-basis.cal derives from pinned Radiance reinhart.cal; retain third-party/Radiance-LICENSE.txt unchanged.",
+    "Hourly derivatives retain weather-asset.json JRC/PVGIS/modified Copernicus attribution and normalization/modification notice.",
+    "No engine binary redistribution."
+  ],
+  "official_rights_reviewed": [
+    "https://raw.githubusercontent.com/LBNL-ETA/Radiance/rad6R0P2/License.txt",
+    "https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/general-information/usage-conditions-data-protection_en"
+  ],
+  "reference_family_qualified": false,
+  "accuracy_accepted": false,
+  "release_accepted": false
+}

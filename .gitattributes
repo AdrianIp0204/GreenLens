@@ -20,6 +20,7 @@ docs/evidence/v0.3-native/candidate05-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate06-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate07-*.json -text -whitespace
 docs/evidence/v0.3-native/candidate08-*.json -text -whitespace
+docs/evidence/v0.3-native/candidate09-*.json -text -whitespace
 *.jpg binary
 docs/evidence/v0.3-engine/higher-MF2-MF4-A-all12-summary.json -text -whitespace
 docs/evidence/v0.3-engine/higher-MF2-B-all12-summary.json -text -whitespace
@@ -77,3 +78,6 @@ scripts/angular_feasibility.py -text -whitespace
 docs/evidence/v0.3-engine/fixed-reference-permutation.json -text -whitespace
 docs/evidence/v0.3-ci/final-main-5cde6dc.json -text -whitespace
 docs/evidence/v0.3-ci/final-main-572f0b7.json -text -whitespace
+docs/evidence/v0.3-ci/superseded-main-d7d74a3.json -text -whitespace
+docs/evidence/v0.3-ci/final-main-b813b06.json -text -whitespace
+docs/evidence/v0.3-engine/reference-prerequisite-rejection-checkpoint.json -text -whitespace

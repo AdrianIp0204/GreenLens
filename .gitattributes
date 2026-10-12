@@ -88,3 +88,4 @@ docs/evidence/v0.3-engine/reference-prerequisite-ordinal13.json -text -whitespac
 docs/evidence/v0.3-engine/reference-prerequisite-reader-recovery.json -text -whitespace
 docs/evidence/v0.3-engine/reference-prerequisite-remaining-checkpoints.json -text -whitespace
 docs/evidence/v0.3-native/candidate10-*.json -text -whitespace
+docs/evidence/v0.3-engine/reference-prerequisite-terminal.json -text -whitespace

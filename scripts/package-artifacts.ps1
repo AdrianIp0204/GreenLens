@@ -24,6 +24,7 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.3-engine/reference-prerequisite-ordinal13.json',
         'docs/evidence/v0.3-engine/reference-prerequisite-reader-recovery.json',
         'docs/evidence/v0.3-engine/reference-prerequisite-remaining-checkpoints.json',
+        'docs/evidence/v0.3-engine/reference-prerequisite-terminal.json',
         'LICENSE','scripts/annual-reference-aggregation.cs',
         'tests/fixtures/reference-depth/README.md','tests/fixtures/reference-depth/manifest.json',
         'tests/fixtures/reference-depth/external-primary/manifest.json',

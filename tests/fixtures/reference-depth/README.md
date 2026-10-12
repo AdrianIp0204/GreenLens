@@ -234,3 +234,36 @@ The producer supplies block→sensor→ray order, each block covering the **enti
 The inline comparison preserves A's equal-two-block mean rows for N=16,384 versus N=32,768 at ab=8 and ab=9, every sensor/component row and the later-count component denominator. It yields exactly 144 predicates at `max(0.1 lx, 1% of the later component)`. B's complete N=16,384 streams are retained without inventing a B adjacent-N result. Record all primary/native/archive receipts and all raw hashes; disagreement with the retained run is evidence, not a reason to choose other settings. Recheck copied input and helper hashes before interpreting a result; this snippet does not provide the original driver's full identity closure.
 
 This compact reproduction intentionally cannot invoke the original strict inspector or `run-reference.ps1`: their exact 24-member-per-case original baseline closure includes full-year matrices, weather/model, historical raw outputs and source/process declarations (64,379,016 bytes for A; 64,385,476 for B, before derived files). Those files and hashes remain enumerated in the sealed proposal. A compact transport replay does not replace that provenance check, complete R1/R2, qualify the reference family, or validate solar angular physics.
+
+## Minimal terminal B8512 depth-failure variant
+
+The original sealed driver subsequently evaluated all 1,008 R1 predicates and stopped naturally: 36 failed, all in B8512 at N=65,536, comparing depth 8 with depth 9. The breakdown is 8 diffuse, 17 reflected-solar and 11 total checks across 17 sensors; no negative assembly occurred. R2 and the conditional candidate were not executed. The complete [terminal record](../../../docs/evidence/v0.3-engine/reference-prerequisite-terminal.json) retains every result and source seal. The sign of the difference does not establish its cause.
+
+This **reviewed but unexecuted manual recipe** isolates those 72 depth predicates. Choose it **instead of** the first-13-stage recipe, before executing any of that recipe's code. It uses the same existing helpers and five original native stages, in order: ordinals **3, 4, 20, 21, 22** (B full octree, black octree, full depth 8, full depth 9, black control). It does not reuse a selected sensor, a primary prefix, or another direct estimator.
+
+Apply only these literal substitutions to the preceding external-primary PowerShell block:
+
+- In case preparation, replace `@('A4116','B8512')` with `@('B8512')`.
+- In expected-receipt preparation **before the native clock starts**, replace `@(16384,32768)` with `@(65536)`.
+- Replace the stage filter `Where-Object { $_.ordinal -le 13 }` with `Where-Object { $_.ordinal -in @(3,4,20,21,22) }`. Preserve the proposal order and exact argument-array equality check. The existing literal construction then supplies `-y 3145728`, `-ab 8`, `-ab 9` or `-ab 0`, unchanged scale 100 and all other flags.
+- Replace only the `$audit` here-string with the following. Keep the existing supervised invocation and its same decreasing `Remaining` budget, cache/source checks, and inventory checks after native and collector metadata writes.
+
+```python
+import json,pathlib,sys,time
+sys.path.insert(0,sys.argv[1])
+import reference_stream as S, reference_report as R
+root=pathlib.Path(sys.argv[2]); end=time.monotonic()+float(sys.argv[3])
+folder=root/'B8512'; S.inventory(folder); summaries={}; assemblies={}
+finite=R.load(folder/'finite-original.json')
+for ab in (0,8,9):
+    receipt=R.load(folder/f'B8512-base-N65536-ab{ab}.rgb.archive.json')
+    summaries[ab]=R.expected(S.read_archive(folder,receipt,end),65536,100)
+for ab in (8,9): assemblies[ab]=S.assemble(summaries[ab],summaries[0],finite)
+checks=S.compare(assemblies[8]['mean_rows'],assemblies[9]['mean_rows'],label='B8512/depth8-9')
+S.require(len(checks)==72,'Exact subset count'); S.inventory(folder); S.deadline(end)
+print(json.dumps({'scope':'manual B8512 depth subset, not strict full-protocol qualification','assemblies':[{'ab':ab,**v} for ab,v in assemblies.items()],'checks':checks,'failed_count':sum(not c['passed'] for c in checks),'negative_results':[{'ab':ab,'blocks':v['negative_sensor_blocks']} for ab,v in assemblies.items() if not v['completed']],'R1_complete':False,'remaining_R1_predicates_not_evaluated':936,'R2_predicates_not_evaluated':1296,'reference_family_qualified':False,'accuracy_accepted':False,'release_accepted':False},allow_nan=False))
+```
+
+Each transport retains both complete hemisphere blocks and all 24 ordered receivers, with 3,145,728 rows × 6 channels. The primary receipt is 3,145,728 rays / 322,831,568 input bytes / SHA-256 `00c7fc5323d9c9a08eac29ac47700474b8a5feb5e841cda14632f4d105c05a98`. Three observed ASCII outputs total 754,974,720 bytes before gzip/logs; keep the existing reserve and inventory checks, 512 MiB file / 2 GiB case / 2 GiB memory / 7,200-second child / 12-hour global limits. This manual variant retains raw ASCII as well as verified gzip, so its storage differs from the original driver's verified duplicate pruning. A resource failure stops it; no retry is prescribed.
+
+The comparison uses each deeper component as denominator: `max(0.1 lx, 1% of depth-9 component)`. The retained run has 36 failures out of these 72 checks. Preserve every new result even if reproduction differs; do not assert the expected failure count before saving the evidence. The first retained failure is receiver `s000001`, reflected solar 91.08753878332723 → 92.13936935635618 lx, difference 1.0518305730289512 lx versus 0.9213936935635618 lx allowed. IDs here are one-based ordered receiver labels; `sensor_index` is zero-based. The other 936 R1 and all 1,296 R2 predicates are outside this subset. The large original current-protocol raw archives are retained externally and hash-bound in the terminal record, not bundled in this fixture; its four bundled gzip files remain the separate historical `-I+` experiment.

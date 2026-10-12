@@ -32,6 +32,7 @@ foreach ($required in @(
     'scripts/annual-reference-prerequisite/guard-review.json','scripts/annual-reference-prerequisite/prepare-check.json',
     'scripts/annual-reference-prerequisite/portable-test-check.json',
     'docs/evidence/v0.3-engine/reference-prerequisite-rejection-checkpoint.json',
+    'docs/evidence/v0.3-engine/reference-prerequisite-terminal.json',
     'tests/fixtures/reference-depth/README.md','tests/fixtures/reference-depth/manifest.json',
     'tests/fixtures/reference-depth/shared/weather-asset.json',
     'tests/fixtures/reference-depth/A4116/baseline.rgb.gz','tests/fixtures/reference-depth/A4116/depth.rgb.gz',

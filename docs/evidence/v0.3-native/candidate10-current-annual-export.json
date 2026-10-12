@@ -1,0 +1,163 @@
+{
+  "schema_version": "greenlens.current-annual-delivery-summary.v1",
+  "checked_utc": "2026-10-12T09:52:31.415718Z",
+  "scope": "Fresh A/B-only delivery export of retained annual evidence; no new scientific calculation, replay, build, native UI action or browser-render observation.",
+  "export_service_source": {
+    "commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+    "dirty": false,
+    "cli_sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553",
+    "original_candidate10_package_modified": false
+  },
+  "artifact": {
+    "file": "current-annual-AB.zip",
+    "bytes": 6184337,
+    "sha256": "01bf5ac8c3ab3de360aeb0ab5c1814c561e5af364653ef8d3277a996f55afe04",
+    "members": 161,
+    "sealed_members": 160,
+    "uncompressed_bytes": 38988231,
+    "bounded_paths_and_5000_64MiB_256MiB_limits_checked": true
+  },
+  "report": {
+    "file": "report-current/report.html",
+    "sha256": "167110264d7527901c4843a14922cdf263c317caf2e1ddc70b197f6492239c61",
+    "qualification_panels": 4,
+    "run_panels": 2,
+    "comparison_side_panels": 2,
+    "all_scientifically_failed": true,
+    "both_physical_and_retained_metric_relations_match": true,
+    "content_and_structure_checked": true,
+    "browser_rendered_for_this_export": false,
+    "scripts": 0,
+    "external_assets": 0
+  },
+  "qualification": {
+    "file": "report-current/qualification.json",
+    "sha256": "81904e78b75f8cddbf8712bcda0a9c86cf438734bc4397c48417e5857608833a",
+    "registry_sha256": "eb03209f4577511232c8b43b00ad55344cb971533875173b03d7a544a37bb2b7",
+    "profile_sha256": "8b5d740afca9f87368a084f2f2a25a1872b349b3446036f12699a1c1fd46d289",
+    "engine_identity_sha256": "7d04c1fbc85a5a2440cb2141208ea28f6a51d006d326d5c301f4595ef13a3144",
+    "recipe_contract_sha256": "29395f51bd78a862705438f18df924344a1742cd21b4cd695a05d5c9537c3a5a",
+    "evidence_id": "docs/evidence/v0.3-ci/method5-6cf036e-convergence-independent.json",
+    "evidence_sha256": "92801299415c6522b0d528438afd008a88b690805fec521eb4e1647adf9f6131",
+    "comparison_sides_match_supplement": true
+  },
+  "runs": [
+    {
+      "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "alternative": "A",
+      "intervals": 8760,
+      "sensors": 24,
+      "record_sha256": "50b9336ea0f83c6232909f961f33357d91aee0e7307334315d045461ddda5452",
+      "recipe_sha256": "5a814d3500aa451e4456597bde6bc7c5be67121ecb50052d648c7b4a59250587",
+      "original_run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "original_run_source_dirty": false,
+      "process_completion": "retained_successful_exit_records",
+      "evidence_integrity": "full_retained_evidence_checked",
+      "current_input_relation": {
+        "metrics": "matches",
+        "physical": "matches"
+      },
+      "scientific_qualification": "failed"
+    },
+    {
+      "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "alternative": "B",
+      "intervals": 8760,
+      "sensors": 24,
+      "record_sha256": "58fe0235610baa2931e9b23fcf529d59aa01f485974638f7c89c0bf756d708c0",
+      "recipe_sha256": "6a1984817a3382bce227bdc8c9cc60dddf389ab96448b2ec96778a6694d94bef",
+      "original_run_source_commit": "6cf036ed0292ff2965ec6429a1d193fbdbc8d831",
+      "original_run_source_dirty": false,
+      "process_completion": "retained_successful_exit_records",
+      "evidence_integrity": "full_retained_evidence_checked",
+      "current_input_relation": {
+        "metrics": "matches",
+        "physical": "matches"
+      },
+      "scientific_qualification": "failed"
+    }
+  ],
+  "preservation": {
+    "source_project_data_files_unchanged": 179,
+    "source_run_weather_files_unchanged": 178,
+    "source_run_weather_bytes_unchanged": 44920485,
+    "selected_zip_immutable_files": 155,
+    "selected_zip_immutable_bytes": 38558778,
+    "each_selected_zip_immutable_member_identical_to_source": true,
+    "manifest_sha256": "e1ee2240635f134ef165858333767186d442abf29e0572395d97178aa05a63d1",
+    "manifest_bytes_unchanged": true,
+    "persisted_cameras_unchanged": true,
+    "zip_manifest_only_removes_unselected_hourly_summary": true,
+    "original_stale_native_zip": {
+      "bytes": 6805818,
+      "sha256": "761e8668287ba503a6c2ee557ad23c5f59109923d2213bcca190f31a3d9799ca"
+    }
+  },
+  "retained_array_checks": {
+    "chunks_checked": 106,
+    "finite_rgb_lux_records": 420480,
+    "maximum_rgb_to_lux_arithmetic_difference": 0.0
+  },
+  "export_process": {
+    "executable": "greenlens.exe",
+    "arguments": [
+      "export",
+      "<unchanged restored candidate10 project>",
+      "current-annual-AB.zip",
+      "--run",
+      "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "--run",
+      "2c436690-9ddc-4040-91f7-154b7b44b596"
+    ],
+    "started_utc": "2026-10-12T09:50:54.5353547Z",
+    "finished_utc": "2026-10-12T09:51:00.4879452Z",
+    "wall_seconds": 5.9497079,
+    "exit_code": 0,
+    "peak_cli_working_set_bytes": null,
+    "engine_executed": false,
+    "replay_executed": false
+  },
+  "measurement_limit": "CLI peak memory was not available from the finished-process query; null is not zero. No scientific engine resource observation is claimed.",
+  "receipts": [
+    {
+      "file": "export-integrity-audit.json",
+      "bytes": 7156,
+      "sha256": "a9dff80d89cbfca3be780fbad7a7a29143bfe7a242a48d06e898039a13cfc5fb"
+    },
+    {
+      "file": "export-inventory.json",
+      "bytes": 67336,
+      "sha256": "ddac57e33b9e48b9b3f5ff010736b749fb91871045466abad7271bfd78517b33"
+    },
+    {
+      "file": "before-inventory.json",
+      "bytes": 32221,
+      "sha256": "5f0442236ce1a64a7b4afb89ddde4e1433abfc3e3eee0dc4714e8e255aa045cd"
+    },
+    {
+      "file": "export-invocation.json",
+      "bytes": 867,
+      "sha256": "4ea3862dde56e58cb600fee2b008358c4de965ced03aee4d62d154b2b5c1b8d9"
+    },
+    {
+      "file": "export-audit.py",
+      "bytes": 12796,
+      "sha256": "b52e0dd7ea77a293f0164736407bf5d7a63b83e5c537ae3d086f9152e9bdbbb5"
+    }
+  ],
+  "preserved_auditor_attempt": {
+    "record": {
+      "file": "audit-attempt1.json",
+      "bytes": 580,
+      "sha256": "c0101063eb7f7aea44d98fbb4b278ee377ac7b4cfe5a39144807a72ed61c336e"
+    },
+    "source": {
+      "file": "export-audit-attempt1.py",
+      "bytes": 12814,
+      "sha256": "57b9fd0031625ccd1a6aaf19344a320ebe58fa5ba543ef2b59d367e664ac7698"
+    },
+    "cause": "The copied auditor source was first read with the Windows default codepage, corrupting a Unicode directory literal. It failed before archive numeric reads or extraction. The failed source and record remain retained; the corrected source copy uses UTF-8. The successful export was not rerun."
+  },
+  "scientific_qualification_accepted": false,
+  "release_complete": false
+}

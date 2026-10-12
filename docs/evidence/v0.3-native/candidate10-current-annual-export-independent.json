@@ -1,0 +1,89 @@
+{
+  "schema_version": "greenlens.candidate10-current-annual-independent.v1",
+  "checked_utc": "2026-10-12T10:00:59.305680Z",
+  "passed": true,
+  "application_source_commit": "34a3d53cb6e7245ff3cb431cca2cc8528a99e8cc",
+  "application_source_dirty": false,
+  "cli_sha256": "f68bd32bc286f0ecb8254795a1b31fa0e3408ce6809099975a15833676968553",
+  "build_audit_sha256": "8967311c50f47d4a3c2f415f6d523949f1a44549be0267b4a1fde1c273a79763",
+  "zip": {
+    "sha256": "01bf5ac8c3ab3de360aeb0ab5c1814c561e5af364653ef8d3277a996f55afe04",
+    "bytes": 6184337,
+    "members": 161,
+    "uncompressed_bytes": 38988231,
+    "outer_seals": 160,
+    "nested_seals": 160,
+    "path_and_actual_decompression_bounds_checked": true
+  },
+  "runs": [
+    {
+      "run_id": "10e9bce5-33ad-4b7b-b85f-ae5d6cae0128",
+      "alternative": "A",
+      "record_sha256": "50b9336ea0f83c6232909f961f33357d91aee0e7307334315d045461ddda5452",
+      "recipe_sha256": "5a814d3500aa451e4456597bde6bc7c5be67121ecb50052d648c7b4a59250587",
+      "shape": [
+        8760,
+        24,
+        4
+      ],
+      "scientific_status": "failed",
+      "current_input_relation": {
+        "metrics": "matches",
+        "physical": "matches"
+      }
+    },
+    {
+      "run_id": "2c436690-9ddc-4040-91f7-154b7b44b596",
+      "alternative": "B",
+      "record_sha256": "58fe0235610baa2931e9b23fcf529d59aa01f485974638f7c89c0bf756d708c0",
+      "recipe_sha256": "6a1984817a3382bce227bdc8c9cc60dddf389ab96448b2ec96778a6694d94bef",
+      "shape": [
+        8760,
+        24,
+        4
+      ],
+      "scientific_status": "failed",
+      "current_input_relation": {
+        "metrics": "matches",
+        "physical": "matches"
+      }
+    }
+  ],
+  "project_preservation": {
+    "files": 179,
+    "immutable_files": 178,
+    "immutable_bytes": 44920485,
+    "manifest_sha256": "e1ee2240635f134ef165858333767186d442abf29e0572395d97178aa05a63d1",
+    "before_inventory_sha256": "5f0442236ce1a64a7b4afb89ddde4e1433abfc3e3eee0dc4714e8e255aa045cd",
+    "old_evidence_identical": true,
+    "stale_export_sha256": "761e8668287ba503a6c2ee557ad23c5f59109923d2213bcca190f31a3d9799ca"
+  },
+  "qualification": {
+    "registry_sha256": "eb03209f4577511232c8b43b00ad55344cb971533875173b03d7a544a37bb2b7",
+    "full_engine_library_and_profile_binding_checked": true,
+    "failed_panels": 4,
+    "physical_and_retained_metric_current_panels": 4,
+    "report_sha256": "167110264d7527901c4843a14922cdf263c317caf2e1ddc70b197f6492239c61",
+    "offline_html_structure_only": true
+  },
+  "array_scope": {
+    "chunk_shapes_and_hashes_independently_checked": 106,
+    "records": 420480,
+    "numeric_values_not_reparsed": true,
+    "reused_hash_bound_array_audit_sha256": "a9dff80d89cbfca3be780fbad7a7a29143bfe7a242a48d06e898039a13cfc5fb",
+    "reused_maximum_rgb_to_lux_arithmetic_difference": 0.0
+  },
+  "summary_utc_correction": {
+    "original_sha256": "1655fadce623f68f1f8ad1956c4f6b0cbac4c03a399564efa37ff7143559f522",
+    "corrected_sha256": "d10c652f6b1975fd99a466cd0c570f2c77e666af5e1e16f0b83834fa5bd49936",
+    "lineage_sha256": "35b36d87ab4e156d7537688f81a729930a72a4534a61f1e671917f040b11acb4",
+    "exact_three_substitutions": true,
+    "exact_instants_including_seventh_fractional_digit_preserved": true
+  },
+  "audit_source_sha256": "6e499954a214deef24ec1e6648a3f97f9c7dabf60b162ac10eae6f57fcbed9d6",
+  "engine_executed": false,
+  "replay_executed": false,
+  "browser_or_native_ui_observed": false,
+  "scientific_qualification_accepted": false,
+  "release_complete": false
+}

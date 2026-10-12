@@ -1,0 +1,57 @@
+{
+  "schema_version": "greenlens.delivery-summary-utc-correction.v1",
+  "checked_utc": "2026-10-12T09:57:37.2154689+00:00",
+  "scope": "Timestamp representation correction in a new compact summary only. Raw bytes confirmed the prior summary had local +08:00 offsets in three UTC-named fields. Equivalent instants are now explicitly Z; all other bytes are unchanged.",
+  "original": {
+    "file": "delivery-summary.json",
+    "bytes": 6834,
+    "sha256": "1655fadce623f68f1f8ad1956c4f6b0cbac4c03a399564efa37ff7143559f522"
+  },
+  "corrected": {
+    "file": "delivery-summary-utc.json",
+    "bytes": 6819,
+    "sha256": "d10c652f6b1975fd99a466cd0c570f2c77e666af5e1e16f0b83834fa5bd49936"
+  },
+  "changes": [
+    {
+      "field": "checked_utc",
+      "original": "2026-10-12T17:52:31.415718+08:00",
+      "corrected": "2026-10-12T09:52:31.415718Z",
+      "equivalent_instant": true
+    },
+    {
+      "field": "export_process.started_utc",
+      "original": "2026-10-12T17:50:54.5353547+08:00",
+      "corrected": "2026-10-12T09:50:54.5353547Z",
+      "equivalent_instant": true
+    },
+    {
+      "field": "export_process.finished_utc",
+      "original": "2026-10-12T17:51:00.4879452+08:00",
+      "corrected": "2026-10-12T09:51:00.4879452Z",
+      "equivalent_instant": true
+    }
+  ],
+  "only_three_timestamp_substitutions": true,
+  "original_summary_preserved": true,
+  "unchanged_evidence": [
+    {
+      "file": "export-integrity-audit.json",
+      "bytes": 7156,
+      "sha256": "a9dff80d89cbfca3be780fbad7a7a29143bfe7a242a48d06e898039a13cfc5fb"
+    },
+    {
+      "file": "export-invocation.json",
+      "bytes": 867,
+      "sha256": "4ea3862dde56e58cb600fee2b008358c4de965ced03aee4d62d154b2b5c1b8d9"
+    },
+    {
+      "file": "current-annual-AB.zip",
+      "bytes": 6184337,
+      "sha256": "01bf5ac8c3ab3de360aeb0ab5c1814c561e5af364653ef8d3277a996f55afe04"
+    }
+  ],
+  "export_rerun": false,
+  "engine_executed": false,
+  "build_executed": false
+}

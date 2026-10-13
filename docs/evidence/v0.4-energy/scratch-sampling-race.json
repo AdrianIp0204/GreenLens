@@ -1,0 +1,330 @@
+{
+  "schema": "greenlens.windows-scratch-sampling-race.v1",
+  "checked_utc": "2026-10-13T11:30:49.204879+00:00",
+  "source_base_commit": "00cf37bd9925a881084077296af5d0142bf1eb61",
+  "repaired_source_worktree_dirty": true,
+  "scope": "Windows native-process scratch accounting only; no scientific input, algorithm, profile, resource cap or process-tree policy changed.",
+  "original_ci": {
+    "run_id": 38369237585,
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38369237585",
+    "source_commit": "00cf37bd9925a881084077296af5d0142bf1eb61",
+    "conclusion": "failure",
+    "failed_job": "build",
+    "failed_test": "tests::live_scratch_removal_is_not_a_failed_process_or_a_final_measurement_skip",
+    "diagnostic": "Sample active native scratch: Access is denied. (os error 5)",
+    "process_test_counts": {
+      "passed": 5,
+      "failed": 1,
+      "ignored_child_entrypoint": 1
+    },
+    "downstream_jobs": {
+      "energy": "skipped",
+      "static_compatibility": "skipped"
+    },
+    "retained_original_seals": {
+      "run.json": {
+        "bytes": 3755,
+        "sha256": "3e5003b791d3e0dcaedeb9c07a94103b338e026864f8395957d56f3cdf96bb73"
+      },
+      "failed.log": {
+        "bytes": 83657,
+        "sha256": "78d4f7f92beb626c2d6e73820768586ef200f9b2e6d3f8f2a5715a73e08559f2"
+      }
+    }
+  },
+  "diagnosis": {
+    "bounded_interpretation": "The CI traceback identifies active scratch sampling, not the individual Windows syscall. A second open after metadata is a deletion race; Rust metadata also has a Windows fallback deletion race.",
+    "microsoft_documentation": "https://learn.microsoft.com/en-us/windows/win32/api/winbase/nf-winbase-deletefile",
+    "rust_version": "1.99.0",
+    "rust_source": "https://github.com/rust-lang/rust/blob/1.99.0/library/std/src/sys/fs/windows.rs",
+    "documentation_summary": "DeleteFile may leave a file pending deletion, for which subsequent CreateFile returns AccessDenied. Rust path metadata first uses a handle, then can fall back to a directory query; if that fails, it returns the original error."
+  },
+  "repair": {
+    "source_member": "crates/greenlens-process/src/lib.rs",
+    "source_seal": {
+      "bytes": 30048,
+      "sha256": "437439f1de6c3e8764c8d872ecb065d3b831a4adba6c2c214ac0f810fccf116e"
+    },
+    "original_git_blob_sha256": "f78692ec961b4d1c15c9c2465774b6573cc62bbb889947db6d808445f9cb84d9",
+    "live_file_size": "Use fresh symlink_metadata.len after checking type and rejecting links/reparse points. Do not use cached DirEntry metadata or reopen the file solely for length.",
+    "live_metadata_recheck": "For Windows raw os5 only, re-query the same path exactly once without delay. Fresh successful metadata is validated; genuine NotFound follows the existing live removed-entry rule. Persistent denial and every other error fail.",
+    "final_measurement": "No retry or additional ignored errors; every retained file requires successful open and handle-based size after the Job is empty.",
+    "preserved": [
+      "root enumeration failure",
+      "inaccessible-directory errors",
+      "link/reparse rejection",
+      "5000-entry/16-depth bounds",
+      "integer overflow checks",
+      "memory/scratch/file/deadline caps",
+      "atomic Windows Job assignment and cancellation",
+      "strict successful process completion and final resource checks"
+    ],
+    "validate_and_execute_functions_unchanged": true
+  },
+  "preserved_local_initial_test_failure": {
+    "log_seal": {
+      "bytes": 1806,
+      "sha256": "bf29777fc839aeb07afd73e12bd11cbe1a3f008ae66866e71c0e4dff9fc7193f"
+    },
+    "passed": 9,
+    "failed": 1,
+    "ignored_child_entrypoint": 1,
+    "reason": "The initial new regression assumed DeleteFileW with a retained share-delete handle always makes later open return os5. This host returned os2, indicating immediate name unlink.",
+    "correction": "Allow exactly actual os2 immediate unlink or documented os5 delete-pending, verify the retained handle still has 31 bytes, and assert the corresponding live/final behavior.",
+    "actual_local_os5_delete_pending_observation_claimed": false
+  },
+  "focused_regression": {
+    "passed": 11,
+    "failed": 0,
+    "ignored_child_entrypoint": 1,
+    "test_seconds": 4.65,
+    "compile_seconds": 2.94,
+    "log_seal": {
+      "bytes": 1424,
+      "sha256": "a16528f849879e3c3fa226c9222227e07647458894c1fa6124de37dc3c2f39d1"
+    },
+    "assertions": [
+      "actual Win32 deletion with retained handle; immediate-unlink and delete-pending branches explicit",
+      "deterministic single-requery count for live os5 followed by success or NotFound",
+      "persistent os5 rejection, no retry for other errors, no final metadata retry",
+      "fresh 131088-byte size observed while writer remains open",
+      "native child holding 131088 bytes under a 4096-byte cap stopped by scratch/file failure before the 3-second test deadline and its 10-second return",
+      "real protected empty-DACL directory rejects both modes and is restored afterward",
+      "rapid unlink child completes with final 31-byte file retained",
+      "cancellation/descendant/nonzero-exit/Unicode/environment-removal/final-cap tests retained"
+    ],
+    "fixture_scope": "Synthetic filesystem/process-supervisor regressions; no Radiance, EnergyPlus or scientific result."
+  },
+  "strict_workspace_clippy": {
+    "passed": true,
+    "seconds": 22.93,
+    "log_seal": {
+      "bytes": 613,
+      "sha256": "aa7bacef8548d2db886f24cfe4d67de769c7c6e581150ad2dd70bae7c5ee0132"
+    }
+  },
+  "fixed_repeated_removal_regression": {
+    "test_name": "tests::live_scratch_removal_is_not_a_failed_process_or_a_final_measurement_skip",
+    "attempt_count": 20,
+    "passed": 20,
+    "failed": 0,
+    "test_executable": {
+      "name": "greenlens_process-9dbbc9ae6f1bfff9.exe",
+      "bytes": 1811968,
+      "sha256": "7de604e635885240872f5bbc7297d273b27d85ac48e2c22aaf77162840843f75"
+    },
+    "result_seal": {
+      "bytes": 1715,
+      "sha256": "9f2d4e637f584e3c46261774c0073551c5de0e5842dfb8ebeea861a462095d85"
+    },
+    "attempts": [
+      {
+        "elapsed_seconds": 1.3399706,
+        "attempt": 1,
+        "exit_code": 0,
+        "log": "removal-1.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "2e82211507247f9c8129e0e8db11893cb9127b39b591f07e52e9ce3315e7f6a9"
+        }
+      },
+      {
+        "elapsed_seconds": 1.2926449,
+        "attempt": 2,
+        "exit_code": 0,
+        "log": "removal-2.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "2c287b50951d71fc3b77a2887875120bea21e4c65b77336b14e970a72090df75"
+        }
+      },
+      {
+        "elapsed_seconds": 1.3223836,
+        "attempt": 3,
+        "exit_code": 0,
+        "log": "removal-3.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "5718671deae6d7b84a8a39a990e347734e3dc2e95f39264bb8c1fc6abad92241"
+        }
+      },
+      {
+        "elapsed_seconds": 1.4030285,
+        "attempt": 4,
+        "exit_code": 0,
+        "log": "removal-4.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "c6e9db1a666966fc531ba164da6a264222eb5b73b01acba84f0384ff071b5753"
+        }
+      },
+      {
+        "elapsed_seconds": 1.344564,
+        "attempt": 5,
+        "exit_code": 0,
+        "log": "removal-5.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "050ba6768534480d474198e44bad349ca9091b7aca82be1f13d3b00c3332eba7"
+        }
+      },
+      {
+        "elapsed_seconds": 1.4711472,
+        "attempt": 6,
+        "exit_code": 0,
+        "log": "removal-6.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "9dd8652e9d6a1baa173878c3f3a40ebdd8273a746e5754c26b3ea8a71964961f"
+        }
+      },
+      {
+        "elapsed_seconds": 1.1668926,
+        "attempt": 7,
+        "exit_code": 0,
+        "log": "removal-7.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "12217116d709263bc429fea36108919d39af6aec662eff41df65e120f297deb6"
+        }
+      },
+      {
+        "elapsed_seconds": 1.3842155,
+        "attempt": 8,
+        "exit_code": 0,
+        "log": "removal-8.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "050ba6768534480d474198e44bad349ca9091b7aca82be1f13d3b00c3332eba7"
+        }
+      },
+      {
+        "elapsed_seconds": 1.2549823,
+        "attempt": 9,
+        "exit_code": 0,
+        "log": "removal-9.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "cbe28cf1d2d02c70dc6162e777a6879344c5465546328c69280cbfa27598643d"
+        }
+      },
+      {
+        "elapsed_seconds": 1.2242611,
+        "attempt": 10,
+        "exit_code": 0,
+        "log": "removal-10.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "a7505804d0af0b25975dca713ff59f37564483c14c5a98ec3e0f2af4658ba3de"
+        }
+      },
+      {
+        "elapsed_seconds": 1.5634465,
+        "attempt": 11,
+        "exit_code": 0,
+        "log": "removal-11.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "884de7c706c473ba2c0b565324e5fc178a387fa4f3c74e44a363cd90fa463b98"
+        }
+      },
+      {
+        "elapsed_seconds": 1.2246604,
+        "attempt": 12,
+        "exit_code": 0,
+        "log": "removal-12.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "6f7adda3cc252bf935d2674ad31ad084aff11d9ae8c5a14d3370b28571283513"
+        }
+      },
+      {
+        "elapsed_seconds": 1.2434191,
+        "attempt": 13,
+        "exit_code": 0,
+        "log": "removal-13.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "f058d8ad034eb974e0045d6c91ff0d3020dc426edbc86b7632574dd2d32a7630"
+        }
+      },
+      {
+        "elapsed_seconds": 1.3301668,
+        "attempt": 14,
+        "exit_code": 0,
+        "log": "removal-14.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "3ec192fbdcb2decb9568fbcb5b617fee0739de775e37d1fd4c02d5760028e34f"
+        }
+      },
+      {
+        "elapsed_seconds": 1.3282817,
+        "attempt": 15,
+        "exit_code": 0,
+        "log": "removal-15.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "58e67b55cd2fbdbe663ad57e68bb1f2677df984aef3268cfbf99cd737a55e0ff"
+        }
+      },
+      {
+        "elapsed_seconds": 1.2417875,
+        "attempt": 16,
+        "exit_code": 0,
+        "log": "removal-16.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "ac08ca97af8c3473437cf8bbeb0003f93d34d0eb2b69e8388f52840b2e490182"
+        }
+      },
+      {
+        "elapsed_seconds": 1.2620472,
+        "attempt": 17,
+        "exit_code": 0,
+        "log": "removal-17.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "6f7adda3cc252bf935d2674ad31ad084aff11d9ae8c5a14d3370b28571283513"
+        }
+      },
+      {
+        "elapsed_seconds": 1.1301672,
+        "attempt": 18,
+        "exit_code": 0,
+        "log": "removal-18.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "ca8c7440f4d6659cb5a16e62a7c53dec210f7389bfd9576c0d5483e0f3dfbe28"
+        }
+      },
+      {
+        "elapsed_seconds": 1.0509325,
+        "attempt": 19,
+        "exit_code": 0,
+        "log": "removal-19.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "3006637b1e31c00d5753e902166ff208a73d5f133555fba737e107ba9fcbbca1"
+        }
+      },
+      {
+        "elapsed_seconds": 1.1684429,
+        "attempt": 20,
+        "exit_code": 0,
+        "log": "removal-20.log",
+        "log_seal": {
+          "bytes": 211,
+          "sha256": "f058d8ad034eb974e0045d6c91ff0d3020dc426edbc86b7632574dd2d32a7630"
+        }
+      }
+    ],
+    "interpretation": "Twenty fixed executions of the repaired original regression, not proof that every filesystem interleaving is covered."
+  },
+  "limitations": [
+    "Original CI remains failed; no replacement CI success claimed.",
+    "Frozen source 00cf37b CLI/NSIS packages predate this repair.",
+    "This record establishes no installed application, engine simulation, energy qualification, replay or release completion.",
+    "Original CI log and first local test failure remain preserved."
+  ]
+}

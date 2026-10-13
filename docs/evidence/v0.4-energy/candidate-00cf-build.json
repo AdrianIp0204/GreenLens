@@ -1,0 +1,36 @@
+{
+  "started_utc": "2026-10-13T08:26:39.6272265Z",
+  "ci": {
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38369237585",
+    "run_id": 38369237585,
+    "reason": "Native process live scratch removal regression observed Access is denied during concurrent temporary file deletion; no scientific stage bypassed",
+    "conclusion": "failure"
+  },
+  "source_commit": "00cf37bd9925a881084077296af5d0142bf1eb61",
+  "source_dirty": false,
+  "cli_seconds": 221.9995774,
+  "completed_utc": "2026-10-13T08:42:49.3684759Z",
+  "frontend_tests": 152,
+  "schema_version": "greenlens.energy-candidate-build.v1",
+  "artifacts": {
+    "GreenLens-CLI-0.4.0-windows-x64.zip": {
+      "sha256": "7213319e5ea98868d1d05b05af171072d2f5dbaf5101b9909c0e5318d31ce6fc",
+      "bytes": 9729921
+    },
+    "greenlens-desktop.exe": {
+      "sha256": "1252a746884432448bc02b8162cbee1258cc20a3c74771d5263790c9d9267de6",
+      "bytes": 18897920
+    },
+    "greenlens.exe": {
+      "sha256": "87c3b369a0c91185ec50a8a6e3dac4a5034e340cf7e6276c5a5adc0f2ae4892f",
+      "bytes": 8888832
+    },
+    "GreenLens_0.4.0_x64-setup.exe": {
+      "sha256": "0325b69ccf3dd7c95c985575930ef339ad08f2c703af110c39b1af2b4be5ccf2",
+      "bytes": 4466552
+    }
+  },
+  "installer_signed": false,
+  "installed_verification": "unverified; automation kernel initialization blocked",
+  "desktop_seconds": 729.087229
+}

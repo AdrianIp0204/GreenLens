@@ -99,7 +99,10 @@ fn scratch_sizes_impl(root: &Path, allow_removed_entries: bool) -> Result<(u64, 
             *count += 1;
             ensure!(*count <= 5000, "Native scratch entry count exceeds 5000");
             let measured = (|| -> Result<()> {
-                let meta = fs::symlink_metadata(entry.path())?;
+                let meta = query_scratch_metadata(
+                    || fs::symlink_metadata(entry.path()),
+                    allow_removed_entries,
+                )?;
                 ensure!(
                     !meta.file_type().is_symlink(),
                     "Native scratch cannot contain links"
@@ -123,7 +126,17 @@ fn scratch_sizes_impl(root: &Path, allow_removed_entries: bool) -> Result<(u64, 
                     )?;
                 } else {
                     ensure!(meta.is_file(), "Unsupported native scratch file");
-                    let n = File::open(entry.path())?.metadata()?.len();
+                    // Use the fresh path metadata already validated above during
+                    // live sampling, not DirEntry's cached enumeration metadata.
+                    // A second open can race DeleteFile on Windows and return
+                    // AccessDenied for a file that is pending deletion. Do not
+                    // suppress that error generally: finalized measurement still
+                    // requires a successful open and handle-based size.
+                    let n = if allow_removed_entries {
+                        meta.len()
+                    } else {
+                        File::open(entry.path())?.metadata()?.len()
+                    };
                     *total = total.checked_add(n).context("Scratch size overflow")?;
                     *max = (*max).max(n);
                 }
@@ -154,6 +167,19 @@ fn accept_scratch_entry(result: Result<()>, allow_removed_entries: bool) -> Resu
         {
             Ok(())
         }
+        other => other,
+    }
+}
+fn query_scratch_metadata(
+    mut query: impl FnMut() -> std::io::Result<fs::Metadata>,
+    live: bool,
+) -> std::io::Result<fs::Metadata> {
+    match query() {
+        // On Windows a delete-pending metadata query can return AccessDenied
+        // even when the file disappears before std's enumeration fallback.
+        // Re-query this exact path once without delay. Only new metadata or a
+        // genuine NotFound can resolve that race; persistent denial still fails.
+        Err(error) if cfg!(windows) && live && error.raw_os_error() == Some(5) => query(),
         other => other,
     }
 }
@@ -359,6 +385,12 @@ mod tests {
             file.set_len(100_000).unwrap();
             thread::sleep(Duration::from_secs(10));
         }
+        if mode == "open-growing-file" {
+            let mut file = File::create("growing.bin").unwrap();
+            file.write_all(&vec![0; 131_088]).unwrap();
+            file.flush().unwrap();
+            thread::sleep(Duration::from_secs(10));
+        }
         if mode == "fast-oversize" {
             fs::write("large.bin", vec![0; 100_000]).unwrap();
         }
@@ -410,6 +442,242 @@ mod tests {
         assert!(outcome.process_tree_empty);
         assert!(!file.exists());
         assert!(scratch_sizes(tmp.path()).unwrap().0 >= 31);
+    }
+    #[test]
+    fn win32_deleted_open_file_is_measured_or_absent_but_final_open_remains_strict() {
+        use std::os::windows::ffi::OsStrExt;
+        use windows_sys::Win32::Storage::FileSystem::DeleteFileW;
+
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("delete-pending.bin");
+        fs::write(&path, [0; 31]).unwrap();
+        // Rust's remove_file may use POSIX deletion. Use the Win32 operation
+        // with an outstanding share-delete handle. Windows/filesystem versions
+        // may leave a delete-pending name or unlink it immediately; both states
+        // must be handled without treating persistent denial as disappearance.
+        let held = File::open(&path).unwrap();
+        let wide: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
+        assert_ne!(unsafe { DeleteFileW(wide.as_ptr()) }, 0);
+        assert_eq!(held.metadata().unwrap().len(), 31);
+        match File::open(&path).unwrap_err().raw_os_error() {
+            Some(5) => {
+                assert_eq!(fs::symlink_metadata(&path).unwrap().len(), 31);
+                assert_eq!(scratch_sizes_impl(tmp.path(), true).unwrap(), (31, 31));
+                let final_error = scratch_sizes(tmp.path()).unwrap_err();
+                assert_eq!(
+                    final_error
+                        .downcast_ref::<std::io::Error>()
+                        .unwrap()
+                        .raw_os_error(),
+                    Some(5)
+                );
+            }
+            Some(2) => {
+                assert_eq!(
+                    fs::symlink_metadata(&path).unwrap_err().kind(),
+                    std::io::ErrorKind::NotFound
+                );
+                assert_eq!(scratch_sizes_impl(tmp.path(), true).unwrap(), (0, 0));
+                assert_eq!(scratch_sizes(tmp.path()).unwrap(), (0, 0));
+            }
+            other => panic!("Unexpected deleted-open-file error: {other:?}"),
+        }
+        drop(held);
+        assert_eq!(scratch_sizes(tmp.path()).unwrap(), (0, 0));
+    }
+    #[test]
+    fn access_denied_metadata_gets_only_one_live_same_path_recheck() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("file.bin");
+        fs::write(&path, [0; 31]).unwrap();
+        let mut calls = 0;
+        let metadata = query_scratch_metadata(
+            || {
+                calls += 1;
+                if calls == 1 {
+                    Err(std::io::Error::from_raw_os_error(5))
+                } else {
+                    fs::symlink_metadata(&path)
+                }
+            },
+            true,
+        )
+        .unwrap();
+        assert_eq!(calls, 2);
+        assert_eq!(metadata.len(), 31);
+        fs::remove_file(&path).unwrap();
+        for live in [true, false] {
+            let mut calls = 0;
+            let error = query_scratch_metadata(
+                || {
+                    calls += 1;
+                    if calls == 1 {
+                        Err(std::io::Error::from_raw_os_error(5))
+                    } else {
+                        fs::symlink_metadata(&path)
+                    }
+                },
+                live,
+            )
+            .unwrap_err();
+            assert_eq!(calls, if live { 2 } else { 1 });
+            assert_eq!(error.raw_os_error(), Some(if live { 2 } else { 5 }));
+        }
+        let mut calls = 0;
+        let error = query_scratch_metadata(
+            || {
+                calls += 1;
+                Err(std::io::Error::from_raw_os_error(5))
+            },
+            true,
+        )
+        .unwrap_err();
+        assert_eq!(calls, 2);
+        assert_eq!(error.raw_os_error(), Some(5));
+        // Other failures do not cause a retry, and no predicate is weakened.
+        let mut calls = 0;
+        let error = query_scratch_metadata(
+            || {
+                calls += 1;
+                Err(std::io::Error::from_raw_os_error(32))
+            },
+            true,
+        )
+        .unwrap_err();
+        assert_eq!(calls, 1);
+        assert_eq!(error.raw_os_error(), Some(32));
+    }
+    #[test]
+    fn live_scratch_uses_fresh_size_while_writer_is_still_open() {
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("growing.bin");
+        let mut held = File::create(&path).unwrap();
+        assert_eq!(scratch_sizes_impl(tmp.path(), true).unwrap(), (0, 0));
+        held.write_all(&vec![0; 131_088]).unwrap();
+        held.flush().unwrap();
+        // No writer close or directory enumeration cache is needed to observe
+        // the live size. The end-to-end live budget test uses the same sampler.
+        assert_eq!(
+            scratch_sizes_impl(tmp.path(), true).unwrap(),
+            (131_088, 131_088)
+        );
+        assert_eq!(scratch_sizes(tmp.path()).unwrap(), (131_088, 131_088));
+    }
+    #[test]
+    fn open_writer_exceeding_file_cap_is_stopped_before_it_closes() {
+        let tmp = tempfile::tempdir().unwrap();
+        let mut r = request(tmp.path(), "open-growing-file");
+        r.limits.max_file_bytes = 4096;
+        r.limits.timeout = Duration::from_secs(3);
+        assert!(execute(&r, &AtomicBool::new(false)).is_err());
+        let record = retained(tmp.path());
+        assert_eq!(record.state, "failed");
+        assert!(record.failure.unwrap().contains("scratch/file budget"));
+        assert!(record.peak_observed_scratch_bytes >= 131_088);
+        assert!(record.elapsed_ms < 3000);
+        assert!(record.process_tree_empty);
+    }
+    #[test]
+    fn inaccessible_directory_is_not_a_removed_live_entry() {
+        use std::os::windows::ffi::OsStrExt;
+        use windows_sys::Win32::Security::{
+            GetFileSecurityW, InitializeAcl, InitializeSecurityDescriptor, SetFileSecurityW,
+            SetSecurityDescriptorDacl, ACL, ACL_REVISION, DACL_SECURITY_INFORMATION,
+            PROTECTED_DACL_SECURITY_INFORMATION, SECURITY_DESCRIPTOR,
+        };
+
+        let tmp = tempfile::tempdir().unwrap();
+        let path = tmp.path().join("inaccessible");
+        fs::create_dir(&path).unwrap();
+        fs::write(path.join("retained.bin"), [0; 31]).unwrap();
+        let wide: Vec<u16> = path.as_os_str().encode_wide().chain(Some(0)).collect();
+        let mut needed = 0;
+        unsafe {
+            GetFileSecurityW(
+                wide.as_ptr(),
+                DACL_SECURITY_INFORMATION,
+                std::ptr::null_mut(),
+                0,
+                &mut needed,
+            );
+        }
+        assert!(needed > 0);
+        // Save this fresh test directory's DACL and restore it even if an
+        // assertion unwinds. No production path or inherited ACL is modified.
+        struct RestoreAcl(Vec<u16>, Vec<u64>);
+        impl Drop for RestoreAcl {
+            fn drop(&mut self) {
+                unsafe {
+                    SetFileSecurityW(
+                        self.0.as_ptr(),
+                        DACL_SECURITY_INFORMATION,
+                        self.1.as_mut_ptr().cast(),
+                    );
+                }
+            }
+        }
+        let mut restore = RestoreAcl(wide, vec![0; (needed as usize).div_ceil(8)]);
+        assert_ne!(
+            unsafe {
+                GetFileSecurityW(
+                    restore.0.as_ptr(),
+                    DACL_SECURITY_INFORMATION,
+                    restore.1.as_mut_ptr().cast(),
+                    needed,
+                    &mut needed,
+                )
+            },
+            0
+        );
+        let mut descriptor: SECURITY_DESCRIPTOR = unsafe { std::mem::zeroed() };
+        let mut acl: ACL = unsafe { std::mem::zeroed() };
+        assert_ne!(
+            unsafe {
+                InitializeSecurityDescriptor(
+                    (&mut descriptor as *mut SECURITY_DESCRIPTOR).cast(),
+                    1,
+                )
+            },
+            0
+        );
+        assert_ne!(
+            unsafe { InitializeAcl(&mut acl, std::mem::size_of::<ACL>() as u32, ACL_REVISION) },
+            0
+        );
+        assert_ne!(
+            unsafe {
+                SetSecurityDescriptorDacl(
+                    (&mut descriptor as *mut SECURITY_DESCRIPTOR).cast(),
+                    1,
+                    &acl,
+                    0,
+                )
+            },
+            0
+        );
+        assert_ne!(
+            unsafe {
+                SetFileSecurityW(
+                    restore.0.as_ptr(),
+                    DACL_SECURITY_INFORMATION | PROTECTED_DACL_SECURITY_INFORMATION,
+                    (&mut descriptor as *mut SECURITY_DESCRIPTOR).cast(),
+                )
+            },
+            0
+        );
+        assert_eq!(fs::read_dir(&path).unwrap_err().raw_os_error(), Some(5));
+        for live in [true, false] {
+            let error = scratch_sizes_impl(tmp.path(), live).unwrap_err();
+            assert_eq!(
+                error
+                    .downcast_ref::<std::io::Error>()
+                    .unwrap()
+                    .raw_os_error(),
+                Some(5)
+            );
+        }
+        drop(restore);
+        assert_eq!(scratch_sizes(tmp.path()).unwrap(), (31, 31));
     }
     #[test]
     fn native_spaces_unicode_success_and_nonzero_exit_are_distinct() {

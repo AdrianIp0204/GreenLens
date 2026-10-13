@@ -1,0 +1,972 @@
+{
+  "schema_version": "greenlens.energy-repaired-reports-independent-audit.v1",
+  "checked_utc": "2026-10-13T08:49:16.457751Z",
+  "source_commit": "00cf37bd9925a881084077296af5d0142bf1eb61",
+  "source_dirty": false,
+  "cli_sha256": "87c3b369a0c91185ec50a8a6e3dac4a5034e340cf7e6276c5a5adc0f2ae4892f",
+  "cli_bytes": 8888832,
+  "build_pointer_sha256": "fec2108513606ad2c9bf00eff9279cea521d2ab6a188c781d1757658978b940e",
+  "template_sha256": "7fe14ea1a40b40ed0c99b987d729ece7dc19d312598c9e395d65cbd8b31d7012",
+  "qualification_registry_sha256": "9517a1edf556c851f8d220a34364d1b5a1b5b419197d025b03b07ca717ccc401",
+  "qualification_registry_entries": 10,
+  "scope": "Independent presentation, numerical-cell arithmetic, input identity and cold report integrity audit of existing four/eight-zone simulations. No EnergyPlus run, replay, build or new scientific qualification performed by this auditor.",
+  "cases": {
+    "four": {
+      "zone_count_per_case": 4,
+      "title": "Synthetic four-zone energy building — building-energy assessment",
+      "source_artifact_manifest_sha256": "6a4402044c851deeb82d3bffba887368756afb6f7edfef0d35cd289690b1d2b9",
+      "dataset_file_sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302",
+      "dataset_rust_canonical_sha256": "73e82ce76c2ed1f04b5c2ede8f1bd24edb529acb0277efa8cf766ca190dd1c39",
+      "cases": {
+        "baseline": {
+          "run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+          "retained_results_file_sha256": "9f5f1f5aed965ea76c5af33e4053d111450cb4fbb9fd0392a35f08781f004fb4",
+          "rust_canonical_record_sha256": "fddc5fd86eb85a681193513ecee5753ca4bebb94c24aa219aa2df61721faea64",
+          "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+          "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+          "processing_sha256": "a8cb978a0361686fa1bafa74f859b6b3ecdc8b1f586df663d45cd72ec4dbf570",
+          "scientific": {
+            "status": "limited_qualified",
+            "method": {
+              "method_id": "greenlens.energyplus.explicit-dx/1",
+              "adapter_version": "1",
+              "engine_version": "26.2.0",
+              "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+              "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+              "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+              "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+              "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+            },
+            "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+            "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior.",
+            "tested_scope": "Only the four-zone/two-storey revision-2 synthetic non-climatic A/B inputs with explicit zero thermostat cutout, complete pinned engine/recipe and six/twelve zone timesteps per hour. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed.",
+            "applicable_physical_input_sha256": [
+              "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486"
+            ],
+            "evidence_ids": [
+              "greenlens.energy-production-audit.v1:sha256:b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+              "greenlens.energy-revision2-independent-audit:sha256:d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+              "greenlens.energy-direct-native-parity-audit.v1:sha256:18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+              "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+              "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+            ]
+          },
+          "snapshot_and_assessment_exact": true
+        },
+        "proposed": {
+          "run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+          "retained_results_file_sha256": "8c2e7e42240bf2c29bf7d9812e83c6958f234def3bf6326e85c91219da635f5d",
+          "rust_canonical_record_sha256": "aebc18d1de2b88e906ea1ca82b1d0930a3310c593991eea9876dbcff38aa653c",
+          "physical_input_sha256": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+          "model_input_sha256": "b9f1b4e019696419c124c5a2751f475f19c7bba0c1df28d3934a123187227f97",
+          "processing_sha256": "826c5417b295cb1aafba5c9868203d73dc71ab394735745f3ed30ec06fc0f145",
+          "scientific": {
+            "status": "limited_qualified",
+            "method": {
+              "method_id": "greenlens.energyplus.explicit-dx/1",
+              "adapter_version": "1",
+              "engine_version": "26.2.0",
+              "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+              "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+              "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+              "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+              "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+            },
+            "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+            "reason": "The exact revision-3 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0876551% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0373689% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). The declared proposed supply-fan efficiency is 0.6, with four 50 W design fans; all other revision-2 inputs are unchanged. Direct native A/B CSV output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior.",
+            "tested_scope": "Only this exact revision-3 four-zone/two-storey proposed B input with synthetic non-climatic weather, zero thermostat cutout, supply-fan total efficiency 0.6 and the complete pinned engine/recipe/numerical identity. Its fixed annual pair retains unchanged revision-2 A. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed; existing revision-2 entries remain unchanged.",
+            "applicable_physical_input_sha256": [
+              "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a"
+            ],
+            "evidence_ids": [
+              "greenlens.energy-production-audit.v1:sha256:e6b9323d1b8e8aceb1af416dea34370e839ccd651b19ac56c97b42585eb42df3",
+              "greenlens.energy-revision3-independent.v1:sha256:7322e79691b19260d2215f421d63fdec2729625393b9fcba61ef480d75f7ccf1",
+              "greenlens.energy-direct-native-parity-audit.v1:sha256:9e604d3944c58dc8d567ca3d24e9f878ed2838f06e022f645a855f790d75f444",
+              "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+              "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+            ]
+          },
+          "snapshot_and_assessment_exact": true
+        }
+      },
+      "content_audit_sha256": "7a40267708a15812c1d79b1dde7801b00ed8abba18e7fdf45e6ab31331799f95",
+      "arithmetic_audit_sha256": "01c9a0f58162e07e5a72545db2ce36f4260bfb4bb96e879e08ace9ef54cc15ae",
+      "documents": {
+        "assessment": {
+          "pages": 25,
+          "pdf_sha256": "c2302210362ee5818ae297a72fa9751601e689b38d2a4fb7de8b05fa719e67be",
+          "bytes": 688803,
+          "document_sha256": "43c801cc2fdc5d6d31e5952199aa06ea8ae56e4d69ec4db5760edbe333758b64",
+          "checked_text_items": 1804,
+          "embedded_fonts": [
+            "/HFQDIO+NotoSansCJKtc-Bold-Identity-H",
+            "/ZDONRO+NotoSansCJKtc-Regular-Identity-H"
+          ]
+        },
+        "input-appendix": {
+          "pages": 32,
+          "pdf_sha256": "fa8b107c631dd36b2d016a00aef9d778d5ed155608860f8bab04f8cf971142fc",
+          "bytes": 807094,
+          "document_sha256": "4ff08327af83aa1e84f6f8b5c7f80c176bd24852f9e5e5f0812066fc5fa302f2",
+          "checked_text_items": 2266,
+          "embedded_fonts": [
+            "/CMIXDO+NotoSansCJKtc-Regular-Identity-H",
+            "/RDINAS+NotoSansCJKtc-Bold-Identity-H"
+          ]
+        },
+        "performance": {
+          "pages": 5,
+          "pdf_sha256": "de9569f8e12cac1da10efb88e7607336e02edae9adf6539d0e3c38fee420eae4",
+          "bytes": 135996,
+          "document_sha256": "56c0e6795bbe635a8cd16df2789c7b21b4052a56006fb4df573064fc96bb8812",
+          "checked_text_items": 252,
+          "embedded_fonts": [
+            "/EPYZLC+NotoSansCJKtc-Bold-Identity-H",
+            "/UOFFTJ+NotoSansCJKtc-Regular-Identity-H"
+          ]
+        }
+      },
+      "typed_numeric_cells": 318,
+      "maximum_arithmetic_difference": 0,
+      "lossless_input_rows": 1064,
+      "declared_text_items": 4322,
+      "all_declared_text_in_pdf_html": true,
+      "offline_html_inline_svg": true,
+      "embedded_fonts_and_no_pdf_active_content": true,
+      "native_typst_processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T08:31:46.013803500+00:00",
+          "finished_utc": "2026-10-13T08:31:47.269724400+00:00",
+          "elapsed_ms": 1324,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 125210624,
+          "peak_observed_scratch_bytes": 34236024,
+          "samples": 23,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T08:31:47.946323500+00:00",
+          "finished_utc": "2026-10-13T08:31:49.415695400+00:00",
+          "elapsed_ms": 1534,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 134856704,
+          "peak_observed_scratch_bytes": 34380036,
+          "samples": 27,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T08:31:49.960760+00:00",
+          "finished_utc": "2026-10-13T08:31:50.491187300+00:00",
+          "elapsed_ms": 596,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 84729856,
+          "peak_observed_scratch_bytes": 33610144,
+          "samples": 10,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "--ppi",
+            "96",
+            "report.typ",
+            "page-{0p}-of-{t}.png"
+          ],
+          "started_utc": "2026-10-13T08:31:51.066234100+00:00",
+          "finished_utc": "2026-10-13T08:31:52.022403+00:00",
+          "elapsed_ms": 1024,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 92033024,
+          "peak_observed_scratch_bytes": 34606137,
+          "samples": 17,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "artifact_seals": [
+        {
+          "path": "energy-report.json",
+          "bytes": 209829,
+          "sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302"
+        },
+        {
+          "path": "performance.json",
+          "bytes": 62585,
+          "sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80"
+        },
+        {
+          "path": "performance.csv",
+          "bytes": 30203,
+          "sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be"
+        },
+        {
+          "path": "inputs.csv",
+          "bytes": 69253,
+          "sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638"
+        },
+        {
+          "path": "baseline-model.svg",
+          "bytes": 3723,
+          "sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec"
+        },
+        {
+          "path": "proposed-model.svg",
+          "bytes": 4393,
+          "sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644"
+        },
+        {
+          "path": "annual.svg",
+          "bytes": 1880,
+          "sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86"
+        },
+        {
+          "path": "monthly.svg",
+          "bytes": 3248,
+          "sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e"
+        },
+        {
+          "path": "assessment.html",
+          "bytes": 88996,
+          "sha256": "008a07b93fe30c382eaf8ecf9296befc4d6461db486aec0916f56ff3aad82b3e"
+        },
+        {
+          "path": "input-appendix.html",
+          "bytes": 102414,
+          "sha256": "26ed07911e5a29d52d3f9bf70ef76e0710a610c8d7492d97ea4651d51a1b0865"
+        },
+        {
+          "path": "performance.html",
+          "bytes": 18421,
+          "sha256": "ded8e44cc1d8ffdd8a5fcd2488e3a4de97ed415eec8b3312d6a3b37736cacf41"
+        },
+        {
+          "path": "assessment.pdf",
+          "bytes": 688803,
+          "sha256": "c2302210362ee5818ae297a72fa9751601e689b38d2a4fb7de8b05fa719e67be"
+        },
+        {
+          "path": "input-appendix.pdf",
+          "bytes": 807094,
+          "sha256": "fa8b107c631dd36b2d016a00aef9d778d5ed155608860f8bab04f8cf971142fc"
+        },
+        {
+          "path": "performance.pdf",
+          "bytes": 135996,
+          "sha256": "de9569f8e12cac1da10efb88e7607336e02edae9adf6539d0e3c38fee420eae4"
+        },
+        {
+          "path": "performance-page-001.png",
+          "bytes": 110302,
+          "sha256": "eccef13c6a4f60e11d1f992bfbb1eaf3f795762e8f5b65bc7554956b4038132d"
+        },
+        {
+          "path": "performance-page-002.png",
+          "bytes": 295183,
+          "sha256": "63197924c29a955896227e72247afc6ccb90abf086bb482dad01267ce87c2654"
+        },
+        {
+          "path": "performance-page-003.png",
+          "bytes": 342152,
+          "sha256": "7cf662e4740e21e7c2c397a2745cded442e36dce0394611e59826addf8a60f2f"
+        },
+        {
+          "path": "performance-page-004.png",
+          "bytes": 215841,
+          "sha256": "5a29f9d37446fce59630efd2e1f3e9e6a78d0131d549ba24dad428a80d4acf16"
+        },
+        {
+          "path": "performance-page-005.png",
+          "bytes": 168511,
+          "sha256": "93c1bf42ac678542bb321e809e13a8446ecd8a495919ba6990fc1c391790659f"
+        }
+      ],
+      "delivered_pngs": [
+        {
+          "path": "performance-page-001.png",
+          "sha256": "eccef13c6a4f60e11d1f992bfbb1eaf3f795762e8f5b65bc7554956b4038132d",
+          "bytes": 110302,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-002.png",
+          "sha256": "63197924c29a955896227e72247afc6ccb90abf086bb482dad01267ce87c2654",
+          "bytes": 295183,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-003.png",
+          "sha256": "7cf662e4740e21e7c2c397a2745cded442e36dce0394611e59826addf8a60f2f",
+          "bytes": 342152,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-004.png",
+          "sha256": "5a29f9d37446fce59630efd2e1f3e9e6a78d0131d549ba24dad428a80d4acf16",
+          "bytes": 215841,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-005.png",
+          "sha256": "93c1bf42ac678542bb321e809e13a8446ecd8a495919ba6990fc1c391790659f",
+          "bytes": 168511,
+          "dimensions": [
+            794,
+            1123
+          ]
+        }
+      ],
+      "all_pdf_and_png_pages_visually_reviewed": true,
+      "cold_integrity": {
+        "wrapper_sha256": "b4bbc8ecd57fa93273e8994db3d633dc4e74b7debf9b6cc0df29baca1554aaf7",
+        "freshly_rehashed_retained_files": 149,
+        "all_unchanged": true,
+        "original_project_and_scratch_unavailable_and_engine_discovery_failed_as_recorded_by_wrapper": true,
+        "shared_package_inspection_sha256": "4ab685608617ac3b1319b5ffe811111b56ce7326de2eb5e075a2cf5e7ae5f846",
+        "export_zip_sha256": "ebd506f0e13405b28330bedbaf1c3ee055093d29a8ab32721aa1992367786c0c",
+        "export_zip_bytes": 8406108,
+        "zip_scope": "Outer ZIP hash and retained shared-reader inspection bound here; this audit does not repeat full ZIP decompression."
+      },
+      "presentation_delta": {
+        "schema_version": "greenlens.energy-report-presentation-repair-delta.v1",
+        "checked_utc": "2026-10-13T08:36:14.759201Z",
+        "zone_count_per_case": 4,
+        "old_dataset_sha256": "3b4b7f4ce713ef12e2af46fc03cc6d64586d72e1e814df8f667c0c3c55e54cdf",
+        "new_dataset_sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302",
+        "exact_allowed_dto_deltas": [
+          "limitations[0]"
+        ],
+        "numerical_csv_json_and_charts_byte_identical": true,
+        "keyed_rows_per_document": {
+          "baseline": 0,
+          "proposed": 4
+        },
+        "geometry": {
+          "baseline": {
+            "all_shape_attributes_exact": true,
+            "old_svg_sha256": "5f74d823f4c020954571e6a762865a1fd7424bb91c954bc72d049dbf0c7a20b6",
+            "new_svg_sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec"
+          },
+          "proposed": {
+            "all_shape_attributes_exact": true,
+            "old_svg_sha256": "0e971255df8312c66f23dfb66ec91ccc039d329e3171f41bb364179ecac28cf4",
+            "new_svg_sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644"
+          }
+        },
+        "all_performed_delta_checks_passed": true,
+        "scientific_qualification_changed": false,
+        "visual_review_completed_by_this_script": false
+      },
+      "delta_audit_sha256": "4e019e0404ca9f7629a8b86863bb73baf2ea98c04c8f4b7cf8f95837c19ea85b",
+      "prior_audit_sha256": "d09e1d97e6b64857e01a576fca316ce5f34c7082c1b65f7a96e24af0cbfac6db",
+      "prior_preserved": true,
+      "visual_findings": [
+        "All 62 PDF pages and five delivered performance PNGs inspected; no clipping, overlap or missing glyphs observed.",
+        "Four keyed overhang rows are legible on assessment page 14 and appendix page 18.",
+        "Dense technical tables and substantial unused space at the last assessment page remain; no content is omitted."
+      ]
+    },
+    "eight": {
+      "zone_count_per_case": 8,
+      "title": "Synthetic two-wing eight-zone capacity fixture — building-energy assessment",
+      "source_artifact_manifest_sha256": "216dd4f2600dc58cd94c5cec1fbc1866c53a2102841bd26951fa5b31878d59a9",
+      "dataset_file_sha256": "3fea942b35b58a2ae85ba3ea87452bdf91ca15531f0e90459a4966f4f5211b7d",
+      "dataset_rust_canonical_sha256": "32a131c19951f50d1df69160bf1efa6f4fb8333421cea11e15b8e9687bbc10af",
+      "cases": {
+        "baseline": {
+          "run_id": "0d20fab5-4903-48e3-9e04-8a9ce8a0d5c5",
+          "retained_results_file_sha256": "6fec51eee81aa1153ddacdcd0e98f8996dc6a9c27535326c7844709df2ec13ed",
+          "rust_canonical_record_sha256": "9e417cfe5387eeb1ad53d3a87cf72de09024d49f4ce794f1459bcfefd6d2a769",
+          "physical_input_sha256": "d0b6e7987d8cefd5e0ca8d9c396c7f056d7f2126d2ffadff1f05101bdc600e75",
+          "model_input_sha256": "78e1030129e6b56fcd6f0e5974eb524aca04fa135ec230006150881313b08cf0",
+          "processing_sha256": "28897a3873afaee7d6cc35a2caf66c1f60237d3ff606370d12925bebec41884d",
+          "scientific": {
+            "status": "unassessed",
+            "method": {
+              "method_id": "greenlens.energyplus.explicit-dx/1",
+              "adapter_version": "1",
+              "engine_version": "26.2.0",
+              "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+              "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+              "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+              "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+              "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+            },
+            "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+            "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+            "tested_scope": "No general building-accuracy, equipment-calibration or certification claim.",
+            "applicable_physical_input_sha256": [],
+            "evidence_ids": []
+          },
+          "snapshot_and_assessment_exact": true
+        },
+        "proposed": {
+          "run_id": "48f745af-e409-45e3-9990-b032da6b86b6",
+          "retained_results_file_sha256": "d900adf0615f028c1528f5699d35b843572db6ace689424e7fe1028331e83ec6",
+          "rust_canonical_record_sha256": "709094380f74453c4ee75cc79fe1867cc7d81ba8caf1a8037f44677db5b9a02e",
+          "physical_input_sha256": "2582b2125983c902b8552c9bade90abf01b1c807de6fe154c0d41a7436945671",
+          "model_input_sha256": "5da509cfe6fba8b7763c5a5bd33f2ce993482ea686e36ebc36995216255ab31e",
+          "processing_sha256": "ca112c956ffa7801cef4b8ed8a9330961e927d621d2ba840c7365c3b9cc5b9d9",
+          "scientific": {
+            "status": "unassessed",
+            "method": {
+              "method_id": "greenlens.energyplus.explicit-dx/1",
+              "adapter_version": "1",
+              "engine_version": "26.2.0",
+              "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+              "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+              "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+              "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+              "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+            },
+            "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+            "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+            "tested_scope": "No general building-accuracy, equipment-calibration or certification claim.",
+            "applicable_physical_input_sha256": [],
+            "evidence_ids": []
+          },
+          "snapshot_and_assessment_exact": true
+        }
+      },
+      "content_audit_sha256": "94e89617471d85e696a00c60f15815fca7b55faad4293a616e6b08ab5f68d947",
+      "arithmetic_audit_sha256": "efc0afdbb03848b4c4d6e22273b6502211dd1e071278ab4bd49e672e2bb5afde",
+      "documents": {
+        "assessment": {
+          "pages": 35,
+          "pdf_sha256": "cab63fa85fe968a63c83e81cfda6bb700b379a0806bef3777f22bbbc4c1b6321",
+          "bytes": 995730,
+          "document_sha256": "19febfe45312f58bb017747f942afe60c408f19477b62a30d28c3b6b66c32114",
+          "checked_text_items": 2716,
+          "embedded_fonts": [
+            "/KBECLX+NotoSansCJKtc-Regular-Identity-H",
+            "/UVNTPP+NotoSansCJKtc-Bold-Identity-H"
+          ]
+        },
+        "input-appendix": {
+          "pages": 50,
+          "pdf_sha256": "976355ea0b0085fe7741e4b15979a9dfd8c99f6cb68a20dd0b5c8480c2db2a07",
+          "bytes": 1270908,
+          "document_sha256": "83cd5f3f1ec2a2c177d54a709fcc620870b06589e6c9ac932a0ffae176f7cdb2",
+          "checked_text_items": 3738,
+          "embedded_fonts": [
+            "/FCFTFV+NotoSansCJKtc-Regular-Identity-H",
+            "/RGZYTO+NotoSansCJKtc-Bold-Identity-H"
+          ]
+        },
+        "performance": {
+          "pages": 5,
+          "pdf_sha256": "8f91d414fb43176ba80ae21ead06cf196b6d5a5cf6425bd9c2d522414346834f",
+          "bytes": 126072,
+          "document_sha256": "48aa9139b77e4d2c3cacf4c98fae0148e4392eb947c7c95d1e6c1b4484fd45d6",
+          "checked_text_items": 252,
+          "embedded_fonts": [
+            "/DFUZMJ+NotoSansCJKtc-Bold-Identity-H",
+            "/HJXBEP+NotoSansCJKtc-Regular-Identity-H"
+          ]
+        }
+      },
+      "typed_numeric_cells": 342,
+      "maximum_arithmetic_difference": 0,
+      "lossless_input_rows": 1792,
+      "declared_text_items": 6706,
+      "all_declared_text_in_pdf_html": true,
+      "offline_html_inline_svg": true,
+      "embedded_fonts_and_no_pdf_active_content": true,
+      "native_typst_processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T08:33:09.077486800+00:00",
+          "finished_utc": "2026-10-13T08:33:10.604630600+00:00",
+          "elapsed_ms": 1592,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 143671296,
+          "peak_observed_scratch_bytes": 34590281,
+          "samples": 28,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T08:33:11.119022400+00:00",
+          "finished_utc": "2026-10-13T08:33:13.241405900+00:00",
+          "elapsed_ms": 2185,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 167403520,
+          "peak_observed_scratch_bytes": 34919615,
+          "samples": 37,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T08:33:14.026348400+00:00",
+          "finished_utc": "2026-10-13T08:33:14.591105800+00:00",
+          "elapsed_ms": 631,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 84213760,
+          "peak_observed_scratch_bytes": 33603753,
+          "samples": 10,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "--ppi",
+            "96",
+            "report.typ",
+            "page-{0p}-of-{t}.png"
+          ],
+          "started_utc": "2026-10-13T08:33:15.124960400+00:00",
+          "finished_utc": "2026-10-13T08:33:15.763119+00:00",
+          "elapsed_ms": 700,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 92311552,
+          "peak_observed_scratch_bytes": 34407611,
+          "samples": 12,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "artifact_seals": [
+        {
+          "path": "energy-report.json",
+          "bytes": 247630,
+          "sha256": "3fea942b35b58a2ae85ba3ea87452bdf91ca15531f0e90459a4966f4f5211b7d"
+        },
+        {
+          "path": "performance.json",
+          "bytes": 67380,
+          "sha256": "57ebf2205ba08f358049f6a469644e3c242ebc57a906ce9bc1ba951d537af96f"
+        },
+        {
+          "path": "performance.csv",
+          "bytes": 32390,
+          "sha256": "d32f15fc083d20e178892275346ef0f4da4ade82c524c89a623720de1de2d6c1"
+        },
+        {
+          "path": "inputs.csv",
+          "bytes": 117685,
+          "sha256": "ece66e38fb4f3aa7b0309f03b6a6112890fa3982dc203b23a4617c35c9ad1185"
+        },
+        {
+          "path": "baseline-model.svg",
+          "bytes": 6328,
+          "sha256": "1f8e2c657c5cc58e451d4d014cde8d31e430c3777fbfd8844b6c3eec08853879"
+        },
+        {
+          "path": "proposed-model.svg",
+          "bytes": 7670,
+          "sha256": "803e4783ce3c1a2845e248b00a022e32799a3bfb8dee7288f0d671b41a92b981"
+        },
+        {
+          "path": "annual.svg",
+          "bytes": 1884,
+          "sha256": "3ba93ca76c03b56c353cb68d2c968eebd615801330c0dd1e5e1f1f31efcc2dc1"
+        },
+        {
+          "path": "monthly.svg",
+          "bytes": 3249,
+          "sha256": "d62fb98414a1057b03b2067719dc7685ae462cccc0fca51ee64cf715afe5578e"
+        },
+        {
+          "path": "assessment.html",
+          "bytes": 127249,
+          "sha256": "130804d0a736cdb287dd2ac135b2e248aa6ed26e22a17ce576263630cdf19569"
+        },
+        {
+          "path": "input-appendix.html",
+          "bytes": 162757,
+          "sha256": "7bef9accdd4b9b284a11ae6f21b9c97d0f46fc2dbf6fd1321a71e1b0192ed12d"
+        },
+        {
+          "path": "performance.html",
+          "bytes": 16090,
+          "sha256": "d501e248592a1ee0149261b6e0f41a6c43ba607a177bdf9416b6d8ad9879b76f"
+        },
+        {
+          "path": "assessment.pdf",
+          "bytes": 995730,
+          "sha256": "cab63fa85fe968a63c83e81cfda6bb700b379a0806bef3777f22bbbc4c1b6321"
+        },
+        {
+          "path": "input-appendix.pdf",
+          "bytes": 1270908,
+          "sha256": "976355ea0b0085fe7741e4b15979a9dfd8c99f6cb68a20dd0b5c8480c2db2a07"
+        },
+        {
+          "path": "performance.pdf",
+          "bytes": 126072,
+          "sha256": "8f91d414fb43176ba80ae21ead06cf196b6d5a5cf6425bd9c2d522414346834f"
+        },
+        {
+          "path": "performance-page-001.png",
+          "bytes": 113112,
+          "sha256": "beb80d4555efd533633297d56c9d0d95c67df10fad919f66eeb76521b6dbf1e0"
+        },
+        {
+          "path": "performance-page-002.png",
+          "bytes": 279268,
+          "sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10"
+        },
+        {
+          "path": "performance-page-003.png",
+          "bytes": 274969,
+          "sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe"
+        },
+        {
+          "path": "performance-page-004.png",
+          "bytes": 219854,
+          "sha256": "db6fa255d256472957b783abb5decd5fecc79c1fd057e19893c3b9549d75bcd3"
+        },
+        {
+          "path": "performance-page-005.png",
+          "bytes": 42727,
+          "sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68"
+        }
+      ],
+      "delivered_pngs": [
+        {
+          "path": "performance-page-001.png",
+          "sha256": "beb80d4555efd533633297d56c9d0d95c67df10fad919f66eeb76521b6dbf1e0",
+          "bytes": 113112,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-002.png",
+          "sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10",
+          "bytes": 279268,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-003.png",
+          "sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe",
+          "bytes": 274969,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-004.png",
+          "sha256": "db6fa255d256472957b783abb5decd5fecc79c1fd057e19893c3b9549d75bcd3",
+          "bytes": 219854,
+          "dimensions": [
+            794,
+            1123
+          ]
+        },
+        {
+          "path": "performance-page-005.png",
+          "sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68",
+          "bytes": 42727,
+          "dimensions": [
+            794,
+            1123
+          ]
+        }
+      ],
+      "all_pdf_and_png_pages_visually_reviewed": true,
+      "cold_integrity": {
+        "wrapper_sha256": "ad54be1dbecf4e00e8efaf2120e06ce8cdbb50ad6fa754a459f090fd964e7ad5",
+        "freshly_rehashed_retained_files": 149,
+        "all_unchanged": true,
+        "original_project_and_scratch_unavailable_and_engine_discovery_failed_as_recorded_by_wrapper": true,
+        "shared_package_inspection_sha256": "4958c03220d87c70e51da2bc40c00710ccae255b902ea41b8c9963aa7eb5e959",
+        "export_zip_sha256": "96644d6f1e6a88a39eba5fd36c6f11b31767005c28c8a6b1b07d6caf5f0ce5ee",
+        "export_zip_bytes": 13205007,
+        "zip_scope": "Outer ZIP hash and retained shared-reader inspection bound here; this audit does not repeat full ZIP decompression."
+      },
+      "presentation_delta": {
+        "schema_version": "greenlens.energy-report-presentation-repair-delta.v1",
+        "checked_utc": "2026-10-13T08:36:14.760873Z",
+        "zone_count_per_case": 8,
+        "old_dataset_sha256": "269a466efc7893e6b42aef23849e38eacf6d4a10707a9faf18c4d722fc59717a",
+        "new_dataset_sha256": "3fea942b35b58a2ae85ba3ea87452bdf91ca15531f0e90459a4966f4f5211b7d",
+        "exact_allowed_dto_deltas": [
+          "limitations[0]",
+          "title"
+        ],
+        "numerical_csv_json_and_charts_byte_identical": true,
+        "keyed_rows_per_document": {
+          "baseline": 0,
+          "proposed": 8
+        },
+        "geometry": {
+          "baseline": {
+            "all_shape_attributes_exact": true,
+            "old_svg_sha256": "d554a7beacd4793b644c345444daf262e8c05cbc73ce5911d2c779af4576ec1c",
+            "new_svg_sha256": "1f8e2c657c5cc58e451d4d014cde8d31e430c3777fbfd8844b6c3eec08853879"
+          },
+          "proposed": {
+            "all_shape_attributes_exact": true,
+            "old_svg_sha256": "132670ebf4b517d470130e992340868fc80ef0c841a75534bcade3fa9d3a08df",
+            "new_svg_sha256": "803e4783ce3c1a2845e248b00a022e32799a3bfb8dee7288f0d671b41a92b981"
+          }
+        },
+        "all_performed_delta_checks_passed": true,
+        "scientific_qualification_changed": false,
+        "visual_review_completed_by_this_script": false
+      },
+      "delta_audit_sha256": "a734b4b18912d81747734fe7f45b149115cacb492b7481663ecf6b586fc14e97",
+      "prior_audit_sha256": "d08258dcba53701fee63738e7045768e7359d22abc1c5341517ce5329cd8c929",
+      "prior_preserved": true,
+      "visual_findings": [
+        "All 90 PDF pages and five delivered performance PNGs inspected; no clipping, overlap or missing glyphs observed.",
+        "Eight keyed dimension rows continue across assessment pages 19-20 and appendix pages 26-27 with repeated headers.",
+        "All covers correctly identify the two-wing eight-zone capacity fixture. Both scientific statuses remain Unassessed.",
+        "The final performance page is mostly unused space after demand convention and empty evidence index."
+      ]
+    }
+  },
+  "total_pdf_pages": 152,
+  "total_delivered_png_pages": 10,
+  "total_declared_text_items": 11028,
+  "total_typed_numeric_cells": 660,
+  "visual_review_method": "All 28 Poppler 90-dpi contact sheets inspected; targeted full-page checks and every delivered performance PNG also inspected. Text equality and numerical checks are separate.",
+  "visual_page_index_sha256": "de437a0c15b1e5a31ac6a580266a4cf9f04dc7ac30855b097e5c41c983854e38",
+  "font_cleanup_scope": "Staged duplicate fonts are removed only after verified child closure; installed pinned font sources are rehashed against retained renderer-input receipts.",
+  "record_hash_scope": "File SHA-256 is independently computed. Rust canonical dataset/run-record hashes are retained distinctly; this auditor does not independently implement Rust canonical serialization.",
+  "repair_outcome": "The initial eight-zone annotation collision and inherited four-zone title are closed in these new report-only outputs. Original failed reports and their audit remain unchanged.",
+  "heating_disclosure_scope": "Explicit non-evaluation of heating/lower-temperature service hours is present in assessment/performance comparison limitations. The complete input appendix retains inputs and assessment; it does not print the global conclusions section.",
+  "scope_limitations": [
+    "No additional EnergyPlus execution, replay or new numerical qualification by this audit.",
+    "Four-zone LimitedQualified applies only to each retained exact registry scope; eight-zone capacity reports remain Unassessed.",
+    "Synthetic carbon factor 0.4 is not a location-specific emissions claim; absent independent lighting-service evidence remains visible.",
+    "No installed-release or general building-accuracy acceptance is inferred."
+  ],
+  "all_performed_checks_passed": true,
+  "new_scientific_qualification_asserted": false,
+  "audit_scripts": {
+    "audit-repair-delta.py": "ac1832819c6e534f8be545801d28219a063ffae2db3a18f81830d8ea88dd4655",
+    "eight/audit-arithmetic-capacity.py": "34bd5b1d9b17894dbf8b5a925c44501326302b0a8e8077cc26f541b748d50476",
+    "eight/audit-content-capacity.py": "b8713efe73b5fe2865d1b06fcd5c6f5229e381cc5e9f7ebc47ba8814397f3986",
+    "four/audit-arithmetic-v3.py": "c55220e6fb9f3975f53017264eae0285303f219cea3f3fafd4ee278878c3aab7",
+    "four/audit-content-v3.py": "84e3b3275da4e207400b68f3f408fa2eacaa2a7c6ce92aa58e1fb0c65e882ca6",
+    "render-pages.py": "174b22da826e0edb744ecee99bb6a1edb825303afddf4a7f5d25d0a85453c1f8",
+    "seal-repair-audit.py": "0bcac9f659551b59ece630362733907d7cd129017274c247a81840d289e9e155"
+  }
+}

@@ -1,0 +1,453 @@
+{
+  "checked_utc": "2026-10-13T11:28:52.8680766Z",
+  "release_complete": false,
+  "schema_version": "greenlens.energy-ci-checkpoint.v1",
+  "scope": "Exact clean source Windows hosted build, complete energy fixtures/four annuals/replay and static compatibility. No installed-desktop observation.",
+  "run": {
+    "conclusion": "success",
+    "createdAt": "2026-10-13T07:42:56Z",
+    "headSha": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+    "jobs": [
+      {
+        "completedAt": "2026-10-13T08:24:27Z",
+        "conclusion": "success",
+        "databaseId": 115186053926,
+        "name": "build",
+        "startedAt": "2026-10-13T07:42:58Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T07:43:01Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T07:42:59Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T07:43:08Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-13T07:43:01Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T07:43:17Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-13T07:43:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T07:43:17Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 4,
+            "startedAt": "2026-10-13T07:43:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T07:44:16Z",
+            "conclusion": "success",
+            "name": "Exact clean source and native toolchain",
+            "number": 5,
+            "startedAt": "2026-10-13T07:43:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T07:44:31Z",
+            "conclusion": "success",
+            "name": "Frontend types, interaction regressions and production assets",
+            "number": 6,
+            "startedAt": "2026-10-13T07:44:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T07:44:37Z",
+            "conclusion": "success",
+            "name": "Pinned Radiance for required legacy cancellation regressions",
+            "number": 7,
+            "startedAt": "2026-10-13T07:44:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:03:16Z",
+            "conclusion": "success",
+            "name": "Format, strict lint and unit/lifecycle regression suite",
+            "number": 8,
+            "startedAt": "2026-10-13T07:44:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:15Z",
+            "conclusion": "success",
+            "name": "Build and package exact-source unsigned binaries",
+            "number": 9,
+            "startedAt": "2026-10-13T08:03:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:18Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 10,
+            "startedAt": "2026-10-13T08:24:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:20Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 11,
+            "startedAt": "2026-10-13T08:24:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:22Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 12,
+            "startedAt": "2026-10-13T08:24:20Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:23Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 22,
+            "startedAt": "2026-10-13T08:24:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:23Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 23,
+            "startedAt": "2026-10-13T08:24:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:25Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 24,
+            "startedAt": "2026-10-13T08:24:23Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:25Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-13T08:24:25Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38364432107/job/115186053926"
+      },
+      {
+        "completedAt": "2026-10-13T09:01:11Z",
+        "conclusion": "success",
+        "databaseId": 115201136216,
+        "name": "static_compatibility",
+        "startedAt": "2026-10-13T08:24:30Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:24:32Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:24:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:42Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-13T08:24:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:43Z",
+            "conclusion": "success",
+            "name": "Owned verification paths",
+            "number": 3,
+            "startedAt": "2026-10-13T08:24:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:44Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@v4",
+            "number": 4,
+            "startedAt": "2026-10-13T08:24:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:58Z",
+            "conclusion": "success",
+            "name": "Frozen CLI identity and pinned static engine",
+            "number": 5,
+            "startedAt": "2026-10-13T08:24:44Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:46:17Z",
+            "conclusion": "success",
+            "name": "Required real static analytical suite",
+            "number": 6,
+            "startedAt": "2026-10-13T08:24:58Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:56:22Z",
+            "conclusion": "success",
+            "name": "Distributed CLI static A/B, copy, export and replay",
+            "number": 7,
+            "startedAt": "2026-10-13T08:46:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:01:06Z",
+            "conclusion": "success",
+            "name": "Historical v0.1 replay without annual executables",
+            "number": 8,
+            "startedAt": "2026-10-13T08:56:22Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:01:07Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 9,
+            "startedAt": "2026-10-13T09:01:06Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:01:09Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 18,
+            "startedAt": "2026-10-13T09:01:07Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T09:01:10Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 19,
+            "startedAt": "2026-10-13T09:01:09Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38364432107/job/115201136216"
+      },
+      {
+        "completedAt": "2026-10-13T08:33:33Z",
+        "conclusion": "success",
+        "databaseId": 115201136253,
+        "name": "energy",
+        "startedAt": "2026-10-13T08:24:30Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T08:24:32Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T08:24:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:37Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-13T08:24:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:37Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 3,
+            "startedAt": "2026-10-13T08:24:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:38Z",
+            "conclusion": "success",
+            "name": "Owned verification paths and clean source assertions",
+            "number": 4,
+            "startedAt": "2026-10-13T08:24:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:24:41Z",
+            "conclusion": "success",
+            "name": "Run actions/download-artifact@v4",
+            "number": 5,
+            "startedAt": "2026-10-13T08:24:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:25:29Z",
+            "conclusion": "success",
+            "name": "Frozen CLI and independently installed pinned runtimes",
+            "number": 6,
+            "startedAt": "2026-10-13T08:24:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:28:41Z",
+            "conclusion": "success",
+            "name": "Explicit native lifecycle regression",
+            "number": 7,
+            "startedAt": "2026-10-13T08:25:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:30:02Z",
+            "conclusion": "success",
+            "name": "Explicit native report render regression",
+            "number": 8,
+            "startedAt": "2026-10-13T08:28:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:31:41Z",
+            "conclusion": "success",
+            "name": "Fixed four annual executions and complete immutable inspection",
+            "number": 9,
+            "startedAt": "2026-10-13T08:30:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:32:10Z",
+            "conclusion": "success",
+            "name": "Independent complete-series arithmetic and frozen scientific criteria",
+            "number": 10,
+            "startedAt": "2026-10-13T08:31:41Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:11Z",
+            "conclusion": "success",
+            "name": "Cold reports, export integrity and distributed replay despite numerical failure",
+            "number": 11,
+            "startedAt": "2026-10-13T08:32:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:11Z",
+            "conclusion": "success",
+            "name": "Retain qualification failure as job failure after independent delivery checks",
+            "number": 12,
+            "startedAt": "2026-10-13T08:33:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:18Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 13,
+            "startedAt": "2026-10-13T08:33:11Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:19Z",
+            "conclusion": "success",
+            "name": "Collect native diagnostics after any outcome",
+            "number": 14,
+            "startedAt": "2026-10-13T08:33:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:29Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 15,
+            "startedAt": "2026-10-13T08:33:19Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:29Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 29,
+            "startedAt": "2026-10-13T08:33:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:31Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 30,
+            "startedAt": "2026-10-13T08:33:29Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T08:33:32Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 31,
+            "startedAt": "2026-10-13T08:33:31Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38364432107/job/115201136253"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-13T09:01:12Z",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38364432107"
+  },
+  "artifacts": [
+    {
+      "digest": "sha256:07999c33df41b968fda5ce4a54d128bacbc9512b043afe57ee119e92723a915a",
+      "size_in_bytes": 3475532,
+      "id": 11799498161,
+      "name": "energy-static-compatibility-d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+      "expired": false
+    },
+    {
+      "digest": "sha256:75e3046925acd925221e7f9bb5c44569faa2ba82102ebb8d5f45d93edf2072e7",
+      "size_in_bytes": 51703403,
+      "id": 11798542289,
+      "name": "energy-native-evidence-d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+      "expired": false
+    },
+    {
+      "digest": "sha256:30f0f7afd4ded2a119648d3a5f3790a3923852150c2a27519afe02a1b06ebc94",
+      "size_in_bytes": 1914576,
+      "id": 11798456105,
+      "name": "energy-build-diagnostics-d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+      "expired": false
+    },
+    {
+      "digest": "sha256:5717f8c72a2174cef99aec004852e0561dc31735537bc4a77e7c8da85bbae888",
+      "size_in_bytes": 9514768,
+      "id": 11798301267,
+      "name": "energy-cli-d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+      "expired": false
+    },
+    {
+      "digest": "sha256:3900dd0499c0bbdf9886120a63ab1d22f9ad2ab8f090d2f8b6c8ee27c6da399f",
+      "size_in_bytes": 53015606,
+      "id": 11798187956,
+      "name": "energy-native-jobs-d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+      "expired": false
+    },
+    {
+      "digest": "sha256:006e79fe4410a7f388e31d0861ba8e63b6813b68a871777a5272ac0e32b177ea",
+      "size_in_bytes": 14054961,
+      "id": 11797777088,
+      "name": "energy-unsigned-investigation-d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+      "expired": false
+    }
+  ]
+}

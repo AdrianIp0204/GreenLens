@@ -1,5 +1,6 @@
 param(
  [Parameter(Mandatory,ParameterSetName='Production')][string]$CliPath,
+ [Parameter(ParameterSetName='Production')][ValidateSet(2,3)][int]$ExampleRevision=3,
  [Parameter(Mandatory,ParameterSetName='Direct')][string]$ProductionRoot,
  [Parameter(Mandatory,ParameterSetName='Control')][string]$ControlInputs,
  [Parameter(Mandatory)][string]$OutputDirectory,
@@ -113,9 +114,11 @@ if($PSCmdlet.ParameterSetName -eq 'Direct'){
  return
 }
 New-Item -ItemType Directory -Path (Join-Path $OutputDirectory 'tools') -Force|Out-Null
-$annualProtocolPath=Join-Path $PSScriptRoot 'energy-zero-cutout-protocol.json'
+$protocolNames=@{2='energy-zero-cutout-protocol.json';3='energy-fan-example-protocol.json'}
+$protocolHashes=@{2='64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40';3='6c2d6defc48553d0380ee47a8e107eacab6d9853e7d690b01ea4b0be249af781'}
+$annualProtocolPath=Join-Path $PSScriptRoot $protocolNames[$ExampleRevision]
 $historicalPath=Join-Path $PSScriptRoot '../examples/energy/revision1-inputs.json'
-if((Get-FileHash -LiteralPath $annualProtocolPath).Hash.ToLowerInvariant() -cne '64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40'){throw 'Revised annual protocol differs'}
+if((Get-FileHash -LiteralPath $annualProtocolPath).Hash.ToLowerInvariant() -cne $protocolHashes[$ExampleRevision]){throw 'Revised annual protocol differs'}
 $annualProtocol=Get-Content -LiteralPath $annualProtocolPath -Raw|ConvertFrom-Json -AsHashtable
 if((Get-FileHash -LiteralPath $historicalPath).Hash.ToLowerInvariant() -cne $annualProtocol.historical_inputs.sha256){throw 'Historical model snapshots differ'}
 $historical=Get-Content -LiteralPath $historicalPath -Raw|ConvertFrom-Json -AsHashtable
@@ -136,6 +139,18 @@ function Assert-EnergySameValue($Actual,$Expected,[string]$Name){
   if($Actual -is [bool] -or $Actual -is [string] -or $Actual -isnot [ValueType] -or ![double]::IsFinite([double]$Actual) -or [double]$Actual -ne [double]$Expected){throw "Number differs: $Name"}
  }
 }
+function Get-EnergyExpectedInput($Historical,[string]$Alternative,[int]$Minutes,[int]$Revision){
+ if($Alternative -cnotin @('A','B') -or $Minutes -notin @(5,10) -or $Revision -notin @(2,3)){throw 'Undeclared example case'}
+ $expected=$Historical.cases[$Alternative]|ConvertTo-Json -Depth 100|ConvertFrom-Json -AsHashtable
+ if($expected.model.zones.Count -ne 4){throw 'Require four original zones'}
+ foreach($zone in $expected.model.zones){
+  if($zone.cooling_system.cooling_deadband_k -ne .2 -or $zone.cooling_system.supply_fan.total_efficiency -ne .5){throw 'Historical cutout or fan efficiency differs'}
+  $zone.cooling_system.cooling_deadband_k=0.0
+  if($Revision -eq 3 -and $Alternative -ceq 'B'){$zone.cooling_system.supply_fan.total_efficiency=.6}
+ }
+ $expected.study.zone_timesteps_per_hour=60/$Minutes
+ return $expected
+}
 $cli=Join-Path $OutputDirectory 'tools/greenlens.exe'
 Copy-Item -LiteralPath $CliPath -Destination $cli
 $cliHash=(Get-FileHash -LiteralPath $cli).Hash.ToLowerInvariant()
@@ -144,10 +159,10 @@ $sources=[ordered]@{}
 foreach($path in @($PSCommandPath,$annualProtocolPath,$historicalPath,(Join-Path $PSScriptRoot 'energy-interzone-protocol.json'))+@(Get-ChildItem (Join-Path $repo 'crates/greenlens-energyplus/src') -File).FullName){
  $sources[[IO.Path]::GetRelativePath($repo,$path).Replace('\','/')]=(Get-FileHash -LiteralPath $path).Hash.ToLowerInvariant()
 }
-$plan=[ordered]@{schema='greenlens.energy-production-qualification.v1';declared_utc=[DateTime]::UtcNow.ToString('o');cli_sha256=$cliHash;source_sha256=$sources;example_revision=2;protocol_sha256=(Get-FileHash -LiteralPath $annualProtocolPath).Hash.ToLowerInvariant();
+$plan=[ordered]@{schema='greenlens.energy-production-qualification.v1';declared_utc=[DateTime]::UtcNow.ToString('o');cli_sha256=$cliHash;source_sha256=$sources;example_revision=$ExampleRevision;protocol_sha256=(Get-FileHash -LiteralPath $annualProtocolPath).Hash.ToLowerInvariant();
  stages=@('A10','B10','A5','B5');native_processes=4;workers=1;native_limits=@{seconds=1800;memory_bytes=2147483648;scratch_bytes=1073741824;file_bytes=134217728};
  criteria=@{annual_facility_relative_max=.01;aligned_ten_minute_peak_relative_max=.03;occupied_unmet_percent_max=1;comfort_tolerance_c=.2;no_threshold_tuning=$true};
- scope='Revision2 changes only the eight declared A/B cooling cutouts0.2 to0.0. All other original four-zone inputs and criteria are unchanged; synthetic non-climatic weather. All four numerical outcomes retained; failed scientific checks do not trigger retries. Process/input failure stops schedule.'}
+ scope="Explicit example revision $ExampleRevision; only the selected pinned protocol changes. Synthetic non-climatic weather. All four numerical outcomes retained; failed scientific checks do not trigger retries. Process/input failure stops schedule."}
 $plan|ConvertTo-Json -Depth 20|Set-Content -LiteralPath (Join-Path $OutputDirectory 'declaration.json') -Encoding utf8
 $records=[Collections.Generic.List[object]]::new()
 function Invoke-Cli([string]$Name,[string[]]$Argv){
@@ -165,24 +180,26 @@ try{
   $project=Join-Path $OutputDirectory "project-$minutes"
   Invoke-Cli "example-$minutes" @('energy','example',$project)
   foreach($alternative in @('A','B')){
-   if($minutes -eq 5){
-    $doc=Get-Content -LiteralPath (Join-Path $project 'project.json') -Raw|ConvertFrom-Json -AsHashtable
-    $design=$doc.energy.designs[$alternative]
-    $design.study.zone_timesteps_per_hour=12
-    $model=Join-Path $OutputDirectory "model-$alternative-5.json"; $study=Join-Path $OutputDirectory "study-$alternative-5.json"
-    $design.model|ConvertTo-Json -Depth 100|Set-Content -LiteralPath $model -Encoding utf8
-    $design.study|ConvertTo-Json -Depth 100|Set-Content -LiteralPath $study -Encoding utf8
-    Invoke-Cli "configure-$alternative-5" @('energy','configure',$project,$model,$study,'--alternative',$alternative)
+   $expected=Get-EnergyExpectedInput $historical $alternative $minutes $ExampleRevision
+   $doc=Get-Content -LiteralPath (Join-Path $project 'project.json') -Raw|ConvertFrom-Json -AsHashtable
+   $design=$doc.energy.designs[$alternative]
+   foreach($zone in $design.model.zones){
+    $zone.cooling_system.cooling_deadband_k=0.0
+    $zone.cooling_system.supply_fan.total_efficiency=if($ExampleRevision -eq 3 -and $alternative -ceq 'B'){.6}else{.5}
    }
+   $design.study.zone_timesteps_per_hour=60/$minutes
+   Assert-EnergySameValue $design.model $expected.model 'configured-model'
+   Assert-EnergySameValue $design.study $expected.study 'configured-study'
+   $model=Join-Path $OutputDirectory "model-$alternative-$minutes.json"; $study=Join-Path $OutputDirectory "study-$alternative-$minutes.json"
+   $design.model|ConvertTo-Json -Depth 100|Set-Content -LiteralPath $model -Encoding utf8
+   $design.study|ConvertTo-Json -Depth 100|Set-Content -LiteralPath $study -Encoding utf8
+   Invoke-Cli "configure-$alternative-$minutes" @('energy','configure',$project,$model,$study,'--alternative',$alternative)
    $name="$alternative$minutes"
    foreach($path in $sources.Keys){if((Get-FileHash -LiteralPath (Join-Path $repo $path)).Hash.ToLowerInvariant() -cne $sources[$path]){throw 'Frozen annual source changed'}}
    $doc=Get-Content -LiteralPath (Join-Path $project 'project.json') -Raw|ConvertFrom-Json -AsHashtable
-   $expected=$historical.cases[$alternative]|ConvertTo-Json -Depth 100|ConvertFrom-Json -AsHashtable
-   foreach($zone in $expected.model.zones){if($zone.cooling_system.cooling_deadband_k -ne .2){throw 'Original cutout differs'};$zone.cooling_system.cooling_deadband_k=0.0}
-   $expected.study.zone_timesteps_per_hour=60/$minutes
    Assert-EnergySameValue $doc.energy.designs[$alternative].model $expected.model 'model'
    Assert-EnergySameValue $doc.energy.designs[$alternative].study $expected.study 'study'
-   [ordered]@{schema='greenlens.energy-revision2-input-preflight.v1';case=$name;protocol_sha256=$plan.protocol_sha256;historical_inputs_sha256=$annualProtocol.historical_inputs.sha256;project_sha256=(Get-FileHash -LiteralPath (Join-Path $project 'project.json')).Hash.ToLowerInvariant();only_declared_changes=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $OutputDirectory "input-preflight-$name.json") -Encoding utf8
+   [ordered]@{schema="greenlens.energy-revision$ExampleRevision-input-preflight.v1";case=$name;example_revision=$ExampleRevision;protocol_sha256=$plan.protocol_sha256;historical_inputs_sha256=$annualProtocol.historical_inputs.sha256;project_sha256=(Get-FileHash -LiteralPath (Join-Path $project 'project.json')).Hash.ToLowerInvariant();only_declared_changes=$true}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $OutputDirectory "input-preflight-$name.json") -Encoding utf8
    Invoke-Cli "run-$name" @('energy','run',$project,'--alternative',$alternative,'--engine-dir',$EngineRoot)
    $doc=Get-Content -LiteralPath (Join-Path $project 'project.json') -Raw|ConvertFrom-Json -AsHashtable
    $run=@($doc.energy.runs|Where-Object alternative_id -eq $alternative)
@@ -199,6 +216,7 @@ try{
    Write-Host "$name completed: $($run[0].id)"
   }
  }
+ foreach($path in $sources.Keys){if((Get-FileHash -LiteralPath (Join-Path $repo $path)).Hash.ToLowerInvariant() -cne $sources[$path]){throw 'Frozen annual source changed at finalization'}}
  [ordered]@{schema='greenlens.energy-production-execution.v1';completed=$true;finished_utc=[DateTime]::UtcNow.ToString('o');cli_sha256=$cliHash;runs=@($runs.ToArray());qualification_asserted=$false}|ConvertTo-Json -Depth 15|Set-Content -LiteralPath (Join-Path $OutputDirectory 'execution.json') -Encoding utf8
 }catch{
  [ordered]@{schema='greenlens.energy-production-execution.v1';completed=$false;finished_utc=[DateTime]::UtcNow.ToString('o');message=$_.Exception.Message;qualification_asserted=$false}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $OutputDirectory 'execution-failure.json') -Encoding utf8

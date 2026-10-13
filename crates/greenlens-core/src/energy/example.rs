@@ -184,6 +184,22 @@ fn schedule(
     }
 }
 pub fn synthetic_four_zone_model(proposed: bool) -> ThermalModel {
+    let mut model = synthetic_four_zone_model_revision_two(proposed);
+    if proposed {
+        for zone in &mut model.zones {
+            zone.cooling_system
+                .as_mut()
+                .expect("synthetic conditioned zone")
+                .supply_fan
+                .total_efficiency = 0.6;
+        }
+    }
+    model
+}
+
+/// Retained revision 2 inputs, independent of the moving demonstration default.
+/// Exact historical qualification remains bound to these inputs and its method.
+pub fn synthetic_four_zone_model_revision_two(proposed: bool) -> ThermalModel {
     let mut office = DayProfile::constant(0.);
     office.values[48..108].fill(1.);
     let mut evening = DayProfile::constant(0.);

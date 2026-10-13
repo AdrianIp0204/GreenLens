@@ -1,0 +1,36 @@
+{
+  "schema": "greenlens.energy-candidate-build.v1",
+  "source_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+  "source_dirty": false,
+  "artifact_utc": "2026-10-13T06:53:48.3465066Z",
+  "files": [
+    {
+      "name": "greenlens-desktop.exe",
+      "bytes": 18890752,
+      "sha256": "df9d0e97e9c45da0d51ac392aba3b7fb0c58c24c6e9359742f813b44d0ea6c56"
+    },
+    {
+      "name": "greenlens.exe",
+      "bytes": 8881664,
+      "sha256": "c7bfa17db52cfd05654900e7db237595da3f61c0d9bf4b07791ba0bb88edf723"
+    },
+    {
+      "name": "GreenLens_0.4.0_x64-setup.exe",
+      "bytes": 4467115,
+      "sha256": "10233246faf2f592e6a8e768895825c12f724d53dde9813e2ceee2404426b745"
+    }
+  ],
+  "frontend_tests": 152,
+  "license_check": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "distributed_cli_matches_cold_report_export_replay": true,
+  "installed_workflow_verified": false,
+  "acceptance_example_fan_change_missing": true,
+  "release_complete": false
+}

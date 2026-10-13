@@ -1,0 +1,457 @@
+{
+  "schema_version": "greenlens.energy-final-report-independent-audit.v1",
+  "checked_utc": "2026-10-13T06:47:54.543721Z",
+  "scope": "Retained real EnergyPlus 10-minute A/B report DTO; production Rust/Typst rendering and cross-format content only. No new simulation or scientific qualification. Both retained cases explicitly expose LimitedQualified scientific status from the exact tested-scope registry. Cold report regeneration is integrity/presentation verification, not scientific acceptance.",
+  "source_manifest_sha256": "af4ee0af31548380e6910bb478c22b94b5c673a6cc8887699d8aa07e78edcfad",
+  "dataset_sha256": "3b6c985ca6f3e98edd3d66402e7d679bf5b7ea37062279a6e647fca85f2cc21c",
+  "template_sha256": "7fe14ea1a40b40ed0c99b987d729ece7dc19d312598c9e395d65cbd8b31d7012",
+  "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+  "artifacts_verified": 19,
+  "native_processes": [
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T06:37:51.629156100+00:00",
+      "finished_utc": "2026-10-13T06:37:52.983702800+00:00",
+      "elapsed_ms": 1396,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 120459264,
+      "peak_observed_scratch_bytes": 34227105,
+      "samples": 22,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T06:37:53.609438400+00:00",
+      "finished_utc": "2026-10-13T06:37:55.091709+00:00",
+      "elapsed_ms": 1547,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 125554688,
+      "peak_observed_scratch_bytes": 34369185,
+      "samples": 26,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T06:37:55.616111800+00:00",
+      "finished_utc": "2026-10-13T06:37:56.674502400+00:00",
+      "elapsed_ms": 1120,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 83734528,
+      "peak_observed_scratch_bytes": 33609022,
+      "samples": 19,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "--ppi",
+        "96",
+        "report.typ",
+        "page-{0p}-of-{t}.png"
+      ],
+      "started_utc": "2026-10-13T06:37:57.272198300+00:00",
+      "finished_utc": "2026-10-13T06:37:58.051736+00:00",
+      "elapsed_ms": 852,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 91389952,
+      "peak_observed_scratch_bytes": 34586585,
+      "samples": 14,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "documents": {
+    "assessment": {
+      "pages": 24,
+      "pdf_sha256": "fdf2f5cc81b5218551fea46cd7bfc82dd372f7efc8331432495ca3fd8fcfaea8",
+      "bytes": 681299,
+      "document_sha256": "985b8c05b2f01f276454cd21a5cba83b7dbdfc1b0c5b287d313103384ac3cbd3",
+      "checked_text_items": 1783,
+      "embedded_fonts": [
+        "/DRHHBG+NotoSansCJKtc-Bold-Identity-H",
+        "/LFJUET+NotoSansCJKtc-Regular-Identity-H"
+      ]
+    },
+    "input-appendix": {
+      "pages": 32,
+      "pdf_sha256": "b7b22493b369a50fe88ffc2cac87d107fa159e2888a272acccd8e43d6d636c50",
+      "bytes": 797662,
+      "document_sha256": "dd28754a10b98677f9a72376a98405b8a9cdb97390df4a7720d2766ade240157",
+      "checked_text_items": 2245,
+      "embedded_fonts": [
+        "/GJBQDC+NotoSansCJKtc-Bold-Identity-H",
+        "/MDAGXN+NotoSansCJKtc-Regular-Identity-H"
+      ]
+    },
+    "performance": {
+      "pages": 5,
+      "pdf_sha256": "a784afeeb0dafb0f7f827946dfcdee9a5f5d3c2d7762578768e018b60a83cfdb",
+      "bytes": 135445,
+      "document_sha256": "40579dffa60f798fe7316d8f29106fcc8222502ac95bdda2d1080ce5d21c1c4f",
+      "checked_text_items": 252,
+      "embedded_fonts": [
+        "/EPYZLC+NotoSansCJKtc-Bold-Identity-H",
+        "/JUIRUL+NotoSansCJKtc-Regular-Identity-H"
+      ]
+    }
+  },
+  "performance_csv_typed_cells": 318,
+  "input_csv_lossless_rows": 1064,
+  "all_declared_document_strings_in_pdf_html": true,
+  "html_offline_inline_svg_no_script_or_external_image": true,
+  "fonts_embedded_with_unicode_maps": true,
+  "pdf_no_active_script_or_open_action": true,
+  "visual_review_complete": true,
+  "qualification_blocks_checked": 6,
+  "both_cases_limited_qualified": true,
+  "energy_acceptance": false,
+  "source_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+  "source_dirty": false,
+  "source_binding": "Frozen CLI hash equals delivery and cold-wrapper copies; clean build pointer, completed replay provenance, and exact Git registry/template bytes. Retained simulation snapshots predate this renderer build. No replay performed by auditor.",
+  "cli_sha256": "c7bfa17db52cfd05654900e7db237595da3f61c0d9bf4b07791ba0bb88edf723",
+  "cli_bytes": 8881664,
+  "source_replay_provenance_observations": [
+    {
+      "results_sha256": "f35bcda6b04cad1519a392b9c2bb2dd7b69075ef77ddda0fa56df4d19026a662",
+      "source_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+      "source_dirty": false
+    },
+    {
+      "results_sha256": "eaecef464b9479188708ddb210d10a02c17ea15a810240d70ee88d1a76cdd15c",
+      "source_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+      "source_dirty": false
+    }
+  ],
+  "qualification_registry_sha256": "c8b4e625f4bfdda93a13fd65afc8a50db64f50bcf6971d3071c6a0af4055eddc",
+  "source_registry_entries": 8,
+  "cases": {
+    "baseline": {
+      "run_id": "f9283d0e-7645-418d-bd2c-3d2cfb3b27d4",
+      "retained_results_file_sha256": "557d188e1758472aca8af2b5c7bb335693776796c65ae6062fac18f5524c57f3",
+      "rust_canonical_record_sha256": "b3aa114167fcb8fae2939b05c443f6436d84bd6cac0492a47d971d5a90b15cb2",
+      "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+      "processing_sha256": "a8cb978a0361686fa1bafa74f859b6b3ecdc8b1f586df663d45cd72ec4dbf570",
+      "scientific": {
+        "status": "limited_qualified",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+        },
+        "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+        "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior.",
+        "tested_scope": "Only the four-zone/two-storey revision-2 synthetic non-climatic A/B inputs with explicit zero thermostat cutout, complete pinned engine/recipe and six/twelve zone timesteps per hour. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed.",
+        "applicable_physical_input_sha256": [
+          "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486"
+        ],
+        "evidence_ids": [
+          "greenlens.energy-production-audit.v1:sha256:b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+          "greenlens.energy-revision2-independent-audit:sha256:d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+          "greenlens.energy-direct-native-parity-audit.v1:sha256:18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+          "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+          "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+        ]
+      },
+      "totals": {
+        "annual_facility_kwh": 16307.089802617933,
+        "coincident_peak": {
+          "timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          },
+          "facility_kw": 5.516090229474726,
+          "end_use_contributions_kw": {
+            "cooling_system": 1.7840902294747256,
+            "supply_fans": 0.24,
+            "ventilation_exhaust_fans": 0.016,
+            "interior_lighting": 1.92,
+            "exterior_lighting": 0.02,
+            "plug_equipment": 1.536
+          },
+          "reconciliation_residual_kw": 0.0
+        }
+      },
+      "retained_snapshots_exact": true
+    },
+    "proposed": {
+      "run_id": "9843a90b-2404-4d5f-9531-df8837301365",
+      "retained_results_file_sha256": "e5aac9b58f2ac85ae40a1df9de390eff757c590c916409422515a5977d301409",
+      "rust_canonical_record_sha256": "03e2ea0b2bdc0cb13fa309e1e15ac73b5c098cb8e033e9a9f926bde3a38c1a4f",
+      "physical_input_sha256": "1d5edab5883055cf8cf010b62a3e9bad9609daf2c6bed24017ac1ee8871e8a87",
+      "model_input_sha256": "0f6c0f3dd69983ca06795ae38314ea2b3c3e85dcb4e06f873d4a28204e8cfc5b",
+      "processing_sha256": "7bbfcf67ceb28f4a3fce6ae393b74f121c8ab52ff75550bbe4d8ffaa27cbf5f2",
+      "scientific": {
+        "status": "limited_qualified",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+        },
+        "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+        "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior.",
+        "tested_scope": "Only the four-zone/two-storey revision-2 synthetic non-climatic A/B inputs with explicit zero thermostat cutout, complete pinned engine/recipe and six/twelve zone timesteps per hour. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed.",
+        "applicable_physical_input_sha256": [
+          "1d5edab5883055cf8cf010b62a3e9bad9609daf2c6bed24017ac1ee8871e8a87"
+        ],
+        "evidence_ids": [
+          "greenlens.energy-production-audit.v1:sha256:b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+          "greenlens.energy-revision2-independent-audit:sha256:d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+          "greenlens.energy-direct-native-parity-audit.v1:sha256:18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+          "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+          "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+        ]
+      },
+      "totals": {
+        "annual_facility_kwh": 12878.806638328644,
+        "coincident_peak": {
+          "timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          },
+          "facility_kw": 4.098803527810259,
+          "end_use_contributions_kw": {
+            "cooling_system": 1.1348035278102588,
+            "supply_fans": 0.24,
+            "ventilation_exhaust_fans": 0.016,
+            "interior_lighting": 1.152,
+            "exterior_lighting": 0.02,
+            "plug_equipment": 1.536
+          },
+          "reconciliation_residual_kw": 0.0
+        }
+      },
+      "retained_snapshots_exact": true
+    }
+  },
+  "record_hash_scope": "File SHA-256 and Rust canonical-record SHA-256 are distinct. The former is independently hashed and bound to the cold inventory; typed record and report fields are compared exactly. The Rust canonical serialization hash is retained, not independently reimplemented.",
+  "arithmetic": {
+    "checked_cells": 318,
+    "maximum_absolute_difference": 0.0,
+    "audit_sha256": "272d7fcbaf9ea1af67ca77d04849e28fedf1fb46fd4dc3ecd4fbc0d768bc0d5d",
+    "source_script_sha256": "22107ad7532d389e77b61427687b41c4c030ba6037f80716418bc132b944f5aa"
+  },
+  "visual_review": {
+    "all_pages": 61,
+    "assessment_pages": 24,
+    "input_appendix_pages": 32,
+    "performance_pages": 5,
+    "method": "Poppler 90 dpi PNGs; all 11 contact sheets visually inspected, with extracted text equality checked separately.",
+    "findings": [
+      "No clipping, table overlap, omitted declared strings or missing glyphs observed.",
+      "Continued tables repeat headings. The 32nd appendix page contains only the empty evidence index and substantial whitespace.",
+      "Dense parameter tables and raw enum spelling remain technical presentation; this is not an executive-only report."
+    ],
+    "page_image_sha256": {
+      "pages/assessment/page-01.png": "4eba0ce0680fbd578ef89891bedfb9825701b76045ccd7a84b8207fef30007a1",
+      "pages/assessment/page-02.png": "271a4600b291e15fb1f19e17e1c3877a77d8342136b99d74d17d9073fcc67e04",
+      "pages/assessment/page-03.png": "3fa474d19c3b2c66bf931acfcf3fcc0a5e39835544e312571074e0cbbb693ea1",
+      "pages/assessment/page-04.png": "39a3b693c5f33d236cd7e8f63527d1974d1e88337790d5a1c7b0e2b564a3bad2",
+      "pages/assessment/page-05.png": "6d8ccb9a424380cf52cee485f0e9de877da353a5a9b0e6e36e5692083b23848c",
+      "pages/assessment/page-06.png": "74c5b4dedd5adb81ffa590b6cc8d90a438fc4788ba4d5601da59011abdbbcb8e",
+      "pages/assessment/page-07.png": "6790aede7b65fc33ee1a40f8a109639b136808c60eba5fad67242a5cb8d07cb4",
+      "pages/assessment/page-08.png": "bd972bea3bed39d6b6546c5e26e74c26cc81baf08a7a8ccb7927db02bb669448",
+      "pages/assessment/page-09.png": "280dc7d3e1d1a31e142a51be73339737a065e35f793f7121e8ace702fea1e040",
+      "pages/assessment/page-10.png": "10c7049f826fa34bac8721d0a07e6b5fdc8afb673937a047b6359b3e35073da9",
+      "pages/assessment/page-11.png": "e396a683468073fe70dd7cb62edba8094990618464fb9e1139e8edc1f09b5799",
+      "pages/assessment/page-12.png": "17e787e9011524c1db801b53a1280c6c95d691d206f0a65f7fec58481f6122ff",
+      "pages/assessment/page-13.png": "0441c2283f9d7c4b8171b96f06cba9f7a41dc296af74cfd936f35986efccf1e3",
+      "pages/assessment/page-14.png": "626722f9fe25d8d7c8abd762f93f068b6cdc207903a9b43bc40c7b05a150cb1b",
+      "pages/assessment/page-15.png": "2e9368cdc13226ebd0afcc15fa96678a3c362c31e84299fd52838ab5cc2918f0",
+      "pages/assessment/page-16.png": "3b9c864bba5199175460f2ea79edaf3c228e155635e73f52e2934072140e4082",
+      "pages/assessment/page-17.png": "a4e204d8cc60502e04ae375f91196c427676c62a16cca9e9d9f6ea0d07c92d6e",
+      "pages/assessment/page-18.png": "4b7d56c8a69194288a12382002435b780b2267603ac84bce923a5129b695c130",
+      "pages/assessment/page-19.png": "30b7fdfc39ec3729bc71f334b131cda8527f79b138ce6a8028517cec088483b7",
+      "pages/assessment/page-20.png": "73564301d46c5da0304c946b5b6c7708c3853db90a6a4c3dfb03db20120662ef",
+      "pages/assessment/page-21.png": "69bd5b30855f1b3bbbe66e325020625a52ffcdf3a620bb5fbba5d1d3b16764b8",
+      "pages/assessment/page-22.png": "9864c8a97b2a6c1e8ebc63952d23e01c4b91c7a83ebba83da01c2c6000691b13",
+      "pages/assessment/page-23.png": "e0ec0d78b01fc05b6ee031a2dfb6e8402404f85091e647eb79257c882bd5da7e",
+      "pages/assessment/page-24.png": "25d618a7143fc27a3b9ea7ddea6402689af0a9aacbf8c12abc026401c8ee8bca",
+      "pages/assessment/sheet-1.png": "9c3e03834ab2948baaf5acf2faecff870ae433259f5fabea5fe616d5cf504f31",
+      "pages/assessment/sheet-2.png": "05c43409a9a622cb3569242a5515fb45ca7d9d4178ac93dcca03b8011e9f2403",
+      "pages/assessment/sheet-3.png": "de82a59dabc9335a5c48aa821443b31346cea1675d6dfb1d99a0bbdc63d1a0d9",
+      "pages/assessment/sheet-4.png": "d21983f75a4d1b5033e19f6b305f4aced4ffbb732c06c4840634bacfbab2b77e",
+      "pages/input-appendix/page-01.png": "5374989281b53f78b5802d208733817db6e65651f232d34aae07a8aa4958f9c9",
+      "pages/input-appendix/page-02.png": "c46d5018167f1184307d100c54247010a74c6611408d2839a7ceb857af4bac77",
+      "pages/input-appendix/page-03.png": "55880f312d767f178dfa6b7b25712ab3b3381f17679de18fcdebdd4c97dcf858",
+      "pages/input-appendix/page-04.png": "a3ae887556542f61b13c99fe99850b855fb612c7d55ff280c381324841ddcdf0",
+      "pages/input-appendix/page-05.png": "3ebade4f4f0402f6a65a3ebf093a54dd2c026ae816035820b98e3147393d0748",
+      "pages/input-appendix/page-06.png": "b6cabfdfefcdc6dd7c7ee11ab60ed9ac47122b33ec44f36a91bb60e5041007e7",
+      "pages/input-appendix/page-07.png": "bb8bc85cb5330d85794c10deb1809e43f687bbb2ef6a79a835a8cd16b3d756ee",
+      "pages/input-appendix/page-08.png": "b14e122514f49b9e4921531d9e6a7b6ceca17674b06574fa4619b522008b2a46",
+      "pages/input-appendix/page-09.png": "2628d5c75f4f9f8d1611f357954011e8650ab44cc50e19a13272b99e316831b9",
+      "pages/input-appendix/page-10.png": "9285145c9440a7746132de4ee2055dbcb2fefe171ed17721c26ba218353776e8",
+      "pages/input-appendix/page-11.png": "d2684fb40c9a94b38aeca9b472881a910e1cf5760bab8011bcf61f65b8bbc321",
+      "pages/input-appendix/page-12.png": "ec52ab3ee457787ad498790aa59f709609267112c303d291dd250bb5a96551a8",
+      "pages/input-appendix/page-13.png": "8a464128ba241fb74f3240b20be451d1f479989db42d3b03b97fa34fc9a6531a",
+      "pages/input-appendix/page-14.png": "e2bf92906922b61a99bf18331dfe521cc7da9c60854080bf7f518f32d46e2d48",
+      "pages/input-appendix/page-15.png": "1b52a6c7af9dd44d0d2e905e560f9f5a277a63a9662fbc9f2e5e439f34203396",
+      "pages/input-appendix/page-16.png": "08811a25f564a85ed1d443aef8b4b300c6176301c29ce39dd04da271114e7e51",
+      "pages/input-appendix/page-17.png": "5dca5bc711306e55ca646c9f879c7e40d0c1b8934da5f515cbedbda0c3e3a78d",
+      "pages/input-appendix/page-18.png": "d8646c70bcdd11d3dc25bea4726208cbc3b9e9b1cb9535a5da19cd711d0bc214",
+      "pages/input-appendix/page-19.png": "237e4c648de2001c2320adedd1851dad0595a4ce8e3ba7bc304b1f92053dae12",
+      "pages/input-appendix/page-20.png": "23c1faeaccc3f86c6d976fc54ffde58d2336018fbb2eb0a5790b7d8b6055d3f5",
+      "pages/input-appendix/page-21.png": "824c794a096085f8f128bd6e7142c01cf8f90ddbb50ecb02601e0cc8c434006e",
+      "pages/input-appendix/page-22.png": "2cbe024de8c0acd28ff3b61c9a9de0f4d50bdebbf8d79abda8461113906c9206",
+      "pages/input-appendix/page-23.png": "8195529473192e1db2941294082ccce73b2f437e2d00bacca5e5c24c524afca0",
+      "pages/input-appendix/page-24.png": "99ce19cb11cb3657fd8db7a57fc33144fff8e450f34b8753b6690de7afd65d16",
+      "pages/input-appendix/page-25.png": "cc30a0bc19eb393ca93f61689cb0e872d06dfceefa81c307cbe6295e5983e344",
+      "pages/input-appendix/page-26.png": "abc17e4d8255a92128943508dc7c096ea11bb9b2b1bdaef9f4908f13db4c79f7",
+      "pages/input-appendix/page-27.png": "d3e0ecaa81707382f74f539f8ae2f3e55989acafda6fb43871bfeb7f27682a65",
+      "pages/input-appendix/page-28.png": "23412297f9f77724ff455d9f57f678b7b3dcd956c8bb55e73992b5977b85e233",
+      "pages/input-appendix/page-29.png": "ea47f4200b5c3701152712356b0e72587b731f0e4933c49c5fe9bbf04ef097d7",
+      "pages/input-appendix/page-30.png": "309dc734f5876e5254d82bc84f3eca2a32de387004e300cd367f34747cdf2a54",
+      "pages/input-appendix/page-31.png": "3d614ca2b7913e088187f21f2d550a0f2f207cf7d0b70b3601cde28e9c2de71d",
+      "pages/input-appendix/page-32.png": "364aa91263bcd2fb248beff7bb7e640a35089a09125c414c52e18bca1fe0a273",
+      "pages/input-appendix/sheet-1.png": "91d09203d126feff1c577113d5ac9ee5d2a4aeccce629fad31759c51c7123ed9",
+      "pages/input-appendix/sheet-2.png": "89b90efbbc70252b0d3123a1292f7b7c941ece70ca8b95a8fa3370061ef8d88a",
+      "pages/input-appendix/sheet-3.png": "aa624108c9918e26478b6a3afd02b579fd1ee1ac6fa43ffc3cffb5c5a137dae4",
+      "pages/input-appendix/sheet-4.png": "a160f4cd70d358ad5b31d96333a0fb0e3ce56b90e7879d495291174c17a78dc1",
+      "pages/input-appendix/sheet-5.png": "b0b0bd3fe9457fce601e6cc95e60c2e36f412b4aae27c4e6d202990ec0b3ab96",
+      "pages/input-appendix/sheet-6.png": "d834660c21716858877497e4ec10e95d9f4fbd1781ab9e587e282d0f48391f10",
+      "pages/performance/page-1.png": "6db5cc26c46a470674bc5bd75c0135ab4b94ecc703a759084bb047f3f9296197",
+      "pages/performance/page-2.png": "bf76144a04b4942035fbfad07c7ae74c22e3c92172de54c4714694ef90722388",
+      "pages/performance/page-3.png": "7e775ec7242f0c8d2c601cecc01499126db1907c3fdc047de86b52b471244312",
+      "pages/performance/page-4.png": "a16f79dbf6a86298e4552c00cc17d269b40f4187771888d19cd6d47502b7ec72",
+      "pages/performance/page-5.png": "3e90fc6901ed1ae84841513066ff4bd4861058ac8320872c25017c21694fabed",
+      "pages/performance/sheet-1.png": "501b7a7e1d7877cc14fdec203c109c2de462a7cbbe945237abec4dfa37c5f8ac"
+    }
+  },
+  "cold_integrity": {
+    "wrapper_evidence_sha256": "b41a9dd75b6ace8a2383ca93dad71cb30ee736a19caa77524bfe2e0d3c1b3dba",
+    "freshly_rehashed_retained_files": 149,
+    "all_unchanged": true,
+    "original_sources_unavailable_during_report_as_recorded_by_wrapper": true,
+    "no_replay_or_engine_executed_by_auditor": true
+  },
+  "audit_scripts": {
+    "audit-arithmetic-v2.py": "22107ad7532d389e77b61427687b41c4c030ba6037f80716418bc132b944f5aa",
+    "audit-arithmetic.py": "f5e70da49496cb0883b8c605616fa97d2b74e5e68617fd2270e223b28cf800b6",
+    "audit-content-v2.py": "e3ed659ed552f35622711838f70247f06b62e4e000c2922d0d6797f53cf882d9",
+    "audit-content.py": "6475c1b087a62fdb234b3eec1eccfc050e0d355697c29de4d1ea51ceea0403c9",
+    "render-pages.py": "0d71521ecab2e90c4ca012e9a49a510520ed5dab834807c2563bc4a63ebfec30",
+    "seal-audit-v2.py": "07181d4e8809bac472426238f2a4b4b080eb8b8ffc44a6a3b1a1f061d9b6b887",
+    "seal-audit.py": "6938f707555fc67d5944f3f4e1a62d757acf2d1e7dde3c7a6f49654f6e1da074"
+  },
+  "font_cleanup_note": "Renderer checks each duplicate font after child-tree completion then deletes that owned duplicate; auditor checks retained font receipt pins against installed sources. First auditor attempt incorrectly expected staged copies and is preserved separately.",
+  "unqualified_scope": "This audit verifies frozen report contents, arithmetic, rendering and input identity. It does not expand exact-registry LimitedQualified scope, certify buildings, validate real weather, or establish installed release acceptance. Prior Failed reports and original nonzero-cutout failure remain unchanged."
+}

@@ -1,0 +1,259 @@
+{
+  "schema": "greenlens.energy-revision3-protocol-review.v1",
+  "checked_utc": "2026-10-13T07:12:26.915420+00:00",
+  "scope": "Independent read-only source/protocol review and data-only reconstruction; no native or Cargo execution.",
+  "source_context": {
+    "base_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+    "worktree_dirty": true,
+    "reviewed_member_sha256": {
+      "scripts/energy-fan-example-protocol.json": {
+        "bytes": 11203,
+        "sha256": "6c2d6defc48553d0380ee47a8e107eacab6d9853e7d690b01ea4b0be249af781"
+      },
+      "scripts/energy-qualification.ps1": {
+        "bytes": 21921,
+        "sha256": "d0688cb76cb5db6b8ca5172e13074918b6efc94b842c3f04ccf4b903d57234dc"
+      },
+      "scripts/energy-gate0-audit.py": {
+        "bytes": 39814,
+        "sha256": "13d3ada539066c61ec612cb3b61ac5d432bba864847ecf105f1aa33f109f3fe6"
+      },
+      "crates/greenlens-core/src/energy/example.rs": {
+        "bytes": 16918,
+        "sha256": "ecc3f3d16762abae227933e421a6dabe2895fef280aca6cdbd22c7837d66be11"
+      },
+      "crates/greenlens-core/src/energy/tests.rs": {
+        "bytes": 22811,
+        "sha256": "c4112e94f5f05160cb6bad2cb78a3c922e026734d10ca1862710f387f270b4c3"
+      },
+      "examples/energy/README.md": {
+        "bytes": 4829,
+        "sha256": "9d221813ece8b178a65e66911a231351648114789975b0eb67eb28f5338dd08e"
+      }
+    }
+  },
+  "all_performed_checks_passed": true,
+  "blocking_findings": [],
+  "native_execution_asserted": false,
+  "scientific_qualification_asserted": false,
+  "canonical_hash_policy": "Reference-only sorted compact JSON using UTF8 json.dumps(sort_keys=True,separators=(comma,colon),allow_nan=False). This is a reproducibility hash, not the application physical_input_hash; application hashes are retained separately after validation.",
+  "canonical_checks": [
+    {
+      "revision": 2,
+      "case": "A10",
+      "expected_intervals": 52560,
+      "model_canonical_sha256": "dc458670ec6e37d51b60c3024e7b6007d2c2d065702c448359135d9cef2901a1",
+      "study_canonical_sha256": "49781f0c769c9ff51bbb6f47a00aad2698d5f40ecd17eda7ba2096d698f1b598",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    {
+      "revision": 2,
+      "case": "B10",
+      "expected_intervals": 52560,
+      "model_canonical_sha256": "8b39bb10feded2b29aeb24b707b2d7a823d3492daf19336a8d9ef2173be49152",
+      "study_canonical_sha256": "49781f0c769c9ff51bbb6f47a00aad2698d5f40ecd17eda7ba2096d698f1b598",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    {
+      "revision": 2,
+      "case": "A5",
+      "expected_intervals": 105120,
+      "model_canonical_sha256": "dc458670ec6e37d51b60c3024e7b6007d2c2d065702c448359135d9cef2901a1",
+      "study_canonical_sha256": "b4e549ae0201c98e6c1ba001744a75c18da49333bdd78c946888e6c1aa8b7d14",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    {
+      "revision": 2,
+      "case": "B5",
+      "expected_intervals": 105120,
+      "model_canonical_sha256": "8b39bb10feded2b29aeb24b707b2d7a823d3492daf19336a8d9ef2173be49152",
+      "study_canonical_sha256": "b4e549ae0201c98e6c1ba001744a75c18da49333bdd78c946888e6c1aa8b7d14",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    {
+      "revision": 3,
+      "case": "A10",
+      "expected_intervals": 52560,
+      "model_canonical_sha256": "dc458670ec6e37d51b60c3024e7b6007d2c2d065702c448359135d9cef2901a1",
+      "study_canonical_sha256": "49781f0c769c9ff51bbb6f47a00aad2698d5f40ecd17eda7ba2096d698f1b598",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    {
+      "revision": 3,
+      "case": "B10",
+      "expected_intervals": 52560,
+      "model_canonical_sha256": "cdbad366caff0847255abfcdc58e5088b1afb55a5a938fbb5ed60fd9850843bc",
+      "study_canonical_sha256": "49781f0c769c9ff51bbb6f47a00aad2698d5f40ecd17eda7ba2096d698f1b598",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ]
+    },
+    {
+      "revision": 3,
+      "case": "A5",
+      "expected_intervals": 105120,
+      "model_canonical_sha256": "dc458670ec6e37d51b60c3024e7b6007d2c2d065702c448359135d9cef2901a1",
+      "study_canonical_sha256": "b4e549ae0201c98e6c1ba001744a75c18da49333bdd78c946888e6c1aa8b7d14",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        60.0,
+        60.0,
+        60.0,
+        60.0
+      ]
+    },
+    {
+      "revision": 3,
+      "case": "B5",
+      "expected_intervals": 105120,
+      "model_canonical_sha256": "cdbad366caff0847255abfcdc58e5088b1afb55a5a938fbb5ed60fd9850843bc",
+      "study_canonical_sha256": "b4e549ae0201c98e6c1ba001744a75c18da49333bdd78c946888e6c1aa8b7d14",
+      "matches_declaration": true,
+      "design_supply_fan_power_w_per_zone": [
+        50.0,
+        50.0,
+        50.0,
+        50.0
+      ]
+    }
+  ],
+  "canonical_checks_count": 8,
+  "revision2_to_revision3_model_leaf_changes": {
+    "A10": [],
+    "B10": [
+      "/zones/0/cooling_system/supply_fan/total_efficiency",
+      "/zones/1/cooling_system/supply_fan/total_efficiency",
+      "/zones/2/cooling_system/supply_fan/total_efficiency",
+      "/zones/3/cooling_system/supply_fan/total_efficiency"
+    ],
+    "A5": [],
+    "B5": [
+      "/zones/0/cooling_system/supply_fan/total_efficiency",
+      "/zones/1/cooling_system/supply_fan/total_efficiency",
+      "/zones/2/cooling_system/supply_fan/total_efficiency",
+      "/zones/3/cooling_system/supply_fan/total_efficiency"
+    ]
+  },
+  "history_pins": {
+    "historical_inputs": {
+      "path": "examples/energy/revision1-inputs.json",
+      "bytes": 195909,
+      "sha256": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb",
+      "exact_hash_match": true
+    },
+    "original_failed_pair_evidence": {
+      "path": "docs/evidence/v0.4-energy/production-timestep.json",
+      "bytes": 180187,
+      "sha256": "ae328ba358bade5d3a9b734ca9eeba2f9cffb68df527c6bdd5c8e6faab21fd08",
+      "exact_hash_match": true
+    },
+    "antecedent_revision2_protocol": {
+      "path": "scripts/energy-zero-cutout-protocol.json",
+      "bytes": 9022,
+      "sha256": "64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40",
+      "exact_hash_match": true
+    },
+    "antecedent_revision2_outcome": {
+      "path": "docs/evidence/v0.4-energy/revision2-production-timestep.json",
+      "bytes": 182574,
+      "sha256": "713c003cd3844255abe300190a8f90c333affca96b2b7026b45004f8bcd2e908",
+      "exact_hash_match": true
+    }
+  },
+  "fixed_native_plan": {
+    "order": [
+      "A10",
+      "B10",
+      "A5",
+      "B5"
+    ],
+    "native_processes": 4,
+    "workers": 1,
+    "arguments": [
+      "--jobs",
+      "1",
+      "--weather",
+      "weather.epw",
+      "--output-directory",
+      ".",
+      "--output-prefix",
+      "eplus",
+      "../model.epJSON"
+    ],
+    "limits": {
+      "per_native_seconds": 1800,
+      "memory_bytes": 2147483648,
+      "scratch_bytes": 1073741824,
+      "file_bytes": 134217728
+    },
+    "criteria": {
+      "annual_facility_energy_relative_max": 0.01,
+      "common_ten_minute_peak_relative_max": 0.03,
+      "occupied_cooling_unmet_percent_max": 1.0,
+      "comfort_tolerance_c": 0.2,
+      "electricity_absolute_kwh": 0.01,
+      "electricity_relative": 0.0001,
+      "demand_absolute_kw": 0.001,
+      "demand_relative": 0.0001
+    },
+    "comparison_policy": "Both A and B must pass independently; finer-step value is denominator; all four full-year cases retained even after a numerical predicate failure. No favorable averaging, excluded intervals, changed weather, sizing or next control setting.",
+    "stop_rule": "Process/input/integrity/resource failure stops the remaining schedule and retains all partial output; scientific numerical failures remain failed and do not skip the other predetermined cases. Four native annuals once, no retries or other control variants."
+  },
+  "contract_review": {
+    "exact_whole_model_and_study_preflight_before_run_and_after_retention": true,
+    "revision2_explicitly_selectable": "-ExampleRevision 2; default is 3. Only the selected protocol transformations are applied before whole-object comparison.",
+    "core_revision2_factory_preserved": "synthetic_four_zone_model_revision_two",
+    "core_revision3_regression": "Complete A equality; restore only four B fan efficiencies for complete revision2 equality; validate model identity and 60/50 W design power. Test source reviewed; Cargo was not run by this reviewer.",
+    "method_weather_and_study_fields_unchanged_except_predeclared_timestep": true,
+    "native_fan_object_checks": "Source requires exactly four named Fan:SystemModel objects per case and exact efficiency, design power, flow, pressure and motor efficiency: sixteen objects across four cases. No generated native input or execution is asserted by this preparation review.",
+    "typed_revision_and_preflight_guards": true,
+    "all_full_year_cases_and_intervals_required": true,
+    "finer_timestep_denominator_and_thresholds_unchanged": true,
+    "no_favorable_subset_or_retry_rule": true
+  },
+  "package_review": {
+    "protocol_explicitly_selected": true,
+    "selector": "scripts/package-artifacts.ps1",
+    "full_document_closure_rerun_by_this_reviewer": false
+  },
+  "limitations": [
+    "This is preparation evidence, not a successful revision3 annual calculation or qualification.",
+    "60 W versus 50 W is declared design electrical fan power; annual savings and coupled cooling effects are not inferred.",
+    "Historical revision1 failure and revision2 limited qualification remain unchanged; revision3 B remains unassessed until exact new evidence is reviewed.",
+    "No engine, native UI, clean release, real-climate or general building acceptance is asserted."
+  ]
+}

@@ -219,28 +219,57 @@ def production_case(root, item, jobs):
                 diagnostics=diagnostic,native_csv_sha256=sha(csvfile),model=record["model"],study=record["study"])
 
 
-def production(root,jobs):
-    index=json.loads((root/"run-index.json").read_text(encoding="utf-8-sig"));assert [x["case"] for x in index]==["A10","B10","A5","B5"]
-    cases=[production_case(root,item,jobs) for item in index];comparisons=[]
-    revision2=None
+def example_contract(root,cases):
+    """Historical revision2 remains selectable after the default factory advances."""
+    contract=None
     if (root/"declaration.json").exists():
         declaration=json.loads((root/"declaration.json").read_text(encoding="utf-8-sig"))
-        if declaration.get("example_revision")==2:
-            protocol=Path(__file__).with_name("energy-zero-cutout-protocol.json")
-            assert sha(protocol)==declaration["protocol_sha256"]=="64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40"
+        if "example_revision" in declaration:
+            revision=declaration["example_revision"];assert type(revision) is int and revision in (2,3)
+            names={2:("energy-zero-cutout-protocol.json","64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40"),
+                   3:("energy-fan-example-protocol.json","6c2d6defc48553d0380ee47a8e107eacab6d9853e7d690b01ea4b0be249af781")}
+            protocol=Path(__file__).with_name(names[revision][0])
+            assert sha(protocol)==declaration["protocol_sha256"]==names[revision][1]
             plan=json.loads(protocol.read_text());historical=Path(__file__).parent.parent/plan["historical_inputs"]["path"]
             assert sha(historical)==plan["historical_inputs"]["sha256"]
             snapshots=json.loads(historical.read_text());canonical=lambda v:hashlib.sha256(json.dumps(v,sort_keys=True,separators=(",",":"),allow_nan=False).encode()).hexdigest()
+            assert len(cases)==len(plan["cases"])==4 and [c["case"] for c in cases]==plan["order"]
+            fan_checks=[]
             for c,p in zip(cases,plan["cases"]):
                 assert c["case"]==p["case"] and c["method"]==p["expected_method"]
                 expected=json.loads(json.dumps(snapshots["cases"][p["alternative"]]))
-                for z in expected["model"]["zones"]:assert z["cooling_system"]["cooling_deadband_k"]==.2;z["cooling_system"]["cooling_deadband_k"]=0.0
+                assert len(expected["model"]["zones"])==4
+                for z in expected["model"]["zones"]:
+                    assert z["cooling_system"]["cooling_deadband_k"]==.2 and z["cooling_system"]["supply_fan"]["total_efficiency"]==.5
+                    z["cooling_system"]["cooling_deadband_k"]=0.0
+                    if revision==3 and p["alternative"]=="B":z["cooling_system"]["supply_fan"]["total_efficiency"]=.6
                 expected["study"]["zone_timesteps_per_hour"]=60//p["minutes"]
                 assert c["model"]==expected["model"] and c["study"]==expected["study"]
                 assert canonical(c["model"])==p["expected_model_canonical_sha256"] and canonical(c["study"])==p["expected_study_canonical_sha256"]
                 preflight=json.loads((root/("input-preflight-"+c["case"]+".json")).read_text(encoding="utf-8-sig"))
                 assert preflight["case"]==c["case"] and preflight["only_declared_changes"] is True and preflight["protocol_sha256"]==sha(protocol) and preflight["historical_inputs_sha256"]==sha(historical)
-            revision2=dict(example_revision=2,protocol_sha256=sha(protocol),historical_inputs_sha256=sha(historical),only_eight_declared_cutout_changes_verified=True,original_failure_unchanged=True)
+                if revision==3:
+                    assert type(preflight["example_revision"]) is int and preflight["example_revision"]==3 and preflight["schema"]=="greenlens.energy-revision3-input-preflight.v1"
+                    model_path=root/f"project-{p['minutes']}"/"runs"/c["id"]/"model.epJSON"
+                    native=json.loads(model_path.read_text())["Fan:SystemModel"]
+                    assert set(native)=={f"Z{i:03} Supply Fan" for i in range(1,5)}
+                    for name,fan in native.items():
+                        assert fan["fan_total_efficiency"]==p["expected_supply_fan_total_efficiency"]
+                        assert fan["design_electric_power_consumption"]==p["expected_design_supply_fan_w_per_zone"]
+                        assert fan["design_pressure_rise"]==100 and fan["design_maximum_air_flow_rate"]==.3 and fan["motor_efficiency"]==.9
+                        fan_checks.append(dict(case=c["case"],native_name=name,total_efficiency=fan["fan_total_efficiency"],design_power_w=fan["design_electric_power_consumption"]))
+            contract=dict(example_revision=revision,protocol_sha256=sha(protocol),historical_inputs_sha256=sha(historical),only_eight_declared_cutout_changes_verified=True,original_failure_unchanged=True)
+            if revision==3:
+                contract.update(only_four_B_fan_efficiency_changes_from_revision2_verified=True,native_fan_checks=fan_checks,
+                    prior_revision2_protocol_sha256=plan["antecedent_revision2_protocol"]["sha256"],prior_revision2_outcome_sha256=plan["antecedent_revision2_outcome"]["sha256"],
+                    fan_energy_comparison=[dict(minutes=m,baseline_kwh=cases[i]["annual_kwh"]["supply_fans"],proposed_kwh=cases[i+1]["annual_kwh"]["supply_fans"],signed_saving_kwh=cases[i]["annual_kwh"]["supply_fans"]-cases[i+1]["annual_kwh"]["supply_fans"]) for i,m in ((0,10),(2,5))])
+    return contract
+
+
+def production(root,jobs):
+    index=json.loads((root/"run-index.json").read_text(encoding="utf-8-sig"));assert [x["case"] for x in index]==["A10","B10","A5","B5"]
+    cases=[production_case(root,item,jobs) for item in index];comparisons=[]
+    contract=example_contract(root,cases)
     for alternative in ("A","B"):
         ten=next(c for c in cases if c["case"]==alternative+"10");five=next(c for c in cases if c["case"]==alternative+"5")
         assert ten["model"]==five["model"]
@@ -254,7 +283,9 @@ def production(root,jobs):
     comfort_passed=all(z["criterion_passed"] for c in cases for z in c["comfort"])
     return dict(schema="greenlens.energy-production-audit.v1",auditor_sha256=sha(Path(__file__)),cases=cases,timestep_comparisons=comparisons,
                 timestep_passed=timestep_passed,comfort_passed=comfort_passed,all_checks_pass=timestep_passed and comfort_passed,
-                revision2_contract=revision2,direct_csv_retention_and_arithmetic_passed=True,independent_native_rerun_or_replay_asserted=False,full_energy_method_qualified=False)
+                revision2_contract=contract if contract and contract["example_revision"]==2 else None,
+                revision3_contract=contract if contract and contract["example_revision"]==3 else None,
+                direct_csv_retention_and_arithmetic_passed=True,independent_native_rerun_or_replay_asserted=False,full_energy_method_qualified=False)
 
 
 def direct_parity(root,production_root,jobs):

@@ -1,0 +1,45 @@
+{
+  "schema": "greenlens.energy-revision3-regression.v1",
+  "checked_utc": "2026-10-13T07:10:06.995645Z",
+  "base_source_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+  "working_tree_dirty": true,
+  "changed_scope": "Four proposed supply fan efficiencies and retained revision2 factory; complete typed equality regression",
+  "commands": [
+    "cargo fmt --all -- --check",
+    "cargo test --workspace --exclude greenlens-radiance --locked --offline",
+    "cargo clippy --workspace --all-targets --locked --offline -- -D warnings"
+  ],
+  "cargo_build_jobs": 1,
+  "rust_test_threads": 2,
+  "passed": true,
+  "tests": {
+    "core_unit": 35,
+    "core_study": 6,
+    "core_weather": 11,
+    "core_weather_explicit_real_source_fixture_ignored": 1,
+    "energyplus_unit": 8,
+    "process_unit": 6,
+    "process_child_fixture_ignored": 1,
+    "runner_unit": 110,
+    "native_report_default_ignored": 1,
+    "native_energy_lifecycle_default_ignored": 1,
+    "runner_jobs": 2,
+    "runner_persistence": 16
+  },
+  "logs": {
+    "format.log": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "workspace.log": {
+      "sha256": "6248e5b8bc72f49360ea2b567f61050fc9a716a44120d3c27cef18b21f2d716d",
+      "bytes": 22945
+    },
+    "clippy.log": {
+      "sha256": "1654b5b37b468a12f9a4ed05757470c8669a685ef6ea130ca3d7a3ca89e421aa",
+      "bytes": 718
+    }
+  },
+  "native_science_asserted": false,
+  "installed_desktop_asserted": false
+}

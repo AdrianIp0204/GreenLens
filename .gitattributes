@@ -103,3 +103,4 @@ scripts/energy-gate0-audit.py -text -whitespace
 scripts/energy-gate0-fixture.py -text -whitespace
 scripts/energy-interzone-fixture.py -text -whitespace
 *.pdf binary
+scripts/energy-fan-example-protocol.json -text -whitespace

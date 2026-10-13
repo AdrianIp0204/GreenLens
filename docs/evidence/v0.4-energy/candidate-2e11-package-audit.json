@@ -1,0 +1,384 @@
+{
+  "schema": "greenlens.energy-final-package-readonly-audit.v1",
+  "checked_utc": "2026-10-13T06:54:25.225415+00:00",
+  "source_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+  "source_preflight_sha256": "887e32a25bd57146f9e6adcd0a4208dd81e47fccb12c4e7e89830f7c373c6442",
+  "artifacts": {
+    "GreenLens_0.4.0_x64-setup.exe": {
+      "sha256": "10233246faf2f592e6a8e768895825c12f724d53dde9813e2ceee2404426b745",
+      "bytes": 4467115
+    },
+    "GreenLens-CLI-0.4.0-windows-x64.zip": {
+      "sha256": "72852381e6625c36e3af4e0a39181efffd8e23214578eab00fc23b0b122d40e4",
+      "bytes": 9586694
+    }
+  },
+  "cli": {
+    "sha256": "c7bfa17db52cfd05654900e7db237595da3f61c0d9bf4b07791ba0bb88edf723",
+    "bytes": 8881664,
+    "imports": [
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "bcryptprimitives.dll",
+      "kernel32.dll",
+      "ntdll.dll",
+      "psapi.dll"
+    ]
+  },
+  "desktop_unbundled": {
+    "sha256": "df9d0e97e9c45da0d51ac392aba3b7fb0c58c24c6e9359742f813b44d0ea6c56",
+    "bytes": 18890752,
+    "imports": [
+      "ADVAPI32.dll",
+      "KERNEL32.dll",
+      "VCRUNTIME140.dll",
+      "VCRUNTIME140_1.dll",
+      "advapi32.dll",
+      "api-ms-win-core-synch-l1-2-0.dll",
+      "api-ms-win-core-winrt-error-l1-1-0.dll",
+      "api-ms-win-crt-convert-l1-1-0.dll",
+      "api-ms-win-crt-heap-l1-1-0.dll",
+      "api-ms-win-crt-locale-l1-1-0.dll",
+      "api-ms-win-crt-math-l1-1-0.dll",
+      "api-ms-win-crt-runtime-l1-1-0.dll",
+      "api-ms-win-crt-stdio-l1-1-0.dll",
+      "api-ms-win-crt-string-l1-1-0.dll",
+      "bcryptprimitives.dll",
+      "combase.dll",
+      "comctl32.dll",
+      "dwmapi.dll",
+      "gdi32.dll",
+      "imm32.dll",
+      "kernel32.dll",
+      "ntdll.dll",
+      "ole32.dll",
+      "oleaut32.dll",
+      "psapi.dll",
+      "shell32.dll",
+      "shlwapi.dll",
+      "user32.dll"
+    ]
+  },
+  "source_commit_string_present_both": true,
+  "zip": {
+    "files": 309,
+    "uncompressed_bytes": 28115446,
+    "exact_source_files": 307,
+    "generated_index": "docs/PACKAGE-CONTENTS.md",
+    "all_members_decompressed_crc_paths_and_exact_bytes_checked": true
+  },
+  "nsis_script_sha256": "60d524e417e177d512c0aba3bfa5d4df441ec4cc81f0e1a567710ded5528354e",
+  "nsis_resource_count": 47,
+  "nsis_resource_mappings": [
+    {
+      "destination": "notices/LICENSE",
+      "source": "LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "bytes": 11358
+    },
+    {
+      "destination": "notices/NOTICE",
+      "source": "NOTICE",
+      "sha256": "ee4a586b20f9e9460c479edfc1756875dc03ac5a4904761e37c6578ed53ab1ad",
+      "bytes": 470
+    },
+    {
+      "destination": "notices/energy-qualification.json",
+      "source": "dependencies/energy-qualification.json",
+      "sha256": "e0c65b5a0f59193d4d2000f88cf6f503a3fe0b2564afdb5f1dd8308b56ea3b7c",
+      "bytes": 16801
+    },
+    {
+      "destination": "notices/energyplus.json",
+      "source": "dependencies/energyplus.json",
+      "sha256": "88c5959fb4cbe2e62e929049c4d184e850f99a7ce6c23364ac46f4050ac29f78",
+      "bytes": 11235
+    },
+    {
+      "destination": "notices/license-supplements.json",
+      "source": "dependencies/license-supplements.json",
+      "sha256": "43700be5416586f89c1513cec10e1c200b5f8b4ebdd22b08a26dda5d64f3de01",
+      "bytes": 11049
+    },
+    {
+      "destination": "notices/radiance.json",
+      "source": "dependencies/radiance.json",
+      "sha256": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe",
+      "bytes": 5578
+    },
+    {
+      "destination": "notices/resolved-inventory.json",
+      "source": "dependencies/resolved-inventory.json",
+      "sha256": "65de8b622618f4619add007e2bbed833be49d2c1318285d040055337aedfe848",
+      "bytes": 506287
+    },
+    {
+      "destination": "notices/typst.json",
+      "source": "dependencies/typst.json",
+      "sha256": "178eeaa7260ee203bdf44b35d4f1f20efc87409dfccdc33e5d278dffabbee93a",
+      "bytes": 4544
+    },
+    {
+      "destination": "notices/weather.json",
+      "source": "dependencies/weather.json",
+      "sha256": "53898ccde5a11992a2d04e3a7b2ffddda65ea4dadc7efa64ff9cce4cdd6a352b",
+      "bytes": 3394
+    },
+    {
+      "destination": "notices/dependencies.md",
+      "source": "docs/dependencies.md",
+      "sha256": "9294f131cda641566104af21302b196643f4cc47906219d7c5c1e1acfdfd05a7",
+      "bytes": 15682
+    },
+    {
+      "destination": "notices/v0.3-weather-sources.md",
+      "source": "docs/v0.3-weather-sources.md",
+      "sha256": "9c6bb9a00b9c626e9fcd0a729e494e253563dbad2a0663ac76fb319c37f7fd73",
+      "bytes": 13525
+    },
+    {
+      "destination": "notices/v0.4-energy-method.md",
+      "source": "docs/v0.4-energy-method.md",
+      "sha256": "c948c3e2447ef1ff22c8e4f0022aa641e31ae47d2c1ef7a5a88228928a53d56c",
+      "bytes": 20907
+    },
+    {
+      "destination": "notices/v0.4-report-method.md",
+      "source": "docs/v0.4-report-method.md",
+      "sha256": "7d8dada7ab6ff0b0e869028ed9723e08a4be41ea6d59d8895ea86fd44b4aabf7",
+      "bytes": 14569
+    },
+    {
+      "destination": "notices/windows-installer.md",
+      "source": "docs/windows-installer.md",
+      "sha256": "37535315d86387763b113b0ec3940c4850ffe9eceb99ad8534036452c7993739",
+      "bytes": 2402
+    },
+    {
+      "destination": "notices/windows-runtime.md",
+      "source": "docs/windows-runtime.md",
+      "sha256": "7f1e6caffdd4319c46dd2bf558a33bad2286ed99730336098b833c33d3dbd7f6",
+      "bytes": 6924
+    },
+    {
+      "destination": "examples/carbon/README.md",
+      "source": "examples/carbon/README.md",
+      "sha256": "dce18f7b6aeba76e68385e57ad781617892932bc4eaa67d64b5e6bc43064f0f6",
+      "bytes": 1196
+    },
+    {
+      "destination": "examples/carbon/clp-hong-kong-2025.json",
+      "source": "examples/carbon/clp-hong-kong-2025.json",
+      "sha256": "8299885a17621b61bf7d2c53f21d92592c0edd179ecbbbe6d4215c6320a20056",
+      "bytes": 824
+    },
+    {
+      "destination": "examples/carbon/synthetic-fixture.json",
+      "source": "examples/carbon/synthetic-fixture.json",
+      "sha256": "2f4ce3e66e14be1159ce3ba9428eace4fcf8b3b2d5661c7835a9e8dc3952e0f3",
+      "bytes": 362
+    },
+    {
+      "destination": "examples/climate-study-pvgis.json",
+      "source": "examples/climate-study-pvgis.json",
+      "sha256": "72de4380d4162cea9dc402ede5bbe8d8a131465ff1bac1898fde01a8a7ce8a36",
+      "bytes": 673
+    },
+    {
+      "destination": "examples/energy/README.md",
+      "source": "examples/energy/README.md",
+      "sha256": "4af140c19b19ed05b12ebf8ae18927174dfe643725941236e72cbf97721898dc",
+      "bytes": 3970
+    },
+    {
+      "destination": "examples/energy/revision1-inputs.json",
+      "source": "examples/energy/revision1-inputs.json",
+      "sha256": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb",
+      "bytes": 195909
+    },
+    {
+      "destination": "examples/synthetic-a.json",
+      "source": "examples/synthetic-a.json",
+      "sha256": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646",
+      "bytes": 633
+    },
+    {
+      "destination": "examples/synthetic-b.json",
+      "source": "examples/synthetic-b.json",
+      "sha256": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf",
+      "bytes": 724
+    },
+    {
+      "destination": "examples/weather/pvgis-hong-kong-tmy-2005-2023.epw",
+      "source": "examples/weather/pvgis-hong-kong-tmy-2005-2023.epw",
+      "sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8",
+      "bytes": 1863014
+    },
+    {
+      "destination": "examples/weather/pvgis-hong-kong.source.json",
+      "source": "examples/weather/pvgis-hong-kong.source.json",
+      "sha256": "26043aa4852ed8e137881f2870f47f3e8a3daf4b03adf07a30cc9a010c7f6d5f",
+      "bytes": 2249
+    },
+    {
+      "destination": "examples/weather/synthetic.source.json",
+      "source": "examples/weather/synthetic.source.json",
+      "sha256": "9b3d02e5b94a1f478b9bacd8a6a7a3577e3c17595ec73a37093b4e8d60d1a055",
+      "bytes": 393
+    },
+    {
+      "destination": "notices/report-renderer/NotoSansCJK-OFL.txt",
+      "source": "reports/energy/notices/NotoSansCJK-OFL.txt",
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2",
+      "bytes": 4301
+    },
+    {
+      "destination": "notices/report-renderer/Typst-LICENSE.txt",
+      "source": "reports/energy/notices/Typst-LICENSE.txt",
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+      "bytes": 9723
+    },
+    {
+      "destination": "notices/report-renderer/Typst-NOTICE.txt",
+      "source": "reports/energy/notices/Typst-NOTICE.txt",
+      "sha256": "1778244777547c281b6f5fa9fc0c18ab21f8d4491c803f64e09046800f5fcb26",
+      "bytes": 21066
+    },
+    {
+      "destination": "notices/report-renderer/Typst-assets-NOTICE.txt",
+      "source": "reports/energy/notices/Typst-assets-NOTICE.txt",
+      "sha256": "80ac46fb7d70f1c30bf0c14d3408e6a6f0f9cc9997a00b592aa0d2c8a5243a9d",
+      "bytes": 76850
+    },
+    {
+      "destination": "notices/report-renderer/Typst-target-NOTICES.txt",
+      "source": "reports/energy/notices/Typst-target-NOTICES.txt",
+      "sha256": "b0f2823c15e849c92c50a46eaeddae24fed1e7edeb86b048b48dcff9f9b3809e",
+      "bytes": 977360
+    },
+    {
+      "destination": "notices/third-party/EnergyPlus-LICENSE.txt",
+      "source": "third-party/EnergyPlus-LICENSE.txt",
+      "sha256": "261aa3c3a98cb059c57ba2db27f1e06d45546b63ed1a1883e9cd3fd31caaa4f0",
+      "bytes": 3184
+    },
+    {
+      "destination": "notices/third-party/Radiance-LICENSE.txt",
+      "source": "third-party/Radiance-LICENSE.txt",
+      "sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6",
+      "bytes": 2456
+    },
+    {
+      "destination": "notices/third-party/Radiance-gendaymtx-NOTICE.txt",
+      "source": "third-party/Radiance-gendaymtx-NOTICE.txt",
+      "sha256": "0aa44c83f4fdd3e1b34635705e2aff1a3aabf490634251ea92327bbb9d365bd5",
+      "bytes": 1258
+    },
+    {
+      "destination": "notices/third-party/generated-notices.txt",
+      "source": "third-party/generated-notices.txt",
+      "sha256": "c812d796d9e17fc35a557af898d35a3e97f16af05204681401b8ca8624fe7e00",
+      "bytes": 2379904
+    },
+    {
+      "destination": "notices/third-party/tauri-template-license.txt",
+      "source": "third-party/tauri-template-license.txt",
+      "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d",
+      "bytes": 1090
+    },
+    {
+      "destination": "notices/third-party/upstream/MPL-2.0.txt",
+      "source": "third-party/upstream/MPL-2.0.txt",
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04",
+      "bytes": 16726
+    },
+    {
+      "destination": "notices/third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-LICENSE.txt",
+      "source": "third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-LICENSE.txt",
+      "sha256": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55",
+      "bytes": 1487
+    },
+    {
+      "destination": "notices/third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-NOTICE.txt",
+      "source": "third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-NOTICE.txt",
+      "sha256": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90",
+      "bytes": 3894
+    },
+    {
+      "destination": "notices/third-party/upstream/NSIS-3.11-COPYING.txt",
+      "source": "third-party/upstream/NSIS-3.11-COPYING.txt",
+      "sha256": "e7dd514003ab96cb3ddccbc028fe5c795fccf57dc41f21cfb9d4dd16ead23bf5",
+      "bytes": 15632
+    },
+    {
+      "destination": "notices/third-party/upstream/NSIS-3.11-ModernUI2-LICENSE.txt",
+      "source": "third-party/upstream/NSIS-3.11-ModernUI2-LICENSE.txt",
+      "sha256": "d5957bd99460eb21148bd2695eeb5a3718abae6b118040a4678926da3f4cfbc0",
+      "bytes": 840
+    },
+    {
+      "destination": "notices/third-party/upstream/NSIS-3.11-NSISdl-LICENSE.txt",
+      "source": "third-party/upstream/NSIS-3.11-NSISdl-LICENSE.txt",
+      "sha256": "326e587f36ca58e14bd09cca153f9e69f1c5ed701189aa47d2d0627af7e16280",
+      "bytes": 943
+    },
+    {
+      "destination": "notices/third-party/upstream/alloc-stdlib-0.3.0-LICENSE.txt",
+      "source": "third-party/upstream/alloc-stdlib-0.3.0-LICENSE.txt",
+      "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae",
+      "bytes": 1483
+    },
+    {
+      "destination": "notices/third-party/upstream/defmt-parser-1.0.0-LICENSE-MIT.txt",
+      "source": "third-party/upstream/defmt-parser-1.0.0-LICENSE-MIT.txt",
+      "sha256": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50",
+      "bytes": 1053
+    },
+    {
+      "destination": "notices/third-party/upstream/nsis-tauri-utils-0.5.3-LICENSE-MIT.txt",
+      "source": "third-party/upstream/nsis-tauri-utils-0.5.3-LICENSE-MIT.txt",
+      "sha256": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe",
+      "bytes": 1110
+    },
+    {
+      "destination": "notices/third-party/upstream/webview2-rs-LICENSE.txt",
+      "source": "third-party/upstream/webview2-rs-LICENSE.txt",
+      "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73",
+      "bytes": 1067
+    },
+    {
+      "destination": "notices/third-party/weather/PVGIS-ERA5-NOTICE.txt",
+      "source": "third-party/weather/PVGIS-ERA5-NOTICE.txt",
+      "sha256": "689e8907f735bc6cd5dffd29b155f1eca00e9fe0ec3e50037a38dfc565da55a7",
+      "bytes": 2655
+    }
+  ],
+  "required_resource_mappings_present": true,
+  "license_summary": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "lockfiles": {
+    "Cargo.lock": "59d2c017b10f3787d4e1aed116c2c028f9c30e604c18c9caabd4ac7305564aca",
+    "apps/desktop/package-lock.json": "d00bb6b90b0abbe8ee21466bf5b5d8793f7e811ff0649bd81113e8181384accf"
+  },
+  "standalone_installer_isolation": false,
+  "isolation_reason": "A different install path still shares GreenLens uninstall/manufacturer registration and shortcut identity; existing upgrade/uninstaller handling can affect the old installation. No install is performed.",
+  "limitations": [
+    "NSIS source resource mappings and CLI/source bytes checked; compressed installer resource payload not independently extracted in this pass.",
+    "PE normal import table inspected without loading either application; runtime DLL resolution and native UI acceptance are not claimed.",
+    "This review adds no simulation, qualification or replay result."
+  ],
+  "executable_or_installer_or_engine_launched": false
+}

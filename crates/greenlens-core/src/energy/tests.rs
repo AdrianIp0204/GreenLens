@@ -24,7 +24,7 @@ fn example_revision_two_changes_only_explicit_cutout_from_retained_revision_one(
         assert_eq!(original_study.calendar, synthetic_energy_calendar());
         assert_eq!(original_study.weather, weather.binding());
         assert_eq!(original_study.zone_timesteps_per_hour, 6);
-        let revised = synthetic_four_zone_model(proposed);
+        let revised = synthetic_four_zone_model_revision_two(proposed);
         assert_eq!(revised.zones.len(), 4);
         assert!(original.zones.iter().all(|zone| zone
             .cooling_system
@@ -50,6 +50,58 @@ fn example_revision_two_changes_only_explicit_cutout_from_retained_revision_one(
         assert_ne!(old.model_input_sha256, new.model_input_sha256);
         validate_weather_context(&revised, &original_study, &weather).unwrap();
     }
+}
+#[test]
+fn example_revision_three_changes_only_four_proposed_fan_efficiencies() {
+    let baseline = synthetic_four_zone_model(false);
+    assert_eq!(baseline, synthetic_four_zone_model_revision_two(false));
+    let previous = synthetic_four_zone_model_revision_two(true);
+    let proposed = synthetic_four_zone_model(true);
+    assert_eq!(previous.zones.len(), 4);
+    assert_eq!(proposed.zones.len(), 4);
+    let mut restored = proposed.clone();
+    for ((old, new), restore) in previous
+        .zones
+        .iter()
+        .zip(&proposed.zones)
+        .zip(&mut restored.zones)
+    {
+        let old_system = old.cooling_system.as_ref().unwrap();
+        let new_system = new.cooling_system.as_ref().unwrap();
+        assert_eq!(old_system.supply_fan.total_efficiency, 0.5);
+        assert_eq!(new_system.supply_fan.total_efficiency, 0.6);
+        close(
+            old_system.rated_airflow_m3_s * old_system.supply_fan.pressure_rise_pa
+                / old_system.supply_fan.total_efficiency,
+            60.,
+        );
+        close(
+            new_system.rated_airflow_m3_s * new_system.supply_fan.pressure_rise_pa
+                / new_system.supply_fan.total_efficiency,
+            50.,
+        );
+        restore
+            .cooling_system
+            .as_mut()
+            .unwrap()
+            .supply_fan
+            .total_efficiency = 0.5;
+    }
+    // Complete typed equality rejects every additional edit, including geometry,
+    // schedules, airflow, ventilation, motor heat, curves, COP and cutout.
+    assert_eq!(restored, previous);
+    let calendar = synthetic_energy_calendar();
+    let old = validate_thermal_model(&previous, &calendar).unwrap();
+    let new = validate_thermal_model(&proposed, &calendar).unwrap();
+    assert_ne!(old.model_input_sha256, new.model_input_sha256);
+    assert_eq!(
+        validate_thermal_model(&baseline, &calendar)
+            .unwrap()
+            .model_input_sha256,
+        validate_thermal_model(&synthetic_four_zone_model_revision_two(false), &calendar)
+            .unwrap()
+            .model_input_sha256
+    );
 }
 #[test]
 fn report_snapshot_presentation_preserves_values_and_missing_states() {

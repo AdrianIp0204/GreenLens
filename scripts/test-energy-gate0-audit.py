@@ -96,6 +96,124 @@ class ClosedRecord(unittest.TestCase):
                 else:self.assertTrue(A.production(self.root,self.root)["revision2_contract"]["only_eight_declared_cutout_changes_verified"])
 
 
+class ExampleRevision(unittest.TestCase):
+    """Synthetic closed inputs only: exercise the real revision contract, not an engine."""
+    def setUp(self):
+        self.temp=tempfile.TemporaryDirectory();self.addCleanup(self.temp.cleanup)
+        self.root=Path(self.temp.name)
+        self.scripts=Path(__file__).parent
+
+    def fixture(self,revision):
+        name={2:"energy-zero-cutout-protocol.json",3:"energy-fan-example-protocol.json"}[revision]
+        path=self.scripts/name;plan=json.loads(path.read_text())
+        original=json.loads((self.scripts.parent/plan["historical_inputs"]["path"]).read_text())
+        declaration=dict(example_revision=revision,protocol_sha256=A.sha(path))
+        (self.root/"declaration.json").write_text(json.dumps(declaration))
+        cases=[]
+        for p in plan["cases"]:
+            c=copy.deepcopy(original["cases"][p["alternative"]])
+            for z in c["model"]["zones"]:
+                z["cooling_system"]["cooling_deadband_k"]=0.0
+                if revision==3 and p["alternative"]=="B":
+                    z["cooling_system"]["supply_fan"]["total_efficiency"]=0.6
+            c["study"]["zone_timesteps_per_hour"]=60//p["minutes"]
+            c.update(case=p["case"],id="synthetic-"+p["case"],method=copy.deepcopy(p["expected_method"]),
+                     annual_kwh=dict(facility_j=100,supply_fans=12 if p["alternative"]=="A" else 9),
+                     aligned_peak_kw=10,comfort=[dict(criterion_passed=True)])
+            cases.append(c)
+            receipt=dict(schema=f"greenlens.energy-revision{revision}-input-preflight.v1",case=p["case"],example_revision=revision,
+                         only_declared_changes=True,protocol_sha256=A.sha(path),historical_inputs_sha256=plan["historical_inputs"]["sha256"])
+            (self.root/("input-preflight-"+p["case"]+".json")).write_text(json.dumps(receipt))
+            native=self.native_path(c);native.parent.mkdir(parents=True,exist_ok=True)
+            efficiency=.6 if revision==3 and p["alternative"]=="B" else .5
+            fan=dict(fan_total_efficiency=efficiency,design_electric_power_consumption=.3*100/efficiency,
+                     design_pressure_rise=100,design_maximum_air_flow_rate=.3,motor_efficiency=.9)
+            native.write_text(json.dumps({"Fan:SystemModel":{f"Z{i:03} Supply Fan":copy.deepcopy(fan) for i in range(1,5)}}))
+        return plan,cases
+
+    def native_path(self,c):
+        return self.root/("project-5" if c["case"].endswith("5") else "project-10")/"runs"/c["id"]/"model.epJSON"
+
+    def rejected(self,cases):
+        with self.assertRaises((AssertionError,KeyError,FileNotFoundError)):
+            A.example_contract(self.root,cases)
+
+    def test_both_revisions_all_four_cases_and_signed_fan_rows(self):
+        for revision in (2,3):
+            with self.subTest(revision=revision):
+                plan,cases=self.fixture(revision);value=A.example_contract(self.root,cases)
+                self.assertEqual([c["case"] for c in cases],["A10","B10","A5","B5"])
+                self.assertEqual(value["example_revision"],revision)
+                self.assertTrue(value["original_failure_unchanged"])
+                if revision==3:
+                    self.assertEqual(len(value["native_fan_checks"]),16)
+                    self.assertEqual(value["fan_energy_comparison"],[dict(minutes=m,baseline_kwh=12,proposed_kwh=9,signed_saving_kwh=3) for m in (10,5)])
+                    self.assertEqual({x["design_power_w"] for x in value["native_fan_checks"]},{50,60})
+                else:self.assertNotIn("native_fan_checks",value)
+
+    def test_revision3_only_four_B_fan_changes_and_same_method_criteria(self):
+        old,cases2=self.fixture(2);new,cases3=self.fixture(3)
+        self.assertEqual(old["criteria"],new["criteria"])
+        for a,b in zip(cases2,cases3):
+            self.assertEqual(a["method"],b["method"]);self.assertEqual(a["study"],b["study"])
+            expected=copy.deepcopy(a["model"])
+            if a["case"].startswith("B"):
+                for z in expected["zones"]:z["cooling_system"]["supply_fan"]["total_efficiency"]=.6
+            self.assertEqual(expected,b["model"])
+
+    def test_missing_extra_or_unrelated_model_edits(self):
+        for i in range(4):
+            for mutation in ("omitted_fan","extra_fan","capacity","availability","motor","calendar"):
+                with self.subTest(case=i,mutation=mutation):
+                    _,cases=self.fixture(3);c=cases[i];z=c["model"]["zones"][0]
+                    if mutation=="omitted_fan":z["cooling_system"]["supply_fan"]["total_efficiency"]=.5 if c["case"].startswith("B") else .6
+                    elif mutation=="extra_fan":z["cooling_system"]["supply_fan"]["undeclared"]=1
+                    elif mutation=="capacity":z["cooling_system"]["gross_rated_capacity_w"]+=1
+                    elif mutation=="availability":z["cooling_system"]["availability_schedule"]="always"
+                    elif mutation=="motor":z["cooling_system"]["supply_fan"]["motor_efficiency"]+=.01
+                    else:c["study"]["calendar"]["start_weekday"]="tuesday"
+                    self.rejected(cases)
+
+    def test_native_fan_power_efficiency_shape_and_fixed_fields(self):
+        for i in range(4):
+            for field,value in (("design_electric_power_consumption",51),("fan_total_efficiency",.55),("design_pressure_rise",101),
+                                ("design_maximum_air_flow_rate",.31),("motor_efficiency",.8),("design_electric_power_consumption","50"),
+                                ("design_electric_power_consumption",None),("design_electric_power_consumption",float("nan"))):
+                with self.subTest(case=i,field=field,value=value):
+                    _,cases=self.fixture(3);path=self.native_path(cases[i]);doc=json.loads(path.read_text())
+                    doc["Fan:SystemModel"]["Z001 Supply Fan"][field]=value;path.write_text(json.dumps(doc));self.rejected(cases)
+        for mutation in ("missing","extra","renamed"):
+            with self.subTest(shape=mutation):
+                _,cases=self.fixture(3);path=self.native_path(cases[1]);doc=json.loads(path.read_text());fans=doc["Fan:SystemModel"]
+                if mutation=="missing":fans.pop("Z001 Supply Fan")
+                elif mutation=="extra":fans["Z005 Supply Fan"]=copy.deepcopy(fans["Z001 Supply Fan"])
+                else:fans["Other fan"]=fans.pop("Z001 Supply Fan")
+                path.write_text(json.dumps(doc));self.rejected(cases)
+
+    def test_case_inventory_and_methods(self):
+        for kind in ("missing","duplicate","order","method"):
+            with self.subTest(kind=kind):
+                _,cases=self.fixture(3)
+                if kind=="missing":cases.pop()
+                elif kind=="duplicate":cases[1]=copy.deepcopy(cases[0])
+                elif kind=="order":cases.reverse()
+                else:cases[0]["method"]["recipe_sha256"]="0"*64
+                self.rejected(cases)
+
+    def test_unknown_revision_and_protocol_binding(self):
+        for field,value in (("example_revision",1),("example_revision",4),("example_revision",True),("example_revision","3"),
+                            ("example_revision",3.0),("protocol_sha256","0"*64)):
+            with self.subTest(field=field,value=value):
+                _,cases=self.fixture(3);p=self.root/"declaration.json";d=json.loads(p.read_text());d[field]=value;p.write_text(json.dumps(d));self.rejected(cases)
+
+    def test_preflight_identity_and_typed_completion(self):
+        for field,value in (("case","B5"),("only_declared_changes",False),("only_declared_changes",1),
+                            ("protocol_sha256","0"*64),("historical_inputs_sha256","0"*64),
+                            ("schema","wrong"),("example_revision",2),("example_revision",3.0),("example_revision","3")):
+            with self.subTest(field=field,value=value):
+                _,cases=self.fixture(3);p=self.root/"input-preflight-A10.json";d=json.loads(p.read_text());d[field]=value;p.write_text(json.dumps(d));self.rejected(cases)
+
+
 class FixedControl(unittest.TestCase):
     def test_numeric_contract(self):
         for text in ("nan","Infinity","1e-999","1e999","1_000","0x1","True",""):

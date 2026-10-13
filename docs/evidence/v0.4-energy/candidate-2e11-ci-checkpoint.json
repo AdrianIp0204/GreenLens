@@ -1,0 +1,23 @@
+{
+  "schema": "greenlens.energy-ci-checkpoint.v1",
+  "checked_utc": "2026-10-13T07:27:56.7708803Z",
+  "source_commit": "2e11b1d36f02a670f7452d7d014c2bf01c22e594",
+  "run_id": 38357293677,
+  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38357293677",
+  "build": "success",
+  "energy_job": "failure",
+  "energy_native_lifecycle": "success",
+  "energy_native_report_render": "success",
+  "four_annual_execution": "success",
+  "complete_series_science": "success",
+  "cold_report_export_replay": "success",
+  "preserve_scientific_failure_gate": "success",
+  "evidence_upload": "failure",
+  "native_job_upload": "success",
+  "static_compatibility": "in_progress_at_checkpoint",
+  "upload_error": "Artifact root directory on the hosted workspace drive is not a parent of retained evidence on the LOCALAPPDATA drive.",
+  "remedy": "Move the small outcome JSON into ENERGY_EVIDENCE so all members of that upload share the LOCALAPPDATA drive. Keep the separate native-job upload unchanged. No scientific stage, threshold or failure propagation removed.",
+  "remedy_ci_verified": false,
+  "installed_desktop_verified": false,
+  "release_complete": false
+}

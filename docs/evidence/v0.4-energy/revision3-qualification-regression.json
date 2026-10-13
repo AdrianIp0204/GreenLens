@@ -1,0 +1,41 @@
+{
+  "schema": "greenlens.energy-revision3-qualification-regression.v1",
+  "base_commit": "38d7b7a070edacf3ac1a3a9af8249c8a1da16b23",
+  "working_tree_dirty": true,
+  "checked_utc": "2026-10-13T07:33:16.0592638Z",
+  "source_sha256": {
+    "crates/greenlens-runner/src/energy_qualification.rs": "3a273157b137b14207ede16017e5f07fc6c5476c5c7ef3f64a93ca0744231775",
+    "crates/greenlens-runner/src/energy_export.rs": "d5b97e6aaa44ade0b5d2d1f9577eeaf4735cbbdf37d2285c957407c71ebbe93e",
+    "dependencies/energy-qualification.json": "1dc1e0b93a2d8519e0edaa5195478a82f9f2da2394de8c1fae9c732ac3845df0"
+  },
+  "historical_registry_entries_preserved": 8,
+  "new_proposed_scopes": 2,
+  "qualification_tests": 3,
+  "supplementary_immutable_export_tests": 1,
+  "strict_workspace_all_targets_clippy": "passed",
+  "format_initial": "Formatting-only differences in new regression; corrected with cargo fmt",
+  "format_after": "passed",
+  "logs": {
+    "format.log": {
+      "bytes": 2358,
+      "sha256": "2938e83971677ab04b475edf61f079dc8df65b73106b12d0c4fc7d23bcf868c0"
+    },
+    "format-after.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "qualification.log": {
+      "bytes": 1117,
+      "sha256": "01ec6d2e1fbb5f4af9315946d2ab8a0c606d0d789617ce79b3c6b3618600d206"
+    },
+    "export.log": {
+      "bytes": 561,
+      "sha256": "b53a12538fbfbd9f2a78deb21ea86b721742385ca5c391e51e496418c4b4cdb0"
+    },
+    "clippy.log": {
+      "bytes": 389,
+      "sha256": "5861c0a9c2e6de7b53906efcb2cd693858766a82338ba6aa6da6b4210da7a83f"
+    }
+  },
+  "native_execution_asserted": false
+}

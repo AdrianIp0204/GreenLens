@@ -69,6 +69,7 @@ jobs:
           ./scripts/test-build-provenance.ps1 -OutputDirectory (Join-Path $env:ENERGY_BUILD_EVIDENCE 'provenance')
           ./scripts/test-package-documents.ps1
           ./scripts/test-energy-portability.ps1
+          ./scripts/test-energy-input-preflight.ps1
           $cache = Join-Path $env:RUNNER_TEMP ('energy-pure-cache-' + [guid]::NewGuid().ToString('N'))
           if (Test-Path -LiteralPath $cache) { throw 'Expected absent Python cache' }
           python -B -X utf8 -X "pycache_prefix=$cache" scripts/test-energy-gate0-audit.py
@@ -256,7 +257,10 @@ jobs:
           SCIENCE_OUTCOME: ${{ steps.science.outcome }}
           PORTABILITY_OUTCOME: ${{ steps.portability.outcome }}
         run: |
-          [ordered]@{source_commit=$env:GITHUB_SHA;production=$env:PRODUCTION_OUTCOME;science=$env:SCIENCE_OUTCOME;portability=$env:PORTABILITY_OUTCOME;installed_desktop_verified=$false;release_acceptance_asserted=$false} | ConvertTo-Json | Tee-Object -FilePath (Join-Path $env:RUNNER_TEMP 'energy-ci-outcome.json')
+          # Keep this upload on one drive; mixing RUNNER_TEMP with LOCALAPPDATA
+          # makes upload-artifact choose a root that cannot contain both trees.
+          New-Item -ItemType Directory -Path $env:ENERGY_EVIDENCE -Force | Out-Null
+          [ordered]@{source_commit=$env:GITHUB_SHA;production=$env:PRODUCTION_OUTCOME;science=$env:SCIENCE_OUTCOME;portability=$env:PORTABILITY_OUTCOME;installed_desktop_verified=$false;release_acceptance_asserted=$false} | ConvertTo-Json | Tee-Object -FilePath (Join-Path $env:ENERGY_EVIDENCE 'ci-outcome.json')
           'Execution, evidence integrity, input currency and scientific qualification remain separate. Hosted checks are not installed desktop verification.' >> $env:GITHUB_STEP_SUMMARY
           if ($env:PRODUCTION_OUTCOME -cne 'success' -or $env:SCIENCE_OUTCOME -cne 'success' -or $env:PORTABILITY_OUTCOME -cne 'success') { throw 'Required energy outcome failed or was skipped; no automatic retry or relaxed criterion' }
       - uses: actions/upload-artifact@v4
@@ -267,7 +271,6 @@ jobs:
             ${{ env.ENERGY_EVIDENCE }}/
             ${{ env.VERIFICATION_ROOT }}/energy lifecycle */
             ${{ env.VERIFICATION_ROOT }}/energy production report */
-            ${{ runner.temp }}/energy-ci-outcome.json
           if-no-files-found: warn
           retention-days: 14
       - name: Collect native diagnostics after any outcome

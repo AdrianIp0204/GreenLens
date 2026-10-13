@@ -22,7 +22,7 @@ pub fn assess(method: &EnergyMethodIdentity, physical: &str) -> Result<EnergyQua
     Ok(matches.into_iter().next().unwrap_or_else(|| EnergyQualification {
         status: EnergyQualificationStatus::Unassessed,
         method: method.clone(),
-        registry_version: "greenlens.energy-qualification.2026-10-13.2".into(),
+        registry_version: "greenlens.energy-qualification.2026-10-13.3".into(),
         reason: "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.".into(),
         tested_scope: "No general building-accuracy, equipment-calibration or certification claim.".into(),
         applicable_physical_input_sha256: vec![], evidence_ids: vec![],
@@ -81,7 +81,10 @@ mod tests {
         let entries: Vec<EnergyQualification> = serde_json::from_str(REGISTRY).unwrap();
         let limited: Vec<_> = entries
             .iter()
-            .filter(|e| e.status == EnergyQualificationStatus::LimitedQualified)
+            .filter(|e| {
+                e.status == EnergyQualificationStatus::LimitedQualified
+                    && e.registry_version == "greenlens.energy-qualification.2026-10-13.2"
+            })
             .collect();
         assert_eq!(limited.len(), 4);
         for entry in limited {
@@ -120,6 +123,71 @@ mod tests {
                 assess(&entry.method, &"f".repeat(64)).unwrap().status,
                 EnergyQualificationStatus::Unassessed
             );
+        }
+    }
+
+    #[test]
+    fn revision_three_adds_only_two_exact_proposed_scopes_and_preserves_history() {
+        let entries: Vec<EnergyQualification> = serde_json::from_str(REGISTRY).unwrap();
+        assert_eq!(entries.len(), 10);
+        assert_eq!(
+            greenlens_core::canonical_hash(&entries[..8].to_vec()).unwrap(),
+            "7baaa42eba90a2aa1d9b25cf4ada7b95bdd0847276c2b581546a1841c044bf81"
+        );
+        let mut keys = std::collections::BTreeSet::new();
+        for entry in &entries {
+            assert_eq!(entry.applicable_physical_input_sha256.len(), 1);
+            for physical in &entry.applicable_physical_input_sha256 {
+                assert!(keys.insert((
+                    serde_json::to_string(&entry.method).unwrap(),
+                    physical.clone()
+                )));
+                assert_eq!(assess(&entry.method, physical).unwrap(), *entry);
+            }
+        }
+        let expected = [
+            (
+                "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+                "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+            ),
+            (
+                "72e816ec0092166fef130842156aeb0e283a16870175f7d3c3ef44f8ed75685b",
+                "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63",
+            ),
+        ];
+        for (entry, (physical, numerics)) in entries[8..].iter().zip(expected) {
+            assert_eq!(entry.status, EnergyQualificationStatus::LimitedQualified);
+            assert_eq!(
+                entry.registry_version,
+                "greenlens.energy-qualification.2026-10-13.3"
+            );
+            assert_eq!(
+                entry.applicable_physical_input_sha256,
+                vec![physical.to_string()]
+            );
+            assert_eq!(entry.method.numerical_settings_sha256, numerics);
+            assert!(entry
+                .tested_scope
+                .contains("not installed-release acceptance"));
+            assert!(entry.evidence_ids.iter().any(
+                |e| e.ends_with("7322e79691b19260d2215f421d63fdec2729625393b9fcba61ef480d75f7ccf1")
+            ));
+            for field in [
+                "recipe_sha256",
+                "engine_executable_sha256",
+                "numerical_settings_sha256",
+            ] {
+                let mut changed = serde_json::to_value(&entry.method).unwrap();
+                changed[field] = "f".repeat(64).into();
+                let method: EnergyMethodIdentity = serde_json::from_value(changed).unwrap();
+                assert_eq!(
+                    assess(&method, physical).unwrap().status,
+                    EnergyQualificationStatus::Unassessed
+                );
+            }
+            let unknown = assess(&entry.method, &"f".repeat(64)).unwrap();
+            assert_eq!(unknown.status, EnergyQualificationStatus::Unassessed);
+            assert_eq!(unknown.registry_version, entry.registry_version);
         }
     }
 }

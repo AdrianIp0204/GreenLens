@@ -336,6 +336,16 @@ mod tests {
             "A later registry has new evidence; historical bytes remain untouched.".into();
         current.baseline.assessment.scientific.registry_version =
             "greenlens.energy-qualification.v2".into();
+        current.baseline.assessment.scientific.status =
+            greenlens_core::energy::EnergyQualificationStatus::LimitedQualified;
+        current
+            .baseline
+            .assessment
+            .scientific
+            .applicable_physical_input_sha256 =
+            vec![current.baseline.physical_input_sha256.clone()];
+        current.baseline.assessment.scientific.evidence_ids =
+            vec!["synthetic:later-exact-scope-evidence".into()];
         current.baseline.assessment.current_physical_inputs =
             greenlens_core::energy::EnergyInputRelation::Changed;
         current.title = "Regenerated presentation".into();

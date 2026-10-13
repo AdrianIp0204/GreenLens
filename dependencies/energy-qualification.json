@@ -190,5 +190,57 @@
       "755ed2e29c78fba852566b3cf8f93cee8e22dd7e5e7100d5399cf6abea160520"
     ],
     "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior."
+  },
+  {
+    "status": "limited_qualified",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+    },
+    "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+    "reason": "The exact revision-3 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0876551% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0373689% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). The declared proposed supply-fan efficiency is 0.6, with four 50 W design fans; all other revision-2 inputs are unchanged. Direct native A/B CSV output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior.",
+    "tested_scope": "Only this exact revision-3 four-zone/two-storey proposed B input with synthetic non-climatic weather, zero thermostat cutout, supply-fan total efficiency 0.6 and the complete pinned engine/recipe/numerical identity. Its fixed annual pair retains unchanged revision-2 A. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed; existing revision-2 entries remain unchanged.",
+    "applicable_physical_input_sha256": [
+      "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a"
+    ],
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:e6b9323d1b8e8aceb1af416dea34370e839ccd651b19ac56c97b42585eb42df3",
+      "greenlens.energy-revision3-independent.v1:sha256:7322e79691b19260d2215f421d63fdec2729625393b9fcba61ef480d75f7ccf1",
+      "greenlens.energy-direct-native-parity-audit.v1:sha256:9e604d3944c58dc8d567ca3d24e9f878ed2838f06e022f645a855f790d75f444",
+      "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+      "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+    ]
+  },
+  {
+    "status": "limited_qualified",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+    },
+    "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+    "reason": "The exact revision-3 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0876551% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0373689% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). The declared proposed supply-fan efficiency is 0.6, with four 50 W design fans; all other revision-2 inputs are unchanged. Direct native A/B CSV output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior.",
+    "tested_scope": "Only this exact revision-3 four-zone/two-storey proposed B input with synthetic non-climatic weather, zero thermostat cutout, supply-fan total efficiency 0.6 and the complete pinned engine/recipe/numerical identity. Its fixed annual pair retains unchanged revision-2 A. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed; existing revision-2 entries remain unchanged.",
+    "applicable_physical_input_sha256": [
+      "72e816ec0092166fef130842156aeb0e283a16870175f7d3c3ef44f8ed75685b"
+    ],
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:e6b9323d1b8e8aceb1af416dea34370e839ccd651b19ac56c97b42585eb42df3",
+      "greenlens.energy-revision3-independent.v1:sha256:7322e79691b19260d2215f421d63fdec2729625393b9fcba61ef480d75f7ccf1",
+      "greenlens.energy-direct-native-parity-audit.v1:sha256:9e604d3944c58dc8d567ca3d24e9f878ed2838f06e022f645a855f790d75f444",
+      "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+      "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+    ]
   }
 ]

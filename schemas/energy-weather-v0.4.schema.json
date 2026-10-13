@@ -1,0 +1,258 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:energy-weather:v0.4",
+  "title": "GreenLens EnergyWeatherData v0.4",
+  "description": "Wire shape only. Authoritative Rust validation additionally checks finite arithmetic, reciprocal full-face topology, complete non-leap calendar, schedule roles, exact physical and engine identities, accounting reconciliation and source-bound scientific scope. Deserialization is not evidence integrity or scientific qualification.",
+  "$ref": "#/$defs/EnergyWeatherData",
+  "$defs": {
+    "EnergyWeatherData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "original_sha256",
+        "normalized_sha256",
+        "time_axis_sha256",
+        "profile_id",
+        "location",
+        "original_headers",
+        "hours",
+        "warnings"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "greenlens.energy-weather.v0.4"
+        },
+        "original_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "normalized_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "time_axis_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "profile_id": {
+          "type": "string",
+          "const": "greenlens.energy-epw-explicit-fields.v1"
+        },
+        "location": {
+          "$ref": "#/$defs/WeatherLocation"
+        },
+        "original_headers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 8,
+          "maxItems": 8
+        },
+        "hours": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyWeatherHour"
+          },
+          "minItems": 8760,
+          "maxItems": 8760
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/WeatherWarning"
+          }
+        }
+      }
+    },
+    "EnergyWeatherHour": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "index",
+        "month",
+        "day",
+        "hour_ending",
+        "dry_bulb_c",
+        "dew_point_c",
+        "relative_humidity_percent",
+        "pressure_pa",
+        "horizontal_infrared_wh_m2",
+        "global_horizontal_wh_m2",
+        "direct_normal_wh_m2",
+        "diffuse_horizontal_wh_m2",
+        "wind_direction_deg",
+        "wind_speed_m_s",
+        "total_sky_cover_tenths",
+        "opaque_sky_cover_tenths",
+        "albedo",
+        "snow_depth_cm",
+        "liquid_precipitation_depth_mm"
+      ],
+      "properties": {
+        "index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "month": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "day": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "hour_ending": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dry_bulb_c": {
+          "type": "number",
+          "minimum": -70,
+          "maximum": 70
+        },
+        "dew_point_c": {
+          "type": "number",
+          "minimum": -70,
+          "maximum": 70
+        },
+        "relative_humidity_percent": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pressure_pa": {
+          "type": "number",
+          "exclusiveMinimum": 31000,
+          "maximum": 120000
+        },
+        "horizontal_infrared_wh_m2": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 9999
+        },
+        "global_horizontal_wh_m2": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 9999
+        },
+        "direct_normal_wh_m2": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 9999
+        },
+        "diffuse_horizontal_wh_m2": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 9999
+        },
+        "wind_direction_deg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 360
+        },
+        "wind_speed_m_s": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 40
+        },
+        "total_sky_cover_tenths": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "opaque_sky_cover_tenths": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "albedo": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "snow_depth_cm": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 999
+        },
+        "liquid_precipitation_depth_mm": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 999
+        }
+      }
+    },
+    "WeatherLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "city",
+        "region",
+        "country",
+        "source",
+        "station",
+        "latitude_deg_north",
+        "longitude_deg_east",
+        "utc_offset_minutes",
+        "elevation_m"
+      ],
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "station": {
+          "type": "string"
+        },
+        "latitude_deg_north": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude_deg_east": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "utc_offset_minutes": {
+          "type": "integer"
+        },
+        "elevation_m": {
+          "type": "number"
+        }
+      }
+    },
+    "WeatherWarning": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "count",
+        "message"
+      ],
+      "properties": {
+        "code": {
+          "type": "string"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

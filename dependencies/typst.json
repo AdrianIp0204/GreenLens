@@ -1,0 +1,96 @@
+{
+  "schema_version": "greenlens.typst-dependency.v1",
+  "status": "separate official installation verified; target-source license inventory reviewed; binary redistribution not approved",
+  "version": "0.15.1",
+  "source_commit": "9dfd3a08500b7896045f907433cf7b4b02434fad",
+  "release_api": "https://api.github.com/repos/typst/typst/releases/tags/v0.15.1",
+  "asset": "typst-x86_64-pc-windows-msvc.zip",
+  "download_url": "https://github.com/typst/typst/releases/download/v0.15.1/typst-x86_64-pc-windows-msvc.zip",
+  "bytes": 22463684,
+  "sha256": "19ce3551153c2fe7ee9fa2f95208310c8f4d3209fedb699e0333faf8913f6736",
+  "archive_root": "typst-x86_64-pc-windows-msvc",
+  "members": {
+    "LICENSE": {
+      "bytes": 9723,
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    "NOTICE": {
+      "bytes": 21066,
+      "sha256": "1778244777547c281b6f5fa9fc0c18ab21f8d4491c803f64e09046800f5fcb26"
+    },
+    "README.md": {
+      "bytes": 12004,
+      "sha256": "ddaf0de156f6a442c7f831202cd55583614df4cc3cfb4b16e95162c7eb11e653"
+    },
+    "typst.exe": {
+      "bytes": 52487680,
+      "sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e"
+    }
+  },
+  "fonts": {
+    "family": "Noto Sans CJK TC",
+    "version": "2.004",
+    "source_commit": "523d033d6cb47f4a80c58a35753646f5c3608a78",
+    "license": "OFL-1.1",
+    "copyright": "Copyright 2014-2021 Adobe (http://www.adobe.com/).",
+    "files": [
+      {
+        "name": "NotoSansCJKtc-Bold.otf",
+        "url": "https://raw.githubusercontent.com/notofonts/noto-cjk/523d033d6cb47f4a80c58a35753646f5c3608a78/Sans/OTF/TraditionalChinese/NotoSansCJKtc-Bold.otf",
+        "bytes": 17000768,
+        "sha256": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0"
+      },
+      {
+        "name": "NotoSansCJKtc-Regular.otf",
+        "url": "https://raw.githubusercontent.com/notofonts/noto-cjk/523d033d6cb47f4a80c58a35753646f5c3608a78/Sans/OTF/TraditionalChinese/NotoSansCJKtc-Regular.otf",
+        "bytes": 16435884,
+        "sha256": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+      }
+    ],
+    "license_file": {
+      "name": "NotoSansCJK-OFL.txt",
+      "url": "https://raw.githubusercontent.com/notofonts/noto-cjk/523d033d6cb47f4a80c58a35753646f5c3608a78/LICENSE",
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    }
+  },
+  "notices": {
+    "reports/energy/notices/NotoSansCJK-OFL.txt": {
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    "reports/energy/notices/Typst-assets-NOTICE.txt": {
+      "bytes": 76850,
+      "sha256": "80ac46fb7d70f1c30bf0c14d3408e6a6f0f9cc9997a00b592aa0d2c8a5243a9d"
+    },
+    "reports/energy/notices/Typst-LICENSE.txt": {
+      "bytes": 9723,
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    "reports/energy/notices/Typst-NOTICE.txt": {
+      "bytes": 21066,
+      "sha256": "1778244777547c281b6f5fa9fc0c18ab21f8d4491c803f64e09046800f5fcb26"
+    },
+    "reports/energy/notices/Typst-target-NOTICES.txt": {
+      "bytes": 977360,
+      "sha256": "b0f2823c15e849c92c50a46eaeddae24fed1e7edeb86b048b48dcff9f9b3809e"
+    }
+  },
+  "license_review": {
+    "typst": "Apache-2.0 plus exact upstream NOTICE",
+    "selected_fonts": "Unmodified OFL-1.1 fonts; embedding permitted; copyright metadata retained; no reserved-name modification",
+    "embedded_assets": "Disabled for rendering but present in upstream binary; typst-assets 0.15.1 NOTICE retained, including GUST, Bitstream/DejaVu, GPL-3.0-or-later plus Font and Distribution Exceptions for NewCM10-Regular, CC0, W3C and PDFium notices",
+    "cargo_lock_package_count": 425,
+    "complete_transitive_binary_inventory_reviewed": false,
+    "release_redistribution_approved": false,
+    "limitation": "Target-source normal/build graph and source notices reviewed. This is not a bit-reproducible official binary inventory; Rust runtime/source-access and embedded-asset distribution obligations still require closure before rebundling. Separate unmodified upstream acquisition remains supported.",
+    "target_source_inventory": {
+      "path": "docs/evidence/v0.4-energy/report-typst-target-inventory.json",
+      "sha256": "fd95589890752310804e059efadcfdb7f370d38047dd76b88786528dd781215a",
+      "target": "x86_64-pc-windows-msvc",
+      "normal_build_packages": 343,
+      "verified_registry_archives": 327,
+      "workspace_packages": 16
+    }
+  }
+}

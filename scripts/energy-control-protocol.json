@@ -1,0 +1,165 @@
+{
+  "schema": "greenlens.energy-fixed-control-diagnostic.v1",
+  "declared_utc": "2026-10-13T05:38:07.941537+00:00",
+  "status": "preparation only, no native execution",
+  "original_run_id": "94ff3a36-a7d3-4043-85f7-afcdf8dbf49e",
+  "original_checksums_sha256": "e886d3bbbb7e8dff243d5eb96af652cf2aa1cd34a034e662689d0ef605798ec8",
+  "original_model_sha256": "afe704399dfbe5d80363591d6175af021e82cc8e0ec04b167212f143c2b3ebea",
+  "original_weather_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+  "original_production_evidence_sha256": "ae328ba358bade5d3a9b734ca9eeba2f9cffb68df527c6bdd5c8e6faab21fd08",
+  "cases": [
+    {
+      "case": "original6",
+      "zone_timesteps_per_hour": 6,
+      "cutout_k": 0.2,
+      "expected_intervals": 1728,
+      "input_sha256": {
+        "model.epJSON": "f74f010cd94a2e5118c29d842c29d14adf8119a5177faadbe61d28e3de2c454a",
+        "weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae"
+      },
+      "arguments": [
+        "--jobs",
+        "1",
+        "--weather",
+        "weather.epw",
+        "--output-directory",
+        ".",
+        "--output-prefix",
+        "eplus",
+        "model.epJSON"
+      ]
+    },
+    {
+      "case": "original12",
+      "zone_timesteps_per_hour": 12,
+      "cutout_k": 0.2,
+      "expected_intervals": 3456,
+      "input_sha256": {
+        "model.epJSON": "0412aaa7aa71a21c28f301edcb83534eb19444bb30cf0b0ca44ce26da3bccf9a",
+        "weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae"
+      },
+      "arguments": [
+        "--jobs",
+        "1",
+        "--weather",
+        "weather.epw",
+        "--output-directory",
+        ".",
+        "--output-prefix",
+        "eplus",
+        "model.epJSON"
+      ]
+    },
+    {
+      "case": "zero6",
+      "zone_timesteps_per_hour": 6,
+      "cutout_k": 0.0,
+      "expected_intervals": 1728,
+      "input_sha256": {
+        "model.epJSON": "d12166545e195907111480996dedde08a114301ad600eb0f5e5dcc54ee48ffe8",
+        "weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae"
+      },
+      "arguments": [
+        "--jobs",
+        "1",
+        "--weather",
+        "weather.epw",
+        "--output-directory",
+        ".",
+        "--output-prefix",
+        "eplus",
+        "model.epJSON"
+      ]
+    },
+    {
+      "case": "zero12",
+      "zone_timesteps_per_hour": 12,
+      "cutout_k": 0.0,
+      "expected_intervals": 3456,
+      "input_sha256": {
+        "model.epJSON": "b9f7768e90025198ff167c6e401c809019ba7acd0268b40ece4fda05c649e65d",
+        "weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae"
+      },
+      "arguments": [
+        "--jobs",
+        "1",
+        "--weather",
+        "weather.epw",
+        "--output-directory",
+        ".",
+        "--output-prefix",
+        "eplus",
+        "model.epJSON"
+      ]
+    }
+  ],
+  "period": {
+    "begin": "12-20 00:00",
+    "end": "12-31 24:00",
+    "days": 12,
+    "start_day": "Thursday",
+    "calendar": "Original Jan1 Monday nonleap synthetic calendar, explicit LST; no DST."
+  },
+  "allowed_input_changes": [
+    "RunPeriod begin_month=12 and begin_day_of_month=20; end12/31 unchanged; matching synthetic start weekday Thursday",
+    "Timestep number6 or12",
+    "For zero cases only: all four temperature_difference_between_cutout_and_setpoint=0.0; schedules, equipment, comfort and all other data unchanged"
+  ],
+  "warmup": {
+    "loads_convergence_tolerance_value": 0.04,
+    "maximum_number_of_warmup_days": 50,
+    "minimum_number_of_warmup_days": 6,
+    "north_axis": 0,
+    "solar_distribution": "FullExterior",
+    "temperature_convergence_tolerance_value": 0.4,
+    "terrain": "Suburbs"
+  },
+  "hvac_convergence": {
+    "Convergence": {
+      "maximum_hvac_iterations": 20,
+      "maximum_plant_iterations": 8,
+      "minimum_plant_iterations": 2,
+      "minimum_system_timestep": 1
+    }
+  },
+  "limits": {
+    "workers": 1,
+    "native_processes": 4,
+    "process_seconds": 1800,
+    "global_seconds": 7200,
+    "memory_bytes": 2147483648,
+    "scratch_bytes": 1073741824,
+    "file_bytes": 134217728
+  },
+  "hypothesis": "The optional nonzero thermostat cutout creates timestep-dependent cycling phase/coincidence that contributes to peak disagreement. Ordinary thermal timestep response remains an alternative.",
+  "controlled_counterfactual": "Zero cutout disables only the optional hysteretic setpoint-revision branch, leaving native modulating load/part-load HVAC calculations. It is a distinct supported control-design input, not a numerical tolerance relaxation or a production adoption.",
+  "pinned_schema_field": {
+    "type": "number",
+    "note": "This optional choice field provides a temperature difference between cut-out temperature and setpoint. The difference is used to adjust to heating or cooling setpoint based on control types.",
+    "units": "deltaC",
+    "minimum": 0.0,
+    "default": 0.0
+  },
+  "pinned_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+  "source_commit": "4bd7a1f26fb749a83257855aba6760e26c8a3c8f",
+  "source_sha256": "54ff484f4cc2071ffec0094ebce14c09e7a1c4127e2e12b097a90d73304b347f",
+  "analysis": [
+    "All 1728/3456 rows, exact complete date/time sequence, original native output map and finite values retained; no warmup-period rows counted",
+    "Align five-minute energy pairs to each fixed ten-minute bin; retain all1728 per-case aligned facility/cooling/end-use demands and zone native temperatures/scheduled/operative values",
+    "Report full-period energy and peak signed/relative differences for each cutout pair; denominators always finer-step result, zero denominator explicitly undefined",
+    "Report signed/max-absolute/RMS same-bin cooling and facility differences, and all-zone operative-setpoint offsets and coincidence for every aligned bin",
+    "Reconciliation/comfort use unchanged original bands. Display1%energy/3%peak comparison diagnostically, not annual qualification."
+  ],
+  "falsifiers": [
+    "If zero-cutout native operative values differ from the unchanged scheduled setpoint beyond1e-7C, the asserted intervention semantics fail; stop interpretation",
+    "If original short-period pair has no peak discrepancy above3%, this short fixture did not reproduce the annual failure; cannot claim that removing cutout fixed the annual issue",
+    "If zero-cutout peak discrepancy remains above3%, or is not lower than the original short-period discrepancy, cutout-only explanation is insufficient; no tuning or escalation"
+  ],
+  "limits_of_inference": [
+    "Different independently warmed initial state from original full year; short-period outcomes cannot substitute for annual criteria",
+    "Removing cutout is a physical control-design change; it must be explicit and equal A/B before any later reviewed annual test",
+    "Finer timestep can affect thermal history and controller timing simultaneously; no unique-cause or statistical confidence claim",
+    "Original annual Bpeak failure and complete sources remain immutable"
+  ],
+  "stop_rule": "Exactly four fixed native processes once, sequential. Stop immediately on execution/resource/input/shape failure, retain every output; retain numerical failures without extra cases. No additional annual run, changed tolerance, seed, phase, sizing or controller setting authorized."
+}

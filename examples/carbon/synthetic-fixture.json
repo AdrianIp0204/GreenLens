@@ -1,0 +1,11 @@
+{
+  "id": "original_synthetic_electricity",
+  "fuel": "electricity",
+  "region": "Non-climatic GreenLens arithmetic example",
+  "year": 2001,
+  "kg_per_kwh": 0.4,
+  "unit": "kg_co2e",
+  "source": "Original synthetic factor for report arithmetic only; not a real emissions inventory",
+  "version": "greenlens.synthetic-carbon/1",
+  "synthetic": true
+}

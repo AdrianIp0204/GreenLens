@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="165" viewBox="0 0 720 165">
+ <rect width="720" height="165" fill="#f4f7f4"/>
+ <path d="M65 18V135H665" stroke="#213834" stroke-width="2" fill="none"/>
+ <g fill="#246954"><rect x="110" y="35" width="55" height="100"/><rect x="290" y="123" width="55" height="12"/></g>
+ <g fill="#94b9a4"><rect x="170" y="55" width="55" height="80"/><rect x="350" y="121.5" width="55" height="13.5"/></g>
+ <g font-family="Noto Sans CJK TC" font-size="14" fill="#213834"><text x="108" y="156">Cooling</text><text x="290" y="156">Fans</text><text x="480" y="156">Exterior lights: 0</text><text x="77" y="18">Display fixture / kWh</text><text x="450" y="25">Dark: baseline · Light: proposed</text></g>
+</svg>

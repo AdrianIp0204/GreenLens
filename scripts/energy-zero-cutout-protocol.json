@@ -1,0 +1,164 @@
+{
+  "schema": "greenlens.energy-zero-cutout-annual-protocol.v1",
+  "declared_utc": "2026-10-13T05:56:23.161530+00:00",
+  "status": "preparation only; specific native-slot handoff required",
+  "example_revision": 2,
+  "historical_inputs": {
+    "path": "examples/energy/revision1-inputs.json",
+    "sha256": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb"
+  },
+  "original_failed_pair_evidence": {
+    "path": "docs/evidence/v0.4-energy/production-timestep.json",
+    "sha256": "ae328ba358bade5d3a9b734ca9eeba2f9cffb68df527c6bdd5c8e6faab21fd08"
+  },
+  "prerequisite_short_control_evidence": {
+    "path": "docs/evidence/v0.4-energy/fixed-control-diagnostic.json",
+    "sha256": "1329966fa5bfa82e311609f2240224af998f2d518fb043ce6f802b66df78f734"
+  },
+  "changes": [
+    "Only zones[0..3].cooling_system.cooling_deadband_k changes from0.2 to0.0 in each A/B physical model.",
+    "Each finer reference changes only zone_timesteps_per_hour6 to12 in its original study; schedules repeat rather than interpolate."
+  ],
+  "cases": [
+    {
+      "case": "A10",
+      "alternative": "A",
+      "minutes": 10,
+      "expected_rows": 52560,
+      "expected_model_canonical_sha256": "dc458670ec6e37d51b60c3024e7b6007d2c2d065702c448359135d9cef2901a1",
+      "expected_study_canonical_sha256": "49781f0c769c9ff51bbb6f47a00aad2698d5f40ecd17eda7ba2096d698f1b598",
+      "original_run_id": "eae50aed-5e5f-4bf1-84a6-26d73b7fc741",
+      "expected_method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "weather_binding": {
+        "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+        "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+        "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+        "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+      }
+    },
+    {
+      "case": "B10",
+      "alternative": "B",
+      "minutes": 10,
+      "expected_rows": 52560,
+      "expected_model_canonical_sha256": "8b39bb10feded2b29aeb24b707b2d7a823d3492daf19336a8d9ef2173be49152",
+      "expected_study_canonical_sha256": "49781f0c769c9ff51bbb6f47a00aad2698d5f40ecd17eda7ba2096d698f1b598",
+      "original_run_id": "94ff3a36-a7d3-4043-85f7-afcdf8dbf49e",
+      "expected_method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "weather_binding": {
+        "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+        "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+        "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+        "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+      }
+    },
+    {
+      "case": "A5",
+      "alternative": "A",
+      "minutes": 5,
+      "expected_rows": 105120,
+      "expected_model_canonical_sha256": "dc458670ec6e37d51b60c3024e7b6007d2c2d065702c448359135d9cef2901a1",
+      "expected_study_canonical_sha256": "b4e549ae0201c98e6c1ba001744a75c18da49333bdd78c946888e6c1aa8b7d14",
+      "original_run_id": "adc2d612-e3f4-425e-9b92-c4a6e1b5c537",
+      "expected_method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "weather_binding": {
+        "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+        "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+        "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+        "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+      }
+    },
+    {
+      "case": "B5",
+      "alternative": "B",
+      "minutes": 5,
+      "expected_rows": 105120,
+      "expected_model_canonical_sha256": "8b39bb10feded2b29aeb24b707b2d7a823d3492daf19336a8d9ef2173be49152",
+      "expected_study_canonical_sha256": "b4e549ae0201c98e6c1ba001744a75c18da49333bdd78c946888e6c1aa8b7d14",
+      "original_run_id": "64284d03-8096-4ba4-9827-591736894dc4",
+      "expected_method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "weather_binding": {
+        "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+        "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+        "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+        "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+      }
+    }
+  ],
+  "order": [
+    "A10",
+    "B10",
+    "A5",
+    "B5"
+  ],
+  "native_processes": 4,
+  "workers": 1,
+  "native_arguments": [
+    "--jobs",
+    "1",
+    "--weather",
+    "weather.epw",
+    "--output-directory",
+    ".",
+    "--output-prefix",
+    "eplus",
+    "../model.epJSON"
+  ],
+  "limits": {
+    "per_native_seconds": 1800,
+    "memory_bytes": 2147483648,
+    "scratch_bytes": 1073741824,
+    "file_bytes": 134217728
+  },
+  "criteria": {
+    "annual_facility_energy_relative_max": 0.01,
+    "common_ten_minute_peak_relative_max": 0.03,
+    "occupied_cooling_unmet_percent_max": 1.0,
+    "comfort_tolerance_c": 0.2,
+    "electricity_absolute_kwh": 0.01,
+    "electricity_relative": 0.0001,
+    "demand_absolute_kw": 0.001,
+    "demand_relative": 0.0001
+  },
+  "comparison_policy": "Both A and B must pass independently; finer-step value is denominator; all four full-year cases retained even after a numerical predicate failure. No favorable averaging, excluded intervals, changed weather, sizing or next control setting.",
+  "input_preflight": "Before each native run, recursively compare every current model/study value with the pinned historical snapshot after exactly the listed changes. The original and normalized weather hashes remain the pinned study binding.",
+  "canonical_hash_policy": "Reference-only sorted compact JSON using UTF8 json.dumps(sort_keys=True,separators=(comma,colon),allow_nan=False). This is a reproducibility hash, not the application physical_input_hash; application hashes are retained separately after validation.",
+  "stop_rule": "Process/input/integrity/resource failure stops the remaining schedule and retains all partial output; scientific numerical failures remain failed and do not skip the other predetermined cases. Four native annuals once, no retries or other control variants.",
+  "qualification": "New physical inputs begin unassessed; only complete reviewed outcomes can qualify this exact scope. Original0.2K failures remain immutable. No generic or real-climate validation."
+}

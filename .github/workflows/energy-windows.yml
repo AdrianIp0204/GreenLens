@@ -1,0 +1,294 @@
+name: Bounded energy Windows verification
+on:
+  push:
+    branches: [main, codex/v0.4-energy-reporting]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: pwsh
+env:
+  CARGO_HTTP_TIMEOUT: '300'
+  CARGO_NET_RETRY: '3'
+  CARGO_BUILD_JOBS: '1'
+  RUST_TEST_THREADS: '2'
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: apps/desktop/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Exact clean source and native toolchain
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 required' }
+          if ((& git rev-parse HEAD).Trim() -cne $env:GITHUB_SHA -or (& git status --porcelain)) { throw 'Expected exact clean checkout' }
+          "GREENLENS_EXPECT_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
+          "GREENLENS_EXPECT_SOURCE_DIRTY=false" >> $env:GITHUB_ENV
+          $evidence = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-energy-build 空間'
+          New-Item -ItemType Directory -Path $evidence | Out-Null
+          "ENERGY_BUILD_EVIDENCE=$evidence" >> $env:GITHUB_ENV
+          rustup toolchain install 1.99.0 --profile minimal --component rustfmt,clippy --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Rust installation failed' }
+          . ./scripts/dev-env.ps1
+          cargo fetch --locked --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Locked dependency acquisition failed' }
+      - name: Frontend types, interaction regressions and production assets
+        working-directory: apps/desktop
+        run: |
+          npm ci
+          if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
+          npm test
+          if ($LASTEXITCODE -ne 0) { throw 'Frontend tests failed' }
+          npm run build
+          if ($LASTEXITCODE -ne 0) { throw 'Frontend types/build failed' }
+      - name: Pinned Radiance for required legacy cancellation regressions
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./scripts/install-radiance.ps1
+      - name: Format, strict lint and unit/lifecycle regression suite
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo fmt --all -- --check
+          if ($LASTEXITCODE -ne 0) { throw 'Formatting failed' }
+          cargo clippy --workspace --all-targets --locked --offline -- -D warnings
+          if ($LASTEXITCODE -ne 0) { throw 'Strict lint failed' }
+          cargo test --workspace --exclude greenlens-radiance --locked --offline
+          if ($LASTEXITCODE -ne 0) { throw 'Workspace tests failed' }
+          cargo test -p greenlens-radiance --lib --locked --offline
+          if ($LASTEXITCODE -ne 0) { throw 'Daylight adapter unit tests failed' }
+          ./scripts/test-build-provenance.ps1 -OutputDirectory (Join-Path $env:ENERGY_BUILD_EVIDENCE 'provenance')
+          ./scripts/test-package-documents.ps1
+          ./scripts/test-energy-portability.ps1
+          $cache = Join-Path $env:RUNNER_TEMP ('energy-pure-cache-' + [guid]::NewGuid().ToString('N'))
+          if (Test-Path -LiteralPath $cache) { throw 'Expected absent Python cache' }
+          python -B -X utf8 -X "pycache_prefix=$cache" scripts/test-energy-gate0-audit.py
+          if ($LASTEXITCODE -ne 0 -or (Test-Path -LiteralPath $cache)) { throw 'Energy audit guard regressions failed' }
+      - name: Build and package exact-source unsigned binaries
+        run: |
+          . ./scripts/dev-env.ps1
+          node scripts/license-inventory.mjs --strict --check
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency notices or locks differ' }
+          cargo build -p greenlens-cli --release --locked --offline
+          if ($LASTEXITCODE -ne 0) { throw 'Release CLI build failed' }
+          Push-Location apps/desktop
+          try {
+            npm run tauri -- build --ci
+            if ($LASTEXITCODE -ne 0) { throw 'Desktop NSIS build failed' }
+          } finally { Pop-Location }
+          node scripts/license-inventory.mjs --strict --check --installer-cache "$env:LOCALAPPDATA/tauri/NSIS"
+          if ($LASTEXITCODE -ne 0) { throw 'Strict installer license/import inventory failed' }
+          $distribution = Join-Path $env:LOCALAPPDATA 'GreenLens/ci-energy-distribution'
+          ./scripts/package-artifacts.ps1 -OutputDirectory $distribution
+          $version = (Get-Content apps/desktop/package.json -Raw | ConvertFrom-Json).version
+          $cliRoot = Join-Path $distribution "GreenLens-CLI-$version-windows-x64"
+          if ((& git rev-parse HEAD).Trim() -cne $env:GITHUB_SHA -or (& git status --porcelain)) { throw 'Build source changed' }
+          [ordered]@{schema='greenlens.energy-ci-build.v1';source_commit=$env:GITHUB_SHA;source_dirty=$false;application_version=$version;cli_sha256=(Get-FileHash (Join-Path $cliRoot 'greenlens.exe')).Hash.ToLowerInvariant();scientific_acceptance_asserted=$false} | ConvertTo-Json | Set-Content (Join-Path $cliRoot 'ci-build.json') -Encoding utf8NoBOM
+          "ENERGY_CLI_ROOT=$cliRoot" >> $env:GITHUB_ENV
+          "ENERGY_DISTRIBUTION=$distribution" >> $env:GITHUB_ENV
+      - uses: actions/upload-artifact@v4
+        with:
+          name: energy-cli-${{ github.sha }}
+          path: ${{ env.ENERGY_CLI_ROOT }}/
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        with:
+          name: energy-unsigned-investigation-${{ github.sha }}
+          path: |
+            ${{ env.ENERGY_DISTRIBUTION }}/*.exe
+            ${{ env.ENERGY_DISTRIBUTION }}/*.zip
+            ${{ env.ENERGY_DISTRIBUTION }}/checksums.json
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: energy-build-diagnostics-${{ github.sha }}
+          path: ${{ env.ENERGY_BUILD_EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 14
+
+  static_compatibility:
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - name: Owned verification paths
+        run: |
+          "ENERGY_CLI_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-energy-cli')" >> $env:GITHUB_ENV
+          "STATIC_EVIDENCE=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-energy-static 空間')" >> $env:GITHUB_ENV
+          "VERIFICATION_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification')" >> $env:GITHUB_ENV
+      - uses: actions/download-artifact@v4
+        with:
+          name: energy-cli-${{ github.sha }}
+          path: ${{ env.ENERGY_CLI_ROOT }}
+      - name: Frozen CLI identity and pinned static engine
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $identity = Get-Content (Join-Path $env:ENERGY_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          $cli = Join-Path $env:ENERGY_CLI_ROOT 'greenlens.exe'
+          if ($identity.source_commit -cne $env:GITHUB_SHA -or $identity.source_dirty -cne $false -or (Get-FileHash $cli).Hash.ToLowerInvariant() -cne $identity.cli_sha256) { throw 'Frozen CLI source/hash differs' }
+          "ENERGY_CLI=$cli" >> $env:GITHUB_ENV
+          ./scripts/install-radiance.ps1
+          rustup toolchain install 1.99.0 --profile minimal --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Rust installation failed' }
+          "GREENLENS_EXPECT_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
+          "GREENLENS_EXPECT_SOURCE_DIRTY=false" >> $env:GITHUB_ENV
+      - name: Required real static analytical suite
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo fetch --locked --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency acquisition failed' }
+          cargo test -p greenlens-radiance --test scientific --locked --offline -- --nocapture
+          if ($LASTEXITCODE -ne 0) { throw 'Static scientific suite failed or engine missing' }
+      - name: Distributed CLI static A/B, copy, export and replay
+        if: ${{ !cancelled() && env.ENERGY_CLI != '' }}
+        run: ./scripts/cli-integration.ps1 -Cli $env:ENERGY_CLI -OutputDirectory (Join-Path $env:STATIC_EVIDENCE 'static-cli')
+      - name: Historical v0.1 replay without annual executables
+        if: ${{ !cancelled() && env.ENERGY_CLI != '' }}
+        run: |
+          ./scripts/test-legacy-engine-fixture.ps1 -OutputDirectory (Join-Path $env:STATIC_EVIDENCE 'static-only-fixture')
+          ./scripts/legacy-replay.ps1 -Cli $env:ENERGY_CLI -OutputDirectory (Join-Path $env:STATIC_EVIDENCE 'legacy-replay')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: energy-static-compatibility-${{ github.sha }}
+          path: |
+            ${{ env.STATIC_EVIDENCE }}/
+            ${{ env.VERIFICATION_ROOT }}/required-scientific-suite-*/
+          if-no-files-found: warn
+          retention-days: 14
+
+  energy:
+    needs: build
+    runs-on: windows-latest
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Owned verification paths and clean source assertions
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 required' }
+          "ENERGY_CLI_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/ci-energy-cli')" >> $env:GITHUB_ENV
+          "ENERGY_EVIDENCE=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification/ci-energy-native 空間')" >> $env:GITHUB_ENV
+          "VERIFICATION_ROOT=$(Join-Path $env:LOCALAPPDATA 'GreenLens/verification')" >> $env:GITHUB_ENV
+          "GREENLENS_EXPECT_SOURCE_COMMIT=$env:GITHUB_SHA" >> $env:GITHUB_ENV
+          "GREENLENS_EXPECT_SOURCE_DIRTY=false" >> $env:GITHUB_ENV
+      - uses: actions/download-artifact@v4
+        with:
+          name: energy-cli-${{ github.sha }}
+          path: ${{ env.ENERGY_CLI_ROOT }}
+      - name: Frozen CLI and independently installed pinned runtimes
+        id: runtimes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $identity = Get-Content (Join-Path $env:ENERGY_CLI_ROOT 'ci-build.json') -Raw | ConvertFrom-Json -DateKind String
+          $cli = Join-Path $env:ENERGY_CLI_ROOT 'greenlens.exe'
+          if ($identity.source_commit -cne $env:GITHUB_SHA -or $identity.source_dirty -cne $false -or (Get-FileHash $cli).Hash.ToLowerInvariant() -cne $identity.cli_sha256) { throw 'Frozen CLI source/hash differs' }
+          "ENERGY_CLI=$cli" >> $env:GITHUB_ENV
+          ./scripts/install-energyplus.ps1
+          ./scripts/install-typst.ps1
+          "GREENLENS_TYPST_DIR=$(Join-Path $env:LOCALAPPDATA 'GreenLens/renderers/typst-0.15.1')" >> $env:GITHUB_ENV
+          rustup toolchain install 1.99.0 --profile minimal --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Rust installation failed' }
+      - name: Explicit native lifecycle regression
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo fetch --locked --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency acquisition failed' }
+          cargo test -p greenlens-runner --test energy_lifecycle --locked --offline -- --ignored --nocapture
+          if ($LASTEXITCODE -ne 0) { throw 'Required native lifecycle failed; ignored default is not acceptance' }
+      - name: Explicit native report render regression
+        if: ${{ !cancelled() && steps.runtimes.outcome == 'success' }}
+        run: |
+          . ./scripts/dev-env.ps1
+          cargo fetch --locked --target x86_64-pc-windows-msvc
+          if ($LASTEXITCODE -ne 0) { throw 'Dependency acquisition failed' }
+          cargo test -p greenlens-runner --lib --locked --offline energy_report::tests::native_typst_all_three_documents_and_pages -- --ignored --exact --nocapture
+          if ($LASTEXITCODE -ne 0) { throw 'Required native report render failed' }
+      - name: Fixed four annual executions and complete immutable inspection
+        id: production
+        if: ${{ !cancelled() && steps.runtimes.outcome == 'success' }}
+        run: |
+          ./scripts/energy-qualification.ps1 -CliPath $env:ENERGY_CLI -OutputDirectory (Join-Path $env:ENERGY_EVIDENCE 'production')
+          $index = Get-Content (Join-Path $env:ENERGY_EVIDENCE 'production/run-index.json') -Raw | ConvertFrom-Json -DateKind String
+          if (($index.case -join ',') -cne 'A10,B10,A5,B5') { throw 'Incomplete or reordered annual evidence' }
+          foreach ($case in $index) {
+            $record = (Get-Content (Join-Path $env:ENERGY_EVIDENCE "production/inspect-$($case.case).json") -Raw | ConvertFrom-Json -DateKind String -Depth 100).run
+            if ($record.provenance.source_commit -cne $env:GITHUB_SHA -or $record.provenance.source_worktree_dirty -cne $false) { throw 'Actual retained run has wrong build provenance' }
+          }
+      - name: Independent complete-series arithmetic and frozen scientific criteria
+        id: science
+        if: ${{ !cancelled() && steps.production.outcome == 'success' }}
+        continue-on-error: true
+        run: |
+          $cache = Join-Path $env:RUNNER_TEMP ('energy-audit-cache-' + [guid]::NewGuid().ToString('N'))
+          if (Test-Path -LiteralPath $cache) { throw 'Expected absent audit cache' }
+          $audit = Join-Path $env:ENERGY_EVIDENCE 'production-audit.json'
+          python -B -X utf8 -X "pycache_prefix=$cache" scripts/energy-gate0-audit.py --production-root (Join-Path $env:ENERGY_EVIDENCE 'production') --jobs-root (Join-Path $env:LOCALAPPDATA 'GreenLens/jobs') --output $audit
+          if ($LASTEXITCODE -ne 0 -or (Test-Path -LiteralPath $cache)) { throw 'Independent integrity/arithmetic audit failed' }
+          $result = Get-Content -LiteralPath $audit -Raw | ConvertFrom-Json -DateKind String
+          if ($result.schema -cne 'greenlens.energy-production-audit.v1' -or $result.all_checks_pass -isnot [bool] -or !$result.all_checks_pass) { throw 'Frozen scientific criteria failed or were not evaluated; retained report is authoritative' }
+      - name: Cold reports, export integrity and distributed replay despite numerical failure
+        id: portability
+        if: ${{ !cancelled() && steps.production.outcome == 'success' }}
+        run: |
+          ./scripts/energy-portability.ps1 -Cli $env:ENERGY_CLI -Project (Join-Path $env:ENERGY_EVIDENCE 'production/project-10') -OutputDirectory (Join-Path $env:ENERGY_EVIDENCE 'portability') -Replay
+      - name: Retain qualification failure as job failure after independent delivery checks
+        if: always()
+        env:
+          PRODUCTION_OUTCOME: ${{ steps.production.outcome }}
+          SCIENCE_OUTCOME: ${{ steps.science.outcome }}
+          PORTABILITY_OUTCOME: ${{ steps.portability.outcome }}
+        run: |
+          [ordered]@{source_commit=$env:GITHUB_SHA;production=$env:PRODUCTION_OUTCOME;science=$env:SCIENCE_OUTCOME;portability=$env:PORTABILITY_OUTCOME;installed_desktop_verified=$false;release_acceptance_asserted=$false} | ConvertTo-Json | Tee-Object -FilePath (Join-Path $env:RUNNER_TEMP 'energy-ci-outcome.json')
+          'Execution, evidence integrity, input currency and scientific qualification remain separate. Hosted checks are not installed desktop verification.' >> $env:GITHUB_STEP_SUMMARY
+          if ($env:PRODUCTION_OUTCOME -cne 'success' -or $env:SCIENCE_OUTCOME -cne 'success' -or $env:PORTABILITY_OUTCOME -cne 'success') { throw 'Required energy outcome failed or was skipped; no automatic retry or relaxed criterion' }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: energy-native-evidence-${{ github.sha }}
+          path: |
+            ${{ env.ENERGY_EVIDENCE }}/
+            ${{ env.VERIFICATION_ROOT }}/energy lifecycle */
+            ${{ env.VERIFICATION_ROOT }}/energy production report */
+            ${{ runner.temp }}/energy-ci-outcome.json
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Collect native diagnostics after any outcome
+        if: always()
+        run: |
+          $output = Join-Path $env:RUNNER_TEMP 'energy-native-jobs'
+          New-Item -ItemType Directory -Path $output | Out-Null
+          $jobs = Join-Path $env:LOCALAPPDATA 'GreenLens/jobs'
+          if (Test-Path -LiteralPath $jobs) {
+            foreach ($job in Get-ChildItem -LiteralPath $jobs -Directory) {
+              if ($job.Name -notmatch '^[0-9a-f-]{36}$') { continue }
+              $files = @(Get-ChildItem -LiteralPath $job.FullName -Recurse -File)
+              # Per-job scientific scratch policy, not a relaxed upload allowance.
+              if (($files | Measure-Object Length -Sum).Sum -gt 1GB -or @($files | Where-Object Length -gt 128MB).Count) { throw 'Owned native job exceeds its original retained scratch/file limits' }
+              Copy-Item -LiteralPath $job.FullName -Destination $output -Recurse
+            }
+          }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: energy-native-jobs-${{ github.sha }}
+          path: ${{ runner.temp }}/energy-native-jobs/
+          if-no-files-found: warn
+          retention-days: 14

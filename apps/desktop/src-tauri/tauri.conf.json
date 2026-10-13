@@ -1,27 +1,41 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "GreenLens",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "identifier": "org.greenlens.desktop",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://127.0.0.1:1420",
     "beforeBuildCommand": "npm run build",
     "frontendDist": "../dist",
-    "windows": { "staticVCRuntime": false }
+    "windows": {
+      "staticVCRuntime": false
+    }
   },
   "app": {
-    "windows": [{ "title": "GreenLens", "width": 1440, "height": 900, "minWidth": 900, "minHeight": 500 }],
+    "windows": [
+      {
+        "title": "GreenLens",
+        "width": 1440,
+        "height": 900,
+        "minWidth": 900,
+        "minHeight": 500
+      }
+    ],
     "security": {
       "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src ipc: http://ipc.localhost; object-src 'none'; frame-src 'none'",
-      "capabilities": ["main-window"]
+      "capabilities": [
+        "main-window"
+      ]
     }
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis"],
+    "targets": [
+      "nsis"
+    ],
     "category": "Education",
-    "shortDescription": "Local building daylight simulation with scientific evidence",
+    "shortDescription": "Local building daylight and energy simulation with reproducible evidence",
     "copyright": "Copyright 2026 GreenLens contributors",
     "license": "Apache-2.0",
     "resources": {
@@ -36,9 +50,28 @@
       "../../../docs/windows-installer.md": "notices/windows-installer.md",
       "../../../docs/v0.3-weather-sources.md": "notices/v0.3-weather-sources.md",
       "../../../examples/": "examples/",
-      "../../../third-party/": "notices/third-party/"
+      "../../../third-party/": "notices/third-party/",
+      "../../../dependencies/energyplus.json": "notices/energyplus.json",
+      "../../../dependencies/typst.json": "notices/typst.json",
+      "../../../dependencies/energy-qualification.json": "notices/energy-qualification.json",
+      "../../../reports/energy/notices/": "notices/report-renderer/",
+      "../../../docs/v0.4-energy-method.md": "notices/v0.4-energy-method.md",
+      "../../../docs/v0.4-report-method.md": "notices/v0.4-report-method.md"
     },
-    "icon": ["icons/icon.ico", "icons/32x32.png", "icons/128x128.png"],
-    "windows": { "webviewInstallMode": { "type": "skip" }, "nsis": { "installMode": "currentUser", "template": "installer.nsi", "displayLanguageSelector": false } }
+    "icon": [
+      "icons/icon.ico",
+      "icons/32x32.png",
+      "icons/128x128.png"
+    ],
+    "windows": {
+      "webviewInstallMode": {
+        "type": "skip"
+      },
+      "nsis": {
+        "installMode": "currentUser",
+        "template": "installer.nsi",
+        "displayLanguageSelector": false
+      }
+    }
   }
 }

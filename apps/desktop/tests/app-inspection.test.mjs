@@ -6,16 +6,17 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { transformWithOxc } from 'vite';
 
-const componentNames=['SelectionBar','PropertiesPanel','ParameterField','AnalysisContent','Stats','Legend','ClimateStudyPanel','ClimateResultControls','ClimateResultsContent','ExportRunDialog'];
+const componentNames=['EnergyWorkspace','SelectionBar','PropertiesPanel','ParameterField','AnalysisContent','Stats','Legend','ClimateStudyPanel','ClimateResultControls','ClimateResultsContent','ExportRunDialog'];
 const components=Object.fromEntries(componentNames.map(name=>[name,Object.defineProperty(()=>null,'name',{value:name})]));
 const fixture=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
 const staticRun={id:'static-A',alternative_id:'A',model:fixture.model,validated:fixture,lux:fixture.sensor_grid.sensors.map(()=>100),statistics:{min:100,mean:100,max:100}};
 const climateRun={id:'historical-method2-A',alternative_id:'A',study:{calculation:{mode:'annual'}},series:{sensor_ids:fixture.sensor_grid.sensors.map(s=>s.id),interval_count:8760}};
-const states=[];let cursor=0,doc,climate,mutations;
+const states=[];let cursor=0,doc,climate,mutations,keyboardHandler;
+globalThis.window={addEventListener:(name,fn)=>{if(name==='keydown')keyboardHandler=fn;},removeEventListener(){}};
 const host={...components,
   useState(initial){const index=cursor++;if(!(index in states))states[index]=typeof initial==='function'?initial():initial;return [states[index],value=>{states[index]=typeof value==='function'?value(states[index]):value;}];},
   useRef(initial){const index=cursor++;return states[index]??(states[index]={current:initial});},
-  useMemo:fn=>fn(),useEffect(){},lazy:()=>Object.defineProperty(()=>null,'name',{value:'SceneView'}),Suspense:'suspense',
+  useMemo:fn=>fn(),useEffect(fn){if(fn.toString().includes('addEventListener("keydown"'))fn();},lazy:()=>Object.defineProperty(()=>null,'name',{value:'SceneView'}),Suspense:'suspense',
   useDocument:()=>doc,useClimateResults:()=>climate,
   useHistoricalComparison:()=>({a:staticRun,b:null,comparison:null,comparisonError:'',comparing:false,selectRun(){}}),
   invoke:async()=>{throw new Error('Unexpected native service request from inspection');},isTauri:()=>false,getCurrentWindow(){throw new Error('Unexpected window operation');},
@@ -23,7 +24,7 @@ const host={...components,
   qualificationLabel:()=> 'Scientific qualification unassessed',errorText:String,fmt:String,METHOD:'Static daylight illuminance under a prescribed CIE standard overcast sky.',
 };
 globalThis.__greenlensAppInspectionHost=host;
-const mocked=new Set(['react','@tauri-apps/api/core','@tauri-apps/api/window','./viewport/entities','./workspace/useDocument','./workspace/useHistoricalComparison','./workspace/PropertiesPanel','./workspace/SelectionBar','./workspace/AnalysisContent','./workspace/ClimateStudyPanel','./workspace/useClimateResults','./workspace/ClimateResultsContent','./workspace/QualificationStatus']);
+const mocked=new Set(['./energy/EnergyWorkspace','react','@tauri-apps/api/core','@tauri-apps/api/window','./viewport/entities','./workspace/useDocument','./workspace/useHistoricalComparison','./workspace/PropertiesPanel','./workspace/SelectionBar','./workspace/AnalysisContent','./workspace/ClimateStudyPanel','./workspace/useClimateResults','./workspace/ClimateResultsContent','./workspace/QualificationStatus']);
 const source=fs.readFileSync(new URL('../src/App.tsx',import.meta.url),'utf8');
 const {code}=await transformWithOxc(source,'App.tsx',{jsx:{runtime:'automatic'}});
 const linked=code.replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_quote,specifier)=>{
@@ -126,3 +127,7 @@ test('App distinguishes a pending current lookup from a completed absence of mat
   assert.equal(find(tree,n=>n.type?.name==='SceneView').props.resultLoading,true);
   climate={...climate,checkingRelationship:false};tree=render();assert.ok(find(tree,n=>n.props?.className==='stale-banner'));
 });
+
+test('energy discipline hides legacy command surfaces and preserves mounted daylight viewport',()=>{let tree=setup('annual');const before=structuredClone(doc.project);tree=clickText(tree,'Energy');assert.ok(byComponent(tree,'EnergyWorkspace'));assert.equal(find(tree,n=>n.props?.className==='daylight-container').props.hidden,true);assert.equal(byLabel(tree,'Application menu').props.className,'energy-active-hidden');const footer=find(tree,n=>n.type==='footer');assert.equal(nodes(footer).filter(n=>n.type==='button').length,0);assert.ok(find(tree,n=>n.type?.name==='SceneView'));tree=clickText(tree,'Daylight');assert.equal(find(tree,n=>n.props?.className==='daylight-container').props.hidden,false);assert.equal(byComponent(tree,'EnergyWorkspace'),undefined);assert.deepEqual(doc.project,before);assert.equal(mutations,0);});
+
+test('actual App energy keyboard routing keeps text native and never dispatches a daylight repeat',()=>{let tree=setup('annual');const actions=[];Object.assign(doc,{replace:k=>actions.push(k),save:()=>actions.push('save'),saveAs:()=>actions.push('save_as'),traverse:k=>actions.push(k)});tree=clickText(tree,'Energy');assert.equal(typeof keyboardHandler,'function');let prevented=0;const key=(key,extra={})=>keyboardHandler({key,preventDefault(){prevented++;},target:{tagName:'DIV'},...extra});key('n',{ctrlKey:true});key('s',{ctrlKey:true,shiftKey:true});key('z',{ctrlKey:true});for(const k of ['Enter','Delete','F8','F9','r'])key(k);assert.deepEqual(actions,['New Energy','save_as','undo']);assert.equal(prevented,3);key('z',{ctrlKey:true,target:{tagName:'TEXTAREA'}});assert.equal(actions.length,3);doc.busy=true;tree=render();assert.equal(find(tree,n=>n.type==='button'&&n.props.children==='Daylight').props.disabled,true);});

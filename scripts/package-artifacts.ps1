@@ -198,7 +198,43 @@ function Get-PackageDocumentPaths {
         'dependencies/radiance.json','dependencies/weather.json',
         'schemas/primary-streams-v1.schema.json',
         'schemas/qualification-v1.schema.json','crates/greenlens-runner/src/qualification-registry.json',
-        'third-party/Radiance-LICENSE.txt','third-party/Radiance-gendaymtx-NOTICE.txt'
+        'third-party/Radiance-LICENSE.txt','third-party/Radiance-gendaymtx-NOTICE.txt',
+        'docs/roadmap.md','docs/v0.4-energy-spec.md','docs/v0.4-energy-implementation-plan.md',
+        'docs/v0.4-energy-contracts.md','docs/v0.4-energy-method.md','docs/v0.4-energy-status.md',
+        'docs/v0.4-energy-usage.md','docs/v0.4-report-method.md',
+        'dependencies/energyplus.json','dependencies/typst.json','dependencies/energy-qualification.json',
+        'schemas/thermal-model-v0.4.schema.json','schemas/energy-study-v0.4.schema.json',
+        'schemas/energy-weather-v0.4.schema.json','schemas/energy-report-v0.4.schema.json',
+        'schemas/energy-report-presentation-v0.4.schema.json',
+        'examples/energy/README.md','examples/energy/revision1-inputs.json','examples/carbon/README.md',
+        'examples/carbon/clp-hong-kong-2025.json','examples/carbon/synthetic-fixture.json',
+        'scripts/install-energyplus.ps1','scripts/install-typst.ps1',
+        'scripts/energy-gate0-audit.py','scripts/energy-gate0-fixture.py','scripts/energy-gate0-run.ps1',
+        'scripts/energy-interzone-protocol.json','scripts/energy-control-protocol.json','scripts/energy-zero-cutout-protocol.json','third-party/EnergyPlus-LICENSE.txt',
+        'crates/greenlens-runner/src/energy_report.rs','reports/energy/feasibility.typ','reports/energy/report.typ',
+        'reports/energy/notices/NotoSansCJK-OFL.txt','reports/energy/notices/Typst-LICENSE.txt',
+        'reports/energy/notices/Typst-NOTICE.txt','reports/energy/notices/Typst-assets-NOTICE.txt',
+        'reports/energy/notices/Typst-target-NOTICES.txt',
+        'docs/evidence/v0.4-energy/interzone.json','docs/evidence/v0.4-energy/native-gate0.json',
+        'docs/evidence/v0.4-energy/production-timestep.json',
+        'docs/evidence/v0.4-energy/revision2-independent.json',
+        'docs/evidence/v0.4-energy/revision2-production-timestep.json',
+        'docs/evidence/v0.4-energy/revision2-direct-native-parity.json',
+        'docs/evidence/v0.4-energy/direct-native-parity.json',
+        'docs/evidence/v0.4-energy/fixed-control-diagnostic.json',
+        'docs/evidence/v0.4-energy/legacy-static-regression.json',
+        'docs/evidence/v0.4-energy/lifecycle-initial-failure.json',
+        'docs/evidence/v0.4-energy/native-lifecycle.json',
+        'docs/evidence/v0.4-energy/cold-portability.json',
+        'docs/evidence/v0.4-energy/historical-energy-replay.json',
+        'docs/evidence/v0.4-energy/report-preflight-guards.json',
+        'docs/evidence/v0.4-energy/report-production-renderer.json',
+        'docs/evidence/v0.4-energy/report-production-results.json',
+        'docs/evidence/v0.4-energy/report-cold-failed-assessment.json',
+        'docs/evidence/v0.4-energy/report-renderer-feasibility.json',
+        'docs/evidence/v0.4-energy/report-renderer-fixture.pdf',
+        'docs/evidence/v0.4-energy/report-renderer-preview.png',
+        'docs/evidence/v0.4-energy/report-typst-target-inventory.json'
     )
 }
 
@@ -229,7 +265,7 @@ function Assert-PackageDocumentSizes([long[]]$FileBytes, [long]$GeneratedIndexBy
     $bytes = 0L
     foreach ($size in @($FileBytes) + @($GeneratedIndexBytes)) {
         if ($size -lt 0 -or $size -gt 2MB) { throw 'Expected a compact documentation file within 2 MiB.' }
-        if ($bytes -gt 12MB - $size) { throw 'Review the explicit documentation selection before exceeding 12 MiB, including its generated index.' }
+        if ($bytes -gt 16MB - $size) { throw 'Review the explicit documentation selection before exceeding 16 MiB, including its generated index.' }
         $bytes += $size
     }
     return $bytes
@@ -241,7 +277,7 @@ function Get-PackageContentsBytes([int]$Links) {
 
 The selected guides, method/reference declarations, data inventories and compact linked numerical records are included for offline reading. Local inline Markdown links in these guides were checked before packaging ($Links links).
 
-This explicit documentation selection, including this index, is limited to 12 MiB total and 2 MiB per file. The reviewed documentation allowance preserves linked historical outcomes; it does not change scientific evidence archive, process, or runtime resource limits.
+Documentation policy v2 limits this explicit selection, including this index, to 16 MiB total and 2 MiB per file. The increase from 12 MiB retains the historical evidence and adds v0.4 method/schema records and audited renderer notices without removing old outcomes. Scientific evidence archive, process and runtime limits are unchanged.
 
 This is not a source checkout or a complete historical evidence archive. Backtick command examples, source-only verification scripts, historical screenshot filenames, upstream URLs and local build/output paths can require the repository or separately retained artifacts. Selected research scripts are retained as readable source; their development dependencies are not a runtime requirement or a bundled verification toolchain. The reference-prerequisite declarations, source pins and preparation records are included for inspection; executing their commands requires the separately reviewed source checkout and inputs. Large matrices, octrees, evidence ZIPs and engine binaries are excluded.
 "@

@@ -16,6 +16,7 @@ use std::{
     path::{Path, PathBuf},
 };
 use tauri::Manager;
+mod energy;
 
 type CommandResult<T> = Result<T, String>;
 fn error(e: impl std::fmt::Display) -> String {
@@ -111,7 +112,12 @@ async fn cancel_and_wait(app: tauri::AppHandle) -> CommandResult<Option<JobStatu
 }
 #[tauri::command]
 async fn prepare_close(app: tauri::AppHandle, discard_pending: bool) -> CommandResult<()> {
-    blocking(move || app.state::<Application>().prepare_close(discard_pending)).await
+    blocking(move || {
+        app.state::<Application>().prepare_close(discard_pending)?;
+        app.state::<energy::ReportControl>().shutdown();
+        Ok(())
+    })
+    .await
 }
 #[cfg(windows)]
 fn file_dialog(
@@ -625,6 +631,7 @@ async fn climate_compare(
 pub fn run() {
     tauri::Builder::default()
         .manage(Application::default())
+        .manage(energy::ReportControl::default())
         .invoke_handler(tauri::generate_handler![
             example,
             validate,
@@ -667,7 +674,22 @@ pub fn run() {
             climate_result_values,
             climate_sensor_series,
             climate_derive_metrics,
-            climate_compare
+            climate_compare,
+            energy::energy_create_example,
+            energy::energy_edit,
+            energy::energy_metadata,
+            energy::energy_attach,
+            energy::dialog_energy_attachment,
+            energy::energy_validate,
+            energy::energy_import_weather,
+            energy::energy_start,
+            energy::energy_default_runs,
+            energy::energy_result,
+            energy::energy_rows,
+            energy::energy_compare,
+            energy::energy_report,
+            energy::energy_cancel_report,
+            energy::dialog_energy_report
         ])
         .build(tauri::generate_context!())
         .expect("failed to build GreenLens desktop")
@@ -677,6 +699,7 @@ pub fn run() {
                 tauri::RunEvent::ExitRequested { .. } | tauri::RunEvent::Exit
             ) {
                 app.state::<Application>().shutdown();
+                app.state::<energy::ReportControl>().shutdown();
             }
         });
 }

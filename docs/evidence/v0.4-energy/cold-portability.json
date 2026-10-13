@@ -1,0 +1,112 @@
+{
+  "schema": "greenlens.energy-cold-portability-summary.v1",
+  "full_evidence_sha256": "b0593a881dbdd22f53c09650d2ca542d3b59e5863f1e1f1be48bb477b7eccfbc",
+  "results": {
+    "schema": "greenlens.energy-cold-portability.v1",
+    "cli_sha256": "dd9075f9891389d9c90b1df7f1a9f4d402805ad8f960c83105f1fc2f834c6c00",
+    "original_project_unavailable": true,
+    "original_job_scratch_unavailable": true,
+    "engine_discovery_failed": true,
+    "report_and_export_completed": true,
+    "package_bytes": 8569440,
+    "package_sha256": "94cc16a32d9d92afa968d5362ea113803f12b50eec40ef8086aea3f4770094b4",
+    "scientific_qualification_asserted": false
+  },
+  "commands": [
+    {
+      "name": "copy",
+      "exit_code": 0,
+      "wall_seconds": 11.6821344
+    },
+    {
+      "name": "inspect-A",
+      "exit_code": 0,
+      "wall_seconds": 4.3642533
+    },
+    {
+      "name": "inspect-B",
+      "exit_code": 0,
+      "wall_seconds": 2.9226502
+    },
+    {
+      "name": "report",
+      "exit_code": 0,
+      "wall_seconds": 9.3416039
+    },
+    {
+      "name": "export",
+      "exit_code": 0,
+      "wall_seconds": 17.1733845
+    },
+    {
+      "name": "package-inspect",
+      "exit_code": 0,
+      "wall_seconds": 5.0865893
+    }
+  ],
+  "package_inspection": {
+    "schema_version": "greenlens.energy-package-inspection.v0.4",
+    "package_sha256": "94cc16a32d9d92afa968d5362ea113803f12b50eec40ef8086aea3f4770094b4",
+    "retained_report_dataset_sha256": "182b979422cfe0e9ab4976f051abda4944d4747de6055a7a962598dc147067ef",
+    "scope": "Complete retained evidence and report bindings checked; no simulator or renderer was executed.",
+    "baseline": {
+      "current_derived_results": "not_compared",
+      "current_physical_inputs": "current",
+      "current_processed_results": "current",
+      "evidence_integrity": "complete_retained_evidence_checked",
+      "execution": "completed",
+      "scientific": {
+        "applicable_physical_input_sha256": [
+          "9fd772a057142b6fa1c705c36a56daad65b9e67ff8ff1353d0f39421d18d89db"
+        ],
+        "evidence_ids": [
+          "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+        ],
+        "method": {
+          "adapter_version": "1",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "engine_version": "26.2.0",
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+        "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+        "status": "failed",
+        "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim."
+      }
+    },
+    "proposed": {
+      "current_derived_results": "not_compared",
+      "current_physical_inputs": "current",
+      "current_processed_results": "current",
+      "evidence_integrity": "complete_retained_evidence_checked",
+      "execution": "completed",
+      "scientific": {
+        "applicable_physical_input_sha256": [
+          "fc50303368fed9c9eabeb8b04161f65abae96debdd84765e53b1f19771815f97"
+        ],
+        "evidence_ids": [
+          "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+        ],
+        "method": {
+          "adapter_version": "1",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "engine_version": "26.2.0",
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+        "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+        "status": "failed",
+        "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim."
+      }
+    }
+  },
+  "scope": "CLI cold inspection, report generation, export and integrity validation with original project and jobs renamed and engine discovery intentionally unavailable. Real replay and installed desktop are separate."
+}

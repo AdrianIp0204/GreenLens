@@ -1,8 +1,10 @@
 # GreenLens
 
-Local-first building environmental simulation with Rust, a native Tauri desktop, and Radiance.
+Local-first building environmental simulation with Rust, a native Tauri desktop, Radiance and separately installed EnergyPlus.
 
-The v0.3 development candidate adds local EPW import, selected-weather-hour and annual daylight studies, hourly inspection, occupied-time metrics and portable climate evidence. **Scientific acceptance is incomplete:** matched-sky/reference convergence remains under investigation, with failures preserved. Start with the [candidate status and launch commands](docs/v0.3-status.md), [climate usage guide](docs/v0.3-usage.md), [method and frozen tolerances](docs/v0.3-scientific-method.md), [acceptance plan](docs/v0.3-implementation-plan.md) and [progress record](docs/progress.md). A built installer or successful full-year calculation does not establish numerical accuracy.
+The active v0.4 candidate adds a separate small-building thermal model, real annual EnergyPlus DX/fan calculations and reproducible energy reports. Read the [energy status](docs/v0.4-energy-status.md), [bounded specification](docs/v0.4-energy-spec.md), [method](docs/v0.4-energy-method.md) and [progress record](docs/progress.md). **v0.4 is not yet a verified release:** numerical, installed-workflow and delivery acceptance are tracked individually.
+
+The historical v0.3 climate-daylight methods remain **failed/unqualified**. Their finite reference investigation is exhausted and closed; energy work neither reopens it nor transfers qualification to it. Historical inspection and replay remain available. See the [retained climate status](docs/v0.3-status.md) and [qualification continuation](docs/v0.3-qualification-continuation.md).
 
 The legacy calculation remains **Static daylight illuminance under a prescribed CIE standard overcast sky.** Its historical inputs, labels, identities and replay tolerance are preserved.
 
@@ -12,7 +14,7 @@ Version 0.2 adds a bounded Rhino-inspired modeling workspace: four persistent vi
 
 The completed v0.1 [implementation plan](docs/implementation-plan.md), [scientific record](docs/scientific-validation.md) and [native verification](docs/native-verification.md) remain historical evidence. They are not substitutes for fresh v0.2 acceptance.
 
-The bounded workflow models one rectangular room, a rectangular window, an optional horizontal overhang and a detached opaque obstruction. Inputs and completed runs stay in portable local project directories. Normal calculation requires no internet, cloud account, paid service or Python runtime.
+The daylight workflow models one rectangular room, a rectangular window, an optional horizontal overhang and a detached opaque obstruction. Inputs and completed runs stay in portable local project directories. Normal calculation requires no internet, cloud account, paid service or Python runtime.
 
 Start with the [installation and launch guide](docs/installation.md). Fresh v0.2 checks are recorded in [scientific and CLI verification](docs/v0.2-scientific-verification.md) and [installed workspace verification](docs/v0.2-native-verification.md). The [v0.1 package hashes](docs/release-artifacts.json) and [v0.1 CI record](docs/ci-evidence.json) describe the historical release only.
 

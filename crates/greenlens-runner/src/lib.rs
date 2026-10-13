@@ -7,6 +7,15 @@ mod climate_job;
 pub mod display;
 #[cfg(test)]
 mod document_tests;
+pub mod energy;
+pub mod energy_attachments;
+pub mod energy_export;
+mod energy_job;
+pub mod energy_qualification;
+pub mod energy_report;
+pub mod energy_series;
+pub mod energy_services;
+pub mod energy_weather;
 pub mod persistence;
 pub mod qualification;
 mod report;
@@ -56,6 +65,8 @@ pub struct Project {
     pub display_state: Option<display::DisplayState>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub climate: Option<climate::ClimateProject>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub energy: Option<energy::EnergyProject>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -83,6 +94,11 @@ pub struct ProjectView {
     pub results: Vec<RunRecord>,
     #[serde(default)]
     pub climate_results: Vec<climate::ClimateRunRecord>,
+    #[serde(default)]
+    pub energy_results: Vec<energy::EnergyRunRecord>,
+    #[serde(default)]
+    pub energy_assessments:
+        std::collections::BTreeMap<String, greenlens_core::energy::EnergyAssessment>,
     #[serde(default)]
     pub climate_assessments: std::collections::BTreeMap<String, qualification::RunAssessment>,
 }
@@ -115,12 +131,18 @@ pub fn example() -> Project {
         runs: vec![],
         display_state: None,
         climate: None,
+        energy: None,
     }
 }
 pub fn validate_project(project: &Project) -> Result<()> {
     ensure!(
-        (project.schema_version == SCHEMA_VERSION && project.climate.is_none())
-            || (project.schema_version == "0.3.0" && project.climate.is_some()),
+        (project.schema_version == SCHEMA_VERSION
+            && project.climate.is_none()
+            && project.energy.is_none())
+            || (project.schema_version == "0.3.0"
+                && project.climate.is_some()
+                && project.energy.is_none())
+            || (project.schema_version == "0.4.0" && project.energy.is_some()),
         "Unsupported project schema"
     );
     Uuid::parse_str(&project.id)?;
@@ -161,6 +183,12 @@ pub fn validate_project(project: &Project) -> Result<()> {
         climate::validate_project_extension(climate, &project.alternatives)?;
         for run in &climate.runs {
             ensure!(ids.insert(&run.id), "Duplicate static/climate run id");
+        }
+    }
+    if let Some(energy) = &project.energy {
+        energy::validate_extension(energy)?;
+        for run in &energy.runs {
+            ensure!(ids.insert(&run.id), "Duplicate daylight/energy run id");
         }
     }
     Ok(())
@@ -350,6 +378,12 @@ pub fn open_project(path: &Path) -> Result<ProjectView> {
     } else {
         vec![]
     };
+    let energy_results = if let Some(extension) = &project.energy {
+        energy::load_project_evidence(path, extension)?
+    } else {
+        vec![]
+    };
+    let energy_assessments = energy_services::assessments(&project, &energy_results)?;
     let climate_assessments =
         qualification::assessments_for_verified_view(&project, &climate_results)?;
     Ok(ProjectView {
@@ -357,6 +391,8 @@ pub fn open_project(path: &Path) -> Result<ProjectView> {
         revision,
         results,
         climate_results,
+        energy_results,
+        energy_assessments,
         climate_assessments,
     })
 }
@@ -369,6 +405,9 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
     }
     if let Some(extension) = &project.climate {
         climate::verify_project_evidence(path, extension)?;
+    }
+    if let Some(extension) = &project.energy {
+        energy::verify_project_evidence(path, extension)?;
     }
     check_revision(path, expected)?;
     atomic_json(path, project)?;
@@ -411,6 +450,10 @@ fn copy_project(
                 && project
                     .climate
                     .as_ref()
+                    .is_none_or(|value| value.runs.is_empty() && value.weather.is_empty())
+                && project
+                    .energy
+                    .as_ref()
                     .is_none_or(|value| value.runs.is_empty() && value.weather.is_empty()),
             "A project with historical runs requires its source directory for Save As"
         );
@@ -428,6 +471,9 @@ fn copy_project(
         }
         if let Some(extension) = &project.climate {
             climate::copy_project_evidence(source, destination, extension)?;
+        }
+        if let Some(extension) = &project.energy {
+            energy::copy_project_evidence(source, destination, extension)?;
         }
     }
     let mut project = project.clone();
@@ -501,6 +547,8 @@ pub struct JobStatus {
     pub result: Option<RunRecord>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub climate_result: Option<climate::ClimateRunRecord>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub energy_result: Option<energy::EnergyRunRecord>,
     /// True until immutable completed evidence has been collected or explicitly discarded.
     pub pending_evidence: bool,
 }
@@ -512,25 +560,37 @@ struct ActiveJob {
     project_id: Option<String>,
 }
 enum JobRequest {
-    Static(Profile),
+    Static {
+        model: Model,
+        profile: Profile,
+    },
     Climate {
+        model: Model,
         study: greenlens_core::study::Study,
+        weather: PathBuf,
+    },
+    Energy {
+        model: greenlens_core::energy::ThermalModel,
+        study: greenlens_core::energy::EnergyStudy,
         weather: PathBuf,
     },
 }
 enum CompletedRun {
     Static(Box<RunRecord>),
     Climate(Box<climate::ClimateRunRecord>),
+    Energy(Box<energy::EnergyRunRecord>),
 }
 enum CompletedRunRef<'a> {
     Static(&'a RunRecord),
     Climate(&'a climate::ClimateRunRecord),
+    Energy(&'a energy::EnergyRunRecord),
 }
 impl JobStatus {
     fn completed(&self) -> Result<CompletedRunRef<'_>> {
-        match (&self.result, &self.climate_result) {
-            (Some(run), None) => Ok(CompletedRunRef::Static(run)),
-            (None, Some(run)) => Ok(CompletedRunRef::Climate(run)),
+        match (&self.result, &self.climate_result, &self.energy_result) {
+            (Some(run), None, None) => Ok(CompletedRunRef::Static(run)),
+            (None, Some(run), None) => Ok(CompletedRunRef::Climate(run)),
+            (None, None, Some(run)) => Ok(CompletedRunRef::Energy(run)),
             _ => bail!("Missing or ambiguous completed result"),
         }
     }
@@ -542,6 +602,30 @@ impl CompletedRunRef<'_> {
                 validate_record(run)?;
                 promote_run(scratch, destination, &run.id)?;
                 append_run(project, run)?;
+            }
+            Self::Energy(run) => {
+                let retained = energy::read_run_directory(scratch)?;
+                ensure!(
+                    canonical_hash(&retained)? == canonical_hash(run)?,
+                    "Pending energy evidence changed"
+                );
+                let extension = project.energy.as_mut().context(
+                    "Energy project is missing; preserve pending evidence and reopen its project",
+                )?;
+                if !extension
+                    .weather
+                    .iter()
+                    .any(|w| w.binding == run.weather_asset.binding)
+                {
+                    extension.weather.push(energy::import_project_weather(
+                        &scratch.join("weather"),
+                        destination,
+                        &Uuid::new_v4().to_string(),
+                    )?);
+                }
+                promote_run(scratch, destination, &run.id)?;
+                energy::append_run(extension, run)?;
+                project.schema_version = "0.4.0".into();
             }
             Self::Climate(run) => {
                 let retained = climate::read_run_directory(scratch)?;
@@ -563,7 +647,12 @@ impl CompletedRunRef<'_> {
                 }
                 promote_run(scratch, destination, &run.id)?;
                 climate::append_run(extension, run)?;
-                project.schema_version = "0.3.0".into();
+                project.schema_version = if project.energy.is_some() {
+                    "0.4.0"
+                } else {
+                    "0.3.0"
+                }
+                .into();
             }
         }
         Ok(())
@@ -591,11 +680,11 @@ impl Application {
         profile: Profile,
         project_id: Option<String>,
     ) -> Result<JobStatus> {
+        validate_model(&model)?;
         self.start_request(
-            model,
             alternative,
             engine_dir,
-            JobRequest::Static(profile),
+            JobRequest::Static { model, profile },
             project_id,
         )
     }
@@ -613,20 +702,44 @@ impl Application {
             study.calculation,
             greenlens_core::study::StudyMode::StaticOvercast
         ) {
-            JobRequest::Static(Profile::shipping())
+            JobRequest::Static {
+                model,
+                profile: Profile::shipping(),
+            }
         } else {
             JobRequest::Climate {
+                model,
                 study,
                 weather: weather.context(
                     "Import a portable weather asset before calculating a weather study",
                 )?,
             }
         };
-        self.start_request(model, alternative, engine_dir, request, project_id)
+        self.start_request(alternative, engine_dir, request, project_id)
+    }
+    pub fn start_energy_for_project(
+        &self,
+        model: greenlens_core::energy::ThermalModel,
+        study: greenlens_core::energy::EnergyStudy,
+        weather: PathBuf,
+        alternative: String,
+        engine_dir: Option<PathBuf>,
+        project_id: String,
+    ) -> Result<JobStatus> {
+        study.validate(&model)?;
+        self.start_request(
+            alternative,
+            engine_dir,
+            JobRequest::Energy {
+                model,
+                study,
+                weather,
+            },
+            Some(project_id),
+        )
     }
     fn start_request(
         &self,
-        model: Model,
         alternative: String,
         engine_dir: Option<PathBuf>,
         request: JobRequest,
@@ -635,7 +748,6 @@ impl Application {
         if let Some(id) = &project_id {
             Uuid::parse_str(id)?;
         }
-        validate_model(&model)?;
         ensure!(
             ["A", "B"].contains(&alternative.as_str()),
             "Unknown alternative"
@@ -669,6 +781,7 @@ impl Application {
             error: None,
             result: None,
             climate_result: None,
+            energy_result: None,
             pending_evidence: false,
         };
         let status = Arc::new(Mutex::new(initial.clone()));
@@ -690,7 +803,7 @@ impl Application {
                 }
             };
             let result = match request {
-                JobRequest::Static(profile) => run_job(
+                JobRequest::Static { model, profile } => run_job(
                     &id,
                     model,
                     alternative,
@@ -701,7 +814,11 @@ impl Application {
                     &log,
                 )
                 .map(|run| CompletedRun::Static(Box::new(run))),
-                JobRequest::Climate { study, weather } => climate_job::run(
+                JobRequest::Climate {
+                    model,
+                    study,
+                    weather,
+                } => climate_job::run(
                     &id,
                     model,
                     alternative,
@@ -713,12 +830,29 @@ impl Application {
                     &log,
                 )
                 .map(|run| CompletedRun::Climate(Box::new(run))),
+                JobRequest::Energy {
+                    model,
+                    study,
+                    weather,
+                } => energy_job::run(
+                    &id,
+                    model,
+                    alternative,
+                    engine_dir.as_deref(),
+                    study,
+                    &weather,
+                    &worker_scratch,
+                    &worker_cancel,
+                    &log,
+                )
+                .map(|run| CompletedRun::Energy(Box::new(run))),
             };
             let mut s = worker_status.lock().unwrap();
             if worker_cancel.load(Ordering::SeqCst) {
                 s.state = JobState::Cancelled;
                 s.result = None;
                 s.climate_result = None;
+                s.energy_result = None;
                 s.log
                     .push("Cancelled; no completed result published".into());
             } else {
@@ -728,6 +862,7 @@ impl Application {
                         match run {
                             CompletedRun::Static(run) => s.result = Some(*run),
                             CompletedRun::Climate(run) => s.climate_result = Some(*run),
+                            CompletedRun::Energy(run) => s.energy_result = Some(*run),
                         }
                         s.pending_evidence = true;
                         s.log
@@ -863,6 +998,9 @@ impl Application {
         if let Some(extension) = &project.climate {
             climate::verify_project_evidence(path, extension)?;
         }
+        if let Some(extension) = &project.energy {
+            energy::verify_project_evidence(path, extension)?;
+        }
         let mut project = project.clone();
         run.promote(&job.scratch, path, &mut project)?;
         check_revision(path, expected)?;
@@ -959,6 +1097,7 @@ pub fn export_project(path: &Path, destination: &Path) -> Result<()> {
     // generating reports. Final generated files share the same writer budget.
     let project: Project = read_json(&regular_child(path, "project.json")?)?;
     validate_project(&project)?;
+    ensure!(project.energy.is_none(), "Choose an explicit energy baseline/proposed pair with energy export, or daylight run IDs with export --run");
     ensure!(project.climate.is_none(), "Choose explicit run IDs when exporting a climate project; use export --run <id> for each selected snapshot");
     let mut source_budget = PackageBudget::default();
     source_budget.add(

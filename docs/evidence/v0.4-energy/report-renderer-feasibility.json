@@ -1,0 +1,419 @@
+{
+  "schema_version": "greenlens.energy-report-feasibility.v1",
+  "completed": true,
+  "started_utc": "2026-10-13T02:39:55.1663841Z",
+  "finished_utc": "2026-10-13T02:39:57.5086666Z",
+  "scope": "Synthetic renderer feasibility only; no energy execution or scientific qualification",
+  "renderer": "0.15.1",
+  "renderer_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+  "font_family": "Noto Sans CJK TC",
+  "font_seals": [
+    {
+      "name": "NotoSansCJKtc-Bold.otf",
+      "bytes": 17000768,
+      "sha256": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0"
+    },
+    {
+      "name": "NotoSansCJKtc-Regular.otf",
+      "bytes": 16435884,
+      "sha256": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+    }
+  ],
+  "input_seals": {
+    "feasibility.typ": {
+      "bytes": 4711,
+      "sha256": "dfa0c75bd0e29e54f0710625ecfb1d0ccc9b27f1e8b10a411c0c7cab4c3ae28b"
+    },
+    "model.svg": {
+      "bytes": 717,
+      "sha256": "317bc49a3464a083d74f50760206d2ab6af176b5619bfb725cf91fdda70e8c63"
+    },
+    "chart.svg": {
+      "bytes": 748,
+      "sha256": "81c1a44aed65d892c3b8030fd4ccb6b4b05442c58221a30a98763aee8b744c90"
+    },
+    "report-data.json": {
+      "bytes": 22969,
+      "sha256": "d082a5ef83772b8db6f81dedc86b373bcc44337d02f9498ecb923f46e9c7977f"
+    }
+  },
+  "output_seals": {
+    "report.pdf": {
+      "bytes": 152020,
+      "sha256": "7a82286dca61d650489c0460fb95aa464061622cecadc7e8b1f4bda6235d42ae"
+    },
+    "page-1-of-8.png": {
+      "bytes": 102047,
+      "sha256": "22682aa19fc7fd0a119a3a3bac23636de0bb3b932b1274fe2347f46a7fd490d6"
+    },
+    "page-2-of-8.png": {
+      "bytes": 162290,
+      "sha256": "4d43c7078a3aba1a310e77d40bfaf6fa8fbfa545cb69511fcc34581ec8d016b5"
+    },
+    "page-3-of-8.png": {
+      "bytes": 283031,
+      "sha256": "42af5f5b6ca407acaa28356ffc0c417ebcf07eaeb372f63f2b739f5e148e3668"
+    },
+    "page-4-of-8.png": {
+      "bytes": 287629,
+      "sha256": "4fe3f4162de035939a076ae48af6f501726e3b1eaffcd2c97e96be0a1755f147"
+    },
+    "page-5-of-8.png": {
+      "bytes": 287657,
+      "sha256": "d2e857bcfe980336b5bef50648eda144b0426ea077bd6a5f628661f6c5d012cf"
+    },
+    "page-6-of-8.png": {
+      "bytes": 287839,
+      "sha256": "95d9ae4aa10e3d8e1485027fb01d1f453a6981f7274488459c958ccd39f8d1d8"
+    },
+    "page-7-of-8.png": {
+      "bytes": 143579,
+      "sha256": "a2991749f024250c40088e56a7233223cb6c9fd59ca849a6249097edb2a57a5a"
+    },
+    "page-8-of-8.png": {
+      "bytes": 120260,
+      "sha256": "f2835cf87c3cd5b007ee2d91da7644d7e4ceb3246af770fb26225cf0db52fb82"
+    }
+  },
+  "png_pages": 8,
+  "pdf_repeat_byte_identical": true,
+  "outside_root_read_rejected": true,
+  "package_directories_unchanged": true,
+  "network_policy": "Owned import-free template, explicit empty package roots, process-local unreachable HTTP/HTTPS proxies; no OS network sandbox claimed",
+  "system_fonts_used": false,
+  "embedded_fonts_used": false,
+  "visual_review_complete": true,
+  "redistribution_review_complete": false,
+  "processes": [
+    {
+      "executable": "typst.exe",
+      "arguments": [
+        "compile",
+        "feasibility.typ",
+        "report.pdf",
+        "--root",
+        ".",
+        "--font-path",
+        "<renderer-fonts>",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "--deps",
+        "pdf-dependencies.json"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-13T02:39:55.2487859Z",
+      "finished_utc": "2026-10-13T02:39:55.7874207Z",
+      "wall_seconds": 0.52877,
+      "sampled_peak_working_set_bytes": 76394496,
+      "sampled_runner_plus_engine_peak_bytes": 257208320,
+      "sampled_scratch_peak_bytes": 182091,
+      "input_bytes": 0,
+      "input_transport": "small-text",
+      "input_receipt": null,
+      "output_bytes": 0,
+      "terminated_tree_reason": null,
+      "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+      "job_empty": true,
+      "stream_tasks_completed": true,
+      "limits": {
+        "file_bytes": 67108864,
+        "scratch_bytes": 268435456,
+        "cleanup_seconds": 5,
+        "memory_bytes": 2147483648,
+        "timeout_seconds": 120.0
+      },
+      "completed": true
+    },
+    {
+      "executable": "typst.exe",
+      "arguments": [
+        "compile",
+        "feasibility.typ",
+        "report-repeat.pdf",
+        "--root",
+        ".",
+        "--font-path",
+        "<renderer-fonts>",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-13T02:39:55.8087078Z",
+      "finished_utc": "2026-10-13T02:39:56.2222110Z",
+      "wall_seconds": 0.4051064,
+      "sampled_peak_working_set_bytes": 76025856,
+      "sampled_runner_plus_engine_peak_bytes": 258330624,
+      "sampled_scratch_peak_bytes": 335441,
+      "input_bytes": 0,
+      "input_transport": "small-text",
+      "input_receipt": null,
+      "output_bytes": 0,
+      "terminated_tree_reason": null,
+      "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+      "job_empty": true,
+      "stream_tasks_completed": true,
+      "limits": {
+        "file_bytes": 67108864,
+        "scratch_bytes": 268435456,
+        "cleanup_seconds": 5,
+        "memory_bytes": 2147483648,
+        "timeout_seconds": 120.0
+      },
+      "completed": true
+    },
+    {
+      "executable": "typst.exe",
+      "arguments": [
+        "compile",
+        "feasibility.typ",
+        "page-{0p}-of-{t}.png",
+        "--root",
+        ".",
+        "--font-path",
+        "<renderer-fonts>",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "--ppi",
+        "96"
+      ],
+      "exit_code": 0,
+      "stderr": "",
+      "started_utc": "2026-10-13T02:39:56.2270655Z",
+      "finished_utc": "2026-10-13T02:39:56.8764646Z",
+      "wall_seconds": 0.6389451,
+      "sampled_peak_working_set_bytes": 83845120,
+      "sampled_runner_plus_engine_peak_bytes": 281481216,
+      "sampled_scratch_peak_bytes": 2011270,
+      "input_bytes": 0,
+      "input_transport": "small-text",
+      "input_receipt": null,
+      "output_bytes": 0,
+      "terminated_tree_reason": null,
+      "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+      "job_empty": true,
+      "stream_tasks_completed": true,
+      "limits": {
+        "file_bytes": 67108864,
+        "scratch_bytes": 268435456,
+        "cleanup_seconds": 5,
+        "memory_bytes": 2147483648,
+        "timeout_seconds": 120.0
+      },
+      "completed": true
+    },
+    {
+      "executable": "typst.exe",
+      "arguments": [
+        "compile",
+        "root-denial.typ",
+        "must-not-exist.pdf",
+        "--root",
+        ".",
+        "--font-path",
+        "<renderer-fonts>",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short"
+      ],
+      "exit_code": 1,
+      "stderr": "root-denial.typ:1:6: error: path `\"../outside-secret.txt\"` would escape the project root\n",
+      "started_utc": "2026-10-13T02:39:56.9060013Z",
+      "finished_utc": "2026-10-13T02:39:57.2656533Z",
+      "wall_seconds": 0.3507639,
+      "sampled_peak_working_set_bytes": 19812352,
+      "sampled_runner_plus_engine_peak_bytes": 219455488,
+      "sampled_scratch_peak_bytes": 2012724,
+      "input_bytes": 0,
+      "input_transport": "small-text",
+      "input_receipt": null,
+      "output_bytes": 0,
+      "terminated_tree_reason": null,
+      "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+      "job_empty": true,
+      "stream_tasks_completed": true,
+      "limits": {
+        "file_bytes": 67108864,
+        "scratch_bytes": 268435456,
+        "cleanup_seconds": 5,
+        "memory_bytes": 2147483648,
+        "timeout_seconds": 15.0
+      },
+      "completed": false
+    }
+  ],
+  "script_sha256": "6d136c0d8360368a64ac4ffd21510492a614257a44bee38bb82fe4c6f802d791",
+  "supervisor_sha256": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+  "native_supervisor_sha256": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+  "independent_review": {
+    "schema_version": "greenlens.energy-renderer-audit.v1",
+    "checked_utc": "2026-10-13T02:40:12.596168Z",
+    "pdf_pages": 8,
+    "table_rows_exact_and_ordered": 96,
+    "repeated_header_pages": [
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "literal_adversarial_strings": 6,
+    "cjk_text_exact": true,
+    "outside_sentinel_absent": true,
+    "embedded_fonts": {
+      "/YPUSJY+NotoSansCJKtc-Regular-Identity-H": {
+        "embedded": true,
+        "unicode_map": true
+      },
+      "/BYZOCP+NotoSansCJKtc-Bold-Identity-H": {
+        "embedded": true,
+        "unicode_map": true
+      }
+    },
+    "pdf_javascript_or_open_action": false,
+    "all_pages_visually_inspected": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "visual_scope": "All eight final-byte-equivalent PDF pages independently rasterized with Poppler and inspected. No clipping, overlaps, missing glyphs or broken tables found. Long labels wrap; final table page is intentionally sparse. This is a renderer fixture, not report-product or energy acceptance.",
+    "final_rerun_same_pdf_and_all_png_bytes_as_visual_review": true,
+    "audit_script_sha256": "70cddd3ecca906532346d706b92aef86945e6d6dda0f78476c6b5098f7c1e6e6",
+    "pdf_inspection_tool": "pypdf 6.10.0",
+    "rasterizer": "Poppler pdftoppm; -scale-to 1200 -png",
+    "raster_seals": {
+      "page-1.png": {
+        "bytes": 90443,
+        "sha256": "91d831451e7fd88701832c5409d2d954d24150d6e42c20b86ecf5390d177e41e"
+      },
+      "page-2.png": {
+        "bytes": 141476,
+        "sha256": "6c7fc48a31ba879081d0d944fdca233ec3550c04b8ddff88bafb7c4f1678817b"
+      },
+      "page-3.png": {
+        "bytes": 283169,
+        "sha256": "013f53b4ab3fd47ea7b178f95a312157615b344902fbabe6a5b22ccc6779af55"
+      },
+      "page-4.png": {
+        "bytes": 294394,
+        "sha256": "939ed16c9cfc25fb429fa6df9f4b3b73cfeba27f96e04fc0843415aabfe37ad7"
+      },
+      "page-5.png": {
+        "bytes": 293078,
+        "sha256": "7ff2471c13b4b7a7600060ec0bb0ab97a312ffd9d477a8a54719c0b7c71c7a0d"
+      },
+      "page-6.png": {
+        "bytes": 294324,
+        "sha256": "67fe4fc0258f2260d671d7e115d9d91315765e410292d8e38fe5122a60e9ddff"
+      },
+      "page-7.png": {
+        "bytes": 144403,
+        "sha256": "f0de45c5acdb5e65c87fffc0a5556799aceb3ecd8e26189f9250e99b52e0e875"
+      },
+      "page-8.png": {
+        "bytes": 109030,
+        "sha256": "137f19261c2901fea46cbe2ae7b2989c7921d578bd0eb3a1d2d6ea029ff63ef3"
+      }
+    }
+  },
+  "limitations": [
+    "No OS-level network denial was exercised; import-free source and empty explicit package directories are mandatory. Child-only unreachable proxy settings are defense in depth.",
+    "No complete transitive binary redistribution/license closure. Official Typst, embedded font and selected Noto notices retained; binary/fonts remain external.",
+    "No production EnergyReportData or application renderer integration; no energy results, standalone HTML or full report-family acceptance.",
+    "Traditional Chinese and Latin fixture tested; broader scripts, mathematical glyphs, user assets and maximum-size reports not yet verified.",
+    "Supervisor samples flat staging directory and known fixed outputs only; it is feasibility reuse, not general recursive report-package supervision."
+  ],
+  "source_paths": [
+    "dependencies/typst.json",
+    "scripts/install-typst.ps1",
+    "scripts/energy-report-feasibility.ps1",
+    "reports/energy/feasibility.typ",
+    "reports/energy/model.svg",
+    "reports/energy/chart.svg"
+  ],
+  "source_seals": {
+    "dependencies/typst.json": {
+      "bytes": 3925,
+      "sha256": "48d4d9ee893006fc33daa2a7c22cd9b64dd9c74fd5fe3bfef313124f7de62e01"
+    },
+    "scripts/install-typst.ps1": {
+      "bytes": 5193,
+      "sha256": "b079e0e2e1ca2cefef798b71406096f445a7c5123af3bb37d1918a98ccbe9e58"
+    },
+    "scripts/energy-report-feasibility.ps1": {
+      "bytes": 11470,
+      "sha256": "6d136c0d8360368a64ac4ffd21510492a614257a44bee38bb82fe4c6f802d791"
+    },
+    "reports/energy/feasibility.typ": {
+      "bytes": 4711,
+      "sha256": "dfa0c75bd0e29e54f0710625ecfb1d0ccc9b27f1e8b10a411c0c7cab4c3ae28b"
+    },
+    "reports/energy/model.svg": {
+      "bytes": 717,
+      "sha256": "317bc49a3464a083d74f50760206d2ab6af176b5619bfb725cf91fdda70e8c63"
+    },
+    "reports/energy/chart.svg": {
+      "bytes": 748,
+      "sha256": "81c1a44aed65d892c3b8030fd4ccb6b4b05442c58221a30a98763aee8b744c90"
+    }
+  },
+  "prior_observations": [
+    {
+      "kind": "installer-closure-script-error",
+      "outcome": "Rejected at member-count closure; repaired PowerShell property enumeration before successful installation."
+    },
+    {
+      "kind": "native-option-error",
+      "outcome": "Initial child exited 2 before compilation because an empty inherited TYPST_FEATURES was present. Fixed process-local remove/restore; original failed scratch retained."
+    },
+    {
+      "kind": "visual-draft",
+      "outcome": "Initial display-only SVG lacked labels. Final SVG has category/unit/legend labels; previous outputs retained."
+    }
+  ]
+}

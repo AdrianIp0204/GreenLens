@@ -1,0 +1,21 @@
+{
+  "script_sha256": "6d136c0d8360368a64ac4ffd21510492a614257a44bee38bb82fe4c6f802d791",
+  "scope": "Failure-only preflight; no native renderer process launched",
+  "installer_sha256": "b079e0e2e1ca2cefef798b71406096f445a7c5123af3bb37d1918a98ccbe9e58",
+  "checks": [
+    {
+      "name": "missing-renderer-fails-before-output",
+      "passed": true
+    },
+    {
+      "name": "corrupt-archive-rejected-before-extraction",
+      "passed": true
+    },
+    {
+      "name": "unreviewed-font-discovery-rejected-before-output",
+      "passed": true
+    }
+  ],
+  "schema_version": "greenlens.energy-renderer-preflight-guards.v1",
+  "checked_utc": "2026-10-13T02:40:46.7191598Z"
+}

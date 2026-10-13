@@ -1,0 +1,2158 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:energy-report:v0.4",
+  "title": "GreenLens EnergyReportData v0.4",
+  "description": "Wire shape only. Authoritative Rust validation additionally checks finite arithmetic, reciprocal full-face topology, complete non-leap calendar, schedule roles, exact physical and engine identities, accounting reconciliation and source-bound scientific scope. Deserialization is not evidence integrity or scientific qualification.",
+  "$ref": "#/$defs/EnergyReportData",
+  "$defs": {
+    "BalancedVentilation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "design_flow_m3_s",
+        "fraction_schedule",
+        "fan_pressure_pa",
+        "total_efficiency"
+      ],
+      "properties": {
+        "design_flow_m3_s": {
+          "type": "number"
+        },
+        "fraction_schedule": {
+          "type": "string"
+        },
+        "fan_pressure_pa": {
+          "type": "number"
+        },
+        "total_efficiency": {
+          "type": "number"
+        }
+      }
+    },
+    "CarbonFactor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "fuel",
+        "region",
+        "year",
+        "kg_per_kwh",
+        "unit",
+        "source",
+        "version",
+        "synthetic"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "fuel": {
+          "$ref": "#/$defs/Fuel"
+        },
+        "region": {
+          "type": "string"
+        },
+        "year": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "kg_per_kwh": {
+          "type": "number"
+        },
+        "unit": {
+          "$ref": "#/$defs/EmissionUnit"
+        },
+        "source": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "CoincidentDemand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "timestamp",
+        "facility_kw",
+        "end_use_contributions_kw",
+        "reconciliation_residual_kw"
+      ],
+      "properties": {
+        "timestamp": {
+          "$ref": "#/$defs/EnergyTimestamp"
+        },
+        "facility_kw": {
+          "type": "number"
+        },
+        "end_use_contributions_kw": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/EnergyEndUse"
+          }
+        },
+        "reconciliation_residual_kw": {
+          "type": "number"
+        }
+      }
+    },
+    "ComfortSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "occupied_hours",
+        "cooling_unmet_hours"
+      ],
+      "properties": {
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "occupied_hours": {
+          "type": "number"
+        },
+        "cooling_unmet_hours": {
+          "type": "number"
+        },
+        "unmet_percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "CurveForm": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "coefficients",
+            "x"
+          ],
+          "properties": {
+            "kind": {
+              "const": "quadratic"
+            },
+            "coefficients": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "number"
+              }
+            },
+            "x": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "coefficients",
+            "x"
+          ],
+          "properties": {
+            "kind": {
+              "const": "cubic"
+            },
+            "coefficients": {
+              "type": "array",
+              "minItems": 4,
+              "maxItems": 4,
+              "items": {
+                "type": "number"
+              }
+            },
+            "x": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "coefficients",
+            "x",
+            "y"
+          ],
+          "properties": {
+            "kind": {
+              "const": "biquadratic"
+            },
+            "coefficients": {
+              "type": "array",
+              "minItems": 6,
+              "maxItems": 6,
+              "items": {
+                "type": "number"
+              }
+            },
+            "x": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number"
+              }
+            },
+            "y": {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": {
+                "type": "number"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "DayProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "values"
+      ],
+      "properties": {
+        "values": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 144,
+          "maxItems": 144
+        }
+      }
+    },
+    "DxCoolingSystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "gross_rated_capacity_w",
+        "gross_rated_cop",
+        "rated_shr",
+        "rated_airflow_m3_s",
+        "rated_indoor_wet_bulb_c",
+        "rated_outdoor_dry_bulb_c",
+        "capacity_temperature_curve",
+        "capacity_flow_curve",
+        "eir_temperature_curve",
+        "eir_flow_curve",
+        "part_load_fraction_curve",
+        "availability_schedule",
+        "cooling_setpoint_schedule",
+        "cooling_deadband_k",
+        "supply_fan",
+        "balanced_ventilation",
+        "sizing_source"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "gross_rated_capacity_w": {
+          "type": "number"
+        },
+        "gross_rated_cop": {
+          "type": "number"
+        },
+        "rated_shr": {
+          "type": "number"
+        },
+        "rated_airflow_m3_s": {
+          "type": "number"
+        },
+        "rated_indoor_wet_bulb_c": {
+          "type": "number"
+        },
+        "rated_outdoor_dry_bulb_c": {
+          "type": "number"
+        },
+        "capacity_temperature_curve": {
+          "type": "string"
+        },
+        "capacity_flow_curve": {
+          "type": "string"
+        },
+        "eir_temperature_curve": {
+          "type": "string"
+        },
+        "eir_flow_curve": {
+          "type": "string"
+        },
+        "part_load_fraction_curve": {
+          "type": "string"
+        },
+        "availability_schedule": {
+          "type": "string"
+        },
+        "cooling_setpoint_schedule": {
+          "type": "string"
+        },
+        "cooling_deadband_k": {
+          "type": "number"
+        },
+        "supply_fan": {
+          "$ref": "#/$defs/SupplyFan"
+        },
+        "balanced_ventilation": {
+          "$ref": "#/$defs/BalancedVentilation"
+        },
+        "sizing_source": {
+          "$ref": "#/$defs/InputSource"
+        }
+      }
+    },
+    "EmissionUnit": {
+      "enum": [
+        "kg_co2",
+        "kg_co2e"
+      ]
+    },
+    "EnergyAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "execution",
+        "evidence_integrity",
+        "current_physical_inputs",
+        "current_processed_results",
+        "current_derived_results",
+        "scientific"
+      ],
+      "properties": {
+        "execution": {
+          "$ref": "#/$defs/EnergyExecutionStatus"
+        },
+        "evidence_integrity": {
+          "$ref": "#/$defs/EnergyIntegrityScope"
+        },
+        "current_physical_inputs": {
+          "$ref": "#/$defs/EnergyInputRelation"
+        },
+        "current_processed_results": {
+          "$ref": "#/$defs/EnergyInputRelation"
+        },
+        "current_derived_results": {
+          "$ref": "#/$defs/EnergyInputRelation"
+        },
+        "scientific": {
+          "$ref": "#/$defs/EnergyQualification"
+        }
+      }
+    },
+    "EnergyCalendar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start_weekday",
+        "holidays",
+        "utc_offset_minutes"
+      ],
+      "properties": {
+        "start_weekday": {
+          "$ref": "#/$defs/Weekday"
+        },
+        "holidays": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MonthDay"
+          },
+          "minItems": 0,
+          "maxItems": 365
+        },
+        "utc_offset_minutes": {
+          "type": "integer",
+          "minimum": -720,
+          "maximum": 840
+        }
+      }
+    },
+    "EnergyComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "input_relation",
+        "rows",
+        "facility_energy_savings",
+        "facility_peak_savings",
+        "lighting_service_equivalence",
+        "savings_claim_limitations"
+      ],
+      "properties": {
+        "input_relation": {
+          "$ref": "#/$defs/EnergyInputComparison"
+        },
+        "rows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyComparisonRow"
+          }
+        },
+        "facility_energy_savings": {
+          "$ref": "#/$defs/Savings"
+        },
+        "facility_peak_savings": {
+          "$ref": "#/$defs/Savings"
+        },
+        "lighting_service_equivalence": {
+          "type": "string"
+        },
+        "savings_claim_limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "EnergyComparisonRow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "end_use",
+        "baseline_kwh",
+        "proposed_kwh",
+        "energy_savings",
+        "baseline_coincident_kw",
+        "proposed_coincident_kw",
+        "demand_savings"
+      ],
+      "properties": {
+        "end_use": {
+          "$ref": "#/$defs/EnergyEndUse"
+        },
+        "baseline_kwh": {
+          "type": "number"
+        },
+        "proposed_kwh": {
+          "type": "number"
+        },
+        "energy_savings": {
+          "$ref": "#/$defs/Savings"
+        },
+        "baseline_coincident_kw": {
+          "type": "number"
+        },
+        "proposed_coincident_kw": {
+          "type": "number"
+        },
+        "demand_savings": {
+          "$ref": "#/$defs/Savings"
+        }
+      }
+    },
+    "EnergyEndUse": {
+      "enum": [
+        "cooling_system",
+        "supply_fans",
+        "ventilation_exhaust_fans",
+        "interior_lighting",
+        "exterior_lighting",
+        "plug_equipment"
+      ]
+    },
+    "EnergyEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "relative_path",
+        "sha256",
+        "caption",
+        "included",
+        "rights"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "relative_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^(?!/)(?!.*\\\\)(?!.*:)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//).+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "included": {
+          "type": "boolean"
+        },
+        "rights": {
+          "type": "string"
+        }
+      }
+    },
+    "EnergyExecutionStatus": {
+      "enum": [
+        "completed",
+        "failed",
+        "cancelled",
+        "not_executed"
+      ]
+    },
+    "EnergyInputComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "comparable_geometry_weather_calendar",
+        "unchanged_service_inputs",
+        "differences",
+        "service_warnings"
+      ],
+      "properties": {
+        "comparable_geometry_weather_calendar": {
+          "type": "boolean"
+        },
+        "unchanged_service_inputs": {
+          "type": "boolean"
+        },
+        "differences": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "service_warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "EnergyInputRelation": {
+      "enum": [
+        "current",
+        "changed",
+        "not_compared"
+      ]
+    },
+    "EnergyIntegrityScope": {
+      "enum": [
+        "not_checked",
+        "metadata_checked",
+        "complete_retained_evidence_checked"
+      ]
+    },
+    "EnergyMethodIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "method_id",
+        "adapter_version",
+        "engine_version",
+        "engine_package_sha256",
+        "engine_executable_sha256",
+        "engine_schema_sha256",
+        "recipe_sha256",
+        "numerical_settings_sha256"
+      ],
+      "properties": {
+        "method_id": {
+          "type": "string"
+        },
+        "adapter_version": {
+          "type": "string"
+        },
+        "engine_version": {
+          "type": "string"
+        },
+        "engine_package_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "engine_executable_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "engine_schema_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "recipe_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "numerical_settings_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "EnergyPeriodTotal": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "facility_kwh",
+        "end_uses_kwh",
+        "reconciliation_residual_kwh"
+      ],
+      "properties": {
+        "facility_kwh": {
+          "type": "number"
+        },
+        "end_uses_kwh": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/EnergyEndUse"
+          }
+        },
+        "reconciliation_residual_kwh": {
+          "type": "number"
+        }
+      }
+    },
+    "EnergyQualification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "method",
+        "registry_version",
+        "reason",
+        "tested_scope",
+        "applicable_physical_input_sha256",
+        "evidence_ids"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/EnergyQualificationStatus"
+        },
+        "method": {
+          "$ref": "#/$defs/EnergyMethodIdentity"
+        },
+        "registry_version": {
+          "type": "string"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "tested_scope": {
+          "type": "string"
+        },
+        "applicable_physical_input_sha256": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "EnergyQualificationStatus": {
+      "enum": [
+        "unassessed",
+        "failed",
+        "limited_qualified"
+      ]
+    },
+    "EnergyReportAsset": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "relative_path",
+        "sha256",
+        "caption",
+        "alt_text",
+        "model_input_sha256"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "relative_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^(?!/)(?!.*\\\\)(?!.*:)(?!.*(?:^|/)\\.{1,2}(?:/|$))(?!.*//).+$"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "caption": {
+          "type": "string"
+        },
+        "alt_text": {
+          "type": "string"
+        },
+        "model_input_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "EnergyReportCase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "label",
+        "model_id",
+        "model",
+        "study",
+        "weather_summary",
+        "model_input_sha256",
+        "run_id",
+        "record_sha256",
+        "physical_input_sha256",
+        "processing_sha256",
+        "method",
+        "assessment",
+        "gross_floor_area_m2",
+        "conditioned_floor_area_m2",
+        "totals",
+        "meter_ledger",
+        "diagnostics",
+        "limitations"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "label": {
+          "type": "string"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "model": {
+          "$ref": "#/$defs/ThermalModel"
+        },
+        "study": {
+          "$ref": "#/$defs/EnergyStudy"
+        },
+        "weather_summary": {
+          "$ref": "#/$defs/EnergyWeatherSummary"
+        },
+        "model_input_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "run_id": {
+          "type": "string"
+        },
+        "record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "physical_input_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "processing_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "method": {
+          "$ref": "#/$defs/EnergyMethodIdentity"
+        },
+        "assessment": {
+          "$ref": "#/$defs/EnergyAssessment"
+        },
+        "gross_floor_area_m2": {
+          "type": "number"
+        },
+        "conditioned_floor_area_m2": {
+          "type": "number"
+        },
+        "totals": {
+          "$ref": "#/$defs/EnergyTotals"
+        },
+        "meter_ledger": {
+          "$ref": "#/$defs/MeterLedger"
+        },
+        "diagnostics": {
+          "$ref": "#/$defs/EnergyReportDiagnostics"
+        },
+        "carbon_factor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CarbonFactor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "EnergyReportData": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "id",
+        "title",
+        "revision",
+        "scope",
+        "baseline",
+        "proposed",
+        "comparison",
+        "assets",
+        "evidence",
+        "limitations"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "greenlens.energy-report.v0.4"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "revision": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "baseline": {
+          "$ref": "#/$defs/EnergyReportCase"
+        },
+        "proposed": {
+          "$ref": "#/$defs/EnergyReportCase"
+        },
+        "comparison": {
+          "$ref": "#/$defs/EnergyComparison"
+        },
+        "assets": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyReportAsset"
+          }
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyEvidence"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "EnergyReportDiagnostics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_record_sha256",
+        "messages",
+        "convergence_disclosure"
+      ],
+      "properties": {
+        "source_record_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "warning_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "severe_count": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "convergence_disclosure": {
+          "type": "string"
+        }
+      }
+    },
+    "EnergyStudy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "weather",
+        "calendar",
+        "zone_timesteps_per_hour"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "greenlens.energy-study.v0.4"
+        },
+        "weather": {
+          "$ref": "#/$defs/EnergyWeatherBinding"
+        },
+        "calendar": {
+          "$ref": "#/$defs/EnergyCalendar"
+        },
+        "zone_timesteps_per_hour": {
+          "type": "integer",
+          "minimum": 0,
+          "enum": [
+            6,
+            12
+          ]
+        }
+      }
+    },
+    "EnergyTimestamp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interval_index",
+        "month",
+        "day",
+        "start_minute",
+        "end_minute"
+      ],
+      "properties": {
+        "interval_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "month": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "day": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "start_minute": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_minute": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "EnergyTotals": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interval_count",
+        "interval_seconds",
+        "annual",
+        "monthly",
+        "demand_interval_seconds",
+        "coincident_peak",
+        "zone_comfort",
+        "building_comfort_union",
+        "comfort_definition",
+        "maximum_interval_reconciliation_residual_kw"
+      ],
+      "properties": {
+        "interval_count": {
+          "type": "integer",
+          "minimum": 0,
+          "enum": [
+            52560,
+            105120
+          ]
+        },
+        "interval_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "enum": [
+            300,
+            600
+          ]
+        },
+        "annual": {
+          "$ref": "#/$defs/EnergyPeriodTotal"
+        },
+        "monthly": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyPeriodTotal"
+          },
+          "minItems": 12,
+          "maxItems": 12
+        },
+        "demand_interval_seconds": {
+          "type": "integer",
+          "minimum": 0,
+          "const": 600
+        },
+        "coincident_peak": {
+          "$ref": "#/$defs/CoincidentDemand"
+        },
+        "zone_comfort": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ComfortSummary"
+          },
+          "minItems": 0,
+          "maxItems": 8
+        },
+        "building_comfort_union": {
+          "$ref": "#/$defs/ComfortSummary"
+        },
+        "comfort_definition": {
+          "type": "string"
+        },
+        "maximum_interval_reconciliation_residual_kw": {
+          "type": "number"
+        }
+      }
+    },
+    "EnergyWeatherBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_sha256",
+        "normalized_sha256",
+        "time_axis_sha256",
+        "profile_id"
+      ],
+      "properties": {
+        "original_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "normalized_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "time_axis_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "profile_id": {
+          "type": "string",
+          "const": "greenlens.energy-epw-explicit-fields.v1"
+        }
+      }
+    },
+    "EnergyWeatherSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "binding",
+        "location",
+        "source",
+        "year_hours"
+      ],
+      "properties": {
+        "binding": {
+          "$ref": "#/$defs/EnergyWeatherBinding"
+        },
+        "location": {
+          "$ref": "#/$defs/WeatherLocation"
+        },
+        "source": {
+          "$ref": "#/$defs/InputSource"
+        },
+        "year_hours": {
+          "type": "integer",
+          "minimum": 0,
+          "const": 8760
+        }
+      }
+    },
+    "Fuel": {
+      "enum": [
+        "electricity"
+      ]
+    },
+    "GlazingBasis": {
+      "enum": [
+        "whole_window",
+        "glass_without_frame"
+      ]
+    },
+    "HolidayOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "date",
+        "profile"
+      ],
+      "properties": {
+        "date": {
+          "$ref": "#/$defs/MonthDay"
+        },
+        "profile": {
+          "$ref": "#/$defs/DayProfile"
+        }
+      }
+    },
+    "InfiltrationRate": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "basis",
+            "value"
+          ],
+          "properties": {
+            "basis": {
+              "const": "air_changes_per_hour"
+            },
+            "value": {
+              "type": "number"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "basis",
+            "value"
+          ],
+          "properties": {
+            "basis": {
+              "const": "flow_m3_per_second"
+            },
+            "value": {
+              "type": "number"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "basis",
+            "value"
+          ],
+          "properties": {
+            "basis": {
+              "const": "flow_m3_per_second_per_floor_m2"
+            },
+            "value": {
+              "type": "number"
+            }
+          }
+        }
+      ]
+    },
+    "InputSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "citation",
+        "synthetic"
+      ],
+      "properties": {
+        "citation": {
+          "type": "string"
+        },
+        "synthetic": {
+          "type": "boolean"
+        }
+      }
+    },
+    "MeterLedger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "facility_native_channel",
+        "entries"
+      ],
+      "properties": {
+        "version": {
+          "type": "string"
+        },
+        "facility_native_channel": {
+          "type": "string"
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MeterLedgerEntry"
+          },
+          "minItems": 1,
+          "maxItems": 6
+        }
+      }
+    },
+    "MeterLedgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "end_use",
+        "fuel",
+        "native_channels",
+        "boundary",
+        "classification"
+      ],
+      "properties": {
+        "end_use": {
+          "$ref": "#/$defs/EnergyEndUse"
+        },
+        "fuel": {
+          "$ref": "#/$defs/Fuel"
+        },
+        "native_channels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 64
+        },
+        "boundary": {
+          "type": "string"
+        },
+        "classification": {
+          "$ref": "#/$defs/ProcessClassification"
+        },
+        "classification_source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "MonthDay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "month",
+        "day"
+      ],
+      "properties": {
+        "month": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 31
+        }
+      }
+    },
+    "OpaqueConstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "layers",
+        "derived_inside_film_m2k_w",
+        "derived_outside_film_m2k_w"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "derived_inside_film_m2k_w": {
+          "type": "number"
+        },
+        "derived_outside_film_m2k_w": {
+          "type": "number"
+        }
+      }
+    },
+    "PerformanceCurve": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "form",
+        "output_limits",
+        "source"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "form": {
+          "$ref": "#/$defs/CurveForm"
+        },
+        "output_limits": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number"
+          }
+        },
+        "source": {
+          "$ref": "#/$defs/InputSource"
+        }
+      }
+    },
+    "ProcessClassification": {
+      "enum": [
+        "process",
+        "non_process",
+        "unclassified"
+      ]
+    },
+    "Savings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "absolute"
+      ],
+      "properties": {
+        "absolute": {
+          "type": "number"
+        },
+        "percent": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "Schedule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "weekday",
+        "saturday",
+        "sunday",
+        "holidays"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "kind": {
+          "$ref": "#/$defs/ScheduleKind"
+        },
+        "weekday": {
+          "$ref": "#/$defs/DayProfile"
+        },
+        "saturday": {
+          "$ref": "#/$defs/DayProfile"
+        },
+        "sunday": {
+          "$ref": "#/$defs/DayProfile"
+        },
+        "holidays": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HolidayOverride"
+          },
+          "minItems": 0,
+          "maxItems": 365
+        }
+      }
+    },
+    "ScheduleKind": {
+      "enum": [
+        "fraction",
+        "activity_watts_per_person",
+        "temperature_celsius"
+      ]
+    },
+    "SupplyFan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pressure_rise_pa",
+        "total_efficiency",
+        "motor_efficiency",
+        "motor_in_air_fraction"
+      ],
+      "properties": {
+        "pressure_rise_pa": {
+          "type": "number"
+        },
+        "total_efficiency": {
+          "type": "number"
+        },
+        "motor_efficiency": {
+          "type": "number"
+        },
+        "motor_in_air_fraction": {
+          "type": "number"
+        }
+      }
+    },
+    "ThermalBoundary": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "const": "outdoors"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "reason"
+          ],
+          "properties": {
+            "kind": {
+              "const": "adiabatic"
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "reason"
+          ],
+          "properties": {
+            "kind": {
+              "const": "insulated_ground"
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "zone_id",
+            "surface_id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "interzone"
+            },
+            "zone_id": {
+              "type": "string"
+            },
+            "surface_id": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ThermalBoxShade": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "origin_m",
+        "size_m"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "origin_m": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        },
+        "size_m": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "ThermalFace": {
+      "enum": [
+        "west",
+        "east",
+        "south",
+        "north",
+        "floor",
+        "roof"
+      ]
+    },
+    "ThermalGlazing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "u_value_w_m2k",
+        "shgc",
+        "visible_transmittance",
+        "basis",
+        "source"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "u_value_w_m2k": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "shgc": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "visible_transmittance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "basis": {
+          "$ref": "#/$defs/GlazingBasis"
+        },
+        "source": {
+          "$ref": "#/$defs/InputSource"
+        }
+      }
+    },
+    "ThermalMaterial": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "thickness_m",
+        "conductivity_w_mk",
+        "density_kg_m3",
+        "specific_heat_j_kgk",
+        "thermal_absorptance",
+        "solar_absorptance",
+        "visible_absorptance",
+        "source"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "thickness_m": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "conductivity_w_mk": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "density_kg_m3": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "specific_heat_j_kgk": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "thermal_absorptance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "solar_absorptance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "visible_absorptance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "source": {
+          "$ref": "#/$defs/InputSource"
+        }
+      }
+    },
+    "ThermalModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "name",
+        "site",
+        "north_rotation_deg",
+        "zones",
+        "materials",
+        "constructions",
+        "glazing",
+        "curves",
+        "schedules",
+        "detached_shading",
+        "exterior_lighting_w",
+        "exterior_lighting_schedule"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "greenlens.thermal-model.v0.4"
+        },
+        "name": {
+          "type": "string"
+        },
+        "site": {
+          "$ref": "#/$defs/ThermalSite"
+        },
+        "north_rotation_deg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 360
+        },
+        "zones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThermalZone"
+          },
+          "minItems": 1,
+          "maxItems": 8
+        },
+        "materials": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThermalMaterial"
+          },
+          "minItems": 0,
+          "maxItems": 256
+        },
+        "constructions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OpaqueConstruction"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "glazing": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThermalGlazing"
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "curves": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PerformanceCurve"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "schedules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Schedule"
+          },
+          "minItems": 0,
+          "maxItems": 128
+        },
+        "detached_shading": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThermalBoxShade"
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "exterior_lighting_w": {
+          "type": "number"
+        },
+        "exterior_lighting_schedule": {
+          "type": "string"
+        }
+      }
+    },
+    "ThermalOverhang": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "projection_m",
+        "side_extension_m",
+        "gap_above_m"
+      ],
+      "properties": {
+        "projection_m": {
+          "type": "number"
+        },
+        "side_extension_m": {
+          "type": "number"
+        },
+        "gap_above_m": {
+          "type": "number"
+        }
+      }
+    },
+    "ThermalSite": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "latitude_deg_north",
+        "longitude_deg_east",
+        "elevation_m"
+      ],
+      "properties": {
+        "latitude_deg_north": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude_deg_east": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "elevation_m": {
+          "type": "number"
+        }
+      }
+    },
+    "ThermalSurface": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "face",
+        "construction_id",
+        "boundary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "face": {
+          "$ref": "#/$defs/ThermalFace"
+        },
+        "construction_id": {
+          "type": "string"
+        },
+        "boundary": {
+          "$ref": "#/$defs/ThermalBoundary"
+        }
+      }
+    },
+    "ThermalWindow": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "surface_id",
+        "glazing_id",
+        "offset_u_m",
+        "offset_v_m",
+        "width_m",
+        "height_m"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "surface_id": {
+          "type": "string"
+        },
+        "glazing_id": {
+          "type": "string"
+        },
+        "offset_u_m": {
+          "type": "number"
+        },
+        "offset_v_m": {
+          "type": "number"
+        },
+        "width_m": {
+          "type": "number"
+        },
+        "height_m": {
+          "type": "number"
+        },
+        "overhang": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ThermalOverhang"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "ThermalZone": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "storey",
+        "origin_m",
+        "size_m",
+        "surfaces",
+        "windows",
+        "gains"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80,
+          "pattern": "^[A-Za-z0-9_-]+$"
+        },
+        "name": {
+          "type": "string"
+        },
+        "storey": {
+          "type": "integer",
+          "minimum": 0,
+          "enum": [
+            1,
+            2
+          ]
+        },
+        "origin_m": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        },
+        "size_m": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        },
+        "surfaces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThermalSurface"
+          },
+          "minItems": 6,
+          "maxItems": 6
+        },
+        "windows": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ThermalWindow"
+          },
+          "minItems": 0,
+          "maxItems": 64
+        },
+        "gains": {
+          "$ref": "#/$defs/ZoneGains"
+        },
+        "cooling_system": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DxCoolingSystem"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      }
+    },
+    "WeatherLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "city",
+        "region",
+        "country",
+        "source",
+        "station",
+        "latitude_deg_north",
+        "longitude_deg_east",
+        "utc_offset_minutes",
+        "elevation_m"
+      ],
+      "properties": {
+        "city": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "station": {
+          "type": "string"
+        },
+        "latitude_deg_north": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        },
+        "longitude_deg_east": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        "utc_offset_minutes": {
+          "type": "integer"
+        },
+        "elevation_m": {
+          "type": "number"
+        }
+      }
+    },
+    "Weekday": {
+      "enum": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    },
+    "ZoneGains": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "people_per_floor_m2",
+        "occupancy_schedule",
+        "activity_schedule",
+        "people_sensible_fraction",
+        "people_radiant_fraction_of_sensible",
+        "lighting_w_per_floor_m2",
+        "lighting_schedule",
+        "lighting_radiant_fraction",
+        "lighting_visible_fraction",
+        "lighting_return_air_fraction",
+        "equipment_w_per_floor_m2",
+        "equipment_schedule",
+        "equipment_radiant_fraction",
+        "equipment_latent_fraction",
+        "equipment_lost_fraction",
+        "infiltration",
+        "infiltration_schedule",
+        "source"
+      ],
+      "properties": {
+        "people_per_floor_m2": {
+          "type": "number"
+        },
+        "occupancy_schedule": {
+          "type": "string"
+        },
+        "activity_schedule": {
+          "type": "string"
+        },
+        "people_sensible_fraction": {
+          "type": "number"
+        },
+        "people_radiant_fraction_of_sensible": {
+          "type": "number"
+        },
+        "lighting_w_per_floor_m2": {
+          "type": "number"
+        },
+        "lighting_schedule": {
+          "type": "string"
+        },
+        "lighting_radiant_fraction": {
+          "type": "number"
+        },
+        "lighting_visible_fraction": {
+          "type": "number"
+        },
+        "lighting_return_air_fraction": {
+          "type": "number"
+        },
+        "equipment_w_per_floor_m2": {
+          "type": "number"
+        },
+        "equipment_schedule": {
+          "type": "string"
+        },
+        "equipment_radiant_fraction": {
+          "type": "number"
+        },
+        "equipment_latent_fraction": {
+          "type": "number"
+        },
+        "equipment_lost_fraction": {
+          "type": "number"
+        },
+        "infiltration": {
+          "$ref": "#/$defs/InfiltrationRate"
+        },
+        "infiltration_schedule": {
+          "type": "string"
+        },
+        "source": {
+          "$ref": "#/$defs/InputSource"
+        }
+      }
+    }
+  }
+}

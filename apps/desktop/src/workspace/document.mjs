@@ -2,18 +2,19 @@
 export const clone = value => structuredClone(value);
 export function documentSignature(project) {
   if (!project) return '';
-  return JSON.stringify({ schema_version: project.schema_version, id: project.id, name: project.name, alternatives: project.alternatives, runs: project.runs, climate: project.climate ?? null });
+  return JSON.stringify({ schema_version: project.schema_version, id: project.id, name: project.name, alternatives: project.alternatives, runs: project.runs, climate: project.climate ?? null, energy: project.energy ?? null });
 }
 // History records one alternative's study, never a whole project snapshot that
 // could erase immutable runs or weather imported after the edit.
 export function studySnapshot(project, alternativeId) {
   return { project_schema_version: project.schema_version, study: clone(project.climate?.studies[alternativeId] ?? null) };
 }
-export function completedJobResult(job) { return job?.result ?? job?.climate_result ?? null; }
-export function hasPendingEvidence(job, results = [], climateResults = []) {
+export function completedJobResult(job) { return job?.result ?? job?.climate_result ?? job?.energy_result ?? null; }
+export function hasPendingEvidence(job, results = [], climateResults = [], energyResults = []) {
   return Boolean(
     (job?.result && !results.some(run => run.id === job.result.id)) ||
     (job?.climate_result && !climateResults.some(run => run.id === job.climate_result.id)) ||
+    (job?.energy_result && !energyResults.some(run => run.id === job.energy_result.id)) ||
     (job?.pending_evidence && !completedJobResult(job))
   );
 }
@@ -49,7 +50,32 @@ export class DocumentHistory {
       return { project: next, changed: true };
     } finally { this.busy = false; }
   }
-  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy) {
+  async editEnergy(project, alternativeId, candidate, label, configure) {
+    if (this.busy) throw new Error('Wait for the current document edit to finish.');
+    const before = project.energy?.designs[alternativeId];
+    if (!before) throw new Error('The thermal design no longer exists.');
+    this.busy = true;
+    try {
+      const next = await configure(clone(project), alternativeId, clone(candidate));
+      const after = next.energy?.designs[alternativeId];
+      if (!after) throw new Error('Rust returned no thermal design.');
+      if (JSON.stringify(before) === JSON.stringify(after)) return { project, changed: false };
+      this.past.push({ kind:'energy', alternativeId, before:clone(before), after:clone(after), label }); this.future=[];
+      return {project:next,changed:true};
+    } finally { this.busy=false; }
+  }
+  async editEnergyMetadata(project,alternativeId,change,label,configure) {
+    if(this.busy)throw new Error('Wait for the current document edit to finish.');
+    if(!project.energy)throw new Error('Energy project missing.');
+    const snapshot=(p)=>change.kind==='attachment'
+      ?{kind:'attachment',id:change.id,included:p.energy.attachments.find(a=>a.id===change.id)?.include_in_export}
+      :{kind:'report_settings',carbon_factor:clone(p.energy.carbon_factor),lighting_service_evidence:p.energy.lighting_service_evidence};
+    this.busy=true;try {const before=snapshot(project),next=await configure(clone(project),clone(change)),after=snapshot(next);
+      if(JSON.stringify(before)===JSON.stringify(after))return {project,changed:false};
+      this.past.push({kind:'energy_metadata',alternativeId,before,after,label});this.future=[];return {project:next,changed:true};
+    }finally{this.busy=false;}
+  }
+  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata) {
     if (this.busy) throw new Error('Wait for the current document edit to finish.');
     const source = direction === 'undo' ? this.past : this.future;
     const target = direction === 'undo' ? this.future : this.past;
@@ -61,7 +87,14 @@ export class DocumentHistory {
       if (!current) throw new Error('The design alternative no longer exists.');
       const candidate = clone(direction === 'undo' ? entry.before : entry.after);
       let next, validated;
-      if (entry.kind === 'study') {
+      if(entry.kind==='energy_metadata') {
+        if(!restoreEnergyMetadata)throw new Error('The report metadata restoration service is unavailable.');
+        next=await restoreEnergyMetadata(clone(project),candidate);validated=await validate(clone(current.model),entry.alternativeId,next);
+      } else if (entry.kind === 'energy') {
+        if (!restoreEnergy) throw new Error('The thermal restoration service is unavailable.');
+        next = await restoreEnergy(clone(project),entry.alternativeId,candidate);
+        validated = await validate(clone(current.model),entry.alternativeId,next);
+      } else if (entry.kind === 'study') {
         if (!restoreStudy) throw new Error('The study restoration service is unavailable.');
         next = await restoreStudy(clone(project), entry.alternativeId, candidate);
         validated = await validate(clone(current.model), entry.alternativeId, next);

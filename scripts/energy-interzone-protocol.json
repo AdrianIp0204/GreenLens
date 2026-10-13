@@ -1,0 +1,47 @@
+{
+  "schema": "greenlens.energy-interzone-fixture.v1",
+  "status": "declared-before-execution",
+  "scope": "One diagnostic process, four original rectangular zones with two complete interzone walls and two complete floor/ceiling pairs; not a delivered IdealLoads system.",
+  "engine_version": "26.2.0",
+  "engine_inventory": "dependencies/energyplus.json",
+  "arguments": ["--jobs", "1", "--weather", "weather.epw", "--output-directory", ".", "--output-prefix", "eplus", "model.epJSON"],
+  "limits": {"timeout_seconds": 900, "memory_bytes": 2147483648, "scratch_bytes": 1073741824, "file_bytes": 134217728, "workers": 1},
+  "time": {"days": 7, "zone_timesteps_per_hour": 6, "intervals": 1008, "steady_state_intervals": 144},
+  "weather": "Exact original Gate0 constant synthetic full-year EPW, zero solar; same original bytes/hash retained in the execution declaration.",
+  "zones": [
+    {"id": "A", "origin_m": [0,0,0], "size_m": [4,3,3], "target_c": 20},
+    {"id": "B", "origin_m": [4,0,0], "size_m": [4,3,3], "target_c": 30},
+    {"id": "C", "origin_m": [0,0,3], "size_m": [4,3,3], "target_c": 25},
+    {"id": "D", "origin_m": [4,0,3], "size_m": [4,3,3], "target_c": 35}
+  ],
+  "surfaces": "Six outward-wound rectangular faces per zone; listed pairs use reciprocal Surface boundaries and identical massless R2 construction. All remaining faces explicitly Adiabatic. No windows, shading, gains, ventilation or infiltration.",
+  "construction": {"resistance_m2k_w": 2, "inside_film_w_m2k": 10, "thermal_absorptance": 1e-9, "solar_absorptance": 0, "omitted_longwave_bound_w": 0.001, "bound_scope": "All264m2 inside surfaces below400K, emissivity1e-9; independently smaller than the fixed oracle band."},
+  "conditioning": "Diagnostic IdealLoads in each zone with equal heating/cooling setpoint at the listed temperature, availability1, unlimited sensible capacity, heating supply50C/cooling13C, no humidification/dehumidification/outdoor air. No production DX acceptance inferred.",
+  "pairs": [
+    {"first": "A-East", "second": "B-West", "area_m2": 9, "delta_temperature_k": 10, "first_inside_conduction_w": 40.90909090909091, "second_inside_conduction_w": -40.90909090909091},
+    {"first": "C-East", "second": "D-West", "area_m2": 9, "delta_temperature_k": 10, "first_inside_conduction_w": 40.90909090909091, "second_inside_conduction_w": -40.90909090909091},
+    {"first": "A-Roof", "second": "C-Floor", "area_m2": 12, "delta_temperature_k": 5, "first_inside_conduction_w": 27.272727272727273, "second_inside_conduction_w": -27.272727272727273},
+    {"first": "B-Roof", "second": "D-Floor", "area_m2": 12, "delta_temperature_k": 5, "first_inside_conduction_w": 27.272727272727273, "second_inside_conduction_w": -27.272727272727273}
+  ],
+  "oracles": {
+    "formula": "Q_into_cooler_zone=area*(T_hot-T_cool)/(R+1/h_inside_first+1/h_inside_second)",
+    "quantity": "Surface Inside Face Conduction Heat Transfer Rate [W]; positive conduction toward the inside face",
+    "per_face_final_day_band_w": "max(1 W,1% absolute reference)",
+    "per_face_final_day_range_w": 0.01,
+    "per_pair_final_day_signed_sum_absolute_max_w": 0.01,
+    "all_eight_interzone_faces_final_day_signed_sum_absolute_max_w": 0.01,
+    "zone_temperature_final_day_absolute_error_max_c": 0.00001,
+    "finite_and_exact_count_required": true
+  },
+  "independent_vs_integration": "The resistance/film heat-flow target is independently calculated. Reciprocal native pairing and signed conservation test implementation within this zero-storage steady state; no transient-mass or arbitrary-building validation.",
+  "stop_rule": "Retain any setup/resource/numerical failure; do not tune temperatures, films, cases or thresholds. No automatic retries or additional cases.",
+  "subsequent_declared_production_checks": {
+    "direct_native_and_recognized_replay": "Same original generated A/B epJSON/weather/native arguments; exact labels/units/time/count. All annual/monthly/end-use kWh and interval demand kW within max(1e-6 reported unit,0.1% reference).",
+    "timestep": "Both unchanged four-zone designs:6 versus12 zone timesteps/hour. Align5-minute J pairs to ten-minute demand. Each annual facility difference<=1%, each coincident facility peak difference<=3%.",
+    "comfort": "Each design, each conditioned zone: occupied cooling-unmet<=1%, air temperature>setpoint+0.2C; disclose numerator/denominator and building interval union.",
+    "energy_reconciliation": "max(0.01kWh,0.01% reference)",
+    "demand_reconciliation": "max(0.001kW,0.01% reference)",
+    "native_process_limit_each": {"seconds":1800,"memory_bytes":2147483648,"scratch_bytes":1073741824,"file_bytes":134217728},
+    "qualification": "All required checks remain distinct. A successful execution or same-engine replay does not substitute for independent physics or comfort/timestep acceptance."
+  }
+}

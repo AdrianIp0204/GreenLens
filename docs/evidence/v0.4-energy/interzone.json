@@ -1,0 +1,226 @@
+{
+  "schema": "greenlens.energy-interzone-audit.v1",
+  "protocol_sha256": "306b66c48fb5350629e35827c9b2957d8ef54a10f96a24d7e2c070b796f97bd5",
+  "source_sha256": "5a9aa2e4f6903f58ec69455633a676ca0a3d5ba99b447301ab8f95f89a4e6e01",
+  "rows": 1008,
+  "checks": [
+    {
+      "id": "A-EAST:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": 40.90909090909091,
+      "mean_w": 40.90909090908861,
+      "max_error_w": 2.3021584638627246e-12,
+      "range_w": 1.4210854715202004e-14,
+      "passed": true
+    },
+    {
+      "id": "B-WEST:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": -40.90909090909091,
+      "mean_w": -40.90909090908861,
+      "max_error_w": 2.3021584638627246e-12,
+      "range_w": 1.4210854715202004e-14,
+      "passed": true
+    },
+    {
+      "id": "A-East + B-West",
+      "max_abs_w": 0.0,
+      "passed": true
+    },
+    {
+      "id": "C-EAST:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": 40.90909090909091,
+      "mean_w": 40.90909090908847,
+      "max_error_w": 2.4442670110147446e-12,
+      "range_w": 2.842170943040401e-14,
+      "passed": true
+    },
+    {
+      "id": "D-WEST:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": -40.90909090909091,
+      "mean_w": -40.90909090908847,
+      "max_error_w": 2.4442670110147446e-12,
+      "range_w": 2.842170943040401e-14,
+      "passed": true
+    },
+    {
+      "id": "C-East + D-West",
+      "max_abs_w": 0.0,
+      "passed": true
+    },
+    {
+      "id": "A-ROOF:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": 27.27272727272727,
+      "mean_w": 27.272727272725817,
+      "max_error_w": 1.5027978861326119e-12,
+      "range_w": 8.526512829121202e-14,
+      "passed": true
+    },
+    {
+      "id": "C-FLOOR:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": -27.27272727272727,
+      "mean_w": -27.272727272725817,
+      "max_error_w": 1.5027978861326119e-12,
+      "range_w": 8.526512829121202e-14,
+      "passed": true
+    },
+    {
+      "id": "A-Roof + C-Floor",
+      "max_abs_w": 0.0,
+      "passed": true
+    },
+    {
+      "id": "B-ROOF:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": 27.27272727272727,
+      "mean_w": 27.272727272725724,
+      "max_error_w": 1.545430450278218e-12,
+      "range_w": 0.0,
+      "passed": true
+    },
+    {
+      "id": "D-FLOOR:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)",
+      "expected_w": -27.27272727272727,
+      "mean_w": -27.272727272725724,
+      "max_error_w": 1.545430450278218e-12,
+      "range_w": 0.0,
+      "passed": true
+    },
+    {
+      "id": "B-Roof + D-Floor",
+      "max_abs_w": 0.0,
+      "passed": true
+    },
+    {
+      "id": "all eight paired faces",
+      "max_abs_w": 0.0,
+      "passed": true
+    },
+    {
+      "id": "A temperature",
+      "max_error_c": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "id": "B temperature",
+      "max_error_c": 3.552713678800501e-15,
+      "passed": true
+    },
+    {
+      "id": "C temperature",
+      "max_error_c": 7.105427357601002e-15,
+      "passed": true
+    },
+    {
+      "id": "D temperature",
+      "max_error_c": 0.0,
+      "passed": true
+    }
+  ],
+  "fixture_passed": true,
+  "qualification_asserted": false,
+  "process": {
+    "executable": "energyplus.exe",
+    "arguments": [
+      "--jobs",
+      "1",
+      "--weather",
+      "weather.epw",
+      "--output-directory",
+      ".",
+      "--output-prefix",
+      "eplus",
+      "model.epJSON"
+    ],
+    "exit_code": 0,
+    "stderr": "EnergyPlus Completed Successfully.\r\n",
+    "started_utc": "2026-10-13T05:20:53.3711801Z",
+    "finished_utc": "2026-10-13T05:20:54.2557293Z",
+    "wall_seconds": 0.8680382,
+    "sampled_peak_working_set_bytes": 211763200,
+    "sampled_runner_plus_engine_peak_bytes": 384618496,
+    "sampled_scratch_peak_bytes": 1366638,
+    "input_bytes": 0,
+    "input_transport": "small-text",
+    "input_receipt": null,
+    "output_bytes": 460,
+    "terminated_tree_reason": null,
+    "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+    "job_empty": true,
+    "stream_tasks_completed": true,
+    "limits": {
+      "timeout_seconds": 900.0,
+      "scratch_bytes": 1073741824,
+      "file_bytes": 134217728,
+      "memory_bytes": 2147483648,
+      "cleanup_seconds": 5
+    },
+    "completed": true
+  },
+  "files": {
+    "eplusout.audit": {
+      "sha256": "7f83723a24767f8fb2940e57593d49aae1ea91f4b972cec4da202f721046f866",
+      "bytes": 1569
+    },
+    "eplusout.bnd": {
+      "sha256": "a5dec2cd72761d8e688951841bf2217c6e89083846e718dff1e0a28d15c30ea5",
+      "bytes": 10710
+    },
+    "eplusout.csv": {
+      "sha256": "ac8f1542adacaa1d947a242ff5b03b3e5bf42f8d4a6751523208f57f89c587e6",
+      "bytes": 217297
+    },
+    "eplusout.eio": {
+      "sha256": "875a1a927fc9b7adbce01cd7db33efdb37172452f771b299dec3d49e160fd10b",
+      "bytes": 12622
+    },
+    "eplusout.end": {
+      "sha256": "05b44b2ced7a6b38702fdc4c56b6e44af3fb1aa6ed9672fcf2596007b61d332f",
+      "bytes": 99
+    },
+    "eplusout.err": {
+      "sha256": "56da7e5c7f872246ee7409087088f8082277134f368fb50a1f99249cb424877f",
+      "bytes": 3985
+    },
+    "eplusout.mdd": {
+      "sha256": "6a6684c159909fd4c7cfd1cdf0466ed81d0ea5df79be9dd455a0ffd2f031c2fd",
+      "bytes": 4783
+    },
+    "eplusout.mtd": {
+      "sha256": "af67e2a1f1734cc2e81684896978c3c4a9adc2a702093f1122e75d0d5c712fba",
+      "bytes": 14620
+    },
+    "eplusout.rdd": {
+      "sha256": "79d67a15d7558c6c81f1e47d89b3d8e6da38023be54475e74101ab24ec4e5bed",
+      "bytes": 31129
+    },
+    "eplusout.shd": {
+      "sha256": "9dcdbd627b9bdcc3cdf374abb73c2ffb7210a4265949514c0fb5f4f789b1c6a2",
+      "bytes": 5066
+    },
+    "execution-declaration.json": {
+      "sha256": "abfb0fc4613e283f93304b8ad32e09b07bab5ea82b649a3096b85e19dc791a1c",
+      "bytes": 1101
+    },
+    "fixture-declaration.json": {
+      "sha256": "c21a13dd39dabd312af7c02cc42d7df9094017a9062da56801e7e260cba14f31",
+      "bytes": 1554
+    },
+    "model.epJSON": {
+      "sha256": "94e8bf793d29d5b523a0380fc6faf6f535bd61c4fa863e56e7dc61d0ff033837",
+      "bytes": 40003
+    },
+    "processes.json": {
+      "sha256": "1a78d708f5dadd309cbfd4ccac020bd720813b393f327b1438d9ed6c6d9bf913",
+      "bytes": 1029
+    },
+    "stdout.txt": {
+      "sha256": "4502f53b5f8ed931fefe4d59255fc0532b4ebc088655237eec0a8b055a21694f",
+      "bytes": 460
+    },
+    "weather.epw": {
+      "sha256": "1c11ce61bcbdd8fd3d9f5564b9d0877515c17a6dc632700984ad43620bb54817",
+      "bytes": 1021640
+    }
+  },
+  "source_audit_sha256": "a99afd44e9a9855280a6d598c61f2c405bbcfa50d626949c1c1bb825c6aa0830",
+  "independent_audit_sha256": "fe7739ccde7815f9dca7ebe77943cddc35cf19b7696d5c5caa23eca99d6d3959",
+  "scope": "Four-zone ideal-load diagnostic with controlled massless surfaces/films; not delivered DX or arbitrary transient-building qualification."
+}

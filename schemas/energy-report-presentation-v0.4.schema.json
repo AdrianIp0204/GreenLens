@@ -1,0 +1,368 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:energy-report-presentation:v0.4",
+  "title": "GreenLens EnergyReportPresentation v0.4",
+  "description": "Wire shape only. Authoritative Rust validation additionally checks finite arithmetic, reciprocal full-face topology, complete non-leap calendar, schedule roles, exact physical and engine identities, accounting reconciliation and source-bound scientific scope. Deserialization is not evidence integrity or scientific qualification.",
+  "$ref": "#/$defs/EnergyReportPresentation",
+  "$defs": {
+    "EnergyCasePresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "case_id",
+        "annual",
+        "monthly",
+        "peak_kw",
+        "peak_end_uses_kw",
+        "peak_timestamp",
+        "peak_reconciliation_residual",
+        "maximum_interval_reconciliation_residual",
+        "gross_floor_area",
+        "conditioned_floor_area",
+        "gross_eui",
+        "conditioned_eui",
+        "emissions",
+        "comfort",
+        "building_comfort_union"
+      ],
+      "properties": {
+        "case_id": {
+          "type": "string"
+        },
+        "annual": {
+          "$ref": "#/$defs/EnergyPeriodPresentation"
+        },
+        "monthly": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyPeriodPresentation"
+          }
+        },
+        "peak_kw": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "peak_end_uses_kw": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/ReportCell"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/EnergyEndUse"
+          }
+        },
+        "peak_timestamp": {
+          "$ref": "#/$defs/EnergyTimestamp"
+        },
+        "peak_reconciliation_residual": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "maximum_interval_reconciliation_residual": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "gross_floor_area": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "conditioned_floor_area": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "gross_eui": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "conditioned_eui": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "emissions": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "comfort": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyComfortPresentation"
+          }
+        },
+        "building_comfort_union": {
+          "$ref": "#/$defs/EnergyComfortPresentation"
+        }
+      }
+    },
+    "EnergyComfortPresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "occupied_hours",
+        "cooling_unmet_hours",
+        "unmet_percent"
+      ],
+      "properties": {
+        "zone_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "occupied_hours": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "cooling_unmet_hours": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "unmet_percent": {
+          "$ref": "#/$defs/ReportCell"
+        }
+      }
+    },
+    "EnergyComparisonPresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "end_use",
+        "baseline_kwh",
+        "proposed_kwh",
+        "energy_savings",
+        "baseline_coincident_kw",
+        "proposed_coincident_kw",
+        "demand_savings"
+      ],
+      "properties": {
+        "end_use": {
+          "$ref": "#/$defs/EnergyEndUse"
+        },
+        "baseline_kwh": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "proposed_kwh": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "energy_savings": {
+          "$ref": "#/$defs/ReportSavings"
+        },
+        "baseline_coincident_kw": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "proposed_coincident_kw": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "demand_savings": {
+          "$ref": "#/$defs/ReportSavings"
+        }
+      }
+    },
+    "EnergyEndUse": {
+      "enum": [
+        "cooling_system",
+        "supply_fans",
+        "ventilation_exhaust_fans",
+        "interior_lighting",
+        "exterior_lighting",
+        "plug_equipment"
+      ]
+    },
+    "EnergyPeriodPresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "facility",
+        "end_uses",
+        "reconciliation_residual"
+      ],
+      "properties": {
+        "facility": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "end_uses": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/ReportCell"
+          },
+          "propertyNames": {
+            "$ref": "#/$defs/EnergyEndUse"
+          }
+        },
+        "reconciliation_residual": {
+          "$ref": "#/$defs/ReportCell"
+        }
+      }
+    },
+    "EnergyReportPresentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "baseline",
+        "proposed",
+        "end_uses",
+        "facility_energy_savings",
+        "facility_peak_savings"
+      ],
+      "properties": {
+        "baseline": {
+          "$ref": "#/$defs/EnergyCasePresentation"
+        },
+        "proposed": {
+          "$ref": "#/$defs/EnergyCasePresentation"
+        },
+        "end_uses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EnergyComparisonPresentation"
+          }
+        },
+        "facility_energy_savings": {
+          "$ref": "#/$defs/ReportSavings"
+        },
+        "facility_peak_savings": {
+          "$ref": "#/$defs/ReportSavings"
+        }
+      }
+    },
+    "EnergyTimestamp": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "interval_index",
+        "month",
+        "day",
+        "start_minute",
+        "end_minute"
+      ],
+      "properties": {
+        "interval_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "month": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "day": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "start_minute": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "end_minute": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "EnergyUnit": {
+      "enum": [
+        "kwh",
+        "kw",
+        "kwh_per_m2",
+        "m2",
+        "hours",
+        "percent",
+        "kg_co2",
+        "kg_co2e",
+        "celsius",
+        "watts",
+        "m3_per_second",
+        "dimensionless"
+      ]
+    },
+    "ReportCell": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "value",
+            "unit",
+            "decimal_places",
+            "display"
+          ],
+          "properties": {
+            "state": {
+              "const": "value"
+            },
+            "value": {
+              "type": "number"
+            },
+            "unit": {
+              "$ref": "#/$defs/EnergyUnit"
+            },
+            "decimal_places": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "display": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "reason"
+          ],
+          "properties": {
+            "state": {
+              "const": "not_applicable"
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "reason"
+          ],
+          "properties": {
+            "state": {
+              "const": "missing"
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "state",
+            "reason"
+          ],
+          "properties": {
+            "state": {
+              "const": "unsupported"
+            },
+            "reason": {
+              "type": "string"
+            }
+          }
+        }
+      ]
+    },
+    "ReportSavings": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "absolute",
+        "percent"
+      ],
+      "properties": {
+        "absolute": {
+          "$ref": "#/$defs/ReportCell"
+        },
+        "percent": {
+          "$ref": "#/$defs/ReportCell"
+        }
+      }
+    }
+  }
+}

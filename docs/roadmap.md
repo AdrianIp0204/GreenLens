@@ -1,4 +1,16 @@
-# Roadmap (excluded from v0.1)
+# GreenLens roadmap
+
+## Active bounded v0.4: energy analysis and report products
+
+The user-requested [v0.4 energy specification](v0.4-energy-spec.md) and [gated implementation plan](v0.4-energy-implementation-plan.md) establish the implementation target activated on 13 October 2026. The bounded target is a real EnergyPlus annual baseline/proposed workflow for 1–8 thermal zones, with explicit DX/fan systems, annual/monthly/end-use energy, source-bound operational emissions, coincident interval demand, original PDF/HTML reports, input evidence and portable replay. The acceptance example has four zones and two storeys. It makes no regional compliance claim.
+
+The v0.3 numerical acceptance remains failed/unqualified as recorded in [its status](v0.3-status.md). Its exhausted continuation stays stopped. Energy development is independent and cannot relabel that historical qualification. Existing features, evidence, failures and the unverified physical modifier observation remain preserved.
+
+After the bounded energy release, full reference parity needs separately scoped larger mixed-use models, shared/VRF and other systems, DHW/lift/exceptional accounting, and only then applicable regional baseline/evidence rules. See the implementation plan for prerequisites and measurable limits. No automatic BEAM scores, full BIM, CFD or optimization are part of v0.4.
+
+## Historical release boundaries (preserved)
+
+The statements below describe the earlier sequence and exclusions. They do not prevent the explicitly requested new energy implementation track above.
 
 Climate-based daylight is now explicitly authorized for v0.3 under `v0.3-spec.md`. Historical exclusions below describe earlier release boundaries, not a prohibition on this new scope. Beyond v0.3, one-zone EnergyPlus requires a proper thermal/zoning/material/HVAC model and engine/license validation; bounded IFC ingress requires schema/units/placement/loss/rights checks; richer geometry requires robust topology and independent tests; regional assessments require current criterion/applicability/rights/evidence audits. No later feature follows automatically from v0.3 completion.
 

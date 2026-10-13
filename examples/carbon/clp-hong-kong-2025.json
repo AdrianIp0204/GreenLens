@@ -1,0 +1,11 @@
+{
+  "id": "clp-hong-kong-electricity-sold-2025",
+  "fuel": "electricity",
+  "region": "CLP Power Hong Kong electricity customers; applicability must be established for the project",
+  "year": 2025,
+  "kg_per_kwh": 0.34,
+  "unit": "kg_co2e",
+  "source": "CLP Holdings 2025 Sustainability Report, ESG Data Hub, CLP Power Hong Kong electricity-sold intensity: https://sustainability.clpgroup.com/en/2025/esg-data-hub . Published basis precedes Renewable Energy Certificate adjustments and excludes the disclosed biogenic CO2 component while including non-CO2 greenhouse gases. This single cited factual factor is not a licence to reproduce the source report, a universal grid factor or a certification method.",
+  "version": "2025 report; source rechecked 2026-10-13; original rounded published factor",
+  "synthetic": false
+}

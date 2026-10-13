@@ -89,3 +89,17 @@ docs/evidence/v0.3-engine/reference-prerequisite-reader-recovery.json -text -whi
 docs/evidence/v0.3-engine/reference-prerequisite-remaining-checkpoints.json -text -whitespace
 docs/evidence/v0.3-native/candidate10-*.json -text -whitespace
 docs/evidence/v0.3-engine/reference-prerequisite-terminal.json -text -whitespace
+
+# Preserve v0.4 retained evidence, reviewed notices and fixed experiment seals.
+docs/evidence/v0.4-energy/** -text -whitespace
+reports/energy/notices/** -text -whitespace
+examples/energy/revision1-inputs.json -text -whitespace
+scripts/energy-control-protocol.json -text -whitespace
+scripts/energy-zero-cutout-protocol.json -text -whitespace
+scripts/energy-interzone-protocol.json -text -whitespace
+scripts/energy-qualification.ps1 -text -whitespace
+scripts/energy-gate0-run.ps1 -text -whitespace
+scripts/energy-gate0-audit.py -text -whitespace
+scripts/energy-gate0-fixture.py -text -whitespace
+scripts/energy-interzone-fixture.py -text -whitespace
+*.pdf binary

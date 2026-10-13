@@ -1,0 +1,5878 @@
+{
+  "schema": "greenlens.energy-production-timestep-evidence.v1",
+  "auditor_sha256": "aa203ce9ccab4018db772c97d0501096501edf46ec04203636c1bd2724188359",
+  "cases": [
+    {
+      "case": "A10",
+      "id": "f9283d0e-7645-418d-bd2c-3d2cfb3b27d4",
+      "minutes": 10,
+      "rows": 52560,
+      "channels": 34,
+      "native_scalar_comparisons": 1576800,
+      "max_native_scalar_difference": 0.0,
+      "annual_kwh": {
+        "facility_j": 16307.089802617933,
+        "cooling_system": 3596.9778026179333,
+        "interior_lighting": 6289.92,
+        "exterior_lighting": 175.2,
+        "plug_equipment": 5031.936,
+        "supply_fans": 1160.64,
+        "ventilation_exhaust_fans": 52.416
+      },
+      "aligned_peak_kw": 5.516090229474726,
+      "aligned_peak_index": 52088,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        }
+      ],
+      "arithmetic_checks": [
+        {
+          "id": "annual/facility",
+          "actual": 16307.089802617933,
+          "reference": 16307.089802617933,
+          "absolute_error": 0.0,
+          "band": 1.630708980261793e-08,
+          "passed": true
+        },
+        {
+          "id": "annual/cooling_system",
+          "actual": 3596.9778026179333,
+          "reference": 3596.9778026179333,
+          "absolute_error": 0.0,
+          "band": 3.5969778026179334e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/supply_fans",
+          "actual": 1160.64,
+          "reference": 1160.64,
+          "absolute_error": 0.0,
+          "band": 1.16064e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/ventilation_exhaust_fans",
+          "actual": 52.416,
+          "reference": 52.416,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/interior_lighting",
+          "actual": 6289.92,
+          "reference": 6289.92,
+          "absolute_error": 0.0,
+          "band": 6.28992e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/exterior_lighting",
+          "actual": 175.2,
+          "reference": 175.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/plug_equipment",
+          "actual": 5031.936,
+          "reference": 5031.936,
+          "absolute_error": 0.0,
+          "band": 5.0319359999999994e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/facility",
+          "actual": 1432.2768453442484,
+          "reference": 1432.2768453442484,
+          "absolute_error": 0.0,
+          "band": 1.4322768453442484e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/cooling_system",
+          "actual": 386.35684534424826,
+          "reference": 386.35684534424826,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/facility",
+          "actual": 1273.1766441829545,
+          "reference": 1273.1766441829545,
+          "absolute_error": 0.0,
+          "band": 1.2731766441829544e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/cooling_system",
+          "actual": 295.5126441829546,
+          "reference": 295.5126441829546,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/supply_fans",
+          "actual": 89.28,
+          "reference": 89.28,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/ventilation_exhaust_fans",
+          "actual": 4.032,
+          "reference": 4.032,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/interior_lighting",
+          "actual": 483.84,
+          "reference": 483.84,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/exterior_lighting",
+          "actual": 13.44,
+          "reference": 13.44,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/plug_equipment",
+          "actual": 387.072,
+          "reference": 387.072,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/facility",
+          "actual": 1331.7592506103113,
+          "reference": 1331.7592506103113,
+          "absolute_error": 0.0,
+          "band": 1.3317592506103112e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/cooling_system",
+          "actual": 248.8312506103114,
+          "reference": 248.8312506103114,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/facility",
+          "actual": 1296.969335917689,
+          "reference": 1296.969335917689,
+          "absolute_error": 0.0,
+          "band": 1.296969335917689e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/cooling_system",
+          "actual": 247.92933591768903,
+          "reference": 247.92933591768903,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/facility",
+          "actual": 1357.9775469574595,
+          "reference": 1357.9775469574595,
+          "absolute_error": 0.0,
+          "band": 1.3579775469574595e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/cooling_system",
+          "actual": 278.64954695745945,
+          "reference": 278.64954695745945,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/facility",
+          "actual": 1324.7836306966337,
+          "reference": 1324.7836306966337,
+          "absolute_error": 0.0,
+          "band": 1.3247836306966336e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/cooling_system",
+          "actual": 275.7436306966336,
+          "reference": 275.7436306966336,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/facility",
+          "actual": 1365.962188038895,
+          "reference": 1365.962188038895,
+          "absolute_error": 0.0,
+          "band": 1.365962188038895e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/cooling_system",
+          "actual": 283.03418803889474,
+          "reference": 283.03418803889474,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/facility",
+          "actual": 1348.5125778513946,
+          "reference": 1348.5125778513946,
+          "absolute_error": 0.0,
+          "band": 1.3485125778513945e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/cooling_system",
+          "actual": 269.18457785139464,
+          "reference": 269.18457785139464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/facility",
+          "actual": 1286.8449754510784,
+          "reference": 1286.8449754510784,
+          "absolute_error": 0.0,
+          "band": 1.2868449754510783e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/cooling_system",
+          "actual": 234.20497545107852,
+          "reference": 234.20497545107852,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/supply_fans",
+          "actual": 100.8,
+          "reference": 100.8,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/facility",
+          "actual": 1363.796079153521,
+          "reference": 1363.796079153521,
+          "absolute_error": 0.0,
+          "band": 1.363796079153521e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/cooling_system",
+          "actual": 284.4680791535211,
+          "reference": 284.4680791535211,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/facility",
+          "actual": 1407.9765904993733,
+          "reference": 1407.9765904993733,
+          "absolute_error": 0.0,
+          "band": 1.4079765904993733e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/cooling_system",
+          "actual": 362.5365904993733,
+          "reference": 362.5365904993733,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/facility",
+          "actual": 1517.054137914375,
+          "reference": 1517.054137914375,
+          "absolute_error": 0.0,
+          "band": 1.5170541379143748e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/cooling_system",
+          "actual": 430.5261379143749,
+          "reference": 430.5261379143749,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/supply_fans",
+          "actual": 102.96,
+          "reference": 102.96,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/facility",
+          "actual": 5.516090229474726,
+          "reference": 5.516090229474726,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/cooling_system",
+          "actual": 1.7840902294747256,
+          "reference": 1.7840902294747256,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/supply_fans",
+          "actual": 0.24,
+          "reference": 0.24,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/ventilation_exhaust_fans",
+          "actual": 0.016,
+          "reference": 0.016,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/interior_lighting",
+          "actual": 1.92,
+          "reference": 1.92,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/exterior_lighting",
+          "actual": 0.02,
+          "reference": 0.02,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/plug_equipment",
+          "actual": 1.536,
+          "reference": 1.536,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "building/occupied_hours",
+          "actual": 6136.0,
+          "reference": 6136.0,
+          "absolute_error": 0.0,
+          "band": 6.1359999999999995e-09,
+          "passed": true
+        },
+        {
+          "id": "building/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        }
+      ],
+      "maximum_interval_reconciliation_kw": 1.5522042910257975e-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "native_process": {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T06:04:49.050332100+00:00",
+        "finished_utc": "2026-10-13T06:04:55.212464400+00:00",
+        "elapsed_ms": 6162,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 396754944,
+        "peak_observed_scratch_bytes": 19753241,
+        "samples": 113,
+        "stdout_sha256": "30ee8ca9a7e51d8a9d4b1f7b1ef0db71f82b41dfbb021553fbecdf2c02f66cad",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      },
+      "closed_run_integrity_verified": true,
+      "checksums_sha256": "45fb2100b6d95bce75ab3d2284f859f531b89f6fa13c7cf19c8beedc9e5304dc",
+      "files": {
+        "checksums.json": {
+          "sha256": "45fb2100b6d95bce75ab3d2284f859f531b89f6fa13c7cf19c8beedc9e5304dc",
+          "bytes": 6872
+        },
+        "diagnostics.json": {
+          "sha256": "405e1dbda0dd7379ddc625197252239da6d7968df53fe3ce5f9725e36c628c39",
+          "bytes": 2241
+        },
+        "input.json": {
+          "sha256": "28a5b707112841167d23e0fa7e942ddd0b663f75d7a575411dfe57dc0944c77a",
+          "bytes": 70216
+        },
+        "model.epJSON": {
+          "sha256": "01c60761f9795947df14f05b3ea6ed66631c910bed6f0dc2d8487f01e987fa36",
+          "bytes": 78315
+        },
+        "provenance.json": {
+          "sha256": "1230f975809db32f7ba1f4c564cb526baaaf7b894c00e6d6feca81f8aae26a13",
+          "bytes": 2198
+        },
+        "recipe.json": {
+          "sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "bytes": 1882
+        },
+        "results.json": {
+          "sha256": "557d188e1758472aca8af2b5c7bb335693776796c65ae6062fac18f5524c57f3",
+          "bytes": 208087
+        },
+        "study.json": {
+          "sha256": "7c8a13631db26551e060f077a5d28900e0b32fc5ec4559cf7cdc81b962a91704",
+          "bytes": 600
+        },
+        "engine/eplusout.end": {
+          "sha256": "6bff9ebc4262099916a8515fa9057507822750bf8ef6d1dba7a3092be70b61fa",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "4b5c0f5d4cfbe951a0f8bbb2c3da2fc4d93c773cca96638822c8e0361ff4671f",
+          "bytes": 1051
+        },
+        "engine/process-stderr.txt": {
+          "sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+          "bytes": 36
+        },
+        "engine/process-stdout.txt": {
+          "sha256": "30ee8ca9a7e51d8a9d4b1f7b1ef0db71f82b41dfbb021553fbecdf2c02f66cad",
+          "bytes": 2326
+        },
+        "engine/process.json": {
+          "sha256": "decca837fd2a6b4dd066e5ceabf24a830d087f83b534e409711c85344bac1132",
+          "bytes": 878
+        },
+        "series/data-00000.f64": {
+          "sha256": "a9fc3b038bc42f271418164458c272d8d7dcc3da837a26e525d72285d2dce458",
+          "bytes": 274176
+        },
+        "series/data-00001.f64": {
+          "sha256": "962385b6454a25309a7068d4d3a6d39d1bafc8c4687a94fb2e8d7fffb966fee9",
+          "bytes": 274176
+        },
+        "series/data-00002.f64": {
+          "sha256": "3d502ddc783d4ea7ec21cd7a10e2823b2faba37baabafd05b7d0dfdb3471da3f",
+          "bytes": 274176
+        },
+        "series/data-00003.f64": {
+          "sha256": "c8667cee873ceb621c7536286bf622075b17f816e8e43dfad00be8d9e352b95f",
+          "bytes": 274176
+        },
+        "series/data-00004.f64": {
+          "sha256": "7f954f409cf021f6326f8ade9d38277b85e5431d439b173e83bfbf8364ddc9ac",
+          "bytes": 274176
+        },
+        "series/data-00005.f64": {
+          "sha256": "f021e149dd5f937413ee862b3084d8ab1340ba7fbe783bd512266312d2c890e4",
+          "bytes": 274176
+        },
+        "series/data-00006.f64": {
+          "sha256": "1465744eee59c2b2eaab68780657689cca15eb05577fb62f20788eb53fc9ffb7",
+          "bytes": 274176
+        },
+        "series/data-00007.f64": {
+          "sha256": "cd65cc859fa3b899711f5010b1321118da9f4826918f46ad5ad286a1a633bd3f",
+          "bytes": 274176
+        },
+        "series/data-00008.f64": {
+          "sha256": "201716b11327d5f43e8edd27a4d5df572672b5c5da199c6b868dd7730aa47792",
+          "bytes": 274176
+        },
+        "series/data-00009.f64": {
+          "sha256": "0ac04ed01d15b8c7cd3ba669964152850ab6cc774da79bce116683ab049bc3b9",
+          "bytes": 274176
+        },
+        "series/data-00010.f64": {
+          "sha256": "131436354386dbde3d81a9dcfad4dbdb6f6fda17f6e132b55b0fa6a32d77b52c",
+          "bytes": 274176
+        },
+        "series/data-00011.f64": {
+          "sha256": "6ffcb448aa892883865f1ef76517437efede80d8611a9a269d7a6e79e5650359",
+          "bytes": 274176
+        },
+        "series/data-00012.f64": {
+          "sha256": "39cce4cb3646cd5a04459ea415a53c464a4ea69a94a46200d7d6d296caa1486c",
+          "bytes": 274176
+        },
+        "series/data-00013.f64": {
+          "sha256": "69c37d6f897b71077a2d9620587e850b1c4d7542efb84f2e25bf97fcb6792eda",
+          "bytes": 274176
+        },
+        "series/data-00014.f64": {
+          "sha256": "914160d2045c01cbd54a83271143af44ea8510c48a6d172a88d0f19aad387f56",
+          "bytes": 274176
+        },
+        "series/data-00015.f64": {
+          "sha256": "4f8d49211637bc92e562cdaae6d9393a940cfee25ecab3f721f9fc4fae6f959d",
+          "bytes": 274176
+        },
+        "series/data-00016.f64": {
+          "sha256": "8894109044e0b4360d189eb80405b6c7393f5c12d155d832f43b9e8a94017918",
+          "bytes": 274176
+        },
+        "series/data-00017.f64": {
+          "sha256": "879698747a089e8164a484dcd0350b396c6cac5d8a76e4c3b961bb84635fb03b",
+          "bytes": 274176
+        },
+        "series/data-00018.f64": {
+          "sha256": "6ce619bbc96203bacc62f58ba6535128a6939bfc78ebed2001d5b1c836c26cc4",
+          "bytes": 274176
+        },
+        "series/data-00019.f64": {
+          "sha256": "ffbcdd3873e3ea1fb952fb9f50f1fd5fafd81cf051fee377ea93431d5be2da77",
+          "bytes": 274176
+        },
+        "series/data-00020.f64": {
+          "sha256": "23538a8334e313dd03ff942f3e666255fc28b1e4d69a25f8f4574b4382b4ca81",
+          "bytes": 274176
+        },
+        "series/data-00021.f64": {
+          "sha256": "ac364473b27b211b0101dbb2bdedc90e5d0cf1a522b7e0b9576714bb50c500d9",
+          "bytes": 274176
+        },
+        "series/data-00022.f64": {
+          "sha256": "8559318e8b8661abed262823d2faf26dafef575e31042a8e678fda5859924e04",
+          "bytes": 274176
+        },
+        "series/data-00023.f64": {
+          "sha256": "f3eaf442e753f14f9fb0ff28b93689c13e7fc550a6bc9df0b609d135b1623df0",
+          "bytes": 274176
+        },
+        "series/data-00024.f64": {
+          "sha256": "ac78da71a91b55f649568db94354816f1f980dbb98d89e8e40d18ada2af128ff",
+          "bytes": 274176
+        },
+        "series/data-00025.f64": {
+          "sha256": "9ae4edd73e9ea5d1bc237db39f95aa4842b82089d50777f2ef92edcbd74b2a26",
+          "bytes": 274176
+        },
+        "series/data-00026.f64": {
+          "sha256": "7a39ed5fa7a2282376ebdb968e24ba973a7c485ac4cef12ce99a348558951722",
+          "bytes": 274176
+        },
+        "series/data-00027.f64": {
+          "sha256": "66531cbcac99d1620bb536114cc3bcfde35aadf607d6879aa0fccec87e0c2613",
+          "bytes": 274176
+        },
+        "series/data-00028.f64": {
+          "sha256": "d708aa5b525037836a202edafd668d5d43ae665d2140eec5fc4af802e370b5eb",
+          "bytes": 274176
+        },
+        "series/data-00029.f64": {
+          "sha256": "44c65dd293c4d8357d995c6f91f5dd7fb55a11ef26066c461bac2734614ffa4b",
+          "bytes": 274176
+        },
+        "series/data-00030.f64": {
+          "sha256": "e8b51761be64222e0e77300ba26123816f3c5f3e293a0def13d06c13c34a861a",
+          "bytes": 274176
+        },
+        "series/data-00031.f64": {
+          "sha256": "062ed275cf0d45f54fb4e618bf505033ccfc28379496d8bce12b51bc55ff8c25",
+          "bytes": 274176
+        },
+        "series/data-00032.f64": {
+          "sha256": "8fb024e3f7944e1916bb94edf519de25c132545397205a040a5668a764dffd40",
+          "bytes": 274176
+        },
+        "series/data-00033.f64": {
+          "sha256": "8fa0b29715eca0b9eae9ece85bf25e0514317ed03cf69bfe1f567c7206701d76",
+          "bytes": 274176
+        },
+        "series/data-00034.f64": {
+          "sha256": "e7db40dfaa38bcf01bf47cba5659081d7a8e5b1399d0fca528eaafb032bfe877",
+          "bytes": 274176
+        },
+        "series/data-00035.f64": {
+          "sha256": "d645dcb55923155ba96f04b3c1c445fcd78700e2ce0b6bec07d0e300db3d98c0",
+          "bytes": 274176
+        },
+        "series/data-00036.f64": {
+          "sha256": "80da352d58c3e02e15fc56697bd8c92c79015f372ad9d558e146b7b0a93bac0a",
+          "bytes": 274176
+        },
+        "series/data-00037.f64": {
+          "sha256": "4b74c883bdfda957706a04fb5fcd8e828909356bfb30e5b48b3459811e001994",
+          "bytes": 274176
+        },
+        "series/data-00038.f64": {
+          "sha256": "1fb1091f686cfdddad3d3933af3c9a4e3f84df62d847d7a5a5b32a75e6be036b",
+          "bytes": 274176
+        },
+        "series/data-00039.f64": {
+          "sha256": "8a2f945d91ee27ec7d8e3b3100ce41f556b33425cccb895ad90ccc50bed5a848",
+          "bytes": 274176
+        },
+        "series/data-00040.f64": {
+          "sha256": "dc580e5fd5fab88348d4bca097a241b5d0a6862a59ea9210d356cf475d026797",
+          "bytes": 274176
+        },
+        "series/data-00041.f64": {
+          "sha256": "ddfc46baeb900d4b7322278ce51838a163cc8adf63d5c22d93d0953e3ee1d153",
+          "bytes": 274176
+        },
+        "series/data-00042.f64": {
+          "sha256": "da10a121dd5c24ee7f708b698d91b10e03777d6d4fab8b1e48364aca6a98ae06",
+          "bytes": 274176
+        },
+        "series/data-00043.f64": {
+          "sha256": "5ec1da57115c95917b5d51dde9e1ff2e31c1a38de158ff048f5d24aa2acb67f1",
+          "bytes": 274176
+        },
+        "series/data-00044.f64": {
+          "sha256": "f3c084389a3231508e4da96cec27968c6070c74c198983a436f82e6dab6cae65",
+          "bytes": 274176
+        },
+        "series/data-00045.f64": {
+          "sha256": "43e42c386a834af659e459db8f79424d0e5cc6dfec006feeba879b1379080c7b",
+          "bytes": 274176
+        },
+        "series/data-00046.f64": {
+          "sha256": "a70d13cea0ec498055a12b66edc8f526d843883041df2c6ee9e398a838d7a6cc",
+          "bytes": 274176
+        },
+        "series/data-00047.f64": {
+          "sha256": "7b2321eda8346faa2314063316d422faa416393de91f7aa50dc74dd5add4d0f4",
+          "bytes": 274176
+        },
+        "series/data-00048.f64": {
+          "sha256": "b737676d81a90e63c932747ca82a23ffba3417488af29efde09bd1611e53ec33",
+          "bytes": 274176
+        },
+        "series/data-00049.f64": {
+          "sha256": "9bd52d32a475d31ba8b7f0af4e37b8ca9f7142194e8172a16732fa9c8687f9ae",
+          "bytes": 274176
+        },
+        "series/data-00050.f64": {
+          "sha256": "f8bd4d18398190e728f8cb72d9aeb88903b26de045293f93dc420f309f3567e5",
+          "bytes": 274176
+        },
+        "series/data-00051.f64": {
+          "sha256": "094027139fd3dbcf1ab17a04df19aa797905c7c0ac1f724f59ee932d6652af9d",
+          "bytes": 274176
+        },
+        "series/data-00052.f64": {
+          "sha256": "beb9a99ca4293433b849eda3cadd50adc3ec0d58cfb9f53474e034238f64fbca",
+          "bytes": 39168
+        },
+        "series/series.json": {
+          "sha256": "ae9952eed49265daaf460fbbacf86e691f5db093aea5d244ea7354e44d5fda18",
+          "bytes": 15357
+        },
+        "weather/asset.json": {
+          "sha256": "132e5cab005b12bfb441c8c161704d89f67ffca036c7e8a42f3f92866e9c08af",
+          "bytes": 677
+        },
+        "weather/checksums.json": {
+          "sha256": "a7cbf88dee0a903628e24123c2a2cd13fe936bc6b6b07a9926c7b9e8323f1354",
+          "bytes": 402
+        },
+        "weather/normalized.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        },
+        "weather/original.epw": {
+          "sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "bytes": 1280195
+        },
+        "weather/weather.json": {
+          "sha256": "2bc05c15bae815a81b96c16f569db36cbfde60c862f878b0c163a7e5556ccb37",
+          "bytes": 5300731
+        }
+      },
+      "diagnostics": {
+        "schema": "greenlens.energy-diagnostics.v1",
+        "completed": true,
+        "warning_count": 1,
+        "severe_count": 0,
+        "messages": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "convergence_disclosure": "All native warnings are retained for review; severe/fatal or explicit convergence failures block completion. Native completion is not physical or timestep qualification.",
+        "rows": 52560,
+        "native_columns": 27,
+        "native_csv_sha256": "75cba90a8edd4f811a45ea7030ca57e723d3f7a84886ad0a6805273b09b79e4c",
+        "native_csv_bytes": 14230532,
+        "error_file_sha256": "4b5c0f5d4cfbe951a0f8bbb2c3da2fc4d93c773cca96638822c8e0361ff4671f",
+        "end_file_sha256": "6bff9ebc4262099916a8515fa9057507822750bf8ef6d1dba7a3092be70b61fa",
+        "input_sha256": {
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "model.epJSON": "01c60761f9795947df14f05b3ea6ed66631c910bed6f0dc2d8487f01e987fa36",
+          "recipe.json": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "minimum_values": [
+          12000.0,
+          0.0,
+          12000.0,
+          0.0,
+          0.0,
+          0.0,
+          22.126428805039776,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.994179071881685,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.414611992178052,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.24088492831277,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_values": [
+          3309654.137684835,
+          1152000.0,
+          12000.0,
+          921600.0,
+          1070454.1376848354,
+          153600.0,
+          24.885119222096538,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          760447.6977140594,
+          24.6648788621671,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          731909.4934007679,
+          24.71362670052373,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          699839.1935920191,
+          24.28843412336197,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          657086.898209893
+        ],
+        "maximum_fan_reconciliation_j": 0.0,
+        "qualification_asserted": false
+      },
+      "native_csv_sha256": "75cba90a8edd4f811a45ea7030ca57e723d3f7a84886ad0a6805273b09b79e4c",
+      "physical_input_hash": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "execution_input_hash": "7063e49c513eb4bf1ed7893743b2e7506fd12174c992bb01bb5f4931979da09a",
+      "physical_result_hash": "6502f1d05bfa293f16f22a352b5932eab8a2d6fd8063520d638d5cdaf42a1f82",
+      "processing_identity": "a8cb978a0361686fa1bafa74f859b6b3ecdc8b1f586df663d45cd72ec4dbf570",
+      "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+      "coincident_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 5.516090229474726,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.7840902294747256,
+          "supply_fans": 0.24,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.92,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "building_comfort_union": {
+        "zone_id": null,
+        "occupied_hours": 6136.0,
+        "cooling_unmet_hours": 0.0,
+        "unmet_percent": 0.0
+      },
+      "compiled_application": {
+        "application_version": "0.4.0",
+        "source_commit": "b3d2c9a835c80a6357eb20f4b913fd524d557441",
+        "source_worktree_dirty": true
+      },
+      "arithmetic_check_count": 112
+    },
+    {
+      "case": "B10",
+      "id": "9843a90b-2404-4d5f-9531-df8837301365",
+      "minutes": 10,
+      "rows": 52560,
+      "channels": 34,
+      "native_scalar_comparisons": 1576800,
+      "max_native_scalar_difference": 0.0,
+      "annual_kwh": {
+        "facility_j": 12878.806638328644,
+        "cooling_system": 2684.662638328643,
+        "interior_lighting": 3773.952,
+        "exterior_lighting": 175.2,
+        "plug_equipment": 5031.936,
+        "supply_fans": 1160.64,
+        "ventilation_exhaust_fans": 52.416
+      },
+      "aligned_peak_kw": 4.098803527810259,
+      "aligned_peak_index": 52088,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        }
+      ],
+      "arithmetic_checks": [
+        {
+          "id": "annual/facility",
+          "actual": 12878.806638328644,
+          "reference": 12878.806638328644,
+          "absolute_error": 0.0,
+          "band": 1.2878806638328643e-08,
+          "passed": true
+        },
+        {
+          "id": "annual/cooling_system",
+          "actual": 2684.662638328643,
+          "reference": 2684.662638328643,
+          "absolute_error": 0.0,
+          "band": 2.684662638328643e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/supply_fans",
+          "actual": 1160.64,
+          "reference": 1160.64,
+          "absolute_error": 0.0,
+          "band": 1.16064e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/ventilation_exhaust_fans",
+          "actual": 52.416,
+          "reference": 52.416,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/interior_lighting",
+          "actual": 3773.952,
+          "reference": 3773.952,
+          "absolute_error": 0.0,
+          "band": 3.773952e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/exterior_lighting",
+          "actual": 175.2,
+          "reference": 175.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/plug_equipment",
+          "actual": 5031.936,
+          "reference": 5031.936,
+          "absolute_error": 0.0,
+          "band": 5.0319359999999994e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/facility",
+          "actual": 1107.5509345759986,
+          "reference": 1107.5509345759986,
+          "absolute_error": 0.0,
+          "band": 1.1075509345759985e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/cooling_system",
+          "actual": 268.99093457599855,
+          "reference": 268.99093457599855,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/facility",
+          "actual": 1001.1604771637363,
+          "reference": 1001.1604771637363,
+          "absolute_error": 0.0,
+          "band": 1.0011604771637364e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/cooling_system",
+          "actual": 217.0324771637363,
+          "reference": 217.0324771637363,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/supply_fans",
+          "actual": 89.28,
+          "reference": 89.28,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/ventilation_exhaust_fans",
+          "actual": 4.032,
+          "reference": 4.032,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/interior_lighting",
+          "actual": 290.304,
+          "reference": 290.304,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/exterior_lighting",
+          "actual": 13.44,
+          "reference": 13.44,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/plug_equipment",
+          "actual": 387.072,
+          "reference": 387.072,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/facility",
+          "actual": 1064.5845295326294,
+          "reference": 1064.5845295326294,
+          "absolute_error": 0.0,
+          "band": 1.0645845295326293e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/cooling_system",
+          "actual": 195.9285295326294,
+          "reference": 195.9285295326294,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/facility",
+          "actual": 1036.8836315035223,
+          "reference": 1036.8836315035223,
+          "absolute_error": 0.0,
+          "band": 1.0368836315035222e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/cooling_system",
+          "actual": 195.20363150352227,
+          "reference": 195.20363150352227,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/facility",
+          "actual": 1078.6323585159812,
+          "reference": 1078.6323585159812,
+          "absolute_error": 0.0,
+          "band": 1.0786323585159811e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/cooling_system",
+          "actual": 213.57635851598124,
+          "reference": 213.57635851598124,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/facility",
+          "actual": 1052.533404606635,
+          "reference": 1052.533404606635,
+          "absolute_error": 0.0,
+          "band": 1.052533404606635e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/cooling_system",
+          "actual": 210.853404606635,
+          "reference": 210.853404606635,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/facility",
+          "actual": 1085.7328042140612,
+          "reference": 1085.7328042140612,
+          "absolute_error": 0.0,
+          "band": 1.085732804214061e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/cooling_system",
+          "actual": 217.0768042140612,
+          "reference": 217.0768042140612,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/facility",
+          "actual": 1073.8513341619441,
+          "reference": 1073.8513341619441,
+          "absolute_error": 0.0,
+          "band": 1.073851334161944e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/cooling_system",
+          "actual": 208.79533416194406,
+          "reference": 208.79533416194406,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/facility",
+          "actual": 1032.772307619127,
+          "reference": 1032.772307619127,
+          "absolute_error": 0.0,
+          "band": 1.0327723076191272e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/cooling_system",
+          "actual": 187.4923076191271,
+          "reference": 187.4923076191271,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/supply_fans",
+          "actual": 100.8,
+          "reference": 100.8,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/facility",
+          "actual": 1079.5993949187698,
+          "reference": 1079.5993949187698,
+          "absolute_error": 0.0,
+          "band": 1.0795993949187698e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/cooling_system",
+          "actual": 214.5433949187699,
+          "reference": 214.5433949187699,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/facility",
+          "actual": 1095.518594335312,
+          "reference": 1095.518594335312,
+          "absolute_error": 0.0,
+          "band": 1.095518594335312e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/cooling_system",
+          "actual": 257.43859433531196,
+          "reference": 257.43859433531196,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/facility",
+          "actual": 1169.9868671809259,
+          "reference": 1169.9868671809259,
+          "absolute_error": 0.0,
+          "band": 1.1699868671809258e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/cooling_system",
+          "actual": 297.7308671809259,
+          "reference": 297.7308671809259,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/supply_fans",
+          "actual": 102.96,
+          "reference": 102.96,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/facility",
+          "actual": 4.098803527810259,
+          "reference": 4.098803527810259,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/cooling_system",
+          "actual": 1.1348035278102588,
+          "reference": 1.1348035278102588,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/supply_fans",
+          "actual": 0.24,
+          "reference": 0.24,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/ventilation_exhaust_fans",
+          "actual": 0.016,
+          "reference": 0.016,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/interior_lighting",
+          "actual": 1.152,
+          "reference": 1.152,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/exterior_lighting",
+          "actual": 0.02,
+          "reference": 0.02,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/plug_equipment",
+          "actual": 1.536,
+          "reference": 1.536,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "building/occupied_hours",
+          "actual": 6136.0,
+          "reference": 6136.0,
+          "absolute_error": 0.0,
+          "band": 6.1359999999999995e-09,
+          "passed": true
+        },
+        {
+          "id": "building/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        }
+      ],
+      "maximum_interval_reconciliation_kw": 1.5522042910257975e-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "native_process": {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T06:05:04.387459+00:00",
+        "finished_utc": "2026-10-13T06:05:11.708112700+00:00",
+        "elapsed_ms": 7320,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 418074624,
+        "peak_observed_scratch_bytes": 19804284,
+        "samples": 131,
+        "stdout_sha256": "0c0d740d537b3fee35e52793d6755b41e321ef826cd33d556a519d96f4c5c6d9",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      },
+      "closed_run_integrity_verified": true,
+      "checksums_sha256": "fe6474e6f61eba819cb2f2b631e2bc7e46d5a003b4c4b74898bbd495098a6084",
+      "files": {
+        "checksums.json": {
+          "sha256": "fe6474e6f61eba819cb2f2b631e2bc7e46d5a003b4c4b74898bbd495098a6084",
+          "bytes": 6872
+        },
+        "diagnostics.json": {
+          "sha256": "b28b4103f65e9de670120f4571f33b6ccd92ae0167fb651d71335cddc9648d07",
+          "bytes": 2244
+        },
+        "input.json": {
+          "sha256": "333ac0310b460515e89edb53f30ae97740b42dfbcd30931c6f5817ca333c2191",
+          "bytes": 70653
+        },
+        "model.epJSON": {
+          "sha256": "5f02088a1642bc06fecb747855185ba6b9d928e0ed4f7d4f5336b0e9dd321327",
+          "bytes": 79894
+        },
+        "provenance.json": {
+          "sha256": "8eb0d7ce937e6d66f13af21951969175ea764a60080877771d72ea9e18c30817",
+          "bytes": 2195
+        },
+        "recipe.json": {
+          "sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "bytes": 1882
+        },
+        "results.json": {
+          "sha256": "e5aac9b58f2ac85ae40a1df9de390eff757c590c916409422515a5977d301409",
+          "bytes": 209047
+        },
+        "study.json": {
+          "sha256": "7c8a13631db26551e060f077a5d28900e0b32fc5ec4559cf7cdc81b962a91704",
+          "bytes": 600
+        },
+        "engine/eplusout.end": {
+          "sha256": "ba801f21a201fb6e16cd89d15f4cd21f48ed4bcb8b4e4c9f0f37bb3cb1063ab7",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "1338a8c13726a361e631240a0f0afba1d865252bd6624f129124c5b944c3a3c4",
+          "bytes": 1051
+        },
+        "engine/process-stderr.txt": {
+          "sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+          "bytes": 36
+        },
+        "engine/process-stdout.txt": {
+          "sha256": "0c0d740d537b3fee35e52793d6755b41e321ef826cd33d556a519d96f4c5c6d9",
+          "bytes": 2326
+        },
+        "engine/process.json": {
+          "sha256": "51c73baab4664d9655450347fdbde4aa3cf46f6211bd674e59a2644b9ae8e837",
+          "bytes": 875
+        },
+        "series/data-00000.f64": {
+          "sha256": "c6bbc92209036cbb9a73e58104459fec86283540490c2f71cba793f6ecbe792f",
+          "bytes": 274176
+        },
+        "series/data-00001.f64": {
+          "sha256": "4d1157dded90f14fbcc025eddd452b8490cceec1eb5c848fac9d298e2fd31d17",
+          "bytes": 274176
+        },
+        "series/data-00002.f64": {
+          "sha256": "9c1d11c56900f95f5ed8eeb1992e543e1403deadda1355ed082fd21337d35ba7",
+          "bytes": 274176
+        },
+        "series/data-00003.f64": {
+          "sha256": "6dfa100bacb2de18e19494e6b52c8431b6358e86ef3ccf2fc1fe527fb4b6a8a2",
+          "bytes": 274176
+        },
+        "series/data-00004.f64": {
+          "sha256": "595474062716621da0a47239769d295765b516bbb8142d8dc00c328c96101a7b",
+          "bytes": 274176
+        },
+        "series/data-00005.f64": {
+          "sha256": "a1d26414d7405ff184fd4c53808c6ab9a5ca51ab3d0437cae38829338ee5daaa",
+          "bytes": 274176
+        },
+        "series/data-00006.f64": {
+          "sha256": "aa26def7c231b8398b82efd0bb228b06644d2cba99f18a34369ce866f543dbf7",
+          "bytes": 274176
+        },
+        "series/data-00007.f64": {
+          "sha256": "e67d0f53ee3a6d6424a3d570f087ab8ee571331f921f6ab47e4d41d71daa79c9",
+          "bytes": 274176
+        },
+        "series/data-00008.f64": {
+          "sha256": "c5405db8d1fe47441432189848023e1ca443dd5d53d64103e959581974e2b758",
+          "bytes": 274176
+        },
+        "series/data-00009.f64": {
+          "sha256": "ae1d79487ca9b8fdaf097a330d55cd1538260cc076b2d8d7d90e898b02628383",
+          "bytes": 274176
+        },
+        "series/data-00010.f64": {
+          "sha256": "4721fd9fa4595f66db4a34e680fdbafcd7df9d3f1bcefe1088bb837ea2956dcc",
+          "bytes": 274176
+        },
+        "series/data-00011.f64": {
+          "sha256": "ddc9ed0c1d3efceb4ddf025948967253d8d8213a418b37ef33434e5bfe07ac53",
+          "bytes": 274176
+        },
+        "series/data-00012.f64": {
+          "sha256": "e1117e1941bed7660f17518da09ca9bd0225c6252bdf02f20bfff4377d524a98",
+          "bytes": 274176
+        },
+        "series/data-00013.f64": {
+          "sha256": "d4f9567d4f1dcbaa095a1dd8c8715115b45a180f7ed62e7ea6d5798e38a64d02",
+          "bytes": 274176
+        },
+        "series/data-00014.f64": {
+          "sha256": "60ddfb64b879248fd7a050cde016bf7b88a9b8f78a77292af127d132ed7f8a58",
+          "bytes": 274176
+        },
+        "series/data-00015.f64": {
+          "sha256": "07bb3569e6fa2610ee4c15dbc76642037675e3a777de11ae8544c728e48714bb",
+          "bytes": 274176
+        },
+        "series/data-00016.f64": {
+          "sha256": "b045d3718578c9ae4f408a850d2c6c5fb8c262c353d5a0af0bf371414bdb86aa",
+          "bytes": 274176
+        },
+        "series/data-00017.f64": {
+          "sha256": "25a53166d45ca796f1ac76a8ca23ed7512cf75496b276bd1c8ae759b357a448e",
+          "bytes": 274176
+        },
+        "series/data-00018.f64": {
+          "sha256": "6cb3de18eb1cc42f7034e806bee8eff6b9598473d4e49d1982d0e668a4944e1a",
+          "bytes": 274176
+        },
+        "series/data-00019.f64": {
+          "sha256": "b7cebdcfdf3244f3acb03b6c6c0598da8010c6c5088ebac485a5a75fe061f4ac",
+          "bytes": 274176
+        },
+        "series/data-00020.f64": {
+          "sha256": "3b60d61b4bbdc753387952007c05b9c69744e4e0ac54c4dd88bbd64b5efe6407",
+          "bytes": 274176
+        },
+        "series/data-00021.f64": {
+          "sha256": "3ac7bb8f39a92a7e7d7853bc05ce5c97349c1f6545b69108c9d957b2ec9cf11b",
+          "bytes": 274176
+        },
+        "series/data-00022.f64": {
+          "sha256": "2884eb50bc8a6644b3bc7e4f4ec0c0287c7722960baebcceb2b9b044f4358b45",
+          "bytes": 274176
+        },
+        "series/data-00023.f64": {
+          "sha256": "a23339eda412c3757476759788b22e7fbe46cedef26760e6411a4328b44b7731",
+          "bytes": 274176
+        },
+        "series/data-00024.f64": {
+          "sha256": "9e2ab2fe6805faff0f519efe9c7102bd6ddf2582964baa8d065def33cca9b30f",
+          "bytes": 274176
+        },
+        "series/data-00025.f64": {
+          "sha256": "b3a1c90a24f1cf53dde7f4ebb454094ad2ef33476719efd2c290ca4cc9c06da5",
+          "bytes": 274176
+        },
+        "series/data-00026.f64": {
+          "sha256": "e1c9c976fad484495c74443f00247aa5f3bd31ef9c858a0b7cb96d0c1661fa0e",
+          "bytes": 274176
+        },
+        "series/data-00027.f64": {
+          "sha256": "e9cfa09688876ac3f313416ecc88ff97571c09f59b0d4d207b28bbd6b33a3859",
+          "bytes": 274176
+        },
+        "series/data-00028.f64": {
+          "sha256": "f595dca3cf498caa126765a361ebdf5973e21cd1ac28f210d29d7a1f50332057",
+          "bytes": 274176
+        },
+        "series/data-00029.f64": {
+          "sha256": "06bbdc8cfb54541c898042885206b5862584851d6aadd1c6a2fda5c316043d83",
+          "bytes": 274176
+        },
+        "series/data-00030.f64": {
+          "sha256": "88463922fc074d8f29b6bccb98ad6782de69a6c68ff46d6ff169639163f92cea",
+          "bytes": 274176
+        },
+        "series/data-00031.f64": {
+          "sha256": "95ad066647f34e65d37c0464d8117de7edbecd43a84f5f82198b979fdf3ba5a7",
+          "bytes": 274176
+        },
+        "series/data-00032.f64": {
+          "sha256": "366eb65780c192b564781b56e1eff6c2100dc4cde3b4fd039096ef93678ea8cb",
+          "bytes": 274176
+        },
+        "series/data-00033.f64": {
+          "sha256": "5ca07927ce994cb5238662936814f235b7961edf79e696509b1d1a5f51c44dfb",
+          "bytes": 274176
+        },
+        "series/data-00034.f64": {
+          "sha256": "b2ff826d764f3a8a445a5e10523c08cc92324d88437bde247db4d8fc110c74fd",
+          "bytes": 274176
+        },
+        "series/data-00035.f64": {
+          "sha256": "98f2bf9bfe7103c367c4a1c206bcfa6e95b45f960e8ec83f867377c7c199099d",
+          "bytes": 274176
+        },
+        "series/data-00036.f64": {
+          "sha256": "1974eda85116552094f35536c609c830d587310ce9fcbc63280fab3ae5591509",
+          "bytes": 274176
+        },
+        "series/data-00037.f64": {
+          "sha256": "0fb043a85b11a1e3b00fe5c2ea3af64127f2f68f613ffa0016f73a043a89b791",
+          "bytes": 274176
+        },
+        "series/data-00038.f64": {
+          "sha256": "3209563eec06e4d75d6b9976c7436a50df2bf6805ec1f362bb8e434402215007",
+          "bytes": 274176
+        },
+        "series/data-00039.f64": {
+          "sha256": "cc10ae4e80bb2fb7e42d257db9cc76b6e337bd626467fee593e6e9469cb161a6",
+          "bytes": 274176
+        },
+        "series/data-00040.f64": {
+          "sha256": "11a44c13ab678691ab66764c20e33398e36fcac391b3ed3a878071c69b3e0408",
+          "bytes": 274176
+        },
+        "series/data-00041.f64": {
+          "sha256": "f6fa49b77b6f80aec28fcf3d8d0b4b34ddaf8d2bc40229d71f603c60e2901e5f",
+          "bytes": 274176
+        },
+        "series/data-00042.f64": {
+          "sha256": "2a978270588cb55c8a8a4eda3c2dbb643f4f3d309ab5bc25644327d7a40a8dd6",
+          "bytes": 274176
+        },
+        "series/data-00043.f64": {
+          "sha256": "b6f1081ca3f483f392932f44ee8bab1b35f3249d7789ad76588cd8a8ccfcd6bf",
+          "bytes": 274176
+        },
+        "series/data-00044.f64": {
+          "sha256": "8ee866550b1d1cdea343e7a9afd8489061f6fde4a2abbd7307cce4fbcb6f4494",
+          "bytes": 274176
+        },
+        "series/data-00045.f64": {
+          "sha256": "3f152101a17d42d5fd20260e553d0b53f325772d88fd53b9e5492a18df445eaf",
+          "bytes": 274176
+        },
+        "series/data-00046.f64": {
+          "sha256": "bacef1659c2b20a827377ad931c6dc400856a53d3e96130ec71bce743199a82f",
+          "bytes": 274176
+        },
+        "series/data-00047.f64": {
+          "sha256": "be61850feebede50ffad25ec3232ee46cbdd701d256885a56adbd119801b185e",
+          "bytes": 274176
+        },
+        "series/data-00048.f64": {
+          "sha256": "1ff4a974ad69ca357d53da99353c8ac6ebc136f6c8064187e6c156c16d0af2e7",
+          "bytes": 274176
+        },
+        "series/data-00049.f64": {
+          "sha256": "c20caad3c0b0ab3e06dda7f4bcd87cf61a0411e4a001b9c9e07019498b6881cb",
+          "bytes": 274176
+        },
+        "series/data-00050.f64": {
+          "sha256": "990c749cf4feacaceed45451fadc63b51b07ad86aa3ab02228db630b7e8397df",
+          "bytes": 274176
+        },
+        "series/data-00051.f64": {
+          "sha256": "a057c458e20226f62be9e5dec65882c00f5895952e12ff3db148b937e6597992",
+          "bytes": 274176
+        },
+        "series/data-00052.f64": {
+          "sha256": "a923cab46a785da92752309e57b105a1cf4b4414ddbb4cb91298ed6066632387",
+          "bytes": 39168
+        },
+        "series/series.json": {
+          "sha256": "041933e078a5a04d337d0307a57cfe352bc4c60faafda57aa3d7f1cd8e676cc5",
+          "bytes": 15357
+        },
+        "weather/asset.json": {
+          "sha256": "132e5cab005b12bfb441c8c161704d89f67ffca036c7e8a42f3f92866e9c08af",
+          "bytes": 677
+        },
+        "weather/checksums.json": {
+          "sha256": "a7cbf88dee0a903628e24123c2a2cd13fe936bc6b6b07a9926c7b9e8323f1354",
+          "bytes": 402
+        },
+        "weather/normalized.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        },
+        "weather/original.epw": {
+          "sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "bytes": 1280195
+        },
+        "weather/weather.json": {
+          "sha256": "2bc05c15bae815a81b96c16f569db36cbfde60c862f878b0c163a7e5556ccb37",
+          "bytes": 5300731
+        }
+      },
+      "diagnostics": {
+        "schema": "greenlens.energy-diagnostics.v1",
+        "completed": true,
+        "warning_count": 1,
+        "severe_count": 0,
+        "messages": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "convergence_disclosure": "All native warnings are retained for review; severe/fatal or explicit convergence failures block completion. Native completion is not physical or timestep qualification.",
+        "rows": 52560,
+        "native_columns": 27,
+        "native_csv_sha256": "a08e453c201c112e15c2c52d535027ac9116e0267815306809d8fcb41fa6cfa3",
+        "native_csv_bytes": 14288440,
+        "error_file_sha256": "1338a8c13726a361e631240a0f0afba1d865252bd6624f129124c5b944c3a3c4",
+        "end_file_sha256": "ba801f21a201fb6e16cd89d15f4cd21f48ed4bcb8b4e4c9f0f37bb3cb1063ab7",
+        "input_sha256": {
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "model.epJSON": "5f02088a1642bc06fecb747855185ba6b9d928e0ed4f7d4f5336b0e9dd321327",
+          "recipe.json": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "minimum_values": [
+          12000.0,
+          0.0,
+          12000.0,
+          0.0,
+          0.0,
+          0.0,
+          22.159505244379186,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          22.13318471539029,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.919888762783682,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.89775974230576,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_values": [
+          2459282.116686155,
+          691200.0,
+          12000.0,
+          921600.0,
+          680882.1166861553,
+          153600.0,
+          24.444594742185036,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          583942.6557280566,
+          24.347985439711906,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          562132.8015749783,
+          24.218030467650735,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          524386.2668494873,
+          24.138506553587806,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          486638.52463350265
+        ],
+        "maximum_fan_reconciliation_j": 0.0,
+        "qualification_asserted": false
+      },
+      "native_csv_sha256": "a08e453c201c112e15c2c52d535027ac9116e0267815306809d8fcb41fa6cfa3",
+      "physical_input_hash": "1d5edab5883055cf8cf010b62a3e9bad9609daf2c6bed24017ac1ee8871e8a87",
+      "execution_input_hash": "2cca8587d2cc95a1f9084efb4cf05c019efee3bed9b392a5b0eba0d0c4b42e2f",
+      "physical_result_hash": "001e3e3dad63dde9bcab9767d2f3c9ad7951188a2ec08276d4ddf973d687b3cb",
+      "processing_identity": "7bbfcf67ceb28f4a3fce6ae393b74f121c8ab52ff75550bbe4d8ffaa27cbf5f2",
+      "model_input_sha256": "0f6c0f3dd69983ca06795ae38314ea2b3c3e85dcb4e06f873d4a28204e8cfc5b",
+      "coincident_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 4.098803527810259,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.1348035278102588,
+          "supply_fans": 0.24,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.152,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "building_comfort_union": {
+        "zone_id": null,
+        "occupied_hours": 6136.0,
+        "cooling_unmet_hours": 0.0,
+        "unmet_percent": 0.0
+      },
+      "compiled_application": {
+        "application_version": "0.4.0",
+        "source_commit": "b3d2c9a835c80a6357eb20f4b913fd524d557441",
+        "source_worktree_dirty": true
+      },
+      "arithmetic_check_count": 112
+    },
+    {
+      "case": "A5",
+      "id": "9cb7ce00-f233-4128-81da-0d8e15c53545",
+      "minutes": 5,
+      "rows": 105120,
+      "channels": 34,
+      "native_scalar_comparisons": 3153600,
+      "max_native_scalar_difference": 0.0,
+      "annual_kwh": {
+        "facility_j": 16305.190534702979,
+        "cooling_system": 3595.0785347029796,
+        "interior_lighting": 6289.92,
+        "exterior_lighting": 175.2,
+        "plug_equipment": 5031.936,
+        "supply_fans": 1160.64,
+        "ventilation_exhaust_fans": 52.416
+      },
+      "aligned_peak_kw": 5.514467140552976,
+      "aligned_peak_index": 52088,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        }
+      ],
+      "arithmetic_checks": [
+        {
+          "id": "annual/facility",
+          "actual": 16305.190534702979,
+          "reference": 16305.190534702979,
+          "absolute_error": 0.0,
+          "band": 1.630519053470298e-08,
+          "passed": true
+        },
+        {
+          "id": "annual/cooling_system",
+          "actual": 3595.0785347029796,
+          "reference": 3595.0785347029796,
+          "absolute_error": 0.0,
+          "band": 3.5950785347029794e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/supply_fans",
+          "actual": 1160.64,
+          "reference": 1160.64,
+          "absolute_error": 0.0,
+          "band": 1.16064e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/ventilation_exhaust_fans",
+          "actual": 52.416,
+          "reference": 52.416,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/interior_lighting",
+          "actual": 6289.92,
+          "reference": 6289.92,
+          "absolute_error": 0.0,
+          "band": 6.28992e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/exterior_lighting",
+          "actual": 175.2,
+          "reference": 175.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/plug_equipment",
+          "actual": 5031.936,
+          "reference": 5031.936,
+          "absolute_error": 0.0,
+          "band": 5.0319359999999994e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/facility",
+          "actual": 1432.2258635099333,
+          "reference": 1432.2258635099333,
+          "absolute_error": 0.0,
+          "band": 1.4322258635099334e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/cooling_system",
+          "actual": 386.30586350993343,
+          "reference": 386.30586350993343,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/facility",
+          "actual": 1272.7430916291755,
+          "reference": 1272.7430916291755,
+          "absolute_error": 0.0,
+          "band": 1.2727430916291754e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/cooling_system",
+          "actual": 295.0790916291756,
+          "reference": 295.0790916291756,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/supply_fans",
+          "actual": 89.28,
+          "reference": 89.28,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/ventilation_exhaust_fans",
+          "actual": 4.032,
+          "reference": 4.032,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/interior_lighting",
+          "actual": 483.84,
+          "reference": 483.84,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/exterior_lighting",
+          "actual": 13.44,
+          "reference": 13.44,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/plug_equipment",
+          "actual": 387.072,
+          "reference": 387.072,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/facility",
+          "actual": 1332.1292535847501,
+          "reference": 1332.1292535847501,
+          "absolute_error": 0.0,
+          "band": 1.3321292535847501e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/cooling_system",
+          "actual": 249.20125358475022,
+          "reference": 249.20125358475022,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/facility",
+          "actual": 1297.217848525037,
+          "reference": 1297.217848525037,
+          "absolute_error": 0.0,
+          "band": 1.297217848525037e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/cooling_system",
+          "actual": 248.1778485250371,
+          "reference": 248.1778485250371,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/facility",
+          "actual": 1357.6499980994151,
+          "reference": 1357.6499980994151,
+          "absolute_error": 0.0,
+          "band": 1.3576499980994152e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/cooling_system",
+          "actual": 278.321998099415,
+          "reference": 278.321998099415,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/facility",
+          "actual": 1324.2276158199813,
+          "reference": 1324.2276158199813,
+          "absolute_error": 0.0,
+          "band": 1.3242276158199814e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/cooling_system",
+          "actual": 275.18761581998143,
+          "reference": 275.18761581998143,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/facility",
+          "actual": 1365.1173343882765,
+          "reference": 1365.1173343882765,
+          "absolute_error": 0.0,
+          "band": 1.3651173343882765e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/cooling_system",
+          "actual": 282.1893343882764,
+          "reference": 282.1893343882764,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/facility",
+          "actual": 1348.5836130212779,
+          "reference": 1348.5836130212779,
+          "absolute_error": 0.0,
+          "band": 1.3485836130212779e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/cooling_system",
+          "actual": 269.25561302127795,
+          "reference": 269.25561302127795,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/facility",
+          "actual": 1287.2344884933277,
+          "reference": 1287.2344884933277,
+          "absolute_error": 0.0,
+          "band": 1.2872344884933278e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/cooling_system",
+          "actual": 234.59448849332776,
+          "reference": 234.59448849332776,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/supply_fans",
+          "actual": 100.8,
+          "reference": 100.8,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/facility",
+          "actual": 1363.2750459667554,
+          "reference": 1363.2750459667554,
+          "absolute_error": 0.0,
+          "band": 1.3632750459667554e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/cooling_system",
+          "actual": 283.94704596675547,
+          "reference": 283.94704596675547,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/facility",
+          "actual": 1407.721955084439,
+          "reference": 1407.721955084439,
+          "absolute_error": 0.0,
+          "band": 1.4077219550844391e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/cooling_system",
+          "actual": 362.2819550844391,
+          "reference": 362.2819550844391,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/interior_lighting",
+          "actual": 518.4,
+          "reference": 518.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/facility",
+          "actual": 1517.06442658061,
+          "reference": 1517.06442658061,
+          "absolute_error": 0.0,
+          "band": 1.51706442658061e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/cooling_system",
+          "actual": 430.53642658061005,
+          "reference": 430.53642658061005,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/supply_fans",
+          "actual": 102.96,
+          "reference": 102.96,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/interior_lighting",
+          "actual": 535.68,
+          "reference": 535.68,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/facility",
+          "actual": 5.514467140552976,
+          "reference": 5.514467140552976,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/cooling_system",
+          "actual": 1.782467140552976,
+          "reference": 1.782467140552976,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/supply_fans",
+          "actual": 0.24,
+          "reference": 0.24,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/ventilation_exhaust_fans",
+          "actual": 0.016,
+          "reference": 0.016,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/interior_lighting",
+          "actual": 1.92,
+          "reference": 1.92,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/exterior_lighting",
+          "actual": 0.02,
+          "reference": 0.02,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/plug_equipment",
+          "actual": 1.536,
+          "reference": 1.536,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "building/occupied_hours",
+          "actual": 6136.0,
+          "reference": 6136.0,
+          "absolute_error": 0.0,
+          "band": 6.1359999999999995e-09,
+          "passed": true
+        },
+        {
+          "id": "building/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        }
+      ],
+      "maximum_interval_reconciliation_kw": 1.5522042910257975e-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "native_process": {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T06:05:26.873163300+00:00",
+        "finished_utc": "2026-10-13T06:05:42.656013100+00:00",
+        "elapsed_ms": 15783,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 597549056,
+        "peak_observed_scratch_bytes": 37544158,
+        "samples": 277,
+        "stdout_sha256": "6f1ab9c1dd77dbfac9fa9121fb91235174a7b5749523d664474e90a50256a337",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      },
+      "closed_run_integrity_verified": true,
+      "checksums_sha256": "0da70fce7f0cb64ff80ae9eeec252e1a53f6eedd19bb1ab5dffc3d4994f3c263",
+      "files": {
+        "checksums.json": {
+          "sha256": "0da70fce7f0cb64ff80ae9eeec252e1a53f6eedd19bb1ab5dffc3d4994f3c263",
+          "bytes": 6872
+        },
+        "diagnostics.json": {
+          "sha256": "f3cb610687318029503184a02f30d669b7a0b5326b4e6af669e49e9b91b873a7",
+          "bytes": 2240
+        },
+        "input.json": {
+          "sha256": "28a5b707112841167d23e0fa7e942ddd0b663f75d7a575411dfe57dc0944c77a",
+          "bytes": 70216
+        },
+        "model.epJSON": {
+          "sha256": "1b9c27e87a249a649c8a16d525e15ce090163055a7ed2f608d3cd3a8d8e086c9",
+          "bytes": 78316
+        },
+        "provenance.json": {
+          "sha256": "2862d0d92285a9fbbb6313f38198d5a320dae0170f487deaf834dc458303e8f2",
+          "bytes": 2199
+        },
+        "recipe.json": {
+          "sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "bytes": 1882
+        },
+        "results.json": {
+          "sha256": "22b59d6a6ee8513c61118581e4fdb12ec17b5f40bb20c6c40979081eba692593",
+          "bytes": 208098
+        },
+        "study.json": {
+          "sha256": "8b82f027def38d330bd966d3bac7274ff9dd0606ba357510ef4eb53ca6ca85fb",
+          "bytes": 601
+        },
+        "engine/eplusout.end": {
+          "sha256": "3665ba1f84a3a1e1be33c38a0b3c3303d645518162ae665e5fd40a9b168ee1cb",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "60c2872920b0aab12a35e7359752a66f208dd697b224c59a2a4ba046e5ef66b4",
+          "bytes": 1051
+        },
+        "engine/process-stderr.txt": {
+          "sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+          "bytes": 36
+        },
+        "engine/process-stdout.txt": {
+          "sha256": "6f1ab9c1dd77dbfac9fa9121fb91235174a7b5749523d664474e90a50256a337",
+          "bytes": 2326
+        },
+        "engine/process.json": {
+          "sha256": "cc3234af78d28c212930548ad8c9a026653b29bea70eb07fe86db87c37669e58",
+          "bytes": 879
+        },
+        "series/data-00000.f64": {
+          "sha256": "fcef98509609b6465011ff261295f1c6ebb2f21a44eb4fd56519a0fda32829c1",
+          "bytes": 548352
+        },
+        "series/data-00001.f64": {
+          "sha256": "337e91d25f80eb23b24befd5ac92d85b5dff2a1e6251a0c1512c4232b41a19a9",
+          "bytes": 548352
+        },
+        "series/data-00002.f64": {
+          "sha256": "436ec7f91e35461ad10e0ae7d336eee8e136da26e76988bac3dea82b080e45d4",
+          "bytes": 548352
+        },
+        "series/data-00003.f64": {
+          "sha256": "65e6dc8ba3f4eede04e5707e8495854e3c228b1977ae8c778b9a488dc2ea49bd",
+          "bytes": 548352
+        },
+        "series/data-00004.f64": {
+          "sha256": "e056d2df97df0d51ea6ebf3d2aa899e8348f3be7e92d78ed79cc3cc8026a56dd",
+          "bytes": 548352
+        },
+        "series/data-00005.f64": {
+          "sha256": "1988d3c5bf3b1cbd8b4efe2dd77c6b7bd4f7e8a64833391e32e74202ac8b31b3",
+          "bytes": 548352
+        },
+        "series/data-00006.f64": {
+          "sha256": "c4b5a5ef4d2386d9497fcb339f2a6894dddd0f31cebe9e5972679d65c719a2c3",
+          "bytes": 548352
+        },
+        "series/data-00007.f64": {
+          "sha256": "8812315396699121404fc32baf36efadd4807fda012eb09288f6e743ce72a6d9",
+          "bytes": 548352
+        },
+        "series/data-00008.f64": {
+          "sha256": "8dd362dc0a69e09b3b0bd3aae64e4c2c9b30fca81d13846f3bece04027777ed8",
+          "bytes": 548352
+        },
+        "series/data-00009.f64": {
+          "sha256": "4a7e5e6c4b76443319dfa45dec5acd1c487e031978ada941319a3b51018ad5c8",
+          "bytes": 548352
+        },
+        "series/data-00010.f64": {
+          "sha256": "e9b9421a0fda1a301c54e416aac62c7a8daa0bf62d8ecde01fc85b7af9e8fe7e",
+          "bytes": 548352
+        },
+        "series/data-00011.f64": {
+          "sha256": "6325ba624e5a844188369d1f220ceea500148558f386507f84d7c8cb389325d9",
+          "bytes": 548352
+        },
+        "series/data-00012.f64": {
+          "sha256": "49735262a4a8a9e12b7b9b4f04a4ef37cca63e1377fe1f49f09a55c56e1b428d",
+          "bytes": 548352
+        },
+        "series/data-00013.f64": {
+          "sha256": "51997206b74f2b31bb83ff60a246589b76a4b1346557d74f2d8faa0822dd5478",
+          "bytes": 548352
+        },
+        "series/data-00014.f64": {
+          "sha256": "ae365e6f29a0423ae28c8dec69376f496c3799724c65f72200ab908bd97f8d97",
+          "bytes": 548352
+        },
+        "series/data-00015.f64": {
+          "sha256": "518f0b2c4ecc4a7f9ad2d5facf5eca727f2dbbf1232657264e82f49f742aa2e8",
+          "bytes": 548352
+        },
+        "series/data-00016.f64": {
+          "sha256": "0bbea6cd4ed24f004e138a4450913d9acc11e5be4b5c9cca00c420a2bfbbb6b4",
+          "bytes": 548352
+        },
+        "series/data-00017.f64": {
+          "sha256": "2b20d3bc28dd582a43b8525b29533a2db38fd2024e5c82619fd9a6d338bcfc0f",
+          "bytes": 548352
+        },
+        "series/data-00018.f64": {
+          "sha256": "bb5321cd544a4934ef1a3f8b9abf84490b1dba2f9a7653a3f19d13cbdbf47eb9",
+          "bytes": 548352
+        },
+        "series/data-00019.f64": {
+          "sha256": "b24b4a88081b225ceb961bdea44c278a02139638b6bb1192bbe0c1aa0a8a3ed2",
+          "bytes": 548352
+        },
+        "series/data-00020.f64": {
+          "sha256": "7609c38865a10ced88d2ae94f781419da6b06ed5d27b7610cbb0af84665e0e15",
+          "bytes": 548352
+        },
+        "series/data-00021.f64": {
+          "sha256": "8151600158966fded60762e71f4a8c78a1120b3d54f3c1e174ea5a2b3afad5a9",
+          "bytes": 548352
+        },
+        "series/data-00022.f64": {
+          "sha256": "a1836f2adfad00d06cbcfe4f98b80217d86fc74df38332bde00a9d3f0775da90",
+          "bytes": 548352
+        },
+        "series/data-00023.f64": {
+          "sha256": "c1f054de151136243a67571382d857b44dfd89bad81fab6b4b866d70df056d9c",
+          "bytes": 548352
+        },
+        "series/data-00024.f64": {
+          "sha256": "82e2295fd51771a3153c28272833385e384b6fe85512a7e97921b1e64e7225b4",
+          "bytes": 548352
+        },
+        "series/data-00025.f64": {
+          "sha256": "33c04d0051d767a0381344b077312ffbfcb77445de6186eae31ea86b1a66600e",
+          "bytes": 548352
+        },
+        "series/data-00026.f64": {
+          "sha256": "2de3a431b22ede0469f642d50cbe4013b759a16453bcb478410c3ad689179666",
+          "bytes": 548352
+        },
+        "series/data-00027.f64": {
+          "sha256": "711bc2c13a0756ff702ac250fdcda7257573c5624841c5b2f79507b609e6244c",
+          "bytes": 548352
+        },
+        "series/data-00028.f64": {
+          "sha256": "1c76940ee7cc086c935531bc5b973c3347c7606669538b6f98635586274a3a72",
+          "bytes": 548352
+        },
+        "series/data-00029.f64": {
+          "sha256": "d6ef584a104a03270b0186a4111c91746d602f3cc44468df087c1fc6a75dcaa5",
+          "bytes": 548352
+        },
+        "series/data-00030.f64": {
+          "sha256": "2edadf4de499eba070c28f82dad913456627ec14c8b06fe700a1ea820cab5e6d",
+          "bytes": 548352
+        },
+        "series/data-00031.f64": {
+          "sha256": "8402f586c8cf317e946cd817e61f59400cb3ab1c4213c4da4167f27dd5e097a6",
+          "bytes": 548352
+        },
+        "series/data-00032.f64": {
+          "sha256": "077e72e6b4077df6baa66d56960180b3d051577ecb27c07dd9dd471f84593f77",
+          "bytes": 548352
+        },
+        "series/data-00033.f64": {
+          "sha256": "854a9aeabc889ef9cd4cc2e35d2143b481a924cb1425ec6de3d2bf935bdfb126",
+          "bytes": 548352
+        },
+        "series/data-00034.f64": {
+          "sha256": "346957769a1ffdec1974ba65413911d7a4537e93c9a93303d3ae5ebe27fdea09",
+          "bytes": 548352
+        },
+        "series/data-00035.f64": {
+          "sha256": "2bb57c2d6d36f212f0229f3cc700dbd38b88ee9cc0c43e65778f0555710e3559",
+          "bytes": 548352
+        },
+        "series/data-00036.f64": {
+          "sha256": "369d17559866cf6f08991ef7008f53aa75fa55d0ef6039087e5de23890479182",
+          "bytes": 548352
+        },
+        "series/data-00037.f64": {
+          "sha256": "0c799994244b6ba95750e039ca17bb83db2039580743f8279e8c03830671223f",
+          "bytes": 548352
+        },
+        "series/data-00038.f64": {
+          "sha256": "b2db34dbee8b923ac0b707465360f71d7f55c0822c9ec885859e4618ef50a1f2",
+          "bytes": 548352
+        },
+        "series/data-00039.f64": {
+          "sha256": "ae96c28633cb1ff1d8b8e117b77fa80f2aab776c34e796d6b9d08fa5f1f23294",
+          "bytes": 548352
+        },
+        "series/data-00040.f64": {
+          "sha256": "6245eb11c3242e375ef390bc40cc8b6f57fcd4f7e7b28ff295e7d54d8818e6bf",
+          "bytes": 548352
+        },
+        "series/data-00041.f64": {
+          "sha256": "c2e16c7ce7cfb048d6847b7cf169cbb86e7d7d427bfbc11a22ff55f6416e0b85",
+          "bytes": 548352
+        },
+        "series/data-00042.f64": {
+          "sha256": "8ec161bc03a0af56e949be42ed3b235c0747cb9f3e41ecdaa320d1f2a630d38c",
+          "bytes": 548352
+        },
+        "series/data-00043.f64": {
+          "sha256": "710fd16bd5adb2b68822b147daaac5061d95ec05c785e1ef9c61db55bdef0013",
+          "bytes": 548352
+        },
+        "series/data-00044.f64": {
+          "sha256": "698930cb48b41eb940fd49a0186df52d74e9df3d0709ac20888fd31d3f24e888",
+          "bytes": 548352
+        },
+        "series/data-00045.f64": {
+          "sha256": "fc23e6edd5d1c7f8300a503a2737014b6286404da23720294247caa07b04e0dc",
+          "bytes": 548352
+        },
+        "series/data-00046.f64": {
+          "sha256": "ff92a27b7101a6d8a3d072e9e44764a9798f114fa3712ad649d4a7f0fb7de0c3",
+          "bytes": 548352
+        },
+        "series/data-00047.f64": {
+          "sha256": "66c966eec316faa38a366f2fc0b75a8e01901ba8d1f8b5b2e43ee04bd629e2cf",
+          "bytes": 548352
+        },
+        "series/data-00048.f64": {
+          "sha256": "29e481e5a2bcd85e576ba57eff197b60b14212a9fcb93fbea9f23187ad96b1a9",
+          "bytes": 548352
+        },
+        "series/data-00049.f64": {
+          "sha256": "d47d596b0dbca2ced68219345c83e5bca358774709232a8938ab36d464c604f1",
+          "bytes": 548352
+        },
+        "series/data-00050.f64": {
+          "sha256": "fb3cd4e677736a2d098b79a4a7fce814b4b595f01f2b5d6bd2aeb7b091a6b74b",
+          "bytes": 548352
+        },
+        "series/data-00051.f64": {
+          "sha256": "edff1558d809124111e73024c08a5dbb28e4d0285fb650889801912cfb8d893a",
+          "bytes": 548352
+        },
+        "series/data-00052.f64": {
+          "sha256": "facd313d38b7c3ed9f3e4bca840605720b71b43dcf1abbe8ad2c10e1f893b8c2",
+          "bytes": 78336
+        },
+        "series/series.json": {
+          "sha256": "b359afbe363170efd8b20f4a214e7f1d49cadf3ecf9f7f2555e82469470b8ca4",
+          "bytes": 15365
+        },
+        "weather/asset.json": {
+          "sha256": "132e5cab005b12bfb441c8c161704d89f67ffca036c7e8a42f3f92866e9c08af",
+          "bytes": 677
+        },
+        "weather/checksums.json": {
+          "sha256": "a7cbf88dee0a903628e24123c2a2cd13fe936bc6b6b07a9926c7b9e8323f1354",
+          "bytes": 402
+        },
+        "weather/normalized.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        },
+        "weather/original.epw": {
+          "sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "bytes": 1280195
+        },
+        "weather/weather.json": {
+          "sha256": "2bc05c15bae815a81b96c16f569db36cbfde60c862f878b0c163a7e5556ccb37",
+          "bytes": 5300731
+        }
+      },
+      "diagnostics": {
+        "schema": "greenlens.energy-diagnostics.v1",
+        "completed": true,
+        "warning_count": 1,
+        "severe_count": 0,
+        "messages": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "convergence_disclosure": "All native warnings are retained for review; severe/fatal or explicit convergence failures block completion. Native completion is not physical or timestep qualification.",
+        "rows": 105120,
+        "native_columns": 27,
+        "native_csv_sha256": "64f2970f809bb7cc832ec89178394a90c3e8ab0bcc3ef08d094d6e112803d86d",
+        "native_csv_bytes": 28166908,
+        "error_file_sha256": "60c2872920b0aab12a35e7359752a66f208dd697b224c59a2a4ba046e5ef66b4",
+        "end_file_sha256": "3665ba1f84a3a1e1be33c38a0b3c3303d645518162ae665e5fd40a9b168ee1cb",
+        "input_sha256": {
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "model.epJSON": "1b9c27e87a249a649c8a16d525e15ce090163055a7ed2f608d3cd3a8d8e086c9",
+          "recipe.json": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "minimum_values": [
+          6000.0,
+          0.0,
+          6000.0,
+          0.0,
+          0.0,
+          0.0,
+          22.120102605652875,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.98767494022273,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.405652916670103,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.22980167936901,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_values": [
+          1655099.9260139386,
+          576000.0,
+          6000.0,
+          460800.0,
+          535499.9260139386,
+          76800.0,
+          24.84877332744259,
+          1.0,
+          24.0,
+          24.00000000000001,
+          18000.0,
+          1200.0,
+          380040.1591511283,
+          24.661938859326657,
+          1.0,
+          24.0,
+          24.00000000000001,
+          18000.0,
+          1200.0,
+          412298.0500147179,
+          24.68470059865642,
+          1.0,
+          24.0,
+          24.00000000000001,
+          18000.0,
+          1200.0,
+          349464.52236576704,
+          24.30506832596098,
+          1.0,
+          24.0,
+          24.00000000000001,
+          18000.0,
+          1200.0,
+          329314.23165172455
+        ],
+        "maximum_fan_reconciliation_j": 0.0,
+        "qualification_asserted": false
+      },
+      "native_csv_sha256": "64f2970f809bb7cc832ec89178394a90c3e8ab0bcc3ef08d094d6e112803d86d",
+      "physical_input_hash": "32eda4566fd60a64b05ee6a6e0100869f6ff542794b7b12b0029de858e2067ba",
+      "execution_input_hash": "5a9adb50ae385e1880ddae4818ddf4f08b9c2883aa05eb7bc6f17eda849a2e02",
+      "physical_result_hash": "4c23fa66b9e419f39618e8241a8e2f461b7b076614a1c12afe2c2f66895b6111",
+      "processing_identity": "d85d602ead17492c7baa173a7019b207b982728f13968e47a3711843faa2d25f",
+      "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+      "coincident_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 5.514467140552976,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.782467140552976,
+          "supply_fans": 0.24,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.92,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "building_comfort_union": {
+        "zone_id": null,
+        "occupied_hours": 6136.0,
+        "cooling_unmet_hours": 0.0,
+        "unmet_percent": 0.0
+      },
+      "compiled_application": {
+        "application_version": "0.4.0",
+        "source_commit": "b3d2c9a835c80a6357eb20f4b913fd524d557441",
+        "source_worktree_dirty": true
+      },
+      "arithmetic_check_count": 112
+    },
+    {
+      "case": "B5",
+      "id": "3fe00bbe-ca53-4d44-b1a2-d8280d74980f",
+      "minutes": 5,
+      "rows": 105120,
+      "channels": 34,
+      "native_scalar_comparisons": 3153600,
+      "max_native_scalar_difference": 0.0,
+      "annual_kwh": {
+        "facility_j": 12889.75554562606,
+        "cooling_system": 2695.6115456260586,
+        "interior_lighting": 3773.952,
+        "exterior_lighting": 175.2,
+        "plug_equipment": 5031.936,
+        "supply_fans": 1160.64,
+        "ventilation_exhaust_fans": 52.416
+      },
+      "aligned_peak_kw": 4.100302173129985,
+      "aligned_peak_index": 52088,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0,
+          "criterion_passed": true
+        }
+      ],
+      "arithmetic_checks": [
+        {
+          "id": "annual/facility",
+          "actual": 12889.75554562606,
+          "reference": 12889.75554562606,
+          "absolute_error": 0.0,
+          "band": 1.288975554562606e-08,
+          "passed": true
+        },
+        {
+          "id": "annual/cooling_system",
+          "actual": 2695.6115456260586,
+          "reference": 2695.6115456260586,
+          "absolute_error": 0.0,
+          "band": 2.6956115456260584e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/supply_fans",
+          "actual": 1160.64,
+          "reference": 1160.64,
+          "absolute_error": 0.0,
+          "band": 1.16064e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/ventilation_exhaust_fans",
+          "actual": 52.416,
+          "reference": 52.416,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/interior_lighting",
+          "actual": 3773.952,
+          "reference": 3773.952,
+          "absolute_error": 0.0,
+          "band": 3.773952e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/exterior_lighting",
+          "actual": 175.2,
+          "reference": 175.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "annual/plug_equipment",
+          "actual": 5031.936,
+          "reference": 5031.936,
+          "absolute_error": 0.0,
+          "band": 5.0319359999999994e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/facility",
+          "actual": 1107.7764166514198,
+          "reference": 1107.7764166514198,
+          "absolute_error": 0.0,
+          "band": 1.1077764166514197e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/cooling_system",
+          "actual": 269.21641665141993,
+          "reference": 269.21641665141993,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month1/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/facility",
+          "actual": 1002.0345710351937,
+          "reference": 1002.0345710351937,
+          "absolute_error": 0.0,
+          "band": 1.0020345710351938e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/cooling_system",
+          "actual": 217.90657103519376,
+          "reference": 217.90657103519376,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/supply_fans",
+          "actual": 89.28,
+          "reference": 89.28,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/ventilation_exhaust_fans",
+          "actual": 4.032,
+          "reference": 4.032,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/interior_lighting",
+          "actual": 290.304,
+          "reference": 290.304,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/exterior_lighting",
+          "actual": 13.44,
+          "reference": 13.44,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month2/plug_equipment",
+          "actual": 387.072,
+          "reference": 387.072,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/facility",
+          "actual": 1065.9828958955388,
+          "reference": 1065.9828958955388,
+          "absolute_error": 0.0,
+          "band": 1.0659828958955389e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/cooling_system",
+          "actual": 197.32689589553883,
+          "reference": 197.32689589553883,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month3/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/facility",
+          "actual": 1038.1773725284797,
+          "reference": 1038.1773725284797,
+          "absolute_error": 0.0,
+          "band": 1.0381773725284797e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/cooling_system",
+          "actual": 196.49737252847981,
+          "reference": 196.49737252847981,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month4/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/facility",
+          "actual": 1079.8610401539572,
+          "reference": 1079.8610401539572,
+          "absolute_error": 0.0,
+          "band": 1.0798610401539572e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/cooling_system",
+          "actual": 214.80504015395715,
+          "reference": 214.80504015395715,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month5/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/facility",
+          "actual": 1053.6593714461444,
+          "reference": 1053.6593714461444,
+          "absolute_error": 0.0,
+          "band": 1.0536593714461443e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/cooling_system",
+          "actual": 211.97937144614446,
+          "reference": 211.97937144614446,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/supply_fans",
+          "actual": 97.2,
+          "reference": 97.2,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month6/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/facility",
+          "actual": 1086.3373762647127,
+          "reference": 1086.3373762647127,
+          "absolute_error": 0.0,
+          "band": 1.0863373762647126e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/cooling_system",
+          "actual": 217.6813762647126,
+          "reference": 217.6813762647126,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/supply_fans",
+          "actual": 99.36,
+          "reference": 99.36,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month7/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/facility",
+          "actual": 1074.9328086824369,
+          "reference": 1074.9328086824369,
+          "absolute_error": 0.0,
+          "band": 1.0749328086824368e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/cooling_system",
+          "actual": 209.87680868243675,
+          "reference": 209.87680868243675,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month8/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/facility",
+          "actual": 1034.1373310173346,
+          "reference": 1034.1373310173346,
+          "absolute_error": 0.0,
+          "band": 1.0341373310173346e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/cooling_system",
+          "actual": 188.85733101733467,
+          "reference": 188.85733101733467,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/supply_fans",
+          "actual": 100.8,
+          "reference": 100.8,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month9/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/facility",
+          "actual": 1080.6048357054322,
+          "reference": 1080.6048357054322,
+          "absolute_error": 0.0,
+          "band": 1.0806048357054321e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/cooling_system",
+          "actual": 215.54883570543217,
+          "reference": 215.54883570543217,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/supply_fans",
+          "actual": 95.76,
+          "reference": 95.76,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month10/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/facility",
+          "actual": 1095.864384105556,
+          "reference": 1095.864384105556,
+          "absolute_error": 0.0,
+          "band": 1.095864384105556e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/cooling_system",
+          "actual": 257.78438410555583,
+          "reference": 257.78438410555583,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/supply_fans",
+          "actual": 93.6,
+          "reference": 93.6,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/ventilation_exhaust_fans",
+          "actual": 4.32,
+          "reference": 4.32,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/interior_lighting",
+          "actual": 311.04,
+          "reference": 311.04,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/exterior_lighting",
+          "actual": 14.4,
+          "reference": 14.4,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month11/plug_equipment",
+          "actual": 414.72,
+          "reference": 414.72,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/facility",
+          "actual": 1170.3871421398528,
+          "reference": 1170.3871421398528,
+          "absolute_error": 0.0,
+          "band": 1.1703871421398528e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/cooling_system",
+          "actual": 298.1311421398528,
+          "reference": 298.1311421398528,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/supply_fans",
+          "actual": 102.96,
+          "reference": 102.96,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/ventilation_exhaust_fans",
+          "actual": 4.464,
+          "reference": 4.464,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/interior_lighting",
+          "actual": 321.408,
+          "reference": 321.408,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/exterior_lighting",
+          "actual": 14.88,
+          "reference": 14.88,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "month12/plug_equipment",
+          "actual": 428.544,
+          "reference": 428.544,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/facility",
+          "actual": 4.100302173129985,
+          "reference": 4.100302173129985,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/cooling_system",
+          "actual": 1.1363021731299852,
+          "reference": 1.1363021731299852,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/supply_fans",
+          "actual": 0.24,
+          "reference": 0.24,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/ventilation_exhaust_fans",
+          "actual": 0.016,
+          "reference": 0.016,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/interior_lighting",
+          "actual": 1.152,
+          "reference": 1.152,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/exterior_lighting",
+          "actual": 0.02,
+          "reference": 0.02,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "peak/plug_equipment",
+          "actual": 1.536,
+          "reference": 1.536,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone1/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone2/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/occupied_hours",
+          "actual": 5096.0,
+          "reference": 5096.0,
+          "absolute_error": 0.0,
+          "band": 5.096e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone3/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/occupied_hours",
+          "actual": 4576.0,
+          "reference": 4576.0,
+          "absolute_error": 0.0,
+          "band": 4.576e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "zone4/unmet_percent",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        },
+        {
+          "id": "building/occupied_hours",
+          "actual": 6136.0,
+          "reference": 6136.0,
+          "absolute_error": 0.0,
+          "band": 6.1359999999999995e-09,
+          "passed": true
+        },
+        {
+          "id": "building/cooling_unmet_hours",
+          "actual": 0.0,
+          "reference": 0.0,
+          "absolute_error": 0.0,
+          "band": 1e-09,
+          "passed": true
+        }
+      ],
+      "maximum_interval_reconciliation_kw": 1.5522042910257975e-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "native_process": {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T06:06:08.017859700+00:00",
+        "finished_utc": "2026-10-13T06:06:33.744229400+00:00",
+        "elapsed_ms": 25727,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 600645632,
+        "peak_observed_scratch_bytes": 37694895,
+        "samples": 425,
+        "stdout_sha256": "5f14651ad0d6927c62709607da9ae09b367f7a854340a56f496a89a7b8a287c6",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      },
+      "closed_run_integrity_verified": true,
+      "checksums_sha256": "523b24409b0efe6fc72cd6613b2ee21458514cbf3fad57024e2bc3e097583e8b",
+      "files": {
+        "checksums.json": {
+          "sha256": "523b24409b0efe6fc72cd6613b2ee21458514cbf3fad57024e2bc3e097583e8b",
+          "bytes": 6872
+        },
+        "diagnostics.json": {
+          "sha256": "4b235dcaea82346429db89b160a4110cc995047d94c9d5ccbef6b26f95835012",
+          "bytes": 2137
+        },
+        "input.json": {
+          "sha256": "333ac0310b460515e89edb53f30ae97740b42dfbcd30931c6f5817ca333c2191",
+          "bytes": 70653
+        },
+        "model.epJSON": {
+          "sha256": "f5584b31e9833ff7c2963c1da412b8d67a52afdbfec2b3dff38e8336934e094e",
+          "bytes": 79895
+        },
+        "provenance.json": {
+          "sha256": "24f95c22719997ea00180a6f4e86ba221b5f015e0703ad0b5e9aeabb947e927b",
+          "bytes": 2199
+        },
+        "recipe.json": {
+          "sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "bytes": 1882
+        },
+        "results.json": {
+          "sha256": "4ee72f5e510d8dc3f78af897a1615ffa28096853bf33cfc6e7cf943255bb8c2d",
+          "bytes": 209109
+        },
+        "study.json": {
+          "sha256": "8b82f027def38d330bd966d3bac7274ff9dd0606ba357510ef4eb53ca6ca85fb",
+          "bytes": 601
+        },
+        "engine/eplusout.end": {
+          "sha256": "bac0f2fcc0af2c4a9f7b647cae4cabb1e326016f244d38f97296f212b02f621c",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "c1fea195f39417145e150a4bcec92c4357b194f5bd4a0fc4fba849078079cdcb",
+          "bytes": 1051
+        },
+        "engine/process-stderr.txt": {
+          "sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+          "bytes": 36
+        },
+        "engine/process-stdout.txt": {
+          "sha256": "5f14651ad0d6927c62709607da9ae09b367f7a854340a56f496a89a7b8a287c6",
+          "bytes": 2326
+        },
+        "engine/process.json": {
+          "sha256": "00988a942e5c81be2d5b2436e7dfdbd83c8b76baa63b49433cde786e192420f5",
+          "bytes": 879
+        },
+        "series/data-00000.f64": {
+          "sha256": "a4ec2e1650de3e1f9e83786abff75bec2b128209b485a922826b0c2ad42bc469",
+          "bytes": 548352
+        },
+        "series/data-00001.f64": {
+          "sha256": "448f6f7c6c2c51df364e2f961e314ab7fb6764b2c194625b0f72e79bbd5bbc6a",
+          "bytes": 548352
+        },
+        "series/data-00002.f64": {
+          "sha256": "55623388165fe92d7f4785179c2c6cde525332afced48a6f92a39feec6285f1b",
+          "bytes": 548352
+        },
+        "series/data-00003.f64": {
+          "sha256": "c4d70d408ca54161b55ab5a06c2674ed20b6da87edcaca48a065e9a3a4bbbac9",
+          "bytes": 548352
+        },
+        "series/data-00004.f64": {
+          "sha256": "348a985907ae486b2ea5424adcc00ad186ffb1bc638bc5c61ad9b27e2b9124d4",
+          "bytes": 548352
+        },
+        "series/data-00005.f64": {
+          "sha256": "dd0ee5ee1c13f2904d6529e25acfb9c765ee1ebc244b3162cc64bf9b052557cd",
+          "bytes": 548352
+        },
+        "series/data-00006.f64": {
+          "sha256": "6643553f1692546c4e9019e72f4295e16185c07a052b96242396135bcb8f181d",
+          "bytes": 548352
+        },
+        "series/data-00007.f64": {
+          "sha256": "e66f5892b018f414f9b2cf84c8aefd726a8b2a8cc629d0f8dda62006394deae3",
+          "bytes": 548352
+        },
+        "series/data-00008.f64": {
+          "sha256": "837fa05672fe501379a0b0c36168c7ee1d60ae821bbcf216c5e0192faa9947b6",
+          "bytes": 548352
+        },
+        "series/data-00009.f64": {
+          "sha256": "143665b8d13aa65ee2f1a3c0cbc17cbaf51ac95660bca808566fd2b177be3bf4",
+          "bytes": 548352
+        },
+        "series/data-00010.f64": {
+          "sha256": "03bf2e82da5cfc62072ddb2073e2fdeca700aa89fb59e9d8464e358dadf18959",
+          "bytes": 548352
+        },
+        "series/data-00011.f64": {
+          "sha256": "b88dc29da208a30f624dba8692f47de635b0445bea5500234f2e9ebd60df26f9",
+          "bytes": 548352
+        },
+        "series/data-00012.f64": {
+          "sha256": "ef139e44c00794d62f18edae2751ce7024c9555aa8115600b2bee7874197c975",
+          "bytes": 548352
+        },
+        "series/data-00013.f64": {
+          "sha256": "bf93246760f8046dd75f2d1521994c3200f0b4e643aa9ca13889c6129686c8b7",
+          "bytes": 548352
+        },
+        "series/data-00014.f64": {
+          "sha256": "fc5a226e937e5f7d369656d1d1eb44f434e7b5297a32592b6a8b4e3f755d1ff0",
+          "bytes": 548352
+        },
+        "series/data-00015.f64": {
+          "sha256": "fedabe89ed587420557190817d4db35278cfefd90a46706f01cc2bafe2148e55",
+          "bytes": 548352
+        },
+        "series/data-00016.f64": {
+          "sha256": "dfabe40e61033bba05ac70b9672a6a37efb8fb4385c9ebfc51439b4fb266eb37",
+          "bytes": 548352
+        },
+        "series/data-00017.f64": {
+          "sha256": "ee9a874a63c483cf944d167fbee9e9f0fc30dd3aa2213ca883021e2dfba2ef30",
+          "bytes": 548352
+        },
+        "series/data-00018.f64": {
+          "sha256": "5bb070406935e2951698a43a4c8cec04702c31fff336c086af8267e9b993050a",
+          "bytes": 548352
+        },
+        "series/data-00019.f64": {
+          "sha256": "e7c3c399f7f8ea1ac5b2177c93366a68f07e43492f30123226b5b8eca55138c7",
+          "bytes": 548352
+        },
+        "series/data-00020.f64": {
+          "sha256": "a1a953af4d5d4a91005b076655a422099e16df3cd757b912a79b03534c98af51",
+          "bytes": 548352
+        },
+        "series/data-00021.f64": {
+          "sha256": "96bbae1784e6701a37b7e32791961af80c5d08c35401042647fc8a642d3f0cbd",
+          "bytes": 548352
+        },
+        "series/data-00022.f64": {
+          "sha256": "7f1b44d413338eb4da13b3cf3035708769aae6b424aa9a38fd4eed9b42ee71b2",
+          "bytes": 548352
+        },
+        "series/data-00023.f64": {
+          "sha256": "911a7f5c626604d7d479e01d54702f1ee24218f93e5cb55f6bd7d6eb8e359313",
+          "bytes": 548352
+        },
+        "series/data-00024.f64": {
+          "sha256": "4b86ccc48ca8e5f51eca0df6894776dfa28465bbb441931b0bc1600bd225a0eb",
+          "bytes": 548352
+        },
+        "series/data-00025.f64": {
+          "sha256": "b35ffe473c51661f167d10b488ac24befa1fd65d584c37e2f08560d4bfa50467",
+          "bytes": 548352
+        },
+        "series/data-00026.f64": {
+          "sha256": "e963a092932325bdda845de0535a8bbf1cfde92eab299a66d3bb4bcf68650de9",
+          "bytes": 548352
+        },
+        "series/data-00027.f64": {
+          "sha256": "9ffa6be5713e6a29f581d8a114b6cf3e8a4d14537d7bf9df82a27f1cefdccdf1",
+          "bytes": 548352
+        },
+        "series/data-00028.f64": {
+          "sha256": "3fa4d4bc23f24abe2b95226148adb5d65d6079a4bc022eb27fcbd31c24e1d793",
+          "bytes": 548352
+        },
+        "series/data-00029.f64": {
+          "sha256": "8d366deec865a5350ac82e9906a58ec516605d47afcc15f2a37e84d621b38176",
+          "bytes": 548352
+        },
+        "series/data-00030.f64": {
+          "sha256": "8d8c2430a0a1c826c7b61139ab1549d94c7122f0cbb94d1706d7cc06bb64faa0",
+          "bytes": 548352
+        },
+        "series/data-00031.f64": {
+          "sha256": "ef573beb644e46c13c9c32d6e83d815f6cd7bedc7c7e6fe0e456f3814b94f4bd",
+          "bytes": 548352
+        },
+        "series/data-00032.f64": {
+          "sha256": "36e22659969039c7ae6d559afdc3c1e8bdc905f67c0442c5f05f4e29cd83d63b",
+          "bytes": 548352
+        },
+        "series/data-00033.f64": {
+          "sha256": "c89dc6168fcba439184a8cb152bf363f8f03d8b5eb1f794d68b670c960df7e2e",
+          "bytes": 548352
+        },
+        "series/data-00034.f64": {
+          "sha256": "2b5ebcb7b452ba8a94bb2f63fa0ee028ebd4f447d270ee5e71e03f2269d05eea",
+          "bytes": 548352
+        },
+        "series/data-00035.f64": {
+          "sha256": "918acca8d33bb2a1b92fa900ca81d52c7776ef0c69003c2e45bd26304b2f414b",
+          "bytes": 548352
+        },
+        "series/data-00036.f64": {
+          "sha256": "043f7bdba315601f34dbc08661f5126ad46f4cb1e3d13e932fd84bafcf46d26b",
+          "bytes": 548352
+        },
+        "series/data-00037.f64": {
+          "sha256": "5c120832c77eb4111ceba93190934f0f0635b4d45826f59ebe928029670f06c8",
+          "bytes": 548352
+        },
+        "series/data-00038.f64": {
+          "sha256": "cf72d1fe963f5c1f7dbe6d821b615b655aa85ecc80135b1694aab1dd77a7fe43",
+          "bytes": 548352
+        },
+        "series/data-00039.f64": {
+          "sha256": "26987b334391acdb36b9a9b265689ebcd5a02b1d8a9dc5d0a634c61a2e792336",
+          "bytes": 548352
+        },
+        "series/data-00040.f64": {
+          "sha256": "9e9fcf8906df260e88787cd7ec189d00101b1aab2f2e4a412a9c376789cfd272",
+          "bytes": 548352
+        },
+        "series/data-00041.f64": {
+          "sha256": "23f3f1def97bfb7ae8dd474d212b6801edf8d995cae4ab8b2d56a9cb0334af81",
+          "bytes": 548352
+        },
+        "series/data-00042.f64": {
+          "sha256": "5cc9b80b1ae36ad7f12ce44c18e6a7a9295c56ad55759cc635dc24fc9f1bfcaa",
+          "bytes": 548352
+        },
+        "series/data-00043.f64": {
+          "sha256": "f8f1878a4a1c97c755ea81678029126a9f9086455c4878af929513aff8ad66bf",
+          "bytes": 548352
+        },
+        "series/data-00044.f64": {
+          "sha256": "507e891661a6d0009dcb0e1369b1fca3a194ba47f6a3043061418674de0144ff",
+          "bytes": 548352
+        },
+        "series/data-00045.f64": {
+          "sha256": "4822757d03cbd6982c272addb6de8191d1af37b59351db78715c6aed3cf6e105",
+          "bytes": 548352
+        },
+        "series/data-00046.f64": {
+          "sha256": "d90e9b9f6ef3fa771533d490964b51c3759d8fabaefacdee1d3dae6b21e697e8",
+          "bytes": 548352
+        },
+        "series/data-00047.f64": {
+          "sha256": "372216234c947613463893b38f55f6a1cda11332c6bd284b618528b15f53ed4d",
+          "bytes": 548352
+        },
+        "series/data-00048.f64": {
+          "sha256": "d4a16cde0471eda4b67c1e14c1bd4b561f7bb231c8274aad975a1ba330ae3292",
+          "bytes": 548352
+        },
+        "series/data-00049.f64": {
+          "sha256": "72a2d095fd165df5db6ab2b63d943876a2c1a7ef13f3e70871cbc666cf7a7210",
+          "bytes": 548352
+        },
+        "series/data-00050.f64": {
+          "sha256": "742523b215ddfe5076c4b0b493e3195e34b5fb28efa329515a06647240034af4",
+          "bytes": 548352
+        },
+        "series/data-00051.f64": {
+          "sha256": "3b2b94bbfc831b2beb40c8f199e26eee30c6f53e6959ba83c8798676fc0c0823",
+          "bytes": 548352
+        },
+        "series/data-00052.f64": {
+          "sha256": "c05387a6e1b7bd931541bc9b1174d79110e4ad8afc7ba0ca580a485df8e0d451",
+          "bytes": 78336
+        },
+        "series/series.json": {
+          "sha256": "017874fdf013b65bdc5bdf3a3055cf90075bd74f6289bc8d1f2fd497d886f979",
+          "bytes": 15365
+        },
+        "weather/asset.json": {
+          "sha256": "132e5cab005b12bfb441c8c161704d89f67ffca036c7e8a42f3f92866e9c08af",
+          "bytes": 677
+        },
+        "weather/checksums.json": {
+          "sha256": "a7cbf88dee0a903628e24123c2a2cd13fe936bc6b6b07a9926c7b9e8323f1354",
+          "bytes": 402
+        },
+        "weather/normalized.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        },
+        "weather/original.epw": {
+          "sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "bytes": 1280195
+        },
+        "weather/weather.json": {
+          "sha256": "2bc05c15bae815a81b96c16f569db36cbfde60c862f878b0c163a7e5556ccb37",
+          "bytes": 5300731
+        }
+      },
+      "diagnostics": {
+        "schema": "greenlens.energy-diagnostics.v1",
+        "completed": true,
+        "warning_count": 1,
+        "severe_count": 0,
+        "messages": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "convergence_disclosure": "All native warnings are retained for review; severe/fatal or explicit convergence failures block completion. Native completion is not physical or timestep qualification.",
+        "rows": 105120,
+        "native_columns": 27,
+        "native_csv_sha256": "a4eff6850a21149283c3801064e5f061ae4ff3e8b1af590880b73f616d8c732d",
+        "native_csv_bytes": 28300316,
+        "error_file_sha256": "c1fea195f39417145e150a4bcec92c4357b194f5bd4a0fc4fba849078079cdcb",
+        "end_file_sha256": "bac0f2fcc0af2c4a9f7b647cae4cabb1e326016f244d38f97296f212b02f621c",
+        "input_sha256": {
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "model.epJSON": "f5584b31e9833ff7c2963c1da412b8d67a52afdbfec2b3dff38e8336934e094e",
+          "recipe.json": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "minimum_values": [
+          6000.0,
+          0.0,
+          6000.0,
+          0.0,
+          0.0,
+          0.0,
+          22.13035475984851,
+          0.0,
+          24.0,
+          24.0,
+          0.0,
+          0.0,
+          0.0,
+          22.103163146314248,
+          0.0,
+          24.0,
+          24.0,
+          0.0,
+          0.0,
+          0.0,
+          21.892608139443553,
+          0.0,
+          24.0,
+          24.0,
+          0.0,
+          0.0,
+          0.0,
+          21.869702586336174,
+          0.0,
+          24.0,
+          24.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_values": [
+          1230390.0737616646,
+          345600.0,
+          6000.0,
+          460800.0,
+          341190.0737616646,
+          76800.0,
+          24.444284640276468,
+          1.0,
+          24.0,
+          24.0,
+          18000.0,
+          1200.0,
+          292017.3598964555,
+          24.34868316944607,
+          1.0,
+          24.0,
+          24.0,
+          18000.0,
+          1200.0,
+          341183.387539007,
+          24.23085161148978,
+          1.0,
+          24.0,
+          24.0,
+          18000.0,
+          1200.0,
+          262158.65567408974,
+          24.148190327762386,
+          1.0,
+          24.0,
+          24.0,
+          18000.0,
+          1200.0,
+          244586.80457888398
+        ],
+        "maximum_fan_reconciliation_j": 0.0,
+        "qualification_asserted": false
+      },
+      "native_csv_sha256": "a4eff6850a21149283c3801064e5f061ae4ff3e8b1af590880b73f616d8c732d",
+      "physical_input_hash": "755ed2e29c78fba852566b3cf8f93cee8e22dd7e5e7100d5399cf6abea160520",
+      "execution_input_hash": "5f1f5db8c6c58a0b0f8532956349e0959d29bca4ae11a451e571546500aa5915",
+      "physical_result_hash": "874f78087779b8e34c20dd7800ec7dca00d41e949f06e9efa4c2ebb6fe815e33",
+      "processing_identity": "6a5a910f6a2f2109a24660c60c2ad0d62e676505bf76fe762169cc40e3ea4618",
+      "model_input_sha256": "0f6c0f3dd69983ca06795ae38314ea2b3c3e85dcb4e06f873d4a28204e8cfc5b",
+      "coincident_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 4.100302173129985,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.1363021731299852,
+          "supply_fans": 0.24,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.152,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "building_comfort_union": {
+        "zone_id": null,
+        "occupied_hours": 6136.0,
+        "cooling_unmet_hours": 0.0,
+        "unmet_percent": 0.0
+      },
+      "compiled_application": {
+        "application_version": "0.4.0",
+        "source_commit": "b3d2c9a835c80a6357eb20f4b913fd524d557441",
+        "source_worktree_dirty": true
+      },
+      "arithmetic_check_count": 112
+    }
+  ],
+  "timestep_comparisons": [
+    {
+      "alternative": "A",
+      "quantity": "annual_kwh",
+      "ten_minute": 16307.089802617933,
+      "five_minute_reference": 16305.190534702979,
+      "relative_difference": 0.00011648241159230206,
+      "limit": 0.01,
+      "passed": true
+    },
+    {
+      "alternative": "A",
+      "quantity": "aligned_peak_kw",
+      "ten_minute": 5.516090229474726,
+      "five_minute_reference": 5.514467140552976,
+      "relative_difference": 0.00029433286669048686,
+      "limit": 0.03,
+      "passed": true
+    },
+    {
+      "alternative": "B",
+      "quantity": "annual_kwh",
+      "ten_minute": 12878.806638328644,
+      "five_minute_reference": 12889.75554562606,
+      "relative_difference": 0.0008494270708749777,
+      "limit": 0.01,
+      "passed": true
+    },
+    {
+      "alternative": "B",
+      "quantity": "aligned_peak_kw",
+      "ten_minute": 4.098803527810259,
+      "five_minute_reference": 4.100302173129985,
+      "relative_difference": 0.0003654963113565661,
+      "limit": 0.03,
+      "passed": true
+    }
+  ],
+  "timestep_passed": true,
+  "comfort_passed": true,
+  "all_checks_pass": true,
+  "revision2_contract": {
+    "example_revision": 2,
+    "protocol_sha256": "64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40",
+    "historical_inputs_sha256": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb",
+    "only_eight_declared_cutout_changes_verified": true,
+    "original_failure_unchanged": true
+  },
+  "direct_csv_retention_and_arithmetic_passed": true,
+  "independent_native_rerun_or_replay_asserted": false,
+  "full_energy_method_qualified": false,
+  "example_revision": 2,
+  "source_audit": {
+    "sha256": "b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+    "bytes": 173312,
+    "raw_scope": "Every native CSV-to-retained-f64 channel comparison, all declared intervals, accounting and comfort. Full raw files remain externally retained."
+  },
+  "execution_declaration": {
+    "schema": "greenlens.energy-production-qualification.v1",
+    "declared_utc": "2026-10-13T06:04:45.0424767Z",
+    "cli_sha256": "dd9075f9891389d9c90b1df7f1a9f4d402805ad8f960c83105f1fc2f834c6c00",
+    "source_sha256": {
+      "scripts/energy-qualification.ps1": "985b62c196d8b8bba4ef5855f68ed5dcb2f59e32203b69ab5cefebb40d6cd4e2",
+      "scripts/energy-zero-cutout-protocol.json": "64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40",
+      "examples/energy/revision1-inputs.json": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb",
+      "scripts/energy-interzone-protocol.json": "306b66c48fb5350629e35827c9b2957d8ef54a10f96a24d7e2c070b796f97bd5",
+      "crates/greenlens-energyplus/src/lib.rs": "13e68c837645e7aefa3607954e16d62945eb10a943f8a4f5c1fac77143aad3f2",
+      "crates/greenlens-energyplus/src/model.rs": "bec3a873ee4103fc595b10175ea13e56f464a4ca605627ac16042ce2f49b1ef1",
+      "crates/greenlens-energyplus/src/output.rs": "ba289724e5bbb337a839466153f50830591e6c83305a774ca7bab145980de0fa"
+    },
+    "example_revision": 2,
+    "protocol_sha256": "64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40",
+    "stages": [
+      "A10",
+      "B10",
+      "A5",
+      "B5"
+    ],
+    "native_processes": 4,
+    "workers": 1,
+    "native_limits": {
+      "seconds": 1800,
+      "memory_bytes": 2147483648,
+      "file_bytes": 134217728,
+      "scratch_bytes": 1073741824
+    },
+    "criteria": {
+      "occupied_unmet_percent_max": 1,
+      "aligned_ten_minute_peak_relative_max": 0.03,
+      "annual_facility_relative_max": 0.01,
+      "no_threshold_tuning": true,
+      "comfort_tolerance_c": 0.2
+    },
+    "scope": "Revision2 changes only the eight declared A/B cooling cutouts0.2 to0.0. All other original four-zone inputs and criteria are unchanged; synthetic non-climatic weather. All four numerical outcomes retained; failed scientific checks do not trigger retries. Process/input failure stops schedule."
+  },
+  "execution_declaration_sha256": "07074680db30384ff84b16fd1eb7d240b02ca91770e40761c35a035b25cd8ba8",
+  "independent_review": {
+    "path": "docs/evidence/v0.4-energy/revision2-independent.json",
+    "sha256": "d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+    "bytes": 16835,
+    "scope": "Independent raw CSV annual/monthly/end-use, aligned peak/coincidence, schedule/comfort, source/input/process, retained chunk hash/shape audit; no new engine execution."
+  },
+  "executed_source_snapshots": {
+    "production": {
+      "record": {
+        "schema": "greenlens.energy-production-source-snapshot.v1",
+        "declaration_sha256": "07074680db30384ff84b16fd1eb7d240b02ca91770e40761c35a035b25cd8ba8",
+        "all_declared_source_sha256": {
+          "scripts/energy-qualification.ps1": "985b62c196d8b8bba4ef5855f68ed5dcb2f59e32203b69ab5cefebb40d6cd4e2",
+          "scripts/energy-zero-cutout-protocol.json": "64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40",
+          "examples/energy/revision1-inputs.json": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb",
+          "scripts/energy-interzone-protocol.json": "306b66c48fb5350629e35827c9b2957d8ef54a10f96a24d7e2c070b796f97bd5",
+          "crates/greenlens-energyplus/src/lib.rs": "13e68c837645e7aefa3607954e16d62945eb10a943f8a4f5c1fac77143aad3f2",
+          "crates/greenlens-energyplus/src/model.rs": "bec3a873ee4103fc595b10175ea13e56f464a4ca605627ac16042ce2f49b1ef1",
+          "crates/greenlens-energyplus/src/output.rs": "ba289724e5bbb337a839466153f50830591e6c83305a774ca7bab145980de0fa"
+        },
+        "additional_factory_sha256": "29e39f241aa578e6db94e891a0c8061c26d0c125d0335cef96eab69e9612e74d"
+      },
+      "sha256": "f3ddfdea42a8c7a399c50b1f54f69be098a3e89f8babd3472b80c43da0814c67",
+      "bytes": 1106
+    },
+    "research": {
+      "record": {
+        "schema": "greenlens.energy-research-source-snapshot.v1",
+        "source_sha256": [
+          {
+            "sha256": "88c5959fb4cbe2e62e929049c4d184e850f99a7ce6c23364ac46f4050ac29f78",
+            "path": "dependencies/energyplus.json"
+          },
+          {
+            "sha256": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb",
+            "path": "examples/energy/revision1-inputs.json"
+          },
+          {
+            "sha256": "aa203ce9ccab4018db772c97d0501096501edf46ec04203636c1bd2724188359",
+            "path": "scripts/energy-gate0-audit.py"
+          },
+          {
+            "sha256": "985b62c196d8b8bba4ef5855f68ed5dcb2f59e32203b69ab5cefebb40d6cd4e2",
+            "path": "scripts/energy-qualification.ps1"
+          },
+          {
+            "sha256": "64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40",
+            "path": "scripts/energy-zero-cutout-protocol.json"
+          },
+          {
+            "sha256": "df66782b92edfd1e9a84f9d7c057c352b9038277ecae492b2c26a0bd6b5034aa",
+            "path": "scripts/test-energy-gate0-audit.py"
+          },
+          {
+            "sha256": "5eed2dcef17e0362310dd321f95f6ff00c8f69efbb838a024dab6aa618777259",
+            "path": "scripts/test-energy-input-preflight.ps1"
+          }
+        ]
+      },
+      "sha256": "ecaccc52500df4e418147e8008e46bc4d87b0195529af51ca4b9a0c5fdba9336",
+      "bytes": 1158
+    }
+  },
+  "execution_support_seals": {
+    "commands.json": {
+      "sha256": "02d43a84e5150cd52188144b2c2ce3617664741512891aeb92a1c3d957ffbbe9",
+      "bytes": 6507
+    },
+    "execution.json": {
+      "sha256": "f414162b26bb9442347212979352764a11e7037b929ef626e5fe9363712eb870",
+      "bytes": 948
+    },
+    "run-index.json": {
+      "sha256": "812798f42c168b5e34ccbe7bcc3ffcb30e192140eb3d539abcf1a6b5fc01566e",
+      "bytes": 623
+    },
+    "input-preflight-A10.json": {
+      "sha256": "2119e9b0a6cb885affa936d36297e3baf20656d6afe10efaa135f3da9a15ed8e",
+      "bytes": 397
+    },
+    "input-preflight-B10.json": {
+      "sha256": "b37210c28338e1c035eb061a46fb7fff04947a035358d8461f620a5adecd185c",
+      "bytes": 397
+    },
+    "input-preflight-A5.json": {
+      "sha256": "1658aba83924426d2b71ca39dd33ea248b011463431c8e94b78bd0b12579ff2d",
+      "bytes": 396
+    },
+    "input-preflight-B5.json": {
+      "sha256": "68063b9bba3b454683bf5c31b82a08f437ff9f252f2e9615ad9f0f1187e3bd53",
+      "bytes": 396
+    }
+  },
+  "resource_summary": {
+    "cases": 4,
+    "complete_native_intervals": 315360,
+    "native_numeric_values": 8514720,
+    "comfort_zones": 16,
+    "failed_timestep_comparisons": 0,
+    "occupied_unmet_hours": 0,
+    "native_elapsed_ms": 54992,
+    "sampled_peak_runner_plus_job_working_set_bytes": 600645632,
+    "peak_observed_scratch_bytes": 37694895
+  },
+  "direct_native_parity": {
+    "path": "docs/evidence/v0.4-energy/revision2-direct-native-parity.json",
+    "sha256": "18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+    "bytes": 12038,
+    "scope": "Identical generated A10/B10 inputs and full 52560x27 native CSV bytes, two fresh processes."
+  },
+  "antecedent_evidence": {
+    "production-timestep.json": {
+      "sha256": "ae328ba358bade5d3a9b734ca9eeba2f9cffb68df527c6bdd5c8e6faab21fd08",
+      "bytes": 180187
+    },
+    "direct-native-parity.json": {
+      "sha256": "2ef2557ee06de9f948c175a9e1c0a8a01adeca7e87c298c5dc1840855ac2b7ab",
+      "bytes": 11989
+    },
+    "fixed-control-diagnostic.json": {
+      "sha256": "1329966fa5bfa82e311609f2240224af998f2d518fb043ce6f802b66df78f734",
+      "bytes": 38109
+    }
+  },
+  "conclusion": "All four fixed revision2 runs pass unchanged annual-energy, aligned-peak, comfort and reconciliation criteria. Only the eight explicit A/B cutout leaves changed from0.2 K to0 K; old failed physical scopes remain failed. Independent raw audit and identical-input direct-native parity pass within this exact synthetic scope.",
+  "limitations": [
+    "Original synthetic non-climatic weather, illustrative sizing and curves; no general real-weather or arbitrary-building accuracy claim.",
+    "The immutable executed application reports a dirty development source tree, not a clean-source installed release. Exact CLI/source and native input/output hashes are retained.",
+    "Shared Windows host; measured wall time and sampled memory are not isolated benchmarks or universal upper bounds.",
+    "The full_energy_method_qualified field remains false because this numerical evidence alone does not establish all method, installed delivery or release criteria. An external registry may separately record limited qualification for these exact physical/method scopes.",
+    "No threshold relaxation, additional control variant, automatic retry, certification or daylight qualification follows."
+  ]
+}

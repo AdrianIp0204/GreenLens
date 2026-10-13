@@ -1,0 +1,1299 @@
+{
+  "schema": "greenlens.energy-fixed-control-public.v1",
+  "auditor_sha256": "e044b4a2de9c86c91805dc7ef1e63960f8df7f53edd4ba83523ada28c0065ca6",
+  "proposal_sha256": "062737b8ff28874bd453095a19006edd0be2e427d37dfcd7e3efd8fb53bd2ec4",
+  "declaration_sha256": "18ba627b436f6f69cc057ed1e02efea1e423913ff2f8521ea7f2299f7eaa62e5",
+  "comparisons": [
+    {
+      "control": "original",
+      "energy_signed_kwh": -0.019829949665506774,
+      "energy_relative_difference": 4.330142292740162e-05,
+      "facility": {
+        "ten_peak_kw": 4.3040571982941005,
+        "five_peak_kw": 4.161464266190448,
+        "ten_peak_index": 246,
+        "five_peak_index": 248,
+        "relative_peak_difference": 0.03426508627315144,
+        "signed_mean_kw": -6.885399189386233e-05,
+        "max_abs_kw": 0.25479123245365054,
+        "rms_kw": 0.08518464003176826
+      },
+      "cooling": {
+        "ten_peak_kw": 1.3400571982941012,
+        "five_peak_kw": 1.1974642661904484,
+        "ten_peak_index": 246,
+        "five_peak_index": 248,
+        "relative_peak_difference": 0.11907907077452141,
+        "signed_mean_kw": -6.885399189387721e-05,
+        "max_abs_kw": 0.25479123245365054,
+        "rms_kw": 0.08518464003176826
+      }
+    },
+    {
+      "control": "zero",
+      "energy_signed_kwh": -0.3291277479127075,
+      "energy_relative_difference": 0.0007225641109892176,
+      "facility": {
+        "ten_peak_kw": 4.101835306531409,
+        "five_peak_kw": 4.102639831525904,
+        "ten_peak_index": 248,
+        "five_peak_index": 248,
+        "relative_peak_difference": 0.00019609934762326682,
+        "signed_mean_kw": -0.0011428046802526843,
+        "max_abs_kw": 0.03423876037646423,
+        "rms_kw": 0.0033315510072704263
+      },
+      "cooling": {
+        "ten_peak_kw": 1.1378353065314073,
+        "five_peak_kw": 1.1386398315259043,
+        "ten_peak_index": 248,
+        "five_peak_index": 248,
+        "relative_peak_difference": 0.0007065667054865455,
+        "signed_mean_kw": -0.0011428046802526718,
+        "max_abs_kw": 0.034238760376464505,
+        "rms_kw": 0.0033315510072704233
+      }
+    }
+  ],
+  "falsifiers": [
+    {
+      "description": "If zero-cutout native operative values differ from the unchanged scheduled setpoint beyond1e-7C, the asserted intervention semantics fail; stop interpretation",
+      "falsified": false
+    },
+    {
+      "description": "If original short-period pair has no peak discrepancy above3%, this short fixture did not reproduce the annual failure; cannot claim that removing cutout fixed the annual issue",
+      "falsified": false
+    },
+    {
+      "description": "If zero-cutout peak discrepancy remains above3%, or is not lower than the original short-period discrepancy, cutout-only explanation is insufficient; no tuning or escalation",
+      "falsified": false
+    }
+  ],
+  "all_declared_falsifiers_absent": true,
+  "all_checks_pass": true,
+  "qualification_asserted": false,
+  "annual_acceptance_asserted": false,
+  "scope": "Exactly four short fixed cases; distinct zero-cutout design and independent warmup. Original annual peak failure remains failed.",
+  "full_external_audit": {
+    "sha256": "503cef7ed7dc915c4e81ef9552721b4e1f89b77f094584488dd373db03cde6c8",
+    "bytes": 4829133,
+    "all_intervals_retained": true,
+    "cases": 4,
+    "native_rows": 10368,
+    "native_numeric_columns": 27,
+    "aligned_bins_per_case": 1728,
+    "large_raw_files_bundled": false
+  },
+  "cases": [
+    {
+      "case": "original6",
+      "rows": 1728,
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T05:48:45.3206654Z",
+        "finished_utc": "2026-10-13T05:48:46.7935856Z",
+        "wall_seconds": 1.4545629,
+        "sampled_peak_working_set_bytes": 220049408,
+        "sampled_runner_plus_engine_peak_bytes": 405102592,
+        "sampled_scratch_peak_bytes": 2194576,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 470,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "file_bytes": 134217728,
+          "timeout_seconds": 1800.0
+        },
+        "completed": true
+      },
+      "energy_kwh": 457.93162579702687,
+      "maximum_reconciliation_kw": 7.761021455128988e-16,
+      "maximum_operative_offset_c": 0.1999999999999993,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "aligned_columns": [
+        {
+          "id": "facility_j",
+          "unit": "kW"
+        },
+        {
+          "id": "interior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "exterior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "equipment_j",
+          "unit": "kW"
+        },
+        {
+          "id": "cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "fans_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_001_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_002_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_003_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_004_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_delivered_cooling_j",
+          "unit": "kW"
+        }
+      ],
+      "diagnostics_end": "EnergyPlus Completed Successfully-- 1 Warning; 0 Severe Errors; Elapsed Time=00hr 00min  0.60sec",
+      "csv_sha256": "34448a8dad6c4567e2392e325882488412ec50e69304022a495f23e9b21386be",
+      "all_bin_cutout_coincidence_counts": {
+        "0": 248,
+        "1": 119,
+        "2": 462,
+        "3": 612,
+        "4": 287
+      },
+      "native_files": {
+        "eplusmtr.csv": {
+          "sha256": "a6b928d3429482f2f7eba60d758394e213df53cb76181689ec113b60e6fa40d6",
+          "bytes": 136093
+        },
+        "eplusout.audit": {
+          "sha256": "6e90bfb2f99d40cb510c2f41b64a495b9f2340dcda871f279eabf431ec043262",
+          "bytes": 1569
+        },
+        "eplusout.bnd": {
+          "sha256": "ff64eee24063bbc13690c261684c401a2bc1edc27fb8ff8206f9b49db9dd5d99",
+          "bytes": 16165
+        },
+        "eplusout.csv": {
+          "sha256": "34448a8dad6c4567e2392e325882488412ec50e69304022a495f23e9b21386be",
+          "bytes": 477035
+        },
+        "eplusout.eio": {
+          "sha256": "97cb848afdb368832ea04c8ba82de02a58efdde7ca7333f553f77a9e03be2446",
+          "bytes": 24614
+        },
+        "eplusout.end": {
+          "sha256": "c4bd74fdb016fe4d1b66b8e83d7463ebad80f268c9127004a43b3eccb0009bf2",
+          "bytes": 98
+        },
+        "eplusout.err": {
+          "sha256": "063431b41cf4c815a3bd574450752c0e4e31aeabf0fb4c4cc86229b9ae2f7017",
+          "bytes": 1051
+        },
+        "eplusout.mdd": {
+          "sha256": "469ca84c1d07b956e406f172d7dc1a2d03b604ede372c7b29ca7c1a18e11504a",
+          "bytes": 12330
+        },
+        "eplusout.mtd": {
+          "sha256": "959102c7ceb9cb7852fec19f3da273a9517299d2388368b84c4965b64c068645",
+          "bytes": 36578
+        },
+        "eplusout.rdd": {
+          "sha256": "b98c88bdcd10a0d80a891d5f44d55a4ce2e5890132bd96df5387b71ab8b692f7",
+          "bytes": 50064
+        },
+        "eplusout.shd": {
+          "sha256": "ece3eee5dd8760c9b2862785c0b13aaadaa68444f937bd04ec7df511ced44365",
+          "bytes": 8558
+        },
+        "execution-declaration.json": {
+          "sha256": "5a8cedf45281d4d6772832a46db3ea463a995d8c2d5a43edaa132a2d75b5b7b6",
+          "bytes": 1102
+        },
+        "fixture-declaration.json": {
+          "sha256": "3e5195a626578d4f591d4c48221b4edc1de2012dea5592da184e41df862fb26c",
+          "bytes": 559
+        },
+        "model.epJSON": {
+          "sha256": "f74f010cd94a2e5118c29d842c29d14adf8119a5177faadbe61d28e3de2c454a",
+          "bytes": 148094
+        },
+        "processes.json": {
+          "sha256": "f0e93e413c40056f57129cebd17182bb65814c03aa167a134f8df5cda83c61d8",
+          "bytes": 1030
+        },
+        "stdout.txt": {
+          "sha256": "d4e7cfc685f148ef1b652da8d1462ecdce90f32c77e4b5aef64c99a38bb273a4",
+          "bytes": 470
+        },
+        "weather.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        }
+      }
+    },
+    {
+      "case": "original12",
+      "rows": 3456,
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T05:48:47.4328855Z",
+        "finished_utc": "2026-10-13T05:48:49.1885151Z",
+        "wall_seconds": 1.7417122,
+        "sampled_peak_working_set_bytes": 230162432,
+        "sampled_runner_plus_engine_peak_bytes": 432939008,
+        "sampled_scratch_peak_bytes": 2786027,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 454,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "file_bytes": 134217728,
+          "timeout_seconds": 1800.0
+        },
+        "completed": true
+      },
+      "energy_kwh": 457.9514557466924,
+      "maximum_reconciliation_kw": 7.761021455128988e-16,
+      "maximum_operative_offset_c": 0.1999999999999993,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "aligned_columns": [
+        {
+          "id": "facility_j",
+          "unit": "kW"
+        },
+        {
+          "id": "interior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "exterior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "equipment_j",
+          "unit": "kW"
+        },
+        {
+          "id": "cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "fans_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_001_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_002_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_003_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_004_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_delivered_cooling_j",
+          "unit": "kW"
+        }
+      ],
+      "diagnostics_end": "EnergyPlus Completed Successfully-- 1 Warning; 0 Severe Errors; Elapsed Time=00hr 00min  0.93sec",
+      "csv_sha256": "86dffb37e6dee03a4966df41742767d4ae209bfb5d572b7b669332ea1fca2cd5",
+      "all_bin_cutout_coincidence_counts": {
+        "0": 193,
+        "1": 56,
+        "2": 115,
+        "3": 620,
+        "4": 744
+      },
+      "native_files": {
+        "eplusmtr.csv": {
+          "sha256": "e8138b598feeecf517aa3e163d6331b5d2f26e42d34c80a60cce022198d4af55",
+          "bytes": 265194
+        },
+        "eplusout.audit": {
+          "sha256": "6e90bfb2f99d40cb510c2f41b64a495b9f2340dcda871f279eabf431ec043262",
+          "bytes": 1569
+        },
+        "eplusout.bnd": {
+          "sha256": "ff64eee24063bbc13690c261684c401a2bc1edc27fb8ff8206f9b49db9dd5d99",
+          "bytes": 16165
+        },
+        "eplusout.csv": {
+          "sha256": "86dffb37e6dee03a4966df41742767d4ae209bfb5d572b7b669332ea1fca2cd5",
+          "bytes": 939405
+        },
+        "eplusout.eio": {
+          "sha256": "b95eab95f5e47bd64647a4231e23b2419452747d01a9a13d0bece6a27a36dc68",
+          "bytes": 24608
+        },
+        "eplusout.end": {
+          "sha256": "c1e1e710c5a484764441558869d84a71d48c48f4f90601ee65e9627fc8e18134",
+          "bytes": 98
+        },
+        "eplusout.err": {
+          "sha256": "cd27c60535ca5f7cf302707a513347c340e02a14111e477cc55bb3a9d8280303",
+          "bytes": 1051
+        },
+        "eplusout.mdd": {
+          "sha256": "469ca84c1d07b956e406f172d7dc1a2d03b604ede372c7b29ca7c1a18e11504a",
+          "bytes": 12330
+        },
+        "eplusout.mtd": {
+          "sha256": "959102c7ceb9cb7852fec19f3da273a9517299d2388368b84c4965b64c068645",
+          "bytes": 36578
+        },
+        "eplusout.rdd": {
+          "sha256": "b98c88bdcd10a0d80a891d5f44d55a4ce2e5890132bd96df5387b71ab8b692f7",
+          "bytes": 50064
+        },
+        "eplusout.shd": {
+          "sha256": "ece3eee5dd8760c9b2862785c0b13aaadaa68444f937bd04ec7df511ced44365",
+          "bytes": 8558
+        },
+        "execution-declaration.json": {
+          "sha256": "f48de0ab8d6823c662c936c21b9fd731d4b4c95e57d015c4483e57006a45b07e",
+          "bytes": 1102
+        },
+        "fixture-declaration.json": {
+          "sha256": "a9511514e04643b8ba5cb901ec30f62ee54aa6ba4796e47cc90526a390c6fd8d",
+          "bytes": 560
+        },
+        "model.epJSON": {
+          "sha256": "0412aaa7aa71a21c28f301edcb83534eb19444bb30cf0b0ca44ce26da3bccf9a",
+          "bytes": 148095
+        },
+        "processes.json": {
+          "sha256": "e2dd7749fc058fd6ef4e2a88db316385b633b75f904cb25051984912032bcc55",
+          "bytes": 1030
+        },
+        "stdout.txt": {
+          "sha256": "bab5863edf58db8ce11b4c7b623667a41f3074c5bd7dbe32d8364ae5e33623d5",
+          "bytes": 454
+        },
+        "weather.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        }
+      }
+    },
+    {
+      "case": "zero6",
+      "rows": 1728,
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T05:48:49.7203460Z",
+        "finished_utc": "2026-10-13T05:48:50.8837267Z",
+        "wall_seconds": 1.1512988,
+        "sampled_peak_working_set_bytes": 219049984,
+        "sampled_runner_plus_engine_peak_bytes": 414748672,
+        "sampled_scratch_peak_bytes": 2194714,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 454,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "file_bytes": 134217728,
+          "timeout_seconds": 1800.0
+        },
+        "completed": true
+      },
+      "energy_kwh": 455.17058903447656,
+      "maximum_reconciliation_kw": 1.5522042910257975e-15,
+      "maximum_operative_offset_c": 0.0,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "aligned_columns": [
+        {
+          "id": "facility_j",
+          "unit": "kW"
+        },
+        {
+          "id": "interior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "exterior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "equipment_j",
+          "unit": "kW"
+        },
+        {
+          "id": "cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "fans_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_001_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_002_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_003_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_004_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_delivered_cooling_j",
+          "unit": "kW"
+        }
+      ],
+      "diagnostics_end": "EnergyPlus Completed Successfully-- 1 Warning; 0 Severe Errors; Elapsed Time=00hr 00min  0.52sec",
+      "csv_sha256": "4f01708c4e7645c80ffb439d6001abb5f2d6e4e71171028447949df2b9353783",
+      "all_bin_cutout_coincidence_counts": {
+        "0": 1728,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "native_files": {
+        "eplusmtr.csv": {
+          "sha256": "49c8cf860b28aa414936e012714c2d1e8e14c5a94a0db775d1e3bfbca2131f6f",
+          "bytes": 136047
+        },
+        "eplusout.audit": {
+          "sha256": "6e90bfb2f99d40cb510c2f41b64a495b9f2340dcda871f279eabf431ec043262",
+          "bytes": 1569
+        },
+        "eplusout.bnd": {
+          "sha256": "ff64eee24063bbc13690c261684c401a2bc1edc27fb8ff8206f9b49db9dd5d99",
+          "bytes": 16165
+        },
+        "eplusout.csv": {
+          "sha256": "4f01708c4e7645c80ffb439d6001abb5f2d6e4e71171028447949df2b9353783",
+          "bytes": 477232
+        },
+        "eplusout.eio": {
+          "sha256": "3be59a74b55ba2bd943ecec7f05566f708c97edfd1b35f197e2e4d0c5e547499",
+          "bytes": 24621
+        },
+        "eplusout.end": {
+          "sha256": "1247ec8a951a78e7e95c58c08b0ab956782b23ef02c93cbfe9492b52b51fd3a8",
+          "bytes": 98
+        },
+        "eplusout.err": {
+          "sha256": "98efe59638502b7550cb588a9480a5faa5e4740a04765d9505d4c57b1f116ac7",
+          "bytes": 1051
+        },
+        "eplusout.mdd": {
+          "sha256": "469ca84c1d07b956e406f172d7dc1a2d03b604ede372c7b29ca7c1a18e11504a",
+          "bytes": 12330
+        },
+        "eplusout.mtd": {
+          "sha256": "959102c7ceb9cb7852fec19f3da273a9517299d2388368b84c4965b64c068645",
+          "bytes": 36578
+        },
+        "eplusout.rdd": {
+          "sha256": "b98c88bdcd10a0d80a891d5f44d55a4ce2e5890132bd96df5387b71ab8b692f7",
+          "bytes": 50064
+        },
+        "eplusout.shd": {
+          "sha256": "ece3eee5dd8760c9b2862785c0b13aaadaa68444f937bd04ec7df511ced44365",
+          "bytes": 8558
+        },
+        "execution-declaration.json": {
+          "sha256": "b98059c49bda96061540e86e0b1095958759e68f1b84042dc8faa1d1a5aa4ed2",
+          "bytes": 1102
+        },
+        "fixture-declaration.json": {
+          "sha256": "e0b7e1a454799a90f42975df13e06e1383823be6520a2f1d52906a3aaf7ba37f",
+          "bytes": 555
+        },
+        "model.epJSON": {
+          "sha256": "d12166545e195907111480996dedde08a114301ad600eb0f5e5dcc54ee48ffe8",
+          "bytes": 148094
+        },
+        "processes.json": {
+          "sha256": "3792bf52af2d33b51575deb80321d1b33ad97f188da1a2bbdc1134bfd986e886",
+          "bytes": 1030
+        },
+        "stdout.txt": {
+          "sha256": "6550be7c65208b90455c898d5f77e1698688be60f39182be1ba3633bc7ed036f",
+          "bytes": 454
+        },
+        "weather.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        }
+      }
+    },
+    {
+      "case": "zero12",
+      "rows": 3456,
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T05:48:51.3448226Z",
+        "finished_utc": "2026-10-13T05:48:52.8290210Z",
+        "wall_seconds": 1.4700189,
+        "sampled_peak_working_set_bytes": 228741120,
+        "sampled_runner_plus_engine_peak_bytes": 426344448,
+        "sampled_scratch_peak_bytes": 2791852,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 454,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "file_bytes": 134217728,
+          "timeout_seconds": 1800.0
+        },
+        "completed": true
+      },
+      "energy_kwh": 455.49971678238927,
+      "maximum_reconciliation_kw": 1.5522042910257975e-15,
+      "maximum_operative_offset_c": 0.0,
+      "comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 176.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 160.0,
+          "unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "aligned_columns": [
+        {
+          "id": "facility_j",
+          "unit": "kW"
+        },
+        {
+          "id": "interior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "exterior_lighting_j",
+          "unit": "kW"
+        },
+        {
+          "id": "equipment_j",
+          "unit": "kW"
+        },
+        {
+          "id": "cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "fans_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_001_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_001_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_001_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_002_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_002_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_002_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_003_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_003_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_003_delivered_cooling_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_temperature_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_occupancy",
+          "unit": "fraction"
+        },
+        {
+          "id": "zone_004_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_operative_setpoint_c",
+          "unit": "C"
+        },
+        {
+          "id": "zone_004_supply_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_ventilation_fan_j",
+          "unit": "kW"
+        },
+        {
+          "id": "zone_004_delivered_cooling_j",
+          "unit": "kW"
+        }
+      ],
+      "diagnostics_end": "EnergyPlus Completed Successfully-- 1 Warning; 0 Severe Errors; Elapsed Time=00hr 00min  0.75sec",
+      "csv_sha256": "4e83ddd5acfdad574e286ae7567e3fee03f06c7dcdbf8e7c4635f28127c48612",
+      "all_bin_cutout_coincidence_counts": {
+        "0": 1728,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
+      "native_files": {
+        "eplusmtr.csv": {
+          "sha256": "4ab9862e6140d36e770698ae5622736b139d28ed69bd0c2f580464c0a91bc570",
+          "bytes": 265501
+        },
+        "eplusout.audit": {
+          "sha256": "6e90bfb2f99d40cb510c2f41b64a495b9f2340dcda871f279eabf431ec043262",
+          "bytes": 1569
+        },
+        "eplusout.bnd": {
+          "sha256": "ff64eee24063bbc13690c261684c401a2bc1edc27fb8ff8206f9b49db9dd5d99",
+          "bytes": 16165
+        },
+        "eplusout.csv": {
+          "sha256": "4e83ddd5acfdad574e286ae7567e3fee03f06c7dcdbf8e7c4635f28127c48612",
+          "bytes": 944908
+        },
+        "eplusout.eio": {
+          "sha256": "30c616fc80ddd6c24d13242465462dcd06a2e787834d2a64d2eff727cb6bfc5f",
+          "bytes": 24627
+        },
+        "eplusout.end": {
+          "sha256": "af3f0ca2d16a6fc79b059701131459c03291414a2a3f30cb96c082f58420926b",
+          "bytes": 98
+        },
+        "eplusout.err": {
+          "sha256": "d320b476df023781bbde59cfc6af640ed5d6c3fd5f5e98d7d897f102c748c938",
+          "bytes": 1051
+        },
+        "eplusout.mdd": {
+          "sha256": "469ca84c1d07b956e406f172d7dc1a2d03b604ede372c7b29ca7c1a18e11504a",
+          "bytes": 12330
+        },
+        "eplusout.mtd": {
+          "sha256": "959102c7ceb9cb7852fec19f3da273a9517299d2388368b84c4965b64c068645",
+          "bytes": 36578
+        },
+        "eplusout.rdd": {
+          "sha256": "b98c88bdcd10a0d80a891d5f44d55a4ce2e5890132bd96df5387b71ab8b692f7",
+          "bytes": 50064
+        },
+        "eplusout.shd": {
+          "sha256": "ece3eee5dd8760c9b2862785c0b13aaadaa68444f937bd04ec7df511ced44365",
+          "bytes": 8558
+        },
+        "execution-declaration.json": {
+          "sha256": "a7e4027ac3500a00d3ffd4cb0b1da812ac6e81c608a78e6d6318286d91e54be6",
+          "bytes": 1102
+        },
+        "fixture-declaration.json": {
+          "sha256": "113750ae55b0303ef5bde9493f08456fb4723bc815ad4b3d472dda5ffa90414d",
+          "bytes": 556
+        },
+        "model.epJSON": {
+          "sha256": "b9f7768e90025198ff167c6e401c809019ba7acd0268b40ece4fda05c649e65d",
+          "bytes": 148095
+        },
+        "processes.json": {
+          "sha256": "b520e181b7a4161d15e22b04fac795cf8567b8aa0e4c0d550a19203c112b2464",
+          "bytes": 1030
+        },
+        "stdout.txt": {
+          "sha256": "145ea494371437d36ac466b69ad09896f941f3002580ec85247e98a7ea49cd8d",
+          "bytes": 454
+        },
+        "weather.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        }
+      }
+    }
+  ],
+  "execution_declaration": {
+    "schema": "greenlens.energy-fixed-control-execution.v1",
+    "declared_utc": "2026-10-13T05:48:42.9056003Z",
+    "deadline_utc": "2026-10-13T07:48:42.9056003Z",
+    "proposal_sha256": "062737b8ff28874bd453095a19006edd0be2e427d37dfcd7e3efd8fb53bd2ec4",
+    "source_sha256": {
+      "energy-qualification.ps1": "7a48bf5762e7406c3d7b4693ff87a632b505abc20619e4d0f1298ec01d49cb61",
+      "energy-control-protocol.json": "062737b8ff28874bd453095a19006edd0be2e427d37dfcd7e3efd8fb53bd2ec4",
+      "energy-gate0-run.ps1": "7c2503486681cfde55aba7c6ceafed043a1bd15a88710a935e9c8d2cae31ecb9",
+      "energy-gate0-fixture.py": "78fb93bb22eed34e81b352907d8baf115b80b49199990a0facdf57576f26bd61",
+      "energy-gate0-audit.py": "e044b4a2de9c86c91805dc7ef1e63960f8df7f53edd4ba83523ada28c0065ca6",
+      "annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+      "annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+      "energyplus.json": "88c5959fb4cbe2e62e929049c4d184e850f99a7ce6c23364ac46f4050ac29f78"
+    },
+    "workers": 1,
+    "native_processes": 4,
+    "qualification_asserted": false,
+    "child_environment": {
+      "removed": [
+        "PYTHONHOME",
+        "PYTHONPATH",
+        "ENERGYPLUS_WEATHER",
+        "ENERGYPLUS_OUTPUT"
+      ],
+      "OMP_NUM_THREADS": "1"
+    }
+  },
+  "execution": {
+    "schema": "greenlens.energy-fixed-control-completion.v1",
+    "completed": true,
+    "finished_utc": "2026-10-13T05:48:53.0975643Z",
+    "wall_seconds": 10.1880062,
+    "qualification_asserted": false
+  },
+  "resources": {
+    "native_wall_seconds_sum": 5.8175928,
+    "peak_sampled_runner_plus_engine_bytes": 432939008,
+    "peak_case_scratch_bytes": 2791852,
+    "complete_experiment_files_at_audit_bytes": 9980386,
+    "host_timing": "Shared Windows host; not an isolated benchmark."
+  },
+  "independent_review": {
+    "audit_sha256": "ed2b078a02a2c1f1df36e1508c8083c5f7dd118e2ad8f99021e5707be573d090",
+    "audit_bytes": 3982,
+    "raw_numeric_values": 279936,
+    "aligned_numeric_values": 235008,
+    "independent_comparisons": 276576,
+    "maximum_numeric_difference": 0,
+    "all_declared_falsifiers_absent": true,
+    "scope": "Independent closed-source/input/process/retained-array and arithmetic verification; short-period fixture only."
+  },
+  "limitations": [
+    "Zero cutout is a changed physical control design; original0.2K annual B failure remains unchanged.",
+    "Independent short-period warmup cannot establish full-year peak/energy convergence or unique cause.",
+    "One synthetic zero-location warning per process is retained; zero severe/fatal errors.",
+    "Exactly four declared native processes completed once; no additional annual or adaptive variants in this execution."
+  ]
+}

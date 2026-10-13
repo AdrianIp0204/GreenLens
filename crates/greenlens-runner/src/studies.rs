@@ -343,7 +343,12 @@ pub fn import_weather_asset(
             &Uuid::new_v4().to_string(),
         )?);
     }
-    project.schema_version = "0.3.0".into();
+    project.schema_version = if project.energy.is_some() {
+        "0.4.0"
+    } else {
+        "0.3.0"
+    }
+    .into();
     crate::validate_project(&project)?;
     if let Some(extension) = &project.climate {
         climate::verify_project_evidence(root, extension)?;
@@ -368,7 +373,12 @@ pub fn configure(project: &Project, alternative: &str, study: Study) -> Result<P
         .get_or_insert_with(climate::ClimateProject::default)
         .studies
         .insert(alternative.into(), study);
-    result.schema_version = "0.3.0".into();
+    result.schema_version = if result.energy.is_some() {
+        "0.4.0"
+    } else {
+        "0.3.0"
+    }
+    .into();
     crate::validate_project(&result)?;
     Ok(result)
 }
@@ -653,8 +663,12 @@ pub fn restore_study(
     crate::validate_project(project)?;
     ensure!(
         match &snapshot.study {
-            Some(_) => snapshot.project_schema_version == "0.3.0",
-            None => snapshot.project_schema_version == crate::SCHEMA_VERSION,
+            Some(_) =>
+                snapshot.project_schema_version == "0.3.0"
+                    || (snapshot.project_schema_version == "0.4.0" && project.energy.is_some()),
+            None =>
+                snapshot.project_schema_version == crate::SCHEMA_VERSION
+                    || (snapshot.project_schema_version == "0.4.0" && project.energy.is_some()),
         },
         "Study history schema and legacy absence marker differ"
     );
@@ -674,7 +688,11 @@ pub fn restore_study(
         })
     {
         restored.climate = None;
-        restored.schema_version = snapshot.project_schema_version.clone();
+        restored.schema_version = if restored.energy.is_some() {
+            "0.4.0".into()
+        } else {
+            snapshot.project_schema_version.clone()
+        };
     }
     // Preserve later weather, completed history and the other study. Their
     // presence legitimately prevents returning to an unchanged legacy document.

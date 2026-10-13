@@ -1,0 +1,45 @@
+{
+  "replay": {
+    "package_sha256": "94cc16a32d9d92afa968d5362ea113803f12b50eec40ef8086aea3f4770094b4",
+    "runs": [
+      {
+        "check": {
+          "channels": 34,
+          "checked_values": 1787040,
+          "intervals": 52560,
+          "maximum_absolute_difference_across_channel_units": 0.0,
+          "maximum_error_allowance_ratio": 0.0,
+          "scope": "Identical-recipe integration agreement; not physical validation",
+          "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+        },
+        "replay_record_sha256": "9f4bc2ae4eb54a4fe4c191c6d3c3bf8983e2c7942b036d54cc8521633871d90f",
+        "run_id": "eae50aed-5e5f-4bf1-84a6-26d73b7fc741",
+        "source_record_sha256": "9825cce426bdb14206ebe80240a560633706413abe9feed862a49a2eabfdb118"
+      },
+      {
+        "check": {
+          "channels": 34,
+          "checked_values": 1787040,
+          "intervals": 52560,
+          "maximum_absolute_difference_across_channel_units": 0.0,
+          "maximum_error_allowance_ratio": 0.0,
+          "scope": "Identical-recipe integration agreement; not physical validation",
+          "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+        },
+        "replay_record_sha256": "09e607b0712182027b0462f8c4aecdafebdb6d720644aaba34b7e9640f45897e",
+        "run_id": "94ff3a36-a7d3-4043-85f7-afcdf8dbf49e",
+        "source_record_sha256": "d6af28726886e573cdff74c443ebcfd1933236b088bdb27a12637ccdaabbc429"
+      }
+    ],
+    "schema_version": "greenlens.energy-replay.v0.4",
+    "state": "completed"
+  },
+  "scope": "Retained initial 0.2 K-cutout full annual A/B evidence still replays exactly after supplementary failed qualification and live scratch repair; this does not repair its timestep sensitivity.",
+  "schema": "greenlens.energy-historical-replay-summary.v1",
+  "process": {
+    "wall_seconds": 38.7736745,
+    "exit_code": 0,
+    "cli_sha256": "dd9075f9891389d9c90b1df7f1a9f4d402805ad8f960c83105f1fc2f834c6c00"
+  },
+  "original_scientific_status": "failed"
+}

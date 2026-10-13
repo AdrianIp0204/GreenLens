@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:energy-study:v0.4",
+  "title": "GreenLens EnergyStudy v0.4",
+  "description": "Wire shape only. Authoritative Rust validation additionally checks finite arithmetic, reciprocal full-face topology, complete non-leap calendar, schedule roles, exact physical and engine identities, accounting reconciliation and source-bound scientific scope. Deserialization is not evidence integrity or scientific qualification.",
+  "$ref": "#/$defs/EnergyStudy",
+  "$defs": {
+    "EnergyCalendar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start_weekday",
+        "holidays",
+        "utc_offset_minutes"
+      ],
+      "properties": {
+        "start_weekday": {
+          "$ref": "#/$defs/Weekday"
+        },
+        "holidays": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MonthDay"
+          },
+          "minItems": 0,
+          "maxItems": 365
+        },
+        "utc_offset_minutes": {
+          "type": "integer",
+          "minimum": -720,
+          "maximum": 840
+        }
+      }
+    },
+    "EnergyStudy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "weather",
+        "calendar",
+        "zone_timesteps_per_hour"
+      ],
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "greenlens.energy-study.v0.4"
+        },
+        "weather": {
+          "$ref": "#/$defs/EnergyWeatherBinding"
+        },
+        "calendar": {
+          "$ref": "#/$defs/EnergyCalendar"
+        },
+        "zone_timesteps_per_hour": {
+          "type": "integer",
+          "minimum": 0,
+          "enum": [
+            6,
+            12
+          ]
+        }
+      }
+    },
+    "EnergyWeatherBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_sha256",
+        "normalized_sha256",
+        "time_axis_sha256",
+        "profile_id"
+      ],
+      "properties": {
+        "original_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "normalized_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "time_axis_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "profile_id": {
+          "type": "string",
+          "const": "greenlens.energy-epw-explicit-fields.v1"
+        }
+      }
+    },
+    "MonthDay": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "month",
+        "day"
+      ],
+      "properties": {
+        "month": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "day": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 31
+        }
+      }
+    },
+    "Weekday": {
+      "enum": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday"
+      ]
+    }
+  }
+}

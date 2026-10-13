@@ -1,0 +1,306 @@
+{
+  "schema": "greenlens.energy-direct-native-parity-audit.v1",
+  "auditor_sha256": "fe995124ddbcd8d739ff21fd12273add4b231d83cba65d838c4b3c98e1bee376",
+  "declaration": {
+    "schema": "greenlens.energy-direct-native-parity.v1",
+    "declared_utc": "2026-10-13T05:29:57.9334976Z",
+    "source_sha256": {
+      "energy-qualification.ps1": "139af78312570e658ccf0d2da3849f1217c889799af87721cbd283229504d9f2",
+      "annual-paired-process.ps1": "43827a490a82a5173cfa5398ff1d1b479805a218b13a8dac7835042a07669c00",
+      "annual-paired-native-process.cs": "7646f693d3f5e431b4fab84ed5d2f1d8d99126459ac50fc4adaac54516d4022b",
+      "energyplus.json": "88c5959fb4cbe2e62e929049c4d184e850f99a7ce6c23364ac46f4050ac29f78"
+    },
+    "cases": [
+      {
+        "case": "A10",
+        "original_run_id": "eae50aed-5e5f-4bf1-84a6-26d73b7fc741",
+        "original_checksums_sha256": "aead3eeed1e4050b48ab367a1664903fbb1366c86d156ec5943b263b601b4a71",
+        "original_process_sha256": "72fef137004d9dcebb98bc0b59fe4f414ab2f885db3f7bf8b9386bc8ef1d89c6",
+        "input_sha256": {
+          "model.epJSON": "b1885a78c80fe07766cb2009751aec1bf5440f8a391b11424cee8f59ec36e4af",
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae"
+        },
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ]
+      },
+      {
+        "case": "B10",
+        "original_run_id": "94ff3a36-a7d3-4043-85f7-afcdf8dbf49e",
+        "original_checksums_sha256": "e886d3bbbb7e8dff243d5eb96af652cf2aa1cd34a034e662689d0ef605798ec8",
+        "original_process_sha256": "aacb618a44277c11bd27d94c91569055483824b4b423f3d1590b5ebeb120f5d3",
+        "input_sha256": {
+          "model.epJSON": "afe704399dfbe5d80363591d6175af021e82cc8e0ec04b167212f143c2b3ebea",
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae"
+        },
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ]
+      }
+    ],
+    "native_processes": 2,
+    "workers": 1,
+    "limits": {
+      "seconds": 1800,
+      "scratch_bytes": 1073741824,
+      "memory_bytes": 2147483648,
+      "file_bytes": 134217728
+    },
+    "criteria": "Exact labels/units/counts/times; all native values and derived energy/demand within max(1e-6 reported unit,0.1% reference). Independent integration only; preserved timestep failure is unchanged.",
+    "child_environment": {
+      "OMP_NUM_THREADS": "1",
+      "legacy_supervisor_addition": "RAYPATH is irrelevant to EnergyPlus and contains only owned working directory and engine lib.",
+      "removed": [
+        "PYTHONHOME",
+        "PYTHONPATH",
+        "ENERGYPLUS_WEATHER",
+        "ENERGYPLUS_OUTPUT"
+      ]
+    }
+  },
+  "declaration_sha256": "45535114d323c63ac0078a34bffd102b598392f13f821c60f75e9e084fd3eda7",
+  "cases": [
+    {
+      "case": "A10",
+      "original_run_id": "eae50aed-5e5f-4bf1-84a6-26d73b7fc741",
+      "rows": 52560,
+      "native_columns": 27,
+      "byte_comparisons": 14211454,
+      "maximum_numeric_difference": 0,
+      "all_reported_energy_and_interval_demand_pass": true,
+      "original_checksums_sha256": "aead3eeed1e4050b48ab367a1664903fbb1366c86d156ec5943b263b601b4a71",
+      "original_raw_audit_sha256": "462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7",
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T05:30:01.4613001Z",
+        "finished_utc": "2026-10-13T05:30:12.5755654Z",
+        "wall_seconds": 11.1014419,
+        "sampled_peak_working_set_bytes": 400470016,
+        "sampled_runner_plus_engine_peak_bytes": 608043008,
+        "sampled_scratch_peak_bytes": 19732431,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 2326,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "file_bytes": 134217728,
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "timeout_seconds": 1800.0
+        },
+        "completed": true
+      },
+      "files": {
+        "model.epJSON": {
+          "sha256": "b1885a78c80fe07766cb2009751aec1bf5440f8a391b11424cee8f59ec36e4af",
+          "bytes": 78315
+        },
+        "engine/eplusmtr.csv": {
+          "sha256": "9820e7d53aa9924275a7df3e9e6ac163615107de00dbf9d73c0663f8477b2136",
+          "bytes": 4089964
+        },
+        "engine/eplusout.audit": {
+          "sha256": "9b729ae8b86ecbeb9b4faca828a03b89dd9e85e66ead2deb332740db162eac70",
+          "bytes": 1569
+        },
+        "engine/eplusout.bnd": {
+          "sha256": "d3593202d409f76cee093ee96d92a72a2a1cbd1aaa0ba2f935f72e6dabe4ef52",
+          "bytes": 16165
+        },
+        "engine/eplusout.csv": {
+          "sha256": "c73aa2ec3278fddf8d3d8f25cac06fbbd322c165a2d9f1f4fbdec2cd67013312",
+          "bytes": 14211454
+        },
+        "engine/eplusout.eio": {
+          "sha256": "099be9ee3e06ad78fc4845f054f517708e1e034952001ba1a5d38b17f9fba206",
+          "bytes": 24518
+        },
+        "engine/eplusout.end": {
+          "sha256": "df451aa34dba8386822e385c0bf19fd0a4b6b0102e1b462f0f775f157a0ac1c3",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "33b154e67ddf66764dddd25afe6babccfdb9a54a3f59babbf46c270718d88b63",
+          "bytes": 1051
+        },
+        "engine/eplusout.mdd": {
+          "sha256": "77ca9a86561e529be88533eb8cd1c610c0f6d6b199fcef675f836690dec8927b",
+          "bytes": 12330
+        },
+        "engine/eplusout.mtd": {
+          "sha256": "959102c7ceb9cb7852fec19f3da273a9517299d2388368b84c4965b64c068645",
+          "bytes": 36578
+        },
+        "engine/eplusout.rdd": {
+          "sha256": "40e9c9686f4164dc0d58f9ee524096b28d13f8576dfebd26d69aa8a7b027ebe8",
+          "bytes": 50064
+        },
+        "engine/eplusout.shd": {
+          "sha256": "ba931c1aa338f478e9c4a955c92a19e9d381e343ce1e2a421582ab4755b56f11",
+          "bytes": 6118
+        },
+        "engine/processes.json": {
+          "sha256": "1d6e9b656273b0d8a7a4573cd0784e8fa3d67a3882bb9356453c099d5e417d87",
+          "bytes": 1036
+        },
+        "engine/stdout.txt": {
+          "sha256": "c9fdf4eb9fc1aa1ac86f618d56efe4eab4696f13faccaccb4e6880d02814461b",
+          "bytes": 2326
+        },
+        "engine/weather.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        }
+      }
+    },
+    {
+      "case": "B10",
+      "original_run_id": "94ff3a36-a7d3-4043-85f7-afcdf8dbf49e",
+      "rows": 52560,
+      "native_columns": 27,
+      "byte_comparisons": 14264618,
+      "maximum_numeric_difference": 0,
+      "all_reported_energy_and_interval_demand_pass": true,
+      "original_checksums_sha256": "e886d3bbbb7e8dff243d5eb96af652cf2aa1cd34a034e662689d0ef605798ec8",
+      "original_raw_audit_sha256": "462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7",
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T05:30:12.9694596Z",
+        "finished_utc": "2026-10-13T05:30:22.2594422Z",
+        "wall_seconds": 9.2781118,
+        "sampled_peak_working_set_bytes": 383688704,
+        "sampled_runner_plus_engine_peak_bytes": 578654208,
+        "sampled_scratch_peak_bytes": 19779377,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 2326,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "file_bytes": 134217728,
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5,
+          "memory_bytes": 2147483648,
+          "timeout_seconds": 1800.0
+        },
+        "completed": true
+      },
+      "files": {
+        "model.epJSON": {
+          "sha256": "afe704399dfbe5d80363591d6175af021e82cc8e0ec04b167212f143c2b3ebea",
+          "bytes": 79894
+        },
+        "engine/eplusmtr.csv": {
+          "sha256": "103ea0e11f5547cd2c6257e3fc720ad5f8153b2234a02f2e993711dd1b26fe2a",
+          "bytes": 4081302
+        },
+        "engine/eplusout.audit": {
+          "sha256": "a9af13bdb4ce2eae86d6ed885ce374777645a7072aeb200d7e03b77450471724",
+          "bytes": 1569
+        },
+        "engine/eplusout.bnd": {
+          "sha256": "d3593202d409f76cee093ee96d92a72a2a1cbd1aaa0ba2f935f72e6dabe4ef52",
+          "bytes": 16165
+        },
+        "engine/eplusout.csv": {
+          "sha256": "b04017168894af9f65723bfba330894e96c2652ad7f0611dfcbaf8aabcdac47b",
+          "bytes": 14264618
+        },
+        "engine/eplusout.eio": {
+          "sha256": "8c0d2aae6d01cd31fadd7bad1c0ef07d2d616355e8d2c39cebba12688420fe1b",
+          "bytes": 24522
+        },
+        "engine/eplusout.end": {
+          "sha256": "1247f8a81d90a5d58e932ef04628331af5e38b10cbc8e219133710df7436b65e",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "cb9bdb5a316979d1dbebe6406a30e236399be4c33f341853e55d05434c283ede",
+          "bytes": 1051
+        },
+        "engine/eplusout.mdd": {
+          "sha256": "77ca9a86561e529be88533eb8cd1c610c0f6d6b199fcef675f836690dec8927b",
+          "bytes": 12330
+        },
+        "engine/eplusout.mtd": {
+          "sha256": "959102c7ceb9cb7852fec19f3da273a9517299d2388368b84c4965b64c068645",
+          "bytes": 36578
+        },
+        "engine/eplusout.rdd": {
+          "sha256": "40e9c9686f4164dc0d58f9ee524096b28d13f8576dfebd26d69aa8a7b027ebe8",
+          "bytes": 50064
+        },
+        "engine/eplusout.shd": {
+          "sha256": "ece3eee5dd8760c9b2862785c0b13aaadaa68444f937bd04ec7df511ced44365",
+          "bytes": 8558
+        },
+        "engine/processes.json": {
+          "sha256": "47e0e15f3010ac819f9136327afa8669e5d5a61ecfaac4dc7e843a3d546f99a9",
+          "bytes": 1035
+        },
+        "engine/stdout.txt": {
+          "sha256": "32af1255f6e45539330874c01a2626f3b3dfcc898c522dd11136783e62376735",
+          "bytes": 2326
+        },
+        "engine/weather.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        }
+      }
+    }
+  ],
+  "all_checks_pass": true,
+  "scope": "Two fresh independent supervised native executions; complete CSV bytes equal the adapter CSVs whose full retained-series arithmetic was independently audited. No recognized replay or physical qualification inferred.",
+  "full_energy_method_qualified": false,
+  "preserved_timestep_failure": true
+}

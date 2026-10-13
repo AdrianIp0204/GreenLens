@@ -21,6 +21,7 @@ fn completed_app(scratch: &Path, project: &Project, run: ClimateRunRecord) -> Ap
                 error: None,
                 result: None,
                 climate_result: Some(run),
+                energy_result: None,
                 pending_evidence: true,
             })),
             cancel: Arc::new(AtomicBool::new(false)),
@@ -341,6 +342,7 @@ fn orderly_cancellation_joins_synthetic_worker_without_publishing_evidence() {
         error: None,
         result: None,
         climate_result: None,
+        energy_result: None,
         pending_evidence: false,
     }));
     let cancel = Arc::new(AtomicBool::new(false));

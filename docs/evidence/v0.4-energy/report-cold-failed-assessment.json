@@ -1,0 +1,312 @@
+{
+  "schema_version": "greenlens.energy-cold-report-independent-audit.v1",
+  "checked_utc": "2026-10-13T06:06:14.926954Z",
+  "scope": "Retained real EnergyPlus 10-minute A/B report DTO; production Rust/Typst rendering and cross-format content only. No new simulation or scientific qualification. Both retained cases explicitly expose Failed scientific status from the exact tested-scope registry. Cold report regeneration is integrity/presentation verification, not scientific acceptance.",
+  "source_manifest_sha256": "b5e1bf588ed73279d279bc2028945bbb1d12297b6d213abf12368cf1f000ae4c",
+  "dataset_sha256": "182b979422cfe0e9ab4976f051abda4944d4747de6055a7a962598dc147067ef",
+  "template_sha256": "c72b119bc27f89b04324187e782ec69f26f6e92cbbd40e8f7cc0fcd615a71e9b",
+  "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+  "artifacts_verified": 19,
+  "native_processes": [
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T06:04:16.158833400+00:00",
+      "finished_utc": "2026-10-13T06:04:17.020146200+00:00",
+      "elapsed_ms": 901,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 118476800,
+      "peak_observed_scratch_bytes": 34218645,
+      "samples": 16,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T06:04:17.404616500+00:00",
+      "finished_utc": "2026-10-13T06:04:18.426831400+00:00",
+      "elapsed_ms": 1067,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 128061440,
+      "peak_observed_scratch_bytes": 34363400,
+      "samples": 19,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T06:04:18.828356300+00:00",
+      "finished_utc": "2026-10-13T06:04:19.308839900+00:00",
+      "elapsed_ms": 525,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 83615744,
+      "peak_observed_scratch_bytes": 33602143,
+      "samples": 9,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "--ppi",
+        "96",
+        "report.typ",
+        "page-{0p}-of-{t}.png"
+      ],
+      "started_utc": "2026-10-13T06:04:19.711970400+00:00",
+      "finished_utc": "2026-10-13T06:04:20.306204+00:00",
+      "elapsed_ms": 639,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 90169344,
+      "peak_observed_scratch_bytes": 34465212,
+      "samples": 11,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "documents": {
+    "assessment": {
+      "pages": 24,
+      "pdf_sha256": "110f006bb456d19840bee4a9b2450966e044d6815babd231593b2e89962c0bc9",
+      "bytes": 674244,
+      "document_sha256": "9fa7d7febee4dc7c21146f7807d2afdf6a789d8420c0ad8c76446909e4924955",
+      "checked_text_items": 1783,
+      "embedded_fonts": [
+        "/DRHHBG+NotoSansCJKtc-Bold-Identity-H",
+        "/WCGQAY+NotoSansCJKtc-Regular-Identity-H"
+      ]
+    },
+    "input-appendix": {
+      "pages": 31,
+      "pdf_sha256": "d4a6612a9b6d351b0a85da6e8696f1b8606cb77eba342f1c09595aab76e9522b",
+      "bytes": 793214,
+      "document_sha256": "0cd3085189ae33185cf13b3c5384e9e6f9daf7180b57ea19bbe2e8db9e2959a0",
+      "checked_text_items": 2245,
+      "embedded_fonts": [
+        "/GJBQDC+NotoSansCJKtc-Bold-Identity-H",
+        "/TBTVEE+NotoSansCJKtc-Regular-Identity-H"
+      ]
+    },
+    "performance": {
+      "pages": 5,
+      "pdf_sha256": "c4b004f31aa0e48dde69c148133930754178f5dcc4d50072805ea56c7e4eea1a",
+      "bytes": 129973,
+      "document_sha256": "97c34351340d3b95e38bbc71762240b6c7987bcc196b543b263c748561b7d5ea",
+      "checked_text_items": 252,
+      "embedded_fonts": [
+        "/DBREHS+NotoSansCJKtc-Regular-Identity-H",
+        "/EPYZLC+NotoSansCJKtc-Bold-Identity-H"
+      ]
+    }
+  },
+  "performance_csv_typed_cells": 318,
+  "input_csv_lossless_rows": 1064,
+  "all_declared_document_strings_in_pdf_html": true,
+  "html_offline_inline_svg_no_script_or_external_image": true,
+  "fonts_embedded_with_unicode_maps": true,
+  "pdf_no_active_script_or_open_action": true,
+  "visual_review_complete": true,
+  "qualification_blocks_checked": 6,
+  "both_cases_failed": true,
+  "energy_acceptance": false,
+  "completed_utc": "2026-10-13T06:10:03.943256Z",
+  "visual_review": {
+    "pages": 60,
+    "documents": {
+      "assessment": 24,
+      "input-appendix": 31,
+      "performance": 5
+    },
+    "findings": [
+      "No clipped or overlapping tables or omitted text observed across all60 pages.",
+      "Both Failed scientific assessments, full reasons, registry and evidence IDs are visible in each document; long tables continue with repeated column headers.",
+      "The input appendix final page contains weather rows and the empty evidence index; sparse final-page whitespace remains."
+    ],
+    "scope": "All pages rasterized with Poppler at90dpi and visually inspected as complete-page contact sheets, with separate text checks. No Typst/engine rerun by auditor."
+  },
+  "arithmetic_audit_sha256": "11bfbf7334daceab5c40f62e2770f3d365ea91b7c9dc023ca85feaf80eb0ee28",
+  "independent_numeric_cells": 318,
+  "maximum_numeric_difference": 0.0,
+  "dataset_file_sha256": "98363c36d5fe9aed50e3d8d78fb869910072bc11538da358b86cbadc7e9d2ce2",
+  "assessments": {
+    "baseline": {
+      "run_id": "eae50aed-5e5f-4bf1-84a6-26d73b7fc741",
+      "record_sha256": "9825cce426bdb14206ebe80240a560633706413abe9feed862a49a2eabfdb118",
+      "physical_input_sha256": "9fd772a057142b6fa1c705c36a56daad65b9e67ff8ff1353d0f39421d18d89db",
+      "assessment": {
+        "execution": "completed",
+        "evidence_integrity": "complete_retained_evidence_checked",
+        "current_physical_inputs": "current",
+        "current_processed_results": "current",
+        "current_derived_results": "not_compared",
+        "scientific": {
+          "status": "failed",
+          "method": {
+            "method_id": "greenlens.energyplus.explicit-dx/1",
+            "adapter_version": "1",
+            "engine_version": "26.2.0",
+            "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+            "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+            "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+            "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+            "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+          },
+          "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+          "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+          "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim.",
+          "applicable_physical_input_sha256": [
+            "9fd772a057142b6fa1c705c36a56daad65b9e67ff8ff1353d0f39421d18d89db"
+          ],
+          "evidence_ids": [
+            "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+          ]
+        }
+      }
+    },
+    "proposed": {
+      "run_id": "94ff3a36-a7d3-4043-85f7-afcdf8dbf49e",
+      "record_sha256": "d6af28726886e573cdff74c443ebcfd1933236b088bdb27a12637ccdaabbc429",
+      "physical_input_sha256": "fc50303368fed9c9eabeb8b04161f65abae96debdd84765e53b1f19771815f97",
+      "assessment": {
+        "execution": "completed",
+        "evidence_integrity": "complete_retained_evidence_checked",
+        "current_physical_inputs": "current",
+        "current_processed_results": "current",
+        "current_derived_results": "not_compared",
+        "scientific": {
+          "status": "failed",
+          "method": {
+            "method_id": "greenlens.energyplus.explicit-dx/1",
+            "adapter_version": "1",
+            "engine_version": "26.2.0",
+            "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+            "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+            "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+            "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+            "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+          },
+          "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+          "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+          "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim.",
+          "applicable_physical_input_sha256": [
+            "fc50303368fed9c9eabeb8b04161f65abae96debdd84765e53b1f19771815f97"
+          ],
+          "evidence_ids": [
+            "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+          ]
+        }
+      }
+    }
+  },
+  "cold_snapshot": {
+    "receipt_sha256": "b0593a881dbdd22f53c09650d2ca542d3b59e5863f1e1f1be48bb477b7eccfbc",
+    "recorded_original_project_unavailable": true,
+    "recorded_original_job_scratch_unavailable": true,
+    "recorded_engine_discovery_failed": true,
+    "independently_rehashed_retained_file_count": 149,
+    "all_current_copy_bytes_match_precall_snapshot": true,
+    "retained_inventory_sha256": "ccf150a974f99f273970097f98e36a6476fec0e6e4dc265b276a0bab0e35c1a6",
+    "cli_sha256": "dd9075f9891389d9c90b1df7f1a9f4d402805ad8f960c83105f1fc2f834c6c00",
+    "package_sha256": "94cc16a32d9d92afa968d5362ea113803f12b50eec40ef8086aea3f4770094b4",
+    "package_bytes": 8569440,
+    "scope": "Read-only hash comparison to the cold wrapper precall run/weather snapshot; unavailable-original observations come from that wrapper, not a second hiding/replay operation."
+  },
+  "audit_source_sha256": "2f20788be2784a23fab1ff06e0a0c857223012cfc12f81630b96254dcbaec587",
+  "arithmetic_source_sha256": "3b22cf8a2c447313215ecd98f310dbd27b706fb9c7945e0a55380682212a6bdc",
+  "qualification_unchanged": "Failed tested-scope status remains authoritative. This audit validates rendering, immutable-copy integrity and presentation arithmetic only; no certification or energy acceptance."
+}

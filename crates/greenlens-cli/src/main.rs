@@ -1,3 +1,4 @@
+mod energy;
 use anyhow::{ensure, Context, Result};
 use clap::{Parser, Subcommand};
 use greenlens_core::{validate_model, Model};
@@ -8,7 +9,7 @@ use std::{path::PathBuf, sync::Arc};
 #[derive(Parser)]
 #[command(
     version,
-    about = "Local, reproducible static and climate-based daylight studies."
+    about = "Local daylight and building-energy studies with reproducible evidence."
 )]
 struct Cli {
     #[command(subcommand)]
@@ -16,6 +17,11 @@ struct Cli {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Thermal building, annual EnergyPlus and reproducible assessment reports.
+    Energy {
+        #[command(subcommand)]
+        command: energy::EnergyCommand,
+    },
     /// Configure/run a versioned study using the shared application service.
     Study {
         #[command(subcommand)]
@@ -191,6 +197,7 @@ impl From<ClimateField> for greenlens_runner::studies::ResultField {
 }
 fn execute() -> Result<()> {
     match Cli::parse().command {
+        Command::Energy { command } => energy::execute(command)?,
         Command::Study { command } => match command {
             StudyCommand::Inspect { project, run } => {
                 let manifest = read_json(&greenlens_runner::persistence::regular_child(

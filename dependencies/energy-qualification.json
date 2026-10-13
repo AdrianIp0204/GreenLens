@@ -1,0 +1,194 @@
+[
+  {
+    "status": "failed",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+    },
+    "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+    "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+    "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim.",
+    "applicable_physical_input_sha256": [
+      "9fd772a057142b6fa1c705c36a56daad65b9e67ff8ff1353d0f39421d18d89db"
+    ],
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+    ]
+  },
+  {
+    "status": "failed",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+    },
+    "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+    "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+    "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim.",
+    "applicable_physical_input_sha256": [
+      "fc50303368fed9c9eabeb8b04161f65abae96debdd84765e53b1f19771815f97"
+    ],
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+    ]
+  },
+  {
+    "status": "failed",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+    },
+    "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+    "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+    "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim.",
+    "applicable_physical_input_sha256": [
+      "8f7af2bf44c91974885b6fd54912f128cb2f09c69460676d8853b9a6bd814dc9"
+    ],
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+    ]
+  },
+  {
+    "status": "failed",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+    },
+    "registry_version": "greenlens.energy-qualification.2026-10-13.1",
+    "reason": "Release numerical acceptance failed for this tested A/B scope: proposed B ten-minute facility peak 4.299673042571325 kW differs by 3.378158637783503% from the five-minute run aligned to ten minutes (4.159169692349159 kW), above the frozen 3% limit. Both annual electricity comparisons, accounting and occupied-comfort checks passed. A passed its own peak check; the A/B qualification remains failed. Execution or replay agreement does not override this failure.",
+    "tested_scope": "Original four-zone/two-storey synthetic non-climatic A/B, fixed explicit single-speed DX/fan method and six/twelve zone timesteps per hour. No general building-accuracy, equipment-calibration or certification claim.",
+    "applicable_physical_input_sha256": [
+      "65f5a6b8b5406b7bdee15d358b4585d2f547e38e29c45b3133540602668d12c6"
+    ],
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:462177fe727e94e13d8a2d3dc6aae06afaa7b840c95df7cbfd69ec094f7dd2b7"
+    ]
+  },
+  {
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+      "greenlens.energy-revision2-independent-audit:sha256:d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+      "greenlens.energy-direct-native-parity-audit.v1:sha256:18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+      "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+      "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+    ],
+    "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+    "status": "limited_qualified",
+    "tested_scope": "Only the four-zone/two-storey revision-2 synthetic non-climatic A/B inputs with explicit zero thermostat cutout, complete pinned engine/recipe and six/twelve zone timesteps per hour. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed.",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+    },
+    "applicable_physical_input_sha256": [
+      "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486"
+    ],
+    "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior."
+  },
+  {
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+      "greenlens.energy-revision2-independent-audit:sha256:d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+      "greenlens.energy-direct-native-parity-audit.v1:sha256:18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+      "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+      "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+    ],
+    "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+    "status": "limited_qualified",
+    "tested_scope": "Only the four-zone/two-storey revision-2 synthetic non-climatic A/B inputs with explicit zero thermostat cutout, complete pinned engine/recipe and six/twelve zone timesteps per hour. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed.",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+    },
+    "applicable_physical_input_sha256": [
+      "1d5edab5883055cf8cf010b62a3e9bad9609daf2c6bed24017ac1ee8871e8a87"
+    ],
+    "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior."
+  },
+  {
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+      "greenlens.energy-revision2-independent-audit:sha256:d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+      "greenlens.energy-direct-native-parity-audit.v1:sha256:18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+      "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+      "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+    ],
+    "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+    "status": "limited_qualified",
+    "tested_scope": "Only the four-zone/two-storey revision-2 synthetic non-climatic A/B inputs with explicit zero thermostat cutout, complete pinned engine/recipe and six/twelve zone timesteps per hour. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed.",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+    },
+    "applicable_physical_input_sha256": [
+      "32eda4566fd60a64b05ee6a6e0100869f6ff542794b7b12b0029de858e2067ba"
+    ],
+    "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior."
+  },
+  {
+    "evidence_ids": [
+      "greenlens.energy-production-audit.v1:sha256:b696312b17b4d7ae8198d2d1acc7ce6a4ab0d5c043af9040bc88e4c058840e33",
+      "greenlens.energy-revision2-independent-audit:sha256:d13c7b08d56c9125c21b41d0533c9a65ac0b6ce9d85fc8ba7758532ca25abb18",
+      "greenlens.energy-direct-native-parity-audit.v1:sha256:18f75f403a2442634029ccf5db8637b106d550bec0a47c6a96c6fb1d06993cc4",
+      "greenlens.energy-gate0-audit.v1:sha256:8fb07183d99abf7d48b1ce05911b87585123c597a0fbaf4fa78a4b773ba42c71",
+      "greenlens.energy-interzone:sha256:01ca80e82301340d5fa64ad9ce18be2325d2c7f69db5367f65e85551194234c8"
+    ],
+    "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+    "status": "limited_qualified",
+    "tested_scope": "Only the four-zone/two-storey revision-2 synthetic non-climatic A/B inputs with explicit zero thermostat cutout, complete pinned engine/recipe and six/twelve zone timesteps per hour. This is limited numerical and analytical qualification, not installed-release acceptance, measured-building validation, real-weather suitability, equipment calibration or certification. Original nonzero-cutout scopes remain failed.",
+    "method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+    },
+    "applicable_physical_input_sha256": [
+      "755ed2e29c78fba852566b3cf8f93cee8e22dd7e5e7100d5399cf6abea160520"
+    ],
+    "reason": "The exact revision-2 synthetic A/B scope passes the frozen complete-year timestep, accounting and occupied-comfort checks. Annual electricity differences are A 0.0116483% and B 0.0849428% (limit 1%); aligned ten-minute peak differences are A 0.0294333% and B 0.0365497% (limit 3%). All occupied cooling-unmet fractions are zero (limit 1%). Direct native A/B output agrees exactly. Electrical, steady-envelope and interzone fixtures establish only their stated limited behavior."
+  }
+]

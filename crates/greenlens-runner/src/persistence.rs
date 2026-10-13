@@ -195,7 +195,8 @@ fn create_checked_directories(
 
 fn read_limited(mut source: impl Read, limit: u64) -> Result<Vec<u8>> {
     let mut bytes = Vec::new();
-    source.by_ref().take(limit + 1).read_to_end(&mut bytes)?;
+    let probe_limit = limit.checked_add(1).context("Read limit overflow")?;
+    source.by_ref().take(probe_limit).read_to_end(&mut bytes)?;
     ensure!(
         bytes.len() as u64 <= limit,
         "JSON exceeds 64 MiB safety limit"
@@ -203,18 +204,15 @@ fn read_limited(mut source: impl Read, limit: u64) -> Result<Vec<u8>> {
     Ok(bytes)
 }
 
-/// Check availability before opening, then bind the size/policy checks to the
-/// opened file. The actual read stays bounded if an external writer grows it.
-pub(crate) fn read_json_bytes(path: &Path) -> Result<Vec<u8>> {
+// Check availability before opening, then bind size/policy to the opened file.
+// Every caller must also bound its actual reads against subsequent growth.
+fn open_limited_file(path: &Path, limit: u64, too_large: &str) -> Result<File> {
     let meta = checked_metadata(path)?;
     ensure!(
         !meta.file_type().is_symlink() && meta.is_file(),
         "Expected a regular file"
     );
-    ensure!(
-        meta.len() <= MAX_EVIDENCE_FILE_BYTES,
-        "JSON exceeds 64 MiB safety limit"
-    );
+    ensure!(meta.len() <= limit, "{too_large}");
     let mut options = OpenOptions::new();
     options.read(true);
     #[cfg(windows)]
@@ -229,11 +227,44 @@ pub(crate) fn read_json_bytes(path: &Path) -> Result<Vec<u8>> {
     #[cfg(not(windows))]
     let opened = file.metadata()?;
     ensure!(opened.is_file(), "Expected a regular file");
-    ensure!(
-        opened.len() <= MAX_EVIDENCE_FILE_BYTES,
-        "JSON exceeds 64 MiB safety limit"
-    );
+    ensure!(opened.len() <= limit, "{too_large}");
+    Ok(file)
+}
+
+/// The actual read stays bounded if an external writer grows the opened file.
+pub(crate) fn read_json_bytes(path: &Path) -> Result<Vec<u8>> {
+    let file = open_limited_file(
+        path,
+        MAX_EVIDENCE_FILE_BYTES,
+        "JSON exceeds 64 MiB safety limit",
+    )?;
     read_limited(file, MAX_EVIDENCE_FILE_BYTES)
+}
+
+fn hash_limited(source: &mut impl Read, limit: u64) -> Result<String> {
+    let probe_limit = limit.checked_add(1).context("Hash limit overflow")?;
+    let mut limited = source.take(probe_limit);
+    let mut digest = Sha256::new();
+    let mut buffer = [0u8; 64 * 1024];
+    let mut total = 0u64;
+    loop {
+        let count = match limited.read(&mut buffer) {
+            Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+            result => result?,
+        };
+        if count == 0 {
+            break;
+        }
+        total += count as u64; // bounded by the checked limit + one probe byte
+        ensure!(total <= limit, "Evidence file too large");
+        digest.update(&buffer[..count]);
+    }
+    Ok(format!("{:x}", digest.finalize()))
+}
+
+fn evidence_file_hash(path: &Path) -> Result<String> {
+    let mut file = open_limited_file(path, MAX_EVIDENCE_FILE_BYTES, "Evidence file too large")?;
+    hash_limited(&mut file, MAX_EVIDENCE_FILE_BYTES)
 }
 
 pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<T> {
@@ -404,7 +435,7 @@ pub fn seal(root: &Path, files: &[&str]) -> Result<()> {
     for name in files {
         hashes.insert(
             (*name).to_string(),
-            bytes_hash(&fs::read(regular_child(root, name)?)?),
+            evidence_file_hash(&regular_child(root, name)?)?,
         );
     }
     write_json(
@@ -424,11 +455,7 @@ pub fn verify_seal(root: &Path) -> Result<Checksums> {
     for (name, digest) in &checksums.sha256 {
         let file = regular_child(root, name)?;
         ensure!(
-            fs::metadata(&file)?.len() <= MAX_EVIDENCE_FILE_BYTES,
-            "Evidence file too large"
-        );
-        ensure!(
-            bytes_hash(&fs::read(file)?) == *digest,
+            evidence_file_hash(&file)? == *digest,
             "Evidence integrity failure: {name}"
         );
     }
@@ -441,6 +468,26 @@ pub fn promote_run(source: &Path, project: &Path, id: &str) -> Result<()> {
 /// Caller owns the project writer lock, as for run promotion.
 pub fn promote_weather(source: &Path, project: &Path, id: &str) -> Result<()> {
     promote_evidence(source, project, "weather", id)
+}
+
+pub(crate) fn promote_attachment(source: &Path, project: &Path, id: &str) -> Result<()> {
+    promote_evidence(source, project, "attachments", id)
+}
+
+/// Also bounds a source which grows after its metadata was inspected. A failed
+/// destination is staging only and must never be promoted by its caller.
+pub fn copy_bounded(
+    source: &mut impl std::io::Read,
+    destination: &mut impl std::io::Write,
+    limit: u64,
+) -> Result<u64> {
+    let probe_limit = limit.checked_add(1).context("Copy limit overflow")?;
+    let copied = std::io::copy(&mut source.take(probe_limit), destination)?;
+    ensure!(
+        copied <= limit,
+        "Evidence source exceeded its byte limit while copying"
+    );
+    Ok(copied)
 }
 
 fn promote_evidence(source: &Path, project: &Path, prefix: &str, id: &str) -> Result<()> {
@@ -472,7 +519,7 @@ fn promote_evidence(source: &Path, project: &Path, prefix: &str, id: &str) -> Re
             .create_new(true)
             .write(true)
             .open(destination)?;
-        std::io::copy(&mut source, &mut destination)?;
+        copy_bounded(&mut source, &mut destination, MAX_EVIDENCE_FILE_BYTES)?;
         destination.sync_all()?;
     }
     verify_seal(&temporary)?;
@@ -610,6 +657,7 @@ mod tests {
                     error: None,
                     result: None,
                     climate_result: Some(record),
+                    energy_result: None,
                     pending_evidence: true,
                 })),
                 cancel: Arc::new(AtomicBool::new(false)),
@@ -743,6 +791,85 @@ mod tests {
         let mut growing_source = Cursor::new(vec![b'x'; 1_024]);
         assert!(read_limited(&mut growing_source, 32).is_err());
         assert_eq!(growing_source.position(), 33);
+    }
+
+    #[test]
+    fn bounded_hash_preserves_digests_and_stops_an_unending_source() {
+        struct Unending {
+            bytes_read: usize,
+        }
+        impl Read for Unending {
+            fn read(&mut self, output: &mut [u8]) -> std::io::Result<usize> {
+                output.fill(7);
+                self.bytes_read += output.len();
+                Ok(output.len())
+            }
+        }
+        let mut growing = Unending { bytes_read: 0 };
+        assert!(hash_limited(&mut growing, 31)
+            .unwrap_err()
+            .to_string()
+            .contains("too large"));
+        assert_eq!(growing.bytes_read, 32);
+        // Cover empty, exact-limit and multiple fixed-buffer reads without
+        // changing the historical lowercase SHA-256 encoding.
+        for size in [0, 31, 65_537] {
+            let bytes = vec![7u8; size];
+            assert_eq!(
+                hash_limited(&mut &bytes[..], size as u64).unwrap(),
+                bytes_hash(&bytes)
+            );
+        }
+    }
+
+    #[test]
+    fn bounded_hash_rejects_read_failure_instead_of_a_partial_digest() {
+        struct FailsAfterPrefix {
+            supplied: bool,
+        }
+        impl Read for FailsAfterPrefix {
+            fn read(&mut self, output: &mut [u8]) -> std::io::Result<usize> {
+                if self.supplied {
+                    return Err(std::io::Error::other("synthetic read failure"));
+                }
+                self.supplied = true;
+                output[0] = 7;
+                Ok(1)
+            }
+        }
+        let error = hash_limited(&mut FailsAfterPrefix { supplied: false }, 31).unwrap_err();
+        assert!(error.to_string().contains("synthetic read failure"));
+    }
+
+    #[test]
+    fn oversized_evidence_cannot_replace_seal_or_be_promoted() {
+        let source = tempfile::tempdir().unwrap();
+        let project = tempfile::tempdir().unwrap();
+        let path = source.path().join("data.bin");
+        fs::write(&path, b"retained evidence").unwrap();
+        seal(source.path(), &["data.bin"]).unwrap();
+        let original_seal = fs::read(source.path().join("checksums.json")).unwrap();
+        let id = Uuid::new_v4().to_string();
+        OpenOptions::new()
+            .write(true)
+            .open(&path)
+            .unwrap()
+            .set_len(MAX_EVIDENCE_FILE_BYTES + 1)
+            .unwrap();
+        assert!(seal(source.path(), &["data.bin"])
+            .unwrap_err()
+            .to_string()
+            .contains("too large"));
+        assert!(verify_seal(source.path())
+            .unwrap_err()
+            .to_string()
+            .contains("too large"));
+        assert!(promote_run(source.path(), project.path(), &id).is_err());
+        assert_eq!(
+            fs::read(source.path().join("checksums.json")).unwrap(),
+            original_seal
+        );
+        assert!(!project.path().join("runs").exists());
     }
 
     #[test]

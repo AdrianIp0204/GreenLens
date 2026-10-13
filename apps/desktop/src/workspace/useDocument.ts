@@ -7,6 +7,7 @@ import { defaultDisplay, type ViewportDisplayState } from '../viewport/types';
 import { DocumentHistory, completedJobResult, documentSignature, hasPendingEvidence, protectReplacement } from './document.mjs';
 import { activeJob } from '../presentation.mjs';
 import { validatedEditLockReason } from './locks.mjs';
+import type { EnergyDesign, EnergyRunRecord, EnergyCalendar, EnergyMetadataChange } from '../energy/types';
 
 export const errorText = (e: unknown) => typeof e === 'string' ? e : e instanceof Error ? e.message : JSON.stringify(e);
 const validate = (model:Model) => invoke<ValidatedModel>('validate', { model });
@@ -17,6 +18,8 @@ const validateInStudy = async(model:Model,alternativeId:string,project:Project) 
 };
 const configureStudy=(project:Project,alternativeId:string,study:Study)=>invoke<Project>('study_configure',{project,alternativeId,study});
 const restoreStudy=(project:Project,alternativeId:string,snapshot:StudyHistorySnapshot)=>invoke<Project>('study_restore',{project,alternativeId,snapshot});
+const configureEnergy=(project:Project,alternativeId:string,design:EnergyDesign)=>invoke<Project>('energy_edit',{project,alternativeId,model:design.model,study:design.study});
+const configureEnergyMetadata=(project:Project,change:EnergyMetadataChange)=>invoke<Project>('energy_metadata',{project,change});
 type GuardChoice = 'save'|'discard'|'cancel';
 export function useDocument() {
   const [project,setProject] = useState<Project|null>(null);
@@ -24,6 +27,7 @@ export function useDocument() {
   const [validated,setValidated] = useState<ValidatedModel|null>(null);
   const [results,setResults] = useState<RunRecord[]>([]);
   const [climateResults,setClimateResults] = useState<ClimateRunRecord[]>([]);
+  const [energyResults,setEnergyResults] = useState<EnergyRunRecord[]>([]);
   const [studyDefaults,setStudyDefaults] = useState<Study|null>(null);
   const [currentClimateState,setCurrentClimateState] = useState<{key:string;result:CurrentClimateResult|null}|null>(null);
   const [display,setDisplay] = useState<ViewportDisplayState>(defaultDisplay);
@@ -39,9 +43,11 @@ export function useDocument() {
   const [guard,setGuard] = useState<string|null>(null);
   const [collectionError,setCollectionError] = useState(false);
   const [historyVersion,setHistoryVersion] = useState(0);
+  const [energyLocked,setEnergyLocked]=useState(false);
+  useEffect(()=>{setEnergyLocked(false);},[documentId]);
   const history = useRef(new DocumentHistory());
-  const state = useRef({project,alternative,validated,results,climateResults,display,path,revision,job,busy,savedSignature});
-  state.current={project,alternative,validated,results,climateResults,display,path,revision,job,busy,savedSignature};
+  const state = useRef({project,alternative,validated,results,climateResults,energyResults,display,path,revision,job,busy,savedSignature});
+  state.current={project,alternative,validated,results,climateResults,energyResults,display,path,revision,job,busy,savedSignature};
   const guardResolver=useRef<((choice:GuardChoice)=>void)|null>(null);
   const attemptedCollection=useRef<string|null>(null);
   const collecting=useRef(false);
@@ -58,17 +64,19 @@ export function useDocument() {
   const validationKey=JSON.stringify([documentId,alternative,model,study]);
   const dirty=Boolean(project && documentSignature(project)!==savedSignature);
   const running=activeJob(job);
-  const pending=hasPendingEvidence(job,results,climateResults);
+  const pending=hasPendingEvidence(job,results,climateResults,energyResults);
   const acceptProject = useCallback((value:ProjectView,directory:string,reset=false)=>{
     setProject(value.project);setRevision(value.revision);setResults(value.results);setClimateResults(value.climate_results??[]);setPath(directory);setSavedSignature(documentSignature(value.project));
-    state.current={...state.current,project:value.project,revision:value.revision,results:value.results,climateResults:value.climate_results??[],path:directory,savedSignature:documentSignature(value.project)};
+    setEnergyResults(value.energy_results??[]);
+    state.current={...state.current,project:value.project,revision:value.revision,results:value.results,climateResults:value.climate_results??[],energyResults:value.energy_results??[],path:directory,savedSignature:documentSignature(value.project)};
     if(reset){setDisplay((value.project.display_state as ViewportDisplayState|null)??defaultDisplay());history.current.reset();setHistoryVersion(v=>v+1);setAlternative('A');setDocumentId(v=>v+1);setValidated(null);}
   },[]);
   const newDocument=useCallback(async()=>{
     const value=await invoke<Project>('example');
+    setEnergyResults([]);
     setProject(value);setResults([]);setClimateResults([]);setCurrentClimateState(null);setRevision(null);setSavedSignature('');setPath('');setJob(null);setAlternative('A');setDisplay(defaultDisplay());setDocumentId(v=>v+1);setValidated(null);setCollectionError(false);
     history.current.reset();setHistoryVersion(v=>v+1);attemptedCollection.current=null;
-    state.current={...state.current,project:value,path:'',results:[],climateResults:[],revision:null,job:null,savedSignature:''};
+    state.current={...state.current,project:value,path:'',results:[],climateResults:[],energyResults:[],revision:null,job:null,savedSignature:''};
     setMessage('Synthetic A/B document. Select an entity, or enter a command.');
   },[]);
   useEffect(()=>{let alive=true;if(!isTauri()){setError('Use the native GreenLens application for the Rust document and Radiance backend.');return;}
@@ -125,7 +133,8 @@ export function useDocument() {
   };
   const traverse=async(direction:'undo'|'redo')=>runAction(async()=>{
     const s=state.current;if(!s.project||activeJob(s.job))throw new Error('Finish or cancel the calculation before undo/redo.');
-    const next=await history.current.traverse(s.project,direction,validateInStudy,checkEditLocks,restoreStudy);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
+    const entry=(direction==='undo'?history.current.past:history.current.future).at(-1);if(energyLocked&&entry?.kind==='energy')throw new Error('Unlock thermal inputs before restoring a thermal edit.');
+    const next=await history.current.traverse(s.project,direction,validateInStudy,checkEditLocks,restoreStudy,configureEnergy,configureEnergyMetadata);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
   });
   const commitStudy=async(candidate:Study,label='Study settings')=>{
     const s=state.current;if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active document operation or calculation before editing.');return false;}
@@ -138,6 +147,14 @@ export function useDocument() {
     finally{actionBusy.current=false;setBusy(false);}
   };
   const cancelAndWait=async()=>{const status=await invoke<JobStatus|null>('cancel_and_wait');setJob(status);state.current.job=status;return status;};
+  const commitEnergy=async(candidate:EnergyDesign,label='Thermal inputs')=>{
+    if(energyLocked){setError('Unlock thermal inputs before editing.');return false;}
+    const s=state.current;if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active operation before editing thermal inputs.');return false;}
+    actionBusy.current=true;setBusy(true);setError('');
+    try {const next=await history.current.editEnergy(s.project,s.alternative,candidate,label,configureEnergy);setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage(next.changed?`${label} accepted by Rust. One undo entry.`:'No thermal change.');return true;}
+    catch(e){setError(`Thermal edit rejected; document and history unchanged. ${errorText(e)}`);return false;}
+    finally{actionBusy.current=false;setBusy(false);}
+  };
   const save=async(asCopy=false):Promise<boolean>=>{
     const s=state.current;if(!s.project)throw new Error('No open document.');
     let destination=s.path;
@@ -145,23 +162,24 @@ export function useDocument() {
     const snapshot={...s.project,display_state:s.display};
     let value:ProjectView;
     if(asCopy||!s.path)value=await invoke<ProjectView>('save_project_as',{sourcePath:s.path||null,destination,project:snapshot,expectedSourceRevision:s.revision,includePending:true});
-    else if(hasPendingEvidence(s.job,s.results,s.climateResults))value=await invoke<ProjectView>('collect_run',{path:destination,project:snapshot,expectedRevision:s.revision});
+    else if(hasPendingEvidence(s.job,s.results,s.climateResults,s.energyResults))value=await invoke<ProjectView>('collect_run',{path:destination,project:snapshot,expectedRevision:s.revision});
     else value=await invoke<ProjectView>('save_project',{path:destination,project:snapshot,expectedRevision:s.revision});
     acceptProject(value,destination);setCollectionError(false);setMessage(asCopy?'Complete project copy saved, including referenced run evidence.':'Project saved. Undo history retained.');return true;
   };
   const decide=(reason:string)=>new Promise<GuardChoice>(resolve=>{guardResolver.current=resolve;setGuard(reason);});
   const resolveGuard=(choice:GuardChoice)=>{const resolve=guardResolver.current;guardResolver.current=null;setGuard(null);resolve?.(choice);};
-  const replace=async(kind:'New'|'Open'|'Close')=>runAction(async()=>{
+  const replace=async(kind:'New'|'New Energy'|'Open'|'Close')=>runAction(async()=>{
     const selected=kind==='Open'?await invoke<string|null>('dialog_open_project',{initialPath:state.current.path||null}):null;
     if(kind==='Open'&&!selected)return;
     if(selected)await invoke<ProjectView>('open_project',{path:selected});
     let discardPending=false;
     const s=state.current;
-    await protectReplacement({needsGuard:documentSignature(s.project)!==s.savedSignature||activeJob(s.job)||Boolean(hasPendingEvidence(s.job,s.results,s.climateResults)),
+    await protectReplacement({needsGuard:documentSignature(s.project)!==s.savedSignature||activeJob(s.job)||Boolean(hasPendingEvidence(s.job,s.results,s.climateResults,s.energyResults)),
       decide:()=>decide(kind),save:async()=>{await cancelAndWait();return save();},
       discard:async()=>{discardPending=true;},
       proceed:async()=>{
-        if(kind==='New'){await invoke<Project>('example');await invoke('discard_job');await newDocument();}
+        if(kind==='New Energy'){const destination=await invoke<string|null>('dialog_save_project',{initialPath:null});if(!destination)return;await cancelAndWait();const value=await invoke<ProjectView>('energy_create_example',{path:destination});await invoke('discard_job');setJob(null);state.current.job=null;acceptProject(value,destination,true);setMessage('Original synthetic thermal example saved; no engine has run.');}
+        else if(kind==='New'){await invoke<Project>('example');await invoke('discard_job');await newDocument();}
         else if(kind==='Open'&&selected){const value=await invoke<ProjectView>('open_project',{path:selected});await invoke('discard_job');setJob(null);state.current.job=null;setCollectionError(false);acceptProject(value,selected,true);setMessage('Project opened; run metadata integrity checked.');}
         else {await invoke('prepare_close',{discardPending});closing.current=true;try{await getCurrentWindow().destroy();}catch(e){closing.current=false;throw e;}}
       }});
@@ -180,7 +198,7 @@ export function useDocument() {
   const start=async(engineDir:string)=>runAction(async()=>{
     const s=state.current;if(!s.project||!s.validated)throw new Error('Wait for a valid document.');
     if(activeJob(s.job))throw new Error('One calculation is already active.');
-    if(hasPendingEvidence(s.job,s.results,s.climateResults))throw new Error('Recover or save the completed evidence first.');
+    if(hasPendingEvidence(s.job,s.results,s.climateResults,s.energyResults))throw new Error('Recover or save the completed evidence first.');
     if(!(await save()))return;
     attemptedCollection.current=null;
     const saved=state.current;
@@ -189,6 +207,25 @@ export function useDocument() {
       ?await invoke<JobStatus>('start_study',{path:saved.path,project:saved.project,alternativeId:s.alternative,study:configured,engineDir:engineDir.trim()||null})
       :await invoke<JobStatus>('start_run',{model:s.project.alternatives.find(a=>a.id===s.alternative)!.model,alternativeId:s.alternative,engineDir:engineDir.trim()||null,projectId:s.project.id});
     setJob(status);state.current.job=status;setMessage(`Design ${s.alternative} queued for real Radiance execution.`);
+  });
+  const startEnergy=async(engineDir:string)=>runAction(async()=>{
+    const s=state.current;if(!s.project?.energy)throw new Error('Create or open an energy document.');
+    if(activeJob(s.job)||hasPendingEvidence(s.job,s.results,s.climateResults,s.energyResults))throw new Error('Finish, cancel or save the current calculation first.');
+    if(!(await save()))return;attemptedCollection.current=null;const saved=state.current;
+    const status=await invoke<JobStatus>('energy_start',{path:saved.path,project:saved.project,alternativeId:saved.alternative,engineDir:engineDir.trim()||null});setJob(status);state.current.job=status;setMessage(`Design ${saved.alternative} queued for EnergyPlus execution; qualification remains separate.`);
+  });
+  const importEnergyWeather=async(file:string,source:WeatherSource,calendar:EnergyCalendar,applyLocation:boolean)=>runAction(async()=>{
+    if(energyLocked)throw new Error('Unlock thermal inputs before importing weather.');
+    if(activeJob(state.current.job))throw new Error('Finish or cancel the calculation before importing weather.');if(!(await save()))return;const s=state.current;
+    const value=await invoke<ProjectView>('energy_import_weather',{path:s.path,project:s.project,expectedRevision:s.revision,file,source,calendar,applyLocation});acceptProject(value,s.path);setMessage('Thermal weather admitted and saved with original bytes and explicit location policy.');
+  });
+  const commitEnergyMetadata=async(change:EnergyMetadataChange,label:string)=>runAction(async()=>{
+    const s=state.current;if(!s.project||activeJob(s.job))throw new Error('Finish or cancel the calculation before editing report metadata.');
+    const next=await history.current.editEnergyMetadata(s.project,s.alternative,change,label,configureEnergyMetadata);setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage(`${label} accepted; physical evidence unchanged.`);
+  });
+  const attachEnergyEvidence=async(file:string,caption:string,rights:string)=>runAction(async()=>{
+    if(activeJob(state.current.job))throw new Error('Finish or cancel the calculation before importing evidence.');
+    if(!(await save()))return;const s=state.current;const value=await invoke<ProjectView>('energy_attach',{path:s.path,project:s.project,expectedRevision:s.revision,alternativeId:s.alternative,file,caption,rights});acceptProject(value,s.path);setMessage('Inert evidence retained with model identity; excluded from exports until explicitly selected.');
   });
   const attachWeather=async(assetPath:string)=>runAction(async()=>{
     if(activeJob(state.current.job))throw new Error('Finish or cancel the calculation before importing weather.');
@@ -210,6 +247,13 @@ export function useDocument() {
     const destination=await invoke<string|null>('dialog_export_evidence',{initialPath:state.current.path||null});if(!destination)return;
     await invoke('export_project',{path:state.current.path,destination,selectedRuns:selectedRuns??null});setMessage('Portable evidence ZIP and offline report exported.');
   });
-  return {project,alternative,setAlternative,model,validated,results,climateResults,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
-    commit,commitStudy,attachWeather,importWeather,traverse,replace,save:()=>runAction(async()=>{await save();}),saveAs:()=>runAction(async()=>{await save(true);}),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');}),exportEvidence,runAction};
+  const energyReport=async(a:string,b:string,typstDir:string,htmlOnly:boolean,portableZip:boolean)=>runAction(async()=>{
+    if(activeJob(state.current.job))throw new Error('Finish or cancel the calculation before rendering reports.');
+    if(!(await save()))return;
+    const destination=await invoke<string|null>('dialog_energy_report',{portableZip});if(!destination)return;
+    await invoke('energy_report',{path:state.current.path,project:state.current.project,a,b,destination,typstDir:typstDir.trim()||null,htmlOnly,portableZip});
+    setMessage(portableZip?'Portable A/B energy evidence and reports exported.':htmlOnly?'HTML, CSV, JSON and SVG reports written; PDF/PNG explicitly not requested.':'Offline HTML, PDF, PNG, CSV, JSON and SVG reports written.');
+  });
+  return {project,alternative,setAlternative,model,validated,results,climateResults,energyResults,energyLocked,setEnergyLocked,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
+    commit,commitStudy,commitEnergy,commitEnergyMetadata,attachEnergyEvidence,attachWeather,importWeather,importEnergyWeather,startEnergy,energyReport,traverse,replace,save:()=>runAction(async()=>{await save();}),saveAs:()=>runAction(async()=>{await save(true);}),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');}),exportEvidence,runAction};
 }

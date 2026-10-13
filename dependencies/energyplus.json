@@ -1,0 +1,276 @@
+{
+  "schema": "greenlens.energyplus-dependency.v1",
+  "name": "EnergyPlus",
+  "version": "26.2.0",
+  "tag": "v26.2.0",
+  "commit": "4bd7a1f26fb749a83257855aba6760e26c8a3c8f",
+  "platform": "windows-x86_64",
+  "release_api": "https://api.github.com/repos/NatLabRockies/EnergyPlus/releases/tags/v26.2.0",
+  "source": "https://github.com/NatLabRockies/EnergyPlus/tree/v26.2.0",
+  "asset": "EnergyPlus-26.2.0-4bd7a1f26f-Windows-x86_64.zip",
+  "asset_id": 601450980,
+  "download_url": "https://github.com/NatLabRockies/EnergyPlus/releases/download/v26.2.0/EnergyPlus-26.2.0-4bd7a1f26f-Windows-x86_64.zip",
+  "sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+  "bytes": 254821638,
+  "package_directory": "EnergyPlus-26.2.0-4bd7a1f26f-Windows-x86_64",
+  "zip_entries": 9946,
+  "zip_uncompressed_bytes": 914024308,
+  "extraction_limits": {
+    "entries": 10000,
+    "uncompressed_bytes": 2147483648,
+    "entry_bytes": 536870912
+  },
+  "critical_files": {
+    "api-ms-win-core-console-l1-1-0.dll": {
+      "sha256": "59d78aec2611cc356702b3836cd6bc66575c594b458b7830877001a89a767547",
+      "bytes": 22896
+    },
+    "api-ms-win-core-console-l1-2-0.dll": {
+      "sha256": "5cd07f83247cbe9cfbc0932b6499ec5230b2163ec12421911eb5ee261462b33f",
+      "bytes": 22888
+    },
+    "api-ms-win-core-datetime-l1-1-0.dll": {
+      "sha256": "78f6c8078b69676497ad76b9ccc337a61f3020bca618ab0141f10972903b1bde",
+      "bytes": 22896
+    },
+    "api-ms-win-core-debug-l1-1-0.dll": {
+      "sha256": "1f5b7d47e991a1dc056f2f50cc62d4f77a51a590c56379f6fa4ecb5455f9b6f2",
+      "bytes": 22872
+    },
+    "api-ms-win-core-errorhandling-l1-1-0.dll": {
+      "sha256": "a1d3ec684400c79d2ec827ddb6d52f4121591694cf464dd653d6b239d136b0bd",
+      "bytes": 22896
+    },
+    "api-ms-win-core-fibers-l1-1-0.dll": {
+      "sha256": "c1d20209067be99a3c69a797e3f499dbe20f04c493ce289e55496a1d5066ca4b",
+      "bytes": 22872
+    },
+    "api-ms-win-core-fibers-l1-1-1.dll": {
+      "sha256": "7fe8a461983247ce74c1e1b09171c68a230a11a3c56142aad718f76ad81780e6",
+      "bytes": 22912
+    },
+    "api-ms-win-core-file-l1-1-0.dll": {
+      "sha256": "3a1cf66477892df44b9f451c8f947cac1329bc1f02399ca63621574154b51538",
+      "bytes": 26992
+    },
+    "api-ms-win-core-file-l1-2-0.dll": {
+      "sha256": "ba215618e8cc09ff2eaa664abbb0732b07db0e4661e16b04d170fc6668694304",
+      "bytes": 22872
+    },
+    "api-ms-win-core-file-l2-1-0.dll": {
+      "sha256": "75b953a6a99b9491244fa56c68ade516119ac473b8e8c64c152fdfd09df11bdc",
+      "bytes": 22872
+    },
+    "api-ms-win-core-handle-l1-1-0.dll": {
+      "sha256": "bd24621589d33a765542e6a109def69f61156bcd1cdc4a0c2e954ffb58de0432",
+      "bytes": 22872
+    },
+    "api-ms-win-core-heap-l1-1-0.dll": {
+      "sha256": "165c0c680b9ad7cf0d10cb02a6dbba897205bb27f7adfb00dfb0cefeb49a40c0",
+      "bytes": 22912
+    },
+    "api-ms-win-core-interlocked-l1-1-0.dll": {
+      "sha256": "697c2de8a219c586869df7b70198aa9d93831b907a2151841bc63943b42e4816",
+      "bytes": 22888
+    },
+    "api-ms-win-core-kernel32-legacy-l1-1-1.dll": {
+      "sha256": "71f4587da6097b837a0631c5c4804b94a3f6a419b9b5665f4e6333453a22fb98",
+      "bytes": 22896
+    },
+    "api-ms-win-core-libraryloader-l1-1-0.dll": {
+      "sha256": "5c4d953db991d849c22782419a8b436d6fc639c5412c34ea672a0c8891b6ca13",
+      "bytes": 22912
+    },
+    "api-ms-win-core-localization-l1-2-0.dll": {
+      "sha256": "16256dfc26826296c8c88471b176f98d3e7ad9a4afacdc5350d0fdd470f40909",
+      "bytes": 22896
+    },
+    "api-ms-win-core-memory-l1-1-0.dll": {
+      "sha256": "beb72ed3c23a5227523bbf9077c57e36540fac0c422c30ec3b63599e4edd2f9a",
+      "bytes": 22872
+    },
+    "api-ms-win-core-namedpipe-l1-1-0.dll": {
+      "sha256": "a44c1d24b3c342fb32ae2836ef890777c1950333c1c167d76383dcf093c8e8c3",
+      "bytes": 22872
+    },
+    "api-ms-win-core-processenvironment-l1-1-0.dll": {
+      "sha256": "bf79af5629a7e2df040ea1a26e3f74137f782f378ee2cedaca49db1fb4957800",
+      "bytes": 22896
+    },
+    "api-ms-win-core-processthreads-l1-1-0.dll": {
+      "sha256": "ffe2375e1d29d541659aa47aead5636afee8c17162e1b47dd7afb46ed52a78b3",
+      "bytes": 22912
+    },
+    "api-ms-win-core-processthreads-l1-1-1.dll": {
+      "sha256": "9de901ebf9dac5e9fad669a065cc2c8c06c2b02d74bcdaf472f02497538d5797",
+      "bytes": 22888
+    },
+    "api-ms-win-core-profile-l1-1-0.dll": {
+      "sha256": "69f5ed9328ff5fdbc14fff88c41184bfe7e8d0ef5d93f5fb467dd6c263b0d51f",
+      "bytes": 22872
+    },
+    "api-ms-win-core-rtlsupport-l1-1-0.dll": {
+      "sha256": "acb9c973980ab441226b30e3647a334ea31c1604d84c6a0aebc2ea4993358901",
+      "bytes": 22896
+    },
+    "api-ms-win-core-string-l1-1-0.dll": {
+      "sha256": "c6372337c9ce1dd2a521d9390fbc867d7445b44d360af8a56e2c0a860297da3f",
+      "bytes": 22888
+    },
+    "api-ms-win-core-synch-l1-1-0.dll": {
+      "sha256": "7e0eb833be2378f0686f958a74edb3fd44cc902c27d597f4ed3cfd7f206255f3",
+      "bytes": 22896
+    },
+    "api-ms-win-core-synch-l1-2-0.dll": {
+      "sha256": "3ba58aecb8e9e6d6620b98e0d8252a005f2bc350e79d1b182cb59883abe277cf",
+      "bytes": 22896
+    },
+    "api-ms-win-core-sysinfo-l1-1-0.dll": {
+      "sha256": "e40f7232de970478d9244ba4d8279c4e3bf30079b072e13298c663b529cb0787",
+      "bytes": 22872
+    },
+    "api-ms-win-core-sysinfo-l1-2-0.dll": {
+      "sha256": "c1eb0f061e8a3b0fc7b98a63eaf9dec264ce013fb9763c4d86dd14a670350c93",
+      "bytes": 22872
+    },
+    "api-ms-win-core-timezone-l1-1-0.dll": {
+      "sha256": "54a9178b6df11f2024e2b38761136d24d8ba0586b2cb4ee2c4722da8d6037b8e",
+      "bytes": 22872
+    },
+    "api-ms-win-core-util-l1-1-0.dll": {
+      "sha256": "a8c4b20070cd6c9346024b97ef15269d71bfb37796bccc5b439cbd3a3e5c3d9c",
+      "bytes": 22896
+    },
+    "api-ms-win-crt-conio-l1-1-0.dll": {
+      "sha256": "963ea14aba2ecfd7c61bb0d796292fff22ace2da5968d8b1db314345ae28cf4a",
+      "bytes": 22912
+    },
+    "api-ms-win-crt-convert-l1-1-0.dll": {
+      "sha256": "b88f98bcb692c6c5b4438767308f44adefda590710941eaa5c4af204f24f4321",
+      "bytes": 26968
+    },
+    "api-ms-win-crt-environment-l1-1-0.dll": {
+      "sha256": "a87560fd7d1bafb9e5519443253e0493e399d1081246b8f29a57e5e7346cd7bc",
+      "bytes": 22872
+    },
+    "api-ms-win-crt-filesystem-l1-1-0.dll": {
+      "sha256": "0d9a3d6106d280e6918a10051cdbf01f7425a9a92cffa070fd4b73fa8aa937bb",
+      "bytes": 22896
+    },
+    "api-ms-win-crt-heap-l1-1-0.dll": {
+      "sha256": "a564f90def67228e35a29ee1f11492c97be7a094ac151e93c03b1a6969cbbc25",
+      "bytes": 22912
+    },
+    "api-ms-win-crt-locale-l1-1-0.dll": {
+      "sha256": "6365a6acc38115f1b3ff099e918906b2edc46262a8b9c203d1768d0f4f0ee1b3",
+      "bytes": 22896
+    },
+    "api-ms-win-crt-math-l1-1-0.dll": {
+      "sha256": "f35e6b89190265a41b449bbb91d6004be673be313e60cceff4bb39e408aab46e",
+      "bytes": 31064
+    },
+    "api-ms-win-crt-multibyte-l1-1-0.dll": {
+      "sha256": "9a0db1e28ed4fe59cd930892511810628b2f36c3cba4f98403f17618619baa60",
+      "bytes": 31104
+    },
+    "api-ms-win-crt-private-l1-1-0.dll": {
+      "sha256": "553e11871e01f94d331be5e21138418d5e34023c6531d79f46f62fc47798e5c7",
+      "bytes": 76144
+    },
+    "api-ms-win-crt-process-l1-1-0.dll": {
+      "sha256": "05b29818af66f0b76903792ba37dc088ff330209e0de6b2cc8edbd518cc999d0",
+      "bytes": 22872
+    },
+    "api-ms-win-crt-runtime-l1-1-0.dll": {
+      "sha256": "659a5d57d7235e0892e6162828c5b144ee911f0c9c92844c1eab0961b88b1172",
+      "bytes": 27008
+    },
+    "api-ms-win-crt-stdio-l1-1-0.dll": {
+      "sha256": "55397a894ca181e23dc0f67d857f83a73b293c16ef2854f9c3dc939835f03c2f",
+      "bytes": 26984
+    },
+    "api-ms-win-crt-string-l1-1-0.dll": {
+      "sha256": "3dc14795df69a59fab83339e5e9d627aa66605f5e45adeb8b1ebdb92f36f6c67",
+      "bytes": 26992
+    },
+    "api-ms-win-crt-time-l1-1-0.dll": {
+      "sha256": "5fd56ad9d9a8df953edd9796335071fd8cd5202644a094185bbd9e494e46c64a",
+      "bytes": 22888
+    },
+    "api-ms-win-crt-utility-l1-1-0.dll": {
+      "sha256": "4d90d577248b381608f6a336a7fb5d7af10a0eb1723987704bd90979d147115f",
+      "bytes": 22912
+    },
+    "concrt140.dll": {
+      "sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376",
+      "bytes": 324208
+    },
+    "Energy+.idd": {
+      "sha256": "c307d88afba83fba3603c04899b0ec063f7472879d80d5cfa75020202707d55f",
+      "bytes": 4678552
+    },
+    "Energy+.schema.epJSON": {
+      "sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "bytes": 10796133
+    },
+    "energyplus.exe": {
+      "sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "bytes": 92672
+    },
+    "energyplusapi.dll": {
+      "sha256": "d018859a87c38276ff1cfef49487b32cfa1db0a4aa2d6ec3e7949d1bcd448d83",
+      "bytes": 35400704
+    },
+    "LICENSE.txt": {
+      "sha256": "261aa3c3a98cb059c57ba2db27f1e06d45546b63ed1a1883e9cd3fd31caaa4f0",
+      "bytes": 3184
+    },
+    "msvcp140.dll": {
+      "sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9",
+      "bytes": 557728
+    },
+    "msvcp140_1.dll": {
+      "sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d",
+      "bytes": 35952
+    },
+    "msvcp140_2.dll": {
+      "sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9",
+      "bytes": 280200
+    },
+    "msvcp140_atomic_wait.dll": {
+      "sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479",
+      "bytes": 50304
+    },
+    "msvcp140_codecvt_ids.dll": {
+      "sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18",
+      "bytes": 31872
+    },
+    "python312.dll": {
+      "sha256": "789a42ac160cef98f8925cb347473eeeb4e70f5513242e7faba5139ba06edf2d",
+      "bytes": 7009048
+    },
+    "PythonLicense.txt": {
+      "sha256": "2c5341be5d795302a11311a44aeddab536412e24d10ed3e3a142e1af17d2bc52",
+      "bytes": 2430
+    },
+    "ucrtbase.dll": {
+      "sha256": "8c9d0d38f521e86a780ae9b2a7c222ee14aad597dbe85a05b9241a9a52782aed",
+      "bytes": 1362288
+    },
+    "vcruntime140.dll": {
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "bytes": 124544
+    },
+    "vcruntime140_1.dll": {
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f",
+      "bytes": 49792
+    }
+  },
+  "license": "EnergyPlus License (BSD-style with EnergyPlus naming condition)",
+  "license_notice": "third-party/EnergyPlus-LICENSE.txt",
+  "license_source": "https://raw.githubusercontent.com/NatLabRockies/EnergyPlus/v26.2.0/LICENSE.txt",
+  "source_license_sha256": "6056c62430939d292fe52a0a7e1cf037d30b110ddb58fe4d51397531d187d653",
+  "package_license_sha256": "261aa3c3a98cb059c57ba2db27f1e06d45546b63ed1a1883e9cd3fd31caaa4f0",
+  "redistribution": "Unmodified upstream package acquired separately per user, not bundled in GreenLens. Retain all upstream licenses. GreenLens invokes energyplus.exe directly; no Python installation, EP-Launch, preprocessor, user plugin or shell script is part of the application recipe. Bundled Python/MSVC/UCRT runtime libraries remain upstream package components. Full third-party distribution review is required before any future binary bundling.",
+  "verification_status": "Archive/source/schema byte verification complete; controlled native feasibility pending."
+}

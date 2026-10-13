@@ -1,6 +1,8 @@
 # Installation and launch
 
-The historical v0.1 package was exercised on native Windows with no development server. Historical v0.2 package and interaction outcomes remain in [v0.2 native verification](v0.2-native-verification.md). The current 0.3.0 development candidate adds climate studies; consult [v0.3 native verification](v0.3-native-verification.md) and [release progress](progress.md) for its incomplete scientific/native acceptance. The following clean-machine installation route is documented; a separate clean Windows installation has not been tested.
+For the active **0.4.0 energy candidate**, use the [energy status and exact source commands](v0.4-energy-status.md). EnergyPlus and Typst/fonts are acquired separately with `scripts/install-energyplus.ps1` and `scripts/install-typst.ps1`; neither engine is bundled. Saved energy inspection needs no simulator, and PDF generation needs only the report renderer. The 0.4 installed workflow remains unverified until its acceptance record is published. Historical installation outcomes below describe their named versions.
+
+The historical v0.1 package was exercised on native Windows with no development server. Historical v0.2 package and interaction outcomes remain in [v0.2 native verification](v0.2-native-verification.md). Historical 0.3.0 adds climate studies whose scientific qualification remains failed; that bounded investigation is stopped. Consult [v0.3 native verification](v0.3-native-verification.md) and [release progress](progress.md) for its separate incomplete acceptance. The following clean-machine installation route is documented; a separate clean Windows installation has not been tested.
 
 ## Windows users
 
@@ -31,7 +33,7 @@ For an engine installed elsewhere, enter the directory containing `bin` and `lib
 
 The pinned Windows Radiance package requires an **ASCII-only engine installation path**, including its parent directories, for CAL-library lookup. Spaces are supported. A non-ASCII engine path can fail with `cannot find function file "rayinit.cal": Invalid argument` even when the file exists. Choose a separate local ASCII path with `./scripts/install-radiance.ps1 -InstallDirectory <path>` and configure its `package` subdirectory in GreenLens. This limitation concerns the engine and its libraries; tested project and working directories contain spaces and Chinese characters. If the Windows user profile itself has non-ASCII characters, select a writable ASCII engine location explicitly.
 
-For climate studies, follow the [weather import, annual desktop and CLI guide](v0.3-usage.md). The real-weather example retains PVGIS/ERA5 attribution and source-specific time conventions. Climate verification scripts require PowerShell 7.5 or newer. Annual numerical accuracy and installed workflow checks are still in progress; the candidate must not be represented as a verified release.
+For historical climate studies, follow the [weather import, annual desktop and CLI guide](v0.3-usage.md). The real-weather example retains PVGIS/ERA5 attribution and source-specific time conventions. Climate verification scripts require PowerShell 7.5 or newer. The failed numerical qualification and outstanding native observations remain visible; energy verification does not qualify those daylight results.
 
 ## Build from source
 
@@ -51,6 +53,7 @@ For a production package and CLI:
 
 ```powershell
 . ./scripts/dev-env.ps1
+$env:CARGO_BUILD_JOBS = '1' # Bound compiler memory on a shared desktop.
 cargo build -p greenlens-cli --release
 Push-Location apps/desktop
 npm run tauri -- build --ci
@@ -69,3 +72,5 @@ Source stays in the checkout. Build products, engine installation, disposable oc
 A project contains `project.json`, relative `runs/<id>` evidence directories and, for retained climate weather, `weather/<id>` assets. Copy the whole directory after saving. Historical run inputs are immutable; edited geometry, weather or numerical settings can make a physical result stale, while occupancy/threshold edits change the derived metric identity. External edits and concurrent writers are rejected rather than overwritten. Simultaneous editing across devices is unsupported. Climate exports select immutable run IDs explicitly; see the mode-specific formats and tolerances in [replay](replay.md). Export to a new ZIP filename; existing exports are not replaced.
 
 For a lost lock after an application crash, ordinary OS locks release automatically; the small `.greenlens.lock` file may remain and is harmless. Do not remove a file to try to bypass a live writer.
+
+The v0.4 offline documentation index is version 2 with a bounded 16 MiB total and 2 MiB per document, sufficient to retain historical evidence and added reviewed runtime notices. Simulation evidence-package limits are unchanged. See [dependency review](dependencies.md).

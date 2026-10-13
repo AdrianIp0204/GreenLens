@@ -1,0 +1,41 @@
+{
+  "schema": "greenlens.energy-lifecycle-failure.v1",
+  "job_id": "17e050f6-43de-44fa-80e0-653ed62418ac",
+  "process": {
+    "schema_version": "greenlens.native-process.v0.4",
+    "executable": "energyplus.exe",
+    "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+    "arguments": [
+      "--jobs",
+      "1",
+      "--weather",
+      "weather.epw",
+      "--output-directory",
+      ".",
+      "--output-prefix",
+      "eplus",
+      "../model.epJSON"
+    ],
+    "started_utc": "2026-10-13T05:52:02.474863900+00:00",
+    "finished_utc": "2026-10-13T05:52:09.750419300+00:00",
+    "elapsed_ms": 7278,
+    "exit_code": -1073741510,
+    "state": "failed",
+    "failure": "The system cannot find the file specified. (os error 2)",
+    "process_tree_empty": true,
+    "sampled_peak_runner_plus_job_working_set_bytes": 275513344,
+    "peak_observed_scratch_bytes": 1418222,
+    "samples": 118,
+    "stdout_sha256": "ed04e842be1565bcf588e5f2a05cc2fa3de9d840957c11bf0f880003546184ad",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "engine_error_file_sha256": "cf1102bc70c0e6ba38a16ecba1df4505fc79e0282179d8b38606b0e53176d9dc",
+  "native_completion_lines": [
+    "   ************* EnergyPlus Completed Successfully-- 1 Warning; 0 Severe Errors; Elapsed Time=00hr 00min  6.38sec"
+  ],
+  "completed_evidence_promoted": false,
+  "diagnosis": "Native temporary-file cleanup raced with scratch sampling. Live sampling now tolerates only NotFound for entries already enumerated; missing root, other errors and final evidence scan remain strict.",
+  "regression": "greenlens-process::tests::live_scratch_removal_is_not_a_failed_process_or_a_final_measurement_skip",
+  "fix_source_sha256": "f78692ec961b4d1c15c9c2465774b6573cc62bbb889947db6d808445f9cb84d9",
+  "scientific_qualification_asserted": false
+}

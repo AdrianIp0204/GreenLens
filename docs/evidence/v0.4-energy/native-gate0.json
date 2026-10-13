@@ -1,0 +1,1107 @@
+{
+  "schema": "greenlens.energy-gate0-audit.v1",
+  "auditor_sha256": "214b021e61048df222a0dc23a064017e9c08198778972e8ce1bfe01fdbf02bf1",
+  "cases": [
+    {
+      "case": "electrical",
+      "zones": 1,
+      "intervals": 52560,
+      "channels": 5,
+      "all_checks_pass": true,
+      "checks": {
+        "finite_values": 262800,
+        "timestamps": 52560,
+        "meter_partition": 52560,
+        "supply_ventilation_partition": 0,
+        "package_aggregate": 0,
+        "off_cycle": 0
+      },
+      "maximum_facility_residual_j": 0.0,
+      "limited_physics": {
+        "fixed_electrical_oracle_pass": true
+      },
+      "columns": {
+        "Z1:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 2892364.121302411,
+          "min": 55.029758776682094,
+          "max": 55.0297587766821
+        },
+        "Electricity:Facility [J](TimeStep)": {
+          "sum": 25228800000.0,
+          "min": 480000.0,
+          "max": 480000.0,
+          "kwh": 7008.0
+        },
+        "ExteriorLights:Electricity [J](TimeStep)": {
+          "sum": 1576800000.0,
+          "min": 30000.0,
+          "max": 30000.0,
+          "kwh": 438.0
+        },
+        "InteriorEquipment:Electricity [J](TimeStep)": {
+          "sum": 15768000000.0,
+          "min": 300000.0,
+          "max": 300000.0,
+          "kwh": 4380.0
+        },
+        "InteriorLights:Electricity [J](TimeStep)": {
+          "sum": 7884000000.0,
+          "min": 150000.0,
+          "max": 150000.0,
+          "kwh": 2190.0
+        }
+      },
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T02:38:16.5025948Z",
+        "finished_utc": "2026-10-13T02:38:20.9364292Z",
+        "wall_seconds": 4.4175831,
+        "sampled_peak_working_set_bytes": 281911296,
+        "sampled_runner_plus_engine_peak_bytes": 474923008,
+        "sampled_scratch_peak_bytes": 7642797,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 2440,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "file_bytes": 134217728,
+          "timeout_seconds": 900.0,
+          "memory_bytes": 2147483648,
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5
+        },
+        "completed": true
+      },
+      "files": {
+        "eplusmtr.csv": {
+          "bytes": 2785852,
+          "sha256": "c05e1d09c5fe858977b0448a08a9dc9d007d904c451fdb0436b07cfe19dd78d1"
+        },
+        "eplusout.audit": {
+          "bytes": 1569,
+          "sha256": "21c67270f17dc96a5d613ae10927fd8ebb717e3773e7c4eb66761a91a076ca08"
+        },
+        "eplusout.bnd": {
+          "bytes": 6365,
+          "sha256": "906eaa695bb95adea31f90122a376fcc7afd80fd02af0a05d9627336175d6b4f"
+        },
+        "eplusout.csv": {
+          "bytes": 3745115,
+          "sha256": "740482260145d8bfee732784c933571eafcf68d8dcb88fe6a19f7c7e6ea3714a"
+        },
+        "eplusout.eio": {
+          "bytes": 13318,
+          "sha256": "35b946237bf3f6beb626017f7b558318835baf35fa67bfb490b5730f631425e6"
+        },
+        "eplusout.end": {
+          "bytes": 98,
+          "sha256": "decdef1db1ca8de178cc94f0cb4012606cc0be59530d11bab3d24a50c6dbd37f"
+        },
+        "eplusout.err": {
+          "bytes": 2028,
+          "sha256": "b37fbac1f7cbeea28ff2b071124ed0db5000d3eab7fae5ed3815d1664eea84f0"
+        },
+        "eplusout.mdd": {
+          "bytes": 5942,
+          "sha256": "5140e3caa0b2d4da50c1bb7dbfd3cf85e903bd78c6ac24cd0b50036a63366892"
+        },
+        "eplusout.mtd": {
+          "bytes": 11332,
+          "sha256": "8e9c055c80b3add9c8c57ceca6c7ace686ce15fa9519dbb5852e9e99300b9051"
+        },
+        "eplusout.rdd": {
+          "bytes": 32682,
+          "sha256": "2378b5d74e6717c505d34490d37cb8c76468f26ec03c70f59d0b55b008d971d6"
+        },
+        "eplusout.shd": {
+          "bytes": 1432,
+          "sha256": "59bfcdc8f178935dd89acad88bbc47c09643c7a7771f60fe914f24ab7fb316a2"
+        },
+        "execution-declaration.json": {
+          "bytes": 1101,
+          "sha256": "b9b2c8c003ec6d9e61634a0c877b690b9fe81892268da9d00cac6161994ca177"
+        },
+        "fixture-declaration.json": {
+          "bytes": 1021,
+          "sha256": "da0656c55864abc673d2d8fc95a662b68ec0c1bd1af38935db4900a5d3dc0fed"
+        },
+        "model.epJSON": {
+          "bytes": 10862,
+          "sha256": "851b4680078386937affda5d16674bb56039259bdfc299eca9d4efa083b4f1ea"
+        },
+        "processes.json": {
+          "bytes": 1030,
+          "sha256": "97a408b72a4b0c0576c6ec8681aec49b96f2a286be05adbe2e6c28df9792b0cd"
+        },
+        "stdout.txt": {
+          "bytes": 2440,
+          "sha256": "0c03d18a929724bd053d95a04c306e2e91c2b1ce24bf347ed090aac099fb8843"
+        },
+        "weather.epw": {
+          "bytes": 1021640,
+          "sha256": "1c11ce61bcbdd8fd3d9f5564b9d0877515c17a6dc632700984ad43620bb54817"
+        }
+      },
+      "total_retained_bytes": 7643827,
+      "maximum_file_bytes": 3745115,
+      "warnings": [
+        "** Warning ** This building has no thermal mass which can cause an unstable solution.",
+        "** Warning ** CheckUsedConstructions: There are 1 nominally unused constructions in input."
+      ],
+      "qualification": false
+    },
+    {
+      "case": "envelope",
+      "zones": 1,
+      "intervals": 1008,
+      "channels": 6,
+      "all_checks_pass": true,
+      "checks": {
+        "finite_values": 6048,
+        "timestamps": 1008,
+        "meter_partition": 0,
+        "supply_ventilation_partition": 0,
+        "package_aggregate": 0,
+        "off_cycle": 0
+      },
+      "maximum_facility_residual_j": 0.0,
+      "limited_physics": {
+        "fixed_envelope_oracle_pass": true,
+        "final_day_wall_w": 56.07476634659565,
+        "independent_wall_w": 56.074766355140184,
+        "absolute_difference_w": 8.544532192900078e-09,
+        "final_day_range_w": 0.0,
+        "radiation_omission_bound_w": 0.001
+      },
+      "columns": {
+        "Z1S:Surface Inside Face Temperature [C](TimeStep)": {
+          "sum": 25671.028037311855,
+          "min": 25.46728971955541,
+          "max": 25.46728971955541
+        },
+        "Z1S:Surface Outside Face Temperature [C](TimeStep)": {
+          "sum": 35091.588783539926,
+          "min": 34.813084110654685,
+          "max": 34.813084110654685
+        },
+        "Z1S:Surface Inside Face Conduction Heat Transfer Rate [W](TimeStep)": {
+          "sum": 56523.36447736842,
+          "min": 56.07476634659565,
+          "max": 56.07476634659565
+        },
+        "Z1:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 25200.0,
+          "min": 25.0,
+          "max": 25.0
+        },
+        "Z1:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 25200.0,
+          "min": 25.0,
+          "max": 25.0
+        },
+        "Z1 AC:Zone Ideal Loads Supply Air Total Cooling Rate [W](TimeStep)": {
+          "sum": 56523.364477372896,
+          "min": 56.07476634660009,
+          "max": 56.07476634660009
+        }
+      },
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T02:39:25.9143230Z",
+        "finished_utc": "2026-10-13T02:39:26.7519764Z",
+        "wall_seconds": 0.8246777,
+        "sampled_peak_working_set_bytes": 210726912,
+        "sampled_runner_plus_engine_peak_bytes": 387239936,
+        "sampled_scratch_peak_bytes": 1210112,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 460,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "memory_bytes": 2147483648,
+          "timeout_seconds": 900.0,
+          "file_bytes": 134217728,
+          "scratch_bytes": 1073741824,
+          "cleanup_seconds": 5
+        },
+        "completed": true
+      },
+      "files": {
+        "eplusout.audit": {
+          "bytes": 1569,
+          "sha256": "b55f87f50faa3e19841475338a7cafed43f8c4ce4094eb76ee8b96968a193ee1"
+        },
+        "eplusout.bnd": {
+          "bytes": 8475,
+          "sha256": "2a94f12bf11c073088b94f92d522ce4fae3aec65f1527bbc1d94b45d07e34e22"
+        },
+        "eplusout.csv": {
+          "bytes": 102160,
+          "sha256": "f35a370e48dbe99222fc8461dd9be369d5915843afe87359f14e2e497f700630"
+        },
+        "eplusout.eio": {
+          "bytes": 11363,
+          "sha256": "3e4b73e0c966e54e799f9006dc5ce2ff9b88cd0b4b435573780f4b21885bf69c"
+        },
+        "eplusout.end": {
+          "bytes": 98,
+          "sha256": "ff164a9f19b410283e684a3ec84bf5d9f09b0241b3f2e38567883abc03fa89e5"
+        },
+        "eplusout.err": {
+          "bytes": 2520,
+          "sha256": "1f06fa538c4db36a942502f094d1139da761cabbff408f3b8163cea517e10ef6"
+        },
+        "eplusout.mdd": {
+          "bytes": 2810,
+          "sha256": "ed2432dcebe4adbf39f16a64e45f35786d113e474f159dcfc301d23d78ffcbb0"
+        },
+        "eplusout.mtd": {
+          "bytes": 5686,
+          "sha256": "90970a01f7351477403ed7ca16a610f8858f24545b872a332dba25ff8d0f98a8"
+        },
+        "eplusout.rdd": {
+          "bytes": 35619,
+          "sha256": "17657369024e719fba00f37653f4ef1adc16af02c4e63705d0abb8240428b527"
+        },
+        "eplusout.shd": {
+          "bytes": 1392,
+          "sha256": "3f22b3fabc8c467e76f0f82cf90bb5afccc2da5e7b81dcecf1d3f7d1c85b093b"
+        },
+        "execution-declaration.json": {
+          "bytes": 1101,
+          "sha256": "63ef32901066c8a4facbdd20150e906b1a65dd2948894e0a6c858fdccde26d40"
+        },
+        "fixture-declaration.json": {
+          "bytes": 1208,
+          "sha256": "c7e1b25f42b42a25f334be4ddccbb66ad944f0575bd2e4fa3b0cdad543451682"
+        },
+        "model.epJSON": {
+          "bytes": 14011,
+          "sha256": "dd0bba13767c43daec2c15d40cc08dd319f4fc4192800dfbef1e2d04f5f500f4"
+        },
+        "processes.json": {
+          "bytes": 1029,
+          "sha256": "daa0ee7fd69a2cf4794cc0c74087b8f1e7fdcce60a899b852177ae2fd705b96f"
+        },
+        "stdout.txt": {
+          "bytes": 460,
+          "sha256": "987ee644c52752ef899d0038faea64744c4e58adfffbeb0d32c1826c2aed8772"
+        },
+        "weather.epw": {
+          "bytes": 1021640,
+          "sha256": "1c11ce61bcbdd8fd3d9f5564b9d0877515c17a6dc632700984ad43620bb54817"
+        }
+      },
+      "total_retained_bytes": 1211141,
+      "maximum_file_bytes": 1021640,
+      "warnings": [
+        "** Warning ** This building has no thermal mass which can cause an unstable solution.",
+        "** Warning ** CheckUsedConstructions: There are 1 nominally unused constructions in input.",
+        "** Warning ** ComputeIntSWAbsorbFactors: Sum of area times inside solar absorption for all surfaces is zero in Enclosure: Z1",
+        "** Warning ** Zone areas*inside surface emissivities are summing to zero, for Zone=\"Z1\"",
+        "** Warning ** Enclosure areas*inside surface emissivities are summing to zero, for Enclosure=\"Z1\""
+      ],
+      "qualification": false
+    },
+    {
+      "case": "dx",
+      "zones": 1,
+      "intervals": 432,
+      "channels": 14,
+      "all_checks_pass": true,
+      "checks": {
+        "finite_values": 6048,
+        "timestamps": 432,
+        "meter_partition": 432,
+        "supply_ventilation_partition": 432,
+        "package_aggregate": 432,
+        "off_cycle": 108
+      },
+      "maximum_facility_residual_j": 0.0,
+      "limited_physics": {},
+      "columns": {
+        "Z1:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 12506.435609224925,
+          "min": 23.997716478498795,
+          "max": 46.05763937351411
+        },
+        "Z1:Zone Ventilation Standard Density Volume Flow Rate [m3/s](TimeStep)": {
+          "sum": 8.64,
+          "min": 0.01999999999999997,
+          "max": 0.020000000000000028
+        },
+        "Z1:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1036800.0,
+          "min": 2399.9999999999995,
+          "max": 2400.0,
+          "kwh": 0.288
+        },
+        "Z1:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 10368.0,
+          "min": 23.999999999999964,
+          "max": 24.000000000000036
+        },
+        "Z1 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 13608000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 3.78
+        },
+        "Z1 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 320120322.16260976,
+          "min": 0.0,
+          "max": 4200000.000000001,
+          "kwh": 88.92231171183604
+        },
+        "Z1 COIL:Cooling Coil Electricity Energy [J](TimeStep)": {
+          "sum": 120047483.23118539,
+          "min": 0.0,
+          "max": 1399999.9999999998,
+          "kwh": 33.34652311977372
+        },
+        "Z1 AC:Zone Window Air Conditioner Electricity Energy [J](TimeStep)": {
+          "sum": 133655483.23118539,
+          "min": 0.0,
+          "max": 1441999.9999999998,
+          "kwh": 37.12652311977372
+        },
+        "Cooling:Electricity [J](TimeStep)": {
+          "sum": 120047483.23118539,
+          "min": 0.0,
+          "max": 1399999.9999999998,
+          "kwh": 33.34652311977372
+        },
+        "Electricity:Facility [J](TimeStep)": {
+          "sum": 342052283.2311854,
+          "min": 482400.0,
+          "max": 1924399.9999999998,
+          "kwh": 95.01452311977371
+        },
+        "ExteriorLights:Electricity [J](TimeStep)": {
+          "sum": 12960000.0,
+          "min": 30000.0,
+          "max": 30000.0,
+          "kwh": 3.6
+        },
+        "Fans:Electricity [J](TimeStep)": {
+          "sum": 14644800.0,
+          "min": 2399.9999999999995,
+          "max": 44400.0,
+          "kwh": 4.068
+        },
+        "InteriorEquipment:Electricity [J](TimeStep)": {
+          "sum": 129600000.0,
+          "min": 300000.0,
+          "max": 300000.0,
+          "kwh": 36.0
+        },
+        "InteriorLights:Electricity [J](TimeStep)": {
+          "sum": 64800000.0,
+          "min": 150000.0,
+          "max": 150000.0,
+          "kwh": 18.0
+        }
+      },
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T02:39:36.7980409Z",
+        "finished_utc": "2026-10-13T02:39:37.6629478Z",
+        "wall_seconds": 0.8528924,
+        "sampled_peak_working_set_bytes": 211062784,
+        "sampled_runner_plus_engine_peak_bytes": 385089536,
+        "sampled_scratch_peak_bytes": 1245745,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 460,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "scratch_bytes": 1073741824,
+          "file_bytes": 134217728,
+          "timeout_seconds": 900.0,
+          "memory_bytes": 2147483648,
+          "cleanup_seconds": 5
+        },
+        "completed": true
+      },
+      "files": {
+        "eplusmtr.csv": {
+          "bytes": 35771,
+          "sha256": "0648d547019fa8030e27c3a7441ef57588b62b77f0bb386f3bb080b729668cc4"
+        },
+        "eplusout.audit": {
+          "bytes": 1569,
+          "sha256": "8964af4d98494399bd0cfccbd46387d03b07708beb0af77d57b95aee789c9b0b"
+        },
+        "eplusout.bnd": {
+          "bytes": 9712,
+          "sha256": "1c77306ac170893fedcd8112bd4ab0da884873f7a0fd8bf5144474cdf0b28f00"
+        },
+        "eplusout.csv": {
+          "bytes": 74205,
+          "sha256": "b40d95310de55e71a5564080d53e0be30033c46d589ab0b16f238b6bda0777b4"
+        },
+        "eplusout.eio": {
+          "bytes": 15825,
+          "sha256": "d42595f692f7f3ebc4cd0ff87fa56fb54e88223a7c892cfc83b1d7a240d59822"
+        },
+        "eplusout.end": {
+          "bytes": 98,
+          "sha256": "fc66bb98cb54a7388c4a8b3719cb1b5a1a7000531a84d0169924a4604940ac93"
+        },
+        "eplusout.err": {
+          "bytes": 2028,
+          "sha256": "811cedebc53cfe8df99186149d7ecf50c3fc37e69b75833b955cc2bc9983c6c1"
+        },
+        "eplusout.mdd": {
+          "bytes": 7158,
+          "sha256": "56bbeb4d1b179b467175b445cd13fda30edeffaa2f9058dcfe62dca10125960c"
+        },
+        "eplusout.mtd": {
+          "bytes": 14561,
+          "sha256": "9258ce130fcb5818df04d623af73bfa605f94494208b4ba9e7fecb53d499dd7a"
+        },
+        "eplusout.rdd": {
+          "bytes": 40542,
+          "sha256": "332963052b05aeb032f1f2b1ef1191a5103b1fca7402fb0072cd3df09b04d299"
+        },
+        "eplusout.shd": {
+          "bytes": 1432,
+          "sha256": "59bfcdc8f178935dd89acad88bbc47c09643c7a7771f60fe914f24ab7fb316a2"
+        },
+        "execution-declaration.json": {
+          "bytes": 1101,
+          "sha256": "16b1d6b1968486e491271c5ab3baaa020ff98667f69c4429aebeac8037940d7b"
+        },
+        "fixture-declaration.json": {
+          "bytes": 1299,
+          "sha256": "dafee2625752b865fc8694227c5d1583a92b64c7c2874a2aa086975d991886c8"
+        },
+        "model.epJSON": {
+          "bytes": 18344,
+          "sha256": "99cbeeb01247c0686eeb41b8e64f85fa33747811b62521ef9d0dd68bff8fded0"
+        },
+        "processes.json": {
+          "bytes": 1029,
+          "sha256": "a7f9702ce7e211275a233353f26009bb9d3aaafd89c9dad85f75c0d196a8924c"
+        },
+        "stdout.txt": {
+          "bytes": 460,
+          "sha256": "e91dc4cd2e0135eac6aa823e759209957e3bc0d7c8a2b1540857d9de70c9d623"
+        },
+        "weather.epw": {
+          "bytes": 1021640,
+          "sha256": "1c11ce61bcbdd8fd3d9f5564b9d0877515c17a6dc632700984ad43620bb54817"
+        }
+      },
+      "total_retained_bytes": 1246774,
+      "maximum_file_bytes": 1021640,
+      "warnings": [
+        "** Warning ** This building has no thermal mass which can cause an unstable solution.",
+        "** Warning ** CheckUsedConstructions: There are 1 nominally unused constructions in input."
+      ],
+      "qualification": false
+    },
+    {
+      "case": "resource8",
+      "zones": 8,
+      "intervals": 52560,
+      "channels": 46,
+      "all_checks_pass": true,
+      "checks": {
+        "finite_values": 2417760,
+        "timestamps": 52560,
+        "meter_partition": 52560,
+        "supply_ventilation_partition": 52560,
+        "package_aggregate": 0,
+        "off_cycle": 0
+      },
+      "maximum_facility_residual_j": 3.725290298461914e-09,
+      "limited_physics": {},
+      "columns": {
+        "Z1:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1572686.7492099423,
+          "min": 23.997935686622508,
+          "max": 51.432031710560054
+        },
+        "Z2:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1572686.7492099423,
+          "min": 23.997935686622505,
+          "max": 51.432031710560054
+        },
+        "Z3:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1591033.3383187475,
+          "min": 23.997970481337237,
+          "max": 53.25655443266196
+        },
+        "Z4:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1591033.3383187475,
+          "min": 23.997970481337244,
+          "max": 53.256554432661964
+        },
+        "Z5:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1543354.1896609114,
+          "min": 23.99789647949646,
+          "max": 48.47743509416253
+        },
+        "Z6:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1543354.1896609114,
+          "min": 23.997896479496465,
+          "max": 48.47743509416253
+        },
+        "Z7:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1557336.666311491,
+          "min": 23.997931619513125,
+          "max": 49.85798783555265
+        },
+        "Z8:Zone Mean Air Temperature [C](TimeStep)": {
+          "sum": 1557336.666311491,
+          "min": 23.997931619513125,
+          "max": 49.85798783555265
+        },
+        "Z1:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z2:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z3:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z4:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z5:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z6:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z7:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z8:Zone Ventilation Fan Electricity Energy [J](TimeStep)": {
+          "sum": 126144000.0,
+          "min": 2399.999999999999,
+          "max": 2400.0,
+          "kwh": 35.04
+        },
+        "Z1:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z2:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z3:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z4:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z5:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z6:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z7:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z8:Zone Thermostat Cooling Setpoint Temperature [C](TimeStep)": {
+          "sum": 1261440.0,
+          "min": 23.99999999999999,
+          "max": 24.00000000000007
+        },
+        "Z1 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z2 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z3 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z4 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z5 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z6 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z7 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z8 SUPPLY FAN:Fan Electricity Energy [J](TimeStep)": {
+          "sum": 1655640000.0,
+          "min": 0.0,
+          "max": 42000.0,
+          "kwh": 459.9
+        },
+        "Z1 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 38650073141.434975,
+          "min": 0.0,
+          "max": 4200000.000000002,
+          "kwh": 10736.131428176383
+        },
+        "Z2 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 38650073141.434975,
+          "min": 0.0,
+          "max": 4200000.000000002,
+          "kwh": 10736.131428176383
+        },
+        "Z3 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 37984111281.270424,
+          "min": 0.0,
+          "max": 4200000.000000001,
+          "kwh": 10551.142022575117
+        },
+        "Z4 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 37984111281.27043,
+          "min": 0.0,
+          "max": 4200000.000000002,
+          "kwh": 10551.142022575119
+        },
+        "Z5 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 38611391149.46301,
+          "min": 0.0,
+          "max": 4200000.000000002,
+          "kwh": 10725.386430406392
+        },
+        "Z6 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 38611391149.46301,
+          "min": 0.0,
+          "max": 4200000.000000002,
+          "kwh": 10725.386430406392
+        },
+        "Z7 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 37910332118.56436,
+          "min": 0.0,
+          "max": 4200000.000000002,
+          "kwh": 10530.647810712322
+        },
+        "Z8 COIL:Cooling Coil Total Cooling Energy [J](TimeStep)": {
+          "sum": 37910332118.56436,
+          "min": 0.0,
+          "max": 4200000.000000002,
+          "kwh": 10530.647810712322
+        },
+        "Cooling:Electricity [J](TimeStep)": {
+          "sum": 114827463235.56703,
+          "min": 0.0,
+          "max": 11199999.999999998,
+          "kwh": 31896.517565435286
+        },
+        "Electricity:Facility [J](TimeStep)": {
+          "sum": 319874535235.567,
+          "min": 3649200.0,
+          "max": 15185200.0,
+          "kwh": 88854.03756543528
+        },
+        "ExteriorLights:Electricity [J](TimeStep)": {
+          "sum": 1576800000.0,
+          "min": 30000.0,
+          "max": 30000.0,
+          "kwh": 438.0
+        },
+        "Fans:Electricity [J](TimeStep)": {
+          "sum": 14254272000.0,
+          "min": 19199.999999999996,
+          "max": 355200.0,
+          "kwh": 3959.52
+        },
+        "InteriorEquipment:Electricity [J](TimeStep)": {
+          "sum": 126144000000.0,
+          "min": 2400000.0,
+          "max": 2400000.0,
+          "kwh": 35040.0
+        },
+        "InteriorLights:Electricity [J](TimeStep)": {
+          "sum": 63072000000.0,
+          "min": 1200000.0,
+          "max": 1200000.0,
+          "kwh": 17520.0
+        }
+      },
+      "process": {
+        "executable": "energyplus.exe",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "model.epJSON"
+        ],
+        "exit_code": 0,
+        "stderr": "EnergyPlus Completed Successfully.\r\n",
+        "started_utc": "2026-10-13T02:40:20.6338727Z",
+        "finished_utc": "2026-10-13T02:40:28.9832167Z",
+        "wall_seconds": 8.3377967,
+        "sampled_peak_working_set_bytes": 498614272,
+        "sampled_runner_plus_engine_peak_bytes": 685019136,
+        "sampled_scratch_peak_bytes": 32530913,
+        "input_bytes": 0,
+        "input_transport": "small-text",
+        "input_receipt": null,
+        "output_bytes": 2440,
+        "terminated_tree_reason": null,
+        "job_assignment": "CreateProcess STARTUPINFOEX JOB_LIST",
+        "job_empty": true,
+        "stream_tasks_completed": true,
+        "limits": {
+          "timeout_seconds": 1800.0,
+          "file_bytes": 134217728,
+          "scratch_bytes": 1073741824,
+          "memory_bytes": 2147483648,
+          "cleanup_seconds": 5
+        },
+        "completed": true
+      },
+      "files": {
+        "eplusmtr.csv": {
+          "bytes": 4503811,
+          "sha256": "3a05e5428023b02cf217a4748550b22af366c9474a4a66b5f4f5ba5173dfc143"
+        },
+        "eplusout.audit": {
+          "bytes": 1569,
+          "sha256": "7f072d3975247f35681b3e3b2d24cff93921933c80720d4b9e57d119792c2cfe"
+        },
+        "eplusout.bnd": {
+          "bytes": 23658,
+          "sha256": "91dd41775b941d8a66a96c75eefa7f01ada8f88830c14988202485f8fe936e1f"
+        },
+        "eplusout.csv": {
+          "bytes": 26714322,
+          "sha256": "72df48a44d06c65cb692fb10f94094112d5a59e328a474efbaa05fc1d62b1aea"
+        },
+        "eplusout.eio": {
+          "bytes": 29560,
+          "sha256": "0e0590d714c8b2cb4703f428b8f995e8149877cf7c41308c9712000ac94d8289"
+        },
+        "eplusout.end": {
+          "bytes": 98,
+          "sha256": "30b64bb5bf8654c8b513f0885d8d84e5a1d427a18cbc3aaef9358e3b36404496"
+        },
+        "eplusout.err": {
+          "bytes": 1233,
+          "sha256": "8a1b72f7f3679f2597eb4d9452a41a3278a39f9adcb238d36712f9648766d16f"
+        },
+        "eplusout.mdd": {
+          "bytes": 18778,
+          "sha256": "4a95153f0b4a9780894e38560894f07c5e888754edce9f6d79cde62b22f73185"
+        },
+        "eplusout.mtd": {
+          "bytes": 64257,
+          "sha256": "d6a0914f4666069ca91adca5459fa6609053a2d37c0edd3856b2f3c1f99e2f6b"
+        },
+        "eplusout.rdd": {
+          "bytes": 44595,
+          "sha256": "ebc3c53f9859a4f3e01061c432e38d2d4b445e01dd6c8e3f6e3b5dc87d25655c"
+        },
+        "eplusout.shd": {
+          "bytes": 10898,
+          "sha256": "bf39d204b482eaec3c8602e6d30986f501278b104bcfff9aa15d59a6a3a8c5c6"
+        },
+        "execution-declaration.json": {
+          "bytes": 1102,
+          "sha256": "21cb20c9429eb16be33b26682af96cc59b9d21129a6f8699f87113a6bac18e72"
+        },
+        "fixture-declaration.json": {
+          "bytes": 1311,
+          "sha256": "22db7c33da9d8dd2ea448982fc6e4d950013d00c22ac1841a177938422005c3c"
+        },
+        "model.epJSON": {
+          "bytes": 91641,
+          "sha256": "78e38adc94024bfb2707365bc876fce40e9921ed1432c706dc898dbd2dd5c360"
+        },
+        "processes.json": {
+          "bytes": 1032,
+          "sha256": "c5d9d193d0a85424c3e938b0515e30868ea38c994f905bf6e47265e2c25e114f"
+        },
+        "stdout.txt": {
+          "bytes": 2440,
+          "sha256": "319d6fc68f1d502daaf4a91c287b1f501d09aaa3ecb050a8cbbd38ba94666b97"
+        },
+        "weather.epw": {
+          "bytes": 1021640,
+          "sha256": "1c11ce61bcbdd8fd3d9f5564b9d0877515c17a6dc632700984ad43620bb54817"
+        }
+      },
+      "total_retained_bytes": 32531945,
+      "maximum_file_bytes": 26714322,
+      "warnings": [
+        "** Warning ** This building has no thermal mass which can cause an unstable solution."
+      ],
+      "qualification": false
+    }
+  ],
+  "full_energy_method_qualified": false,
+  "real_weather_qualified": false,
+  "demo_timestep_qualified": false,
+  "resource_scope": "original massless synthetic envelope and constant zero-solar weather; not worst-case every supported input",
+  "original_audit_sha256": "c93241a9e43d4fd456fbe6fdb65db641b1741b817352842cfee778999cf90ecf",
+  "prior_native_failures": [
+    {
+      "case": "envelope",
+      "files": {
+        "eplusout.audit": {
+          "bytes": 79,
+          "sha256": "e786b065a41c676372e096ebb9ad47563cb0f1e6302ef620ce500feedd4db4bb"
+        },
+        "eplusout.bnd": {
+          "bytes": 77,
+          "sha256": "3901f9f7e990c29f6279993608758548a68e8d902d05b894a4afcbc4b69b796a"
+        },
+        "eplusout.eio": {
+          "bytes": 7551,
+          "sha256": "30c624fe2fa7a535aba2e36911854ea144c9eb6432d106a7fbb10c91b6254f01"
+        },
+        "eplusout.end": {
+          "bytes": 107,
+          "sha256": "b6d5996079c0c7328c24bcb5e4d27f63b3c58fd911f75e8ca11fc2e6a973fd23"
+        },
+        "eplusout.err": {
+          "bytes": 1491,
+          "sha256": "cd0ea6435474d07df55316489d2a6ebb30ddff4ea0fd681103a7982b757c73e1"
+        },
+        "eplusout.mtd": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execution-declaration.json": {
+          "bytes": 1101,
+          "sha256": "89328c4377c443616c7e2a5002d788673401156cb0f791fba58d5f79d2cec76b"
+        },
+        "failure.json": {
+          "bytes": 255,
+          "sha256": "c0dae6b34c99ad2ffaed9f1d2d4cc61167d48b7e2d12492bccc3adcc49ddbaac"
+        },
+        "fixture-declaration.json": {
+          "bytes": 1208,
+          "sha256": "83ca1481376271df3b88d91c2fe7af3c3fe30280217e908a0780010ddb91a499"
+        },
+        "model.epJSON": {
+          "bytes": 14071,
+          "sha256": "c6cb7d0d8b528db3b0d241e80c54f545157c4b10e6f6fba1499ca2ae0f90acfb"
+        },
+        "processes.json": {
+          "bytes": 1057,
+          "sha256": "e0f43c759295d5f579699301645c19803387067cd6bf505c8b6baa73a0431521"
+        },
+        "stdout.txt": {
+          "bytes": 180,
+          "sha256": "20dfb4fcdf1d18d41c05bb33cf0a68d667a4047b3f72d02506138b6573c102ee"
+        },
+        "weather.epw": {
+          "bytes": 1021640,
+          "sha256": "1c11ce61bcbdd8fd3d9f5564b9d0877515c17a6dc632700984ad43620bb54817"
+        }
+      },
+      "exit_code": null,
+      "diagnosis": "Zone equipment connection duplicated the exhaust and return node; rejected before time integration.",
+      "repair": "Omit return-air node field; preserve all fixed oracle, case, system and numerical settings. Original failed attempt retained."
+    },
+    {
+      "case": "dx",
+      "files": {
+        "eplusout.audit": {
+          "bytes": 79,
+          "sha256": "e786b065a41c676372e096ebb9ad47563cb0f1e6302ef620ce500feedd4db4bb"
+        },
+        "eplusout.bnd": {
+          "bytes": 77,
+          "sha256": "3901f9f7e990c29f6279993608758548a68e8d902d05b894a4afcbc4b69b796a"
+        },
+        "eplusout.eio": {
+          "bytes": 7551,
+          "sha256": "30c624fe2fa7a535aba2e36911854ea144c9eb6432d106a7fbb10c91b6254f01"
+        },
+        "eplusout.end": {
+          "bytes": 107,
+          "sha256": "58fe9d063b89992f8e550056ebf482d56af4220c5b4ecf699628796847adacb4"
+        },
+        "eplusout.err": {
+          "bytes": 1491,
+          "sha256": "b5076bb33dfb369669125ec2ee9a2fbf724a595f908c7522da5c9e43c03938c5"
+        },
+        "eplusout.mtd": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "execution-declaration.json": {
+          "bytes": 1101,
+          "sha256": "c1e64f80eb999ad2f1712000cf8acd5a5e668a7027f5f30a3a5d9be6f108144f"
+        },
+        "failure.json": {
+          "bytes": 255,
+          "sha256": "7af1753109e1f513485fd586f41fa75e467a7fbaa08f214af737212be6fcce32"
+        },
+        "fixture-declaration.json": {
+          "bytes": 1299,
+          "sha256": "c7c2228a2513427f9913a1c113382860a9b5f7be04c65a26b0379970d59856b0"
+        },
+        "model.epJSON": {
+          "bytes": 18404,
+          "sha256": "8f2ca70a84e833b14700575f64f28d5cef76c08bdbaeb2b0e0f8b2ae5245409a"
+        },
+        "processes.json": {
+          "bytes": 1057,
+          "sha256": "8201c69ee58cc9b7370e436a59446dce9908d45d77d8f163b1f0bedabd801c0a"
+        },
+        "stdout.txt": {
+          "bytes": 180,
+          "sha256": "20dfb4fcdf1d18d41c05bb33cf0a68d667a4047b3f72d02506138b6573c102ee"
+        },
+        "weather.epw": {
+          "bytes": 1021640,
+          "sha256": "1c11ce61bcbdd8fd3d9f5564b9d0877515c17a6dc632700984ad43620bb54817"
+        }
+      },
+      "exit_code": null,
+      "diagnosis": "Zone equipment connection duplicated the exhaust and return node; rejected before time integration.",
+      "repair": "Omit return-air node field; preserve all fixed oracle, case, system and numerical settings. Original failed attempt retained."
+    }
+  ],
+  "scope": {
+    "native_integration": "Four fixed original fixtures completed and met their limited checks; two antecedent native setup failures retained.",
+    "not_established": [
+      "real climate accuracy",
+      "manufacturer DX calibration",
+      "four-zone A/B comfort",
+      "10-versus-5-minute convergence",
+      "release qualification"
+    ],
+    "gate0_envelope_emissivity": "The zero-emissivity preparation failed schema before native execution; declared1e-9 emits an independently bounded <0.001W longwave perturbation, within unchanged1W band.",
+    "raw_retention": "Original native CSV/err/end/process/input files retained externally; public record contains their exact hashes, counts and all limited oracle statistics."
+  },
+  "real_weather_audit": {
+    "source": "https://data.nlr.gov/submissions/128",
+    "license": "https://data.nlr.gov/node/128/license",
+    "original_archive_sha256": "9f0ff1b0eb82f17a9785a79f2c32b354bdd3d0f740b4480ed44cab8d7f682396",
+    "rows": 8784,
+    "location": "LOCATION,Travis,Texas,United States,NSRDB 2.0.1 2012 AMY,722540,30.29,-97.74,-6,186.84",
+    "bytes": 1700997,
+    "sha256": "e723559b6459ec33fc83d90e3e28a1cb810919cc5936932eabeb9b4bc1da9d11",
+    "invalid_zero_based_epw_field_counts": {
+      "12": 8784,
+      "22": 8784,
+      "30": 8784,
+      "32": 8784,
+      "33": 8784
+    },
+    "admitted": false,
+    "source_fields_modified": false,
+    "license_review": "Dataset128 permits use/copy with its complete copyright/permission/disclaimer notice and DOE/NREL/Alliance credit; no endorsement. Original archive retained externally; no weather redistribution in this record."
+  }
+}

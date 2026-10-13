@@ -1275,7 +1275,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-cli"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1283,6 +1283,7 @@ dependencies = [
  "greenlens-core",
  "greenlens-radiance",
  "greenlens-runner",
+ "serde",
  "serde_json",
 ]
 
@@ -1298,7 +1299,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-desktop"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "greenlens-core",
@@ -1312,8 +1313,34 @@ dependencies = [
 ]
 
 [[package]]
+name = "greenlens-energyplus"
+version = "0.4.0"
+dependencies = [
+ "anyhow",
+ "greenlens-core",
+ "greenlens-process",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+]
+
+[[package]]
+name = "greenlens-process"
+version = "0.4.0"
+dependencies = [
+ "anyhow",
+ "chrono",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+ "windows-sys 0.61.2",
+]
+
+[[package]]
 name = "greenlens-radiance"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "chrono",
@@ -1326,12 +1353,14 @@ dependencies = [
 
 [[package]]
 name = "greenlens-runner"
-version = "0.3.0"
+version = "0.4.0"
 dependencies = [
  "anyhow",
  "chrono",
  "fs2",
  "greenlens-core",
+ "greenlens-energyplus",
+ "greenlens-process",
  "greenlens-radiance",
  "serde",
  "serde_json",

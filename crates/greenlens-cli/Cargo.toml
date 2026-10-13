@@ -14,5 +14,6 @@ greenlens-radiance = { path = "../greenlens-radiance" }
 greenlens-runner = { path = "../greenlens-runner" }
 anyhow.workspace = true
 serde_json.workspace = true
+serde.workspace = true
 clap = { version = "4.5", features = ["derive"] }
 ctrlc = "3.4"

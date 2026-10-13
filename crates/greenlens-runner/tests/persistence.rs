@@ -9,6 +9,22 @@ use greenlens_runner::{example, open_project, save_project};
 use std::{fs, io::Write, path::Path};
 use tempfile::tempdir;
 
+#[test]
+fn growing_or_unending_evidence_stream_is_bounded_during_copy() {
+    let mut output = Vec::new();
+    let error =
+        greenlens_runner::persistence::copy_bounded(&mut std::io::repeat(7), &mut output, 31)
+            .unwrap_err();
+    assert!(error.to_string().contains("exceeded"));
+    assert_eq!(output.len(), 32); // one probe byte, never an unbounded copy
+    let mut exact = Vec::new();
+    assert_eq!(
+        greenlens_runner::persistence::copy_bounded(&mut &output[..31], &mut exact, 31).unwrap(),
+        31
+    );
+    assert_eq!(exact, output[..31]);
+}
+
 fn mock_compact_evidence(root: &Path) {
     fs::create_dir_all(root).unwrap();
     // Deliberately marked mocks: these exercise file handling only.

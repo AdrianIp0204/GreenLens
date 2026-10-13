@@ -50,6 +50,15 @@ fn reduced_project(mut project: Project, selected: &[String]) -> Result<Project>
         ids.iter().all(|id| known.contains(id)),
         "Selected export includes an unknown run"
     );
+    // Explicit daylight-only selection omits energy evidence rather than
+    // advertising uncopied energy runs in a successful package.
+    project.energy = None;
+    project.schema_version = if project.climate.is_some() {
+        "0.3.0"
+    } else {
+        crate::SCHEMA_VERSION
+    }
+    .into();
     project.runs.retain(|r| ids.contains(r.id.as_str()));
     if let Some(extension) = &mut project.climate {
         extension.runs.retain(|r| ids.contains(r.id.as_str()));

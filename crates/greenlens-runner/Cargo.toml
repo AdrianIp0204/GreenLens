@@ -7,6 +7,8 @@ license.workspace = true
 [dependencies]
 greenlens-core = { path = "../greenlens-core" }
 greenlens-radiance = { path = "../greenlens-radiance" }
+greenlens-process = { path = "../greenlens-process" }
+greenlens-energyplus = { path = "../greenlens-energyplus" }
 anyhow.workspace = true
 serde.workspace = true
 serde_json.workspace = true

@@ -1,0 +1,12 @@
+{
+  "schema": "greenlens.native-automation-availability.v1",
+  "checked_utc": "2026-10-13T11:52:48.2672969Z",
+  "context": "One resumed availability check after known os112 disk exhaustion was resolved through Cargo package-scoped cleanup",
+  "disk_free_bytes": 8862343168,
+  "initialization": "mcp__node_repl js_reset then documented @oai/sky import",
+  "outcome": "failed before app enumeration or input",
+  "error": "failed to write kernel assets: The system cannot find the path specified. (os error 3)",
+  "installed_application_altered": false,
+  "installed_verification_asserted": false,
+  "next_intervention": "Restore supplied native automation runtime or record manual installed candidate verification"
+}

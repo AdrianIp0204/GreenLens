@@ -1,0 +1,636 @@
+{
+  "schema_version": "greenlens.energy-report-exact-byte-transfer.v1",
+  "checked_utc": "2026-10-13T12:00:59.216437Z",
+  "source_commit": "9b65897a5a49c62a2bf6b2ba36da2970ebde8db4",
+  "source_dirty": false,
+  "cli_sha256": "fc792a08a5522fd81e6cf908b301b420a2aa7c4e57445fd781133986921b81b5",
+  "cli_bytes": 8889344,
+  "build_pointer_sha256": "b5ed6b7ed09b9326a0c6aac14d6c5197d07927d9e3b09fb565f6daa348ccf0f7",
+  "prior_all_page_audit_sha256": "ec10fabc7e4b744b7065350b5dcd154d5e44185e95e85b770e7c9fd222e50fe5",
+  "prior_renderer_source": "00cf37bd9925a881084077296af5d0142bf1eb61",
+  "unchanged_report_source_sha256": {
+    "crates/greenlens-runner/src/energy_report.rs": "6803d1ec85963d151a03ad6fb4341f15ba1e3e9deee4ea10791e328abc384604",
+    "crates/greenlens-runner/src/energy_services.rs": "400ccbc31bb597aaa6ce119856b8780d9d6e598e21588a589aa46b37910b88d9",
+    "reports/energy/report.typ": "7fe14ea1a40b40ed0c99b987d729ece7dc19d312598c9e395d65cbd8b31d7012",
+    "dependencies/energy-qualification.json": "9517a1edf556c851f8d220a34364d1b5a1b5b419197d025b03b07ca717ccc401"
+  },
+  "cases": {
+    "four": {
+      "comparisons": [
+        {
+          "path": "energy-report.json",
+          "old_sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302",
+          "new_sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302",
+          "bytes": 209829,
+          "exact": true
+        },
+        {
+          "path": "performance.json",
+          "old_sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80",
+          "new_sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80",
+          "bytes": 62585,
+          "exact": true
+        },
+        {
+          "path": "performance.csv",
+          "old_sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be",
+          "new_sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be",
+          "bytes": 30203,
+          "exact": true
+        },
+        {
+          "path": "inputs.csv",
+          "old_sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638",
+          "new_sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638",
+          "bytes": 69253,
+          "exact": true
+        },
+        {
+          "path": "baseline-model.svg",
+          "old_sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec",
+          "new_sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec",
+          "bytes": 3723,
+          "exact": true
+        },
+        {
+          "path": "proposed-model.svg",
+          "old_sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644",
+          "new_sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644",
+          "bytes": 4393,
+          "exact": true
+        },
+        {
+          "path": "annual.svg",
+          "old_sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86",
+          "new_sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86",
+          "bytes": 1880,
+          "exact": true
+        },
+        {
+          "path": "monthly.svg",
+          "old_sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e",
+          "new_sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e",
+          "bytes": 3248,
+          "exact": true
+        },
+        {
+          "path": "assessment.html",
+          "old_sha256": "008a07b93fe30c382eaf8ecf9296befc4d6461db486aec0916f56ff3aad82b3e",
+          "new_sha256": "008a07b93fe30c382eaf8ecf9296befc4d6461db486aec0916f56ff3aad82b3e",
+          "bytes": 88996,
+          "exact": true
+        },
+        {
+          "path": "input-appendix.html",
+          "old_sha256": "26ed07911e5a29d52d3f9bf70ef76e0710a610c8d7492d97ea4651d51a1b0865",
+          "new_sha256": "26ed07911e5a29d52d3f9bf70ef76e0710a610c8d7492d97ea4651d51a1b0865",
+          "bytes": 102414,
+          "exact": true
+        },
+        {
+          "path": "performance.html",
+          "old_sha256": "ded8e44cc1d8ffdd8a5fcd2488e3a4de97ed415eec8b3312d6a3b37736cacf41",
+          "new_sha256": "ded8e44cc1d8ffdd8a5fcd2488e3a4de97ed415eec8b3312d6a3b37736cacf41",
+          "bytes": 18421,
+          "exact": true
+        },
+        {
+          "path": "assessment.pdf",
+          "old_sha256": "c2302210362ee5818ae297a72fa9751601e689b38d2a4fb7de8b05fa719e67be",
+          "new_sha256": "c2302210362ee5818ae297a72fa9751601e689b38d2a4fb7de8b05fa719e67be",
+          "bytes": 688803,
+          "exact": true
+        },
+        {
+          "path": "input-appendix.pdf",
+          "old_sha256": "fa8b107c631dd36b2d016a00aef9d778d5ed155608860f8bab04f8cf971142fc",
+          "new_sha256": "fa8b107c631dd36b2d016a00aef9d778d5ed155608860f8bab04f8cf971142fc",
+          "bytes": 807094,
+          "exact": true
+        },
+        {
+          "path": "performance.pdf",
+          "old_sha256": "de9569f8e12cac1da10efb88e7607336e02edae9adf6539d0e3c38fee420eae4",
+          "new_sha256": "de9569f8e12cac1da10efb88e7607336e02edae9adf6539d0e3c38fee420eae4",
+          "bytes": 135996,
+          "exact": true
+        },
+        {
+          "path": "performance-page-001.png",
+          "old_sha256": "eccef13c6a4f60e11d1f992bfbb1eaf3f795762e8f5b65bc7554956b4038132d",
+          "new_sha256": "eccef13c6a4f60e11d1f992bfbb1eaf3f795762e8f5b65bc7554956b4038132d",
+          "bytes": 110302,
+          "exact": true
+        },
+        {
+          "path": "performance-page-002.png",
+          "old_sha256": "63197924c29a955896227e72247afc6ccb90abf086bb482dad01267ce87c2654",
+          "new_sha256": "63197924c29a955896227e72247afc6ccb90abf086bb482dad01267ce87c2654",
+          "bytes": 295183,
+          "exact": true
+        },
+        {
+          "path": "performance-page-003.png",
+          "old_sha256": "7cf662e4740e21e7c2c397a2745cded442e36dce0394611e59826addf8a60f2f",
+          "new_sha256": "7cf662e4740e21e7c2c397a2745cded442e36dce0394611e59826addf8a60f2f",
+          "bytes": 342152,
+          "exact": true
+        },
+        {
+          "path": "performance-page-004.png",
+          "old_sha256": "5a29f9d37446fce59630efd2e1f3e9e6a78d0131d549ba24dad428a80d4acf16",
+          "new_sha256": "5a29f9d37446fce59630efd2e1f3e9e6a78d0131d549ba24dad428a80d4acf16",
+          "bytes": 215841,
+          "exact": true
+        },
+        {
+          "path": "performance-page-005.png",
+          "old_sha256": "93c1bf42ac678542bb321e809e13a8446ecd8a495919ba6990fc1c391790659f",
+          "new_sha256": "93c1bf42ac678542bb321e809e13a8446ecd8a495919ba6990fc1c391790659f",
+          "bytes": 168511,
+          "exact": true
+        }
+      ],
+      "all_19_content_members_exact": true,
+      "pdf_png_visual_transfer_eligible": true,
+      "prior_visual_pdf_pages": 62,
+      "prior_visual_png_pages": 5,
+      "dataset_canonical_sha256": "73e82ce76c2ed1f04b5c2ede8f1bd24edb529acb0277efa8cf766ca190dd1c39",
+      "canonical_dataset_matches_prior": true,
+      "cold_evidence_sha256": "1818fdd65e0c43fbac4d80c6961e2165806461df79bd84420088af5ece1a7a16",
+      "retained_files_unchanged": 149,
+      "report_manifest_sha256": "e6dd83e89ea7500f07f5f31a92ef7641995042f3f822335f37d3d4019877436b",
+      "prior_report_manifest_sha256": "6a4402044c851deeb82d3bffba887368756afb6f7edfef0d35cd289690b1d2b9",
+      "new_typst_processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T11:54:38.653489500+00:00",
+          "finished_utc": "2026-10-13T11:54:40.160548700+00:00",
+          "elapsed_ms": 1590,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 122433536,
+          "peak_observed_scratch_bytes": 34236024,
+          "samples": 27,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T11:54:40.974666100+00:00",
+          "finished_utc": "2026-10-13T11:54:43.482715500+00:00",
+          "elapsed_ms": 2601,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 134316032,
+          "peak_observed_scratch_bytes": 34380036,
+          "samples": 41,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T11:54:44.142714900+00:00",
+          "finished_utc": "2026-10-13T11:54:44.882656600+00:00",
+          "elapsed_ms": 819,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 84574208,
+          "peak_observed_scratch_bytes": 33610144,
+          "samples": 14,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "--ppi",
+            "96",
+            "report.typ",
+            "page-{0p}-of-{t}.png"
+          ],
+          "started_utc": "2026-10-13T11:54:45.514574700+00:00",
+          "finished_utc": "2026-10-13T11:54:46.376729100+00:00",
+          "elapsed_ms": 937,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 92028928,
+          "peak_observed_scratch_bytes": 34606137,
+          "samples": 16,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "export_outer_sha256": "209a913161481b0f0d54eb5f65f7cd7b00aba59da012543c0594aae6dccbe4d4",
+      "shared_package_inspection_sha256": "d816b8ef6d066c866de412503a649402ee96b30eed76f9c0dc49aed215ce5bd8",
+      "manifest_scope": "New process times/resources/work identity are retained separately; exact manifest or ZIP identity is not asserted."
+    },
+    "eight": {
+      "comparisons": [
+        {
+          "path": "energy-report.json",
+          "old_sha256": "3fea942b35b58a2ae85ba3ea87452bdf91ca15531f0e90459a4966f4f5211b7d",
+          "new_sha256": "3fea942b35b58a2ae85ba3ea87452bdf91ca15531f0e90459a4966f4f5211b7d",
+          "bytes": 247630,
+          "exact": true
+        },
+        {
+          "path": "performance.json",
+          "old_sha256": "57ebf2205ba08f358049f6a469644e3c242ebc57a906ce9bc1ba951d537af96f",
+          "new_sha256": "57ebf2205ba08f358049f6a469644e3c242ebc57a906ce9bc1ba951d537af96f",
+          "bytes": 67380,
+          "exact": true
+        },
+        {
+          "path": "performance.csv",
+          "old_sha256": "d32f15fc083d20e178892275346ef0f4da4ade82c524c89a623720de1de2d6c1",
+          "new_sha256": "d32f15fc083d20e178892275346ef0f4da4ade82c524c89a623720de1de2d6c1",
+          "bytes": 32390,
+          "exact": true
+        },
+        {
+          "path": "inputs.csv",
+          "old_sha256": "ece66e38fb4f3aa7b0309f03b6a6112890fa3982dc203b23a4617c35c9ad1185",
+          "new_sha256": "ece66e38fb4f3aa7b0309f03b6a6112890fa3982dc203b23a4617c35c9ad1185",
+          "bytes": 117685,
+          "exact": true
+        },
+        {
+          "path": "baseline-model.svg",
+          "old_sha256": "1f8e2c657c5cc58e451d4d014cde8d31e430c3777fbfd8844b6c3eec08853879",
+          "new_sha256": "1f8e2c657c5cc58e451d4d014cde8d31e430c3777fbfd8844b6c3eec08853879",
+          "bytes": 6328,
+          "exact": true
+        },
+        {
+          "path": "proposed-model.svg",
+          "old_sha256": "803e4783ce3c1a2845e248b00a022e32799a3bfb8dee7288f0d671b41a92b981",
+          "new_sha256": "803e4783ce3c1a2845e248b00a022e32799a3bfb8dee7288f0d671b41a92b981",
+          "bytes": 7670,
+          "exact": true
+        },
+        {
+          "path": "annual.svg",
+          "old_sha256": "3ba93ca76c03b56c353cb68d2c968eebd615801330c0dd1e5e1f1f31efcc2dc1",
+          "new_sha256": "3ba93ca76c03b56c353cb68d2c968eebd615801330c0dd1e5e1f1f31efcc2dc1",
+          "bytes": 1884,
+          "exact": true
+        },
+        {
+          "path": "monthly.svg",
+          "old_sha256": "d62fb98414a1057b03b2067719dc7685ae462cccc0fca51ee64cf715afe5578e",
+          "new_sha256": "d62fb98414a1057b03b2067719dc7685ae462cccc0fca51ee64cf715afe5578e",
+          "bytes": 3249,
+          "exact": true
+        },
+        {
+          "path": "assessment.html",
+          "old_sha256": "130804d0a736cdb287dd2ac135b2e248aa6ed26e22a17ce576263630cdf19569",
+          "new_sha256": "130804d0a736cdb287dd2ac135b2e248aa6ed26e22a17ce576263630cdf19569",
+          "bytes": 127249,
+          "exact": true
+        },
+        {
+          "path": "input-appendix.html",
+          "old_sha256": "7bef9accdd4b9b284a11ae6f21b9c97d0f46fc2dbf6fd1321a71e1b0192ed12d",
+          "new_sha256": "7bef9accdd4b9b284a11ae6f21b9c97d0f46fc2dbf6fd1321a71e1b0192ed12d",
+          "bytes": 162757,
+          "exact": true
+        },
+        {
+          "path": "performance.html",
+          "old_sha256": "d501e248592a1ee0149261b6e0f41a6c43ba607a177bdf9416b6d8ad9879b76f",
+          "new_sha256": "d501e248592a1ee0149261b6e0f41a6c43ba607a177bdf9416b6d8ad9879b76f",
+          "bytes": 16090,
+          "exact": true
+        },
+        {
+          "path": "assessment.pdf",
+          "old_sha256": "cab63fa85fe968a63c83e81cfda6bb700b379a0806bef3777f22bbbc4c1b6321",
+          "new_sha256": "cab63fa85fe968a63c83e81cfda6bb700b379a0806bef3777f22bbbc4c1b6321",
+          "bytes": 995730,
+          "exact": true
+        },
+        {
+          "path": "input-appendix.pdf",
+          "old_sha256": "976355ea0b0085fe7741e4b15979a9dfd8c99f6cb68a20dd0b5c8480c2db2a07",
+          "new_sha256": "976355ea0b0085fe7741e4b15979a9dfd8c99f6cb68a20dd0b5c8480c2db2a07",
+          "bytes": 1270908,
+          "exact": true
+        },
+        {
+          "path": "performance.pdf",
+          "old_sha256": "8f91d414fb43176ba80ae21ead06cf196b6d5a5cf6425bd9c2d522414346834f",
+          "new_sha256": "8f91d414fb43176ba80ae21ead06cf196b6d5a5cf6425bd9c2d522414346834f",
+          "bytes": 126072,
+          "exact": true
+        },
+        {
+          "path": "performance-page-001.png",
+          "old_sha256": "beb80d4555efd533633297d56c9d0d95c67df10fad919f66eeb76521b6dbf1e0",
+          "new_sha256": "beb80d4555efd533633297d56c9d0d95c67df10fad919f66eeb76521b6dbf1e0",
+          "bytes": 113112,
+          "exact": true
+        },
+        {
+          "path": "performance-page-002.png",
+          "old_sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10",
+          "new_sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10",
+          "bytes": 279268,
+          "exact": true
+        },
+        {
+          "path": "performance-page-003.png",
+          "old_sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe",
+          "new_sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe",
+          "bytes": 274969,
+          "exact": true
+        },
+        {
+          "path": "performance-page-004.png",
+          "old_sha256": "db6fa255d256472957b783abb5decd5fecc79c1fd057e19893c3b9549d75bcd3",
+          "new_sha256": "db6fa255d256472957b783abb5decd5fecc79c1fd057e19893c3b9549d75bcd3",
+          "bytes": 219854,
+          "exact": true
+        },
+        {
+          "path": "performance-page-005.png",
+          "old_sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68",
+          "new_sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68",
+          "bytes": 42727,
+          "exact": true
+        }
+      ],
+      "all_19_content_members_exact": true,
+      "pdf_png_visual_transfer_eligible": true,
+      "prior_visual_pdf_pages": 90,
+      "prior_visual_png_pages": 5,
+      "dataset_canonical_sha256": "32a131c19951f50d1df69160bf1efa6f4fb8333421cea11e15b8e9687bbc10af",
+      "canonical_dataset_matches_prior": true,
+      "cold_evidence_sha256": "6fbaf06d540168aca95c746d943c272bf7e8e0b6a275d838a5f24c41d3474b2e",
+      "retained_files_unchanged": 149,
+      "report_manifest_sha256": "963d0766b512276c7400c2d4b0bc88e095a7955021a890aa6fce2e5cda38a3c7",
+      "prior_report_manifest_sha256": "216dd4f2600dc58cd94c5cec1fbc1866c53a2102841bd26951fa5b31878d59a9",
+      "new_typst_processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T11:56:12.817405+00:00",
+          "finished_utc": "2026-10-13T11:56:15.676360100+00:00",
+          "elapsed_ms": 2970,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 147025920,
+          "peak_observed_scratch_bytes": 34590281,
+          "samples": 50,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T11:56:16.322497500+00:00",
+          "finished_utc": "2026-10-13T11:56:18.791125600+00:00",
+          "elapsed_ms": 2551,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 168042496,
+          "peak_observed_scratch_bytes": 34919615,
+          "samples": 45,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T11:56:19.429495500+00:00",
+          "finished_utc": "2026-10-13T11:56:20.549762500+00:00",
+          "elapsed_ms": 1200,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 84226048,
+          "peak_observed_scratch_bytes": 33603753,
+          "samples": 17,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "--ppi",
+            "96",
+            "report.typ",
+            "page-{0p}-of-{t}.png"
+          ],
+          "started_utc": "2026-10-13T11:56:21.157631700+00:00",
+          "finished_utc": "2026-10-13T11:56:21.898542600+00:00",
+          "elapsed_ms": 811,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 89833472,
+          "peak_observed_scratch_bytes": 34407611,
+          "samples": 14,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "export_outer_sha256": "aa49884d7d0f50e05aafa44c18c624160db3edfc5ecd7424293cecf23edbc3cf",
+      "shared_package_inspection_sha256": "46f9abf4364b681fe287c69dd42df1f44471cdc9efb3fa18bc00d497e2993f02",
+      "manifest_scope": "New process times/resources/work identity are retained separately; exact manifest or ZIP identity is not asserted."
+    }
+  },
+  "scope": "Exact content-byte comparison and current output/process/input integrity. Visual review is transferred only for exact PDF/PNG bytes from the sealed prior audit; it is not described as a repeated visual review. No simulation, replay or report generation performed by this auditor.",
+  "all_content_exact": true,
+  "all_visual_transfer_eligible": true,
+  "new_scientific_qualification_asserted": false,
+  "auditor_sha256": "b9da2be0f49b2284a97a5d13ebc3ecd8a8ca17e39c2441f582a66319a00e7af3"
+}

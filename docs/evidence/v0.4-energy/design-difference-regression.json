@@ -1,0 +1,68 @@
+{
+  "schema": "greenlens.energy-design-difference-regression.v1",
+  "checked_utc": "2026-10-13T12:34:05.6294328Z",
+  "base_source_commit": "9b65897a5a49c62a2bf6b2ba36da2970ebde8db4",
+  "worktree_dirty": true,
+  "tested_source_files": {
+    "crates/greenlens-runner/src/energy_report.rs": "d7211c0208fa75dde4e5754d840a6cc1c4bf2301771418b37e118fa6cd660a90",
+    "apps/desktop/src/energy/EnergyWorkspace.tsx": "46f8843edfb82efcc57063f3f3ea1a643ad5f767a3503e2b02cd83adffd7d8cc",
+    "apps/desktop/tests/energy-comparison.test.mjs": "f5867db49a29f1279fd22f0cf83e3369cf172a95c165d1e3e213cef756782293"
+  },
+  "tests": [
+    {
+      "reason": "Rustfmt requested multiline tuple-array formatting in the new regression",
+      "remedy": "cargo fmt --all",
+      "final_exit": 0,
+      "command": "cargo fmt --all -- --check",
+      "initial_exit": 1
+    },
+    {
+      "command": "cargo test -p greenlens-runner --lib energy_report::tests --locked --offline",
+      "ignored_reason": "Native Typst fixture requires explicit invocation; executed separately below",
+      "passed": 6,
+      "failed": 0,
+      "ignored": 1,
+      "exit_code": 0
+    },
+    {
+      "command": "cargo clippy -p greenlens-runner --all-targets --locked --offline -- -D warnings",
+      "exit_code": 0
+    },
+    {
+      "synthetic_renderer_fixture_only": true,
+      "command": "frozen test executable --exact energy_report::tests::native_typst_all_three_documents_and_pages --ignored --nocapture --test-threads=1",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "exit_code": 0,
+      "elapsed_seconds": 53.91
+    }
+  ],
+  "retained_log_seals": {
+    "fmt.log": {
+      "bytes": 680,
+      "sha256": "21fc16117d004b7773d5026d0a8d425f4dfc6b78184ec8f7e64d0882a4a369fe"
+    },
+    "fmt-repaired.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "report-tests.log": {
+      "bytes": 1192,
+      "sha256": "6bd637317de6a6ff0d9b52476706a0f5a6b8a5317734803aab4b9ac7af03a7bf"
+    },
+    "clippy.log": {
+      "bytes": 619,
+      "sha256": "14b2f5751c62cf0042dbed991debc0a69bf7c1c79f6f130ff289d8d8a5711211"
+    },
+    "native-render-test.log": {
+      "bytes": 337,
+      "sha256": "50b6a6658777f9d21fe3d7b9a5a1f55f7b34957cbd6f37fde7ac3331c51a963e"
+    }
+  },
+  "test_executable_sha256": "2107c68dfa3305aa7d44da28396c08c4bec3573adb8f3cb56d82a4ad9a210263",
+  "scope": "Presentation regression only: ordered existing differences in shared HTML/PDF projection, valid empty case, literal strings and immutable dataset. Native renderer success is not energy or installed-app acceptance.",
+  "physics_changed": false,
+  "actual_energy_example_report_review": "pending for changed presentation",
+  "installed_desktop_verified": false
+}

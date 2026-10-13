@@ -386,6 +386,14 @@ fn documents(
             .chain(data.limitations.clone())
             .collect(),
     ));
+    overview.push(Section::prose(
+        "Baseline/proposed input differences",
+        if data.comparison.input_relation.differences.is_empty() {
+            vec!["No input differences are listed for these retained snapshots. Comparison scope and service limitations still apply.".into()]
+        } else {
+            data.comparison.input_relation.differences.clone()
+        },
+    ));
     overview.push(Section::prose("Reported findings",vec![format!("The retained facility energy difference (baseline minus proposed) is {}; percentage difference is {}. The two own-peak demand difference is {}. These quantities describe the identified snapshots and declared accounting boundaries.",cell(&p.facility_energy_savings.absolute),cell(&p.facility_energy_savings.percent),cell(&p.facility_peak_savings.absolute)),format!("Baseline scientific status: {}; proposed scientific status: {}. Execution and arithmetic consistency do not promote scientific status or establish equal lighting service.",serialized(&data.baseline.assessment.scientific.status)?,serialized(&data.proposed.assessment.scientific.status)?)]));
     let mut input = vec![Section::prose("Immutable input appendix", vec!["All parameters below come from the retained model and study snapshots, not the current editor. Units are explicit in parameter names. Array ranges use zero-based [start..end) indices; repeated values are represented losslessly. Schedule indices are ten-minute local standard intervals beginning at 00:00; no DST or operating-system timezone is used.".into()])];
     input.extend([assessment(&data.baseline)?, assessment(&data.proposed)?]);
@@ -1572,6 +1580,77 @@ mod tests {
                 }
                 assert!(!html.contains(&q.reason));
             }
+        }
+    }
+    #[test]
+    fn input_differences_survive_html_and_pdf_projection_including_empty_case() {
+        // Synthetic presentation fixtures only; no engine or PDF process is run.
+        let different = synthetic_energy_report().unwrap();
+        assert!(!different.comparison.input_relation.differences.is_empty());
+        let mut identical = different.clone();
+        identical.proposed = identical.baseline.clone();
+        identical.proposed.id = "proposed-identical-inputs".into();
+        identical.proposed.label = "Synthetic identical-input comparison".into();
+        identical.comparison = compare_energy_totals(
+            &identical.baseline.totals,
+            &identical.proposed.totals,
+            compare_energy_inputs(
+                &identical.baseline.model,
+                &identical.baseline.study,
+                &identical.proposed.model,
+                &identical.proposed.study,
+            )
+            .unwrap(),
+            identical.comparison.lighting_service_equivalence.clone(),
+        )
+        .unwrap();
+        assert!(identical.comparison.input_relation.differences.is_empty());
+        identical.validate().unwrap();
+        let tmp = tempfile::tempdir().unwrap();
+        for (name, data) in [("different", different), ("identical", identical)] {
+            let before = serde_json::to_vec(&data).unwrap();
+            let target = tmp.path().join(name);
+            let artifacts = render(&data, &target, None, &AtomicBool::new(false)).unwrap();
+            assert!(artifacts.processes.is_empty());
+            let docs = documents(
+                &data,
+                &data.presentation().unwrap(),
+                &artifacts.dataset_sha256,
+            )
+            .unwrap();
+            let expected = if name == "identical" {
+                vec!["No input differences are listed for these retained snapshots. Comparison scope and service limitations still apply.".to_owned()]
+            } else {
+                data.comparison.input_relation.differences.clone()
+            };
+            for (doc, file) in [
+                (&docs[0], "assessment.html"),
+                (&docs[2], "performance.html"),
+            ] {
+                // This exact serialized Document is written as the PDF template's
+                // document.json; compare every ordered entry, not just its heading.
+                let pdf_input: Value =
+                    serde_json::from_slice(&serde_json::to_vec_pretty(doc).unwrap()).unwrap();
+                let section = pdf_input["sections"]
+                    .as_array()
+                    .unwrap()
+                    .iter()
+                    .find(|s| s["title"] == "Baseline/proposed input differences")
+                    .unwrap();
+                assert_eq!(section["paragraphs"], json!(expected));
+                let html = fs::read_to_string(target.join(file)).unwrap();
+                for difference in &expected {
+                    assert!(
+                        html.contains(&format!("<p>{}</p>", escaped(difference))),
+                        "Missing comparison entry in {name}/{file}: {difference}"
+                    );
+                }
+            }
+            let retained: EnergyReportData =
+                serde_json::from_slice(&fs::read(target.join("energy-report.json")).unwrap())
+                    .unwrap();
+            assert_eq!(serde_json::to_vec(&retained).unwrap(), before);
+            assert_eq!(serde_json::to_vec(&data).unwrap(), before);
         }
     }
     #[test]

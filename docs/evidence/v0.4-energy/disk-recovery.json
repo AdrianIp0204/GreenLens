@@ -1,0 +1,212 @@
+{
+  "schema": "greenlens.disk-recovery-independent.v1",
+  "checked_utc": "2026-10-13T11:53:27.183006+00:00",
+  "source_commit": "9b65897a5a49c62a2bf6b2ba36da2970ebde8db4",
+  "source_dirty_at_checks": false,
+  "initial_attempt": {
+    "started_utc": "2026-10-13T11:36:46.9293265Z",
+    "cli_completed": true,
+    "cli": {
+      "bytes": 8889344,
+      "sha256": "d9254638a360c5e5cb3517d3f96f80699977b768b6be146c378cc1075273e7ec"
+    },
+    "cli_build_seconds": 254.8376498,
+    "desktop_completed": false,
+    "desktop_log_error": "rustc-LLVM ERROR: IO failure on output stream: no space on device",
+    "desktop_log_truncated_after_final_Caused_by": true,
+    "export_completed": false,
+    "export_error": "There is not enough space on the disk. (os error 112)",
+    "cold_commands": [
+      {
+        "name": "copy",
+        "exit_code": 0,
+        "wall_seconds": 13.8835909
+      },
+      {
+        "name": "inspect-A",
+        "exit_code": 0,
+        "wall_seconds": 5.3139111
+      },
+      {
+        "name": "inspect-B",
+        "exit_code": 0,
+        "wall_seconds": 4.1262454
+      },
+      {
+        "name": "report",
+        "exit_code": 0,
+        "wall_seconds": 12.9180118
+      },
+      {
+        "name": "export",
+        "exit_code": 1,
+        "wall_seconds": 18.6383545
+      }
+    ],
+    "failed_export_not_finalized_or_accepted": true
+  },
+  "cleanup": {
+    "operator": "root build owner; this audit performed no cleanup",
+    "direct_recursive_removal": {
+      "automatic_policy_rejected": true,
+      "action_performed": false,
+      "evidence_kind": "operator conversation observation; no independent filesystem-operation log"
+    },
+    "command": [
+      "cargo",
+      "clean",
+      "--profile",
+      "dev",
+      "--package",
+      "greenlens-runner",
+      "--package",
+      "greenlens-cli"
+    ],
+    "relative_target": "build/28f99e682cc1fe37",
+    "dry_run": {
+      "summary": "14118 files, 8.1 GiB",
+      "evidence_kind": "tool output summarized by cleanup receipt; no separate dry-run log"
+    },
+    "completed_log_summary": "Removed 14113 files, 8.0GiB total",
+    "receipt_utc": "2026-10-13T11:48:39.6985449Z",
+    "disk_free_before_bytes": 1256714240,
+    "disk_free_after_bytes": 8540590080,
+    "disk_free_increase_bytes": 7283875840,
+    "deletion_scope": "Cargo dev-profile cache for greenlens-runner and greenlens-cli only; evidence, jobs, engines and releases excluded"
+  },
+  "restoration": {
+    "project_manifest": {
+      "bytes": 206542,
+      "sha256": "fae5ed44543dd2b5ddc89222e57e3702854f736fb4ea462e34f058087081db49"
+    },
+    "copy_stdout_semantically_matches_restored_manifest": true,
+    "original_owned_and_cold_manifest_bytes_equal": true,
+    "retained_file_count": 149,
+    "original_owned_and_cold_retained_files_equal": true,
+    "member_inventory": {
+      "path": "restored-members.json",
+      "bytes": 26284,
+      "sha256": "2c900944a795ab7ab85f243790dfd6721b4383e44cead59c8c710d45280826d8"
+    },
+    "hidden_project_sibling_absent": true,
+    "job_directories": [
+      {
+        "run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+        "restored_directory_present": true,
+        "hidden_sibling_absent": true
+      },
+      {
+        "run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+        "restored_directory_present": true,
+        "hidden_sibling_absent": true
+      }
+    ],
+    "separate_after_finally_inventory_existed": false,
+    "observation_scope": "Current exact byte comparison after restoration; root separately observed restored path immediately after failed script."
+  },
+  "prior_releases": [
+    {
+      "release": "20261013-energy-candidate-d144831",
+      "prior_public_audit": {
+        "bytes": 19563,
+        "sha256": "925c28dc1552bab810bb62018856f29cbffd9ba71e984b9aa9a12824eac28a6c"
+      },
+      "artifacts_rehashed": {
+        "GreenLens_0.4.0_x64-setup.exe": {
+          "bytes": 4467900,
+          "sha256": "bde70675fe90221f90ba81a7e72364ba5224c699934daa0ecd5feb4b12dc4907"
+        },
+        "GreenLens-CLI-0.4.0-windows-x64.zip": {
+          "bytes": 9667965,
+          "sha256": "20c884ac7672c31be20e9168800937d94795e4dba84eb38e3381c18cbab50f76"
+        }
+      },
+      "cli_rehashed": {
+        "bytes": 8887296,
+        "sha256": "7ac63405d1eda9478714a313122c34975ae39d6bd792aa1b5a3228d202c4ef8f"
+      }
+    },
+    {
+      "release": "20261013-energy-candidate-00cf37b",
+      "prior_public_audit": {
+        "bytes": 19096,
+        "sha256": "dc841776a41daf940043585f12d33940d62fb69135563e4c32275c1900eaf13a"
+      },
+      "artifacts_rehashed": {
+        "GreenLens_0.4.0_x64-setup.exe": {
+          "bytes": 4466552,
+          "sha256": "0325b69ccf3dd7c95c985575930ef339ad08f2c703af110c39b1af2b4be5ccf2"
+        },
+        "GreenLens-CLI-0.4.0-windows-x64.zip": {
+          "bytes": 9729921,
+          "sha256": "7213319e5ea98868d1d05b05af171072d2f5dbaf5101b9909c0e5318d31ce6fc"
+        }
+      },
+      "cli_rehashed": {
+        "bytes": 8888832,
+        "sha256": "87c3b369a0c91185ec50a8a6e3dac4a5034e340cf7e6276c5a5adc0f2ae4892f"
+      },
+      "checksums": {
+        "bytes": 465,
+        "sha256": "db5439d3c8ffa17e7a71a87db906fd08a9d999022a4e4802a14018a88ab81702"
+      }
+    }
+  ],
+  "retained_original_seals": {
+    "initial-build/build-failed.json": {
+      "bytes": 659,
+      "sha256": "9f1a44879521a66751e3199f75a9f10cbb0a74c2583c4b727f34d3d40e55a2fc"
+    },
+    "initial-build/build.ps1": {
+      "bytes": 3013,
+      "sha256": "6741bdc63edb29adf048ae5b843b0ab6ec563c87eadf6bc04527e06c334d4b30"
+    },
+    "initial-build/cli-build.log": {
+      "bytes": 496,
+      "sha256": "e1a6b4ace3670c3deb05f6ab4513551468c81cb512f66af83bb0162718b9b57e"
+    },
+    "initial-build/desktop-build.log": {
+      "bytes": 2243,
+      "sha256": "6d5b67fc0645875600cd4476dcfe0e6af78750c03f27310fc4a4af3f620077ad"
+    },
+    "initial-build/frontend-tests.log": {
+      "bytes": 15466,
+      "sha256": "e217a8b8b3ae6d94471da4cf0c8973d0416109a51c63ca1ca7c24d84fa358585"
+    },
+    "initial-delivery/render.ps1": {
+      "bytes": 1733,
+      "sha256": "30f9fc353b55ae45b8fd020e79b73e8211517e32f39557fdfd0c2ecb464f746d"
+    },
+    "initial-delivery/four-copy.json": {
+      "bytes": 206542,
+      "sha256": "fae5ed44543dd2b5ddc89222e57e3702854f736fb4ea462e34f058087081db49"
+    },
+    "initial-delivery/four-portability.log": {
+      "bytes": 345,
+      "sha256": "3dba566c24a74fe7d4c302276475921d6df956d20723c74f4165e314d1e374c6"
+    },
+    "initial-delivery/four/commands.json": {
+      "bytes": 442,
+      "sha256": "6dc4f26e5001e1950d12cbea275c865abd523546e115e29d3f675a41c78ac3c0"
+    },
+    "initial-delivery/four/export.stderr.txt": {
+      "bytes": 66,
+      "sha256": "4d7c74c419d98df8c3976d6219682af5b7775cb5b7cfae29d2452f836075aac3"
+    },
+    "cleanup/receipt.json": {
+      "bytes": 624,
+      "sha256": "8ed4cc4eab512f8aaeb2330e6cab3bc1989ea129f88e97d0dc1032c3d7a91a2b"
+    },
+    "cleanup/clean.log": {
+      "bytes": 40,
+      "sha256": "e12f9175a99ed3be798d8d5a8e1931e2c669a20098bff3587164299607e729eb"
+    }
+  },
+  "preservation_scope": "Original failure logs, completed CLI, restored project and 149 retained files, and enumerated prior release artifacts were checked. No claim of rehashing every historical job, engine or release member.",
+  "limits": [
+    "No build, engine, installer or GUI executed by this audit.",
+    "No source/evidence bytes altered; recovery record and member inventory are additive external files.",
+    "Successful retry package and delivery are assessed separately after closure.",
+    "The initial desktop/export failures remain failures; this record asserts no scientific or release qualification."
+  ]
+}

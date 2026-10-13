@@ -2,7 +2,7 @@
 
 Local-first building environmental simulation with Rust, a native Tauri desktop, Radiance and separately installed EnergyPlus.
 
-The active v0.4 candidate adds a separate small-building thermal model, real annual EnergyPlus DX/fan calculations and reproducible energy reports. Read the [energy status](docs/v0.4-energy-status.md), [bounded specification](docs/v0.4-energy-spec.md), [method](docs/v0.4-energy-method.md) and [progress record](docs/progress.md). **v0.4 is not yet a verified release:** numerical, installed-workflow and delivery acceptance are tracked individually.
+The active v0.4 candidate adds a separate small-building thermal model, real annual EnergyPlus DX/fan calculations and reproducible energy reports. The [candidate delivery guide](docs/v0.4-delivery.md) gives the actual installer, CLI and reviewed example-output locations. Read the [energy status](docs/v0.4-energy-status.md), [bounded specification](docs/v0.4-energy-spec.md), [method](docs/v0.4-energy-method.md) and [progress record](docs/progress.md). **v0.4 is not yet a verified release:** numerical, installed-workflow and delivery acceptance are tracked individually.
 
 The historical v0.3 climate-daylight methods remain **failed/unqualified**. Their finite reference investigation is exhausted and closed; energy work neither reopens it nor transfers qualification to it. Historical inspection and replay remain available. See the [retained climate status](docs/v0.3-status.md) and [qualification continuation](docs/v0.3-qualification-continuation.md).
 

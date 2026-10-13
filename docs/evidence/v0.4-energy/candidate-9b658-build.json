@@ -1,0 +1,203 @@
+{
+  "schema": "greenlens.clean-candidate-build.v1",
+  "checked_utc": "2026-10-13T12:08:28.694770+00:00",
+  "application_version": "0.4.0",
+  "source_commit": "9b65897a5a49c62a2bf6b2ba36da2970ebde8db4",
+  "source_dirty": false,
+  "started_utc": "2026-10-13T11:49:33.9242297Z",
+  "completed_utc": "2026-10-13T12:06:00.4167813Z",
+  "distribution": "releases/0.4.0/20261013-energy-candidate-9b65897",
+  "status": "build and package completed; installation unverified",
+  "commands": [
+    {
+      "working_directory": "source",
+      "arguments": [
+        "cargo",
+        "build",
+        "-p",
+        "greenlens-cli",
+        "--release",
+        "--locked",
+        "--offline"
+      ]
+    },
+    {
+      "working_directory": "source/apps/desktop",
+      "arguments": [
+        "npm",
+        "test"
+      ]
+    },
+    {
+      "working_directory": "source/apps/desktop",
+      "arguments": [
+        "npm",
+        "run",
+        "tauri",
+        "--",
+        "build",
+        "--ci"
+      ]
+    },
+    {
+      "working_directory": "source",
+      "arguments": [
+        "node",
+        "scripts/license-inventory.mjs",
+        "--strict",
+        "--check",
+        "--installer-cache",
+        "<separate NSIS cache>"
+      ]
+    },
+    {
+      "working_directory": "source",
+      "arguments": [
+        "scripts/package-artifacts.ps1",
+        "-OutputDirectory",
+        "<new versioned distribution>"
+      ]
+    }
+  ],
+  "environment": {
+    "GREENLENS_EXPECT_SOURCE_COMMIT": "9b65897a5a49c62a2bf6b2ba36da2970ebde8db4",
+    "GREENLENS_EXPECT_SOURCE_DIRTY": "false",
+    "CARGO_BUILD_JOBS": "1",
+    "RUST_TEST_THREADS": "2",
+    "build_cache": "separate local GreenLens/build tree"
+  },
+  "timing_seconds": {
+    "release_cli": 223.0330043,
+    "desktop_with_frontend_production_and_NSIS": 746.9953255,
+    "frontend_tests_reported": 3.2680596
+  },
+  "frontend_tests": {
+    "tests": 152,
+    "passed": 152,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "scope": "Node frontend regressions; no installed UI claim"
+  },
+  "artifacts": {
+    "GreenLens_0.4.0_x64-setup.exe": {
+      "bytes": 4472475,
+      "sha256": "cda94e3033002d19c69180c997310261fe67702ddbfc526f818c337eee23f974"
+    },
+    "GreenLens-CLI-0.4.0-windows-x64.zip": {
+      "bytes": 9773974,
+      "sha256": "86395d93923a2a4da4fcad996cce104dfdc3b10c6e43b93008999df88aa3d97f"
+    }
+  },
+  "cli": {
+    "bytes": 8889344,
+    "sha256": "fc792a08a5522fd81e6cf908b301b420a2aa7c4e57445fd781133986921b81b5",
+    "architecture": "x86_64",
+    "certificate_directory_empty": true
+  },
+  "desktop": {
+    "bytes": 18898432,
+    "sha256": "009277f21e9e464457476b4a422f2cd1ef288a090cb4ef98711d0f8e4fb21d40",
+    "architecture": "x86_64",
+    "certificate_directory_empty": true
+  },
+  "package_audit": {
+    "file": "audit.json",
+    "bytes": 20282,
+    "sha256": "bbaf29dade41a12760b0a7d662bfa8de5652a81167b0210e4fa8f4a146aaa388",
+    "all_checks_pass": true,
+    "zip_files": 336,
+    "zip_uncompressed_bytes": 28831875,
+    "documentation": {
+      "selected_files": 312,
+      "local_links": 506,
+      "bytes_including_index": 15129155,
+      "per_file_limit": 2097152,
+      "total_limit": 16777216,
+      "scope": "Documentation-only limits; scientific archive and runtime caps unchanged."
+    },
+    "NSIS_mapped_resources": 47
+  },
+  "licenses": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "lockfiles": {
+    "Cargo.lock": "59d2c017b10f3787d4e1aed116c2c028f9c30e604c18c9caabd4ac7305564aca",
+    "apps/desktop/package-lock.json": "d00bb6b90b0abbe8ee21466bf5b5d8793f7e811ff0649bd81113e8181384accf"
+  },
+  "retained_successful_logs": {
+    "build.json": {
+      "bytes": 851,
+      "sha256": "076bf870cce1ed99b5886054613db26cf3ec0a45bc88dabc115d5c0a7fb70456"
+    },
+    "build.ps1": {
+      "bytes": 3013,
+      "sha256": "6741bdc63edb29adf048ae5b843b0ab6ec563c87eadf6bc04527e06c334d4b30"
+    },
+    "cli-build.log": {
+      "bytes": 272,
+      "sha256": "20b4dccee59803f342bae048bfd5bb21eede9332b3bd0338178c17732b6d3ab5"
+    },
+    "desktop-build.log": {
+      "bytes": 2371,
+      "sha256": "6588e7f6ed55f4226b1a42ba1c9ed1e06d848b5624ed6bebbdaa296969ea30c0"
+    },
+    "frontend-tests.log": {
+      "bytes": 15452,
+      "sha256": "d67e569857abf17d7c47a7ef3874454e52d2e6f5974bf38aaa346147082e47e2"
+    },
+    "installer-x64.nsi": {
+      "bytes": 42514,
+      "sha256": "787cb7bf9ecc12b4ebb8f30a3b8553d217e8ad383fcae02a62eb95611cb2768f"
+    },
+    "licenses.json": {
+      "bytes": 147,
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    },
+    "package.log": {
+      "bytes": 131,
+      "sha256": "14a35c962f6e0955b71d38bf7764e1dbc9830b437d4a419af587560fcbb3f0ff"
+    },
+    "retry.json": {
+      "bytes": 297,
+      "sha256": "56d4ed14946b9da461b9af78f55cdc7054034fd638d2ed1b9202454b8c8fd65e"
+    }
+  },
+  "preserved_initial_attempt": {
+    "source_commit": "9b65897a5a49c62a2bf6b2ba36da2970ebde8db4",
+    "started_utc": "2026-10-13T11:36:46.9293265Z",
+    "cli_completed": true,
+    "cli": {
+      "bytes": 8889344,
+      "sha256": "d9254638a360c5e5cb3517d3f96f80699977b768b6be146c378cc1075273e7ec"
+    },
+    "desktop_completed": false,
+    "export_completed": false,
+    "failure": "disk full; desktop log reports no space on device, export reports os112",
+    "original_failed_build_record": {
+      "bytes": 659,
+      "sha256": "9f1a44879521a66751e3199f75a9f10cbb0a74c2583c4b727f34d3d40e55a2fc"
+    },
+    "disk_recovery_audit": {
+      "bytes": 7669,
+      "sha256": "edee5eaad4a069b2e6512a5f2114a56b9940cd6d0f073de8f58ddcc8be803178"
+    },
+    "cleanup": "Cargo dev-profile cache for greenlens-runner and greenlens-cli only; original evidence preserved",
+    "same_source_different_cli_build_digest": true,
+    "bit_reproducible_build_claimed": false
+  },
+  "installed_native_verification": false,
+  "new_scientific_qualification_asserted": false,
+  "release_complete": false,
+  "limits": [
+    "Build completion and package integrity do not establish installed desktop acceptance or general scientific qualification.",
+    "Scientific run, replay, cold report and delivery supplement audits remain separate evidence.",
+    "No installer, application, engine or Cargo invocation occurred in this independent audit.",
+    "This additive external sidecar is outside the original package hash closure."
+  ]
+}

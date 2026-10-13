@@ -1,0 +1,120 @@
+{
+  "schema": "greenlens.final-delivery-supplement-independent.v1",
+  "checked_utc": "2026-10-13T12:10:56.301647+00:00",
+  "application_source_commit": "9b65897a5a49c62a2bf6b2ba36da2970ebde8db4",
+  "source_dirty": false,
+  "cli_sha256": "fc792a08a5522fd81e6cf908b301b420a2aa7c4e57445fd781133986921b81b5",
+  "all_checks_pass": true,
+  "original_package_audit": {
+    "bytes": 20282,
+    "sha256": "bbaf29dade41a12760b0a7d662bfa8de5652a81167b0210e4fa8f4a146aaa388"
+  },
+  "original_installer_cli_zip_and_checksums_unchanged": true,
+  "delivery_manifest": {
+    "bytes": 37088,
+    "sha256": "846b119eb7bbb13a4d965a8362ff8634ed5de99ba7fc72da17c548559a302d70"
+  },
+  "manifest_file_count": 172,
+  "manifest_total_bytes": 64946494,
+  "aggregate_independently_summed": true,
+  "source_manifest_has_no_aggregate_field": true,
+  "project": {
+    "manifest": {
+      "bytes": 206542,
+      "sha256": "fae5ed44543dd2b5ddc89222e57e3702854f736fb4ea462e34f058087081db49"
+    },
+    "retained_files": 149,
+    "all_retained_files_equal_cold_source": true,
+    "empty_advisory_lock_in_inventory": true
+  },
+  "reports": {
+    "files": 20,
+    "all_bytes_equal_cold_source": true,
+    "report_dataset": {
+      "bytes": 209829,
+      "sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302"
+    },
+    "both_cases_match_immutable_run_input_study_method_and_totals": true,
+    "cases": [
+      {
+        "side": "baseline",
+        "run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+        "record_sha256": "fddc5fd86eb85a681193513ecee5753ca4bebb94c24aa219aa2df61721faea64",
+        "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+        "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+        "scientific_status": "limited_qualified",
+        "intervals": 52560,
+        "interval_seconds": 600,
+        "report_model_study_method_totals_equal_retained_inputs": true
+      },
+      {
+        "side": "proposed",
+        "run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+        "record_sha256": "aebc18d1de2b88e906ea1ca82b1d0930a3310c593991eea9876dbcff38aa653c",
+        "physical_input_sha256": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+        "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+        "scientific_status": "limited_qualified",
+        "intervals": 52560,
+        "interval_seconds": 600,
+        "report_model_study_method_totals_equal_retained_inputs": true
+      }
+    ]
+  },
+  "portable_evidence": {
+    "bytes": 8406105,
+    "sha256": "209a913161481b0f0d54eb5f65f7cd7b00aba59da012543c0594aae6dccbe4d4",
+    "members": 173,
+    "uncompressed_bytes": 56564516,
+    "largest_member_bytes": 5300731,
+    "member_limit": 5000,
+    "per_member_limit_bytes": 67108864,
+    "total_limit_bytes": 268435456,
+    "all_CRC_paths_outer_seals_retained_members_checked": true,
+    "report_dataset_semantically_equal_standalone_and_shared_inspection": true,
+    "member_inventory": {
+      "file": "delivery-zip-members.json",
+      "bytes": 29591,
+      "sha256": "6f446b364b910701015e5ec3b86456edf87e974e3bf5542e0025eba589afb1d5"
+    }
+  },
+  "owner_cold_receipts": {
+    "cold-evidence.json": {
+      "bytes": 21186,
+      "sha256": "1818fdd65e0c43fbac4d80c6961e2165806461df79bd84420088af5ece1a7a16"
+    },
+    "commands.json": {
+      "bytes": 537,
+      "sha256": "f930b636e79f70c328efb8ad8c8c75f0fa596cc33b1dbe3ea0fc29008500e48f"
+    },
+    "package-inspect.json": {
+      "bytes": 227139,
+      "sha256": "d816b8ef6d066c866de412503a649402ee96b30eed76f9c0dc49aed215ce5bd8"
+    },
+    "report.json": {
+      "bytes": 12175,
+      "sha256": "e6dd83e89ea7500f07f5f31a92ef7641995042f3f822335f37d3d4019877436b"
+    }
+  },
+  "retained_replay_receipt": {
+    "seal": {
+      "bytes": 1473,
+      "sha256": "118c8adf2b9e87325df7a43aa23a435df350da8185172b9f6111436348d85af1"
+    },
+    "checked_values": 3574080,
+    "maximum_difference_reported": 0,
+    "scope": "Receipt and package identity binding only; independent replay arithmetic/native execution not repeated by this supplement audit."
+  },
+  "delivery_instructions": {
+    "bytes": 1786,
+    "sha256": "c9942259c5869a4f4e6e29ee1f5aa0fa33b3ebf1e0ef16541d488a0053920432"
+  },
+  "installed_native_verification": false,
+  "release_complete": false,
+  "limitations": [
+    "This is an additive delivery supplement outside the original CLI ZIP/checksum closure.",
+    "No numerical series were reparsed and no engine, application, installer or Cargo was executed.",
+    "PDF pagination and rendered-page appearance are covered by the separate report audit, not repeated here.",
+    "Exact synthetic A revision2 and B revision3 scope remains limited; no general building, real-weather or certification acceptance.",
+    "The exploratory metadata read initially expected obsolete qualification.json; actual v0.4 authority is the embedded report assessment plus compiled-reader recomputation. No package changed."
+  ]
+}

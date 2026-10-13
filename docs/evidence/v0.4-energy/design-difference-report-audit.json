@@ -1,0 +1,1063 @@
+{
+  "schema_version": "greenlens.energy-input-differences-report-audit.v1",
+  "recorded_utc": "2026-10-13T12:58:14.034954Z",
+  "source_commit": "fce896d1529752f49ffae39372e9e3791988fffe",
+  "source_dirty": false,
+  "cli_sha256": "afe231fb5d14082ed4bea37928c3543c2495633b2f6fe67448418f8d4fdd24dd",
+  "cli_bytes": 8890368,
+  "frozen_cli_snapshot": {
+    "name": "cli-source-snapshot.json",
+    "sha256": "576f35336e6f35a696809061e9da1a840ca9cf7920330903ed0af62cbe0b7de2",
+    "bytes": 614
+  },
+  "scope": "Independent content, arithmetic, ordered input-difference projection and visual audit of regenerated four/eight-zone reports. Existing thermal results are reused unchanged. This auditor performed no build, EnergyPlus, replay or Typst invocation; Poppler rasterization is presentation inspection only.",
+  "presentation_delta_audit": {
+    "name": "presentation-delta.json",
+    "sha256": "9f3b9924d74ddc77b9ec681ff8677e3670d99298a2b3ec22247eb0191eb1cef7",
+    "bytes": 18212
+  },
+  "unchanged_scientific_service_sources": {
+    "crates/greenlens-core/src/energy/accounting.rs": "8b692a81337641bc050dd49b6a6623301da8f4b0ade4ba9f6ab66f900be14b07",
+    "crates/greenlens-core/src/energy/example.rs": "ecc3f3d16762abae227933e421a6dabe2895fef280aca6cdbd22c7837d66be11",
+    "crates/greenlens-core/src/energy/mod.rs": "49fc1f46be33cb70dc3344c227c7ef0c865e37e0de80941e0d51f90b2702860f",
+    "crates/greenlens-core/src/energy/model.rs": "ad3ebc7cb55bd9c582f0515ab134e8b9d2d10310a774fba4c0acf080094568bb",
+    "crates/greenlens-core/src/energy/report.rs": "f738504c031110bf33f842103a50cc80b6a2d11ba02d42862735d0a57aa34e48",
+    "crates/greenlens-core/src/energy/schedule.rs": "f126381fce4297e6f6cb4a441705b2aa96602476cab1abc48ee549d323b2aa61",
+    "crates/greenlens-core/src/energy/study.rs": "9da0ab2c34f501d8f078e38e8025d704c78a9a9dc8aabc58ebd23a2ac621c616",
+    "crates/greenlens-core/src/energy/tests.rs": "c4112e94f5f05160cb6bad2cb78a3c922e026734d10ca1862710f387f270b4c3",
+    "crates/greenlens-core/src/energy/weather.rs": "b579004616e87b883acf2a26af3d13ab83793d734a9a7f7d795b73c232239183",
+    "crates/greenlens-energyplus/src/lib.rs": "0dc177e06beffa1061189b2e4370267be215546b038eddf146302fcf4315a6d7",
+    "crates/greenlens-energyplus/src/model.rs": "bec3a873ee4103fc595b10175ea13e56f464a4ca605627ac16042ce2f49b1ef1",
+    "crates/greenlens-energyplus/src/output.rs": "ba289724e5bbb337a839466153f50830591e6c83305a774ca7bab145980de0fa",
+    "crates/greenlens-process/src/lib.rs": "437439f1de6c3e8764c8d872ecb065d3b831a4adba6c2c214ac0f810fccf116e",
+    "crates/greenlens-process/src/windows.rs": "f2944d0732c11702839ae22aaf9b8460f8130681acbd2c9419ec4ac29f80b6ce",
+    "crates/greenlens-runner/src/energy.rs": "bd991d891ef756aeb23f53fe3edcbd96cb00533d93c31ffc81cebdef93d48da4",
+    "crates/greenlens-runner/src/energy_job.rs": "64df58299a86b4dc77069832429773254fcdaf6c8d8ee172a7fe50ab193a81ee",
+    "crates/greenlens-runner/src/energy_services.rs": "400ccbc31bb597aaa6ce119856b8780d9d6e598e21588a589aa46b37910b88d9"
+  },
+  "auditor_sources": [
+    {
+      "path": "audit-presentation-delta.py",
+      "sha256": "e304fe605ea98ab00a5c0976f762e36d8a11dc229db98b1f0fbd6f897ea46846",
+      "bytes": 9853
+    },
+    {
+      "path": "render-pages.py",
+      "sha256": "174b22da826e0edb744ecee99bb6a1edb825303afddf4a7f5d25d0a85453c1f8",
+      "bytes": 953
+    },
+    {
+      "path": "eight/audit-arithmetic-capacity.py",
+      "sha256": "34bd5b1d9b17894dbf8b5a925c44501326302b0a8e8077cc26f541b748d50476",
+      "bytes": 4491
+    },
+    {
+      "path": "eight/audit-content-capacity.py",
+      "sha256": "b8713efe73b5fe2865d1b06fcd5c6f5229e381cc5e9f7ebc47ba8814397f3986",
+      "bytes": 7627
+    },
+    {
+      "path": "four/audit-arithmetic-v3.py",
+      "sha256": "c55220e6fb9f3975f53017264eae0285303f219cea3f3fafd4ee278878c3aab7",
+      "bytes": 4556
+    },
+    {
+      "path": "four/audit-content-v3.py",
+      "sha256": "84e3b3275da4e207400b68f3f408fa2eacaa2a7c6ce92aa58e1fb0c65e882ca6",
+      "bytes": 7701
+    }
+  ],
+  "cases": {
+    "four": {
+      "scientific_status": "LimitedQualified exact scopes",
+      "manifest_sha256": "0683ccdffa0912bb3dfd02c39048a8aa6e66606c71e9ca358131d66508267e4f",
+      "content_audit": {
+        "name": "four/content-audit.json",
+        "sha256": "b4665d01cec0accd32ad1115424396248c344aa1eacad5390ee1fc7198edbf93",
+        "bytes": 7895
+      },
+      "arithmetic_audit": {
+        "name": "four/arithmetic.json",
+        "sha256": "382fb68ebab9f3f7810a586790aad763b1c5e015c1abce71d9a112c34dbf678d",
+        "bytes": 51931
+      },
+      "documents": {
+        "assessment": {
+          "pages": 25,
+          "pdf_sha256": "2910bffc4a2acf765a1f4ce68c611333de658bce4469568dcd6428e525025c5f",
+          "bytes": 692282,
+          "document_sha256": "cc31076bb449e88148f035615c4e43bf91ec2ff4c9e56b73d126de0f823424dc",
+          "checked_text_items": 1815,
+          "embedded_fonts": [
+            "/PBFRAH+NotoSansCJKtc-Bold-Identity-H",
+            "/PWIQPM+NotoSansCJKtc-Regular-Identity-H"
+          ]
+        },
+        "input-appendix": {
+          "pages": 32,
+          "pdf_sha256": "fa8b107c631dd36b2d016a00aef9d778d5ed155608860f8bab04f8cf971142fc",
+          "bytes": 807094,
+          "document_sha256": "4ff08327af83aa1e84f6f8b5c7f80c176bd24852f9e5e5f0812066fc5fa302f2",
+          "checked_text_items": 2266,
+          "embedded_fonts": [
+            "/CMIXDO+NotoSansCJKtc-Regular-Identity-H",
+            "/RDINAS+NotoSansCJKtc-Bold-Identity-H"
+          ]
+        },
+        "performance": {
+          "pages": 5,
+          "pdf_sha256": "01c7248e9548c05171b119673b8b13f3f935a3112b0b94c01f277696f92f9832",
+          "bytes": 139398,
+          "document_sha256": "b684b47e96a51793bdaf5a4fb1ac410612fbdf1a6f6a392f229a275d033f0488",
+          "checked_text_items": 263,
+          "embedded_fonts": [
+            "/DBYLCD+NotoSansCJKtc-Bold-Identity-H",
+            "/ERRZTH+NotoSansCJKtc-Regular-Identity-H"
+          ]
+        }
+      },
+      "artifact_seals_and_prior_comparison": [
+        {
+          "path": "energy-report.json",
+          "bytes": 209829,
+          "new_sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302",
+          "old_sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.json",
+          "bytes": 62585,
+          "new_sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80",
+          "old_sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.csv",
+          "bytes": 30203,
+          "new_sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be",
+          "old_sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be",
+          "exact_bytes": true
+        },
+        {
+          "path": "inputs.csv",
+          "bytes": 69253,
+          "new_sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638",
+          "old_sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638",
+          "exact_bytes": true
+        },
+        {
+          "path": "baseline-model.svg",
+          "bytes": 3723,
+          "new_sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec",
+          "old_sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec",
+          "exact_bytes": true
+        },
+        {
+          "path": "proposed-model.svg",
+          "bytes": 4393,
+          "new_sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644",
+          "old_sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644",
+          "exact_bytes": true
+        },
+        {
+          "path": "annual.svg",
+          "bytes": 1880,
+          "new_sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86",
+          "old_sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86",
+          "exact_bytes": true
+        },
+        {
+          "path": "monthly.svg",
+          "bytes": 3248,
+          "new_sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e",
+          "old_sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e",
+          "exact_bytes": true
+        },
+        {
+          "path": "assessment.html",
+          "bytes": 89603,
+          "new_sha256": "e83d8ec3d306345c02f9910f5d7356add11050519cace527dc17b6a471dcc248",
+          "old_sha256": "008a07b93fe30c382eaf8ecf9296befc4d6461db486aec0916f56ff3aad82b3e",
+          "exact_bytes": false
+        },
+        {
+          "path": "input-appendix.html",
+          "bytes": 102414,
+          "new_sha256": "26ed07911e5a29d52d3f9bf70ef76e0710a610c8d7492d97ea4651d51a1b0865",
+          "old_sha256": "26ed07911e5a29d52d3f9bf70ef76e0710a610c8d7492d97ea4651d51a1b0865",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.html",
+          "bytes": 19028,
+          "new_sha256": "f380f4a67da2a37d49cb0b8fea842cc1c884b1daf520946c000b1384ffd4b2ed",
+          "old_sha256": "ded8e44cc1d8ffdd8a5fcd2488e3a4de97ed415eec8b3312d6a3b37736cacf41",
+          "exact_bytes": false
+        },
+        {
+          "path": "assessment.pdf",
+          "bytes": 692282,
+          "new_sha256": "2910bffc4a2acf765a1f4ce68c611333de658bce4469568dcd6428e525025c5f",
+          "old_sha256": "c2302210362ee5818ae297a72fa9751601e689b38d2a4fb7de8b05fa719e67be",
+          "exact_bytes": false
+        },
+        {
+          "path": "input-appendix.pdf",
+          "bytes": 807094,
+          "new_sha256": "fa8b107c631dd36b2d016a00aef9d778d5ed155608860f8bab04f8cf971142fc",
+          "old_sha256": "fa8b107c631dd36b2d016a00aef9d778d5ed155608860f8bab04f8cf971142fc",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.pdf",
+          "bytes": 139398,
+          "new_sha256": "01c7248e9548c05171b119673b8b13f3f935a3112b0b94c01f277696f92f9832",
+          "old_sha256": "de9569f8e12cac1da10efb88e7607336e02edae9adf6539d0e3c38fee420eae4",
+          "exact_bytes": false
+        },
+        {
+          "path": "performance-page-001.png",
+          "bytes": 114380,
+          "new_sha256": "9595db75352488c2663dbc26626984b0aa1d730d4fb158f612c45e01364ef464",
+          "old_sha256": "eccef13c6a4f60e11d1f992bfbb1eaf3f795762e8f5b65bc7554956b4038132d",
+          "exact_bytes": false
+        },
+        {
+          "path": "performance-page-002.png",
+          "bytes": 295183,
+          "new_sha256": "63197924c29a955896227e72247afc6ccb90abf086bb482dad01267ce87c2654",
+          "old_sha256": "63197924c29a955896227e72247afc6ccb90abf086bb482dad01267ce87c2654",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance-page-003.png",
+          "bytes": 342152,
+          "new_sha256": "7cf662e4740e21e7c2c397a2745cded442e36dce0394611e59826addf8a60f2f",
+          "old_sha256": "7cf662e4740e21e7c2c397a2745cded442e36dce0394611e59826addf8a60f2f",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance-page-004.png",
+          "bytes": 244607,
+          "new_sha256": "b693bdd51dce38e9e7336d0fc3473c8a9a02aa50e675a8d6b7d60b05f288dca4",
+          "old_sha256": "5a29f9d37446fce59630efd2e1f3e9e6a78d0131d549ba24dad428a80d4acf16",
+          "exact_bytes": false
+        },
+        {
+          "path": "performance-page-005.png",
+          "bytes": 180802,
+          "new_sha256": "0f92a07f42c4a3a5736d679ec02be678f0eea64464b0b4954caa99da6aa8fb50",
+          "old_sha256": "93c1bf42ac678542bb321e809e13a8446ecd8a495919ba6990fc1c391790659f",
+          "exact_bytes": false
+        }
+      ],
+      "dataset_rust_canonical_sha256": "73e82ce76c2ed1f04b5c2ede8f1bd24edb529acb0277efa8cf766ca190dd1c39",
+      "template_sha256": "7fe14ea1a40b40ed0c99b987d729ece7dc19d312598c9e395d65cbd8b31d7012",
+      "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "ordered_input_differences": [
+        "Opaque thermal materials or constructions differ.",
+        "Glazing, openings or fixed shading differs.",
+        "Zone zone1 gains differ.",
+        "Zone zone1 cooling/fan/ventilation system differs.",
+        "Zone zone2 gains differ.",
+        "Zone zone2 cooling/fan/ventilation system differs.",
+        "Zone zone3 gains differ.",
+        "Zone zone3 cooling/fan/ventilation system differs.",
+        "Zone zone4 gains differ.",
+        "Zone zone4 cooling/fan/ventilation system differs."
+      ],
+      "difference_paragraphs_in_each_assessment_and_performance": 10,
+      "exact_numeric_cells": 318,
+      "maximum_arithmetic_difference": 0.0,
+      "lossless_input_csv_rows": 1064,
+      "all_declared_text_in_pdf_and_html": true,
+      "offline_html_no_external_image_or_script": true,
+      "embedded_fonts_unicode_maps": true,
+      "no_pdf_active_content": true,
+      "retained_immutable_files_unchanged": 149,
+      "report_dto_exactly_identical_to_prior_9b": true,
+      "native_typst_records": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T12:45:53.123400900+00:00",
+          "finished_utc": "2026-10-13T12:45:54.460606+00:00",
+          "elapsed_ms": 1412,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 124698624,
+          "peak_observed_scratch_bytes": 34240188,
+          "samples": 25,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T12:45:55.063356600+00:00",
+          "finished_utc": "2026-10-13T12:45:56.672890700+00:00",
+          "elapsed_ms": 1684,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 134483968,
+          "peak_observed_scratch_bytes": 34380036,
+          "samples": 30,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T12:45:57.268505400+00:00",
+          "finished_utc": "2026-10-13T12:45:57.843346800+00:00",
+          "elapsed_ms": 646,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 84635648,
+          "peak_observed_scratch_bytes": 33614231,
+          "samples": 11,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "--ppi",
+            "96",
+            "report.typ",
+            "page-{0p}-of-{t}.png"
+          ],
+          "started_utc": "2026-10-13T12:45:58.469361800+00:00",
+          "finished_utc": "2026-10-13T12:45:59.275293500+00:00",
+          "elapsed_ms": 880,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 92991488,
+          "peak_observed_scratch_bytes": 34651957,
+          "samples": 15,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "visual_review": {
+        "assessment_pages_directly_reviewed": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25
+        ],
+        "performance_pages_directly_reviewed": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "delivered_png_pages_directly_reviewed": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "input_appendix_pages_transferred_by_exact_bytes": 32,
+        "appendix_transfer_prior_audit_sha256": "ec10fabc7e4b744b7065350b5dcd154d5e44185e95e85b770e7c9fd222e50fe5",
+        "method": "Every changed PDF page viewed on 90 dpi Poppler contact sheets; every delivered performance PNG viewed individually. New page-4 input differences inspected at delivered image resolution. Unchanged appendix PDF/document hashes exactly match the sealed prior all-page visual audit.",
+        "contact_sheet_seals": [
+          {
+            "name": "four/pages/assessment/sheet-1.png",
+            "sha256": "d8b811dfe9a2eaceba85497dfc56d62eaf03c2c93f588edd1c94a9ba4b986430",
+            "bytes": 1273812
+          },
+          {
+            "name": "four/pages/assessment/sheet-2.png",
+            "sha256": "8d43e059d8eb7ba89f75db22f4192a3f26a6ff51cefebe98098a9905e50a44a4",
+            "bytes": 1043525
+          },
+          {
+            "name": "four/pages/assessment/sheet-3.png",
+            "sha256": "ad91e900e21b1f5327d3737d7034285a809cd0b1acfb0b8df9310ac28f0f882e",
+            "bytes": 1019504
+          },
+          {
+            "name": "four/pages/assessment/sheet-4.png",
+            "sha256": "503861c9b47773bcb0cea7267c70f86d773bf32fa907a611f35f196d60db181f",
+            "bytes": 900993
+          },
+          {
+            "name": "four/pages/assessment/sheet-5.png",
+            "sha256": "ce12e88cf0489c407acd7f8e5eb377ad6793dd55bf1c2fe2004595d718a15270",
+            "bytes": 67340
+          },
+          {
+            "name": "four/pages/performance/sheet-1.png",
+            "sha256": "9fa00b026b619402db8f97eec2fc848f0f9aa74df6a9c825bf92c963103c6c47",
+            "bytes": 1047341
+          }
+        ],
+        "findings": [
+          "Ordered differences, report titles, qualification disclosures, continuation headers and page numbers are legible.",
+          "No clipped text, overlapping table/annotation, missing glyph, chart-label collision or off-page content found on the reviewed changed pages."
+        ],
+        "passed": true
+      }
+    },
+    "eight": {
+      "scientific_status": "Unassessed capacity fixture",
+      "manifest_sha256": "ad56378d589ad41308f353d2e92466f2eca48ed601f18a8abadc584158a413ad",
+      "content_audit": {
+        "name": "eight/content-audit.json",
+        "sha256": "f250d77d00a07343d5e2eaec1fa6f38365ae150de9652104d54a20b878648600",
+        "bytes": 7872
+      },
+      "arithmetic_audit": {
+        "name": "eight/arithmetic.json",
+        "sha256": "e2688d3bc14db99d41149d85a86cbee05d3452d475029024fe3f6fabc8c36895",
+        "bytes": 55622
+      },
+      "documents": {
+        "assessment": {
+          "pages": 36,
+          "pdf_sha256": "e8135d3c45717f32c343f536fd0bfaa1c5416de4f8739630f01bf80725b9b5c1",
+          "bytes": 1000580,
+          "document_sha256": "f89b1f69f1897f548a2254f0643461141db95ac0ebb4e8170bddcd7f50b19f61",
+          "checked_text_items": 2735,
+          "embedded_fonts": [
+            "/EFORYD+NotoSansCJKtc-Regular-Identity-H",
+            "/YSOJSJ+NotoSansCJKtc-Bold-Identity-H"
+          ]
+        },
+        "input-appendix": {
+          "pages": 50,
+          "pdf_sha256": "976355ea0b0085fe7741e4b15979a9dfd8c99f6cb68a20dd0b5c8480c2db2a07",
+          "bytes": 1270908,
+          "document_sha256": "83cd5f3f1ec2a2c177d54a709fcc620870b06589e6c9ac932a0ffae176f7cdb2",
+          "checked_text_items": 3738,
+          "embedded_fonts": [
+            "/FCFTFV+NotoSansCJKtc-Regular-Identity-H",
+            "/RGZYTO+NotoSansCJKtc-Bold-Identity-H"
+          ]
+        },
+        "performance": {
+          "pages": 5,
+          "pdf_sha256": "a27a6be1afb43f39e01d410053a15a479665ade4bf1b6270979868ec70cf9abf",
+          "bytes": 130169,
+          "document_sha256": "cf9bd33caf0d933e835fd24e9e3975543b35101468dab9f4a6076ee05852e90d",
+          "checked_text_items": 271,
+          "embedded_fonts": [
+            "/QRJDHP+NotoSansCJKtc-Bold-Identity-H",
+            "/XFCBVG+NotoSansCJKtc-Regular-Identity-H"
+          ]
+        }
+      },
+      "artifact_seals_and_prior_comparison": [
+        {
+          "path": "energy-report.json",
+          "bytes": 247630,
+          "new_sha256": "3fea942b35b58a2ae85ba3ea87452bdf91ca15531f0e90459a4966f4f5211b7d",
+          "old_sha256": "3fea942b35b58a2ae85ba3ea87452bdf91ca15531f0e90459a4966f4f5211b7d",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.json",
+          "bytes": 67380,
+          "new_sha256": "57ebf2205ba08f358049f6a469644e3c242ebc57a906ce9bc1ba951d537af96f",
+          "old_sha256": "57ebf2205ba08f358049f6a469644e3c242ebc57a906ce9bc1ba951d537af96f",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.csv",
+          "bytes": 32390,
+          "new_sha256": "d32f15fc083d20e178892275346ef0f4da4ade82c524c89a623720de1de2d6c1",
+          "old_sha256": "d32f15fc083d20e178892275346ef0f4da4ade82c524c89a623720de1de2d6c1",
+          "exact_bytes": true
+        },
+        {
+          "path": "inputs.csv",
+          "bytes": 117685,
+          "new_sha256": "ece66e38fb4f3aa7b0309f03b6a6112890fa3982dc203b23a4617c35c9ad1185",
+          "old_sha256": "ece66e38fb4f3aa7b0309f03b6a6112890fa3982dc203b23a4617c35c9ad1185",
+          "exact_bytes": true
+        },
+        {
+          "path": "baseline-model.svg",
+          "bytes": 6328,
+          "new_sha256": "1f8e2c657c5cc58e451d4d014cde8d31e430c3777fbfd8844b6c3eec08853879",
+          "old_sha256": "1f8e2c657c5cc58e451d4d014cde8d31e430c3777fbfd8844b6c3eec08853879",
+          "exact_bytes": true
+        },
+        {
+          "path": "proposed-model.svg",
+          "bytes": 7670,
+          "new_sha256": "803e4783ce3c1a2845e248b00a022e32799a3bfb8dee7288f0d671b41a92b981",
+          "old_sha256": "803e4783ce3c1a2845e248b00a022e32799a3bfb8dee7288f0d671b41a92b981",
+          "exact_bytes": true
+        },
+        {
+          "path": "annual.svg",
+          "bytes": 1884,
+          "new_sha256": "3ba93ca76c03b56c353cb68d2c968eebd615801330c0dd1e5e1f1f31efcc2dc1",
+          "old_sha256": "3ba93ca76c03b56c353cb68d2c968eebd615801330c0dd1e5e1f1f31efcc2dc1",
+          "exact_bytes": true
+        },
+        {
+          "path": "monthly.svg",
+          "bytes": 3249,
+          "new_sha256": "d62fb98414a1057b03b2067719dc7685ae462cccc0fca51ee64cf715afe5578e",
+          "old_sha256": "d62fb98414a1057b03b2067719dc7685ae462cccc0fca51ee64cf715afe5578e",
+          "exact_bytes": true
+        },
+        {
+          "path": "assessment.html",
+          "bytes": 128208,
+          "new_sha256": "9ebd3c8eb547cfc235ed01f7f5a925ecd15411a439e5a57e69a58c3634a4d71f",
+          "old_sha256": "130804d0a736cdb287dd2ac135b2e248aa6ed26e22a17ce576263630cdf19569",
+          "exact_bytes": false
+        },
+        {
+          "path": "input-appendix.html",
+          "bytes": 162757,
+          "new_sha256": "7bef9accdd4b9b284a11ae6f21b9c97d0f46fc2dbf6fd1321a71e1b0192ed12d",
+          "old_sha256": "7bef9accdd4b9b284a11ae6f21b9c97d0f46fc2dbf6fd1321a71e1b0192ed12d",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.html",
+          "bytes": 17049,
+          "new_sha256": "5bea96ebbdd75aa6631cebe2e85069258871ab0280e7f1a5f07c8e5d685a902a",
+          "old_sha256": "d501e248592a1ee0149261b6e0f41a6c43ba607a177bdf9416b6d8ad9879b76f",
+          "exact_bytes": false
+        },
+        {
+          "path": "assessment.pdf",
+          "bytes": 1000580,
+          "new_sha256": "e8135d3c45717f32c343f536fd0bfaa1c5416de4f8739630f01bf80725b9b5c1",
+          "old_sha256": "cab63fa85fe968a63c83e81cfda6bb700b379a0806bef3777f22bbbc4c1b6321",
+          "exact_bytes": false
+        },
+        {
+          "path": "input-appendix.pdf",
+          "bytes": 1270908,
+          "new_sha256": "976355ea0b0085fe7741e4b15979a9dfd8c99f6cb68a20dd0b5c8480c2db2a07",
+          "old_sha256": "976355ea0b0085fe7741e4b15979a9dfd8c99f6cb68a20dd0b5c8480c2db2a07",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance.pdf",
+          "bytes": 130169,
+          "new_sha256": "a27a6be1afb43f39e01d410053a15a479665ade4bf1b6270979868ec70cf9abf",
+          "old_sha256": "8f91d414fb43176ba80ae21ead06cf196b6d5a5cf6425bd9c2d522414346834f",
+          "exact_bytes": false
+        },
+        {
+          "path": "performance-page-001.png",
+          "bytes": 117239,
+          "new_sha256": "43f02d05c1645a7009784400cd9a1be51d6ce66f6b771987c946ce5b89348685",
+          "old_sha256": "beb80d4555efd533633297d56c9d0d95c67df10fad919f66eeb76521b6dbf1e0",
+          "exact_bytes": false
+        },
+        {
+          "path": "performance-page-002.png",
+          "bytes": 279268,
+          "new_sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10",
+          "old_sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance-page-003.png",
+          "bytes": 274969,
+          "new_sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe",
+          "old_sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe",
+          "exact_bytes": true
+        },
+        {
+          "path": "performance-page-004.png",
+          "bytes": 164986,
+          "new_sha256": "1e5f64dd6767958d2a65ff3ac6b3abfce202fabc943cdc608aa6e8f0393acec8",
+          "old_sha256": "db6fa255d256472957b783abb5decd5fecc79c1fd057e19893c3b9549d75bcd3",
+          "exact_bytes": false
+        },
+        {
+          "path": "performance-page-005.png",
+          "bytes": 169187,
+          "new_sha256": "906889f6bdbacfe0c4eb8277839d184d74f8ada4c274c0ec2d656f61b3e4e924",
+          "old_sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68",
+          "exact_bytes": false
+        }
+      ],
+      "dataset_rust_canonical_sha256": "32a131c19951f50d1df69160bf1efa6f4fb8333421cea11e15b8e9687bbc10af",
+      "template_sha256": "7fe14ea1a40b40ed0c99b987d729ece7dc19d312598c9e395d65cbd8b31d7012",
+      "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "ordered_input_differences": [
+        "Opaque thermal materials or constructions differ.",
+        "Glazing, openings or fixed shading differs.",
+        "Zone zone1 gains differ.",
+        "Zone zone1 cooling/fan/ventilation system differs.",
+        "Zone zone2 gains differ.",
+        "Zone zone2 cooling/fan/ventilation system differs.",
+        "Zone zone3 gains differ.",
+        "Zone zone3 cooling/fan/ventilation system differs.",
+        "Zone zone4 gains differ.",
+        "Zone zone4 cooling/fan/ventilation system differs.",
+        "Zone zone5 gains differ.",
+        "Zone zone5 cooling/fan/ventilation system differs.",
+        "Zone zone6 gains differ.",
+        "Zone zone6 cooling/fan/ventilation system differs.",
+        "Zone zone7 gains differ.",
+        "Zone zone7 cooling/fan/ventilation system differs.",
+        "Zone zone8 gains differ.",
+        "Zone zone8 cooling/fan/ventilation system differs."
+      ],
+      "difference_paragraphs_in_each_assessment_and_performance": 18,
+      "exact_numeric_cells": 342,
+      "maximum_arithmetic_difference": 0.0,
+      "lossless_input_csv_rows": 1792,
+      "all_declared_text_in_pdf_and_html": true,
+      "offline_html_no_external_image_or_script": true,
+      "embedded_fonts_unicode_maps": true,
+      "no_pdf_active_content": true,
+      "retained_immutable_files_unchanged": 149,
+      "report_dto_exactly_identical_to_prior_9b": true,
+      "native_typst_records": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T12:48:12.109214500+00:00",
+          "finished_utc": "2026-10-13T12:48:14.591209900+00:00",
+          "elapsed_ms": 2588,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 147816448,
+          "peak_observed_scratch_bytes": 34596208,
+          "samples": 44,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T12:48:15.282410900+00:00",
+          "finished_utc": "2026-10-13T12:48:18.368609400+00:00",
+          "elapsed_ms": 3177,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 167563264,
+          "peak_observed_scratch_bytes": 34919615,
+          "samples": 54,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "report.typ",
+            "report.pdf"
+          ],
+          "started_utc": "2026-10-13T12:48:19.077320400+00:00",
+          "finished_utc": "2026-10-13T12:48:19.897875400+00:00",
+          "elapsed_ms": 911,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 84975616,
+          "peak_observed_scratch_bytes": 33608927,
+          "samples": 15,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "typst.exe",
+          "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+          "arguments": [
+            "compile",
+            "--root",
+            ".",
+            "--font-path",
+            "fonts",
+            "--ignore-system-fonts",
+            "--ignore-embedded-fonts",
+            "--package-path",
+            "empty-packages",
+            "--package-cache-path",
+            "empty-package-cache",
+            "--creation-timestamp",
+            "0",
+            "--jobs",
+            "1",
+            "--diagnostic-format",
+            "short",
+            "--ppi",
+            "96",
+            "report.typ",
+            "page-{0p}-of-{t}.png"
+          ],
+          "started_utc": "2026-10-13T12:48:20.646197500+00:00",
+          "finished_utc": "2026-10-13T12:48:21.662687100+00:00",
+          "elapsed_ms": 1103,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 92393472,
+          "peak_observed_scratch_bytes": 34484407,
+          "samples": 16,
+          "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "visual_review": {
+        "assessment_pages_directly_reviewed": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36
+        ],
+        "performance_pages_directly_reviewed": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "delivered_png_pages_directly_reviewed": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "input_appendix_pages_transferred_by_exact_bytes": 50,
+        "appendix_transfer_prior_audit_sha256": "ec10fabc7e4b744b7065350b5dcd154d5e44185e95e85b770e7c9fd222e50fe5",
+        "method": "Every changed PDF page viewed on 90 dpi Poppler contact sheets; every delivered performance PNG viewed individually. New page-4 input differences inspected at delivered image resolution. Unchanged appendix PDF/document hashes exactly match the sealed prior all-page visual audit.",
+        "contact_sheet_seals": [
+          {
+            "name": "eight/pages/assessment/sheet-1.png",
+            "sha256": "1d38d0d7fc90e410bd21b513b43290a79b95adcb0c6a9766e791f618dbde3c19",
+            "bytes": 1155468
+          },
+          {
+            "name": "eight/pages/assessment/sheet-2.png",
+            "sha256": "c00d6963367fd5f6e81ca14168c0bac4aa7b09f6cb8a0164f43e06fb2008b450",
+            "bytes": 1071461
+          },
+          {
+            "name": "eight/pages/assessment/sheet-3.png",
+            "sha256": "6cd61478d9d3ae4cf6137ccf990759d9fb338c69bb86e02aa210459a4c43e583",
+            "bytes": 926172
+          },
+          {
+            "name": "eight/pages/assessment/sheet-4.png",
+            "sha256": "ead3c8c0121507283fd37ea0b45b9b8955cb8b1b523434d9d7206079108475ac",
+            "bytes": 993296
+          },
+          {
+            "name": "eight/pages/assessment/sheet-5.png",
+            "sha256": "4f2dc9ba16b1641c5f412fdd535ee008b752c930ec5006fb811f6057e9b1f1a8",
+            "bytes": 943393
+          },
+          {
+            "name": "eight/pages/assessment/sheet-6.png",
+            "sha256": "f7ba76010ef37d50634fa820e0677941536879a504f7a1ed0ddc5ee29070d920",
+            "bytes": 892790
+          },
+          {
+            "name": "eight/pages/performance/sheet-1.png",
+            "sha256": "155e76bc565c317edab586e62532480fd646cfa9016c9496588ca269f4783900",
+            "bytes": 889234
+          }
+        ],
+        "findings": [
+          "Ordered differences, report titles, qualification disclosures, continuation headers and page numbers are legible.",
+          "No clipped text, overlapping table/annotation, missing glyph, chart-label collision or off-page content found on the reviewed changed pages."
+        ],
+        "passed": true
+      }
+    }
+  },
+  "prior_complete_visual_audit": {
+    "name": "repaired-report-audit.json",
+    "sha256": "ec10fabc7e4b744b7065350b5dcd154d5e44185e95e85b770e7c9fd222e50fe5",
+    "bytes": 46470
+  },
+  "complementary_cold_replay_audit": {
+    "name": "cold-audit-v2.json",
+    "sha256": "5265d68fb7a53deaf0a2539bb426042b132852118d33c1f02fc3ca58fbd1d288",
+    "bytes": 67806
+  },
+  "limitations": [
+    "Four-zone scientific status remains limited to the exact registered inputs; both eight-zone inputs remain Unassessed.",
+    "No installed desktop, general weather, new scientific qualification or release acceptance is asserted by this audit.",
+    "Lower-temperature/heating service hours are not evaluated; no new threshold or heating model is inferred.",
+    "The explicit 0.4 kgCO2e/kWh factor is synthetic demonstration data, not a real jurisdiction claim.",
+    "Native/replay timings are from a shared Windows host with concurrent desktop build and are not an isolated benchmark."
+  ],
+  "preserved_initial_wrapper_failure": {
+    "classification": "External PowerShell wrapper argument-array failure before report/replay invocation; not a simulation failure.",
+    "cause": "One-element assignment was unwrapped and splatted as characters; retry wrapper explicitly retains a string array.",
+    "original_wrapper": {
+      "name": "render.ps1",
+      "sha256": "b6e2f44ac6cc69669e3bef342efbc07732820c8bce1d3c8999d862d9e58cec22",
+      "bytes": 1805
+    },
+    "failure_log": {
+      "name": "four-portability.log",
+      "sha256": "0128bca856ae987d2b7a06267646daac50727b7b198e87bc3237c6b5a1911afb",
+      "bytes": 91
+    },
+    "successful_initial_copy": {
+      "name": "four-copy.json",
+      "sha256": "fae5ed44543dd2b5ddc89222e57e3702854f736fb4ea462e34f058087081db49",
+      "bytes": 206542
+    },
+    "fresh_retry_wrapper": {
+      "name": "render.ps1",
+      "sha256": "eb2b82868b370df3404abcd240175386db0c16df4a05a4354838bb767a11ac69",
+      "bytes": 1806
+    },
+    "failed_original_preserved": true,
+    "original_no_command_receipt_or_report_directory": true
+  },
+  "summary": {
+    "pdf_pages": 153,
+    "changed_pdf_pages_directly_reviewed": 71,
+    "exact_appendix_pages_transferred": 82,
+    "delivered_png_pages_directly_reviewed": 10,
+    "artifact_count": 38,
+    "exact_numeric_cells": 660,
+    "maximum_arithmetic_difference": 0.0,
+    "lossless_input_rows": 2856,
+    "declared_text_items_checked": 11088,
+    "ordered_difference_paragraphs_checked": 56,
+    "native_typst_processes": 8,
+    "native_typst_elapsed_ms_sum": 12401,
+    "native_typst_peak_sampled_runner_plus_job_bytes": 167563264,
+    "native_typst_peak_scratch_bytes": 34919615
+  },
+  "complementary_verified_replay": {
+    "record_sha256": "eba21c568dcdb65a26f72235c70da1f914249471427949781279d51db1636d7b",
+    "checked_finite_values": 3574080,
+    "all_values_exactly_equal": true,
+    "native_elapsed_ms_sum": 17696,
+    "peak_sampled_runner_plus_job_bytes": 418271232,
+    "peak_observed_scratch_bytes": 21082235,
+    "scope": "Identical-recipe integration agreement only. Shared Windows host with concurrent desktop build; not an isolated benchmark or new scientific qualification. Eight-zone replay was not requested or performed."
+  },
+  "all_performed_checks_passed": true,
+  "new_scientific_qualification_asserted": false,
+  "installed_desktop_acceptance_asserted": false
+}

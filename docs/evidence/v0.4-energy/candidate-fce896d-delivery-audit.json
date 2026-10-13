@@ -1,0 +1,100 @@
+{
+  "schema": "greenlens.final-presentation-delivery-supplement-independent.v1",
+  "checked_utc": "2026-10-13T13:02:31.199345+00:00",
+  "source_commit": "fce896d1529752f49ffae39372e9e3791988fffe",
+  "source_dirty": false,
+  "cli_sha256": "afe231fb5d14082ed4bea37928c3543c2495633b2f6fe67448418f8d4fdd24dd",
+  "all_checks_pass": true,
+  "package_audit": {
+    "bytes": 20858,
+    "sha256": "56c9e81bcc25e08dbbf940b99f048e6d22ce0ebdd17d8b1069781612f5be653c"
+  },
+  "cold_delivery_audit": {
+    "bytes": 67806,
+    "sha256": "5265d68fb7a53deaf0a2539bb426042b132852118d33c1f02fc3ca58fbd1d288"
+  },
+  "original_installer_cli_zip_and_checksums_unchanged": true,
+  "delivery_manifest": {
+    "bytes": 37088,
+    "sha256": "ad77e760041de46db7e6587224b1f22b66ca1eeea15be0598e52eca3b33ef769"
+  },
+  "manifest_file_count": 172,
+  "manifest_total_bytes": 65047796,
+  "aggregate_independently_summed": true,
+  "project": {
+    "manifest": {
+      "bytes": 206542,
+      "sha256": "fae5ed44543dd2b5ddc89222e57e3702854f736fb4ea462e34f058087081db49"
+    },
+    "retained_files": 149,
+    "all_files_equal_closed_cold_source": true
+  },
+  "reports": {
+    "files": 20,
+    "all_bytes_equal_closed_cold_source": true,
+    "dataset": {
+      "bytes": 209829,
+      "sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302"
+    },
+    "ordered_input_difference_count": 10,
+    "scope": "Exact copy of the independently audited four-zone Assessment/Performance differences and unchanged report data; PDF visual review is separate."
+  },
+  "portable_evidence": {
+    "seal": {
+      "bytes": 8454180,
+      "sha256": "8858965413fa2ac422a5d98662afb85fd36dbd4fa832b69f80af7514307cbb99"
+    },
+    "sha256": "8858965413fa2ac422a5d98662afb85fd36dbd4fa832b69f80af7514307cbb99",
+    "compressed_bytes": 8454180,
+    "entries": 173,
+    "uncompressed_bytes": 56617748,
+    "largest_member_bytes": 5300731,
+    "all_member_checksums_crc_and_shared_limits_pass": true,
+    "export_renderer_receipt_sha256": "8c544e50865b1a404b86232ed6dd5235ffd9fab4181be9581b6079ebbc769006",
+    "all_report_artifact_bytes_equal_separate_report": true,
+    "renderer_receipt_note": "Export separately renders the identical report. Only renderer work ID and process records differ; all report artifacts and renderer input hashes agree.",
+    "integrity_basis": "Exact byte identity to the closed cold ZIP whose all members were decompressed with CRC, path, size and seal checks."
+  },
+  "replay": {
+    "record_sha256": "eba21c568dcdb65a26f72235c70da1f914249471427949781279d51db1636d7b",
+    "checked_finite_values": 3574080,
+    "all_values_exactly_equal": true,
+    "native_elapsed_ms_sum": 17696,
+    "peak_sampled_runner_plus_job_bytes": 418271232,
+    "peak_observed_scratch_bytes": 21082235,
+    "scope": "Identical-recipe integration agreement only. Shared Windows host with concurrent desktop build; not an isolated benchmark or new scientific qualification. Eight-zone replay was not requested or performed."
+  },
+  "delivery_copy_receipts": {
+    "delivery-copy.json": {
+      "bytes": 206542,
+      "sha256": "fae5ed44543dd2b5ddc89222e57e3702854f736fb4ea462e34f058087081db49"
+    },
+    "delivery-copy.stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "delivery_instructions": {
+    "file": "READ-ME-FIRST.txt",
+    "bytes": 1419,
+    "sha256": "8179431db66e811045c55bc8fcf6e810f0168229393016f90440ae9e68864872"
+  },
+  "previous_9b_delivery": {
+    "manifest": {
+      "bytes": 37088,
+      "sha256": "846b119eb7bbb13a4d965a8362ff8634ed5de99ba7fc72da17c548559a302d70"
+    },
+    "files": 172,
+    "total_bytes": 64946494,
+    "all_original_manifest_file_seals_unchanged": true
+  },
+  "installed_native_verification": false,
+  "new_scientific_qualification_asserted": false,
+  "release_complete": false,
+  "limitations": [
+    "Supplement is outside the immutable CLI ZIP and installer closure.",
+    "No installer, application, engine, renderer, Cargo or replay was invoked by this audit.",
+    "Reported process resources were observed on a shared host with concurrent desktop compilation; they are not isolated benchmarks."
+  ],
+  "auditor_sha256": "a30946b12e9e51ebbb66e5b8e82be31284ff6d3747119211eacc4250b390dbf8"
+}

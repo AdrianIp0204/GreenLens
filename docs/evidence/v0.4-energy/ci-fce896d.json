@@ -1,0 +1,149 @@
+{
+  "schema": "greenlens.energy-hosted-ci.v1",
+  "checked_utc": "2026-10-13T13:03:59.7499326Z",
+  "application_source_commit": "fce896d1529752f49ffae39372e9e3791988fffe",
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-10-13T12:36:21Z",
+    "headSha": "fce896d1529752f49ffae39372e9e3791988fffe",
+    "jobs": [
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 115299814733,
+        "name": "build",
+        "startedAt": "2026-10-13T12:36:23Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-13T12:36:25Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-13T12:36:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T12:36:31Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-13T12:36:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T12:36:38Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-13T12:36:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T12:36:38Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 4,
+            "startedAt": "2026-10-13T12:36:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T12:37:14Z",
+            "conclusion": "success",
+            "name": "Exact clean source and native toolchain",
+            "number": 5,
+            "startedAt": "2026-10-13T12:36:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T12:37:28Z",
+            "conclusion": "success",
+            "name": "Frontend types, interaction regressions and production assets",
+            "number": 6,
+            "startedAt": "2026-10-13T12:37:14Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T12:37:32Z",
+            "conclusion": "success",
+            "name": "Pinned Radiance for required legacy cancellation regressions",
+            "number": 7,
+            "startedAt": "2026-10-13T12:37:28Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-13T12:57:06Z",
+            "conclusion": "success",
+            "name": "Format, strict lint and unit/lifecycle regression suite",
+            "number": 8,
+            "startedAt": "2026-10-13T12:37:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Build and package exact-source unsigned binaries",
+            "number": 9,
+            "startedAt": "2026-10-13T12:57:06Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 10,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 11,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 12,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 22,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 23,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 24,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38398522763/job/115299814733"
+      }
+    ],
+    "status": "in_progress",
+    "updatedAt": "2026-10-13T12:36:24Z",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38398522763"
+  },
+  "installed_native_verification": false,
+  "release_complete": false,
+  "scope": "Exact frozen application source; later documentation supplements do not change this binary source. Pending/skipped steps are not acceptance."
+}

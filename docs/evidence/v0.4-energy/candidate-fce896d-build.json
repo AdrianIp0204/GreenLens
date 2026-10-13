@@ -1,0 +1,185 @@
+{
+  "schema": "greenlens.clean-candidate-build.v1",
+  "checked_utc": "2026-10-13T13:02:31.215456+00:00",
+  "application_version": "0.4.0",
+  "source_commit": "fce896d1529752f49ffae39372e9e3791988fffe",
+  "source_dirty": false,
+  "started_utc": "2026-10-13T12:36:52.8753498Z",
+  "completed_utc": "2026-10-13T12:55:32.8502503Z",
+  "distribution": "releases/0.4.0/20261013-energy-candidate-fce896d",
+  "status": "build and package completed; installation unverified",
+  "commands": [
+    {
+      "working_directory": "source",
+      "arguments": [
+        "cargo",
+        "build",
+        "-p",
+        "greenlens-cli",
+        "--release",
+        "--locked",
+        "--offline"
+      ]
+    },
+    {
+      "working_directory": "source/apps/desktop",
+      "arguments": [
+        "npm",
+        "test"
+      ]
+    },
+    {
+      "working_directory": "source/apps/desktop",
+      "arguments": [
+        "npm",
+        "run",
+        "tauri",
+        "--",
+        "build",
+        "--ci"
+      ]
+    },
+    {
+      "working_directory": "source",
+      "arguments": [
+        "node",
+        "scripts/license-inventory.mjs",
+        "--strict",
+        "--check",
+        "--installer-cache",
+        "<separate NSIS cache>"
+      ]
+    },
+    {
+      "working_directory": "source",
+      "arguments": [
+        "scripts/package-artifacts.ps1",
+        "-OutputDirectory",
+        "<new versioned distribution>"
+      ]
+    }
+  ],
+  "environment": {
+    "GREENLENS_EXPECT_SOURCE_COMMIT": "fce896d1529752f49ffae39372e9e3791988fffe",
+    "GREENLENS_EXPECT_SOURCE_DIRTY": "false",
+    "CARGO_BUILD_JOBS": "1",
+    "RUST_TEST_THREADS": "2",
+    "build_cache": "separate local GreenLens/build tree"
+  },
+  "timing_seconds": {
+    "release_cli": 245.1584758,
+    "desktop_with_frontend_production_and_NSIS": 827.4203541,
+    "frontend_tests_reported": 28.8151325
+  },
+  "frontend_tests": {
+    "tests": 155,
+    "passed": 155,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "scope": "Node frontend regressions; no installed UI claim"
+  },
+  "artifacts": {
+    "GreenLens_0.4.0_x64-setup.exe": {
+      "bytes": 4475119,
+      "sha256": "b64ebb96d96f88eefe795a00f98723db04dd8849682aa855d47ab3d8e9735468"
+    },
+    "GreenLens-CLI-0.4.0-windows-x64.zip": {
+      "bytes": 9833287,
+      "sha256": "9c9b859533007922922d44a6ef965b890ca0e8d1efba75ca3f1aaba0ad6253aa"
+    }
+  },
+  "cli": {
+    "bytes": 8890368,
+    "sha256": "afe231fb5d14082ed4bea37928c3543c2495633b2f6fe67448418f8d4fdd24dd",
+    "architecture": "x86_64",
+    "certificate_directory_empty": true
+  },
+  "desktop": {
+    "bytes": 18905088,
+    "sha256": "4d716945b279f9d74ff325f19ec583a111ef30daebf59058d2dbad80ecfc2d00",
+    "architecture": "x86_64",
+    "certificate_directory_empty": true
+  },
+  "package_audit": {
+    "file": "package-audit.json",
+    "bytes": 20858,
+    "sha256": "56c9e81bcc25e08dbbf940b99f048e6d22ce0ebdd17d8b1069781612f5be653c",
+    "all_checks_pass": true,
+    "zip_files": 346,
+    "zip_uncompressed_bytes": 29033906,
+    "documentation": {
+      "selected_files": 322,
+      "local_links": 546,
+      "bytes_including_index": 15330162,
+      "per_file_limit": 2097152,
+      "total_limit": 16777216,
+      "scope": "Documentation-only limits; scientific archive and runtime caps unchanged."
+    },
+    "NSIS_mapped_resources": 47
+  },
+  "licenses": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "lockfiles": {
+    "Cargo.lock": "59d2c017b10f3787d4e1aed116c2c028f9c30e604c18c9caabd4ac7305564aca",
+    "apps/desktop/package-lock.json": "d00bb6b90b0abbe8ee21466bf5b5d8793f7e811ff0649bd81113e8181384accf"
+  },
+  "retained_successful_logs": {
+    "build.json": {
+      "bytes": 851,
+      "sha256": "a1ac758dad0360d0e9bece23d05ac32caf4aea5cdcfaa5dcf96e9a79324779b1"
+    },
+    "build.ps1": {
+      "bytes": 3013,
+      "sha256": "b4087636d15f32a8ba96276d57f024319768c223f01ae345de314a700bd56277"
+    },
+    "cli-build.log": {
+      "bytes": 272,
+      "sha256": "749e15a10c5855165f6246789bd219fb66949e0f347fe8330061640780e982d3"
+    },
+    "desktop-build.log": {
+      "bytes": 2371,
+      "sha256": "68de3c50550a036b0ac1472bd964ee7fdebf98e20a95738a7c701790851509d9"
+    },
+    "frontend-tests.log": {
+      "bytes": 15774,
+      "sha256": "b18dc9f5343d59ce5d3f9c05e115e27ac84ed3f388cbda1e763c1bf4183791fe"
+    },
+    "installer-x64.nsi": {
+      "bytes": 42514,
+      "sha256": "55947aaef31873e9e0dba6146c76d6319740a472ee18aeea263b22f3d0123415"
+    },
+    "licenses.json": {
+      "bytes": 147,
+      "sha256": "50db351e233bd7e1ee41865710470e3770361714e7b90299319cefec8d38cec3"
+    },
+    "package.log": {
+      "bytes": 131,
+      "sha256": "253a51be6e8962e9f3fb79af327e261b5d7f004259af3c2f31524b42bf2f78ff"
+    }
+  },
+  "installed_native_verification": false,
+  "new_scientific_qualification_asserted": false,
+  "release_complete": false,
+  "limits": [
+    "Build completion and package integrity do not establish installed desktop acceptance or general scientific qualification.",
+    "Scientific run, replay, cold report and delivery supplement audits remain separate evidence.",
+    "No installer, application, engine or Cargo invocation occurred in this independent audit.",
+    "This additive external sidecar is outside the original package hash closure."
+  ],
+  "timing_context": "Report/export and the four-zone replay overlapped desktop compilation on the same host. These build durations are observations, not isolated benchmarks.",
+  "separate_delivery_wrapper_failure": {
+    "scope": "The build itself completed on its first attempt. The separate report wrapper argument binding failure is retained in the cold delivery audit; no engine/scientific failure is inferred.",
+    "audit": {
+      "bytes": 67806,
+      "sha256": "5265d68fb7a53deaf0a2539bb426042b132852118d33c1f02fc3ca58fbd1d288"
+    }
+  },
+  "auditor_sha256": "a30946b12e9e51ebbb66e5b8e82be31284ff6d3747119211eacc4250b390dbf8"
+}

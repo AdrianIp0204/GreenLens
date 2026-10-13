@@ -391,6 +391,9 @@ fn documents(
     input.extend([assessment(&data.baseline)?, assessment(&data.proposed)?]);
     for (side, c) in [("baseline", &data.baseline), ("proposed", &data.proposed)] {
         input.push(Section::figure(&format!("{} — retained geometry",c.label), &format!("{side}-model.svg"), format!("Building-local plans and exterior elevations; metre geometry, shared north rotation {}°. Retained model {}. Diagrams are input illustrations, not thermal fields.",c.model.north_rotation_deg,c.model_input_sha256)));
+        if let Some(table) = overhang_dimensions(c)? {
+            input.push(table);
+        }
         let value = json!({"model":c.model,"study":c.study,"weather":c.weather_summary,"method":c.method,"carbon_factor":c.carbon_factor});
         for (name, v) in value.as_object().context("Input object")? {
             let mut rows = vec![];
@@ -446,6 +449,9 @@ fn documents(
     let mut focused_performance = performance.clone();
     for (side, c) in [("baseline", &data.baseline), ("proposed", &data.proposed)] {
         performance.push(Section::figure(&format!("{} — model snapshot",c.label),&format!("{side}-model.svg"),format!("Retained model {}. Original input drawing; full inputs are in the appendix and energy-report.json.",c.model_input_sha256)));
+        if let Some(table) = overhang_dimensions(c)? {
+            performance.push(table);
+        }
         let validated = validate_thermal_model(&c.model, &c.study.calendar)?;
         let mut meter_rows = vec![];
         flatten(
@@ -744,6 +750,44 @@ fn chart(p: &EnergyReportPresentation, monthly: bool) -> String {
     out
 }
 
+fn overhang_dimensions(c: &EnergyReportCase) -> Result<Option<Section>> {
+    // Facade projections can coincide or become arbitrarily close. Keep all
+    // dimension labels in a keyed, paginated table instead of over the geometry.
+    let mut rows = Vec::new();
+    for z in &c.model.zones {
+        for w in &z.windows {
+            if let Some(h) = &w.overhang {
+                let surface = z
+                    .surfaces
+                    .iter()
+                    .find(|s| s.id == w.surface_id)
+                    .context("Overhang window has no retained surface")?;
+                rows.push(vec![
+                    format!("{}\n{}\n{:?}", z.id, w.id, surface.face),
+                    format!("{}\n{}", w.offset_u_m, w.offset_v_m),
+                    format!("{}\n{}", w.width_m, w.height_m),
+                    format!(
+                        "{}\n{}\n{}",
+                        h.projection_m, h.gap_above_m, h.side_extension_m
+                    ),
+                ]);
+            }
+        }
+    }
+    Ok((!rows.is_empty()).then(|| {
+        Section::table(
+            &format!("{} — overhang dimensions", c.label),
+            &[
+                "Zone / window / local face",
+                "Window u / v (m)",
+                "Window width / height (m)",
+                "Overhang depth / gap above / side extension (m)",
+            ],
+            rows,
+        )
+    }))
+}
+
 fn model_svg(c: &EnergyReportCase) -> String {
     let model = &c.model;
     let boxes = model
@@ -895,13 +939,13 @@ fn model_svg(c: &EnergyReportCase) -> String {
                     if let Some(h) = &w.overhang {
                         let hx = wx - h.side_extension_m * s;
                         let hy = wy - h.gap_above_m * s;
-                        svg.push_str(&format!("<path d=\"M {hx:.3} {hy:.3} h {:.3}\" stroke=\"#865d3d\" stroke-width=\"3\"/><text x=\"{hx:.3}\" y=\"{:.3}\">overhang depth {} m</text>",(w.width_m+2.*h.side_extension_m)*s,hy-5.,h.projection_m));
+                        svg.push_str(&format!("<path d=\"M {hx:.3} {hy:.3} h {:.3}\" stroke=\"#865d3d\" stroke-width=\"3\"><title>{} / {}: overhang depth {} m; gap {} m; side extension {} m</title></path>",(w.width_m+2.*h.side_extension_m)*s,escaped(&z.id),escaped(&w.id),h.projection_m,h.gap_above_m,h.side_extension_m));
                     }
                 }
             }
         }
     }
-    svg.push_str("<text x=\"20\" y=\"794\">Blue: glazing. Brown: overhang / detached shade. Non-occluding input projections, not thermal results.</text></g></svg>");
+    svg.push_str("<text x=\"20\" y=\"794\">Blue: glazing. Brown: overhang / detached shade. Dimensions are keyed by zone and window in the report.</text><text x=\"20\" y=\"812\">Non-occluding input projections, not thermal results.</text></g></svg>");
     svg
 }
 
@@ -1385,6 +1429,89 @@ fn copy_artifact(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn repeated_eight_zone_overhangs_use_keyed_rows_not_overlapping_svg_text() {
+        // Geometry/annotation fixture only; no new simulated result or assessment.
+        let data = synthetic_energy_report().unwrap();
+        let mut case = data.proposed.clone();
+        let mut second_wing = case.model.zones.clone();
+        for z in &mut second_wing {
+            z.id = format!("copy_{}", z.id);
+            z.origin_m[0] += 20.;
+            for s in &mut z.surfaces {
+                s.id = format!("copy_{}", s.id);
+                if let ThermalBoundary::Interzone {
+                    zone_id,
+                    surface_id,
+                } = &mut s.boundary
+                {
+                    *zone_id = format!("copy_{zone_id}");
+                    *surface_id = format!("copy_{surface_id}");
+                }
+            }
+            for w in &mut z.windows {
+                w.id = format!("copy_{}", w.id);
+                w.surface_id = format!("copy_{}", w.surface_id);
+            }
+            if let Some(system) = &mut z.cooling_system {
+                system.id = format!("copy_{}", system.id);
+            }
+        }
+        case.model.zones.extend(second_wing);
+        validate_thermal_model(&case.model, &case.study.calendar).unwrap();
+        let before = serde_json::to_vec(&case).unwrap();
+        let svg = model_svg(&case);
+        let table = overhang_dimensions(&case).unwrap().unwrap();
+        assert_eq!(table.rows.len(), 8);
+        assert_eq!(svg.matches("stroke-width=\"3\"").count(), 8);
+        // The first south overhang is still the same projected line: 36 m
+        // total width, window u=2, v=1, w=3, h=1.5, extension/gap=0.1 m.
+        assert!(svg.contains("d=\"M 50.583 481.833 h 34.667\""));
+        for (z, row) in case.model.zones.iter().zip(&table.rows) {
+            assert_eq!(
+                row,
+                &vec![
+                    format!("{}\n{}_window\nSouth", z.id, z.id),
+                    "2\n1".into(),
+                    "3\n1.5".into(),
+                    "0.6\n0.1\n0.1".into(),
+                ]
+            );
+            assert!(svg.contains(&format!(
+                "<title>{} / {}_window: overhang depth 0.6 m; gap 0.1 m; side extension 0.1 m</title>",
+                z.id, z.id
+            )));
+        }
+        for text in svg.split("<text ").skip(1) {
+            let content = text
+                .split_once('>')
+                .unwrap()
+                .1
+                .split("</text>")
+                .next()
+                .unwrap();
+            assert!(!content.contains("overhang depth"));
+        }
+        assert_eq!(svg, model_svg(&case));
+        assert_eq!(serde_json::to_vec(&case).unwrap(), before);
+        assert!(overhang_dimensions(&data.baseline).unwrap().is_none());
+
+        let docs = documents(&data, &data.presentation().unwrap(), &"a".repeat(64)).unwrap();
+        let mut legends = 0;
+        for doc in &docs {
+            for (i, section) in doc.sections.iter().enumerate() {
+                if section.title.ends_with(" — overhang dimensions") {
+                    legends += 1;
+                    assert_eq!(
+                        doc.sections[i - 1].image.as_deref(),
+                        Some("proposed-model.svg")
+                    );
+                }
+            }
+        }
+        // Assessment and appendix contain the model; focused performance does not.
+        assert_eq!(legends, 2);
+    }
     #[test]
     fn failed_scientific_assessments_are_visible_in_every_document() {
         // Synthetic presentation fixture only: no execution or qualification evidence.

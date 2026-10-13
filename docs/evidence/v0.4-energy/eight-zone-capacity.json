@@ -1,0 +1,2346 @@
+{
+  "schema": "greenlens.energy-eight-zone-capacity-evidence.v1",
+  "recorded_utc": "2026-10-13T08:24:22.650947+00:00",
+  "source_commit": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+  "source_dirty_at_cli_build": false,
+  "cli_sha256": "7ac63405d1eda9478714a313122c34975ae39d6bd792aa1b5a3228d202c4ef8f",
+  "scope": "Unassessed original synthetic two-wing eight-zone capacity/pagination/export fixture. No assumption of doubled energy; mutual exterior shading changes. No numerical qualification, timestep convergence, real climate, maximum arbitrary input content or complete release claim.",
+  "transformation": "Duplicate exact revision3 zones1-4 as zones5-8; translate second wing +20m building-local X; remap zone/surface/window/cooling IDs and reciprocal internal references; append second-wing name suffix. Original four zones and all shared definitions, 20W exterior lighting, site, calendar, weather and numerical recipe remain unchanged.",
+  "protocol_sha256": "3d02e27e38dd97eb39ba59eeabc4fef5edbe91f69ab1665a2ed475e6bf1287ba",
+  "declared_utc": "2026-10-13T07:57:10.348925+00:00",
+  "protocol_original_cases": [
+    {
+      "case": "A10",
+      "alternative": "A",
+      "minutes": 10,
+      "expected_rows": 52560,
+      "expected_retained_channels": 62,
+      "expected_chunk_count": 53,
+      "original_run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+      "original_results_sha256": "9f5f1f5aed965ea76c5af33e4053d111450cb4fbb9fd0392a35f08781f004fb4",
+      "original_checksums_sha256": "a793f057125c80c64d9afa1695be573244ee21c78ccc3f405f38067521c8c857",
+      "original_model_sha256": "d4dc24f165a7a8da9da9c178bafb24d9a262407a6ef5c1eb0961c06ebbd0a2c4",
+      "original_study_sha256": "6b2db0b945caa2d1bb6fcd5e877f03e8ea4a351118c11b2605a4e91d2ec054ba",
+      "model_sha256": "7496c5928ea776d52f959e759e1ff5fc369ff6788f727846b1da3f083a274a1e",
+      "study_sha256": "6b2db0b945caa2d1bb6fcd5e877f03e8ea4a351118c11b2605a4e91d2ec054ba",
+      "expected_method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      }
+    },
+    {
+      "case": "B10",
+      "alternative": "B",
+      "minutes": 10,
+      "expected_rows": 52560,
+      "expected_retained_channels": 62,
+      "expected_chunk_count": 53,
+      "original_run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+      "original_results_sha256": "8c2e7e42240bf2c29bf7d9812e83c6958f234def3bf6326e85c91219da635f5d",
+      "original_checksums_sha256": "5910e3f8c912979e83b420d54e09c33ffedd35f1b77f483d9c8d4e9af76753ab",
+      "original_model_sha256": "26212bb2edfa4133f678b56b29946b96c168399b19bb6706880884de096a97a0",
+      "original_study_sha256": "6b2db0b945caa2d1bb6fcd5e877f03e8ea4a351118c11b2605a4e91d2ec054ba",
+      "model_sha256": "09986fe57a29595405b3da9e46ef4c38e45d5d1bb07b3bdc7b629e1399d5da93",
+      "study_sha256": "6b2db0b945caa2d1bb6fcd5e877f03e8ea4a351118c11b2605a4e91d2ec054ba",
+      "expected_method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      }
+    }
+  ],
+  "source_sha256": {
+    "scripts/energy-gate0-audit.py": "13d3ada539066c61ec612cb3b61ac5d432bba864847ecf105f1aa33f109f3fe6",
+    "scripts/energy-fan-example-protocol.json": "6c2d6defc48553d0380ee47a8e107eacab6d9853e7d690b01ea4b0be249af781",
+    "crates/greenlens-core/src/energy/example.rs": "ecc3f3d16762abae227933e421a6dabe2895fef280aca6cdbd22c7837d66be11",
+    "crates/greenlens-energyplus/src/lib.rs": "0dc177e06beffa1061189b2e4370267be215546b038eddf146302fcf4315a6d7",
+    "crates/greenlens-energyplus/src/model.rs": "bec3a873ee4103fc595b10175ea13e56f464a4ca605627ac16042ce2f49b1ef1",
+    "crates/greenlens-energyplus/src/output.rs": "ba289724e5bbb337a839466153f50830591e6c83305a774ca7bab145980de0fa",
+    "dependencies/energyplus.json": "88c5959fb4cbe2e62e929049c4d184e850f99a7ce6c23364ac46f4050ac29f78",
+    "dependencies/typst.json": "178eeaa7260ee203bdf44b35d4f1f20efc87409dfccdc33e5d278dffabbee93a",
+    "reports/energy/report.typ": "7fe14ea1a40b40ed0c99b987d729ece7dc19d312598c9e395d65cbd8b31d7012",
+    "crates/greenlens-runner/src/energy_report.rs": "d635e786c0d5da66a20ae5052b59639ef6b935f45b7a8f55a6c35c3e184ae628",
+    "crates/greenlens-runner/src/energy_export.rs": "d5b97e6aaa44ade0b5d2d1f9577eeaf4735cbbdf37d2285c957407c71ebbe93e",
+    "examples/carbon/synthetic-fixture.json": "2f4ce3e66e14be1159ce3ba9428eace4fcf8b3b2d5661c7835a9e8dc3952e0f3"
+  },
+  "owner_audit_sha256": "401c150692ea60a14d97e3334e0fa26bca6d1ef72bce619e473cd4ea5d9e929f",
+  "original_auditor_sha256": "13d3ada539066c61ec612cb3b61ac5d432bba864847ecf105f1aa33f109f3fe6",
+  "wrapper_sha256": "96283adc3007ac70bf43438d84c2359126943a3473a793ff2a1cbec1bf47efa9",
+  "preparer_sha256": "24dc9783502b66530eac497fc4e2549fcd43e611b7083e6e81b99f30c94a952e",
+  "summary_builder_sha256": "390e81d5d0c1282704186583783b4416c848d9dd07e1bc28ff0f7decb2e235b3",
+  "cases": [
+    {
+      "case": "A10",
+      "run_id": "0d20fab5-4903-48e3-9e04-8a9ce8a0d5c5",
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "validated": {
+        "gross_floor_area_m2": 384.0,
+        "conditioned_floor_area_m2": 384.0,
+        "construction_u_values_w_m2k": {
+          "external": 0.7042253521126761,
+          "internal": 1.9607843137254901
+        },
+        "facade_wwr": [
+          {
+            "orientation": "north",
+            "gross_wall_m2": 192.0,
+            "opening_m2": 0.0,
+            "ratio": 0.0
+          },
+          {
+            "orientation": "east",
+            "gross_wall_m2": 72.0,
+            "opening_m2": 0.0,
+            "ratio": 0.0
+          },
+          {
+            "orientation": "south",
+            "gross_wall_m2": 192.0,
+            "opening_m2": 36.0,
+            "ratio": 0.1875
+          },
+          {
+            "orientation": "west",
+            "gross_wall_m2": 72.0,
+            "opening_m2": 0.0,
+            "ratio": 0.0
+          }
+        ],
+        "model_input_sha256": "78e1030129e6b56fcd6f0e5974eb524aca04fa135ec230006150881313b08cf0"
+      },
+      "provenance": {
+        "application_version": "0.4.0",
+        "source_commit": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+        "source_worktree_dirty": false,
+        "started_utc": "2026-10-13T08:00:22.636311700+00:00",
+        "finished_utc": "2026-10-13T08:00:35.630396500+00:00",
+        "physical_input_hash": "d0b6e7987d8cefd5e0ca8d9c396c7f056d7f2126d2ffadff1f05101bdc600e75",
+        "execution_input_hash": "381099e386fcd6a976a042568d3889b988b035455ebd97f0b4224edccecb93b0",
+        "physical_result_hash": "e3b0964a2f1e954e9763f4d11efede9cc8d3274a0a629261cc0d75e3e99b32d4",
+        "processing_identity": "28897a3873afaee7d6cc35a2caf66c1f60237d3ff606370d12925bebec41884d",
+        "diagnostics": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "warning_count": 1,
+        "severe_count": 0,
+        "raw_representation": "All requested native CSV numeric columns parsed to IEEE-754 float64 little-endian chunks; ordered labels, dimensions, time policy, original CSV digests and exact argument recipe retained. Input-derived occupancy is identified separately. Large native CSV/octrees are regenerable scratch, not needed for inspection."
+      },
+      "study": {
+        "schema_version": "greenlens.energy-study.v0.4",
+        "weather": {
+          "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+          "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+        },
+        "calendar": {
+          "start_weekday": "monday",
+          "holidays": [
+            {
+              "month": 1,
+              "day": 1
+            }
+          ],
+          "utc_offset_minutes": 0
+        },
+        "zone_timesteps_per_hour": 6
+      },
+      "rows": 52560,
+      "retained_channels": 62,
+      "chunks": 53,
+      "retained_f64_bytes": 26069760,
+      "native_scalar_comparisons": 2838240,
+      "maximum_native_scalar_difference": 0.0,
+      "independent_arithmetic_checks": 124,
+      "all_independent_arithmetic_checks_pass": true,
+      "maximum_interval_reconciliation_kw": 4.656612873077393e-15,
+      "totals": {
+        "interval_count": 52560,
+        "interval_seconds": 600,
+        "annual": {
+          "facility_kwh": 32341.863797730475,
+          "end_uses_kwh": {
+            "cooling_system": 7096.839797730475,
+            "supply_fans": 2321.28,
+            "ventilation_exhaust_fans": 104.832,
+            "interior_lighting": 12579.84,
+            "exterior_lighting": 175.2,
+            "plug_equipment": 10063.872
+          },
+          "reconciliation_residual_kwh": 0.0
+        },
+        "monthly": [
+          {
+            "facility_kwh": 2843.6415329955585,
+            "end_uses_kwh": {
+              "cooling_system": 766.6815329955582,
+              "supply_fans": 187.2,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 1036.8,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": 4.547473508864641e-13
+          },
+          {
+            "facility_kwh": 2525.3944865520584,
+            "end_uses_kwh": {
+              "cooling_system": 583.5064865520583,
+              "supply_fans": 178.56,
+              "ventilation_exhaust_fans": 8.064,
+              "interior_lighting": 967.68,
+              "exterior_lighting": 13.44,
+              "plug_equipment": 774.144
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2636.9621367021155,
+            "end_uses_kwh": {
+              "cooling_system": 485.9861367021151,
+              "supply_fans": 198.72,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 1071.36,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 4.547473508864641e-13
+          },
+          {
+            "facility_kwh": 2569.6380762285435,
+            "end_uses_kwh": {
+              "cooling_system": 485.9580762285434,
+              "supply_fans": 194.4,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 1036.8,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2693.931180537341,
+            "end_uses_kwh": {
+              "cooling_system": 550.1551805373409,
+              "supply_fans": 191.52,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 1071.36,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2629.0919201053457,
+            "end_uses_kwh": {
+              "cooling_system": 545.4119201053455,
+              "supply_fans": 194.4,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 1036.8,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2710.4238066370076,
+            "end_uses_kwh": {
+              "cooling_system": 559.4478066370074,
+              "supply_fans": 198.72,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 1071.36,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 4.547473508864641e-13
+          },
+          {
+            "facility_kwh": 2673.9929420250746,
+            "end_uses_kwh": {
+              "cooling_system": 530.2169420250747,
+              "supply_fans": 191.52,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 1071.36,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2547.6197714554296,
+            "end_uses_kwh": {
+              "cooling_system": 456.73977145542955,
+              "supply_fans": 201.6,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 1036.8,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2702.8480181729046,
+            "end_uses_kwh": {
+              "cooling_system": 559.0720181729048,
+              "supply_fans": 191.52,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 1071.36,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2794.805903191877,
+            "end_uses_kwh": {
+              "cooling_system": 718.3259031918768,
+              "supply_fans": 187.2,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 1036.8,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 3013.5140231272194,
+            "end_uses_kwh": {
+              "cooling_system": 855.3380231272192,
+              "supply_fans": 205.92,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 1071.36,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 4.547473508864641e-13
+          }
+        ],
+        "demand_interval_seconds": 600,
+        "coincident_peak": {
+          "timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          },
+          "facility_kw": 10.996734376143603,
+          "end_use_contributions_kw": {
+            "cooling_system": 3.552734376143603,
+            "supply_fans": 0.48,
+            "ventilation_exhaust_fans": 0.032,
+            "interior_lighting": 3.84,
+            "exterior_lighting": 0.02,
+            "plug_equipment": 3.072
+          },
+          "reconciliation_residual_kw": 1.5522042910257975e-15
+        },
+        "zone_comfort": [
+          {
+            "zone_id": "zone1",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone2",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone3",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone4",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone5",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone6",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone7",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone8",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          }
+        ],
+        "building_comfort_union": {
+          "zone_id": null,
+          "occupied_hours": 6136.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        "comfort_definition": "Occupied when the declared occupancy is nonzero; air temperature > cooling setpoint + 0.2 C. Comfort uses source intervals without averaging excursions; building numerator and denominator are interval unions, not sums of zones.",
+        "maximum_interval_reconciliation_residual_kw": 4.656612873077393e-15
+      },
+      "diagnostics": {
+        "schema": "greenlens.energy-diagnostics.v1",
+        "completed": true,
+        "warning_count": 1,
+        "severe_count": 0,
+        "messages": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "convergence_disclosure": "All native warnings are retained for review; severe/fatal or explicit convergence failures block completion. Native completion is not physical or timestep qualification.",
+        "rows": 52560,
+        "native_columns": 47,
+        "native_csv_sha256": "7619b3790d5c11b826388a705e964edd3e6b46f90bc752197a5fcb8854c2ef40",
+        "native_csv_bytes": 24112137,
+        "error_file_sha256": "cdd68b5ce2736599a79579aec71262bd1475fc98f94e9f3aad64688714689db7",
+        "end_file_sha256": "5562c2ea3108c92b6d0c0361c11a0fd029c892f4104945124509df097db4e07b",
+        "input_sha256": {
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "model.epJSON": "94a1c3e009a069e596c78352bcb63f49f44e57f4fd2ef7588ab216290224131a",
+          "recipe.json": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "minimum_values": [
+          12000.0,
+          0.0,
+          12000.0,
+          0.0,
+          0.0,
+          0.0,
+          22.105709144521715,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.86951777688245,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.3986306912052,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.185831802538928,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.975389401050293,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.959262430180598,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.3034000353779,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.215568073067026,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_values": [
+          6598040.625686162,
+          2304000.0,
+          12000.0,
+          1843200.0,
+          2131640.6256861617,
+          307200.0,
+          24.88069635442092,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          759629.7053169925,
+          24.57530024944454,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          715664.4102491726,
+          24.710574900104273,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          699143.8020080958,
+          24.269523476156724,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          650497.6360104544,
+          24.86443676793746,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          758968.936803644,
+          24.6519334439107,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          727282.8548540294,
+          24.70227174047044,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          697881.0290752675,
+          24.284488265040057,
+          1.0,
+          24.0,
+          24.00000000000001,
+          36000.0,
+          2400.0,
+          655832.9501758374
+        ],
+        "maximum_fan_reconciliation_j": 0.0,
+        "qualification_asserted": false
+      },
+      "native_process": {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T08:00:23.738229500+00:00",
+        "finished_utc": "2026-10-13T08:00:34.204918800+00:00",
+        "elapsed_ms": 10467,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 511823872,
+        "peak_observed_scratch_bytes": 29714385,
+        "samples": 189,
+        "stdout_sha256": "6cd2e64f464d84e0d349e621aa0c869de531c35550d1ded774c9f49abca34f9b",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      },
+      "native_csv_sha256": "7619b3790d5c11b826388a705e964edd3e6b46f90bc752197a5fcb8854c2ef40",
+      "closed_run_integrity_verified": true,
+      "checksums_sha256": "4b6172dc74d9d74ba0cacb1e9d2579a553bbd3f974944d1e79fcf6031c174a00",
+      "retained_files": {
+        "checksums.json": {
+          "sha256": "4b6172dc74d9d74ba0cacb1e9d2579a553bbd3f974944d1e79fcf6031c174a00",
+          "bytes": 6872
+        },
+        "diagnostics.json": {
+          "sha256": "b7b231f31aeeb51298f36dc5b26560fe740fbb741a288e925224f2776766c5c3",
+          "bytes": 3064
+        },
+        "input.json": {
+          "sha256": "6c7d09159dfaa2673a421939503ba15920bc339b99fe6096e0cda155e3963f55",
+          "bytes": 86548
+        },
+        "model.epJSON": {
+          "sha256": "94a1c3e009a069e596c78352bcb63f49f44e57f4fd2ef7588ab216290224131a",
+          "bytes": 116717
+        },
+        "provenance.json": {
+          "sha256": "77ddd9e44bf0b07d43f451b13046a277a4923beea54a821f0100ec62248e065e",
+          "bytes": 2200
+        },
+        "recipe.json": {
+          "sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "bytes": 1882
+        },
+        "results.json": {
+          "sha256": "6fec51eee81aa1153ddacdcd0e98f8996dc6a9c27535326c7844709df2ec13ed",
+          "bytes": 263432
+        },
+        "study.json": {
+          "sha256": "7c8a13631db26551e060f077a5d28900e0b32fc5ec4559cf7cdc81b962a91704",
+          "bytes": 600
+        },
+        "engine/eplusout.end": {
+          "sha256": "5562c2ea3108c92b6d0c0361c11a0fd029c892f4104945124509df097db4e07b",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "cdd68b5ce2736599a79579aec71262bd1475fc98f94e9f3aad64688714689db7",
+          "bytes": 1051
+        },
+        "engine/process-stderr.txt": {
+          "sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+          "bytes": 36
+        },
+        "engine/process-stdout.txt": {
+          "sha256": "6cd2e64f464d84e0d349e621aa0c869de531c35550d1ded774c9f49abca34f9b",
+          "bytes": 2326
+        },
+        "engine/process.json": {
+          "sha256": "8cc9eef42839b0832e67d50362b9f515976229286c37d5330f32ff670f9f8afd",
+          "bytes": 879
+        },
+        "series/data-00000.f64": {
+          "sha256": "bb07041b90e525027c3dbb79a3b47f12f7faf7ebe119eddff293a18d245e59f7",
+          "bytes": 499968
+        },
+        "series/data-00001.f64": {
+          "sha256": "4f59382b4b724957c912468ea4224289b4857897686624f9c762876504b873e8",
+          "bytes": 499968
+        },
+        "series/data-00002.f64": {
+          "sha256": "0eacc31ad57573f56c98b47c6a501cb64e0b60828dc784f668e544b63b52d589",
+          "bytes": 499968
+        },
+        "series/data-00003.f64": {
+          "sha256": "20c6c82ed501cde5cd93724ae7f997526a648f41a6f56fc9bf68bde6cb287150",
+          "bytes": 499968
+        },
+        "series/data-00004.f64": {
+          "sha256": "f005cded18312aa1297ccbf32906bde1b6e8d148a48dec63002bf35ee199a471",
+          "bytes": 499968
+        },
+        "series/data-00005.f64": {
+          "sha256": "94abc3ae89e75146a063eea7c973112a430bdc833550e30b355aa81032c70b51",
+          "bytes": 499968
+        },
+        "series/data-00006.f64": {
+          "sha256": "6734a9f261e05ca3c27322912873ddf5341aa028069002bdbec069fab30e1c46",
+          "bytes": 499968
+        },
+        "series/data-00007.f64": {
+          "sha256": "fe387c63855c06eac949cac394d64fbd8e09ac676b243b8e39d8cc86c54fc00e",
+          "bytes": 499968
+        },
+        "series/data-00008.f64": {
+          "sha256": "9d01d00ac45fd606077b8b7125d2febb105eb53b6032244196564ccb4ae0c6d2",
+          "bytes": 499968
+        },
+        "series/data-00009.f64": {
+          "sha256": "732dda7aad5f5d61538e51bbb889cd0a1b88c344e0ae8cf586286d5afe747b63",
+          "bytes": 499968
+        },
+        "series/data-00010.f64": {
+          "sha256": "4c1368653d8aadf31ea548d7013fe9e1a9c441f2b7d37a44028b4f4c4420802e",
+          "bytes": 499968
+        },
+        "series/data-00011.f64": {
+          "sha256": "59bc81dd5930908fabc8825896508d41c60cc1761b30724503b208029ff5eed6",
+          "bytes": 499968
+        },
+        "series/data-00012.f64": {
+          "sha256": "cf0d900ae5ffe2fcff23361e193d04b57bc978e558f2d6b749f1eeca7d9e3874",
+          "bytes": 499968
+        },
+        "series/data-00013.f64": {
+          "sha256": "38d9075d85729f2abfae7574df425899bfa9f29e46f81aeb0a9ccf23066ae942",
+          "bytes": 499968
+        },
+        "series/data-00014.f64": {
+          "sha256": "53e2c1225fabcf1ed352bf39c1d1c3d9e3dd26d2da3e955203e96fa6bf1b52ae",
+          "bytes": 499968
+        },
+        "series/data-00015.f64": {
+          "sha256": "6c4269334cd543624dae315896c4539c1908ac76861623ba72b8d3a2b8e24289",
+          "bytes": 499968
+        },
+        "series/data-00016.f64": {
+          "sha256": "e3d7b8c24fff4b634913152be68e488fd1a3d4184e65fff54cc46f3c8d2a4181",
+          "bytes": 499968
+        },
+        "series/data-00017.f64": {
+          "sha256": "6aa4c518ad0d9432429b2572bb425e33f988bf41cac7ae7231b6f2086c571917",
+          "bytes": 499968
+        },
+        "series/data-00018.f64": {
+          "sha256": "226a1446f6741c5b90ec361497ea92cdc5e778e5723cf296fb23cc182b93774b",
+          "bytes": 499968
+        },
+        "series/data-00019.f64": {
+          "sha256": "f598921e811b2361b1629e74a87d01b8e218d140878402eef5e1f854930cf43f",
+          "bytes": 499968
+        },
+        "series/data-00020.f64": {
+          "sha256": "dbeb086b6ec8de7b8c3fdfc2326153220afe6453e14ae3d8b9bf5d3a514ea966",
+          "bytes": 499968
+        },
+        "series/data-00021.f64": {
+          "sha256": "48ce09a2a6bee36e5d92a316b4b11b2f890c73ccde28871e90009c3902fde70b",
+          "bytes": 499968
+        },
+        "series/data-00022.f64": {
+          "sha256": "a4f3bdffa4ab1b64e459d315af0bd43556b6504b78cd1c51a17fefd082d28c05",
+          "bytes": 499968
+        },
+        "series/data-00023.f64": {
+          "sha256": "05267c8aa06ba3610f4c40927d75f320031b0ebcc751a9bad249208dcf6c665c",
+          "bytes": 499968
+        },
+        "series/data-00024.f64": {
+          "sha256": "8917d4f395cae25a336e07966d15ee859021d98b91c141a504e5558582914179",
+          "bytes": 499968
+        },
+        "series/data-00025.f64": {
+          "sha256": "f3bb94c78c672148759923b9cd762de6355829ae7acbcf054605fd9f7a8be000",
+          "bytes": 499968
+        },
+        "series/data-00026.f64": {
+          "sha256": "113109d2d08f36719432b6386ec7af35b72276b7647c539f87339720c40d92e9",
+          "bytes": 499968
+        },
+        "series/data-00027.f64": {
+          "sha256": "a995b287d9ab23904eaa6a860f19c78c22390c32d728a100e0476d06e94b575d",
+          "bytes": 499968
+        },
+        "series/data-00028.f64": {
+          "sha256": "7fcdc394944be89787b481ec939a2bee918da3b2e4aa63ee2a93a436f5f15946",
+          "bytes": 499968
+        },
+        "series/data-00029.f64": {
+          "sha256": "9341f0d9b8f1b722f9c7dafb93d20a30f74c9c2d3e5af81a722e5fe04f9e4d63",
+          "bytes": 499968
+        },
+        "series/data-00030.f64": {
+          "sha256": "909c9749877cdb85c47013e8751821b5eceb79d464a7b8699a43e2d84b6ca2fd",
+          "bytes": 499968
+        },
+        "series/data-00031.f64": {
+          "sha256": "009d565fbf419cc58eb86e1cebc49ac4e9e1dd771fcf568c0b62ce57b6c86b26",
+          "bytes": 499968
+        },
+        "series/data-00032.f64": {
+          "sha256": "36a4583b82e20442f10de5e475ec02c62e17661ce0f515119e5e1701edf9dfae",
+          "bytes": 499968
+        },
+        "series/data-00033.f64": {
+          "sha256": "22f3ad8cd62e3afe65c785ca920b206ef297a6dcdbe5077018a3b1d72adce119",
+          "bytes": 499968
+        },
+        "series/data-00034.f64": {
+          "sha256": "166b39011dfac38eb802985fa2b9490ac71b661f42ffa2e77f5c95188bd7bcc4",
+          "bytes": 499968
+        },
+        "series/data-00035.f64": {
+          "sha256": "421e36541ae6d5beebfa8f000bec31faa3d0c6cc0ef49d479d073e7343cd3f1c",
+          "bytes": 499968
+        },
+        "series/data-00036.f64": {
+          "sha256": "f41c80c42563602f98b08ead399418ce4faef8ad8572983b7c40b4c22030f1cc",
+          "bytes": 499968
+        },
+        "series/data-00037.f64": {
+          "sha256": "8ccd6f81c2dd300256c7c98da78ff7cd1d98e6e86a96d0a5127fb1047335f58e",
+          "bytes": 499968
+        },
+        "series/data-00038.f64": {
+          "sha256": "5919ed9705252f1452057d264fc038554457d7e3a18a04ebe9b3849f0fca2a2d",
+          "bytes": 499968
+        },
+        "series/data-00039.f64": {
+          "sha256": "a58e44ab86f7290a941c6976a8900a7f64f796ecfdc099e919fceffbd5597e17",
+          "bytes": 499968
+        },
+        "series/data-00040.f64": {
+          "sha256": "51e67afec8319fd5fa02b835fce0c801d6ce8f30b435be3e22d8e36720205e0f",
+          "bytes": 499968
+        },
+        "series/data-00041.f64": {
+          "sha256": "d8ddfcff4e09472243c31eb3d1d2065970e9f4c8a3663f8b74b487794f25a2ca",
+          "bytes": 499968
+        },
+        "series/data-00042.f64": {
+          "sha256": "563afacfece39942e21eeb061d6193094bbe5a696180bb8222e25c1685457c6b",
+          "bytes": 499968
+        },
+        "series/data-00043.f64": {
+          "sha256": "e20b92c5d681751d97f2bafa2eb8600c17a1c7964b0264e852a0e47de4c3acb3",
+          "bytes": 499968
+        },
+        "series/data-00044.f64": {
+          "sha256": "c286bcddba169cff5bef246438937fb9e5de40d919869a0bb2c078b245a78287",
+          "bytes": 499968
+        },
+        "series/data-00045.f64": {
+          "sha256": "bbc4ef044acab11d9aa948df60283950ee589df3486a93aa900b60533ec0d69c",
+          "bytes": 499968
+        },
+        "series/data-00046.f64": {
+          "sha256": "542e30e4fbcb1a62ae9d444ad5380befaddc5403d4d2a0eae3461a5401ebe4eb",
+          "bytes": 499968
+        },
+        "series/data-00047.f64": {
+          "sha256": "41e562e097714273b858885a1a6efff277dcde8326e147d6ec72a60b0ae501e2",
+          "bytes": 499968
+        },
+        "series/data-00048.f64": {
+          "sha256": "b3f78cf1f9ea8133e365412378e1243ce7873b5d8fcedec2744220b7517f45c1",
+          "bytes": 499968
+        },
+        "series/data-00049.f64": {
+          "sha256": "38c5524d67755f0f0beeaec78ab3ab40241ba693b448bc1a17a85a87d8c1e794",
+          "bytes": 499968
+        },
+        "series/data-00050.f64": {
+          "sha256": "23ea479db861c4cebd00950fbc294ad7d3a2a4c1577a5c1cc5c893388a89f611",
+          "bytes": 499968
+        },
+        "series/data-00051.f64": {
+          "sha256": "6369be23df8bffe30e3b9b350d092ac5728b40ebea912854d34b40573ac771c4",
+          "bytes": 499968
+        },
+        "series/data-00052.f64": {
+          "sha256": "bc4b92b8205ffec41d7184c479abe17a737779bc0271b05ed64223b8786c7adb",
+          "bytes": 71424
+        },
+        "series/series.json": {
+          "sha256": "bd63b25a4b6bc41d03fc29c17a8f417837843dc48c03aee430b5a289bf6fafb8",
+          "bytes": 19245
+        },
+        "weather/asset.json": {
+          "sha256": "132e5cab005b12bfb441c8c161704d89f67ffca036c7e8a42f3f92866e9c08af",
+          "bytes": 677
+        },
+        "weather/checksums.json": {
+          "sha256": "a7cbf88dee0a903628e24123c2a2cd13fe936bc6b6b07a9926c7b9e8323f1354",
+          "bytes": 402
+        },
+        "weather/normalized.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        },
+        "weather/original.epw": {
+          "sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "bytes": 1280195
+        },
+        "weather/weather.json": {
+          "sha256": "2bc05c15bae815a81b96c16f569db36cbfde60c862f878b0c163a7e5556ccb37",
+          "bytes": 5300731
+        }
+      },
+      "assessment": {
+        "current_derived_results": "not_compared",
+        "current_physical_inputs": "current",
+        "current_processed_results": "current",
+        "evidence_integrity": "complete_retained_evidence_checked",
+        "execution": "completed",
+        "scientific": {
+          "applicable_physical_input_sha256": [],
+          "evidence_ids": [],
+          "method": {
+            "adapter_version": "1",
+            "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+            "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+            "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+            "engine_version": "26.2.0",
+            "method_id": "greenlens.energyplus.explicit-dx/1",
+            "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+            "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+          },
+          "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+          "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+          "status": "unassessed",
+          "tested_scope": "No general building-accuracy, equipment-calibration or certification claim."
+        }
+      },
+      "geometry": [
+        {
+          "id": "zone1",
+          "storey": 1,
+          "origin_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone2",
+          "storey": 1,
+          "origin_m": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone3",
+          "storey": 2,
+          "origin_m": [
+            0.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone4",
+          "storey": 2,
+          "origin_m": [
+            8.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone5",
+          "storey": 1,
+          "origin_m": [
+            20.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone6",
+          "storey": 1,
+          "origin_m": [
+            28.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone7",
+          "storey": 2,
+          "origin_m": [
+            20.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone8",
+          "storey": 2,
+          "origin_m": [
+            28.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        }
+      ]
+    },
+    {
+      "case": "B10",
+      "run_id": "48f745af-e409-45e3-9990-b032da6b86b6",
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "validated": {
+        "gross_floor_area_m2": 384.0,
+        "conditioned_floor_area_m2": 384.0,
+        "construction_u_values_w_m2k": {
+          "external": 0.4132231404958678,
+          "internal": 1.9607843137254901
+        },
+        "facade_wwr": [
+          {
+            "orientation": "north",
+            "gross_wall_m2": 192.0,
+            "opening_m2": 0.0,
+            "ratio": 0.0
+          },
+          {
+            "orientation": "east",
+            "gross_wall_m2": 72.0,
+            "opening_m2": 0.0,
+            "ratio": 0.0
+          },
+          {
+            "orientation": "south",
+            "gross_wall_m2": 192.0,
+            "opening_m2": 36.0,
+            "ratio": 0.1875
+          },
+          {
+            "orientation": "west",
+            "gross_wall_m2": 72.0,
+            "opening_m2": 0.0,
+            "ratio": 0.0
+          }
+        ],
+        "model_input_sha256": "5da509cfe6fba8b7763c5a5bd33f2ce993482ea686e36ebc36995216255ab31e"
+      },
+      "provenance": {
+        "application_version": "0.4.0",
+        "source_commit": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+        "source_worktree_dirty": false,
+        "started_utc": "2026-10-13T08:00:47.030399200+00:00",
+        "finished_utc": "2026-10-13T08:00:59.180784800+00:00",
+        "physical_input_hash": "2582b2125983c902b8552c9bade90abf01b1c807de6fe154c0d41a7436945671",
+        "execution_input_hash": "09d11bc0311b30d2026ab0b5c2365ed0f62a53f47416e570fde4e357030b813c",
+        "physical_result_hash": "3ae774e5942f5ee0a50897f9b0ef3528958f4a62b5795fd15090ec56069fbb99",
+        "processing_identity": "ca112c956ffa7801cef4b8ed8a9330961e927d621d2ba840c7365c3b9cc5b9d9",
+        "diagnostics": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "warning_count": 1,
+        "severe_count": 0,
+        "raw_representation": "All requested native CSV numeric columns parsed to IEEE-754 float64 little-endian chunks; ordered labels, dimensions, time policy, original CSV digests and exact argument recipe retained. Input-derived occupancy is identified separately. Large native CSV/octrees are regenerable scratch, not needed for inspection."
+      },
+      "study": {
+        "schema_version": "greenlens.energy-study.v0.4",
+        "weather": {
+          "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+          "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+        },
+        "calendar": {
+          "start_weekday": "monday",
+          "holidays": [
+            {
+              "month": 1,
+              "day": 1
+            }
+          ],
+          "utc_offset_minutes": 0
+        },
+        "zone_timesteps_per_hour": 6
+      },
+      "rows": 52560,
+      "retained_channels": 62,
+      "chunks": 53,
+      "retained_f64_bytes": 26069760,
+      "native_scalar_comparisons": 2838240,
+      "maximum_native_scalar_difference": 0.0,
+      "independent_arithmetic_checks": 124,
+      "all_independent_arithmetic_checks_pass": true,
+      "maximum_interval_reconciliation_kw": 3.104408582051595e-15,
+      "totals": {
+        "interval_count": 52560,
+        "interval_seconds": 600,
+        "annual": {
+          "facility_kwh": 25003.77200880042,
+          "end_uses_kwh": {
+            "cooling_system": 5177.564008800421,
+            "supply_fans": 1934.4000000000003,
+            "ventilation_exhaust_fans": 104.832,
+            "interior_lighting": 7547.904,
+            "exterior_lighting": 175.2,
+            "plug_equipment": 10063.872
+          },
+          "reconciliation_residual_kwh": 0.0
+        },
+        "monthly": [
+          {
+            "facility_kwh": 2154.8432254006557,
+            "end_uses_kwh": {
+              "cooling_system": 523.8032254006557,
+              "supply_fans": 156.00000000000003,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 622.08,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 1944.366442353897,
+            "end_uses_kwh": {
+              "cooling_system": 419.3104423538967,
+              "supply_fans": 148.8,
+              "ventilation_exhaust_fans": 8.064,
+              "interior_lighting": 580.608,
+              "exterior_lighting": 13.44,
+              "plug_equipment": 774.144
+            },
+            "reconciliation_residual_kwh": 2.2737367544323206e-13
+          },
+          {
+            "facility_kwh": 2062.4389413287527,
+            "end_uses_kwh": {
+              "cooling_system": 373.1269413287527,
+              "supply_fans": 165.60000000000002,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 642.816,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2009.622093519615,
+            "end_uses_kwh": {
+              "cooling_system": 373.0620935196151,
+              "supply_fans": 162.00000000000003,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 622.08,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": -2.2737367544323206e-13
+          },
+          {
+            "facility_kwh": 2095.2516070555093,
+            "end_uses_kwh": {
+              "cooling_system": 411.9396070555093,
+              "supply_fans": 159.60000000000002,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 642.816,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2043.7465211777564,
+            "end_uses_kwh": {
+              "cooling_system": 407.18652117775656,
+              "supply_fans": 162.00000000000003,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 622.08,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": -2.2737367544323206e-13
+          },
+          {
+            "facility_kwh": 2108.3513065412553,
+            "end_uses_kwh": {
+              "cooling_system": 419.0393065412554,
+              "supply_fans": 165.60000000000002,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 642.816,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2084.8067176987106,
+            "end_uses_kwh": {
+              "cooling_system": 401.49471769871036,
+              "supply_fans": 159.60000000000002,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 642.816,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 1998.5103167317934,
+            "end_uses_kwh": {
+              "cooling_system": 355.95031673179346,
+              "supply_fans": 168.00000000000003,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 622.08,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": -2.2737367544323206e-13
+          },
+          {
+            "facility_kwh": 2095.1008603217592,
+            "end_uses_kwh": {
+              "cooling_system": 411.78886032175916,
+              "supply_fans": 159.60000000000002,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 642.816,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          },
+          {
+            "facility_kwh": 2130.8690944418872,
+            "end_uses_kwh": {
+              "cooling_system": 500.30909444188734,
+              "supply_fans": 156.00000000000003,
+              "ventilation_exhaust_fans": 8.64,
+              "interior_lighting": 622.08,
+              "exterior_lighting": 14.4,
+              "plug_equipment": 829.44
+            },
+            "reconciliation_residual_kwh": -4.547473508864641e-13
+          },
+          {
+            "facility_kwh": 2275.864882228829,
+            "end_uses_kwh": {
+              "cooling_system": 580.552882228829,
+              "supply_fans": 171.60000000000002,
+              "ventilation_exhaust_fans": 8.928,
+              "interior_lighting": 642.816,
+              "exterior_lighting": 14.88,
+              "plug_equipment": 857.088
+            },
+            "reconciliation_residual_kwh": 0.0
+          }
+        ],
+        "demand_interval_seconds": 600,
+        "coincident_peak": {
+          "timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          },
+          "facility_kw": 8.063122035274983,
+          "end_use_contributions_kw": {
+            "cooling_system": 2.2351220352749803,
+            "supply_fans": 0.4,
+            "ventilation_exhaust_fans": 0.032,
+            "interior_lighting": 2.304,
+            "exterior_lighting": 0.02,
+            "plug_equipment": 3.072
+          },
+          "reconciliation_residual_kw": 1.5522042910257975e-15
+        },
+        "zone_comfort": [
+          {
+            "zone_id": "zone1",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone2",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone3",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone4",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone5",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone6",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone7",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          },
+          {
+            "zone_id": "zone8",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0
+          }
+        ],
+        "building_comfort_union": {
+          "zone_id": null,
+          "occupied_hours": 6136.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        "comfort_definition": "Occupied when the declared occupancy is nonzero; air temperature > cooling setpoint + 0.2 C. Comfort uses source intervals without averaging excursions; building numerator and denominator are interval unions, not sums of zones.",
+        "maximum_interval_reconciliation_residual_kw": 3.104408582051595e-15
+      },
+      "diagnostics": {
+        "schema": "greenlens.energy-diagnostics.v1",
+        "completed": true,
+        "warning_count": 1,
+        "severe_count": 0,
+        "messages": [
+          "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+        ],
+        "convergence_disclosure": "All native warnings are retained for review; severe/fatal or explicit convergence failures block completion. Native completion is not physical or timestep qualification.",
+        "rows": 52560,
+        "native_columns": 47,
+        "native_csv_sha256": "8c6be3b30ddbb1d06520b3896f124aad971b4c0f673e17822754afba124436a7",
+        "native_csv_bytes": 26811522,
+        "error_file_sha256": "b6497005d33731e87ec178c5202f25face52617236a0966be4e53a68ed3711b7",
+        "end_file_sha256": "3beef6a0d71fef938b800db0c815993294c30f3c5298cdeb778eaf8fc9c3da0a",
+        "input_sha256": {
+          "engine/weather.epw": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "model.epJSON": "5b79d278d3ea225da2bf31b93ea750d7a756cbb93e2377ec47fb1f3dee9e74b6",
+          "recipe.json": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "minimum_values": [
+          12000.0,
+          0.0,
+          12000.0,
+          0.0,
+          0.0,
+          0.0,
+          22.13264880860454,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          22.067426965352798,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.8968085393551,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.84228276472757,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          22.08432987266167,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          22.111937127200846,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.86722166964764,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0,
+          21.87968150017059,
+          0.0,
+          24.0,
+          23.99999999999999,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "maximum_values": [
+          4837873.221164989,
+          1382400.0,
+          12000.0,
+          1843200.0,
+          1341073.2211649881,
+          259200.00000000003,
+          24.441193488515076,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          577087.2029869799,
+          24.32125404022698,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          543228.5230066399,
+          24.21536837054345,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          517537.7055197207,
+          24.121060333726884,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          476510.2013560145,
+          24.435098854126128,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          575832.2780837534,
+          24.339678302291112,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          552401.0913816736,
+          24.20844803426299,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          516019.66504114534,
+          24.135456160585722,
+          1.0,
+          24.0,
+          24.00000000000001,
+          30000.000000000007,
+          2400.0,
+          479415.07681692473
+        ],
+        "maximum_fan_reconciliation_j": 2.9103830456733704e-11,
+        "qualification_asserted": false
+      },
+      "native_process": {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T08:00:47.926884700+00:00",
+        "finished_utc": "2026-10-13T08:00:57.905419+00:00",
+        "elapsed_ms": 9978,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 526868480,
+        "peak_observed_scratch_bytes": 32415025,
+        "samples": 183,
+        "stdout_sha256": "1a16b68e6aa8ccc5ebc0d22447aee0730171e4fa47df37c2251301520e5f4163",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      },
+      "native_csv_sha256": "8c6be3b30ddbb1d06520b3896f124aad971b4c0f673e17822754afba124436a7",
+      "closed_run_integrity_verified": true,
+      "checksums_sha256": "d3b45a451401e09cd461b7784b30c4fcd163cd346f837d53f25e3fa1ffc1bcbb",
+      "retained_files": {
+        "checksums.json": {
+          "sha256": "d3b45a451401e09cd461b7784b30c4fcd163cd346f837d53f25e3fa1ffc1bcbb",
+          "bytes": 6872
+        },
+        "diagnostics.json": {
+          "sha256": "4fbc2626690a874e5d3f85abddd5bce68a47ea053ac56e90f968b156279c41ce",
+          "bytes": 3185
+        },
+        "input.json": {
+          "sha256": "7bb9ffeba57bd521ffc82ec380c7632716c1df4d952f018dc8048e8d1f7f1bf0",
+          "bytes": 87421
+        },
+        "model.epJSON": {
+          "sha256": "5b79d278d3ea225da2bf31b93ea750d7a756cbb93e2377ec47fb1f3dee9e74b6",
+          "bytes": 119856
+        },
+        "provenance.json": {
+          "sha256": "4c1e65e3b8d304ec4352f74d19402d057997e5449dfba607ad680d29e40e4947",
+          "bytes": 2196
+        },
+        "recipe.json": {
+          "sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "bytes": 1882
+        },
+        "results.json": {
+          "sha256": "d900adf0615f028c1528f5699d35b843572db6ace689424e7fe1028331e83ec6",
+          "bytes": 265541
+        },
+        "study.json": {
+          "sha256": "7c8a13631db26551e060f077a5d28900e0b32fc5ec4559cf7cdc81b962a91704",
+          "bytes": 600
+        },
+        "engine/eplusout.end": {
+          "sha256": "3beef6a0d71fef938b800db0c815993294c30f3c5298cdeb778eaf8fc9c3da0a",
+          "bytes": 98
+        },
+        "engine/eplusout.err": {
+          "sha256": "b6497005d33731e87ec178c5202f25face52617236a0966be4e53a68ed3711b7",
+          "bytes": 1051
+        },
+        "engine/process-stderr.txt": {
+          "sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+          "bytes": 36
+        },
+        "engine/process-stdout.txt": {
+          "sha256": "1a16b68e6aa8ccc5ebc0d22447aee0730171e4fa47df37c2251301520e5f4163",
+          "bytes": 2326
+        },
+        "engine/process.json": {
+          "sha256": "9df3d43cc89c18c98441f591e70288b19ffc16a872de8da97a2d8390ba8140d4",
+          "bytes": 875
+        },
+        "series/data-00000.f64": {
+          "sha256": "5d004dc09c50c25b136e75fc7b598c8daabe3d1d0459c8dc70d29ae7f7b185b2",
+          "bytes": 499968
+        },
+        "series/data-00001.f64": {
+          "sha256": "b8c0dc4678478625db46388ef27c76d47b9d103172b0fe64d2f9d011d5fa1f74",
+          "bytes": 499968
+        },
+        "series/data-00002.f64": {
+          "sha256": "2d5f4846e96f618b37e146a92d318546c736afdab619b22ef8b4e38570e52de0",
+          "bytes": 499968
+        },
+        "series/data-00003.f64": {
+          "sha256": "bc9342adec2e0b6f298516f929571571d4aa07e15d2c4c01aaf8e58f35f26e7d",
+          "bytes": 499968
+        },
+        "series/data-00004.f64": {
+          "sha256": "513c8415e72a2ec80354d2a4d18fef687c23aff20d33b6bb64a4be3b4feaaafa",
+          "bytes": 499968
+        },
+        "series/data-00005.f64": {
+          "sha256": "5f0b701ab66505600eba3cf1d405d297fe21ed44d4e2b4c217f21147ad14d9c6",
+          "bytes": 499968
+        },
+        "series/data-00006.f64": {
+          "sha256": "30027438e92dd787a93ae970614e9360f60f6b87097294244d9f5074d781dfea",
+          "bytes": 499968
+        },
+        "series/data-00007.f64": {
+          "sha256": "3dc80e9e5241c749bf0f5bf3a51aa93b2546f89bdea1967d68812f922969d47c",
+          "bytes": 499968
+        },
+        "series/data-00008.f64": {
+          "sha256": "f2a8db29b710a00dc158d70823c8fc6475b322d9a510b24aac9c5fa5678453f0",
+          "bytes": 499968
+        },
+        "series/data-00009.f64": {
+          "sha256": "489b8a1143f7258f82b355fa3c3cecbd65b21ee480773952cd6ce8bc00fb4524",
+          "bytes": 499968
+        },
+        "series/data-00010.f64": {
+          "sha256": "67ad6fdbddcf898762ce8447a6ada756ab0045b888a38a3545597accb334107b",
+          "bytes": 499968
+        },
+        "series/data-00011.f64": {
+          "sha256": "7f0f2204b5df4be6005244b2d3dbab9905649abd2483497ad538dff064fbba44",
+          "bytes": 499968
+        },
+        "series/data-00012.f64": {
+          "sha256": "0e38b8c1c08f04c9ee5fe32ab1d9a795a2dada7c18965a545c45d24263242976",
+          "bytes": 499968
+        },
+        "series/data-00013.f64": {
+          "sha256": "6ca1267ad26afcb3b2bdc8202bc9279c5cdc1b3bb4a2dc0f4af625289104192e",
+          "bytes": 499968
+        },
+        "series/data-00014.f64": {
+          "sha256": "139df4542adb75a9f9809793f1cf9a34fc13a3a9c7eee3d231304c05e06686d7",
+          "bytes": 499968
+        },
+        "series/data-00015.f64": {
+          "sha256": "9f4e437dd1be018a2742d0cb911437b3a5abdb194616011cc34758fbdff2b4e4",
+          "bytes": 499968
+        },
+        "series/data-00016.f64": {
+          "sha256": "c1ee6d8746e88e743dbbb64d5f902b1daf20f1c0d431542b4cd1b1e1eda99ad6",
+          "bytes": 499968
+        },
+        "series/data-00017.f64": {
+          "sha256": "f8f967dc9b398412466008ba2c170fe9c06f24f888fb4fa934b454e7f5834ce7",
+          "bytes": 499968
+        },
+        "series/data-00018.f64": {
+          "sha256": "e5a332039dc138b8c3905cddd8237ae3b9557bc3b04b7417506ff5059b780a10",
+          "bytes": 499968
+        },
+        "series/data-00019.f64": {
+          "sha256": "26415bc45ba43a3aea91f330c94f7282e420121e3d8686396ffe216c8743234b",
+          "bytes": 499968
+        },
+        "series/data-00020.f64": {
+          "sha256": "b985e81cb31b50f5427f077306309dfcd09053b6a82b64a7151e543faf20afb0",
+          "bytes": 499968
+        },
+        "series/data-00021.f64": {
+          "sha256": "81470c98110c2f2662a7038d5c2d482b2b211212c3a8285f66fb218c843f0804",
+          "bytes": 499968
+        },
+        "series/data-00022.f64": {
+          "sha256": "0fa9de8a0307cd1da8277076e2990b761c0306f6411dace364364f337a2f49eb",
+          "bytes": 499968
+        },
+        "series/data-00023.f64": {
+          "sha256": "84bbe24b1e8b7d05f3a7ce634957e4568bcc0873dcd7e3130378ff2102797666",
+          "bytes": 499968
+        },
+        "series/data-00024.f64": {
+          "sha256": "bf3131497eb72944c5674f69bc037f973484ac32c6cd54aa3e95a0dcbfa8d100",
+          "bytes": 499968
+        },
+        "series/data-00025.f64": {
+          "sha256": "cd920da14b246b10e4d25ec3f4e5d599f353e712d898d6a314f11597fc5e1f42",
+          "bytes": 499968
+        },
+        "series/data-00026.f64": {
+          "sha256": "0a2b50d950ea4cf9ded3fb8dfc28d68e6d80e5b9ad299271bef96dc5e0199144",
+          "bytes": 499968
+        },
+        "series/data-00027.f64": {
+          "sha256": "1ccece53af69e09dbdd1eb9411cc937c7a0727aa9f2ad1788f772b734b309445",
+          "bytes": 499968
+        },
+        "series/data-00028.f64": {
+          "sha256": "c5c5089de182b803e40cce3fdd23a9fb6090d39538018ff760e853522bafc0e3",
+          "bytes": 499968
+        },
+        "series/data-00029.f64": {
+          "sha256": "b8f0c4c92aa67fa30f57f507a8b4f58bee0cce112977bb90c026bda4781bc2b7",
+          "bytes": 499968
+        },
+        "series/data-00030.f64": {
+          "sha256": "9053f855e06bee3b246ba92ea8bfe906e53099b8bb70c11016d2e54a2a701046",
+          "bytes": 499968
+        },
+        "series/data-00031.f64": {
+          "sha256": "62f7311825bda0698779e5b1df3ef77f9cb5526f1075007b806462625ebe92be",
+          "bytes": 499968
+        },
+        "series/data-00032.f64": {
+          "sha256": "f15f1fe601a349958c499a632c5bc0429e3f2fcc85e39f21f86b06e76822b762",
+          "bytes": 499968
+        },
+        "series/data-00033.f64": {
+          "sha256": "5fbb2b1039ecae908c2300464eafa154a53b5dc14430a4f67dba778370a2d46e",
+          "bytes": 499968
+        },
+        "series/data-00034.f64": {
+          "sha256": "6dc5423ee0e0c17befc833885060b3f693ff075a405a91ea3a00045a0d462f60",
+          "bytes": 499968
+        },
+        "series/data-00035.f64": {
+          "sha256": "bb5c6073ae03692899c3dac931cb60e332a302c843928512fa42e7bcaf5f9718",
+          "bytes": 499968
+        },
+        "series/data-00036.f64": {
+          "sha256": "910415714620306a93033799e5cb490bb70a81c7fb2d78b5f1095335584b18cd",
+          "bytes": 499968
+        },
+        "series/data-00037.f64": {
+          "sha256": "ec92b67b5720a64a9802badbeb56321e049e7f3884ab1463ebeebc2b656d8f50",
+          "bytes": 499968
+        },
+        "series/data-00038.f64": {
+          "sha256": "1bc4ffadc71ea4b3928531b87f706b9f36a626892256b0bdbf78a82cacd81381",
+          "bytes": 499968
+        },
+        "series/data-00039.f64": {
+          "sha256": "e7674c0d9c1c50b91fd76cb3f0cd3f8a99e2e8093afb22d439e3abdced3adbb9",
+          "bytes": 499968
+        },
+        "series/data-00040.f64": {
+          "sha256": "761c8e73dca04e2ec09949ebcc2e2653041b162ffb82778d7f34db25b7adf8de",
+          "bytes": 499968
+        },
+        "series/data-00041.f64": {
+          "sha256": "03d603d35403765c061ee2f860b369285302fff374cbbaaa74eb39081189acfc",
+          "bytes": 499968
+        },
+        "series/data-00042.f64": {
+          "sha256": "69cb0d391eec91da88716c147396ed3c69cc480cfd8b49d0d99b5028f443f197",
+          "bytes": 499968
+        },
+        "series/data-00043.f64": {
+          "sha256": "d067a12bbb05ab6fdef9ca62b1972a44b9b64eeeef042c9e827fad005d80289f",
+          "bytes": 499968
+        },
+        "series/data-00044.f64": {
+          "sha256": "b09ccb4c5ae2eccef64de1e95374bde49465bb08dc11a2e881abd1237060efdf",
+          "bytes": 499968
+        },
+        "series/data-00045.f64": {
+          "sha256": "d5e358f00df3240c1333d239595b077b4862df7fb29e933b211c661301e379eb",
+          "bytes": 499968
+        },
+        "series/data-00046.f64": {
+          "sha256": "e58fcd22a14de41a6388fed86472c72d63899dc50718cdbde163a47cfe9a7518",
+          "bytes": 499968
+        },
+        "series/data-00047.f64": {
+          "sha256": "4a7805cadb4ac7187c65d3a2a6a482f2bbc9a48a3024673bae27260641628aa3",
+          "bytes": 499968
+        },
+        "series/data-00048.f64": {
+          "sha256": "f3591238fb62f046d3d4e0a2cb94a845f2d059c4c9f2c80cd773daad66fc3b91",
+          "bytes": 499968
+        },
+        "series/data-00049.f64": {
+          "sha256": "f557c584ed1cf0b11765d612e694252eb488165fdaf5a8829f6a54c322235d1d",
+          "bytes": 499968
+        },
+        "series/data-00050.f64": {
+          "sha256": "8ebd359472e7bce42edefea98b89f227d6a15522657fb380aa6f33c86e16a901",
+          "bytes": 499968
+        },
+        "series/data-00051.f64": {
+          "sha256": "418c9aa562b29911eab0d9de1fe3192bd476d12a815a0474311ef0d459e0c394",
+          "bytes": 499968
+        },
+        "series/data-00052.f64": {
+          "sha256": "fd6e819f1d0c2cd5e88d4c472931edfb5816031ee5961d49a826fa18381f4c94",
+          "bytes": 71424
+        },
+        "series/series.json": {
+          "sha256": "e4f862d994f2530b1ee5900ef1c8471070e30a54fcc71c2752fb9be2e59b5b1b",
+          "bytes": 19245
+        },
+        "weather/asset.json": {
+          "sha256": "132e5cab005b12bfb441c8c161704d89f67ffca036c7e8a42f3f92866e9c08af",
+          "bytes": 677
+        },
+        "weather/checksums.json": {
+          "sha256": "a7cbf88dee0a903628e24123c2a2cd13fe936bc6b6b07a9926c7b9e8323f1354",
+          "bytes": 402
+        },
+        "weather/normalized.epw": {
+          "sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+          "bytes": 1280196
+        },
+        "weather/original.epw": {
+          "sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+          "bytes": 1280195
+        },
+        "weather/weather.json": {
+          "sha256": "2bc05c15bae815a81b96c16f569db36cbfde60c862f878b0c163a7e5556ccb37",
+          "bytes": 5300731
+        }
+      },
+      "assessment": {
+        "current_derived_results": "not_compared",
+        "current_physical_inputs": "current",
+        "current_processed_results": "current",
+        "evidence_integrity": "complete_retained_evidence_checked",
+        "execution": "completed",
+        "scientific": {
+          "applicable_physical_input_sha256": [],
+          "evidence_ids": [],
+          "method": {
+            "adapter_version": "1",
+            "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+            "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+            "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+            "engine_version": "26.2.0",
+            "method_id": "greenlens.energyplus.explicit-dx/1",
+            "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+            "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+          },
+          "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+          "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+          "status": "unassessed",
+          "tested_scope": "No general building-accuracy, equipment-calibration or certification claim."
+        }
+      },
+      "geometry": [
+        {
+          "id": "zone1",
+          "storey": 1,
+          "origin_m": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone2",
+          "storey": 1,
+          "origin_m": [
+            8.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone3",
+          "storey": 2,
+          "origin_m": [
+            0.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone4",
+          "storey": 2,
+          "origin_m": [
+            8.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone5",
+          "storey": 1,
+          "origin_m": [
+            20.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone6",
+          "storey": 1,
+          "origin_m": [
+            28.0,
+            0.0,
+            0.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone7",
+          "storey": 2,
+          "origin_m": [
+            20.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        },
+        {
+          "id": "zone8",
+          "storey": 2,
+          "origin_m": [
+            28.0,
+            0.0,
+            3.0
+          ],
+          "size_m": [
+            8.0,
+            6.0,
+            3.0
+          ]
+        }
+      ]
+    }
+  ],
+  "native_processes": 2,
+  "renderer_processes": 4,
+  "intervals": 105120,
+  "native_scalar_comparisons": 5676480,
+  "native_resource_limits": {
+    "seconds": 1800,
+    "memory_bytes": 2147483648,
+    "scratch_bytes": 1073741824,
+    "file_bytes": 134217728
+  },
+  "report_resource_limits": {
+    "global_seconds": 600,
+    "stage_seconds": 120,
+    "memory_bytes": 2147483648,
+    "total_staging_output_bytes": 268435456,
+    "active_stage_bytes": 134217728,
+    "file_bytes": 67108864
+  },
+  "export_limits": {
+    "entries": 5000,
+    "entry_bytes": 67108864,
+    "total_uncompressed_bytes": 268435456
+  },
+  "resources": {
+    "native_elapsed_ms": 20445,
+    "peak_memory_bytes": 526868480,
+    "peak_scratch_bytes": 32415025
+  },
+  "native_wrapper_wall_seconds": 53.4428909,
+  "timing_context": "Shared Windows host, not an isolated benchmark or arbitrary-model guarantee. Final desktop build/package completed at 07:59:11.9787835Z before these native stages began at 08:00:23.738229500Z; no compilation overlap is asserted.",
+  "package": {
+    "schema": "greenlens.capacity-package-report-extraction.v1",
+    "package_sha256": "9ef9117f195da6ea1bfe9a929b1211c160f1c6e2163d608ea611ebdcd2a1ed7f",
+    "package_bytes": 13182773,
+    "entries": 173,
+    "uncompressed_bytes": 81099305,
+    "maximum_entry_bytes": 5300731,
+    "shared_reader_exit_code": 0,
+    "shared_reader_output_sha256": "e597a89b4d2f22fb3f8c644e41ba10a7cf9f1ac706a98197de62393ef3091562",
+    "execution_from_package": false,
+    "scientific_qualification_asserted": false
+  },
+  "report_artifacts_sha256": "ae9bf5b092128637a87adf9079410feb737dbe17f86735245e4bf52f69d59b35",
+  "report_dataset_sha256": "15eacd7e549a2da7816112fbfd7c87eb19c04122ae17bb5846def97c88e4ba55",
+  "renderer_status": "completed",
+  "renderer_records": [
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T08:05:06.017875+00:00",
+      "finished_utc": "2026-10-13T08:05:07.279872600+00:00",
+      "elapsed_ms": 1315,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 142106624,
+      "peak_observed_scratch_bytes": 34576052,
+      "samples": 23,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T08:05:07.690284900+00:00",
+      "finished_utc": "2026-10-13T08:05:09.330080600+00:00",
+      "elapsed_ms": 1690,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 163033088,
+      "peak_observed_scratch_bytes": 34903468,
+      "samples": 30,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T08:05:09.800531800+00:00",
+      "finished_utc": "2026-10-13T08:05:10.335891100+00:00",
+      "elapsed_ms": 589,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 84418560,
+      "peak_observed_scratch_bytes": 33603002,
+      "samples": 10,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "--ppi",
+        "96",
+        "report.typ",
+        "page-{0p}-of-{t}.png"
+      ],
+      "started_utc": "2026-10-13T08:05:11.063883300+00:00",
+      "finished_utc": "2026-10-13T08:05:11.809906+00:00",
+      "elapsed_ms": 820,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 92790784,
+      "peak_observed_scratch_bytes": 34396745,
+      "samples": 13,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "report_members": {
+    "reports/energy-report.json": {
+      "bytes": 247514,
+      "sha256": "269a466efc7893e6b42aef23849e38eacf6d4a10707a9faf18c4d722fc59717a"
+    },
+    "reports/performance.json": {
+      "bytes": 67380,
+      "sha256": "57ebf2205ba08f358049f6a469644e3c242ebc57a906ce9bc1ba951d537af96f"
+    },
+    "reports/performance.csv": {
+      "bytes": 32390,
+      "sha256": "d32f15fc083d20e178892275346ef0f4da4ade82c524c89a623720de1de2d6c1"
+    },
+    "reports/inputs.csv": {
+      "bytes": 117685,
+      "sha256": "ece66e38fb4f3aa7b0309f03b6a6112890fa3982dc203b23a4617c35c9ad1185"
+    },
+    "reports/baseline-model.svg": {
+      "bytes": 6246,
+      "sha256": "d554a7beacd4793b644c345444daf262e8c05cbc73ce5911d2c779af4576ec1c"
+    },
+    "reports/proposed-model.svg": {
+      "bytes": 7274,
+      "sha256": "132670ebf4b517d470130e992340868fc80ef0c841a75534bcade3fa9d3a08df"
+    },
+    "reports/annual.svg": {
+      "bytes": 1884,
+      "sha256": "3ba93ca76c03b56c353cb68d2c968eebd615801330c0dd1e5e1f1f31efcc2dc1"
+    },
+    "reports/monthly.svg": {
+      "bytes": 3249,
+      "sha256": "d62fb98414a1057b03b2067719dc7685ae462cccc0fca51ee64cf715afe5578e"
+    },
+    "reports/assessment.html": {
+      "bytes": 125593,
+      "sha256": "e70809cc36fac496fd99268bf0deb9fd100b773adffcad5dc8417a3a4f5e374f"
+    },
+    "reports/input-appendix.html": {
+      "bytes": 161206,
+      "sha256": "0eecd58db93503ae095f464d0e066c0c2622b38bd021dffaf49fc76d7d9582bf"
+    },
+    "reports/performance.html": {
+      "bytes": 15963,
+      "sha256": "ab9bb2d32eb6b274628207a30399256035394aac6f378ac1d6986a374c166ca6"
+    },
+    "reports/assessment.pdf": {
+      "bytes": 983437,
+      "sha256": "3b413fd119268c488ba193c59be782487d0f3b4f62d9176ba776fe14d1dde006"
+    },
+    "reports/input-appendix.pdf": {
+      "bytes": 1256592,
+      "sha256": "1def4d674197a3501d8836f1b1924f5980a179655d80c62c4164dda5e67685ed"
+    },
+    "reports/performance.pdf": {
+      "bytes": 125915,
+      "sha256": "e7b675b7c0c4034182e64f9aece2d7beae35d063c8059638b7c7237f7410d8d1"
+    },
+    "reports/performance-page-001.png": {
+      "bytes": 110088,
+      "sha256": "f7cd1c116a65ed84192df8d2f38c3e60ab35f0e67b5e283939c232f0ac89d33e"
+    },
+    "reports/performance-page-002.png": {
+      "bytes": 279268,
+      "sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10"
+    },
+    "reports/performance-page-003.png": {
+      "bytes": 274969,
+      "sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe"
+    },
+    "reports/performance-page-004.png": {
+      "bytes": 212606,
+      "sha256": "38aaf841b9361873ab71860deea0947b446b7f7dd8110ac366587cef5c20c3de"
+    },
+    "reports/performance-page-005.png": {
+      "bytes": 42727,
+      "sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68"
+    },
+    "reports/report-artifacts.json": {
+      "bytes": 12170,
+      "sha256": "ae9bf5b092128637a87adf9079410feb737dbe17f86735245e4bf52f69d59b35"
+    }
+  },
+  "positive_factor": {
+    "id": "original_synthetic_electricity",
+    "fuel": "electricity",
+    "region": "Non-climatic GreenLens arithmetic example",
+    "year": 2001,
+    "kg_per_kwh": 0.4,
+    "unit": "kg_co2e",
+    "source": "Original synthetic factor for report arithmetic only; not a real emissions inventory",
+    "version": "greenlens.synthetic-carbon/1",
+    "synthetic": true
+  },
+  "independent_reviews": {
+    "input_process_integrity": {
+      "sha256": "6245a8ba0b84820fed1d8467dce9996105aa368191c59dd940c65a35ec321f76",
+      "bytes": 15865,
+      "passed": true,
+      "scope": "Independent exact model transformation, sources, inputs, retained file/shape integrity, two sequential process records and resource limits, and Unassessed status. No duplicate numeric array parse; owner arithmetic remains separately bound."
+    },
+    "original_report_pagination": {
+      "sha256": "d08258dcba53701fee63738e7045768e7359d22abc1c5341517ce5329cd8c929",
+      "bytes": 34739,
+      "passed": false,
+      "integrity_arithmetic_content_passed": true,
+      "pdf_pages_inspected": 89,
+      "performance_png_pages_inspected": 5,
+      "scope": "All eight zones retained and all content/arithmetic/package/snapshot checks pass. Initial visual check fails for overlapping repeated overhang annotations and inherited four-zone project title; original artifacts remain unchanged."
+    }
+  },
+  "terminal_process_observation": {
+    "schema": "greenlens.capacity-terminal-process-observation.v1",
+    "observed_utc": "2026-10-13T08:08:34.8756244Z",
+    "energyplus_process_count": 0,
+    "processes": [],
+    "scope": "OS process-name observation after both prescribed runs and report/export completed; native receipts separately attest empty owned Jobs."
+  },
+  "terminal_process_observation_sha256": "5ce15f3bfc1c6cdf0825961b746fe81dcb270246533241bcc819950e39bdf901",
+  "preserved_pre_native_launcher_failure": {
+    "schema": "greenlens.capacity-launcher-repair.v1",
+    "original_wrapper_sha256": "3da98e0d626e0f5322a80f1d7f63de5353d445d1e38fc599d90320dd623f46da",
+    "repaired_wrapper_sha256": "96283adc3007ac70bf43438d84c2359126943a3473a793ff2a1cbec1bf47efa9",
+    "original_failure_sha256": "4dcf094cfbe3ad879739ae584d0cd5c142c1aa2be9f37f4f930ea380db3b069e",
+    "protocol_sha256": "3d02e27e38dd97eb39ba59eeabc4fef5edbe91f69ab1665a2ed475e6bf1287ba",
+    "native_processes_before_repair": 0,
+    "repair": "Rename Cli helper to Invoke-CapacityCli; built-in cli alias is Clear-Item and has precedence over functions. No other wrapper bytes changed.",
+    "alias_definition": "Clear-Item",
+    "recorded_utc": "2026-10-13T08:00:08.6955694Z"
+  },
+  "native_capacity_integrity_arithmetic_passed": true,
+  "original_report_integrity_arithmetic_content_passed": true,
+  "original_report_visual_checks_passed": false,
+  "original_report_defects": [
+    "Repeated overhang annotations overlap in the eight-zone schematic on assessment page 19 and input-appendix page 26.",
+    "The report inherited the four-zone project title despite retaining all eight zones."
+  ],
+  "presentation_only_title_copy": {
+    "original_title": "Synthetic four-zone energy building",
+    "corrected_title": "Synthetic two-wing eight-zone capacity fixture",
+    "original_project_sha256": "4c762ccd6def2ace5e7de31c7d88d011617e5cbe2748c4ef98e65f498677dffe",
+    "corrected_project_sha256": "c726373ad32334669d63b9d9236169fa394b404a7563c8fecf966b560bdc5bc3",
+    "original_project_unchanged": true,
+    "unchanged_evidence_files": 149,
+    "unchanged_evidence_bytes": 76742257,
+    "both_scientific_statuses": "unassessed",
+    "thermal_inputs_and_studies_equal": true,
+    "all_run_weather_bytes_equal": true,
+    "comparison_changed_fields": [
+      "title"
+    ],
+    "native_energyplus_processes": 0,
+    "renderer_processes": 0,
+    "scope": "Presentation-only portable copy; original project, native runs, package and report artifacts are preserved. No numerical rerun or scientific qualification."
+  },
+  "presentation_only_title_copy_audit_sha256": "a554832cfcc64c2b67bf7f5ce121b49b0631a79d332d6712137042ceecc81190",
+  "corrected_report_rerender_status": "Not part of this original capacity record; a separate presentation-only rerender and audit are required. Original outputs and visual failures remain retained.",
+  "qualified": false,
+  "scientific_qualification_asserted": false,
+  "new_registry_entries": 0,
+  "limitations": [
+    "Maximum supported zone count is exercised for this fixed two-wing synthetic pair; arbitrary worst-case schedules, attachments and every valid model complexity are not benchmarked.",
+    "The same shared reader/writer limits remain unchanged; no mandatory evidence was discarded or transmuted from Gate0 diagnostics.",
+    "No 5-minute comparison, direct parity rerun, additional replay or physics qualification was performed for this capacity pair. Existing four-zone qualified scopes are unchanged.",
+    "Mutual exterior solar context changes; no doubled-energy identity is assumed.",
+    "Lower-temperature/heating service hours are not evaluated. Reported service hours are occupied cooling-unmet only; no heating threshold or model is introduced.",
+    "Weather is original synthetic non-climatic data; the carbon factor is explicitly fictional. No real-climate or local emissions accounting validity is implied.",
+    "Raw native output, complete immutable project, source snapshots and package remain external and hash-bound. Compact publication does not claim the full raw arrays are bundled.",
+    "Installed native desktop workflow and physical modifier-selection observations remain separate unverified gates."
+  ]
+}

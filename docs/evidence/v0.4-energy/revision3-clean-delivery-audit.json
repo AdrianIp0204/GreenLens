@@ -1,0 +1,181 @@
+{
+  "schema": "greenlens.energy-revision3-cold-delivery-independent.v1",
+  "checked_utc": "2026-10-13T07:55:05.040061+00:00",
+  "all_checks_pass": true,
+  "application": {
+    "source_commit": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+    "source_worktree_dirty": false,
+    "version": "0.4.0",
+    "frozen_cli_sha256": "7ac63405d1eda9478714a313122c34975ae39d6bd792aa1b5a3228d202c4ef8f"
+  },
+  "original_simulation_source": "38d7b7a070edacf3ac1a3a9af8249c8a1da16b23",
+  "package": {
+    "sha256": "48a3a88395739446e86528f40ba4106daea7a95942b9fae008f03aa07c7cf7f5",
+    "bytes": 8394273,
+    "members": 173,
+    "uncompressed_bytes": 56539376,
+    "largest_member_bytes": 5300731,
+    "limits": {
+      "members": 5000,
+      "individual_uncompressed_bytes": 67108864,
+      "total_uncompressed_bytes": 268435456
+    },
+    "all_members_decompressed_crc_size_and_sha_checked": true,
+    "inner_checksum_members_checked": 154
+  },
+  "retained_immutability": {
+    "files": 149,
+    "original_owned_copy_cold_copy_zip_match": true,
+    "original_and_copies_manifest_unchanged_during_audit": true,
+    "owned_copy_manifest_only_difference_from_original": "Explicit positive synthetic carbon factor; all thermal/scientific/run fields unchanged.",
+    "all_original_job_and_project_paths_restored": true
+  },
+  "cases": [
+    {
+      "alternative": "A",
+      "run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+      "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "registry_version": "greenlens.energy-qualification.2026-10-13.2",
+      "scientific_status": "limited_qualified",
+      "emissions_kg_co2e": 6522.8359210471735,
+      "emissions_display": "6522.84"
+    },
+    {
+      "alternative": "B",
+      "run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+      "physical_input_sha256": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+      "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+      "scientific_status": "limited_qualified",
+      "emissions_kg_co2e": 5046.942892952661,
+      "emissions_display": "5046.94"
+    }
+  ],
+  "report": {
+    "dataset_sha256": "82db88bdd340a22d2e7f636e8aa77524b004d7aeeb8e69cb83912ceb50b66f4e",
+    "payload_identical_across_report_package_and_compiled_inspection": true,
+    "models_studies_totals_ledgers_and_method_match_immutable_runs": true,
+    "report_artifacts_checked": 19,
+    "package_report_artifacts_checked": 19,
+    "native_renderer_successful_closed_receipts": 8,
+    "no_energy_engine_during_cold_reports": "Recorded failed engine discovery with an explicit unavailable path, reviewed shared command order, and only Typst report process receipts; not a continuous global process monitor.",
+    "visual_review_performed_by_this_audit": false,
+    "positive_carbon_factor": {
+      "id": "original_synthetic_electricity",
+      "fuel": "electricity",
+      "region": "Non-climatic GreenLens arithmetic example",
+      "year": 2001,
+      "kg_per_kwh": 0.4,
+      "unit": "kg_co2e",
+      "source": "Original synthetic factor for report arithmetic only; not a real emissions inventory",
+      "version": "greenlens.synthetic-carbon/1",
+      "synthetic": true
+    },
+    "html_explicit_positive_emission_values_checked": true
+  },
+  "replay": {
+    "record_sha256": "8ac00bdd13e00f8f637f852ddeefb7660224c6500aea116d86f112b525f4769f",
+    "runs": 2,
+    "intervals_per_run": 52560,
+    "channels_per_interval": 34,
+    "values": 3574080,
+    "all_retained_f64_chunk_bytes_equal": true,
+    "maximum_absolute_difference": 0.0,
+    "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)",
+    "processes": [
+      {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T07:48:44.484824100+00:00",
+        "finished_utc": "2026-10-13T07:48:52.324283500+00:00",
+        "elapsed_ms": 7840,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 402923520,
+        "peak_observed_scratch_bytes": 19753241,
+        "samples": 141,
+        "stdout_sha256": "7b8daec441c404d5d41c55bbe51cb575cd733536472590464392a12d595a1d69",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      },
+      {
+        "schema_version": "greenlens.native-process.v0.4",
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "started_utc": "2026-10-13T07:48:56.783014800+00:00",
+        "finished_utc": "2026-10-13T07:49:03.957873900+00:00",
+        "elapsed_ms": 7175,
+        "exit_code": 0,
+        "state": "completed",
+        "failure": null,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 410914816,
+        "peak_observed_scratch_bytes": 21082235,
+        "samples": 130,
+        "stdout_sha256": "280a09f063e5c526c53f01abd21661e9c043b9b0cdd01f60902b7a8d6d94b832",
+        "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+      }
+    ],
+    "scope": "Recognized identical-recipe integration agreement only; no new physical or general-building qualification."
+  },
+  "receipts": {
+    "cold-evidence.json": {
+      "sha256": "aa2566a923a8d49ff75b718ce22b1acd09b36765ec2fb4fecac46fa0abb131f2",
+      "bytes": 21186
+    },
+    "commands.json": {
+      "sha256": "c9b1383b353de9c1098327e38391f45ee03c29d3fd9482721f956805efef3d59",
+      "bytes": 623
+    },
+    "replay.json": {
+      "sha256": "8ac00bdd13e00f8f637f852ddeefb7660224c6500aea116d86f112b525f4769f",
+      "bytes": 1473
+    },
+    "report.json": {
+      "sha256": "aa089eed75e2180d0d1a6bf2f9efd9b8f439c0ea285310e6e8206143eb1733a9",
+      "bytes": 12176
+    },
+    "export.json": {
+      "sha256": "218b77b6d20e6b70e510a4f5ebb06d88d34cc945ce94dfb28c6ec8c770ce11d1",
+      "bytes": 413
+    },
+    "inspect-A.json": {
+      "sha256": "daf7ce5882290257b967c1f88d0dcdaf3719102f77893e115997f07039ed41c6",
+      "bytes": 229397
+    },
+    "inspect-B.json": {
+      "sha256": "f283b6485123c0b419757035ec79157eec7370e37cadb2efcdc364d4d0b164a5",
+      "bytes": 230924
+    },
+    "package-inspect.json": {
+      "sha256": "aed4faed82a8ef9f7c3ac83a5172d287926cc3df97a557208f16ffc99b5b8f52",
+      "bytes": 227034
+    }
+  },
+  "source_script_sha256": "fb01417ffce9a3265a7c14e599176da1151e51215d28faabf5e199fec9438193",
+  "original_annual_independent_sha256": "7322e79691b19260d2215f421d63fdec2729625393b9fcba61ef480d75f7ccf1",
+  "limits": "Read-only closed evidence review. No new engine, build, report generation or source edits; prior failed scopes remain unchanged. Renderer appearance and native desktop acceptance are outside this audit."
+}

@@ -349,6 +349,10 @@ mod tests {
         current.baseline.assessment.current_physical_inputs =
             greenlens_core::energy::EnergyInputRelation::Changed;
         current.title = "Regenerated presentation".into();
+        current.limitations.push(
+            "Later presentation explicitly discloses unevaluated lower-temperature service hours."
+                .into(),
+        );
         validate_report_binding(&retained, &current, &hash).unwrap();
         assert_eq!(old, serde_json::to_vec(&retained).unwrap());
         assert!(validate_report_binding(&retained, &current, &"0".repeat(64)).is_err());

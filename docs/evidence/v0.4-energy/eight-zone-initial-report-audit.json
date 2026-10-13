@@ -1,0 +1,655 @@
+{
+  "schema_version": "greenlens.energy-eight-zone-capacity-report-independent-audit.v1",
+  "checked_utc": "2026-10-13T08:18:51.260419Z",
+  "scope": "Eight-zone two-wing maximum-capacity pair with both physical input sets outside the tested registry scope. Retained real EnergyPlus 10-minute A/B report DTO; production Rust/Typst rendering and cross-format content only. No new simulation or scientific qualification. Both retained cases explicitly expose Unassessed scientific status. Report export and rendering are capacity/integrity verification, not scientific acceptance.",
+  "source_manifest_sha256": "ae9bf5b092128637a87adf9079410feb737dbe17f86735245e4bf52f69d59b35",
+  "dataset_sha256": "15eacd7e549a2da7816112fbfd7c87eb19c04122ae17bb5846def97c88e4ba55",
+  "template_sha256": "7fe14ea1a40b40ed0c99b987d729ece7dc19d312598c9e395d65cbd8b31d7012",
+  "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+  "artifacts_verified": 19,
+  "native_processes": [
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T08:05:06.017875+00:00",
+      "finished_utc": "2026-10-13T08:05:07.279872600+00:00",
+      "elapsed_ms": 1315,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 142106624,
+      "peak_observed_scratch_bytes": 34576052,
+      "samples": 23,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T08:05:07.690284900+00:00",
+      "finished_utc": "2026-10-13T08:05:09.330080600+00:00",
+      "elapsed_ms": 1690,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 163033088,
+      "peak_observed_scratch_bytes": 34903468,
+      "samples": 30,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "report.typ",
+        "report.pdf"
+      ],
+      "started_utc": "2026-10-13T08:05:09.800531800+00:00",
+      "finished_utc": "2026-10-13T08:05:10.335891100+00:00",
+      "elapsed_ms": 589,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 84418560,
+      "peak_observed_scratch_bytes": 33603002,
+      "samples": 10,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "schema_version": "greenlens.native-process.v0.4",
+      "executable": "typst.exe",
+      "executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "arguments": [
+        "compile",
+        "--root",
+        ".",
+        "--font-path",
+        "fonts",
+        "--ignore-system-fonts",
+        "--ignore-embedded-fonts",
+        "--package-path",
+        "empty-packages",
+        "--package-cache-path",
+        "empty-package-cache",
+        "--creation-timestamp",
+        "0",
+        "--jobs",
+        "1",
+        "--diagnostic-format",
+        "short",
+        "--ppi",
+        "96",
+        "report.typ",
+        "page-{0p}-of-{t}.png"
+      ],
+      "started_utc": "2026-10-13T08:05:11.063883300+00:00",
+      "finished_utc": "2026-10-13T08:05:11.809906+00:00",
+      "elapsed_ms": 820,
+      "exit_code": 0,
+      "state": "completed",
+      "failure": null,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 92790784,
+      "peak_observed_scratch_bytes": 34396745,
+      "samples": 13,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "documents": {
+    "assessment": {
+      "pages": 35,
+      "pdf_sha256": "3b413fd119268c488ba193c59be782487d0f3b4f62d9176ba776fe14d1dde006",
+      "bytes": 983437,
+      "document_sha256": "e29df027aba5e740ef73f3de6dae5225e3294a26d0996e2472e4aac70f1e9624",
+      "checked_text_items": 2679,
+      "embedded_fonts": [
+        "/KVBRKL+NotoSansCJKtc-Bold-Identity-H",
+        "/XCZIEJ+NotoSansCJKtc-Regular-Identity-H"
+      ]
+    },
+    "input-appendix": {
+      "pages": 49,
+      "pdf_sha256": "1def4d674197a3501d8836f1b1924f5980a179655d80c62c4164dda5e67685ed",
+      "bytes": 1256592,
+      "document_sha256": "d8942870600da23f1379e49e7677be362c690fe38e19d53f9b28ff57d190a352",
+      "checked_text_items": 3701,
+      "embedded_fonts": [
+        "/GENKNM+NotoSansCJKtc-Regular-Identity-H",
+        "/GJBQDC+NotoSansCJKtc-Bold-Identity-H"
+      ]
+    },
+    "performance": {
+      "pages": 5,
+      "pdf_sha256": "e7b675b7c0c4034182e64f9aece2d7beae35d063c8059638b7c7237f7410d8d1",
+      "bytes": 125915,
+      "document_sha256": "0e253670ee48cb05b2dcc8cb5306c59c6426b6d00d5b4dab55815215d22b8969",
+      "checked_text_items": 252,
+      "embedded_fonts": [
+        "/EPYZLC+NotoSansCJKtc-Bold-Identity-H",
+        "/HXHLAI+NotoSansCJKtc-Regular-Identity-H"
+      ]
+    }
+  },
+  "performance_csv_typed_cells": 342,
+  "input_csv_lossless_rows": 1792,
+  "all_declared_document_strings_in_pdf_html": true,
+  "html_offline_inline_svg_no_script_or_external_image": true,
+  "fonts_embedded_with_unicode_maps": true,
+  "pdf_no_active_script_or_open_action": true,
+  "visual_review_complete": true,
+  "qualification_blocks_checked": 6,
+  "both_cases_unassessed": true,
+  "energy_acceptance": false,
+  "source_commit": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+  "source_dirty": false,
+  "cli_sha256": "7ac63405d1eda9478714a313122c34975ae39d6bd792aa1b5a3228d202c4ef8f",
+  "source_binding": "Frozen delivery CLI independently hashed; exact Git registry/template bytes checked. No rebuild, renderer execution or simulation performed by this audit.",
+  "qualification_registry_sha256": "9517a1edf556c851f8d220a34364d1b5a1b5b419197d025b03b07ca717ccc401",
+  "source_registry_entries": 10,
+  "cases": {
+    "baseline": {
+      "run_id": "0d20fab5-4903-48e3-9e04-8a9ce8a0d5c5",
+      "retained_results_file_sha256": "6fec51eee81aa1153ddacdcd0e98f8996dc6a9c27535326c7844709df2ec13ed",
+      "rust_canonical_record_sha256": "9e417cfe5387eeb1ad53d3a87cf72de09024d49f4ce794f1459bcfefd6d2a769",
+      "physical_input_sha256": "d0b6e7987d8cefd5e0ca8d9c396c7f056d7f2126d2ffadff1f05101bdc600e75",
+      "model_input_sha256": "78e1030129e6b56fcd6f0e5974eb524aca04fa135ec230006150881313b08cf0",
+      "processing_sha256": "28897a3873afaee7d6cc35a2caf66c1f60237d3ff606370d12925bebec41884d",
+      "scientific": {
+        "status": "unassessed",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+        },
+        "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+        "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+        "tested_scope": "No general building-accuracy, equipment-calibration or certification claim.",
+        "applicable_physical_input_sha256": [],
+        "evidence_ids": []
+      },
+      "zone_count": 8,
+      "storeys": 2,
+      "interval_count": 52560,
+      "annual_facility_kwh": 32341.863797730475,
+      "coincident_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 10.996734376143603,
+        "end_use_contributions_kw": {
+          "cooling_system": 3.552734376143603,
+          "supply_fans": 0.48,
+          "ventilation_exhaust_fans": 0.032,
+          "interior_lighting": 3.84,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 3.072
+        },
+        "reconciliation_residual_kw": 1.5522042910257975e-15
+      },
+      "immutable_snapshots_exact": true
+    },
+    "proposed": {
+      "run_id": "48f745af-e409-45e3-9990-b032da6b86b6",
+      "retained_results_file_sha256": "d900adf0615f028c1528f5699d35b843572db6ace689424e7fe1028331e83ec6",
+      "rust_canonical_record_sha256": "709094380f74453c4ee75cc79fe1867cc7d81ba8caf1a8037f44677db5b9a02e",
+      "physical_input_sha256": "2582b2125983c902b8552c9bade90abf01b1c807de6fe154c0d41a7436945671",
+      "model_input_sha256": "5da509cfe6fba8b7763c5a5bd33f2ce993482ea686e36ebc36995216255ab31e",
+      "processing_sha256": "ca112c956ffa7801cef4b8ed8a9330961e927d621d2ba840c7365c3b9cc5b9d9",
+      "scientific": {
+        "status": "unassessed",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+        },
+        "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+        "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+        "tested_scope": "No general building-accuracy, equipment-calibration or certification claim.",
+        "applicable_physical_input_sha256": [],
+        "evidence_ids": []
+      },
+      "zone_count": 8,
+      "storeys": 2,
+      "interval_count": 52560,
+      "annual_facility_kwh": 25003.77200880042,
+      "coincident_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 8.063122035274983,
+        "end_use_contributions_kw": {
+          "cooling_system": 2.2351220352749803,
+          "supply_fans": 0.4,
+          "ventilation_exhaust_fans": 0.032,
+          "interior_lighting": 2.304,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 3.072
+        },
+        "reconciliation_residual_kw": 1.5522042910257975e-15
+      },
+      "immutable_snapshots_exact": true
+    }
+  },
+  "record_hash_scope": "Pretty-file SHA and Rust canonical-record SHA differ. Typed stored/inspected/report fields and pretty-file bytes are checked; the Rust canonical hash is retained without independent reimplementation.",
+  "arithmetic": {
+    "checked_cells": 342,
+    "maximum_absolute_difference": 0,
+    "audit_sha256": "44393795e2af65ad27e14a5862e99dfa424a616c7bdfd05e8ecd3ac4c92a0a07",
+    "source_script_sha256": "34bd5b1d9b17894dbf8b5a925c44501326302b0a8e8077cc26f541b748d50476"
+  },
+  "visual_review_passed": false,
+  "visual_review": {
+    "all_pdf_pages": 89,
+    "assessment_pages": 35,
+    "input_appendix_pages": 49,
+    "performance_pages": 5,
+    "method": "Poppler 90 dpi PNGs; all 16 contact sheets inspected, affected assessment page 19 inspected individually, and all five delivered performance PNGs inspected individually. Text/HTML equality checked separately.",
+    "findings": [
+      {
+        "id": "capacity-overhang-label-overlap",
+        "severity": "layout_failure",
+        "location": "proposed-model.svg; assessment PDF page 19; input appendix PDF page 26; shared inline SVG in HTML",
+        "description": "Adjacent repeated overhang depth 0.6 m labels overlap in the south elevation. Original geometry/windows and complete input values remain present.",
+        "evidence_image": "pages/assessment/page-19.png",
+        "svg_sha256": "132670ebf4b517d470130e992340868fc80ef0c841a75534bcade3fa9d3a08df"
+      },
+      {
+        "id": "capacity-inherited-project-title",
+        "severity": "fixture_label_failure",
+        "location": "All three report title pages and HTML titles",
+        "description": "Retained project title says Synthetic four-zone energy building although both immutable report models contain eight zones. The model names and all eight zone input sections are correct. No source or exported byte was changed by this audit."
+      }
+    ],
+    "other_pages": "No additional clipping, missing glyphs or table overlap observed. Parameter tables are dense; empty evidence index is explicitly reported.",
+    "page_image_sha256": {
+      "pages/assessment/page-01.png": "e7c9abd21d5a9206649c5e0d87868934fbf3922775ec0294b7c0189623b92929",
+      "pages/assessment/page-02.png": "573e4899e555f5c22dbb00a9c900d2ca96582bc6d0a165ebd0a2c2a394c98254",
+      "pages/assessment/page-03.png": "b773b423e7603c62432bcda2a7a956b15452ab8cc607910bf4c5df499fcdcfac",
+      "pages/assessment/page-04.png": "2ef173bc7305e331df7152ef2aa5d547ec0d5f81df6bf48563f68328578e2a95",
+      "pages/assessment/page-05.png": "e0e968b177ae9b4cc2ba2219707b5acad7932a58daeba08b8b0e7ea9e6717330",
+      "pages/assessment/page-06.png": "cd1d6c8e130ebd799aeb8142dd0eaf2bbd33fc15e4a61f0f8ae0564ab56fd911",
+      "pages/assessment/page-07.png": "46cf70109c4ae2950a7aa67cfbf38de50ec245f2e371ea6e5ec4e2e33100346c",
+      "pages/assessment/page-08.png": "89c805765580c12a5445d1c15a429275a5a7eb5f20a006a00d6a78ea3db3e4d7",
+      "pages/assessment/page-09.png": "ec0498b5d23118e010b122931a87c74f1ba0b9601e35db3fad89a2fd71414382",
+      "pages/assessment/page-10.png": "77c6bfff5b67e4649dd79e80c5478221368368badffc4c4acf31556086b7439d",
+      "pages/assessment/page-11.png": "f8c72ca598f09d578c0fa213d0e126615239ef91de370c3b23b79be48b4d7ec1",
+      "pages/assessment/page-12.png": "73e4ac1e1c5f38c9581477f3b641c68d9cf79d8cc3f659446972ac1d57142f5e",
+      "pages/assessment/page-13.png": "cd699aaf6a893cce22e234a2cad844562d2df51fd183d7b3093f4e3dfb5c052a",
+      "pages/assessment/page-14.png": "2d0e9d9a47ab0cc17a46d8f7891ae254b3c6bd9e12e721d5ff479b0fffbbf3e9",
+      "pages/assessment/page-15.png": "b6e5253a37171ce0235e671dd0c23a6bceedafac86d9888e40f262b6ec38bcda",
+      "pages/assessment/page-16.png": "efc53fef0eb859c6bf7891dcbf396e3349321bbcb2e76a9dc97cfd64e22a075b",
+      "pages/assessment/page-17.png": "b5c1c7f4dcc9e82608f9ef6a7f7860787e75ba0089875de9b1e2f231d4ca7b8a",
+      "pages/assessment/page-18.png": "6e504594c7a9c01c3b94596fcee5ad0cefb0e2542880355a67535ec1868665d4",
+      "pages/assessment/page-19.png": "fe315fb71aab2d9985ec49b30f566690302b6ccfce5fd5098a9c5148b32aecfd",
+      "pages/assessment/page-20.png": "ce9d71835cf666b73b5bdaef13ec61623846f7fa39cb61cfe7469831d042b2b9",
+      "pages/assessment/page-21.png": "c83460f1e730c9b708cb278d8da704564bded39e3e88f6298514a7e1538579ec",
+      "pages/assessment/page-22.png": "bc1faa0a1a307618993f7635bced829975b8ef8c27b186a2fcfdec4e16fc1c35",
+      "pages/assessment/page-23.png": "8369b66f3d5d3d59186b4e1cad2b2f695fe50b3ad1e1c72915798aa0e95f8ac9",
+      "pages/assessment/page-24.png": "55011af3f3210fe2d5ab7d3114125149510992d18c43baf146dd36858580c3ae",
+      "pages/assessment/page-25.png": "3d34bc41ce7daa94b58c39439ea282b537255a65aac6d471d3539ac722d481af",
+      "pages/assessment/page-26.png": "3d6cfc3da39a0201d7473709a9d6a97d52a981c116d96119c0f0267a0ce6b419",
+      "pages/assessment/page-27.png": "712f958e0370936a441a0d55e87aeb81cd534a49a7dcb9b43fdc2d416b6dcab9",
+      "pages/assessment/page-28.png": "fefea5f3f42c0b66d4322bc90f6003dc811100bffbda42b92b93ba8e9cc8c80d",
+      "pages/assessment/page-29.png": "d061333623d3396552f433079b99825a8b437b86bdf896c75c49c02d85e988b1",
+      "pages/assessment/page-30.png": "0f6154af0cddd733829b927915b7d3d7940a2d31ed4dd49825cedfe8faded9fc",
+      "pages/assessment/page-31.png": "99434c5521333148ca5ca505af03c62b5b3aa696ba6042b598e0188f4ee7f5b5",
+      "pages/assessment/page-32.png": "afdcae0d08876385bfbc3486d64a208a394b0cf1cd9a8600444fc262cd764f84",
+      "pages/assessment/page-33.png": "9537a12537110517b886eda3a98280007527331deed5aa35c2e4a6b57da7f716",
+      "pages/assessment/page-34.png": "f2feb90c6889b246773c84c9646a636e8874819726326a3f92f80f6581a6d141",
+      "pages/assessment/page-35.png": "ab332e73d20f60aef2646e7fc1d47fcf5b1ad49c838af4b9eac42186e118d355",
+      "pages/assessment/sheet-1.png": "cb680952dbc83f0085e150c8a482d17b00a27599504f8a8f0c270b3f49aa4bb5",
+      "pages/assessment/sheet-2.png": "08d8db0570a0b65117aeb59e1115d05fe1c87b1bb7a371b2ce949cd53e977e14",
+      "pages/assessment/sheet-3.png": "66fc9781567340902f295c40058ce0233c81a55784aef6bcd17126520603f568",
+      "pages/assessment/sheet-4.png": "b70c639db8eb35c629e11858a5d2962a7f32b7969e07c4922232c9cca24fc808",
+      "pages/assessment/sheet-5.png": "4c574ec223da7dabcc8f99949bf0532300cd10f005d5a58d2dd3a18a7c52af99",
+      "pages/assessment/sheet-6.png": "074ceb28703c28e88d5e48a8493e630c8cb5d3c6ca342262aa33aeaefe51da3c",
+      "pages/input-appendix/page-01.png": "a9e9fc724a821b47a9b14fe96673eb4e8f8a4a4b9e39be9d4d86d07c4c635efb",
+      "pages/input-appendix/page-02.png": "43df4e06f2020c8fd5f8003dac72f18c34de821c03dcc22eaadaf3324d3784b7",
+      "pages/input-appendix/page-03.png": "c9513a8805e806cf3447bb70a967249bbe9d2f7bac9e73d0fe24889c9b79134e",
+      "pages/input-appendix/page-04.png": "6aacf88b6a67c1ec66223ee6d194818dc5530a4677846d0025da9ad00562ecb7",
+      "pages/input-appendix/page-05.png": "23a00d79c43ab7660ab71fb24d53bec747a554bfb86f33befee0184a46079f9b",
+      "pages/input-appendix/page-06.png": "d90f157c8b4b9d8fcfb9395dae97865e692678b62c5b8c722df7a1c2ed851cbe",
+      "pages/input-appendix/page-07.png": "46be9cad00620245d8a1947e7eea6271044b1fc84147e17c96551aaf72d5c1cb",
+      "pages/input-appendix/page-08.png": "89cd0fc41f0fe1f7d63cbe6a5ef35909d3e1759d7e6d72ba089985709c746766",
+      "pages/input-appendix/page-09.png": "e6274191c9a8d5b8562d7e56ef2c799a63b5bdc5021e3ec9ebf3ce5e8fff52b0",
+      "pages/input-appendix/page-10.png": "76bfbab2f81168c7702c2c180cb934f095b3847765a24bb428346598929f2d90",
+      "pages/input-appendix/page-11.png": "af30b0732766ff895eec0a49ba4b9c462e0d2f53fe56201754342897aba8f1c4",
+      "pages/input-appendix/page-12.png": "1162a10f142efd3e776dce37ae468292f371fd98b655a95b101cebf0bf104bbe",
+      "pages/input-appendix/page-13.png": "200dfb0f2fd963b487d5b2f6d50b650a7564ede69c64d0a282f267f5ef534f2d",
+      "pages/input-appendix/page-14.png": "6d56829cca72e0ee1190ce31c087655446a551ece0e275af308d732e1bd3651b",
+      "pages/input-appendix/page-15.png": "fb303b775674d9c87fc6d7e843db25850bb7ecffa043285190d0fd987149dcf5",
+      "pages/input-appendix/page-16.png": "fff7dab31e9a3dc5efe0cbfceabfc93f01fe83cf5c6156c91ada106c5276c30f",
+      "pages/input-appendix/page-17.png": "30a21d1fd9fca6191efc74259e8cb536aed3b1b1dc3289d9340d6ae9ab0a4102",
+      "pages/input-appendix/page-18.png": "85ef51eb6c26440b4a6d429f452f6dfe98a62b7723b3d8264a6b1406476a938a",
+      "pages/input-appendix/page-19.png": "ba7a4fa4a048ae4a33b25347921fcf726cf256edfae5d06cb3867fd19453e685",
+      "pages/input-appendix/page-20.png": "e83a9322ceee8822a1522f263f592bb90b4071bbc19d2ef42f9de08bd22dc470",
+      "pages/input-appendix/page-21.png": "e571a3e17ea56a6f399a1257979c52715b8e55f36cfa1a1605eeb1f15cea73a6",
+      "pages/input-appendix/page-22.png": "837d1fa33da1eed032a7eb0dec99d772587f2334f6007a29bc654776e6e5fc6c",
+      "pages/input-appendix/page-23.png": "a32777ce6f552d290b19c93d45231de77b84e8a9801d112f97d5cba1d3b75f5e",
+      "pages/input-appendix/page-24.png": "2e351700866e8582c7db09ded1d21b99247a32cf2a11c05575f6a489afac12e1",
+      "pages/input-appendix/page-25.png": "fdd5c5dfd46cc894671d55832117fc0fc4597aa3f2f864eae933c3596873be22",
+      "pages/input-appendix/page-26.png": "6660bccc0bc26b350255808bad8b4554e848003f2ba4fe78da30ec858afa26ea",
+      "pages/input-appendix/page-27.png": "5af0b5caa9f67e8daa462729bea23b546d84f04d1ecccea356d38ce212a42ce8",
+      "pages/input-appendix/page-28.png": "ade6ba0741c50708bdb5565cc480fe477746df45fa08c0aaed6624d3b22c02ed",
+      "pages/input-appendix/page-29.png": "efefd2e22d60cb16c93a87e59c0078da29000c5c9c1e3d40af9fab7a5582e702",
+      "pages/input-appendix/page-30.png": "4fb8debd78ae84f69c9f80d76531d78265c24776336a29e6bd26af340e4baf52",
+      "pages/input-appendix/page-31.png": "c251c16466ffd8689d8fd9d5d2c053574506d1d03c4e950f04669b79797e4ac0",
+      "pages/input-appendix/page-32.png": "6ef1e389c5f48b69c456c61ce4b569bfc81cb81c43bcc12c604c46127df310ce",
+      "pages/input-appendix/page-33.png": "e8ae6399e9d1287976810c50ad8433110f65326f3a0a05b846fe7006fd285965",
+      "pages/input-appendix/page-34.png": "3eb81afa849e31da57530a8fd4f64350a28428f1be0ae732536ed3383435cbed",
+      "pages/input-appendix/page-35.png": "940510fbc57d28d5787069c3438cdc9c0b34a6f5ed7a03bf275a2367e879e3ff",
+      "pages/input-appendix/page-36.png": "1a9b46fd815790a8929d1501365689b2c929f256bc36dd4a0fb7f89715b3bdb3",
+      "pages/input-appendix/page-37.png": "930a963bd7bd216f7ff3cfea06f845a42826437aa5dafdba3454ee551ddc2a38",
+      "pages/input-appendix/page-38.png": "67d065495d342181af49f8dea9415d656b16b731255395f2de8119adaea12cdf",
+      "pages/input-appendix/page-39.png": "163d820fdc593543cf3ea9c01c8a615839858e61e8c94f20c19cd724943ed785",
+      "pages/input-appendix/page-40.png": "6ee17d211e13c9ccece9098cc4d6a8da06842d9224325fb9a7651c5d7470714c",
+      "pages/input-appendix/page-41.png": "4c6c5dc9c7ef8d007447cb67fdf9572524fc26fa40750b51b3b9033ae3139e3b",
+      "pages/input-appendix/page-42.png": "a2bbdbe6bffa92cf74bbfe2c041305b6396acc04fc3beb17ba559c73ebf3bf7c",
+      "pages/input-appendix/page-43.png": "cac00402b12ac394318f0c5e880a916287e50b1654b19983784c403e22b75c2e",
+      "pages/input-appendix/page-44.png": "778d943fac54251607e4ee08a319e80fb8b44a4dd8ba61a0230d3a8cf7f7448a",
+      "pages/input-appendix/page-45.png": "e653210343c6ee66953ec29a4a3ff41b920327cceb4878d2e4b8d60780a4527c",
+      "pages/input-appendix/page-46.png": "fe2b6e7019e7ab26e9a337305db089c61bcf4b59c3c5d2b568b1ee275b0dbd68",
+      "pages/input-appendix/page-47.png": "fab6572e2767fa68c3f428802f36c899cadfdaa4a5948670ef0e9d188ff5728d",
+      "pages/input-appendix/page-48.png": "73525a5f3ce2068ef2295535ec106032240f949588c2ec0c4ddadc0a8892328e",
+      "pages/input-appendix/page-49.png": "587bb0ac66a98bbff99fec69f6467bdf66f1f4b249ab4788442c3a5504b13e2a",
+      "pages/input-appendix/sheet-1.png": "a92e304f4b8241596e8d6d56b2502142467fec8b9b2c8bbe324a429bbf3f12dc",
+      "pages/input-appendix/sheet-2.png": "44d236f2bbda0a92d9f56522db8b48d61282dd49caa9d98260f8397180b085b9",
+      "pages/input-appendix/sheet-3.png": "3c710be5454b9bab2286ef7a16c0c6f77262b4b46e7528c85926f339641e334f",
+      "pages/input-appendix/sheet-4.png": "099d5dfaab15e04ada2ecfafdaf2f626b09e71308dcd777d5adabddab18dad42",
+      "pages/input-appendix/sheet-5.png": "7332ff7f5228ff98c599579beca5e27b8a6f92020f12f5ac3dddcb50466f7601",
+      "pages/input-appendix/sheet-6.png": "0a916a56f81341aafd98b955f43d948ff8b992747fb26cf845545de5959410fc",
+      "pages/input-appendix/sheet-7.png": "48e42e4401c3bc93f15648d58fc647cc0074db9f9ece9350aa67748e7baf7173",
+      "pages/input-appendix/sheet-8.png": "6815e4a9c4caeb73155c0571c4e03a588d6518aa2519c9f9eefa9ec7d019731b",
+      "pages/input-appendix/sheet-9.png": "6713fac0670205193d19d3079a8142f60a1287adaacb8daafd094981607cbda2",
+      "pages/performance/page-1.png": "c84adfc2316acca84e7429f76720d610ddae3c642370cb13995f90c7fbb06102",
+      "pages/performance/page-2.png": "2691c2bf6c008d2c3620e5b244d8cb15b8790eb889aadce38c77a7f49f7864f1",
+      "pages/performance/page-3.png": "64eae061b5913685207316f13bc4e60ec2699a4a7f040a3de1d9681309cb06a6",
+      "pages/performance/page-4.png": "5cbf6a89a53958924311ea814099a60e5cc2842cf47218ccbe3550aece145753",
+      "pages/performance/page-5.png": "f6e215a8efdd05368c7d55c6838756282e17319d704a1908a7830377d2a1f587",
+      "pages/performance/sheet-1.png": "bc2202cb7d4c86ab5e32caa485f60c865675381ffd0618d11f7afbadd1ed7c3b"
+    }
+  },
+  "performance_png_review": {
+    "all_pages_visually_inspected": true,
+    "pages": [
+      {
+        "path": "performance-page-001.png",
+        "bytes": 110088,
+        "sha256": "f7cd1c116a65ed84192df8d2f38c3e60ab35f0e67b5e283939c232f0ac89d33e",
+        "dimensions": [
+          794,
+          1123
+        ]
+      },
+      {
+        "path": "performance-page-002.png",
+        "bytes": 279268,
+        "sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10",
+        "dimensions": [
+          794,
+          1123
+        ]
+      },
+      {
+        "path": "performance-page-003.png",
+        "bytes": 274969,
+        "sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe",
+        "dimensions": [
+          794,
+          1123
+        ]
+      },
+      {
+        "path": "performance-page-004.png",
+        "bytes": 212606,
+        "sha256": "38aaf841b9361873ab71860deea0947b446b7f7dd8110ac366587cef5c20c3de",
+        "dimensions": [
+          794,
+          1123
+        ]
+      },
+      {
+        "path": "performance-page-005.png",
+        "bytes": 42727,
+        "sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68",
+        "dimensions": [
+          794,
+          1123
+        ]
+      }
+    ]
+  },
+  "package_integrity": {
+    "package_sha256": "9ef9117f195da6ea1bfe9a929b1211c160f1c6e2163d608ea611ebdcd2a1ed7f",
+    "bytes": 13182773,
+    "entries": 173,
+    "uncompressed_bytes": 81099305,
+    "maximum_entry_bytes": 5300731,
+    "outer_sealed_members": 172,
+    "inner_seal_relations_checked": 154,
+    "original_project_members_equal": 150,
+    "report_members_exact": 20,
+    "member_inventory_sha256": "0b7ca85b49de80a7ce2df193401bac3688fe81328b92f9356726c50692589ba7",
+    "safe_unique_paths_and_actual_decompression_checked": true,
+    "shared_reader_evidence_sha256": "e597a89b4d2f22fb3f8c644e41ba10a7cf9f1ac706a98197de62393ef3091562",
+    "owner_package_audit_sha256": "fdcb9689a334ab7242b83d0610021177a1ced041abce596d7d102a21f6307caa"
+  },
+  "prior_native_audit": {
+    "path": "capacity-audit.json",
+    "sha256": "401c150692ea60a14d97e3334e0fa26bca6d1ef72bce619e473cd4ea5d9e929f",
+    "scope": "Owner source/process/105120-interval/5676480-native-value audit is retained, not repeated. This report audit does not independently rerun or reparse raw native numeric arrays."
+  },
+  "declared_carbon_factor": {
+    "id": "original_synthetic_electricity",
+    "fuel": "electricity",
+    "region": "Non-climatic GreenLens arithmetic example",
+    "year": 2001,
+    "kg_per_kwh": 0.4,
+    "unit": "kg_co2e",
+    "source": "Original synthetic factor for report arithmetic only; not a real emissions inventory",
+    "version": "greenlens.synthetic-carbon/1",
+    "synthetic": true
+  },
+  "lighting_service_equivalence": "Missing: no independent lighting-service equivalence evidence was supplied.",
+  "savings_claim_limitations": [
+    "Lighting power differences do not establish equal illumination; the separately declared service evidence remains necessary."
+  ],
+  "artifact_seals": [
+    {
+      "path": "energy-report.json",
+      "bytes": 247514,
+      "sha256": "269a466efc7893e6b42aef23849e38eacf6d4a10707a9faf18c4d722fc59717a"
+    },
+    {
+      "path": "performance.json",
+      "bytes": 67380,
+      "sha256": "57ebf2205ba08f358049f6a469644e3c242ebc57a906ce9bc1ba951d537af96f"
+    },
+    {
+      "path": "performance.csv",
+      "bytes": 32390,
+      "sha256": "d32f15fc083d20e178892275346ef0f4da4ade82c524c89a623720de1de2d6c1"
+    },
+    {
+      "path": "inputs.csv",
+      "bytes": 117685,
+      "sha256": "ece66e38fb4f3aa7b0309f03b6a6112890fa3982dc203b23a4617c35c9ad1185"
+    },
+    {
+      "path": "baseline-model.svg",
+      "bytes": 6246,
+      "sha256": "d554a7beacd4793b644c345444daf262e8c05cbc73ce5911d2c779af4576ec1c"
+    },
+    {
+      "path": "proposed-model.svg",
+      "bytes": 7274,
+      "sha256": "132670ebf4b517d470130e992340868fc80ef0c841a75534bcade3fa9d3a08df"
+    },
+    {
+      "path": "annual.svg",
+      "bytes": 1884,
+      "sha256": "3ba93ca76c03b56c353cb68d2c968eebd615801330c0dd1e5e1f1f31efcc2dc1"
+    },
+    {
+      "path": "monthly.svg",
+      "bytes": 3249,
+      "sha256": "d62fb98414a1057b03b2067719dc7685ae462cccc0fca51ee64cf715afe5578e"
+    },
+    {
+      "path": "assessment.html",
+      "bytes": 125593,
+      "sha256": "e70809cc36fac496fd99268bf0deb9fd100b773adffcad5dc8417a3a4f5e374f"
+    },
+    {
+      "path": "input-appendix.html",
+      "bytes": 161206,
+      "sha256": "0eecd58db93503ae095f464d0e066c0c2622b38bd021dffaf49fc76d7d9582bf"
+    },
+    {
+      "path": "performance.html",
+      "bytes": 15963,
+      "sha256": "ab9bb2d32eb6b274628207a30399256035394aac6f378ac1d6986a374c166ca6"
+    },
+    {
+      "path": "assessment.pdf",
+      "bytes": 983437,
+      "sha256": "3b413fd119268c488ba193c59be782487d0f3b4f62d9176ba776fe14d1dde006"
+    },
+    {
+      "path": "input-appendix.pdf",
+      "bytes": 1256592,
+      "sha256": "1def4d674197a3501d8836f1b1924f5980a179655d80c62c4164dda5e67685ed"
+    },
+    {
+      "path": "performance.pdf",
+      "bytes": 125915,
+      "sha256": "e7b675b7c0c4034182e64f9aece2d7beae35d063c8059638b7c7237f7410d8d1"
+    },
+    {
+      "path": "performance-page-001.png",
+      "bytes": 110088,
+      "sha256": "f7cd1c116a65ed84192df8d2f38c3e60ab35f0e67b5e283939c232f0ac89d33e"
+    },
+    {
+      "path": "performance-page-002.png",
+      "bytes": 279268,
+      "sha256": "dbffe49f0de772d2c4561b965399573ea491b34e8f2dc9a293e973e2c769fa10"
+    },
+    {
+      "path": "performance-page-003.png",
+      "bytes": 274969,
+      "sha256": "a5540a7df6d4b0211cb771d7f4182f038edadd7ac6402b18b9be6ac5665b4cfe"
+    },
+    {
+      "path": "performance-page-004.png",
+      "bytes": 212606,
+      "sha256": "38aaf841b9361873ab71860deea0947b446b7f7dd8110ac366587cef5c20c3de"
+    },
+    {
+      "path": "performance-page-005.png",
+      "bytes": 42727,
+      "sha256": "c0761b0b38c0f7d42d560878e5bfaf1100984d1e4176410bfdc470daf115bc68"
+    }
+  ],
+  "audit_scripts": {
+    "audit-arithmetic-capacity.py": "34bd5b1d9b17894dbf8b5a925c44501326302b0a8e8077cc26f541b748d50476",
+    "audit-content-capacity.py": "b8713efe73b5fe2865d1b06fcd5c6f5229e381cc5e9f7ebc47ba8814397f3986",
+    "render-pages.py": "174b22da826e0edb744ecee99bb6a1edb825303afddf4a7f5d25d0a85453c1f8",
+    "seal-capacity.py": "282cf017eac1c12dc5eb118898f994ce47df3a5449865b62aabd7b3841f17e37"
+  },
+  "source_records": {
+    "protocol_sha256": "3d02e27e38dd97eb39ba59eeabc4fef5edbe91f69ab1665a2ed475e6bf1287ba",
+    "package_audit_sha256": "fdcb9689a334ab7242b83d0610021177a1ced041abce596d7d102a21f6307caa",
+    "capacity_audit_sha256": "401c150692ea60a14d97e3334e0fa26bca6d1ef72bce619e473cd4ea5d9e929f"
+  },
+  "integrity_arithmetic_content_checks_passed": true,
+  "all_performed_checks_passed": false,
+  "new_scientific_qualification_asserted": false,
+  "limitations": "Both original eight-zone cases remain Unassessed. Two visual/fixture defects are preserved without altering outputs. This is report capacity, input and arithmetic verification, not scientific, installed-desktop or release acceptance."
+}

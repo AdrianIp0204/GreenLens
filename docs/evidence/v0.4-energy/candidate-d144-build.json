@@ -1,0 +1,53 @@
+{
+  "schema": "greenlens.energy-candidate-build.v2",
+  "application_source_commit": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+  "source_dirty": false,
+  "build_started_utc": "2026-10-13T07:43:18.4517077Z",
+  "build_completed_utc": "2026-10-13T07:59:11.9787835Z",
+  "cli_build_seconds": 203.3156231,
+  "desktop_build_seconds": 736.2802216,
+  "files": [
+    {
+      "name": "greenlens.exe",
+      "bytes": 8887296,
+      "sha256": "7ac63405d1eda9478714a313122c34975ae39d6bd792aa1b5a3228d202c4ef8f"
+    },
+    {
+      "name": "greenlens-desktop.exe",
+      "bytes": 18896896,
+      "sha256": "acb34683d8088f275ad2340d5fe6f78ac7dd75ffdf21cfe739b16c7a8314d90d"
+    },
+    {
+      "name": "GreenLens_0.4.0_x64-setup.exe",
+      "bytes": 4467900,
+      "sha256": "bde70675fe90221f90ba81a7e72364ba5224c699934daa0ecd5feb4b12dc4907"
+    },
+    {
+      "name": "GreenLens-CLI-0.4.0-windows-x64.zip",
+      "bytes": 9667965,
+      "sha256": "20c884ac7672c31be20e9168800937d94795e4dba84eb38e3381c18cbab50f76"
+    }
+  ],
+  "frontend_tests": {
+    "failed": 0,
+    "skipped": 0,
+    "passed": 152
+  },
+  "frontend_typecheck_and_production_build": "passed; existing nonfatal Vite chunk-size advisory",
+  "license_check": {
+    "packages": 358,
+    "notice_texts": 196,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "installed_workflow_verified": false,
+  "release_complete": false,
+  "ci": {
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38364432107",
+    "source": "d144831ac73cad8bc9ff1ee7545f68242bc0b10f",
+    "completion_not_inferred": true,
+    "status": "in_progress_at_build_checkpoint"
+  }
+}

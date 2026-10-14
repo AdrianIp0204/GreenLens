@@ -47,6 +47,14 @@ jobs:
         run: |
           npm ci
           if ($LASTEXITCODE -ne 0) { throw 'npm ci failed' }
+          # Check the complete resolved inventory before costly compilation.
+          # A fresh-host mismatch must identify the actual differing fields.
+          Push-Location ../..
+          try {
+            . ./scripts/dev-env.ps1
+            node scripts/license-inventory.mjs --strict --check
+            if ($LASTEXITCODE -ne 0) { throw 'Early dependency inventory check failed' }
+          } finally { Pop-Location }
           npm test
           if ($LASTEXITCODE -ne 0) { throw 'Frontend tests failed' }
           npm run build
@@ -72,6 +80,8 @@ jobs:
           ./scripts/test-energy-input-preflight.ps1
           node --test scripts/test-license-supplement-binding.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }
+          node --test scripts/test-license-inventory-diff.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Bounded inventory diagnostic regressions failed' }
           $cache = Join-Path $env:RUNNER_TEMP ('energy-pure-cache-' + [guid]::NewGuid().ToString('N'))
           if (Test-Path -LiteralPath $cache) { throw 'Expected absent Python cache' }
           python -B -X utf8 -X "pycache_prefix=$cache" scripts/test-energy-gate0-audit.py

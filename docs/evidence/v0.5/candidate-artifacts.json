@@ -1,0 +1,59 @@
+{
+  "schema_version": "greenlens.v0.5-candidate-artifacts.v1",
+  "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+  "source_clean": true,
+  "application_version": "0.5.0",
+  "scope": "Unsigned built candidate, installed payload audit and shared-service cold/replay verification; installed UI and real-weather acceptance remain incomplete.",
+  "artifacts": [
+    {
+      "sha256": "038939fcf809d578a57ab137f5115d4e5a8ff070620fca131d3b51e3cb82e69a",
+      "bytes": 5283771,
+      "path": "GreenLens_0.5.0_x64-setup.exe"
+    },
+    {
+      "sha256": "26abe821d8743fe738f914db9b671a09d94e32dd7c8fc67a9cf2f094d2b39d3f",
+      "bytes": 10532275,
+      "path": "GreenLens-CLI-0.5.0-windows-x64.zip"
+    },
+    {
+      "sha256": "9e46dd2285ffd2692f9db716af6f6ae409afe532090eac9fed4e1a328bd21ce3",
+      "bytes": 10542592,
+      "path": "GreenLens-CLI-0.5.0-windows-x64/greenlens.exe"
+    },
+    {
+      "sha256": "54d717f00935ae08f0eb003ccfc828270310a55cc3b5c9ecf5ad29bdf3b078d4",
+      "bytes": 21440379,
+      "path": "example-energy-evidence.zip"
+    }
+  ],
+  "build_logs": [
+    {
+      "sha256": "1ffff0a503b877046481f17e8bd6289d99b33d3d8b65bae6c528a6ce40de1df9",
+      "bytes": 272,
+      "logical_name": "cli-build.log"
+    },
+    {
+      "sha256": "1a65a6b071b4fd0864205a08e5e601ccb8281509937054fca1189a746f0b9780",
+      "bytes": 2818,
+      "logical_name": "desktop-build.log"
+    },
+    {
+      "sha256": "9d9fb7418ae06a428c032500f061ecb5d92a5bb1249b72d700f158a85a576ba7",
+      "bytes": 147,
+      "logical_name": "licenses.log"
+    },
+    {
+      "sha256": "74f2aa751bfc413733b3aaf745f44e4adcdb8263480d6ad184b1a33ca7b8e6cb",
+      "bytes": 629,
+      "logical_name": "native-energy-lifecycle.log"
+    }
+  ],
+  "license_inventory": {
+    "packages": 402,
+    "notice_texts": 230,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  }
+}

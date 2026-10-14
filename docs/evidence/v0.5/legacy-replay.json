@@ -1,0 +1,50 @@
+{
+  "schema_version": "greenlens.legacy-replay-verification.v1",
+  "started_utc": "2026-10-14T01:52:11.0542518Z",
+  "finished_utc": "2026-10-14T01:56:29.7625135Z",
+  "wall_seconds": 258.7001156,
+  "cli_sha256": "9e46dd2285ffd2692f9db716af6f6ae409afe532090eac9fed4e1a328bd21ce3",
+  "fixture_sha256": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec",
+  "fixture_unchanged": true,
+  "engine_executables": [
+    "gensky.exe",
+    "oconv.exe",
+    "rtrace.exe"
+  ],
+  "engine_fixture": {
+    "schema_version": "greenlens.legacy-engine-fixture.v1",
+    "engine_release": "6.0.2",
+    "file_count": 150,
+    "copied_files_sha256": "2a1b108d6c5401b86e232f11cbab338dcc566a3923f4accbfe8a6cdd33df5826",
+    "source_and_copy_identical": true,
+    "library_path_ascii": true,
+    "engine_executables": [
+      "gensky.exe",
+      "oconv.exe",
+      "rtrace.exe"
+    ],
+    "annual_executables_present": false
+  },
+  "annual_executables_present": false,
+  "exit_code": 0,
+  "replay": {
+    "checks": [
+      {
+        "max_absolute_error_lux": 0.0,
+        "passed": true,
+        "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+        "sensors": 77
+      },
+      {
+        "max_absolute_error_lux": 0.0,
+        "passed": true,
+        "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+        "sensors": 77
+      }
+    ],
+    "climate_assessments": {},
+    "passed": true,
+    "verification": "same-engine integration, not independent physical validation"
+  },
+  "scope": "Native same-engine replay of original v0.1 evidence using only legacy executables; not annual accuracy or installed-desktop acceptance"
+}

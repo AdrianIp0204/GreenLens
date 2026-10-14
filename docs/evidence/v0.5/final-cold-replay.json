@@ -1,0 +1,699 @@
+{
+  "schema_version": "greenlens.v0.5.final-cold-independent-audit.v1",
+  "recorded_utc": "2026-10-14T01:55:11.5558015Z",
+  "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+  "source_binding_scope": "Coordinator declared frozen source; independently measured copied CLI SHA256 and all four replay native provenance records confirm version0.5.0, exact commit29adf02852153989749a1d9a74496315979edcb9 and clean source. Release build record separately binds the executable to that commit.",
+  "cli_sha256": "9e46dd2285ffd2692f9db716af6f6ae409afe532090eac9fed4e1a328bd21ce3",
+  "commands": [
+    {
+      "name": "copy",
+      "exit_code": 0,
+      "wall_seconds": 26.966678
+    },
+    {
+      "name": "inspect-A",
+      "exit_code": 0,
+      "wall_seconds": 6.5571492
+    },
+    {
+      "name": "inspect-B",
+      "exit_code": 0,
+      "wall_seconds": 6.9336205
+    },
+    {
+      "name": "report",
+      "exit_code": 0,
+      "wall_seconds": 17.7837449
+    },
+    {
+      "name": "export",
+      "exit_code": 0,
+      "wall_seconds": 41.7135005
+    },
+    {
+      "name": "package-inspect",
+      "exit_code": 0,
+      "wall_seconds": 9.2601659
+    },
+    {
+      "name": "replay",
+      "exit_code": 0,
+      "wall_seconds": 47.718526
+    }
+  ],
+  "original_source_restored": true,
+  "source_copy_and_snapshot_matching_members": 301,
+  "immutable_member_scope": "All retained run/weather/sensitivity files named by the cold snapshot independently hashed against restored source and cold copy.",
+  "series_shapes_and_replay": [
+    {
+      "run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+      "record_sha256": "fddc5fd86eb85a681193513ecee5753ca4bebb94c24aa219aa2df61721faea64",
+      "values": 1787040,
+      "bytes": 14296320,
+      "intervals": 52560,
+      "chunks": 53,
+      "channels": 34,
+      "interval_minutes": 10,
+      "encoding": "float64_little_endian",
+      "ordering": "time_channel",
+      "replay": {
+        "check": {
+          "channels": 34,
+          "checked_values": 1787040,
+          "intervals": 52560,
+          "maximum_absolute_difference_across_channel_units": 0.0,
+          "maximum_error_allowance_ratio": 0.0,
+          "scope": "Identical-recipe integration agreement; not physical validation",
+          "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+        },
+        "replay_record_sha256": "5c014ab558c7a38ea163e43ab2c4658669cf9e2ab4944ab7a1404f3fbfce17f2",
+        "run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+        "source_record_sha256": "fddc5fd86eb85a681193513ecee5753ca4bebb94c24aa219aa2df61721faea64"
+      },
+      "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+    },
+    {
+      "run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+      "record_sha256": "aebc18d1de2b88e906ea1ca82b1d0930a3310c593991eea9876dbcff38aa653c",
+      "values": 1787040,
+      "bytes": 14296320,
+      "intervals": 52560,
+      "chunks": 53,
+      "channels": 34,
+      "interval_minutes": 10,
+      "encoding": "float64_little_endian",
+      "ordering": "time_channel",
+      "replay": {
+        "check": {
+          "channels": 34,
+          "checked_values": 1787040,
+          "intervals": 52560,
+          "maximum_absolute_difference_across_channel_units": 0.0,
+          "maximum_error_allowance_ratio": 0.0,
+          "scope": "Identical-recipe integration agreement; not physical validation",
+          "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+        },
+        "replay_record_sha256": "fbd17e7fc9e1182e0034921302e344e03c19a606df10a2be490db8d2ef9ee7d3",
+        "run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+        "source_record_sha256": "aebc18d1de2b88e906ea1ca82b1d0930a3310c593991eea9876dbcff38aa653c"
+      },
+      "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+    },
+    {
+      "run_id": "393bbca1-29a2-4a96-bcd4-6d3f5f359500",
+      "record_sha256": "f892d7757001749f192066d66a5c58ac8227f5ec28adc589a30aec4f421fb95e",
+      "values": 3574080,
+      "bytes": 28592640,
+      "intervals": 105120,
+      "chunks": 53,
+      "channels": 34,
+      "interval_minutes": 5,
+      "encoding": "float64_little_endian",
+      "ordering": "time_channel",
+      "replay": {
+        "check": {
+          "channels": 34,
+          "checked_values": 3574080,
+          "intervals": 105120,
+          "maximum_absolute_difference_across_channel_units": 0.0,
+          "maximum_error_allowance_ratio": 0.0,
+          "scope": "Identical-recipe integration agreement; not physical validation",
+          "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+        },
+        "replay_record_sha256": "c0c985bf15c4ac9b62af987b3212346b911f55ee9fc226511b752c3bd8529ed0",
+        "run_id": "393bbca1-29a2-4a96-bcd4-6d3f5f359500",
+        "source_record_sha256": "f892d7757001749f192066d66a5c58ac8227f5ec28adc589a30aec4f421fb95e"
+      },
+      "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+    },
+    {
+      "run_id": "8733596c-4bb5-43ad-9945-6b17603fe5ea",
+      "record_sha256": "47b5ad1bc9680517bd58680c93aed838d3a2a21c4c8db35ba000acb22d75bd84",
+      "values": 3574080,
+      "bytes": 28592640,
+      "intervals": 105120,
+      "chunks": 53,
+      "channels": 34,
+      "interval_minutes": 5,
+      "encoding": "float64_little_endian",
+      "ordering": "time_channel",
+      "replay": {
+        "check": {
+          "channels": 34,
+          "checked_values": 3574080,
+          "intervals": 105120,
+          "maximum_absolute_difference_across_channel_units": 0.0,
+          "maximum_error_allowance_ratio": 0.0,
+          "scope": "Identical-recipe integration agreement; not physical validation",
+          "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+        },
+        "replay_record_sha256": "1e3ac1dad15a607111304082a36f85a21f7d63b08f8d707c0da5753b0048b66d",
+        "run_id": "8733596c-4bb5-43ad-9945-6b17603fe5ea",
+        "source_record_sha256": "47b5ad1bc9680517bd58680c93aed838d3a2a21c4c8db35ba000acb22d75bd84"
+      },
+      "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+    }
+  ],
+  "replay_checked_values": 10722240.0,
+  "replay_maximum_error_allowance_ratio": 0.0,
+  "package": {
+    "bytes": 21440379,
+    "sha256": "54d717f00935ae08f0eb003ccfc828270310a55cc3b5c9ecf5ad29bdf3b078d4",
+    "proof": {
+      "limits": {
+        "entries": 5000,
+        "entry_bytes": 67108864,
+        "package_uncompressed_bytes": 268435456
+      },
+      "uncompressed_bytes": 131878577,
+      "path_and_duplicate_check_passed": true,
+      "event_count": 7,
+      "maximum_entry_bytes": 5300731,
+      "session_id": "04359cb5-3e15-43a9-a427-b8a3e50f2a26",
+      "entries": 344,
+      "qualification_promoted": false,
+      "numerical_sensitivity_passed": true,
+      "plan_sha256": "99ec6d1fa3e3d64a554e2eb51b390564abfebf17e7e6dd181a9fd93828a48fa1",
+      "sealed_entries_hashed": 343,
+      "finalized": true,
+      "selection": {
+        "excluded_session_ids": [],
+        "included_run_ids": [
+          "393bbca1-29a2-4a96-bcd4-6d3f5f359500",
+          "8733596c-4bb5-43ad-9945-6b17603fe5ea",
+          "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+          "d7032960-4a14-4158-a276-af515bdf534a"
+        ],
+        "included_session_id": "04359cb5-3e15-43a9-a427-b8a3e50f2a26",
+        "policy": "One explicit A/B pair plus its first retained finalized sensitivity assessment whose A10/B10 run IDs match exactly, including failed outcomes; other sessions remain in the saved project. At most four runs. Shared archive bounds still apply."
+      }
+    }
+  },
+  "report_identity": {
+    "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+    "transferred_visual_review": {
+      "direct_new_page_inspection": 0,
+      "performance_png_pages": 8,
+      "public_prior_receipt": "docs/evidence/v0.5/report-development-review.json",
+      "basis": "Exact artifact bytes and all renderer-input bindings match previously reviewed revised reports. Runtime process receipts differ and are not visual content.",
+      "pdf_pages": 65
+    },
+    "dataset_sha256": "5756db82ef242a33bd5f0a1130370f3f6d188e3977ae7ec1889460b795c8b686",
+    "reviewed_old_manifest_sha256": "a13554a7da9a1186994e8b26e11b2c85189ff07b85a87087c1acefcd5c5b92ab",
+    "artifact_count": 38,
+    "renderer_input_bindings": 95,
+    "artifacts": [
+      {
+        "path": "workbench-report.json",
+        "sha256": "774a224731b9a3d8163ccf4957dd859086e2297412ea1d9fc0e15bf25c8e1990",
+        "bytes": 245455,
+        "exact_identity": true
+      },
+      {
+        "path": "energy-report.json",
+        "sha256": "63835a8fec6a0c56b576d517ee2f4e44e2d506964c99a0f79840af479ce4e302",
+        "bytes": 209829,
+        "exact_identity": true
+      },
+      {
+        "path": "typed-differences.json",
+        "sha256": "fc504fee7f9ba8462a24ee1d52707f94b2cae9bd0ea036ec97a08835aadabd08",
+        "bytes": 16650,
+        "exact_identity": true
+      },
+      {
+        "path": "performance.json",
+        "sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80",
+        "bytes": 62585,
+        "exact_identity": true
+      },
+      {
+        "path": "performance.csv",
+        "sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be",
+        "bytes": 30203,
+        "exact_identity": true
+      },
+      {
+        "path": "inputs.csv",
+        "sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638",
+        "bytes": 69253,
+        "exact_identity": true
+      },
+      {
+        "path": "baseline-model.svg",
+        "sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec",
+        "bytes": 3723,
+        "exact_identity": true
+      },
+      {
+        "path": "proposed-model.svg",
+        "sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644",
+        "bytes": 4393,
+        "exact_identity": true
+      },
+      {
+        "path": "annual.svg",
+        "sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86",
+        "bytes": 1880,
+        "exact_identity": true
+      },
+      {
+        "path": "monthly.svg",
+        "sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e",
+        "bytes": 3248,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-baseline-000.svg",
+        "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66",
+        "bytes": 16448,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-baseline-001.svg",
+        "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0",
+        "bytes": 16473,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-baseline-002.svg",
+        "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77",
+        "bytes": 15704,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-baseline-003.svg",
+        "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157",
+        "bytes": 15715,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-baseline-004.svg",
+        "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec",
+        "bytes": 15710,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-proposed-000.svg",
+        "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66",
+        "bytes": 16448,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-proposed-001.svg",
+        "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0",
+        "bytes": 16473,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-proposed-002.svg",
+        "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77",
+        "bytes": 15704,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-proposed-003.svg",
+        "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157",
+        "bytes": 15715,
+        "exact_identity": true
+      },
+      {
+        "path": "schedule-proposed-004.svg",
+        "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec",
+        "bytes": 15710,
+        "exact_identity": true
+      },
+      {
+        "path": "executive.html",
+        "sha256": "dd4b5615a5b9efb738fd7ac71c3989323c555ed0323d5164d8cd73f4256ab7dd",
+        "bytes": 14019,
+        "exact_identity": true
+      },
+      {
+        "path": "technical.html",
+        "sha256": "bfc6ba5b710e51001384c122d4c34fa97db78413d4897e7e86ae16524dba0a76",
+        "bytes": 233705,
+        "exact_identity": true
+      },
+      {
+        "path": "input-appendix.html",
+        "sha256": "4d03bf5a6952fcf6998bd1e11b996e7391117c997612a71650a80683f4cdf29c",
+        "bytes": 102400,
+        "exact_identity": true
+      },
+      {
+        "path": "performance.html",
+        "sha256": "693d1caca158b2440faba1463877d838696efdeed79529960b241f866dba9b91",
+        "bytes": 29676,
+        "exact_identity": true
+      },
+      {
+        "path": "assessment.html",
+        "sha256": "dd4b5615a5b9efb738fd7ac71c3989323c555ed0323d5164d8cd73f4256ab7dd",
+        "bytes": 14019,
+        "exact_identity": true
+      },
+      {
+        "path": "executive.pdf",
+        "sha256": "0b4a7a733da0d73c5d14fe30a093e478c15fc3f34649dae4df5a133d0a22d908",
+        "bytes": 66614,
+        "exact_identity": true
+      },
+      {
+        "path": "technical.pdf",
+        "sha256": "5baafcd0715722ea41ef32cf52adf40760a12287a3b579ce3e72596c4b5da935",
+        "bytes": 449027,
+        "exact_identity": true
+      },
+      {
+        "path": "input-appendix.pdf",
+        "sha256": "2a69dd49c0f8470e2dd714c89500838a07a28b009a56128212333ca192e741ee",
+        "bytes": 816490,
+        "exact_identity": true
+      },
+      {
+        "path": "performance.pdf",
+        "sha256": "0447ed2b0f31a2f8b1b76b21d102316c40d94d3da7dbeae98ba5fa5bfd51c4a0",
+        "bytes": 241443,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-001.png",
+        "sha256": "dcc2bdb9d9921ad7bbb8d4154a4c19543caac704411c011100ffd1185c98135d",
+        "bytes": 132214,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-002.png",
+        "sha256": "31ced498bc1536cc23d1c6d8391f6b1b9947e729be135afc483608308df25611",
+        "bytes": 297101,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-003.png",
+        "sha256": "19ebb60c61223d8fd19adc7f66a088bb1c86e0f4c6cb1dbebda0fd3902b5115d",
+        "bytes": 358882,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-004.png",
+        "sha256": "1d9b1d4869e7ad4d23dfe167e610619e0c322f70c7bba256f7efd9ae44b4e3ba",
+        "bytes": 196656,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-005.png",
+        "sha256": "5031f903ef8df177360598c589755761282613cb714bb97290188adc481c44f0",
+        "bytes": 276398,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-006.png",
+        "sha256": "dece725e8d9ca1df7736a393d00aaabccfd1bd5ba45158ae317f386f4a8990fc",
+        "bytes": 230503,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-007.png",
+        "sha256": "bfd0060ec13da7d12d51b69ef57e36564cff576427434678592ec068ace86cb6",
+        "bytes": 264363,
+        "exact_identity": true
+      },
+      {
+        "path": "performance-page-008.png",
+        "sha256": "79be8c1745feed51648e68f52d069db313e1476b334559f2148e3cb1d52581a1",
+        "bytes": 59694,
+        "exact_identity": true
+      },
+      {
+        "path": "assessment.pdf",
+        "sha256": "0b4a7a733da0d73c5d14fe30a093e478c15fc3f34649dae4df5a133d0a22d908",
+        "bytes": 66614,
+        "exact_identity": true
+      }
+    ],
+    "all_bytes_identical": true,
+    "template_sha256": "f2582543c0eb1e5609fdf52af441941b1498367f5e16f8c5dd1a5cc25007ee6a",
+    "new_manifest_sha256": "858f904c7cf0827465d2dc83501e316bc56c3a4d31306bc1f4a9dd8b0e5bf98a"
+  },
+  "input_receipts": [
+    {
+      "name": "cold-evidence.json",
+      "sha256": "2ff36626c842775e8a6922dad4269860522d1eaf776a62e837fe190485c78fab"
+    },
+    {
+      "name": "commands.json",
+      "sha256": "9e83cd7703a6fd9db0737cd1897d4f58fb51eb3b62f44595565464176922edab"
+    },
+    {
+      "name": "replay.json",
+      "sha256": "48848e5e139d31bdce77377b500342f730d0be438a6de657c62e2f576e38d465"
+    },
+    {
+      "name": "package-inspect.json",
+      "sha256": "fa92ebef9ab4d0d8ec2da36b118232a8441eba5afc6896f6918c6cc18a381dca"
+    }
+  ],
+  "limitations": [
+    "CLI cold-copy and native engine replay; not installed desktop Save As, keyboard/mouse or clean-machine installation.",
+    "Supplied original verification project and known retained UUID job scratch were hidden by the coordinator script; engine discovery deliberately failed during inspect/report/export. This audit verifies the retained receipts and restored bytes, not an independent OS observation while paths were hidden.",
+    "Offline renderer uses local pinned tools/assets; no separate network-disconnection observation is claimed.",
+    "Replayed evidence uses original synthetic non-climatic weather and mixed retained application provenance; exact final CLI reproduces all retained native channels, not independent physical validation.",
+    "No change to scientific qualification. Real-weather/nonconstant-curve and native interaction blockers remain independent."
+  ],
+  "replay_native_records": [
+    {
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "severe_count": 0,
+      "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "source_run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+      "retained_provenance_file_sha256": "502b336fc548d560385574cd602a332c32edbc4d6c4dfe30da646a025caac277",
+      "execution_input_sha256": "7063e49c513eb4bf1ed7893743b2e7506fd12174c992bb01bb5f4931979da09a",
+      "processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T01:50:50.668458300+00:00",
+          "finished_utc": "2026-10-14T01:50:55.009299100+00:00",
+          "elapsed_ms": 4341,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 433475584,
+          "peak_observed_scratch_bytes": 19753241,
+          "samples": 84,
+          "stdout_sha256": "84d5e31dac2419b406077e90a027c4979d451c8f68605ebd3d2b878afadfb37f",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "application_version": "0.5.0",
+      "checksum_members_verified": 71,
+      "replay_record_id": "7a6d7aca-d016-486a-a7f3-da9831b7777f",
+      "physical_result_sha256": "6502f1d05bfa293f16f22a352b5932eab8a2d6fd8063520d638d5cdaf42a1f82",
+      "warning_count": 1,
+      "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+      "replay_canonical_record_sha256": "5c014ab558c7a38ea163e43ab2c4658669cf9e2ab4944ab7a1404f3fbfce17f2",
+      "checksums_file_sha256": "8710c2948a8b2e97533d560cef4750054cd07ceec729184c060d01075473aebf",
+      "source_worktree_dirty": false,
+      "retained_results_file_sha256": "ad1ab7338408fc87c4874af99ccf387a2cee3b4ddd42228e88b856fe5e1803ab",
+      "processing_identity": "a8cb978a0361686fa1bafa74f859b6b3ecdc8b1f586df663d45cd72ec4dbf570"
+    },
+    {
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "severe_count": 0,
+      "physical_input_sha256": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+      "source_run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+      "retained_provenance_file_sha256": "56403756922830111cb107d7d0edbc58944f843a4e5d007bb46fc3da1761d7c3",
+      "execution_input_sha256": "e783e018adc071963e5ce78a8b0b12e73b07d4da8a55909c2eeeb483e8f037c9",
+      "processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T01:50:57.422423400+00:00",
+          "finished_utc": "2026-10-14T01:51:02.298385900+00:00",
+          "elapsed_ms": 4876,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 443904000,
+          "peak_observed_scratch_bytes": 21082235,
+          "samples": 94,
+          "stdout_sha256": "169afae59aa8d34c03d04b52b4c873fd1a166c7d1bd79eaeac28728d166f1182",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "application_version": "0.5.0",
+      "checksum_members_verified": 71,
+      "replay_record_id": "afb0adf1-3f09-4650-b664-dade6004aa1d",
+      "physical_result_sha256": "f34ec9c8142089793d07cfe100a92ac2ad0faf75aba27cca3fe538dbce8241d3",
+      "warning_count": 1,
+      "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+      "replay_canonical_record_sha256": "fbd17e7fc9e1182e0034921302e344e03c19a606df10a2be490db8d2ef9ee7d3",
+      "checksums_file_sha256": "bfc04f36b162115d7487f48f282bfbb961e97ec2188ef40cedab77a84e600aa8",
+      "source_worktree_dirty": false,
+      "retained_results_file_sha256": "eb6834bf5cdf375973b24a2d26f3d715bcb083b8d2f80430f2cc38eebd169375",
+      "processing_identity": "826c5417b295cb1aafba5c9868203d73dc71ab394735745f3ed30ec06fc0f145"
+    },
+    {
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "severe_count": 0,
+      "physical_input_sha256": "32eda4566fd60a64b05ee6a6e0100869f6ff542794b7b12b0029de858e2067ba",
+      "source_run_id": "393bbca1-29a2-4a96-bcd4-6d3f5f359500",
+      "retained_provenance_file_sha256": "d025dfc204f2bf6ba77158dfdcd61c3b68c33632e940e13d44effb02a1b33ab1",
+      "execution_input_sha256": "5a9adb50ae385e1880ddae4818ddf4f08b9c2883aa05eb7bc6f17eda849a2e02",
+      "processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T01:51:05.348448600+00:00",
+          "finished_utc": "2026-10-14T01:51:14.092041900+00:00",
+          "elapsed_ms": 8743,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 625291264,
+          "peak_observed_scratch_bytes": 37544158,
+          "samples": 168,
+          "stdout_sha256": "3821d96ab5278b936bb52c3e5fdaa65794be9f83755de969c385dfa01b804e2c",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "application_version": "0.5.0",
+      "checksum_members_verified": 71,
+      "replay_record_id": "9fac2401-6344-4c33-9fab-e93ab988b900",
+      "physical_result_sha256": "4c23fa66b9e419f39618e8241a8e2f461b7b076614a1c12afe2c2f66895b6111",
+      "warning_count": 1,
+      "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+      "replay_canonical_record_sha256": "c0c985bf15c4ac9b62af987b3212346b911f55ee9fc226511b752c3bd8529ed0",
+      "checksums_file_sha256": "d8e17565ac32317a03a4b0ef94a6d06aa77c45b97e72543573a314e12542530a",
+      "source_worktree_dirty": false,
+      "retained_results_file_sha256": "75acabe08b2990d2872bce4d69b6bf14d369a7e15f440f609c1136c4b63f0b1d",
+      "processing_identity": "d85d602ead17492c7baa173a7019b207b982728f13968e47a3711843faa2d25f"
+    },
+    {
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "severe_count": 0,
+      "physical_input_sha256": "72e816ec0092166fef130842156aeb0e283a16870175f7d3c3ef44f8ed75685b",
+      "source_run_id": "8733596c-4bb5-43ad-9945-6b17603fe5ea",
+      "retained_provenance_file_sha256": "997cb7c642a93d69a0a1f16c0ee4bab494c5c52f7093a3723512630e17c31bbb",
+      "execution_input_sha256": "90372f7eef3862e5b7f9c70435673db89e28dc63bed535d8c109bdeb9e418608",
+      "processes": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T01:51:17.875909700+00:00",
+          "finished_utc": "2026-10-14T09:51:26.467484+08:00",
+          "elapsed_ms": 8591,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 637652992,
+          "peak_observed_scratch_bytes": 40243055,
+          "samples": 165,
+          "stdout_sha256": "343e377dba7ff836f2208e80796995f40fb6cc866e7302d3608db8724ae1dd05",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "application_version": "0.5.0",
+      "checksum_members_verified": 71,
+      "replay_record_id": "1b299894-9ba3-4a34-9fbc-b30c0e794c28",
+      "physical_result_sha256": "ae7318770c87fb277531ded773880bc99bf699ad56449bef59ebb7b92368248a",
+      "warning_count": 1,
+      "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+      "replay_canonical_record_sha256": "1e3ac1dad15a607111304082a36f85a21f7d63b08f8d707c0da5753b0048b66d",
+      "checksums_file_sha256": "32de1d5e79810a728265203523ce62f9b5eae19b66dbe6f3b5838ad5f25d6099",
+      "source_worktree_dirty": false,
+      "retained_results_file_sha256": "50d71e47999e2564971fbc059db640845b9209ae4016a7d01c1c4b1b0f203252",
+      "processing_identity": "ddefffe88991b7d0cd449c32baa2ed4a1a947d4deccbaeb5f98f14d21e95acd8"
+    }
+  ],
+  "native_stage_replay_receipt_sha256": "48848e5e139d31bdce77377b500342f730d0be438a6de657c62e2f576e38d465"
+}

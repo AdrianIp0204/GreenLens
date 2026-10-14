@@ -6,6 +6,7 @@ function Get-PackageDocumentPaths {
     # Explicit compact evidence only: no directory-wide evidence/archive copies.
     @(
         'docs/installation.md','docs/replay.md','docs/persistence.md','docs/model-contract.md',
+        'docs/evidence/v0.5/ci-29adf02-failure.json',
         'docs/scientific-validation.md','docs/dependencies.md','docs/windows-runtime.md',
         'docs/windows-installer.md','docs/workspace-guide.md','docs/rhino-interaction-matrix.md',
         'docs/v0.2-native-verification.md','docs/images/v0.2/README.md','docs/v0.3-spec.md',
@@ -210,6 +211,9 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.5/report-development-review.json',
         'docs/evidence/v0.5/frontend-final-development.json',
         'docs/evidence/v0.5/sensitivity-development.json',
+        'docs/evidence/v0.5/final-cold-replay.json','docs/evidence/v0.5/installed-payload.json',
+        'docs/evidence/v0.5/legacy-replay.json','docs/evidence/v0.5/native-lifecycle.json',
+        'docs/evidence/v0.5/candidate-artifacts.json',
         'docs/evidence/v0.5/carrier-curve-domain-proof.json','docs/evidence/v0.5/carrier-curve-observability.json',
         'dependencies/energyplus.json','dependencies/typst.json','dependencies/energy-qualification.json',
         'schemas/thermal-model-v0.4.schema.json','schemas/energy-study-v0.4.schema.json',

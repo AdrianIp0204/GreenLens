@@ -1,0 +1,205 @@
+{
+  "schema_version": "greenlens.v0.5-ci-terminal.v1",
+  "recorded_utc": "2026-10-14T02:11:46.1302994Z",
+  "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+  "run": {
+    "conclusion": "failure",
+    "createdAt": "2026-10-14T01:45:07Z",
+    "headSha": "29adf02852153989749a1d9a74496315979edcb9",
+    "jobs": [
+      {
+        "completedAt": "2026-10-14T02:09:59Z",
+        "conclusion": "failure",
+        "databaseId": 115636178909,
+        "name": "build",
+        "startedAt": "2026-10-14T01:45:09Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-14T01:45:12Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-14T01:45:10Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T01:45:18Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-14T01:45:12Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T01:45:24Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-14T01:45:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T01:45:25Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-python@v5",
+            "number": 4,
+            "startedAt": "2026-10-14T01:45:24Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T01:46:02Z",
+            "conclusion": "success",
+            "name": "Exact clean source and native toolchain",
+            "number": 5,
+            "startedAt": "2026-10-14T01:45:25Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T01:46:27Z",
+            "conclusion": "success",
+            "name": "Frontend types, interaction regressions and production assets",
+            "number": 6,
+            "startedAt": "2026-10-14T01:46:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T01:46:31Z",
+            "conclusion": "success",
+            "name": "Pinned Radiance for required legacy cancellation regressions",
+            "number": 7,
+            "startedAt": "2026-10-14T01:46:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:40Z",
+            "conclusion": "success",
+            "name": "Format, strict lint and unit/lifecycle regression suite",
+            "number": 8,
+            "startedAt": "2026-10-14T01:46:31Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:47Z",
+            "conclusion": "failure",
+            "name": "Build and package exact-source unsigned binaries",
+            "number": 9,
+            "startedAt": "2026-10-14T02:09:40Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:47Z",
+            "conclusion": "skipped",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 10,
+            "startedAt": "2026-10-14T02:09:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:47Z",
+            "conclusion": "skipped",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 11,
+            "startedAt": "2026-10-14T02:09:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:50Z",
+            "conclusion": "success",
+            "name": "Run actions/upload-artifact@v4",
+            "number": 12,
+            "startedAt": "2026-10-14T02:09:47Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:50Z",
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-python@v5",
+            "number": 22,
+            "startedAt": "2026-10-14T02:09:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:50Z",
+            "conclusion": "skipped",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 23,
+            "startedAt": "2026-10-14T02:09:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:53Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 24,
+            "startedAt": "2026-10-14T02:09:50Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T02:09:55Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-14T02:09:53Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38497392326/job/115636178909"
+      },
+      {
+        "completedAt": "2026-10-14T02:09:59Z",
+        "conclusion": "skipped",
+        "databaseId": 115643145586,
+        "name": "energy",
+        "startedAt": "2026-10-14T02:10:00Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38497392326/job/115643145586"
+      },
+      {
+        "completedAt": "2026-10-14T02:09:59Z",
+        "conclusion": "skipped",
+        "databaseId": 115643145814,
+        "name": "static_compatibility",
+        "startedAt": "2026-10-14T02:10:00Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38497392326/job/115643145814"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-14T02:10:00Z",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38497392326"
+  },
+  "artifacts": [
+    {
+      "id": 11865436645,
+      "name": "energy-build-diagnostics-29adf02852153989749a1d9a74496315979edcb9",
+      "size_in_bytes": 1902831,
+      "digest": "sha256:6e16e7f522bd5f323cb2e9b83f6a41dc004c0c7dcc6d6e37e9e4730a2e610821",
+      "expired": false
+    }
+  ],
+  "failed_log": {
+    "logical_name": "ci-failed-build.log",
+    "sha256": "59a98bbacb05fbc7c8a426014b11030c0011be120e28041541e4e89c54653fac",
+    "bytes": 8497,
+    "publicly_bundled": false
+  },
+  "failure": {
+    "job": "build",
+    "step": "Build and package exact-source unsigned binaries",
+    "command": "node scripts/license-inventory.mjs --strict --check",
+    "message": "Committed dependency inventory differs from resolved sources; regenerate and review it before building",
+    "consequence": "Release CLI and desktop packaging did not execute; dependent energy and static_compatibility jobs were skipped."
+  },
+  "passed_scope": [
+    "Frontend types, interaction regressions and production assets",
+    "Format, strict lint and unit/lifecycle regression suite"
+  ],
+  "limitations": [
+    "No installed native observation follows from hosted checks.",
+    "Failed source-bound CI remains failed. No workflow changes, rerun or cancellation performed.",
+    "Detailed inventory difference not yet diagnosed by this monitoring record."
+  ]
+}

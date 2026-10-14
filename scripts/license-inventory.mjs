@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { validateNpmSupplement } from './license-supplement-binding.mjs';
+import { describeInventoryDifference } from './license-inventory-diff.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
@@ -336,9 +337,13 @@ if (check) {
         delete item.cache_verified;
       }
     }
-    return JSON.stringify(copy);
+    return copy;
   };
-  if (comparable(readJson(inventoryPath)) !== comparable(inventory)) throw new Error('Committed dependency inventory differs from resolved sources; regenerate and review it before building');
+  const difference = describeInventoryDifference(comparable(readJson(inventoryPath)), comparable(inventory));
+  if (!difference.identical) {
+    console.error(JSON.stringify({ inventory_difference: difference }, null, 2));
+    throw new Error('Committed dependency inventory differs from resolved sources; regenerate and review it before building');
+  }
   if (fs.readFileSync(noticesPath, 'utf8') !== text) throw new Error('Committed dependency notices differ from actual source notices; regenerate and review them before building');
 } else {
   fs.mkdirSync(path.dirname(inventoryPath), { recursive: true });

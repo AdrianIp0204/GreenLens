@@ -26,6 +26,22 @@ The current unsigned v0.3 candidate's installed binary and artifact identities a
 
 [Native screenshot context and tested sizes](docs/images/v0.2/README.md).
 
+## Thermal workbench candidate
+
+The repaired local 0.5.0 candidate is built from application source `94a80e0`. Its [delivery guide](docs/v0.5-delivery.md) identifies the installer, CLI, example project, reports, prerequisites and precise verification limits. The installer is unsigned. Installation/payload checks passed on the existing host; installed interaction and clean-machine acceptance remain unverified.
+
+[Exact-source Windows CI](https://github.com/AdrianIp0204/GreenLens/actions/runs/38501748598) passed build, energy and static compatibility for `94a80e0`. Its [artifact audit](docs/evidence/v0.5/ci-94a80e0-success.json) verifies four annual synthetic cases, frozen sensitivity/comfort criteria, cold reports, real replay and legacy compatibility. This does not close the installed-workflow or real-weather blockers above.
+
+Launch the installed application in PowerShell:
+
+```powershell
+& "$env:LOCALAPPDATA/Programs/GreenLens/greenlens-desktop.exe"
+```
+
+Choose **Building energy → New**, create adjacent/stacked zones through **Create / edit geometry**, assign inputs and schedules in **Properties**, then import weather. Explicitly copy baseline A to proposed B, edit B and review typed differences. Resolve drafts before running; use **History/Results**, **Sensitivity**, and **Evidence/Reports** to investigate and issue outputs. This is the implemented path; the complete installed no-JSON demonstration remains pending.
+
+The example outputs use actual calculations with clearly synthetic weather and equipment assumptions. They are not the stopped real-weather demonstration, a calibrated building, or a certification assessment. Dependency setup can require a network; calculation, retained inspection and report generation are local. EnergyPlus is needed for calculation/replay; Typst/fonts are separately required for PDF/PNG regeneration. See the [shared CLI examples](docs/v0.5-delivery.md#shared-cli-commands) for reproducible headless use.
+
 ## Native Windows development
 
 Install Visual Studio C++ Build Tools, WebView2, Node.js 24 and the pinned Rust toolchain following [toolchain instructions](docs/toolchain.md). The following commands exercise the static workflow from this repository in PowerShell; [climate commands](docs/v0.3-usage.md) configure weather and studies separately:

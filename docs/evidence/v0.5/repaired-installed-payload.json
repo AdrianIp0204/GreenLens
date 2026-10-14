@@ -1,0 +1,267 @@
+{
+  "schema_version": "greenlens.v0.5-installation.v1",
+  "checked_utc": "2026-10-14T02:47:41.1078943Z",
+  "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+  "source_clean": true,
+  "previous_app_running": false,
+  "previous_installed_sha256": "1369f91159ace340903cb34b0a7990d8a6d0f211044b30a9be10aae5fa85ac5a",
+  "installer_exit_code": 0,
+  "installer_sha256": "08a57f663562a6600ded680f6767d21d8f5596adf66803021c0323d7649ab5a0",
+  "installed_executable_sha256": "b02a6c8090006514a26e0fb4783081472da549c3e673b037f7dca8d07e10a3ff",
+  "installed_version": "0.5.0",
+  "registry_version": "0.5.0",
+  "signature_status": "NotSigned",
+  "verification_reference": "Extracted NSIS payload; not unpatched Cargo executable",
+  "payload_members": [
+    {
+      "path": "greenlens-desktop.exe",
+      "bytes": 22963712,
+      "sha256": "b02a6c8090006514a26e0fb4783081472da549c3e673b037f7dca8d07e10a3ff"
+    },
+    {
+      "path": "examples/climate-study-pvgis.json",
+      "bytes": 673,
+      "sha256": "72de4380d4162cea9dc402ede5bbe8d8a131465ff1bac1898fde01a8a7ce8a36"
+    },
+    {
+      "path": "examples/synthetic-a.json",
+      "bytes": 633,
+      "sha256": "2209ff5ae7979ecace2fdbbced9e6e96f75f0a1187cc19bb8e53d84228095646"
+    },
+    {
+      "path": "examples/synthetic-b.json",
+      "bytes": 724,
+      "sha256": "8186aab61125d0d9559827f1358658009104d5d2a993864a324d39326ec2ffaf"
+    },
+    {
+      "path": "examples/carbon/clp-hong-kong-2025.json",
+      "bytes": 824,
+      "sha256": "8299885a17621b61bf7d2c53f21d92592c0edd179ecbbbe6d4215c6320a20056"
+    },
+    {
+      "path": "examples/carbon/README.md",
+      "bytes": 1196,
+      "sha256": "dce18f7b6aeba76e68385e57ad781617892932bc4eaa67d64b5e6bc43064f0f6"
+    },
+    {
+      "path": "examples/carbon/synthetic-fixture.json",
+      "bytes": 362,
+      "sha256": "2f4ce3e66e14be1159ce3ba9428eace4fcf8b3b2d5661c7835a9e8dc3952e0f3"
+    },
+    {
+      "path": "examples/energy/README.md",
+      "bytes": 4829,
+      "sha256": "9d221813ece8b178a65e66911a231351648114789975b0eb67eb28f5338dd08e"
+    },
+    {
+      "path": "examples/energy/revision1-inputs.json",
+      "bytes": 195909,
+      "sha256": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb"
+    },
+    {
+      "path": "examples/weather/pvgis-hong-kong-tmy-2005-2023.epw",
+      "bytes": 1863014,
+      "sha256": "60719262a01e8827e8984537800f97f508ab4ae5ae8abc55fce571893c55b2d8"
+    },
+    {
+      "path": "examples/weather/pvgis-hong-kong.source.json",
+      "bytes": 2249,
+      "sha256": "26043aa4852ed8e137881f2870f47f3e8a3daf4b03adf07a30cc9a010c7f6d5f"
+    },
+    {
+      "path": "examples/weather/synthetic.source.json",
+      "bytes": 393,
+      "sha256": "9b3d02e5b94a1f478b9bacd8a6a7a3577e3c17595ec73a37093b4e8d60d1a055"
+    },
+    {
+      "path": "notices/dependencies.md",
+      "bytes": 16930,
+      "sha256": "4056330756bd8404a64170e9ef3836f0bd7196d6375933fdd6bf689bc1911c36"
+    },
+    {
+      "path": "notices/energy-qualification.json",
+      "bytes": 22219,
+      "sha256": "1dc1e0b93a2d8519e0edaa5195478a82f9f2da2394de8c1fae9c732ac3845df0"
+    },
+    {
+      "path": "notices/energyplus.json",
+      "bytes": 11235,
+      "sha256": "88c5959fb4cbe2e62e929049c4d184e850f99a7ce6c23364ac46f4050ac29f78"
+    },
+    {
+      "path": "notices/LICENSE",
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "path": "notices/license-supplements.json",
+      "bytes": 30753,
+      "sha256": "907472045d22bc468cc94f4b087b4c52593a649b5622fc70e41f0094ffe73d3c"
+    },
+    {
+      "path": "notices/NOTICE",
+      "bytes": 470,
+      "sha256": "ee4a586b20f9e9460c479edfc1756875dc03ac5a4904761e37c6578ed53ab1ad"
+    },
+    {
+      "path": "notices/radiance.json",
+      "bytes": 5578,
+      "sha256": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+    },
+    {
+      "path": "notices/resolved-inventory.json",
+      "bytes": 580491,
+      "sha256": "390118d47703c16c931ad88227d16dec458b44c0d5244bb2a5d58332978e4f57"
+    },
+    {
+      "path": "notices/typst.json",
+      "bytes": 4544,
+      "sha256": "178eeaa7260ee203bdf44b35d4f1f20efc87409dfccdc33e5d278dffabbee93a"
+    },
+    {
+      "path": "notices/v0.3-weather-sources.md",
+      "bytes": 13525,
+      "sha256": "9c6bb9a00b9c626e9fcd0a729e494e253563dbad2a0663ac76fb319c37f7fd73"
+    },
+    {
+      "path": "notices/v0.4-energy-method.md",
+      "bytes": 28284,
+      "sha256": "d93356982800fd5cd956e9172ab12a5ef226e25d8bee0cccca61fe2d4862ccb2"
+    },
+    {
+      "path": "notices/v0.4-report-method.md",
+      "bytes": 23887,
+      "sha256": "16828f04d0732561f89f58e78f2913866e6aaa575f820bd3b0cb82f01049def2"
+    },
+    {
+      "path": "notices/weather.json",
+      "bytes": 3394,
+      "sha256": "53898ccde5a11992a2d04e3a7b2ffddda65ea4dadc7efa64ff9cce4cdd6a352b"
+    },
+    {
+      "path": "notices/windows-installer.md",
+      "bytes": 2402,
+      "sha256": "37535315d86387763b113b0ec3940c4850ffe9eceb99ad8534036452c7993739"
+    },
+    {
+      "path": "notices/windows-runtime.md",
+      "bytes": 6924,
+      "sha256": "7f1e6caffdd4319c46dd2bf558a33bad2286ed99730336098b833c33d3dbd7f6"
+    },
+    {
+      "path": "notices/report-renderer/NotoSansCJK-OFL.txt",
+      "bytes": 4301,
+      "sha256": "6a73f9541c2de74158c0e7cf6b0a58ef774f5a780bf191f2d7ec9cc53efe2bf2"
+    },
+    {
+      "path": "notices/report-renderer/Typst-assets-NOTICE.txt",
+      "bytes": 76850,
+      "sha256": "80ac46fb7d70f1c30bf0c14d3408e6a6f0f9cc9997a00b592aa0d2c8a5243a9d"
+    },
+    {
+      "path": "notices/report-renderer/Typst-LICENSE.txt",
+      "bytes": 9723,
+      "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+    },
+    {
+      "path": "notices/report-renderer/Typst-NOTICE.txt",
+      "bytes": 21066,
+      "sha256": "1778244777547c281b6f5fa9fc0c18ab21f8d4491c803f64e09046800f5fcb26"
+    },
+    {
+      "path": "notices/report-renderer/Typst-target-NOTICES.txt",
+      "bytes": 977360,
+      "sha256": "b0f2823c15e849c92c50a46eaeddae24fed1e7edeb86b048b48dcff9f9b3809e"
+    },
+    {
+      "path": "notices/third-party/EnergyPlus-LICENSE.txt",
+      "bytes": 3184,
+      "sha256": "261aa3c3a98cb059c57ba2db27f1e06d45546b63ed1a1883e9cd3fd31caaa4f0"
+    },
+    {
+      "path": "notices/third-party/generated-notices.txt",
+      "bytes": 2444167,
+      "sha256": "9a79720fc781330db67da0f735e6349f3960fe361348b08743c6976663e3d9ec"
+    },
+    {
+      "path": "notices/third-party/Radiance-gendaymtx-NOTICE.txt",
+      "bytes": 1258,
+      "sha256": "0aa44c83f4fdd3e1b34635705e2aff1a3aabf490634251ea92327bbb9d365bd5"
+    },
+    {
+      "path": "notices/third-party/Radiance-LICENSE.txt",
+      "bytes": 2456,
+      "sha256": "1ce85220aa44606999b89105acefb879be6dcf285887251a51d56274295e93c6"
+    },
+    {
+      "path": "notices/third-party/tauri-template-license.txt",
+      "bytes": 1090,
+      "sha256": "9dd42ea92cff2ede5cd477cbfcce051b2d0115c0ac7f368ee88cb545055dff1d"
+    },
+    {
+      "path": "notices/third-party/upstream/alloc-stdlib-0.3.0-LICENSE.txt",
+      "bytes": 1483,
+      "sha256": "c0c56f26d9c051cac4d200c34c84e7ae9aaa853e01a982a1df08b09931e518ae"
+    },
+    {
+      "path": "notices/third-party/upstream/defmt-parser-1.0.0-LICENSE-MIT.txt",
+      "bytes": 1053,
+      "sha256": "2710a622a896bba67356913d4d0492cab5465f61b2ecce6d880aeb483834fb50"
+    },
+    {
+      "path": "notices/third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-LICENSE.txt",
+      "bytes": 1487,
+      "sha256": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55"
+    },
+    {
+      "path": "notices/third-party/upstream/Microsoft.Web.WebView2-1.0.3800.47-NOTICE.txt",
+      "bytes": 3894,
+      "sha256": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90"
+    },
+    {
+      "path": "notices/third-party/upstream/MPL-2.0.txt",
+      "bytes": 16726,
+      "sha256": "3f3d9e0024b1921b067d6f7f88deb4a60cbe7a78e76c64e3f1d7fc3b779b9d04"
+    },
+    {
+      "path": "notices/third-party/upstream/NSIS-3.11-COPYING.txt",
+      "bytes": 15632,
+      "sha256": "e7dd514003ab96cb3ddccbc028fe5c795fccf57dc41f21cfb9d4dd16ead23bf5"
+    },
+    {
+      "path": "notices/third-party/upstream/NSIS-3.11-ModernUI2-LICENSE.txt",
+      "bytes": 840,
+      "sha256": "d5957bd99460eb21148bd2695eeb5a3718abae6b118040a4678926da3f4cfbc0"
+    },
+    {
+      "path": "notices/third-party/upstream/NSIS-3.11-NSISdl-LICENSE.txt",
+      "bytes": 943,
+      "sha256": "326e587f36ca58e14bd09cca153f9e69f1c5ed701189aa47d2d0627af7e16280"
+    },
+    {
+      "path": "notices/third-party/upstream/nsis-tauri-utils-0.5.3-LICENSE-MIT.txt",
+      "bytes": 1110,
+      "sha256": "1c1020fa10a6bf318717e82c911bcc54ebdfb9bb280460ae332bcb2f82f57fbe"
+    },
+    {
+      "path": "notices/third-party/upstream/saxes-6.0.0-LICENSE.txt",
+      "bytes": 3011,
+      "sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e"
+    },
+    {
+      "path": "notices/third-party/upstream/webview2-rs-LICENSE.txt",
+      "bytes": 1067,
+      "sha256": "0dcf41516e608bbcb6cdc5229feb7b86fe4a643b85e7df251133c93408fdac73"
+    },
+    {
+      "path": "notices/third-party/weather/PVGIS-ERA5-NOTICE.txt",
+      "bytes": 2655,
+      "sha256": "689e8907f735bc6cd5dffd29b155f1eca00e9fe0ec3e50037a38dfc565da55a7"
+    }
+  ],
+  "distributed_cli_matches_repaired_cold_cli": true,
+  "cli_sha256": "9e3d3cf9fbabee85f3e6a0e9d693124534b7a40bc6a06275e4c8c629ccb6fb21",
+  "interaction_verified": false,
+  "launch_observed": false,
+  "clean_machine": false
+}

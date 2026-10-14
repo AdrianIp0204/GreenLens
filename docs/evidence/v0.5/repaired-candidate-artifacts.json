@@ -1,0 +1,82 @@
+{
+  "schema_version": "greenlens.v0.5-candidate-artifacts.v1",
+  "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+  "source_clean": true,
+  "application_version": "0.5.0",
+  "scope": "Unsigned repaired candidate, installed-payload identity and cold-copy report/export audit. No installed interaction, new local replay or real-weather demonstration is implied.",
+  "artifacts": [
+    {
+      "path": "GreenLens_0.5.0_x64-setup.exe",
+      "bytes": 5284297,
+      "sha256": "08a57f663562a6600ded680f6767d21d8f5596adf66803021c0323d7649ab5a0"
+    },
+    {
+      "path": "GreenLens-CLI-0.5.0-windows-x64.zip",
+      "bytes": 10557253,
+      "sha256": "9d36cd2b73f7ebf5553bdfd0f8ad2ba1069edfdd2ae3a6c1d43046c44b27cdcb"
+    },
+    {
+      "path": "GreenLens-CLI-0.5.0-windows-x64/greenlens.exe",
+      "bytes": 10542592,
+      "sha256": "9e3d3cf9fbabee85f3e6a0e9d693124534b7a40bc6a06275e4c8c629ccb6fb21"
+    },
+    {
+      "path": "example-energy-evidence.zip",
+      "bytes": 21440381,
+      "sha256": "a6931fd3a743046599e17fa5a92b4e6b381ba07032a1c20be52dc7bb6cf258de"
+    }
+  ],
+  "build_logs": [
+    {
+      "logical_name": "cli-build.log",
+      "bytes": 272,
+      "sha256": "d2f2d50d2ef65383185de965264e2f74467f3d58bda95573d2f6ca909e6f65a1"
+    },
+    {
+      "logical_name": "desktop-build.log",
+      "bytes": 2380,
+      "sha256": "413918d0d5b50aec91b998ee14a0f0d463732a389cfec76b3dcc04c49d58feae"
+    },
+    {
+      "logical_name": "licenses-before.log",
+      "bytes": 148,
+      "sha256": "ab88c4a947391887621cd7c5ec4bf623906082037ff10f8c7193aac63f123030"
+    },
+    {
+      "logical_name": "licenses-after.log",
+      "bytes": 147,
+      "sha256": "9d9fb7418ae06a428c032500f061ecb5d92a5bb1249b72d700f158a85a576ba7"
+    }
+  ],
+  "build_commands": [
+    "cargo build -p greenlens-cli --release --locked --offline",
+    "npm run tauri -- build --ci",
+    "node scripts/license-inventory.mjs --strict --check --installer-cache <local-NSIS-cache>",
+    "pwsh -File scripts/package-artifacts.ps1 -OutputDirectory <candidate>"
+  ],
+  "build_elapsed_seconds": {
+    "cli": 145,
+    "desktop_rust_release": 514
+  },
+  "copied_example_and_report_files_verified": 342,
+  "license_inventory": {
+    "packages": 402,
+    "notice_texts": 230,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "cli_zip_audit": {
+    "checked_utc": "2026-10-14T02:53:29.2753019Z",
+    "file_members": 379,
+    "uncompressed_bytes": 31325754,
+    "largest_entry_bytes": 10542592,
+    "all_files_match_extracted_distribution": true,
+    "safe_paths_and_unique_members": true,
+    "executable_members": [
+      "GreenLens-CLI-0.5.0-windows-x64/greenlens.exe"
+    ],
+    "engine_binaries_bundled": false
+  }
+}

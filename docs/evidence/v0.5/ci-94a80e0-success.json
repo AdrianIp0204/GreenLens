@@ -1,0 +1,1401 @@
+{
+  "schema_version": "greenlens.v0.5.hosted-ci-scientific-audit.v1",
+  "observed_utc": "2026-10-14T04:00:30.0799864Z",
+  "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+  "source_dirty": false,
+  "run_id": 38501748598,
+  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38501748598",
+  "status": "hosted_ci_success_artifact_audit_complete",
+  "scope": {
+    "installed_desktop_verified": false,
+    "full_energy_method_qualified": false,
+    "hosted_report_page_visual_review": false,
+    "byte_identical_to_local_installed_candidate_asserted": false,
+    "real_weather_demonstration_asserted": false,
+    "release_acceptance_asserted": false,
+    "historical_daylight_failure_unchanged": true,
+    "hosted_source_bound_build": true
+  },
+  "hosted_cli_sha256": "df98022fa709068a91aa67e9da1677a864f3ae4eba736aaf8ac838a2b4917ae2",
+  "weather": {
+    "binding": {
+      "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+      "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+      "profile_id": "greenlens.energy-epw-explicit-fields.v1",
+      "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4"
+    },
+    "schema_version": "greenlens.energy-weather-asset.v0.4",
+    "source": {
+      "citation": "GreenLens original non-climatic thermal input",
+      "license": "Apache-2.0",
+      "rights_note": "Original synthetic fixture; no measured or typical-climate claim",
+      "source_url": null,
+      "synthetic_non_climatic": true
+    }
+  },
+  "energy_artifact": {
+    "digest": "sha256:f41f36b150416469c3bfb78119e271b8bb1f29bc2025e921a530c6d829b07694",
+    "name": "energy-native-evidence-94a80e0913579216da48ee23e3a2084a8291dc5f",
+    "compressed_bytes": 54458438,
+    "id": 11868052328
+  },
+  "source_file_seals": [
+    {
+      "path": "ci-outcome.json",
+      "bytes": 232,
+      "sha256": "3c230027897afd25c2467107da23fa236a105210c3542d41fd36de88677ca01f"
+    },
+    {
+      "path": "production-audit.json",
+      "bytes": 177134,
+      "sha256": "51bad51eb6232edba27549febfcdfeb4ab40f5a10c84bc48fde41560ae1beb7a"
+    },
+    {
+      "path": "production/run-index.json",
+      "bytes": 623,
+      "sha256": "d568c92d5f166ccd14cef27c6e99a70d6be4f2abf81e434e8c60f1dc6172cfcf"
+    },
+    {
+      "path": "production/commands.json",
+      "bytes": 7469,
+      "sha256": "e06f494d942b3e70f452200d0cd2225bd46486074812e07baf55b7faf105c079"
+    },
+    {
+      "path": "production/inspect-A10.json",
+      "bytes": 229400,
+      "sha256": "2cafdd6865b24070dd84d36600b2a7faa309a925204bdf19db3dc9482979c759"
+    },
+    {
+      "path": "production/inspect-B10.json",
+      "bytes": 230924,
+      "sha256": "0d82b944fc3a52dd5f4d68e9087a69b722b038a6f16ffb02f4da84c37eec461f"
+    },
+    {
+      "path": "production/inspect-A5.json",
+      "bytes": 229411,
+      "sha256": "896e96b3bec80bb4e0c8f73be3295c8f1257a43e709bff96044d4db969aefc40"
+    },
+    {
+      "path": "production/inspect-B5.json",
+      "bytes": 230821,
+      "sha256": "99d5e1051c62def9a9a1e4a8e8b2d3aa8f1171f560a913abc6d4f6c910e0b9c3"
+    },
+    {
+      "path": "portability/cold-evidence.json",
+      "bytes": 21186,
+      "sha256": "0c1f4067e37a1b740aeac582c61e2ccc323e025eb23453736f6245dd29bf86f2"
+    },
+    {
+      "path": "portability/replay.json",
+      "bytes": 1473,
+      "sha256": "e3824586f85ba6ea247aebb449b095f5961e35e89e73f855ba41ff15b675d2a7"
+    },
+    {
+      "path": "portability/report.json",
+      "bytes": 22484,
+      "sha256": "788031f9cc3eb96e9155420dd4be566ff3e2d2213ca1d89a105cd8c8342497a9"
+    },
+    {
+      "path": "portability/package-inspect.json",
+      "bytes": 226327,
+      "sha256": "2d38b536404451e00e9b2cdd0021a093678bfa64fd8ffbacccbe3136036de69a"
+    },
+    {
+      "path": "portability/commands.json",
+      "bytes": 623,
+      "sha256": "61872fbc1dd09c8addf7fac25d566dcdf63421e9569761e97427e692a6adf1ab"
+    }
+  ],
+  "production": {
+    "timestep_passed": true,
+    "full_energy_method_qualified": false,
+    "comfort_passed": true,
+    "schema": "greenlens.energy-production-audit.v1",
+    "direct_csv_retention_and_arithmetic_passed": true,
+    "timestep_comparisons": [
+      {
+        "alternative": "A",
+        "quantity": "annual_kwh",
+        "ten_minute": 16307.089802617933,
+        "five_minute_reference": 16305.190534702979,
+        "relative_difference": 0.00011648241159230206,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "A",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 5.516090229474726,
+        "five_minute_reference": 5.514467140552976,
+        "relative_difference": 0.00029433286669048686,
+        "limit": 0.03,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "annual_kwh",
+        "ten_minute": 12617.357232381652,
+        "five_minute_reference": 12628.426687271483,
+        "relative_difference": 0.0008765505920851582,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 4.045870430025533,
+        "five_minute_reference": 4.0473828908715905,
+        "relative_difference": 0.0003736885999761613,
+        "limit": 0.03,
+        "passed": true
+      }
+    ],
+    "revision3_contract": {
+      "example_revision": 3,
+      "protocol_sha256": "6c2d6defc48553d0380ee47a8e107eacab6d9853e7d690b01ea4b0be249af781",
+      "historical_inputs_sha256": "337398a0f0f22c5e420932bec1194cc580397fd724486c79138e2bcd7200cdcb",
+      "only_eight_declared_cutout_changes_verified": true,
+      "original_failure_unchanged": true,
+      "only_four_B_fan_efficiency_changes_from_revision2_verified": true,
+      "native_fan_checks": [
+        {
+          "case": "A10",
+          "native_name": "Z001 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "A10",
+          "native_name": "Z002 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "A10",
+          "native_name": "Z003 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "A10",
+          "native_name": "Z004 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "B10",
+          "native_name": "Z001 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        },
+        {
+          "case": "B10",
+          "native_name": "Z002 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        },
+        {
+          "case": "B10",
+          "native_name": "Z003 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        },
+        {
+          "case": "B10",
+          "native_name": "Z004 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        },
+        {
+          "case": "A5",
+          "native_name": "Z001 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "A5",
+          "native_name": "Z002 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "A5",
+          "native_name": "Z003 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "A5",
+          "native_name": "Z004 Supply Fan",
+          "total_efficiency": 0.5,
+          "design_power_w": 60.0
+        },
+        {
+          "case": "B5",
+          "native_name": "Z001 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        },
+        {
+          "case": "B5",
+          "native_name": "Z002 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        },
+        {
+          "case": "B5",
+          "native_name": "Z003 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        },
+        {
+          "case": "B5",
+          "native_name": "Z004 Supply Fan",
+          "total_efficiency": 0.6,
+          "design_power_w": 50.0
+        }
+      ],
+      "prior_revision2_protocol_sha256": "64e3d780fee5ae5441c5150d864c5f4638c238591ed3988772fa55ff35bc3f40",
+      "prior_revision2_outcome_sha256": "713c003cd3844255abe300190a8f90c333affca96b2b7026b45004f8bcd2e908",
+      "fan_energy_comparison": [
+        {
+          "minutes": 10,
+          "baseline_kwh": 1160.64,
+          "proposed_kwh": 967.2000000000002,
+          "signed_saving_kwh": 193.43999999999994
+        },
+        {
+          "minutes": 5,
+          "baseline_kwh": 1160.64,
+          "proposed_kwh": 967.2000000000002,
+          "signed_saving_kwh": 193.43999999999994
+        }
+      ]
+    },
+    "all_checks_pass": true,
+    "cases": [
+      {
+        "case": "A10",
+        "run_id": "bb36168c-dc9a-4657-99ed-a52c6c55a47b",
+        "interval_minutes": 10,
+        "intervals": 52560,
+        "channels": 34,
+        "series": {
+          "encoding": "float64_little_endian",
+          "ordering": "time_channel",
+          "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+        },
+        "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+        "source_dirty": false,
+        "physical_input_hash": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+        "execution_input_hash": "7063e49c513eb4bf1ed7893743b2e7506fd12174c992bb01bb5f4931979da09a",
+        "physical_result_hash": "6502f1d05bfa293f16f22a352b5932eab8a2d6fd8063520d638d5cdaf42a1f82",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+        },
+        "annual_kwh": {
+          "facility_j": 16307.089802617933,
+          "cooling_system": 3596.9778026179333,
+          "interior_lighting": 6289.92,
+          "exterior_lighting": 175.2,
+          "plug_equipment": 5031.936,
+          "supply_fans": 1160.64,
+          "ventilation_exhaust_fans": 52.416
+        },
+        "aligned_peak_kw": 5.516090229474726,
+        "aligned_peak_index": 52088,
+        "comfort": [
+          {
+            "zone_id": "zone1",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone2",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone3",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone4",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          }
+        ],
+        "arithmetic": {
+          "maximum_absolute_error": 0.0,
+          "failed": 0,
+          "checks": 112
+        },
+        "native_scalar_comparisons": 1576800,
+        "max_native_scalar_difference": 0.0,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "maximum_fan_reconciliation_j": 0.0,
+        "native_process": {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T03:29:23.345787200+00:00",
+          "finished_utc": "2026-10-14T03:29:29.513757300+00:00",
+          "elapsed_ms": 6168,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 414879744,
+          "peak_observed_scratch_bytes": 19753241,
+          "samples": 122,
+          "stdout_sha256": "fd54da371f8e822f7939559d4eb54694aa3970b936654cbc3baed8780e9d6751",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        },
+        "closed_run_integrity_verified": true,
+        "checksums_sha256": "6310568f6f178aff5faa0cdab992e3f3534b93ab4796c7333448292c0ed2bdf2",
+        "native_csv_sha256": "75cba90a8edd4f811a45ea7030ca57e723d3f7a84886ad0a6805273b09b79e4c",
+        "diagnostics": {
+          "warning_count": 1,
+          "severe_count": 0,
+          "messages": [
+            "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+          ]
+        }
+      },
+      {
+        "case": "B10",
+        "run_id": "5474bc72-9980-4780-a024-989d4092a2e5",
+        "interval_minutes": 10,
+        "intervals": 52560,
+        "channels": 34,
+        "series": {
+          "encoding": "float64_little_endian",
+          "ordering": "time_channel",
+          "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+        },
+        "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+        "source_dirty": false,
+        "physical_input_hash": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+        "execution_input_hash": "e783e018adc071963e5ce78a8b0b12e73b07d4da8a55909c2eeeb483e8f037c9",
+        "physical_result_hash": "f34ec9c8142089793d07cfe100a92ac2ad0faf75aba27cca3fe538dbce8241d3",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+        },
+        "annual_kwh": {
+          "facility_j": 12617.357232381652,
+          "cooling_system": 2616.65323238165,
+          "interior_lighting": 3773.952,
+          "exterior_lighting": 175.2,
+          "plug_equipment": 5031.936,
+          "supply_fans": 967.2000000000002,
+          "ventilation_exhaust_fans": 52.416
+        },
+        "aligned_peak_kw": 4.045870430025533,
+        "aligned_peak_index": 52088,
+        "comfort": [
+          {
+            "zone_id": "zone1",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone2",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone3",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone4",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          }
+        ],
+        "arithmetic": {
+          "maximum_absolute_error": 0.0,
+          "failed": 0,
+          "checks": 112
+        },
+        "native_scalar_comparisons": 1576800,
+        "max_native_scalar_difference": 0.0,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "maximum_fan_reconciliation_j": 1.4551915228366852E-11,
+        "native_process": {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T03:29:39.996606500+00:00",
+          "finished_utc": "2026-10-14T03:29:46.112846300+00:00",
+          "elapsed_ms": 6116,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 407408640,
+          "peak_observed_scratch_bytes": 21082235,
+          "samples": 121,
+          "stdout_sha256": "5ad42df12ade0ed75ebfabebcc9e1921edc0dd3b2f9cc73f6328c8a4fd71341a",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        },
+        "closed_run_integrity_verified": true,
+        "checksums_sha256": "5d0c4ead46820dbf02d20d65cfaac76df24d70a91376ff57ef26d51e059b9d5a",
+        "native_csv_sha256": "d1e5d79fe1ed5b7e332418ec58ceadc03abbe4757d5073791b5abc95812ad7e7",
+        "diagnostics": {
+          "warning_count": 1,
+          "severe_count": 0,
+          "messages": [
+            "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+          ]
+        }
+      },
+      {
+        "case": "A5",
+        "run_id": "51047787-3fc9-49d9-a1b5-9351f0421f7c",
+        "interval_minutes": 5,
+        "intervals": 105120,
+        "channels": 34,
+        "series": {
+          "encoding": "float64_little_endian",
+          "ordering": "time_channel",
+          "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+        },
+        "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+        "source_dirty": false,
+        "physical_input_hash": "32eda4566fd60a64b05ee6a6e0100869f6ff542794b7b12b0029de858e2067ba",
+        "execution_input_hash": "5a9adb50ae385e1880ddae4818ddf4f08b9c2883aa05eb7bc6f17eda849a2e02",
+        "physical_result_hash": "4c23fa66b9e419f39618e8241a8e2f461b7b076614a1c12afe2c2f66895b6111",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+        },
+        "annual_kwh": {
+          "facility_j": 16305.190534702979,
+          "cooling_system": 3595.0785347029796,
+          "interior_lighting": 6289.92,
+          "exterior_lighting": 175.2,
+          "plug_equipment": 5031.936,
+          "supply_fans": 1160.64,
+          "ventilation_exhaust_fans": 52.416
+        },
+        "aligned_peak_kw": 5.514467140552976,
+        "aligned_peak_index": 52088,
+        "comfort": [
+          {
+            "zone_id": "zone1",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone2",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone3",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone4",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          }
+        ],
+        "arithmetic": {
+          "maximum_absolute_error": 0.0,
+          "failed": 0,
+          "checks": 112
+        },
+        "native_scalar_comparisons": 3153600,
+        "max_native_scalar_difference": 0.0,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "maximum_fan_reconciliation_j": 0.0,
+        "native_process": {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T03:29:57.184708400+00:00",
+          "finished_utc": "2026-10-14T03:30:09.186339400+00:00",
+          "elapsed_ms": 12001,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 597925888,
+          "peak_observed_scratch_bytes": 37544158,
+          "samples": 231,
+          "stdout_sha256": "bd2ee080fb1c0a959cf100ce3a28e9b030a8e09a6ada6e2cc3ef0f985a801eb5",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        },
+        "closed_run_integrity_verified": true,
+        "checksums_sha256": "ae373003b7a39e289a0cb3c558121d5b752d6003ed32ffb486deda70eee6bb88",
+        "native_csv_sha256": "64f2970f809bb7cc832ec89178394a90c3e8ab0bcc3ef08d094d6e112803d86d",
+        "diagnostics": {
+          "warning_count": 1,
+          "severe_count": 0,
+          "messages": [
+            "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+          ]
+        }
+      },
+      {
+        "case": "B5",
+        "run_id": "c2622ec0-a28b-4d5f-b22c-125ed9235952",
+        "interval_minutes": 5,
+        "intervals": 105120,
+        "channels": 34,
+        "series": {
+          "encoding": "float64_little_endian",
+          "ordering": "time_channel",
+          "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing"
+        },
+        "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+        "source_dirty": false,
+        "physical_input_hash": "72e816ec0092166fef130842156aeb0e283a16870175f7d3c3ef44f8ed75685b",
+        "execution_input_hash": "90372f7eef3862e5b7f9c70435673db89e28dc63bed535d8c109bdeb9e418608",
+        "physical_result_hash": "ae7318770c87fb277531ded773880bc99bf699ad56449bef59ebb7b92368248a",
+        "method": {
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "adapter_version": "1",
+          "engine_version": "26.2.0",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+          "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+        },
+        "annual_kwh": {
+          "facility_j": 12628.426687271483,
+          "cooling_system": 2627.7226872714837,
+          "interior_lighting": 3773.952,
+          "exterior_lighting": 175.2,
+          "plug_equipment": 5031.936,
+          "supply_fans": 967.2000000000002,
+          "ventilation_exhaust_fans": 52.416
+        },
+        "aligned_peak_kw": 4.0473828908715905,
+        "aligned_peak_index": 52088,
+        "comfort": [
+          {
+            "zone_id": "zone1",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone2",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone3",
+            "occupied_hours": 5096.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          },
+          {
+            "zone_id": "zone4",
+            "occupied_hours": 4576.0,
+            "cooling_unmet_hours": 0.0,
+            "unmet_percent": 0.0,
+            "criterion_passed": true
+          }
+        ],
+        "arithmetic": {
+          "maximum_absolute_error": 0.0,
+          "failed": 0,
+          "checks": 112
+        },
+        "native_scalar_comparisons": 3153600,
+        "max_native_scalar_difference": 0.0,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "maximum_fan_reconciliation_j": 7.275957614183426E-12,
+        "native_process": {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-14T03:30:24.452358200+00:00",
+          "finished_utc": "2026-10-14T03:30:36.484038900+00:00",
+          "elapsed_ms": 12031,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 611655680,
+          "peak_observed_scratch_bytes": 40243055,
+          "samples": 236,
+          "stdout_sha256": "407b9e2c5578b289ddd95b6d32f15e1e9f5455ee9282932aad257add3475d5ab",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        },
+        "closed_run_integrity_verified": true,
+        "checksums_sha256": "663c28c421155d258cbd249eeb311ba531b5d41c40fa36175a1ff28896b1f84f",
+        "native_csv_sha256": "d585a6f6fff02a657eb82c3393e609d0998f40913c17ecdc0ac1474695e3da20",
+        "diagnostics": {
+          "warning_count": 1,
+          "severe_count": 0,
+          "messages": [
+            "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+          ]
+        }
+      }
+    ],
+    "independent_native_rerun_or_replay_asserted_by_audit": false,
+    "auditor_sha256": "13d3ada539066c61ec612cb3b61ac5d432bba864847ecf105f1aa33f109f3fe6",
+    "annual_kwh_units_note": "All annual_kwh values are electricity energy in kWh after native joule conversion. The facility_j member retains the native channel identifier; its suffix is not the unit of these reported values. Original production-audit bytes are unchanged."
+  },
+  "lifecycle": {
+    "evidence_sha256": "e9ef23b72c525be4504f26b864dc54bf902bb8759aa2e2c99b728ba475e66e90",
+    "observations": {
+      "bounded_native_demand_rows": true,
+      "cancelled_id": "bf4fe17e-d205-423e-8229-33c15d3aec16",
+      "cancelled_process": {
+        "arguments": [
+          "--jobs",
+          "1",
+          "--weather",
+          "weather.epw",
+          "--output-directory",
+          ".",
+          "--output-prefix",
+          "eplus",
+          "../model.epJSON"
+        ],
+        "elapsed_ms": 281,
+        "executable": "energyplus.exe",
+        "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "exit_code": -1073741510,
+        "failure": "Cancelled; native process tree terminated",
+        "finished_utc": "2026-10-14T03:27:57.525735800+00:00",
+        "peak_observed_scratch_bytes": 1280278,
+        "process_tree_empty": true,
+        "sampled_peak_runner_plus_job_working_set_bytes": 197976064,
+        "samples": 5,
+        "schema_version": "greenlens.native-process.v0.4",
+        "started_utc": "2026-10-14T03:27:57.247340500+00:00",
+        "state": "cancelled",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_sha256": "0c4c2219b8473b6e1857909215831a89f22aabe054b2418d123461d7657bfa9d"
+      },
+      "completed_method": {
+        "adapter_version": "1",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "engine_version": "26.2.0",
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+      },
+      "completed_physical_input_hash": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "completed_run_id": "bea3713f-699c-4dbd-ad57-63ec1eed9633",
+      "conflict_preserved": true,
+      "edit_stale_undo_current": true,
+      "external_title_reconciled": true,
+      "immutable_run_bytes_equal": true,
+      "missing_engine_failed": true,
+      "pending_close_rejected": true,
+      "pending_save_as_complete": true,
+      "schema": "greenlens.energy-native-lifecycle.v1",
+      "scientific_qualification_asserted": false,
+      "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+      "source_dirty": false
+    }
+  },
+  "cold_portability": {
+    "package_bounds": {
+      "entries": 192,
+      "uncompressed_bytes": 57863653,
+      "largest_entry_bytes": 5300731,
+      "unsafe_path_count": 0,
+      "duplicate_path_count": 0,
+      "limits": {
+        "uncompressed_bytes": 268435456,
+        "entries": 5000,
+        "entry_bytes": 67108864
+      },
+      "reader_completed": true
+    },
+    "original_project_unavailable": true,
+    "scientific_qualification_asserted": false,
+    "schema": "greenlens.energy-cold-portability.v1",
+    "original_job_scratch_unavailable": true,
+    "replay": {
+      "package_sha256": "4f9dbb94d59280cc757f7745cb6d599a213e3a61bc46f0e51ef82d2875631b20",
+      "runs": [
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "b058384b80e0fd08ff06ca6902029b75356c979635ba12d08d3d9fe017f8febf",
+          "run_id": "bb36168c-dc9a-4657-99ed-a52c6c55a47b",
+          "source_record_sha256": "b1fd5eb3795bd887f333819f8c62c07c2607b220c6ee1d8595306d77f88baff7"
+        },
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "a034af3142fb77a316e26374c4ee6def6a6ed587d2121c8e38553190117d215d",
+          "run_id": "5474bc72-9980-4780-a024-989d4092a2e5",
+          "source_record_sha256": "500fd6f257a79673c4dc4a4985f4010ed5bc2a1bc274cfdff379e354062397bd"
+        }
+      ],
+      "schema_version": "greenlens.energy-replay.v0.4",
+      "state": "completed"
+    },
+    "retained_file_hashes_independently_rechecked": 149,
+    "report_and_export_completed": true,
+    "hash_mismatches": 0,
+    "package_bytes": 9166780,
+    "package_sha256": "4f9dbb94d59280cc757f7745cb6d599a213e3a61bc46f0e51ef82d2875631b20",
+    "engine_discovery_failed": true
+  },
+  "report": {
+    "renderer_message": "All requested workbench PDFs and complete performance PNG pages rendered using pinned offline dependencies. Page count and visual acceptance require separate inspection.",
+    "visual_review_performed": false,
+    "schema": "greenlens.energy-report-artifacts.v0.5",
+    "renderer_status": "completed",
+    "dataset_sha256": "3708170ff7126bcfb04a9e2106b6055d0c4b8fc2dcfb95fdec4ad82cef88945f",
+    "artifact_count": 38,
+    "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+    "template_sha256": "f2582543c0eb1e5609fdf52af441941b1498367f5e16f8c5dd1a5cc25007ee6a",
+    "downloaded_artifact_hashes_rechecked": 38,
+    "hash_mismatches": 0,
+    "artifact_inventory": "Complete relative output names, byte counts and SHA-256 digests retained in sealed portability/report.json; all38 downloaded artifact hashes independently rechecked."
+  },
+  "license_audit": {
+    "strict_inventory_check_passed": true,
+    "packages": 402,
+    "notice_texts": 230,
+    "review_gaps": [],
+    "partial": false,
+    "installer_cache_verified": true,
+    "energyplus_version": "26.2.0",
+    "energyplus_install_verified_files": 61,
+    "typst_version": "0.15.1 (9dfd3a08)",
+    "typst_fonts_verified": 2,
+    "typst_redistribution_approved": false,
+    "engines_and_typst_separately_installed": true
+  },
+  "static_compatibility": {
+    "artifact": {
+      "digest": "sha256:96d759d8a85cccc8aab2327ed9f9b354e2e620071fac548ccf9d56bc725c33d0",
+      "name": "energy-static-compatibility-94a80e0913579216da48ee23e3a2084a8291dc5f",
+      "id": 11869330995,
+      "compressed_bytes": 4017258
+    },
+    "science_report_sha256": "17ba3bcf2acea03b14cd93d94e7852ed7a186bf8123a5226e61592cb5b3a058c",
+    "science_report_bytes": 27409,
+    "source_binding": "Required scientific suite compiled and executed from clean exact workflow source; original legacy science report schema has no application source field. New distributed-CLI run provenance separately binds both retained runs.",
+    "all_executed_checks_passed": true,
+    "fixtures_only": false,
+    "release_acceptance_complete": false,
+    "limitations": "Analytical fixtures establish limited behavior; integration verification is not independent physical validation. Export replay and desktop acceptance are separate gates.",
+    "engine": {
+      "library_hash_count": 147,
+      "executable_sha256": {
+        "gensky.exe": "72745cf8f263d34549d0c01d86a7e04b5cb2558cab483d8f27417c95913409f8",
+        "oconv.exe": "e0bc7240ee2645d6590c33ef5a6a783f4bfe81246dce23bfefdc66966cba60a2",
+        "rtrace.exe": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9"
+      },
+      "version": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)",
+      "fingerprint": "cb04363f2d28ab2513aa7d2bebf3e7449f01450c4b40cf4d0f0a77a7dead9d09",
+      "complete_library_hashes_in_sealed_report": true,
+      "adapter_version": "radiance-static-overcast/1"
+    },
+    "checks": [
+      {
+        "actual_lux": 563.0935460000001,
+        "expected_lux": 562.345084992573,
+        "id": "B",
+        "name": "Uniform hemisphere E=pi*L",
+        "passed": true,
+        "relative_error": 0.0013309638999280179,
+        "tolerance_relative": 0.01
+      },
+      {
+        "actual_lux": 9983.09492,
+        "expected_lux": 10000.0,
+        "id": "C",
+        "name": "Prescribed overcast exterior normalization",
+        "passed": true,
+        "relative_error": 0.0016905080000000454,
+        "tolerance_relative": 0.01
+      },
+      {
+        "actual_lux": [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "id": "D",
+        "name": "Sealed black enclosure",
+        "passed": true,
+        "tolerance_lux": 0.1
+      },
+      {
+        "id": "E",
+        "name": "Independent black room aperture integration",
+        "passed": true,
+        "quadrature_tolerance_relative": 0.001,
+        "rows": [
+          {
+            "absolute_error_lux": 3.1170479424595214,
+            "passed": true,
+            "quadrature_128_lux": 2752.5495007218324,
+            "quadrature_256_lux": 2752.482504678556,
+            "quadrature_512_lux": 2752.4657579424597,
+            "quadrature_relative_change": 6.084266824324389E-06,
+            "quadrature_relative_change_128_to_256": 2.4340224928814866E-05,
+            "radiance_lux": 2749.34871,
+            "sensor": [
+              2.0,
+              0.5,
+              0.8
+            ],
+            "tolerance_lux": 82.5739727382738
+          },
+          {
+            "absolute_error_lux": 3.086569464248555,
+            "passed": true,
+            "quadrature_128_lux": 726.0088671854543,
+            "quadrature_256_lux": 726.0011265765487,
+            "quadrature_512_lux": 725.9991914642486,
+            "quadrature_relative_change": 2.6654469079861187E-06,
+            "quadrature_relative_change_128_to_256": 1.0661979192896366E-05,
+            "radiance_lux": 722.912622,
+            "sensor": [
+              2.0,
+              1.5,
+              0.8
+            ],
+            "tolerance_lux": 21.77997574392746
+          },
+          {
+            "absolute_error_lux": 1.8916500360338944,
+            "passed": true,
+            "quadrature_128_lux": 139.12217238984584,
+            "quadrature_256_lux": 139.12167650561406,
+            "quadrature_512_lux": 139.1215525360339,
+            "quadrature_relative_change": 8.910882454865577E-07,
+            "quadrature_relative_change_128_to_256": 3.564392294840684E-06,
+            "radiance_lux": 137.2299025,
+            "sensor": [
+              2.0,
+              3.0,
+              0.8
+            ],
+            "tolerance_lux": 4.173646576081017
+          },
+          {
+            "absolute_error_lux": 2.245859274479727,
+            "passed": true,
+            "quadrature_128_lux": 117.09666074192926,
+            "quadrature_256_lux": 117.09639020751618,
+            "quadrature_512_lux": 117.09632257447973,
+            "quadrature_relative_change": 5.77584632585532E-07,
+            "quadrature_relative_change_128_to_256": 2.3103565583582074E-06,
+            "radiance_lux": 114.8504633,
+            "sensor": [
+              1.0,
+              3.0,
+              0.8
+            ],
+            "tolerance_lux": 3.5128896772343916
+          },
+          {
+            "absolute_error_lux": 2.320699174476985,
+            "passed": true,
+            "quadrature_128_lux": 117.09666074192897,
+            "quadrature_256_lux": 117.09639020751851,
+            "quadrature_512_lux": 117.09632257447699,
+            "quadrature_relative_change": 5.775846759112028E-07,
+            "quadrature_relative_change_128_to_256": 2.310356536027864E-06,
+            "radiance_lux": 114.7756234,
+            "sensor": [
+              3.0,
+              3.0,
+              0.8
+            ],
+            "tolerance_lux": 3.5128896772343094
+          }
+        ]
+      },
+      {
+        "id": "scaling",
+        "name": "Sky intensity scaling x2",
+        "passed": true,
+        "ratios": [
+          2.0004381655901335,
+          2.0004357926399576,
+          2.000438271826361,
+          2.0004388872151813,
+          2.0004332470478223
+        ],
+        "relative_tolerance": 0.002
+      },
+      {
+        "id": "symmetry",
+        "name": "Black aperture mirror sensors",
+        "passed": true,
+        "relative_difference": 0.0006518414442848286,
+        "tolerance_relative": 0.03
+      },
+      {
+        "exit_code": 1,
+        "id": "nonzero_exit",
+        "name": "Malformed scene fails and retains native exit record",
+        "passed": true
+      },
+      {
+        "diagnostic": "Simulation cancelled during rtrace; process tree terminated",
+        "id": "cancellation",
+        "name": "Actual rtrace cancelled without finalized evidence",
+        "passed": true
+      },
+      {
+        "id": "A",
+        "name": "Adapter vs direct pinned-engine invocation (integration verification)",
+        "passed": true,
+        "sensor_count": 77,
+        "max_absolute_difference_lux": 0.0,
+        "tolerance": "max(0.1 lx, 0.1% of reference)",
+        "scope": "Same-engine integration agreement"
+      },
+      {
+        "id": "F",
+        "name": "Shipping vs higher-quality profile convergence",
+        "passed": true,
+        "sensor_count": 77,
+        "mean_absolute_difference_divided_by_reference_mean": 0.007590611273328036,
+        "mean_relative_tolerance": 0.02,
+        "per_sensor_tolerance": "max(2 lx, 5% of reference)",
+        "max_per_sensor_allowance_ratio": 0.814319585714283,
+        "sensors_outside_tolerance": 0,
+        "shipping_profile": {
+          "ambient_accuracy": 0.075,
+          "ambient_bounces": 5,
+          "ambient_divisions": 4096,
+          "ambient_resolution": 192,
+          "ambient_supersamples": 1024,
+          "limit_reflections": 12,
+          "limit_weight": 5E-05,
+          "name": "shipping-v1"
+        },
+        "reference_profile": {
+          "ambient_accuracy": 0.05,
+          "ambient_bounces": 6,
+          "ambient_divisions": 8192,
+          "ambient_resolution": 256,
+          "ambient_supersamples": 2048,
+          "limit_reflections": 12,
+          "limit_weight": 1E-05,
+          "name": "reference-v1"
+        }
+      }
+    ],
+    "cli_summary": {
+      "schema_version": "0.1.0",
+      "passed": true,
+      "platform": "native Windows",
+      "checks": [
+        "doctor",
+        "validate",
+        "real A/B runs",
+        "compatible comparison",
+        "copy exact evidence",
+        "reopen/export without scratch",
+        "ZIP replay tolerance"
+      ],
+      "verified_utc": "2026-10-14T03:53:13.7887055Z"
+    },
+    "cli_runs": [
+      {
+        "alternative": "A",
+        "run_id": "2fcb08a9-39ea-41ea-916b-03a3ca910903",
+        "sensor_count": 77,
+        "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+        "source_dirty": false,
+        "adapter_version": "radiance-static-overcast/1"
+      },
+      {
+        "alternative": "B",
+        "run_id": "5608a57f-8bf9-4135-8381-0f839b831c58",
+        "sensor_count": 77,
+        "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+        "source_dirty": false,
+        "adapter_version": "radiance-static-overcast/1"
+      }
+    ],
+    "cli_replay": {
+      "checks": [
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "2fcb08a9-39ea-41ea-916b-03a3ca910903",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "5608a57f-8bf9-4135-8381-0f839b831c58",
+          "sensors": 77
+        }
+      ],
+      "climate_assessments": {},
+      "passed": true,
+      "verification": "same-engine integration, not independent physical validation"
+    },
+    "legacy_replay": {
+      "schema_version": "greenlens.legacy-replay-verification.v1",
+      "started_utc": "2026-10-14T03:53:15.8848836Z",
+      "finished_utc": "2026-10-14T03:57:48.5895715Z",
+      "wall_seconds": 272.7015133,
+      "cli_sha256": "df98022fa709068a91aa67e9da1677a864f3ae4eba736aaf8ac838a2b4917ae2",
+      "fixture_sha256": "c53dcc4094630f3bac5c3f1f76b7e3c452f015c0e819d8713e4744f3e0aedcec",
+      "fixture_unchanged": true,
+      "engine_executables": [
+        "gensky.exe",
+        "oconv.exe",
+        "rtrace.exe"
+      ],
+      "engine_fixture": {
+        "schema_version": "greenlens.legacy-engine-fixture.v1",
+        "engine_release": "6.0.2",
+        "file_count": 150,
+        "copied_files_sha256": "2a1b108d6c5401b86e232f11cbab338dcc566a3923f4accbfe8a6cdd33df5826",
+        "source_and_copy_identical": true,
+        "library_path_ascii": true,
+        "engine_executables": [
+          "gensky.exe",
+          "oconv.exe",
+          "rtrace.exe"
+        ],
+        "annual_executables_present": false
+      },
+      "annual_executables_present": false,
+      "exit_code": 0,
+      "replay": {
+        "checks": [
+          {
+            "max_absolute_error_lux": 0.0,
+            "passed": true,
+            "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+            "sensors": 77
+          },
+          {
+            "max_absolute_error_lux": 0.0,
+            "passed": true,
+            "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+            "sensors": 77
+          }
+        ],
+        "climate_assessments": {},
+        "passed": true,
+        "verification": "same-engine integration, not independent physical validation"
+      },
+      "scope": "Native same-engine replay of original v0.1 evidence using only legacy executables; not annual accuracy or installed-desktop acceptance"
+    },
+    "static_only_fixture": {
+      "schema_version": "greenlens.legacy-engine-fixture-test.v1",
+      "native_process": {
+        "exit_code": 0,
+        "wall_seconds": 0.0461711,
+        "library_path_kind": "ASCII",
+        "working_path_kind": "Unicode and spaces",
+        "stdout": "RADIANCE 6.0.2 2026-02-02 LBNL (6.0.c1700d56cc)\r\n",
+        "started_utc": "2026-10-14T03:53:15.0992041Z",
+        "executable_sha256": "edb01ac56b31ad79263c1f42a686413c0d369829f460e83a170340a6f821b5c9",
+        "stderr": "",
+        "executable": "rtrace.exe",
+        "arguments": [
+          "-version"
+        ],
+        "finished_utc": "2026-10-14T03:53:15.1491326Z",
+        "timed_out": false
+      },
+      "checks": [
+        "Pinned three-executable fixture and every copied library/DLL byte match the source; annual executables absent",
+        "Existing fixture rejected without overwriting its CAL library",
+        "Unicode engine-library destination rejected before writes with an actionable override",
+        "Unavailable source engine fails instead of skipping",
+        "Real pinned rtrace initializes rayinit.cal from an ASCII library path inside a Unicode working directory",
+        "Altered critical CAL library rejected before destination creation"
+      ],
+      "disposable_fixture_corrupted_after_probe": true,
+      "completed_utc": "2026-10-14T03:53:15.2361863Z",
+      "passed": true,
+      "scope": "Fixture byte identity and native CAL-loader regression only; complete legacy replay is a separate mandatory CI step",
+      "engine_fixture": {
+        "schema_version": "greenlens.legacy-engine-fixture.v1",
+        "engine_release": "6.0.2",
+        "file_count": 150,
+        "copied_files_sha256": "2a1b108d6c5401b86e232f11cbab338dcc566a3923f4accbfe8a6cdd33df5826",
+        "source_and_copy_identical": true,
+        "library_path_ascii": true,
+        "engine_executables": [
+          "gensky.exe",
+          "oconv.exe",
+          "rtrace.exe"
+        ],
+        "annual_executables_present": false
+      }
+    },
+    "source_file_seals": [
+      {
+        "path": "legacy-replay/summary.json",
+        "bytes": 1671,
+        "sha256": "98a16b8263dc8d6fd680f3173ce86ef573d5c1d7f46ed694d0ecafe23dae92a4"
+      },
+      {
+        "path": "legacy-replay/replay.json",
+        "bytes": 465,
+        "sha256": "b005fa3dbf638d41b99e487441f36907c95595c2d75e072d386f4dd0151b1edb"
+      },
+      {
+        "path": "static-cli/summary.json",
+        "bytes": 337,
+        "sha256": "7816a8c66fcc2588f82c8b9000a5ac92f5fee12f817cfdf1297ff7ac00d21a9e"
+      },
+      {
+        "path": "static-cli/replay.json",
+        "bytes": 445,
+        "sha256": "5e3b0a18f9366ed123f867c36827d5e13ba25c0972aca212418f46b6b981a43a"
+      },
+      {
+        "path": "static-cli/run-A.json",
+        "bytes": 42974,
+        "sha256": "4dfed608521244400859119d2285c4b64057776d8efe0abe7757b2f7439ee1e6"
+      },
+      {
+        "path": "static-cli/run-B.json",
+        "bytes": 43635,
+        "sha256": "49f1e9f553ac52d3d6231c30dbe16c8d20505ebbaeb5e678561216e6865f139c"
+      },
+      {
+        "path": "static-only-fixture/summary.json",
+        "bytes": 1883,
+        "sha256": "cff1d164aaf1efb200d11e1c26fb59b38a4790f2c7eb6e29852d8319f69af494"
+      }
+    ]
+  },
+  "terminal": {
+    "status": "completed",
+    "conclusion": "success",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38501748598",
+    "source_commit": "94a80e0913579216da48ee23e3a2084a8291dc5f",
+    "started_utc": "2026-10-14T02:34:34Z",
+    "updated_utc": "2026-10-14T03:57:54Z",
+    "receipt_sha256": "6d9ca49d40fa0bcbea091a1852c61a314332b527d71a36fbbd0c7d0cfa04a684",
+    "jobs": [
+      {
+        "id": 115650072151,
+        "name": "build",
+        "status": "completed",
+        "conclusion": "success",
+        "started_utc": "2026-10-14T02:34:36Z",
+        "completed_utc": "2026-10-14T03:23:40Z",
+        "step_count": 16,
+        "failed_or_skipped_steps": []
+      },
+      {
+        "id": 115663591975,
+        "name": "static_compatibility",
+        "status": "completed",
+        "conclusion": "success",
+        "started_utc": "2026-10-14T03:23:42Z",
+        "completed_utc": "2026-10-14T03:57:53Z",
+        "step_count": 11,
+        "failed_or_skipped_steps": []
+      },
+      {
+        "id": 115663591990,
+        "name": "energy",
+        "status": "completed",
+        "conclusion": "success",
+        "started_utc": "2026-10-14T03:23:43Z",
+        "completed_utc": "2026-10-14T03:33:08Z",
+        "step_count": 18,
+        "failed_or_skipped_steps": []
+      }
+    ]
+  },
+  "build_checks": {
+    "frontend": {
+      "passed": 239,
+      "failed": 0,
+      "types_and_production_build_passed": true
+    },
+    "cargo_fmt_passed": true,
+    "cargo_clippy_strict_passed": true,
+    "workspace_and_radiance_unit_lifecycle_passed": true,
+    "ignored_defaults_not_counted_as_executed": true,
+    "explicit_energy_lifecycle": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "explicit_native_typst": {
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0
+    },
+    "build_provenance_checks_passed": 20,
+    "source_package_document_files": 354,
+    "source_package_document_links": 644,
+    "license_supplement_tests_passed": 5,
+    "inventory_diagnostic_tests_passed": 12,
+    "energy_audit_guard_tests_passed": 19,
+    "unsigned_nsis_built": true
+  },
+  "host_context": {
+    "os": "Microsoft Windows Server 2025 Datacenter 10.0.26100",
+    "runner_image": "windows-2025-vs2026",
+    "runner_image_version": "20260925.250.1",
+    "rust": "1.99.0 (b940084d7 2026-09-28) x86_64-pc-windows-msvc",
+    "hardware_model": "Not recorded in retained scientific receipt",
+    "memory_scope": "Sampled runner plus supervised native process working set; not machine-wide peak",
+    "scratch_scope": "Peak observed per native process",
+    "performance_benchmark_claim": false
+  },
+  "job_log_seals": [
+    {
+      "job": "build",
+      "bytes": 201657,
+      "sha256": "f65c10d08dc3e2fc6d9010e87ef21676e3e1c6a12ef75db86ffe4ba395eebc0b"
+    },
+    {
+      "job": "energy",
+      "bytes": 71243,
+      "sha256": "6524e3e49603910c748e68a7deff66ad2410daec6f7e87bfa352962df4691af6"
+    },
+    {
+      "job": "static_compatibility",
+      "bytes": 47275,
+      "sha256": "5110746d5319d22047d2ae202dd60538729676943ba7f4de936c38c24cd61e4f"
+    }
+  ],
+  "prior_failed_ci_preserved": [
+    {
+      "run_id": 38497392326,
+      "conclusion": "failure",
+      "source_commit": "29adf02852153989749a1d9a74496315979edcb9",
+      "reason": "Strict license inventory mismatch; later repaired without weakening strict equality"
+    },
+    {
+      "run_id": 38500522173,
+      "conclusion": "failure",
+      "source_commit": "5c507f72a14660188114dd7442c79a4c00e5bc01",
+      "reason": "Diagnostic inventory identified package-lock byte digest CRLF/LF difference; public diagnostic receipt retained"
+    }
+  ]
+}

@@ -15,9 +15,12 @@ use std::{
     time::Duration,
 };
 
+mod dry_envelope;
 mod model;
 mod output;
+pub mod preflight;
 pub use output::{channels, decode_interval, ledger, Channel, Decoder, Diagnostics};
+pub use preflight::{preflight_model, AdapterPreflight};
 
 pub const METHOD_ID: &str = "greenlens.energyplus.explicit-dx/1";
 pub const ENGINE_VERSION: &str = "26.2.0";
@@ -41,6 +44,12 @@ const RECIPE: &str = concat!(
 );
 pub fn recipe_bytes() -> &'static [u8] {
     RECIPE.as_bytes()
+}
+pub fn recipe_for_study(study: &EnergyStudy) -> Result<Vec<u8>> {
+    match weather::EnergyWeatherProfile::from_id(&study.weather.profile_id)? {
+        weather::EnergyWeatherProfile::ExplicitFieldsV1 => Ok(recipe_bytes().to_vec()),
+        weather::EnergyWeatherProfile::DryEnvelopeV1 => dry_envelope::recipe(),
+    }
 }
 pub fn sha256(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
@@ -87,10 +96,17 @@ pub fn method_identity(study: &EnergyStudy) -> Result<EnergyMethodIdentity> {
         "Unsupported energy timestep"
     );
     let inventory: Value = serde_json::from_str(INVENTORY)?;
-    let settings = json!({"zone_timesteps_per_hour":study.zone_timesteps_per_hour,"recipe_sha256":sha256(recipe_bytes()),"runtime_inventory_sha256":sha256(INVENTORY.as_bytes())});
+    let recipe = recipe_for_study(study)?;
+    let dry = study.weather.profile_id == weather::ENERGY_DRY_ENVELOPE_PROFILE;
+    let settings = json!({"zone_timesteps_per_hour":study.zone_timesteps_per_hour,"recipe_sha256":sha256(&recipe),"runtime_inventory_sha256":sha256(INVENTORY.as_bytes())});
     Ok(EnergyMethodIdentity {
-        method_id: METHOD_ID.into(),
-        adapter_version: "1".into(),
+        method_id: if dry {
+            dry_envelope::METHOD_ID
+        } else {
+            METHOD_ID
+        }
+        .into(),
+        adapter_version: if dry { "2" } else { "1" }.into(),
         engine_version: ENGINE_VERSION.into(),
         engine_package_sha256: inventory["sha256"].as_str().unwrap().into(),
         engine_executable_sha256: inventory["critical_files"]["energyplus.exe"]["sha256"]
@@ -101,7 +117,7 @@ pub fn method_identity(study: &EnergyStudy) -> Result<EnergyMethodIdentity> {
             .as_str()
             .unwrap()
             .into(),
-        recipe_sha256: sha256(recipe_bytes()),
+        recipe_sha256: sha256(&recipe),
         numerical_settings_sha256: greenlens_core::canonical_hash(&settings)?,
     })
 }
@@ -134,7 +150,10 @@ pub fn prepare(
         sha256(normalized_epw) == study.weather.normalized_sha256,
         "Normalized energy weather hash differs"
     );
-    let weather = weather::parse_energy_epw(normalized_epw)?;
+    let weather = weather::parse_energy_epw_with_profile(
+        normalized_epw,
+        weather::EnergyWeatherProfile::from_id(&study.weather.profile_id)?,
+    )?;
     ensure!(
         weather.normalized_epw == normalized_epw
             && weather.data.time_axis_sha256 == study.weather.time_axis_sha256
@@ -159,7 +178,7 @@ pub fn prepare(
     );
     fs::create_dir_all(stage.join("engine"))?;
     write_new(&stage.join("model.epJSON"), &bytes)?;
-    write_new(&stage.join("recipe.json"), recipe_bytes())?;
+    write_new(&stage.join("recipe.json"), &recipe_for_study(study)?)?;
     write_new(&stage.join("engine/weather.epw"), normalized_epw)?;
     let mut inputs = BTreeMap::new();
     for name in ["model.epJSON", "recipe.json", "engine/weather.epw"] {
@@ -178,7 +197,12 @@ pub fn prepare(
 /// Deterministic trusted renderer, also used for engine-free retained validation.
 pub fn render_model(model: &ThermalModel, study: &EnergyStudy) -> Result<Vec<u8>> {
     study.validate(model)?;
-    let bytes = serde_json::to_vec(&model::generate(model, study)?)?;
+    let mut doc = model::generate(model, study)?;
+    if study.weather.profile_id == weather::ENERGY_DRY_ENVELOPE_PROFILE {
+        doc["Site:GroundReflectance"] = dry_envelope::ground_reflectance();
+        dry_envelope::validate(&doc)?;
+    }
+    let bytes = serde_json::to_vec(&doc)?;
     ensure!(
         bytes.len() as u64 <= MAX_FILE,
         "Expanded schedules/model exceed portable epJSON size; simplify schedules or model"
@@ -198,7 +222,7 @@ pub fn validate_retained_contract(
         method == &method_identity(study)?
             && actual_ledger == &ledger(model)?
             && actual_channels == channels(model)
-            && recipe == recipe_bytes()
+            && recipe == recipe_for_study(study)?
             && epjson == render_model(model, study)?,
         "Retained energy method, output map or owned model differs from compiled contract"
     );

@@ -44,13 +44,46 @@ pub fn export_pair(
     typst: &TypstConfig,
     cancel: &AtomicBool,
 ) -> Result<Value> {
+    export_pair_impl(root, a, b, destination, typst, cancel, false)
+}
+pub fn export_workbench_pair(
+    root: &Path,
+    a: &str,
+    b: &str,
+    destination: &Path,
+    typst: &TypstConfig,
+    cancel: &AtomicBool,
+) -> Result<Value> {
+    export_pair_impl(root, a, b, destination, typst, cancel, true)
+}
+fn export_pair_impl(
+    root: &Path,
+    a: &str,
+    b: &str,
+    destination: &Path,
+    typst: &TypstConfig,
+    cancel: &AtomicBool,
+    workbench: bool,
+) -> Result<Value> {
     ensure!(
         !destination.exists(),
         "Export destination exists; choose a new file"
     );
     let _lock = WriterLock::acquire(root)?;
     let view = crate::open_project(root)?;
+    let supplement = if workbench {
+        Some(energy_services::workbench_report_data(
+            root,
+            &view.project,
+            a,
+            b,
+        )?)
+    } else {
+        None
+    };
     let mut dataset = energy_services::report_data(root, &view.project, a, b)?;
+    let sensitivity =
+        crate::energy_sensitivity_workflow::export_selection(root, &view.project, a, b)?;
     // Excluded evidence metadata can itself be private; omit it from public products.
     dataset.evidence.retain(|e| e.included);
     let mut project = view.project;
@@ -59,7 +92,14 @@ pub fn export_pair(
     project.runs.clear();
     project.climate = None;
     let extension = project.energy.as_mut().context("Energy project missing")?;
-    extension.runs.retain(|r| r.id == a || r.id == b);
+    extension
+        .runs
+        .retain(|r| sensitivity.included_run_ids.contains(&r.id));
+    if let Some(state) = &mut extension.workbench {
+        state
+            .sensitivity
+            .retain(|r| Some(&r.id) == sensitivity.included_session_id.as_ref());
+    }
     extension.attachments.retain(|item| {
         item.include_in_export
             && dataset
@@ -68,7 +108,9 @@ pub fn export_pair(
                 .any(|e| e.relative_path == item.path)
     });
     ensure!(
-        extension.runs.len() == 2,
+        a != b
+            && extension.runs.iter().any(|r| r.id == a)
+            && extension.runs.iter().any(|r| r.id == b),
         "Select two distinct retained baseline/proposed runs"
     );
     let mut files = vec!["project.json".into()];
@@ -92,14 +134,23 @@ pub fn export_pair(
             &mut budget,
         )?;
     }
+    for name in crate::energy_sensitivity_workflow::evidence_members(root, &project)? {
+        budget.add(&name, fs::metadata(regular_child(root, &name)?)?.len())?;
+        files.push(name);
+    }
     ensure!(!cancel.load(Ordering::SeqCst), "Export cancelled");
     let stage = crate::local_root()?
         .join("energy-exports")
         .join(Uuid::new_v4().to_string());
     fs::create_dir_all(&stage)?;
     energy::copy_project_evidence(root, &stage, extension)?;
+    crate::energy_sensitivity_workflow::copy_evidence(root, &stage, &project)?;
     write_json(&stage.join("project.json"), &project)?;
-    let reports = energy_report::render(&dataset, &stage.join("reports"), Some(typst), cancel)?;
+    let reports = if let Some(data) = &supplement {
+        crate::energy_report_workbench::render(data, &stage.join("reports"), Some(typst), cancel)?
+    } else {
+        energy_report::render(&dataset, &stage.join("reports"), Some(typst), cancel)?
+    };
     ensure!(
         reports.renderer_status == "completed",
         "Required PDF/PNG report generation is incomplete"
@@ -120,7 +171,7 @@ pub fn export_pair(
     }
     write_json(
         &stage.join("energy-export.json"),
-        &json!({"schema_version":"greenlens.energy-export.v0.4","baseline_run_id":a,"proposed_run_id":b,"report_dataset_sha256":dataset.dataset_sha256()?,"assessment_authority":"Supplementary report only; the compiled application independently recomputes integrity and qualification without altering run evidence."}),
+        &json!({"schema_version":if workbench {"greenlens.energy-export.v0.5"}else{"greenlens.energy-export.v0.4"},"baseline_run_id":a,"proposed_run_id":b,"report_dataset_sha256":dataset.dataset_sha256()?,"workbench_report_sha256":supplement.as_ref().map(|d|&d.derived_sha256),"sensitivity":sensitivity,"assessment_authority":"Supplementary report only; the compiled application independently recomputes integrity and qualification without altering run evidence."}),
     )?;
     fs::write(stage.join("REPLAY.txt"),"GreenLens energy evidence\nInspect/regenerate reports without EnergyPlus or the original weather/cache. Original/normalized weather, immutable inputs and all retained native channels are included.\nPDF regeneration requires the pinned separately installed Typst/font package.\nInstall pinned EnergyPlus 26.2.0 separately for replay: greenlens energy replay evidence.zip --engine-dir <compatible-engine-directory>\nReplay regenerates trusted epJSON from authoritative inputs using the compiled recognized adapter; no imported executable recipe or report is executed.\nEvery channel is checked within max(1e-6 in its unit, 0.1% of reference), with exact shape, channel labels and interval-end local-standard timestamps.\nAgreement is integration verification, not general physical validation or certification.\n")?;
     files.extend(["energy-export.json".into(), "REPLAY.txt".into()]);
@@ -190,10 +241,7 @@ pub fn replay(package: &Path, engine_dir: Option<&Path>, cancel: &AtomicBool) ->
     extract_package(package, &imported)?;
     let view = crate::open_project(&imported)?;
     let selection: Value = read_json(&regular_child(&imported, "energy-export.json")?)?;
-    ensure!(
-        selection["schema_version"] == "greenlens.energy-export.v0.4",
-        "Unsupported energy package"
-    );
+    ensure!(recognized_package(&selection), "Unsupported energy package");
     let a = selection["baseline_run_id"]
         .as_str()
         .context("Missing baseline run")?;
@@ -210,8 +258,17 @@ pub fn replay(package: &Path, engine_dir: Option<&Path>, cancel: &AtomicBool) ->
             .as_str()
             .context("Missing report hash")?,
     )?;
+    validate_workbench_supplement(&imported, &selection, &retained_data)?;
     let mut results = vec![];
-    for id in [a, b] {
+    for id in view
+        .project
+        .energy
+        .as_ref()
+        .context("Energy project missing")?
+        .runs
+        .iter()
+        .map(|r| r.id.as_str())
+    {
         ensure!(!cancel.load(Ordering::SeqCst), "Replay cancelled");
         let run = energy_services::selected_run(&imported, &view.project, id)?;
         let output = stage.join(format!("replay-{id}"));
@@ -239,6 +296,31 @@ pub fn replay(package: &Path, engine_dir: Option<&Path>, cancel: &AtomicBool) ->
     let result = json!({"schema_version":"greenlens.energy-replay.v0.4","package_sha256":greenlens_process::file_hash(package)?,"runs":results,"state":"completed"});
     write_json(&stage.join("replay.json"), &result)?;
     Ok(result)
+}
+
+fn recognized_package(selection: &Value) -> bool {
+    matches!(
+        selection["schema_version"].as_str(),
+        Some("greenlens.energy-export.v0.4" | "greenlens.energy-export.v0.5")
+    )
+}
+fn validate_workbench_supplement(
+    root: &Path,
+    selection: &Value,
+    base: &greenlens_core::energy::EnergyReportData,
+) -> Result<()> {
+    if selection["schema_version"] == "greenlens.energy-export.v0.5" {
+        let data: greenlens_core::energy::EnergyReportWorkbenchData =
+            read_json(&regular_child(root, "reports/workbench-report.json")?)?;
+        data.validate()?;
+        ensure!(
+            data.base == *base
+                && Some(data.derived_sha256.as_str())
+                    == selection["workbench_report_sha256"].as_str(),
+            "Supplementary report identity differs from retained immutable dataset"
+        );
+    }
+    Ok(())
 }
 
 // Qualification and currentness are supplementary interpretations, not part of
@@ -295,10 +377,7 @@ pub fn inspect_package(package: &Path) -> Result<Value> {
     extract_package(package, &imported)?;
     let view = crate::open_project(&imported)?;
     let selection: Value = read_json(&regular_child(&imported, "energy-export.json")?)?;
-    ensure!(
-        selection["schema_version"] == "greenlens.energy-export.v0.4",
-        "Unsupported energy package"
-    );
+    ensure!(recognized_package(&selection), "Unsupported energy package");
     let data = energy_services::report_data(
         &imported,
         &view.project,
@@ -318,6 +397,7 @@ pub fn inspect_package(package: &Path) -> Result<Value> {
             .as_str()
             .context("Missing report hash")?,
     )?;
+    validate_workbench_supplement(&imported, &selection, &retained)?;
     Ok(
         json!({"schema_version":"greenlens.energy-package-inspection.v0.4","package_sha256":greenlens_process::file_hash(package)?,"retained_report_dataset_sha256":retained.dataset_sha256()?,"current_report":data,"scope":"Complete retained evidence and report bindings checked; no simulator or renderer was executed."}),
     )

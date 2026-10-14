@@ -58,6 +58,8 @@ pub struct EnergyProject {
     pub carbon_factor: Option<CarbonFactor>,
     /// An explicit evidence declaration; reduced LPD never implies equivalence.
     pub lighting_service_evidence: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub workbench: Option<crate::energy_workbench::EnergyWorkbench>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -107,6 +109,7 @@ fn hash(value: &str) -> bool {
             .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
 }
 pub fn validate_extension(project: &EnergyProject) -> Result<()> {
+    crate::energy_workbench::validate_state(project)?;
     ensure!(
         project.schema_version == PROJECT_SCHEMA,
         "Unsupported thermal project extension"

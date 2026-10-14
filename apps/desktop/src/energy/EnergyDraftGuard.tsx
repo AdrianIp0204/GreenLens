@@ -1,0 +1,5 @@
+import type { useEnergyDrafts } from './useEnergyDrafts';
+export default function EnergyDraftGuard({drafts}:{drafts:ReturnType<typeof useEnergyDrafts>}){
+  const guard=drafts.guard;if(!guard)return null;
+  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="energy-draft-title"><h2 id="energy-draft-title">Resolve thermal drafts before {guard.reason}</h2><p>Unapplied edits are stored locally for {guard.alternatives.join(' and ')}. These edits are not saved project inputs and are not used in calculations.</p><p>Apply validates each draft in Rust. Discard uses the accepted inputs. Cancel keeps editing.</p>{guard.error&&<p role="alert">{guard.error}</p>}<div className="button-row"><button disabled={guard.applying} onClick={()=>void drafts.resolve('apply')}>Apply</button><button disabled={guard.applying} onClick={()=>void drafts.resolve('discard')}>Discard</button><button autoFocus disabled={guard.applying} onClick={()=>void drafts.resolve('cancel')}>Cancel</button></div></section></div>;
+}

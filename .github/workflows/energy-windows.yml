@@ -1,7 +1,7 @@
 name: Bounded energy Windows verification
 on:
   push:
-    branches: [main, codex/v0.4-energy-reporting]
+    branches: [main, codex/v0.4-energy-reporting, codex/v0.5-thermal-workbench]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -70,6 +70,8 @@ jobs:
           ./scripts/test-package-documents.ps1
           ./scripts/test-energy-portability.ps1
           ./scripts/test-energy-input-preflight.ps1
+          node --test scripts/test-license-supplement-binding.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }
           $cache = Join-Path $env:RUNNER_TEMP ('energy-pure-cache-' + [guid]::NewGuid().ToString('N'))
           if (Test-Path -LiteralPath $cache) { throw 'Expected absent Python cache' }
           python -B -X utf8 -X "pycache_prefix=$cache" scripts/test-energy-gate0-audit.py

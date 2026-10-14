@@ -104,3 +104,5 @@ scripts/energy-gate0-fixture.py -text -whitespace
 scripts/energy-interzone-fixture.py -text -whitespace
 *.pdf binary
 scripts/energy-fan-example-protocol.json -text -whitespace
+# Preserve source-bound v0.5 observations and reviewed notice digests exactly.
+docs/evidence/v0.5/** -text -whitespace

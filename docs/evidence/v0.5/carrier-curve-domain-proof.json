@@ -1,0 +1,421 @@
+{
+  "schema_version": "greenlens.carrier-curve-domain-proof.v1",
+  "scope": "Pure analytical prerequisite; no EnergyPlus execution, fit adoption or scientific qualification.",
+  "source": {
+    "commit": "4bd7a1f26fb749a83257855aba6760e26c8a3c8f",
+    "path": "datasets/DXCoolingCoil.idf",
+    "bytes": 155564,
+    "sha256": "6808674b57724405eb17d0dcf35576533c93dc6cc94d5446addc96d0a9d8dadc",
+    "url": "https://github.com/NREL/EnergyPlus/blob/4bd7a1f26fb749a83257855aba6760e26c8a3c8f/datasets/DXCoolingCoil.idf"
+  },
+  "curve_evaluator": {
+    "path": "src/EnergyPlus/CurveManager.cc",
+    "sha256": "71d58441456991eb047e931e942806dc862ed125ddb646cf55d24786bb835e85"
+  },
+  "producer_sha256": "e9d1c8f2be1b5d61c85546e6b88b68886ea3008033956ee6905133281e2ab936",
+  "proof": {
+    "arithmetic": "Python fractions.Fraction exact decimal rationals; repeated with exact rational representations of binary64 coefficients and domain endpoints.",
+    "completeness": "A continuous polynomial attains extrema on the compact rectangle. Evaluate all corners, all stationary points on each edge, and the interior solution of its zero gradient. Both fixed biquadratic Hessian determinants are nonzero; no stationary continuum is omitted. Quadratics use endpoints and an in-domain derivative root; the linear PLF uses endpoints.",
+    "formula": "a+b*x+c*x*x+d*y+e*y*y+f*x*y; edge roots x=-(b+f*y)/(2*c), y=-(d+f*x)/(2*e); determinant D=4*c*e-f*f; interior x=(f*d-2*e*b)/D, y=(f*b-2*c*d)/D.",
+    "binary64_margin": "For the pinned expression with finite domain inputs and binary64 round-to-nearest, fewer than64 rounded arithmetic factors/operations affect any expanded term. gamma64=64u/(1-64u), u=2^-53, times the sum of absolute term bounds is less than1e-12 for each curve. The selected representable output bounds enclose exact binary-input extrema expanded by1e-12. No overflow/subnormal coefficient or nonzero-domain product is involved in these fixed cases; fused operations cannot enlarge this conservative bound.",
+    "source_checks": "Each named object and every coefficient/domain token was checked against the complete hash-pinned source; original blank output bounds are not treated as supplied numerical limits."
+  },
+  "curves": [
+    {
+      "role": "CapFT",
+      "coefficients_decimal": [
+        ".9953455",
+        "-.0118418",
+        ".0012277",
+        ".0030246",
+        "-.0000702",
+        "-.0003685"
+      ],
+      "domain_x_decimal": [
+        "12.22",
+        "26.67"
+      ],
+      "domain_y_decimal": [
+        "15.56",
+        "51.67"
+      ],
+      "proposed_output_limits_decimal": [
+        ".7",
+        "1.5"
+      ],
+      "exact_decimal_candidates": [
+        {
+          "value_exact": "24849195319/25000000000",
+          "value_display": 0.99396781276,
+          "point_exact": [
+            "611/50",
+            "389/25"
+          ]
+        },
+        {
+          "value_exact": "154031491/200000000",
+          "value_display": 0.770157455,
+          "point_exact": [
+            "611/50",
+            "5167/100"
+          ]
+        },
+        {
+          "value_exact": "142991843161/100000000000",
+          "value_display": 1.42991843161,
+          "point_exact": [
+            "2667/100",
+            "389/25"
+          ]
+        },
+        {
+          "value_exact": "10138286431/10000000000",
+          "value_display": 1.0138286431,
+          "point_exact": [
+            "2667/100",
+            "5167/100"
+          ]
+        },
+        {
+          "value_exact": "3781319737893151/4910800000000000",
+          "value_display": 0.7700007611576832,
+          "point_exact": [
+            "6176439/491080",
+            "5167/100"
+          ]
+        }
+      ],
+      "exact_decimal_min": {
+        "value_exact": "3781319737893151/4910800000000000",
+        "value_display": 0.7700007611576832,
+        "point_exact": [
+          "6176439/491080",
+          "5167/100"
+        ]
+      },
+      "exact_decimal_max": {
+        "value_exact": "142991843161/100000000000",
+        "value_display": 1.42991843161,
+        "point_exact": [
+          "2667/100",
+          "389/25"
+        ]
+      },
+      "hessian_determinant_exact": "-48053041/100000000000000",
+      "binary64_input_min": {
+        "value_exact": "1592877788516302849551328502801587062682409579683069410712690919/2068670407703802482340445494240572703606361851852883303046578176",
+        "value_display": 0.7700007611576832,
+        "point_exact": [
+          "20043690510394995671591331028835/1593645713305801933367933927424",
+          "3635953011659899/70368744177664"
+        ]
+      },
+      "binary64_input_max": {
+        "value_exact": "16718625032381214525124881925625086729242415425163/11692013098647223345629478661730264157247460343808",
+        "value_display": 1.42991843161,
+        "point_exact": [
+          "1876734407218299/70368744177664",
+          "8759501275235615/562949953421312"
+        ]
+      },
+      "binary64_absolute_term_sum_bound_exact": "554625856655194406901545339809184756489973560977/182687704666362864775460604089535377456991567872",
+      "rounding_error_allowance_exact": "1/1000000000000",
+      "non_clipping_output_bounds_proved": true
+    },
+    {
+      "role": "EIRFT",
+      "coefficients_decimal": [
+        ".3802131",
+        ".0199468",
+        "-.0006682",
+        ".0058933",
+        ".0004646",
+        "-.0004072"
+      ],
+      "domain_x_decimal": [
+        "12.22",
+        "26.67"
+      ],
+      "domain_y_decimal": [
+        "15.56",
+        "51.67"
+      ],
+      "proposed_output_limits_decimal": [
+        ".4",
+        "1.9"
+      ],
+      "exact_decimal_candidates": [
+        {
+          "value_exact": "8136764683/12500000000",
+          "value_display": 0.65094117464,
+          "point_exact": [
+            "611/50",
+            "389/25"
+          ]
+        },
+        {
+          "value_exact": "90598169989/50000000000",
+          "value_display": 1.81196339978,
+          "point_exact": [
+            "611/50",
+            "5167/100"
+          ]
+        },
+        {
+          "value_exact": "23605738307/50000000000",
+          "value_display": 0.47211476614,
+          "point_exact": [
+            "2667/100",
+            "389/25"
+          ]
+        },
+        {
+          "value_exact": "4439575959/3125000000",
+          "value_display": 1.42066430688,
+          "point_exact": [
+            "2667/100",
+            "5167/100"
+          ]
+        }
+      ],
+      "exact_decimal_min": {
+        "value_exact": "23605738307/50000000000",
+        "value_display": 0.47211476614,
+        "point_exact": [
+          "2667/100",
+          "389/25"
+        ]
+      },
+      "exact_decimal_max": {
+        "value_exact": "90598169989/50000000000",
+        "value_display": 1.81196339978,
+        "point_exact": [
+          "611/50",
+          "5167/100"
+        ]
+      },
+      "hessian_determinant_exact": "-8797467/6250000000000",
+      "binary64_input_min": {
+        "value_exact": "1379993007443412752619117420413527866114852159893/2923003274661805836407369665432566039311865085952",
+        "value_display": 0.47211476614000003,
+        "point_exact": [
+          "1876734407218299/70368744177664",
+          "8759501275235615/562949953421312"
+        ]
+      },
+      "binary64_input_max": {
+        "value_exact": "5296374951124279292333998959336266920133647500155/2923003274661805836407369665432566039311865085952",
+        "value_display": 1.8119633997800002,
+        "point_exact": [
+          "6879248430808433/562949953421312",
+          "3635953011659899/70368744177664"
+        ]
+      },
+      "binary64_absolute_term_sum_bound_exact": "319110266319643644983706805157973064217241092221/91343852333181432387730302044767688728495783936",
+      "rounding_error_allowance_exact": "1/1000000000000",
+      "non_clipping_output_bounds_proved": true
+    },
+    {
+      "role": "CapFFF",
+      "coefficients_decimal": [
+        ".7705358",
+        ".2848007",
+        "-.0580891"
+      ],
+      "domain_x_decimal": [
+        ".75",
+        "1.25"
+      ],
+      "domain_y_decimal": null,
+      "proposed_output_limits_decimal": [
+        ".9",
+        "1.1"
+      ],
+      "exact_decimal_candidates": [
+        {
+          "value_exact": "152233793/160000000",
+          "value_display": 0.95146120625,
+          "point_exact": [
+            "3/4"
+          ]
+        },
+        {
+          "value_exact": "165723593/160000000",
+          "value_display": 1.03577245625,
+          "point_exact": [
+            "5/4"
+          ]
+        }
+      ],
+      "exact_decimal_min": {
+        "value_exact": "152233793/160000000",
+        "value_display": 0.95146120625,
+        "point_exact": [
+          "3/4"
+        ]
+      },
+      "exact_decimal_max": {
+        "value_exact": "165723593/160000000",
+        "value_display": 1.03577245625,
+        "point_exact": [
+          "5/4"
+        ]
+      },
+      "hessian_determinant_exact": null,
+      "binary64_input_min": {
+        "value_exact": "2193920170969591129/2305843009213693952",
+        "value_display": 0.95146120625,
+        "point_exact": [
+          "3/4"
+        ]
+      },
+      "binary64_input_max": {
+        "value_exact": "2388328677380159209/2305843009213693952",
+        "value_display": 1.03577245625,
+        "point_exact": [
+          "5/4"
+        ]
+      },
+      "binary64_absolute_term_sum_bound_exact": "2806904755963019159/2305843009213693952",
+      "rounding_error_allowance_exact": "1/1000000000000",
+      "non_clipping_output_bounds_proved": true
+    },
+    {
+      "role": "EIRFFF",
+      "coefficients_decimal": [
+        "1.3439758",
+        "-.5111244",
+        ".1732549"
+      ],
+      "domain_x_decimal": [
+        ".75",
+        "1.25"
+      ],
+      "domain_y_decimal": null,
+      "proposed_output_limits_decimal": [
+        ".9",
+        "1.1"
+      ],
+      "exact_decimal_candidates": [
+        {
+          "value_exact": "169294141/160000000",
+          "value_display": 1.05808838125,
+          "point_exact": [
+            "3/4"
+          ]
+        },
+        {
+          "value_exact": "156124973/160000000",
+          "value_display": 0.97578108125,
+          "point_exact": [
+            "5/4"
+          ]
+        }
+      ],
+      "exact_decimal_min": {
+        "value_exact": "156124973/160000000",
+        "value_display": 0.97578108125,
+        "point_exact": [
+          "5/4"
+        ]
+      },
+      "exact_decimal_max": {
+        "value_exact": "169294141/160000000",
+        "value_display": 1.05808838125,
+        "point_exact": [
+          "3/4"
+        ]
+      },
+      "hessian_determinant_exact": null,
+      "binary64_input_min": {
+        "value_exact": "140624874045205733/144115188075855872",
+        "value_display": 0.9757810812499998,
+        "point_exact": [
+          "5/4"
+        ]
+      },
+      "binary64_input_max": {
+        "value_exact": "152486606064721629/144115188075855872",
+        "value_display": 1.05808838125,
+        "point_exact": [
+          "3/4"
+        ]
+      },
+      "binary64_absolute_term_sum_bound_exact": "324776846635603213/144115188075855872",
+      "rounding_error_allowance_exact": "1/1000000000000",
+      "non_clipping_output_bounds_proved": true
+    },
+    {
+      "role": "PLFFPLR",
+      "coefficients_decimal": [
+        ".85",
+        ".15",
+        "0"
+      ],
+      "domain_x_decimal": [
+        "0",
+        "1"
+      ],
+      "domain_y_decimal": null,
+      "proposed_output_limits_decimal": [
+        ".8",
+        "1.1"
+      ],
+      "exact_decimal_candidates": [
+        {
+          "value_exact": "17/20",
+          "value_display": 0.85,
+          "point_exact": [
+            "0"
+          ]
+        },
+        {
+          "value_exact": "1",
+          "value_display": 1.0,
+          "point_exact": [
+            "1"
+          ]
+        }
+      ],
+      "exact_decimal_min": {
+        "value_exact": "17/20",
+        "value_display": 0.85,
+        "point_exact": [
+          "0"
+        ]
+      },
+      "exact_decimal_max": {
+        "value_exact": "1",
+        "value_display": 1.0,
+        "point_exact": [
+          "1"
+        ]
+      },
+      "hessian_determinant_exact": null,
+      "binary64_input_min": {
+        "value_exact": "7656119366529843/9007199254740992",
+        "value_display": 0.85,
+        "point_exact": [
+          "0"
+        ]
+      },
+      "binary64_input_max": {
+        "value_exact": "36028797018963967/36028797018963968",
+        "value_display": 1.0,
+        "point_exact": [
+          "1"
+        ]
+      },
+      "binary64_absolute_term_sum_bound_exact": "36028797018963967/36028797018963968",
+      "rounding_error_allowance_exact": "1/1000000000000",
+      "non_clipping_output_bounds_proved": true
+    }
+  ],
+  "native_processes": 0,
+  "active_operating_domain_coverage": "unverified",
+  "limitations": [
+    "Bounds concern output clipping only within each published input domain. They do not stop or justify EnergyPlus input clamping.",
+    "Annual outdoor and entering-coil wet-bulb applicability remains a separate prerequisite; averaged output cannot prove all internal iterations.",
+    "No source coefficients, rating tuple, input domains, model, schedules or historical identities were changed. Proposed limits are not adopted by this proof alone."
+  ]
+}

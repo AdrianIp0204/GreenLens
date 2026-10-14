@@ -8,7 +8,9 @@ import {renderToStaticMarkup} from 'react-dom/server';
 
 const states=[];let cursor=0,pair,doc,initialProject,mutations=0;
 const host={
-  useState(initial){const i=cursor++;if(!(i in states))states[i]=initial;return[states[i],v=>{states[i]=v;}];},
+  useState(initial){const i=cursor++;if(!(i in states))states[i]=typeof initial==='function'?initial():initial;return[states[i],v=>{states[i]=typeof v==='function'?v(states[i]):v;}];},
+  useRef(initial){const i=cursor++;return states[i]??(states[i]={current:initial});},
+  useCallback(fn){cursor++;return fn;},
   useEffect(){},
   invoke(){throw new Error('No native command expected');},
   useEnergyRead(command,args){
@@ -16,13 +18,19 @@ const host={
     if(command==='energy_compare'&&args)return pair;
     return{value:null,loading:false,error:null};
   },
-  Assessment:()=>null,Cell:()=>null,ThermalEditor:()=>null,EvidenceSettings:()=>null,ThermalView:()=>null,EnergySeries:()=>null,
+  Assessment:()=>null,Cell:()=>null,ThermalEditor:()=>null,GeometryAuthoring:()=>null,NewEnergyProject:()=>null,EvidenceSettings:()=>null,ThermalView:()=>null,EnergyInvestigation:()=>null,ThermalDifferences:()=>null,EnergyPreflight:()=>null,ReportWorkbench:()=>null,ThermalInspectorResizer:()=>null,EnergySensitivity:()=>null,EnergyCommandBar:()=>null,RunHistory:()=>null,EnergyDependencySettings:()=>null,
+  DesignCopy:()=>null,useEnergyDependencyPaths:()=>({paths:{engineDir:'',typstDir:''},warning:'',setPath(){},reset(){}}),
   readable:s=>s.charAt(0).toUpperCase()+s.slice(1).replaceAll('_',' '),
 };
 globalThis.__energyComparisonHost=host;
 const sourceUrl=new URL('../src/energy/EnergyWorkspace.tsx',import.meta.url);
 const {code}=await transformWithOxc(fs.readFileSync(sourceUrl,'utf8'),sourceUrl.pathname,{jsx:{runtime:'automatic'}});
-const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./EvidenceSettings','./ThermalView','./EnergySeries']);
+const inspectorUrl=new URL('../src/energy/thermal-inspector-target.ts',import.meta.url);
+const inspector=await transformWithOxc(fs.readFileSync(inspectorUrl,'utf8'),inspectorUrl.pathname);
+const inspectorModule=`data:text/javascript;base64,${Buffer.from(inspector.code).toString('base64')}`;
+// This older read-only comparison projection test excludes unrelated panels.
+// Real editing, metadata and viewport interactions have dedicated DOM suites.
+const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./GeometryAuthoring','./NewEnergyProject','./EvidenceSettings','./ThermalView','./EnergyInvestigation','./ThermalDifferences','./EnergyPreflight','./ReportWorkbench','./ThermalInspectorResizer','./EnergySensitivity','./EnergyCommandBar','./RunHistory','./EnergyDependencySettings','./energy-dependency-settings','./DesignCopy']);
 const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_q,specifier)=>{
   if(mocked.has(specifier)){
     const parts=[],named=binding.match(/\{([^}]+)\}/)?.[1];
@@ -31,7 +39,7 @@ const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/impo
     if(!defaultName.startsWith('{'))parts.push(`const ${defaultName}=globalThis.__energyComparisonHost.${defaultName};`);
     return parts.join('\n');
   }
-  return `import ${binding} from ${JSON.stringify(specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
+  return `import ${binding} from ${JSON.stringify(specifier==='./thermal-inspector-target'?inspectorModule:specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
 });
 const {default:EnergyWorkspace}=await import(`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`);
 const nodes=t=>!t||typeof t!=='object'?[]:Array.isArray(t)?t.flatMap(nodes):[t,...nodes(t.props?.children)];
@@ -40,6 +48,7 @@ function setup(differences){
   states.length=0;mutations=0;
   const design={model:{name:'Original synthetic zone',zones:[{id:'zone-1',name:'Zone 1',storey:0}]},study:null};
   doc={documentId:1,alternative:'A',path:'synthetic-project',project:{energy:{designs:{A:design,B:structuredClone(design)},runs:[{id:'retained-A',alternative_id:'A'},{id:'retained-B',alternative_id:'B'}]}},history:{past:[],future:[]},busy:false,running:false,pending:false,energyLocked:false,job:null,commitEnergy(){mutations++;},setAlternative(){mutations++;},setEnergyLocked(){mutations++;}};
+  doc.thermalPresentation={value:{selected:null,hidden:[],isolated:null,inspector_width:320},update(){mutations++;},resetLayout(){mutations++;}};
   initialProject=structuredClone(doc.project);
   const savings={absolute:{state:'value',value:1,display:'1',unit:'kwh'},percent:{state:'value',value:2,display:'2',unit:'percent'}};
   pair={value:{data:{comparison:{input_relation:{differences,service_warnings:[]},lighting_service_equivalence:'Missing service evidence'}},presentation:{facility_energy_savings:savings,facility_peak_savings:savings,end_uses:[]}},loading:false,error:null};

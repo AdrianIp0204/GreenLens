@@ -1275,7 +1275,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-cli"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "clap",
@@ -1299,7 +1299,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-desktop"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "greenlens-core",
@@ -1314,7 +1314,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-energyplus"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "greenlens-core",
@@ -1327,7 +1327,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-process"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "chrono",
@@ -1340,7 +1340,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-radiance"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "chrono",
@@ -1353,7 +1353,7 @@ dependencies = [
 
 [[package]]
 name = "greenlens-runner"
-version = "0.4.0"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "chrono",

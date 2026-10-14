@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { transformWithOxc } from 'vite';
 
-const componentNames=['EnergyWorkspace','SelectionBar','PropertiesPanel','ParameterField','AnalysisContent','Stats','Legend','ClimateStudyPanel','ClimateResultControls','ClimateResultsContent','ExportRunDialog'];
+const componentNames=['EnergyDraftGuard','EnergyWorkspace','SelectionBar','PropertiesPanel','ParameterField','AnalysisContent','Stats','Legend','ClimateStudyPanel','ClimateResultControls','ClimateResultsContent','ExportRunDialog'];
 const components=Object.fromEntries(componentNames.map(name=>[name,Object.defineProperty(()=>null,'name',{value:name})]));
 const fixture=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
 const staticRun={id:'static-A',alternative_id:'A',model:fixture.model,validated:fixture,lux:fixture.sensor_grid.sensors.map(()=>100),statistics:{min:100,mean:100,max:100}};
@@ -24,7 +24,7 @@ const host={...components,
   qualificationLabel:()=> 'Scientific qualification unassessed',errorText:String,fmt:String,METHOD:'Static daylight illuminance under a prescribed CIE standard overcast sky.',
 };
 globalThis.__greenlensAppInspectionHost=host;
-const mocked=new Set(['./energy/EnergyWorkspace','react','@tauri-apps/api/core','@tauri-apps/api/window','./viewport/entities','./workspace/useDocument','./workspace/useHistoricalComparison','./workspace/PropertiesPanel','./workspace/SelectionBar','./workspace/AnalysisContent','./workspace/ClimateStudyPanel','./workspace/useClimateResults','./workspace/ClimateResultsContent','./workspace/QualificationStatus']);
+const mocked=new Set(['./energy/EnergyDraftGuard','./energy/EnergyWorkspace','react','@tauri-apps/api/core','@tauri-apps/api/window','./viewport/entities','./workspace/useDocument','./workspace/useHistoricalComparison','./workspace/PropertiesPanel','./workspace/SelectionBar','./workspace/AnalysisContent','./workspace/ClimateStudyPanel','./workspace/useClimateResults','./workspace/ClimateResultsContent','./workspace/QualificationStatus']);
 const source=fs.readFileSync(new URL('../src/App.tsx',import.meta.url),'utf8');
 const {code}=await transformWithOxc(source,'App.tsx',{jsx:{runtime:'automatic'}});
 const linked=code.replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_quote,specifier)=>{

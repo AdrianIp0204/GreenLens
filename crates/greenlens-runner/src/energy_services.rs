@@ -31,6 +31,7 @@ pub fn example_document() -> Project {
         attachments: vec![],
         carbon_factor: None,
         lighting_service_evidence: None,
+        workbench: None,
     });
     project
 }
@@ -122,13 +123,35 @@ pub fn import_weather(
     calendar: EnergyCalendar,
     apply_location: bool,
 ) -> Result<ProjectView> {
+    import_weather_with_profile(
+        root,
+        project,
+        expected,
+        file,
+        source,
+        calendar,
+        apply_location,
+        weather::EnergyWeatherProfile::ExplicitFieldsV1,
+    )
+}
+#[allow(clippy::too_many_arguments)]
+pub fn import_weather_with_profile(
+    root: &Path,
+    project: &Project,
+    expected: Option<&str>,
+    file: &Path,
+    source: crate::weather::WeatherSource,
+    calendar: EnergyCalendar,
+    apply_location: bool,
+    profile: weather::EnergyWeatherProfile,
+) -> Result<ProjectView> {
     check_revision(root, expected)?;
     let scratch = crate::local_root()?
         .join("energy-imports")
         .join(Uuid::new_v4().to_string());
     fs::create_dir_all(&scratch)?;
     let asset = scratch.join("asset");
-    energy_weather::import(file, &asset, source)?;
+    energy_weather::import_with_profile(file, &asset, source, profile)?;
     attach_weather(root, project, expected, &asset, calendar, apply_location)
 }
 
@@ -138,6 +161,16 @@ pub fn edit(
     model: ThermalModel,
     study: Option<EnergyStudy>,
 ) -> Result<Project> {
+    let original = project
+        .energy
+        .as_ref()
+        .and_then(|e| e.designs.get(alternative))
+        .context("Select energy alternative A or B")?;
+    enforce_thermal_locks(
+        &original.model,
+        &model,
+        crate::energy_workbench::locks(project, alternative),
+    )?;
     let mut next = project.clone();
     let design = next
         .energy
@@ -159,6 +192,18 @@ pub fn start(
     engine_dir: Option<std::path::PathBuf>,
 ) -> Result<crate::JobStatus> {
     crate::validate_project(project)?;
+    let check = crate::energy_preflight::inputs(project, alternative)?;
+    ensure!(
+        check.can_prepare,
+        "Energy preflight rejected the study: {}",
+        check
+            .issues
+            .iter()
+            .filter(|i| i.severity == ThermalIssueSeverity::Error)
+            .map(|i| format!("{}: {} {}", i.code, i.message, i.remedy))
+            .collect::<Vec<_>>()
+            .join("\n")
+    );
     let extension = project
         .energy
         .as_ref()
@@ -363,6 +408,79 @@ pub fn render_reports(
     typst: Option<&crate::energy_report::TypstConfig>,
     cancel: &std::sync::atomic::AtomicBool,
 ) -> Result<crate::energy_report::EnergyReportArtifacts> {
+    render_reports_impl(root, project, a, b, destination, typst, cancel, false)
+}
+/// New report profiles are a supplementary presentation, not a new run codec.
+pub fn render_workbench_reports(
+    root: &Path,
+    project: &Project,
+    a: &str,
+    b: &str,
+    destination: &Path,
+    typst: Option<&crate::energy_report::TypstConfig>,
+    cancel: &std::sync::atomic::AtomicBool,
+) -> Result<crate::energy_report::EnergyReportArtifacts> {
+    render_reports_impl(root, project, a, b, destination, typst, cancel, true)
+}
+pub fn report_attachment_preflight(
+    root: &Path,
+    project: &Project,
+    a: &str,
+    b: &str,
+) -> Result<EnergyAttachmentPreflight> {
+    let a = selected_run(root, project, a)?;
+    let b = selected_run(root, project, b)?;
+    crate::energy_report_workbench::attachment_preflight(
+        root,
+        &project
+            .energy
+            .as_ref()
+            .context("Energy project missing")?
+            .attachments,
+        [
+            &a.validated.model_input_sha256,
+            &b.validated.model_input_sha256,
+        ],
+    )
+}
+pub fn workbench_report_data(
+    root: &Path,
+    project: &Project,
+    a: &str,
+    b: &str,
+) -> Result<EnergyReportWorkbenchData> {
+    let preflight = report_attachment_preflight(root, project, a, b)?;
+    preflight.summary()?;
+    let metadata = project
+        .energy
+        .as_ref()
+        .and_then(|e| e.workbench.as_ref())
+        .and_then(|w| w.report_metadata.clone())
+        .unwrap_or_else(|| EnergyReportMetadata {
+            title: format!("{} — energy assessment", project.name),
+            ..Default::default()
+        });
+    crate::energy_report_workbench::prepare_data(
+        report_data(root, project, a, b)?,
+        metadata,
+        vec![
+            EnergyReportProfile::Executive,
+            EnergyReportProfile::Technical,
+        ],
+        &preflight,
+    )
+}
+#[allow(clippy::too_many_arguments)]
+fn render_reports_impl(
+    root: &Path,
+    project: &Project,
+    a: &str,
+    b: &str,
+    destination: &Path,
+    typst: Option<&crate::energy_report::TypstConfig>,
+    cancel: &std::sync::atomic::AtomicBool,
+    workbench: bool,
+) -> Result<crate::energy_report::EnergyReportArtifacts> {
     use std::sync::atomic::Ordering;
     ensure!(
         !destination.exists(),
@@ -374,7 +492,16 @@ pub fn render_reports(
     let stage = crate::local_root()?
         .join("energy-report-deliveries")
         .join(Uuid::new_v4().to_string());
-    let mut products = crate::energy_report::render(&data, &stage, typst, cancel)?;
+    let mut products = if workbench {
+        crate::energy_report_workbench::render(
+            &workbench_report_data(root, project, a, b)?,
+            &stage,
+            typst,
+            cancel,
+        )?
+    } else {
+        crate::energy_report::render(&data, &stage, typst, cancel)?
+    };
     for item in &project
         .energy
         .as_ref()

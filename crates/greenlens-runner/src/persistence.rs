@@ -193,6 +193,26 @@ fn create_checked_directories(
     Ok((current, guards))
 }
 
+/// Create one immutable relative member while retaining checked parent handles.
+/// Callers keep their existing project transaction lock; this does not acquire
+/// a second root WriterLock or overwrite an existing member.
+pub(crate) fn write_new_evidence_bytes(root: &Path, name: &str, bytes: &[u8]) -> Result<()> {
+    ensure!(
+        bytes.len() as u64 <= MAX_EVIDENCE_FILE_BYTES,
+        "Evidence file too large"
+    );
+    let relative = relative_path(name)?;
+    let parent = relative.parent().unwrap_or_else(|| Path::new(""));
+    let (_parent, _guards) = create_checked_directories(root, parent)?;
+    let mut file = OpenOptions::new()
+        .create_new(true)
+        .write(true)
+        .open(root.join(relative))?;
+    file.write_all(bytes)?;
+    file.sync_all()?;
+    Ok(())
+}
+
 fn read_limited(mut source: impl Read, limit: u64) -> Result<Vec<u8>> {
     let mut bytes = Vec::new();
     let probe_limit = limit.checked_add(1).context("Read limit overflow")?;
@@ -232,7 +252,7 @@ fn open_limited_file(path: &Path, limit: u64, too_large: &str) -> Result<File> {
 }
 
 /// The actual read stays bounded if an external writer grows the opened file.
-pub(crate) fn read_json_bytes(path: &Path) -> Result<Vec<u8>> {
+pub fn read_json_bytes(path: &Path) -> Result<Vec<u8>> {
     let file = open_limited_file(
         path,
         MAX_EVIDENCE_FILE_BYTES,

@@ -67,16 +67,16 @@ pub struct EnergyReportArtifacts {
     pub processes: Vec<ProcessOutcome>,
 }
 #[derive(Debug, Clone, Serialize)]
-struct Section {
-    title: String,
-    paragraphs: Vec<String>,
-    headers: Vec<String>,
-    rows: Vec<Vec<String>>,
-    image: Option<String>,
-    caption: String,
+pub(crate) struct Section {
+    pub(crate) title: String,
+    pub(crate) paragraphs: Vec<String>,
+    pub(crate) headers: Vec<String>,
+    pub(crate) rows: Vec<Vec<String>>,
+    pub(crate) image: Option<String>,
+    pub(crate) caption: String,
 }
 impl Section {
-    fn table(title: &str, headers: &[&str], rows: Vec<Vec<String>>) -> Self {
+    pub(crate) fn table(title: &str, headers: &[&str], rows: Vec<Vec<String>>) -> Self {
         Self {
             title: title.into(),
             paragraphs: vec![],
@@ -86,13 +86,13 @@ impl Section {
             caption: String::new(),
         }
     }
-    fn prose(title: &str, paragraphs: Vec<String>) -> Self {
+    pub(crate) fn prose(title: &str, paragraphs: Vec<String>) -> Self {
         Self {
             paragraphs,
             ..Self::table(title, &[], vec![])
         }
     }
-    fn figure(title: &str, image: &str, caption: String) -> Self {
+    pub(crate) fn figure(title: &str, image: &str, caption: String) -> Self {
         Self {
             image: Some(image.into()),
             caption,
@@ -101,20 +101,20 @@ impl Section {
     }
 }
 #[derive(Debug, Clone, Serialize)]
-struct Document {
-    schema_version: &'static str,
-    title: String,
-    report_id: String,
-    revision: String,
-    kind: String,
-    scope: String,
-    dataset_sha256: String,
-    sections: Vec<Section>,
+pub(crate) struct Document {
+    pub(crate) schema_version: &'static str,
+    pub(crate) title: String,
+    pub(crate) report_id: String,
+    pub(crate) revision: String,
+    pub(crate) kind: String,
+    pub(crate) scope: String,
+    pub(crate) dataset_sha256: String,
+    pub(crate) sections: Vec<Section>,
 }
-fn sha(bytes: &[u8]) -> String {
+pub(crate) fn sha(bytes: &[u8]) -> String {
     format!("{:x}", Sha256::digest(bytes))
 }
-fn timestamp(t: &EnergyTimestamp) -> String {
+pub(crate) fn timestamp(t: &EnergyTimestamp) -> String {
     format!(
         "{:02}/{:02} {:02}:{:02}-{:02}:{:02}\nLocal standard time; interval {}",
         t.month,
@@ -126,7 +126,7 @@ fn timestamp(t: &EnergyTimestamp) -> String {
         t.interval_index
     )
 }
-fn escaped(s: &str) -> String {
+pub(crate) fn escaped(s: &str) -> String {
     s.replace('&', "&amp;")
         .replace('<', "&lt;")
         .replace('>', "&gt;")
@@ -136,7 +136,7 @@ fn escaped(s: &str) -> String {
 fn serialized(value: &impl Serialize) -> Result<String> {
     Ok(serde_json::to_string(value)?)
 }
-fn cell(c: &ReportCell) -> String {
+pub(crate) fn cell(c: &ReportCell) -> String {
     match c {
         ReportCell::Value { display, unit, .. } => format!("{display} {}", unit.symbol()),
         ReportCell::NotApplicable { reason } => format!("N/A — {reason}"),
@@ -144,7 +144,7 @@ fn cell(c: &ReportCell) -> String {
         ReportCell::Unsupported { reason } => format!("Unsupported — {reason}"),
     }
 }
-fn end_use(e: EnergyEndUse) -> &'static str {
+pub(crate) fn end_use(e: EnergyEndUse) -> &'static str {
     match e {
         EnergyEndUse::CoolingSystem => "Cooling system",
         EnergyEndUse::SupplyFans => "Supply fans",
@@ -273,7 +273,7 @@ fn value_text(value: &Value) -> String {
         _ => value.to_string(),
     }
 }
-fn documents(
+pub(crate) fn documents(
     data: &EnergyReportData,
     p: &EnergyReportPresentation,
     hash: &str,
@@ -575,7 +575,7 @@ fn documents(
         base("Performance", focused_performance),
     ])
 }
-fn html(d: &Document, generated: &[(&str, Vec<u8>)]) -> Result<String> {
+pub(crate) fn html(d: &Document, generated: &[(&str, Vec<u8>)]) -> Result<String> {
     let mut out=format!("<!doctype html><html lang=\"en\"><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width\"><meta http-equiv=\"Content-Security-Policy\" content=\"default-src 'none'; img-src 'self'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'\"><title>{}</title><style>body{{font:15px/1.55 system-ui,sans-serif;color:#213834;max-width:1120px;margin:40px auto;padding:0 24px}}h1,h2{{color:#246954}}table{{border-collapse:collapse;width:100%;margin:20px 0;font-size:13px}}th,td{{border:1px solid #ccd8d1;padding:8px;text-align:left;vertical-align:top;overflow-wrap:anywhere;white-space:pre-wrap}}th{{background:#eef4f0}}figure{{margin:20px 0}}svg{{width:100%;height:auto}}.scope{{padding:16px;background:#eef4f0}}@media print{{thead{{display:table-header-group}}tr{{break-inside:avoid}}}}</style><h1>{}</h1><p>{} · {}</p><p class=\"scope\">{}</p><p>Dataset SHA-256: {}</p>",escaped(&d.title),escaped(&d.title),escaped(&d.kind),escaped(&d.revision),escaped(&d.scope),escaped(&d.dataset_sha256));
     out.push_str("<nav aria-label=\"Contents\"><h2>Contents</h2><ol>");
     for (i, s) in d.sections.iter().enumerate() {
@@ -630,7 +630,7 @@ fn html(d: &Document, generated: &[(&str, Vec<u8>)]) -> Result<String> {
     out.push_str("<p>Execution, evidence integrity, input currency and scientific qualification are separate. Simulation metrics are not certification.</p></html>");
     Ok(out)
 }
-fn inputs_csv(data: &EnergyReportData) -> Result<String> {
+pub(crate) fn inputs_csv(data: &EnergyReportData) -> Result<String> {
     let mut rows = vec!["\"input_parameter\",\"exact_value_or_lossless_repeated_range\"".into()];
     for (side, c) in [("baseline", &data.baseline), ("proposed", &data.proposed)] {
         flatten_values(
@@ -656,7 +656,7 @@ fn csv_field(s: &str) -> String {
     };
     format!("\"{}\"", guarded.replace('"', "\"\""))
 }
-fn csv(p: &EnergyReportPresentation) -> Result<String> {
+pub(crate) fn csv(p: &EnergyReportPresentation) -> Result<String> {
     fn visit(path: &str, v: &Value, rows: &mut Vec<Vec<String>>) {
         if let Some(o) = v.as_object() {
             if let Some(state) = o.get("state").and_then(Value::as_str) {
@@ -720,7 +720,7 @@ fn numeric(c: &ReportCell) -> f64 {
         0.
     }
 }
-fn chart(p: &EnergyReportPresentation, monthly: bool) -> String {
+pub(crate) fn chart(p: &EnergyReportPresentation, monthly: bool) -> String {
     let rows: Vec<(String, &ReportCell, &ReportCell)> = if monthly {
         p.baseline
             .monthly
@@ -796,7 +796,7 @@ fn overhang_dimensions(c: &EnergyReportCase) -> Result<Option<Section>> {
     }))
 }
 
-fn model_svg(c: &EnergyReportCase) -> String {
+pub(crate) fn model_svg(c: &EnergyReportCase) -> String {
     let model = &c.model;
     let boxes = model
         .zones
@@ -981,7 +981,7 @@ fn safe_chain(path: &Path) -> Result<()> {
     }
     Ok(())
 }
-fn create_fresh(path: &Path) -> Result<()> {
+pub(crate) fn create_fresh(path: &Path) -> Result<()> {
     safe_chain(path)?;
     ensure!(
         !path.exists(),
@@ -990,14 +990,14 @@ fn create_fresh(path: &Path) -> Result<()> {
     fs::create_dir_all(path)?;
     safe_chain(path)
 }
-fn write_new(path: &Path, bytes: &[u8]) -> Result<()> {
+pub(crate) fn write_new(path: &Path, bytes: &[u8]) -> Result<()> {
     ensure!(bytes.len() as u64 <= FILE_CAP, "Report file exceeds 64 MiB");
     let mut f = OpenOptions::new().write(true).create_new(true).open(path)?;
     f.write_all(bytes)?;
     f.sync_all()?;
     Ok(())
 }
-fn artifact(root: &Path, name: &str) -> Result<ReportArtifact> {
+pub(crate) fn artifact(root: &Path, name: &str) -> Result<ReportArtifact> {
     let path = root.join(name);
     safe_chain(&path)?;
     let m = fs::symlink_metadata(&path)?;
@@ -1063,7 +1063,7 @@ fn renderer_files(config: &TypstConfig) -> Result<(PathBuf, Vec<PinnedRendererFi
     );
     Ok((exe, fonts))
 }
-fn check_budget(root: &Path) -> Result<()> {
+pub(crate) fn check_budget(root: &Path) -> Result<()> {
     let (total, max) = scratch_sizes(root)?;
     ensure!(
         total <= TOTAL_CAP && max <= FILE_CAP,
@@ -1190,6 +1190,55 @@ fn render_native(
     cancel: &AtomicBool,
     result: &mut EnergyReportArtifacts,
 ) -> Result<()> {
+    render_native_documents(
+        NativeDocuments {
+            docs,
+            generated,
+            template: TEMPLATE,
+            stages: &[
+                ("assessment", 0, false),
+                ("input-appendix", 1, false),
+                ("performance", 2, false),
+                ("performance-pages", 2, true),
+            ],
+        },
+        destination,
+        config,
+        cancel,
+        result,
+    )
+}
+pub(crate) struct NativeDocuments<'a> {
+    pub(crate) docs: &'a [Document],
+    pub(crate) generated: &'a [(&'a str, Vec<u8>)],
+    pub(crate) template: &'a str,
+    pub(crate) stages: &'a [(&'a str, usize, bool)],
+}
+pub(crate) fn render_native_documents(
+    bundle: NativeDocuments<'_>,
+    destination: &Path,
+    config: &TypstConfig,
+    cancel: &AtomicBool,
+    result: &mut EnergyReportArtifacts,
+) -> Result<()> {
+    let NativeDocuments {
+        docs,
+        generated,
+        template,
+        stages,
+    } = bundle;
+    ensure!(
+        !stages.is_empty() && stages.len() <= 6,
+        "Expected bounded owned report stages"
+    );
+    for (name, index, _) in stages {
+        ensure!(
+            !name.is_empty()
+                && name.bytes().all(|b| b.is_ascii_lowercase() || b == b'-')
+                && *index < docs.len(),
+            "Invalid owned report stage"
+        );
+    }
     let start = Instant::now();
     let (exe, fonts) = renderer_files(config)?;
     let exe_hash = file_hash(&exe)?;
@@ -1200,15 +1249,7 @@ fn render_native(
         .join(format!("energy-report-{}", uuid::Uuid::new_v4()));
     create_fresh(&work)?;
     result.renderer_work_id = work.file_name().map(|s| s.to_string_lossy().into_owned());
-    for (index, name) in [
-        "assessment",
-        "input-appendix",
-        "performance",
-        "performance-pages",
-    ]
-    .iter()
-    .enumerate()
-    {
+    for &(name, document_index, png) in stages {
         ensure!(!cancel.load(Ordering::SeqCst), "Report cancelled");
         ensure!(start.elapsed() < DEADLINE, "Whole report deadline exceeded");
         let stage = work.join(name);
@@ -1224,9 +1265,9 @@ fn render_native(
         for (file, bytes) in generated.iter().filter(|(name, _)| name.ends_with(".svg")) {
             write_new(&stage.join(file), bytes)?;
         }
-        let d = &docs[index.min(2)];
+        let d = &docs[document_index];
         write_new(&stage.join("document.json"), &serde_json::to_vec_pretty(d)?)?;
-        write_new(&stage.join("report.typ"), TEMPLATE.as_bytes())?;
+        write_new(&stage.join("report.typ"), template.as_bytes())?;
         let mut input_hashes = fs::read_dir(&stage)?
             .map(|entry| {
                 let entry = entry?;
@@ -1248,10 +1289,10 @@ fn render_native(
         }
         result
             .renderer_inputs
-            .insert((*name).into(), input_hashes.clone());
+            .insert(name.into(), input_hashes.clone());
         check_budget(&work)?;
         file_bound(&exe, 52_487_680, &exe_hash)?;
-        let output = if index == 3 {
+        let output = if png {
             "page-{0p}-of-{t}.png"
         } else {
             "report.pdf"
@@ -1278,7 +1319,7 @@ fn render_native(
         .into_iter()
         .map(str::to_owned)
         .collect::<Vec<_>>();
-        if index == 3 {
+        if png {
             args.extend(["--ppi".into(), "96".into()]);
         }
         args.extend(["report.typ".into(), output.into()]);
@@ -1340,7 +1381,7 @@ fn render_native(
             );
         }
         check_budget(&work)?;
-        if index < 3 {
+        if !png {
             pdf_header(&stage.join(output))?;
             let file = format!("{name}.pdf");
             copy_artifact(&stage.join(output), destination, &file, result)?;

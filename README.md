@@ -2,7 +2,9 @@
 
 Local-first building environmental simulation with Rust, a native Tauri desktop, Radiance and separately installed EnergyPlus.
 
-The active v0.4 candidate adds a separate small-building thermal model, real annual EnergyPlus DX/fan calculations and reproducible energy reports. The [candidate delivery guide](docs/v0.4-delivery.md) gives the actual installer, CLI and reviewed example-output locations. Read the [energy status](docs/v0.4-energy-status.md), [bounded specification](docs/v0.4-energy-spec.md), [method](docs/v0.4-energy-method.md) and [progress record](docs/progress.md). **v0.4 is not yet a verified release:** numerical, installed-workflow and delivery acceptance are tracked individually.
+The active v0.5 workbench extends the existing energy services with form-based small-building authoring, durable validated drafts, four thermal views, typed design differences, date-based results, explicit numerical sensitivity and executive/technical reports. See the [bounded specification](docs/v0.5-spec.md), [acceptance ledger](docs/v0.5-acceptance.md) and [delivery guide](docs/v0.5-delivery.md). **This is an incomplete release candidate:** installed workflow verification remains blocked, and the predeclared real-weather equipment demonstration stopped at an unresolved curve-applicability prerequisite.
+
+The underlying v0.4 candidate provides a separate thermal model, real annual EnergyPlus DX/fan calculations and reproducible reports. Its [delivery guide](docs/v0.4-delivery.md), [energy status](docs/v0.4-energy-status.md) and [method](docs/v0.4-energy-method.md) retain exact historical evidence. Final v0.4 CI passed; it does not establish the still-unverified installed workflow. Fresh v0.5 checks are recorded separately in [progress](docs/progress.md).
 
 The historical v0.3 climate-daylight methods remain **failed/unqualified**. Their finite reference investigation is exhausted and closed; energy work neither reopens it nor transfers qualification to it. Historical inspection and replay remain available. See the [retained climate status](docs/v0.3-status.md) and [qualification continuation](docs/v0.3-qualification-continuation.md).
 

@@ -7,7 +7,10 @@ use anyhow::{ensure, Result};
 use greenlens_core::{
     canonical_hash,
     energy::{
-        weather::{parse_energy_epw, EnergyWeatherData, ParsedEnergyWeather, ENERGY_EPW_PROFILE},
+        weather::{
+            parse_energy_epw, parse_energy_epw_with_profile, EnergyWeatherData,
+            EnergyWeatherProfile, ParsedEnergyWeather, ENERGY_EPW_PROFILE,
+        },
         EnergyWeatherBinding,
     },
 };
@@ -34,12 +37,25 @@ pub struct EnergyWeatherInspection {
 }
 impl From<&EnergyWeatherData> for EnergyWeatherInspection {
     fn from(data: &EnergyWeatherData) -> Self {
-        Self{binding:data.binding(),location:data.location.clone(),interval_count:data.hours.len(),warnings:data.warnings.clone(),interpretation:"Hourly interval-end local standard time, non-leap synthetic calendar explicitly chosen in study; no operating-system timezone or daylight saving. Radiation is hourly accumulation in Wh/m². Required thermal fields are explicit; no zero substitution or weather-field derivation.".into()}
+        let policy = if data.profile_id == ENERGY_EPW_PROFILE {
+            "Required thermal fields are explicit; no zero substitution or weather-field derivation."
+        } else {
+            "Restricted dry-envelope profile: only exact missing albedo/precipitation sentinels may remain; original tokens are preserved and affected hours disclosed. A separately identified adapter prohibits their consumers, rain/snow effects, and prescribes monthly ground reflectance0.2. This is not general EPW suitability."
+        };
+        Self{binding:data.binding(),location:data.location.clone(),interval_count:data.hours.len(),warnings:data.warnings.clone(),interpretation:format!("Hourly interval-end local standard time, non-leap calendar explicitly chosen in study; no operating-system timezone or daylight saving. Radiation is hourly accumulation in Wh/m². {policy}")}
     }
 }
 pub fn inspect(path: &Path) -> Result<EnergyWeatherInspection> {
     Ok(EnergyWeatherInspection::from(
         &parse_energy_epw(&read_original(path)?)?.data,
+    ))
+}
+pub fn inspect_with_profile(
+    path: &Path,
+    profile: EnergyWeatherProfile,
+) -> Result<EnergyWeatherInspection> {
+    Ok(EnergyWeatherInspection::from(
+        &parse_energy_epw_with_profile(&read_original(path)?, profile)?.data,
     ))
 }
 
@@ -48,9 +64,22 @@ pub fn import(
     destination: &Path,
     source: WeatherSource,
 ) -> Result<EnergyWeatherInspection> {
+    import_with_profile(
+        path,
+        destination,
+        source,
+        EnergyWeatherProfile::ExplicitFieldsV1,
+    )
+}
+pub fn import_with_profile(
+    path: &Path,
+    destination: &Path,
+    source: WeatherSource,
+    profile: EnergyWeatherProfile,
+) -> Result<EnergyWeatherInspection> {
     source.validate()?;
     let original = read_original(path)?;
-    let parsed = parse_energy_epw(&original)?;
+    let parsed = parse_energy_epw_with_profile(&original, profile)?;
     let parent = destination
         .parent()
         .filter(|p| !p.as_os_str().is_empty())
@@ -99,12 +128,15 @@ pub fn open(root: &Path) -> Result<(EnergyWeatherAsset, ParsedEnergyWeather)> {
     );
     let asset: EnergyWeatherAsset = read_json(&regular_child(root, "asset.json")?)?;
     ensure!(
-        asset.schema_version == ASSET_SCHEMA && asset.binding.profile_id == ENERGY_EPW_PROFILE,
+        asset.schema_version == ASSET_SCHEMA,
         "Unsupported energy weather asset or provider profile"
     );
     asset.binding.validate()?;
     asset.source.validate()?;
-    let parsed = parse_energy_epw(&read_original(&regular_child(root, "original.epw")?)?)?;
+    let parsed = parse_energy_epw_with_profile(
+        &read_original(&regular_child(root, "original.epw")?)?,
+        EnergyWeatherProfile::from_id(&asset.binding.profile_id)?,
+    )?;
     ensure!(
         asset.binding == parsed.data.binding(),
         "Energy weather binding differs from retained original bytes"

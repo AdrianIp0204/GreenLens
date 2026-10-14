@@ -1,0 +1,79 @@
+{
+  "schema_version": "greenlens.npm-license-review.v1",
+  "checked_utc": "2026-10-13T19:22:44.736Z",
+  "scope": "Four exact installed npm development/test packages; source/notice audit only. No package code, build, native engine or installed UI execution.",
+  "archive_checks": [
+    {
+      "name": "@csstools/color-helpers",
+      "version": "6.1.2",
+      "source": "https://registry.npmjs.org/@csstools/color-helpers/-/color-helpers-6.1.2.tgz",
+      "integrity": "sha512-grhRy3OKmniaAEKXMjua5z/EODX0MSqBGjunw8+j/3HQjOnahs2AGhvEOIYVUWcU6ScApbhLhVrQTX8XqrMrow==",
+      "archive_sha256": "23fbce9d140e7611c37d3e92e862d2ed871731aa56ceba37c9e008588d5bf7b2",
+      "archive_bytes": 10722,
+      "all_installed_members_equal": true,
+      "member_count": 6
+    },
+    {
+      "name": "@csstools/css-syntax-patches-for-csstree",
+      "version": "1.1.15",
+      "source": "https://registry.npmjs.org/@csstools/css-syntax-patches-for-csstree/-/css-syntax-patches-for-csstree-1.1.15.tgz",
+      "integrity": "sha512-J0u7HkVl2nzSlhsiTOp4AmwcUQ3D+mGEEKfBy/7To5/y7F2OHwyLrXfrhR0SMgr4p5Lo+eaMVSeai24zUcBIxA==",
+      "archive_sha256": "47ec40a8a7bf32a5d22eb64477d2204c6e782b9ee5d4cfcfbc0c66c49036d07b",
+      "archive_bytes": 20006,
+      "all_installed_members_equal": true,
+      "member_count": 6
+    },
+    {
+      "name": "lru-cache",
+      "version": "11.5.3",
+      "source": "https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.3.tgz",
+      "integrity": "sha512-U4N8FgzmWxc8k1VH8Kr6lQg18U7Fjvby6wXHVRX/ZZ7IwWbRMgrRbP0Wrb5q5NVinryp4SQampHKdvtecItxUg==",
+      "archive_sha256": "d18739bbd7d0091d30d2cca58e120c8b70ac09a5a21aa4b2b3e9afb2dc4084d8",
+      "archive_bytes": 697866,
+      "all_installed_members_equal": true,
+      "member_count": 113
+    },
+    {
+      "name": "saxes",
+      "version": "6.0.0",
+      "source": "https://registry.npmjs.org/saxes/-/saxes-6.0.0.tgz",
+      "integrity": "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==",
+      "archive_sha256": "1cdf52fbbe1ccbd175c365d2b8e63f46e590e74aff23fa6a44a6ec51522e96db",
+      "archive_bytes": 35374,
+      "all_installed_members_equal": true,
+      "member_count": 5
+    }
+  ],
+  "saxes": {
+    "registry_git_head": "211fa0ebec9b628affc09219199639887174bfc3",
+    "registry_metadata_sha256": "3e439c43d51c447769a08f664c29e86dbab55f8efa34d48152650c5ae3056a4e",
+    "notice": "third-party/upstream/saxes-6.0.0-LICENSE.txt",
+    "notice_sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e",
+    "notice_in_published_npm_archive": false,
+    "upstream_license_sections_retained": [
+      "saxes ISC",
+      "original sax ISC",
+      "historical unused String.fromCodePoint MIT"
+    ]
+  },
+  "reviewed_license_texts": [
+    {
+      "packages": [
+        "@csstools/color-helpers@6.1.2",
+        "@csstools/css-syntax-patches-for-csstree@1.1.15"
+      ],
+      "path": "LICENSE.md",
+      "sha256": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6",
+      "source": "https://spdx.org/licenses/MIT-0.html"
+    },
+    {
+      "packages": [
+        "lru-cache@11.5.3"
+      ],
+      "path": "LICENSE.md",
+      "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+      "source": "https://blueoakcouncil.org/license/1.0.0"
+    }
+  ],
+  "policy": "No global MIT-0/BlueOak allowlist addition. Per-package manual review requires unchanged URL, lock SHA-512, declared license, installed manifest, every reviewed archive member hash and explicit obligations. Existing Cargo source-commit binding remains separate."
+}

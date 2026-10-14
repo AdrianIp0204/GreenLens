@@ -10,6 +10,31 @@ use serde::{Deserialize, Serialize};
 
 pub const ENERGY_WEATHER_SCHEMA: &str = "greenlens.energy-weather.v0.4";
 pub const ENERGY_EPW_PROFILE: &str = "greenlens.energy-epw-explicit-fields.v1";
+pub const ENERGY_DRY_ENVELOPE_PROFILE: &str = "greenlens.energy-epw-dry-envelope.v1";
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub enum EnergyWeatherProfile {
+    ExplicitFieldsV1,
+    DryEnvelopeV1,
+}
+impl EnergyWeatherProfile {
+    pub fn id(self) -> &'static str {
+        match self {
+            Self::ExplicitFieldsV1 => ENERGY_EPW_PROFILE,
+            Self::DryEnvelopeV1 => ENERGY_DRY_ENVELOPE_PROFILE,
+        }
+    }
+    pub fn from_id(id: &str) -> Result<Self> {
+        match id {
+            ENERGY_EPW_PROFILE => Ok(Self::ExplicitFieldsV1),
+            ENERGY_DRY_ENVELOPE_PROFILE => Ok(Self::DryEnvelopeV1),
+            _ => Err(invalid(
+                "weather.profile_id",
+                "Unsupported energy-specific EPW profile; daylight acceptance is insufficient",
+            )),
+        }
+    }
+}
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct EnergyWeatherBinding {
@@ -27,12 +52,7 @@ impl EnergyWeatherBinding {
         ] {
             hash(name, value)?;
         }
-        if self.profile_id != ENERGY_EPW_PROFILE {
-            return Err(invalid(
-                "weather.profile_id",
-                "An energy-specific EPW profile is required; daylight acceptance is insufficient",
-            ));
-        }
+        EnergyWeatherProfile::from_id(&self.profile_id)?;
         Ok(())
     }
 }
@@ -88,10 +108,21 @@ pub struct ParsedEnergyWeather {
     pub normalized_epw: Vec<u8>,
 }
 pub fn parse_energy_epw(original: &[u8]) -> Result<ParsedEnergyWeather> {
+    parse_energy_epw_with_profile(original, EnergyWeatherProfile::ExplicitFieldsV1)
+}
+/// The restricted profile retains exact missing sentinel values, never
+/// substitutes observations. Its engine adapter must enforce the dry-envelope
+/// consumer allowlist. The historical strict entrypoint remains unchanged.
+pub fn parse_energy_epw_with_profile(
+    original: &[u8],
+    profile: EnergyWeatherProfile,
+) -> Result<ParsedEnergyWeather> {
     let parsed = parse_epw(original, WeatherSourceProfile::EpwHourEnding)?;
     let original_text =
         std::str::from_utf8(original).map_err(|_| invalid("weather.encoding", "Expected UTF-8"))?;
     let mut hours = Vec::with_capacity(8760);
+    let mut missing_albedo = 0;
+    let mut missing_precip = 0;
     for (index, line) in original_text.lines().skip(8).enumerate() {
         let fields: Vec<_> = line.split(',').map(str::trim).collect();
         let number = |column: usize, name: &str, low: f64, high: f64| -> Result<f64> {
@@ -146,6 +177,22 @@ pub fn parse_energy_epw(original: &[u8]) -> Result<ParsedEnergyWeather> {
             }
             Ok(value)
         };
+        let unused_sentinel = |column: usize| -> bool {
+            profile == EnergyWeatherProfile::DryEnvelopeV1
+                && fields[column].parse::<f64>().is_ok_and(|v| v == 999.)
+        };
+        let albedo = if unused_sentinel(32) {
+            missing_albedo += 1;
+            999.
+        } else {
+            number(32, "albedo", 0., 1.)?
+        };
+        let precipitation = if unused_sentinel(33) {
+            missing_precip += 1;
+            999.
+        } else {
+            no_missing_depth(33, "liquid_precipitation_depth_mm")?
+        };
         hours.push(EnergyWeatherHour {
             index,
             month: base.month,
@@ -163,27 +210,39 @@ pub fn parse_energy_epw(original: &[u8]) -> Result<ParsedEnergyWeather> {
             wind_speed_m_s: number(21, "wind_speed", 0., 40.)?,
             total_sky_cover_tenths: total,
             opaque_sky_cover_tenths: opaque,
-            albedo: number(32, "albedo", 0., 1.)?,
+            albedo,
             snow_depth_cm: no_missing_depth(30, "snow_depth_cm")?,
-            liquid_precipitation_depth_mm: no_missing_depth(33, "liquid_precipitation_depth_mm")?,
+            liquid_precipitation_depth_mm: precipitation,
         });
     }
     let axis = canonical_hash(&(
-        ENERGY_EPW_PROFILE,
+        profile.id(),
         "fixed-local-standard-hour-ending-no-DST",
         &parsed.data.time_axis_sha256,
     ))?;
+    let mut warnings = parsed.data.warnings;
+    if profile == EnergyWeatherProfile::DryEnvelopeV1 {
+        warnings.push(WeatherWarning{code:"energy_dry_envelope_scope".into(),count:8760,message:"Restricted dry-envelope profile: no rain/snow surface effects, water/green-roof/ground/PV/EMS consumers. Exterior ground-reflected solar uses explicitly prescribed monthly reflectance 0.2, not EPW albedo. The adapter enforces this scope; this is not general weather suitability.".into()});
+        for (name, count) in [
+            ("albedo", missing_albedo),
+            ("liquid_precipitation", missing_precip),
+        ] {
+            if count > 0 {
+                warnings.push(WeatherWarning{code:format!("energy_unused_missing_{name}"),count,message:format!("{count} hourly {name} values are exact missing sentinel 999, retained unchanged in weather rows and engine input. They are not zero or observations. EnergyPlus may populate internal weather bookkeeping; this profile excludes its consumers and preserves native diagnostics. Exact affected indices are the rows with this sentinel.")});
+            }
+        }
+    }
     Ok(ParsedEnergyWeather {
         data: EnergyWeatherData {
             schema_version: ENERGY_WEATHER_SCHEMA.into(),
             original_sha256: parsed.data.original_sha256,
             normalized_sha256: parsed.data.normalized_sha256,
             time_axis_sha256: axis,
-            profile_id: ENERGY_EPW_PROFILE.into(),
+            profile_id: profile.id().into(),
             location: parsed.data.location,
             original_headers: parsed.data.original_headers,
             hours,
-            warnings: parsed.data.warnings,
+            warnings,
         },
         normalized_epw: parsed.normalized_epw,
     })

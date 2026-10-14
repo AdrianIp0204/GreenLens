@@ -1,21 +1,37 @@
 //! Independent thermal inputs and energy accounting. No engine object mapping,
 //! execution or scientific qualification is implied by accepting these inputs.
 pub mod accounting;
+pub mod comparison;
+pub mod diagnostics;
 pub mod example;
+pub mod investigation;
 pub mod model;
 pub mod report;
+pub mod report_workbench;
+pub mod scene;
 pub mod schedule;
+pub mod sensitivity;
 pub mod study;
 pub mod weather;
+pub mod workbench;
 
 pub use accounting::*;
+pub use comparison::*;
+pub use diagnostics::*;
 pub use example::*;
+pub use investigation::*;
 pub use model::*;
 pub use report::*;
+pub use report_workbench::*;
+pub use scene::*;
 pub use schedule::*;
+pub use sensitivity::*;
 pub use study::*;
+pub use workbench::*;
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod weather_policy_tests;
 
 use crate::{CoreError, Result};
 

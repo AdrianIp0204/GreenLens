@@ -15,6 +15,9 @@ const host={
   useEffect(fn,deps){const i=cursor++,old=effects[i];if(!old||deps.some((v,j)=>!Object.is(v,old.deps[j]))){old?.cleanup?.();effects[i]={deps};pending.push(()=>{effects[i].cleanup=fn();});}},
   invoke(command,args){calls.push({command,args});return reply(command,args);},isTauri:()=>true,
   getCurrentWindow:()=>({onCloseRequested:async()=>()=>{}}),
+  // Climate fixtures have no thermal drafts; their lifecycle is covered by real DOM tests.
+  useEnergyDrafts:()=>({beforeAction:async()=>true}),
+  useThermalPresentation:()=>({}),
   defaultDisplay:()=>({layers:{},objects:{},cameras:{}}),
   fmt:String,ClimateTimeControl:()=>null,ClimateLegend:()=>null,
 };
@@ -24,7 +27,7 @@ async function load(relative){
   const url=new URL(relative,import.meta.url);
   const {code}=await transformWithOxc(fs.readFileSync(url,'utf8'),url.pathname,{jsx:{runtime:'automatic'}});
   const linked=code.replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_q,specifier)=>{
-    if(['react','@tauri-apps/api/core','@tauri-apps/api/window','../viewport/types','./AnalysisContent'].includes(specifier))return `const ${binding.replace(/\bas\b/g,':')}=globalThis.__greenlensLoadingHost;`;
+    if(['react','@tauri-apps/api/core','@tauri-apps/api/window','../viewport/types','../energy/useEnergyDrafts','../energy/thermal-presentation','./AnalysisContent'].includes(specifier))return `const ${binding.replace(/\bas\b/g,':')}=globalThis.__greenlensLoadingHost;`;
     const target=specifier.startsWith('.')?new URL(specifier,url).href:import.meta.resolve(specifier);
     if(specifier==='./QualificationStatus')return `const QualificationStatus=globalThis.__greenlensLoadingHost.QualificationStatus;`;
     if(specifier==='./WeatherCalendarPicker')return `const WeatherCalendarPicker=globalThis.__greenlensLoadingHost.WeatherCalendarPicker;`;

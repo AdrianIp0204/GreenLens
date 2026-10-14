@@ -1,0 +1,1009 @@
+{
+  "schema": "greenlens.v0.5.sensitivity-development-audit.v1",
+  "observed_date_local": "2026-10-14",
+  "timezone": "Asia/Hong_Kong",
+  "scope": "Synthetic four-zone/two-storey native CLI sensitivity orchestration, reused A10/B10 and exactly one new A5/B5 execution. Mixed development binaries; not final-source installed workflow acceptance.",
+  "session_id": "04359cb5-3e15-43a9-a427-b8a3e50f2a26",
+  "plan_sha256": "99ec6d1fa3e3d64a554e2eb51b390564abfebf17e7e6dd181a9fd93828a48fa1",
+  "plan_file_sha256": "3e6ccebd65360f7485e33fb1e872ce96316fd72d3a3014b7e003629c612c5068",
+  "declaration_sha256": "ad69944efeef510350345057b5abfe7695820ba71513d67cf78f1d84459284c3",
+  "created_utc": "2026-10-13T19:01:02.149564700Z",
+  "cli_binaries": [
+    {
+      "source_clean": false,
+      "sha256": "6313d16b193ca933c5b35f9c316b229242ce3741d56322d5fa05f40cc780a27e",
+      "note": "Version 0.4.0 development binary with v0.5 implementation changes.",
+      "role": "declare and A5"
+    },
+    {
+      "source_clean": false,
+      "sha256": "e587ab7748692e7a1cafd12c074646fbde57217272af5cafc2ae4da425271f44",
+      "note": "Version 0.5.0 development release binary after localized process-receipt deserialization repair.",
+      "role": "recover inspection, B5 and finalize"
+    }
+  ],
+  "commands": [
+    [
+      "energy",
+      "sensitivity",
+      "plan",
+      "<portable-project>",
+      "--alternatives",
+      "A,B",
+      "--retain"
+    ],
+    [
+      "energy",
+      "sensitivity",
+      "step",
+      "<portable-project>",
+      "04359cb5-3e15-43a9-a427-b8a3e50f2a26"
+    ],
+    [
+      "energy",
+      "sensitivity",
+      "inspect",
+      "<portable-project>",
+      "04359cb5-3e15-43a9-a427-b8a3e50f2a26"
+    ],
+    [
+      "energy",
+      "sensitivity",
+      "step",
+      "<portable-project>",
+      "04359cb5-3e15-43a9-a427-b8a3e50f2a26"
+    ],
+    [
+      "energy",
+      "sensitivity",
+      "finalize",
+      "<portable-project>",
+      "04359cb5-3e15-43a9-a427-b8a3e50f2a26"
+    ]
+  ],
+  "weather": {
+    "schema_version": "greenlens.energy-weather-asset.v0.4",
+    "binding": {
+      "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+      "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+      "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+      "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+    },
+    "source": {
+      "citation": "GreenLens original non-climatic thermal input",
+      "source_url": null,
+      "license": "Apache-2.0",
+      "rights_note": "Original synthetic fixture; no measured or typical-climate claim",
+      "synthetic_non_climatic": true
+    }
+  },
+  "fixed_slot_order": [
+    "A10",
+    "B10",
+    "A5",
+    "B5"
+  ],
+  "runs": [
+    {
+      "physical_result_sha256": "6502f1d05bfa293f16f22a352b5932eab8a2d6fd8063520d638d5cdaf42a1f82",
+      "series_manifest_sha256": "ae9952eed49265daaf460fbbacf86e691f5db093aea5d244ea7354e44d5fda18",
+      "generated_epjson_sha256": "01c60761f9795947df14f05b3ea6ed66631c910bed6f0dc2d8487f01e987fa36",
+      "maximum_interval_reconciliation_residual_kw": 1.5522042910257975E-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "execution_input_sha256": "7063e49c513eb4bf1ed7893743b2e7506fd12174c992bb01bb5f4931979da09a",
+      "common_ten_minute_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 5.516090229474726,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.7840902294747256,
+          "supply_fans": 0.24,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.92,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "dimensions": {
+        "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+        "minutes": 10,
+        "channels": 34,
+        "ordering": "time_channel",
+        "chunks": 53,
+        "encoding": "float64_little_endian",
+        "intervals": 52560
+      },
+      "input_file_sha256": "28a5b707112841167d23e0fa7e942ddd0b663f75d7a575411dfe57dc0944c77a",
+      "results_file_sha256": "9f5f1f5aed965ea76c5af33e4053d111450cb4fbb9fd0392a35f08781f004fb4",
+      "process_receipts": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-13T15:20:11.74167+08:00",
+          "finished_utc": "2026-10-13T07:20:18.597588400+00:00",
+          "elapsed_ms": 6856,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 399880192,
+          "peak_observed_scratch_bytes": 19753241,
+          "samples": 125,
+          "stdout_sha256": "96760fc69923126868f908200eadc98b5bc8eeefe198a2f8d54672025252bf5f",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "slot_id": "A10",
+      "severe_count": 0,
+      "warning_count": 1,
+      "selection": "retained exact-input evidence reused",
+      "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+      "zone_comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "annual_facility_kwh": 16307.089802617933,
+      "source": {
+        "commit": "38d7b7a070edacf3ac1a3a9af8249c8a1da16b23",
+        "dirty": false,
+        "application_version": "0.4.0"
+      },
+      "checksums_file_sha256": "a793f057125c80c64d9afa1695be573244ee21c78ccc3f405f38067521c8c857",
+      "retained_bytes": 22548671.0,
+      "provenance_file_sha256": "f429305b26770b1f8ba372066a310ccb08a34e3a37fabe56848646f7a5f184f7",
+      "processing_identity": "a8cb978a0361686fa1bafa74f859b6b3ecdc8b1f586df663d45cd72ec4dbf570",
+      "record_sha256": "fddc5fd86eb85a681193513ecee5753ca4bebb94c24aa219aa2df61721faea64",
+      "checksum_members_verified": 71
+    },
+    {
+      "physical_result_sha256": "f34ec9c8142089793d07cfe100a92ac2ad0faf75aba27cca3fe538dbce8241d3",
+      "series_manifest_sha256": "d53944f40425411bf32007b50f2962d10231da397de32a4eeff05f1cb465208f",
+      "generated_epjson_sha256": "cc5d181c0a369d1e26d1c43a65234768fd523f98d7cf294a693dc03c76615b3a",
+      "maximum_interval_reconciliation_residual_kw": 1.5522042910257975E-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+      },
+      "execution_input_sha256": "e783e018adc071963e5ce78a8b0b12e73b07d4da8a55909c2eeeb483e8f037c9",
+      "common_ten_minute_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 4.045870430025533,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.1218704300255327,
+          "supply_fans": 0.2,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.152,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "dimensions": {
+        "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+        "minutes": 10,
+        "channels": 34,
+        "ordering": "time_channel",
+        "chunks": 53,
+        "encoding": "float64_little_endian",
+        "intervals": 52560
+      },
+      "input_file_sha256": "27c52c88258e804ab34fb74d430cc34abdecdccf61af1fac448c2699c5323819",
+      "results_file_sha256": "8c2e7e42240bf2c29bf7d9812e83c6958f234def3bf6326e85c91219da635f5d",
+      "process_receipts": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-13T07:20:31.736680600+00:00",
+          "finished_utc": "2026-10-13T07:20:37.530304800+00:00",
+          "elapsed_ms": 5793,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 405942272,
+          "peak_observed_scratch_bytes": 21082235,
+          "samples": 107,
+          "stdout_sha256": "fb218c54db4f47db99d601e644923c0730f37e479243c4420014656ba3b792e1",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "slot_id": "B10",
+      "severe_count": 0,
+      "warning_count": 1,
+      "selection": "retained exact-input evidence reused",
+      "physical_input_sha256": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+      "run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+      "zone_comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "annual_facility_kwh": 12617.357232381652,
+      "source": {
+        "commit": "38d7b7a070edacf3ac1a3a9af8249c8a1da16b23",
+        "dirty": false,
+        "application_version": "0.4.0"
+      },
+      "checksums_file_sha256": "5910e3f8c912979e83b420d54e09c33ffedd35f1b77f483d9c8d4e9af76753ab",
+      "retained_bytes": 22551973.0,
+      "provenance_file_sha256": "56936c6f2cbb8b38095cd95d58f9155f7f25dd46dbc97c5f5a43ea32599deadc",
+      "processing_identity": "826c5417b295cb1aafba5c9868203d73dc71ab394735745f3ed30ec06fc0f145",
+      "record_sha256": "aebc18d1de2b88e906ea1ca82b1d0930a3310c593991eea9876dbcff38aa653c",
+      "checksum_members_verified": 71
+    },
+    {
+      "physical_result_sha256": "4c23fa66b9e419f39618e8241a8e2f461b7b076614a1c12afe2c2f66895b6111",
+      "series_manifest_sha256": "b359afbe363170efd8b20f4a214e7f1d49cadf3ecf9f7f2555e82469470b8ca4",
+      "generated_epjson_sha256": "1b9c27e87a249a649c8a16d525e15ce090163055a7ed2f608d3cd3a8d8e086c9",
+      "maximum_interval_reconciliation_residual_kw": 1.5522042910257975E-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "execution_input_sha256": "5a9adb50ae385e1880ddae4818ddf4f08b9c2883aa05eb7bc6f17eda849a2e02",
+      "common_ten_minute_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 5.514467140552976,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.782467140552976,
+          "supply_fans": 0.24,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.92,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "dimensions": {
+        "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+        "minutes": 5,
+        "channels": 34,
+        "ordering": "time_channel",
+        "chunks": 53,
+        "encoding": "float64_little_endian",
+        "intervals": 105120
+      },
+      "input_file_sha256": "28a5b707112841167d23e0fa7e942ddd0b663f75d7a575411dfe57dc0944c77a",
+      "results_file_sha256": "ecdc03c60cd58bdbf351be850cc2a666a321eef345061f4cac296d0a7f179e2c",
+      "process_receipts": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-13T19:09:15.909354500+00:00",
+          "finished_utc": "2026-10-13T19:09:37.353901200+00:00",
+          "elapsed_ms": 21449,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 646230016,
+          "peak_observed_scratch_bytes": 37544158,
+          "samples": 384,
+          "stdout_sha256": "a0f92ee174c6538af1dd7ec204404ecaf0da43cc72fb3071e672048f9012948a",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "slot_id": "A5",
+      "severe_count": 0,
+      "warning_count": 1,
+      "selection": "one newly declared execution",
+      "physical_input_sha256": "32eda4566fd60a64b05ee6a6e0100869f6ff542794b7b12b0029de858e2067ba",
+      "run_id": "393bbca1-29a2-4a96-bcd4-6d3f5f359500",
+      "zone_comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "annual_facility_kwh": 16305.190534702979,
+      "source": {
+        "commit": "9322d27a61b89975e5769a70811268abce2eef5d",
+        "dirty": true,
+        "application_version": "0.4.0"
+      },
+      "checksums_file_sha256": "130ddcdbb4b09c41c1bd6b9f42693cc2bc1759c48a45c2664ea8332e31ad3c0f",
+      "retained_bytes": 36845020.0,
+      "provenance_file_sha256": "4c0b920ce9653ef79ca08a03595e61907c6e939fc5a88f69a5f4cd8e66ca3f0b",
+      "processing_identity": "d85d602ead17492c7baa173a7019b207b982728f13968e47a3711843faa2d25f",
+      "record_sha256": "f892d7757001749f192066d66a5c58ac8227f5ec28adc589a30aec4f421fb95e",
+      "checksum_members_verified": 71
+    },
+    {
+      "physical_result_sha256": "ae7318770c87fb277531ded773880bc99bf699ad56449bef59ebb7b92368248a",
+      "series_manifest_sha256": "62bf2f07764db9dca6660ec9ca7352e3d81ceadaa1fdeed2b0b53f0cc89d4176",
+      "generated_epjson_sha256": "ed96b5b3ee69a2f032601f3e14ecd2668965d97998ee5bc303ba4135eb378eb7",
+      "maximum_interval_reconciliation_residual_kw": 1.5522042910257975E-15,
+      "method": {
+        "method_id": "greenlens.energyplus.explicit-dx/1",
+        "adapter_version": "1",
+        "engine_version": "26.2.0",
+        "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+        "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+        "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+        "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+        "numerical_settings_sha256": "90227a6bf39574b0f1872a18361bae811780a3804530fd11c8c5f857f138cd63"
+      },
+      "execution_input_sha256": "90372f7eef3862e5b7f9c70435673db89e28dc63bed535d8c109bdeb9e418608",
+      "common_ten_minute_peak": {
+        "timestamp": {
+          "interval_index": 52088,
+          "month": 12,
+          "day": 28,
+          "start_minute": 1040,
+          "end_minute": 1050
+        },
+        "facility_kw": 4.0473828908715905,
+        "end_use_contributions_kw": {
+          "cooling_system": 1.123382890871591,
+          "supply_fans": 0.2,
+          "ventilation_exhaust_fans": 0.016,
+          "interior_lighting": 1.152,
+          "exterior_lighting": 0.02,
+          "plug_equipment": 1.536
+        },
+        "reconciliation_residual_kw": 0.0
+      },
+      "dimensions": {
+        "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+        "minutes": 5,
+        "channels": 34,
+        "ordering": "time_channel",
+        "chunks": 53,
+        "encoding": "float64_little_endian",
+        "intervals": 105120
+      },
+      "input_file_sha256": "27c52c88258e804ab34fb74d430cc34abdecdccf61af1fac448c2699c5323819",
+      "results_file_sha256": "67c522d06c527d97edbebdc72015b5ed76a6bb85e5ea336c2c6018e7e3d744cd",
+      "process_receipts": [
+        {
+          "schema_version": "greenlens.native-process.v0.4",
+          "executable": "energyplus.exe",
+          "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "arguments": [
+            "--jobs",
+            "1",
+            "--weather",
+            "weather.epw",
+            "--output-directory",
+            ".",
+            "--output-prefix",
+            "eplus",
+            "../model.epJSON"
+          ],
+          "started_utc": "2026-10-13T19:28:20.017056100+00:00",
+          "finished_utc": "2026-10-13T19:28:34.696437100+00:00",
+          "elapsed_ms": 14679,
+          "exit_code": 0,
+          "state": "completed",
+          "failure": null,
+          "process_tree_empty": true,
+          "sampled_peak_runner_plus_job_working_set_bytes": 617918464,
+          "peak_observed_scratch_bytes": 40243055,
+          "samples": 269,
+          "stdout_sha256": "9a34520f04fff74902eaa38b97b98257a2a83dc053d0410f1fd9d9d862032e27",
+          "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f"
+        }
+      ],
+      "slot_id": "B5",
+      "severe_count": 0,
+      "warning_count": 1,
+      "selection": "one newly declared execution",
+      "physical_input_sha256": "72e816ec0092166fef130842156aeb0e283a16870175f7d3c3ef44f8ed75685b",
+      "run_id": "8733596c-4bb5-43ad-9945-6b17603fe5ea",
+      "zone_comfort": [
+        {
+          "zone_id": "zone1",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone2",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone3",
+          "occupied_hours": 5096.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        },
+        {
+          "zone_id": "zone4",
+          "occupied_hours": 4576.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      ],
+      "annual_facility_kwh": 12628.426687271483,
+      "source": {
+        "commit": "9322d27a61b89975e5769a70811268abce2eef5d",
+        "dirty": true,
+        "application_version": "0.5.0"
+      },
+      "checksums_file_sha256": "053a9b4c960ab8429e50dbd2a92b8391fff5dba21f4d332a6eff9df07f4bc42d",
+      "retained_bytes": 36848086.0,
+      "provenance_file_sha256": "660c394c88cbef125c45e88870a8d529a785dff5e47fbef1c4d83ae9cff7a0d9",
+      "processing_identity": "ddefffe88991b7d0cd449c32baa2ed4a1a947d4deccbaeb5f98f14d21e95acd8",
+      "record_sha256": "47b5ad1bc9680517bd58680c93aed838d3a2a21c4c8db35ba000acb22d75bd84",
+      "checksum_members_verified": 71
+    }
+  ],
+  "events": [
+    {
+      "kind": "reserved",
+      "sha256": "d918fe0c4a5da14853a93d5599168d23c816ccce12a4e64b09ca47811099c338",
+      "slot_id": "A5",
+      "sequence": 1,
+      "recorded_utc": "2026-10-13T19:08:40.998134100Z"
+    },
+    {
+      "kind": "started",
+      "sha256": "128fff149b4e226b295fc72b960634514462a0de0fa58e8c6cba5b2cfe110caf",
+      "slot_id": "A5",
+      "sequence": 2,
+      "recorded_utc": "2026-10-13T19:09:03.601659300Z"
+    },
+    {
+      "kind": "collected",
+      "sha256": "53628617598598b5cd7df5e336f752795b89bb1e8d9b92350108a081ae1cafc0",
+      "slot_id": "A5",
+      "sequence": 3,
+      "recorded_utc": "2026-10-13T19:11:32.261561200Z"
+    },
+    {
+      "kind": "reserved",
+      "sha256": "21929b26f16e0edf56c2d42586368f2ce0d6246ce0b7b308acf0f8f4871c8e7e",
+      "slot_id": "B5",
+      "sequence": 4,
+      "recorded_utc": "2026-10-13T19:28:12.097462700Z"
+    },
+    {
+      "kind": "started",
+      "sha256": "b381096c9e9b1d5b75914414f346bfa194d2cdc87cb21e65ae4bc1172057acff",
+      "slot_id": "B5",
+      "sequence": 5,
+      "recorded_utc": "2026-10-13T19:28:18.868217700Z"
+    },
+    {
+      "kind": "collected",
+      "sha256": "9731bd15522579bfe1f190c1ff7311c807974ea831465bab9f17b8d30ab496ec",
+      "slot_id": "B5",
+      "sequence": 6,
+      "recorded_utc": "2026-10-13T19:28:55.436688200Z"
+    },
+    {
+      "kind": "finalized",
+      "sha256": "c1e10b14df51e251f7ad9c2e7d5238df9647fd5bab7abadd89db4685afde1627",
+      "slot_id": null,
+      "sequence": 7,
+      "recorded_utc": "2026-10-14T01:41:39.170938300Z"
+    }
+  ],
+  "finalized": true,
+  "current_inputs_match": true,
+  "all_declared_runs_integrity_checked": true,
+  "numerical_sensitivity_passed": true,
+  "criteria": [
+    {
+      "id": "A:annual_facility_kwh",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A10",
+        "A5"
+      ],
+      "quantity": "annual_facility_kwh",
+      "zone_id": null,
+      "ten_minute": 16307.089802617933,
+      "five_minute_reference": 16305.190534702979,
+      "measured_percent": 0.011648241159230206,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Absolute ten-minus-five difference divided by the absolute five-minute reference; both zero is zero difference; nonzero versus zero fails without an infinite JSON number."
+    },
+    {
+      "id": "A:common_ten_minute_peak_kw",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A10",
+        "A5"
+      ],
+      "quantity": "common_ten_minute_peak_kw",
+      "zone_id": null,
+      "ten_minute": 5.516090229474726,
+      "five_minute_reference": 5.514467140552976,
+      "measured_percent": 0.029433286669048687,
+      "limit_percent": 3.0,
+      "passed": true,
+      "explanation": "Absolute ten-minus-five difference divided by the absolute five-minute reference; both zero is zero difference; nonzero versus zero fails without an infinite JSON number."
+    },
+    {
+      "id": "B:annual_facility_kwh",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B10",
+        "B5"
+      ],
+      "quantity": "annual_facility_kwh",
+      "zone_id": null,
+      "ten_minute": 12617.357232381652,
+      "five_minute_reference": 12628.426687271483,
+      "measured_percent": 0.08765505920851582,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Absolute ten-minus-five difference divided by the absolute five-minute reference; both zero is zero difference; nonzero versus zero fails without an infinite JSON number."
+    },
+    {
+      "id": "B:common_ten_minute_peak_kw",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B10",
+        "B5"
+      ],
+      "quantity": "common_ten_minute_peak_kw",
+      "zone_id": null,
+      "ten_minute": 4.045870430025533,
+      "five_minute_reference": 4.0473828908715905,
+      "measured_percent": 0.03736885999761613,
+      "limit_percent": 3.0,
+      "passed": true,
+      "explanation": "Absolute ten-minus-five difference divided by the absolute five-minute reference; both zero is zero difference; nonzero versus zero fails without an infinite JSON number."
+    },
+    {
+      "id": "A10:comfort:zone1",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone1",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "A10:comfort:zone2",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone2",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "A10:comfort:zone3",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone3",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "A10:comfort:zone4",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone4",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B10:comfort:zone1",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone1",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B10:comfort:zone2",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone2",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B10:comfort:zone3",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone3",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B10:comfort:zone4",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B10"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone4",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "A5:comfort:zone1",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone1",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "A5:comfort:zone2",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone2",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "A5:comfort:zone3",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone3",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "A5:comfort:zone4",
+      "alternative_id": "A",
+      "slot_ids": [
+        "A5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone4",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B5:comfort:zone1",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone1",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B5:comfort:zone2",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone2",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B5:comfort:zone3",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone3",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    },
+    {
+      "id": "B5:comfort:zone4",
+      "alternative_id": "B",
+      "slot_ids": [
+        "B5"
+      ],
+      "quantity": "occupied_cooling_unmet_percent",
+      "zone_id": "zone4",
+      "ten_minute": null,
+      "five_minute_reference": null,
+      "measured_percent": 0.0,
+      "limit_percent": 1.0,
+      "passed": true,
+      "explanation": "Each conditioned zone in every declared run: occupied air temperature > scheduled cooling setpoint + 0.2 C, at source resolution; occupied-unmet <=1%. No occupied hours does not establish this predicate. Building-union comfort is descriptive only."
+    }
+  ],
+  "criterion_counts": {
+    "failed": 0,
+    "conditioned_zone_comfort": 16,
+    "annual_electricity": 2,
+    "aligned_ten_minute_peak": 2,
+    "passed": 20
+  },
+  "qualification_promoted": false,
+  "failure_recovery": {
+    "collected_event_sequence": 3,
+    "reopened_completed_A5": "393bbca1-29a2-4a96-bcd4-6d3f5f359500",
+    "reopened_next_slot": "B5",
+    "collected_run_record_sha256": "f892d7757001749f192066d66a5c58ac8227f5ec28adc589a30aec4f421fb95e",
+    "collected_event_sha256": "53628617598598b5cd7df5e336f752795b89bb1e8d9b92350108a081ae1cafc0",
+    "initial_A5_cli_exit": 1,
+    "reopened_event3_hash_matches_current": true,
+    "initial_failure": "u128 is not supported at line 43 column 1",
+    "historical_byte_observation_limit": "No separately saved before-repair complete file-inventory snapshot was found in this experiment directory. The collected receipt timestamp precedes the CLI error; its digest matches the retained recovery snapshot and final chain. This is not an independent byte-by-byte before/after filesystem comparison.",
+    "remedy": "Localized process-receipt JSON deserialization repair; read retained event/result and continue only missing B5. No A5 engine rerun.",
+    "checksum_audit": "All current compact evidence members independently matched their retained manifests.",
+    "engine_completed": true
+  },
+  "execution_limits": "Explicit next step only; at most one attempt per declared missing slot, in fixed order. Existing Application owns the only worker,1800s/2GiB memory/1GiB scratch/128MiB file per native case. Ordinary collect retains completed evidence. No retry after failure/cancellation/ambiguous recovery; no registry promotion.",
+  "B5_cli_wall_seconds": 66.3651604,
+  "source_receipts": [
+    {
+      "sha256": "f259fad44685d567f2a4efaaa6b6df2091d0068ca873be27e6b68bd22c70a92f",
+      "bytes": 225241,
+      "file": "declared.json"
+    },
+    {
+      "sha256": "17d5b940884523c8542289e477f4750fdf0d6a6519456008bdc8ec7c5dce97be",
+      "bytes": 75,
+      "file": "A5-exit.json"
+    },
+    {
+      "sha256": "5af5dff69c3d196838fdf3d3732fcdd7603fc3a771f23ab9f5bca3988d42ff20",
+      "bytes": 460,
+      "file": "A5-stderr.txt"
+    },
+    {
+      "sha256": "15719032c651dc6d236f3a895c53e6e58a48f5f924b2f9a475ceaee23169c74b",
+      "bytes": 225687,
+      "file": "A5-reopened.json"
+    },
+    {
+      "sha256": "e551c84f0091f4017baf1ad7338a386b3bf2ee672584fbb1001f3bfc80dbda42",
+      "bytes": 106,
+      "file": "B5-exit.json"
+    },
+    {
+      "sha256": "4cc226f24f725267d3a8b0a794f36fba7f25f3a1639cb97f11e11ca2517f9b1e",
+      "bytes": 226127,
+      "file": "B5-outcome.json"
+    },
+    {
+      "sha256": "ae39b12bef325a687854e4cef150fbe8dc52127c381cd7cb0897f358fdce95e1",
+      "bytes": 406,
+      "file": "B5-stderr.txt"
+    },
+    {
+      "sha256": "ea4a637d5023b665309e553d1677b0588a4abbfee71312e2b204a5875bd24929",
+      "bytes": 280260,
+      "file": "finalized.json"
+    }
+  ],
+  "limitations": [
+    "Only the declared ten-/five-minute sensitivity predicates are evaluated. Passing does not establish calibrated accuracy, operating curve-domain coverage, service equivalence or certification.",
+    "No result from this assessment is added to the scientific registry. Historical failed/unassessed run qualification remains independently visible.",
+    "Every missing, failed or cancelled declared execution prevents a completed passing assessment; no automatic tuning or favorable retry is supported.",
+    "Native CLI and actual EnergyPlus execution do not establish installed desktop keyboard/mouse acceptance.",
+    "Weather is original synthetic non-climatic input with synthetic constant performance curves; this does not satisfy the separately blocked real-weather/nonconstant-curve demonstration.",
+    "Reused A10/B10 source is 38d7b7a; A5/B5 are dirty descendants of 9322d27 using distinct tested executable hashes. This is development evidence, not exact final-source CI.",
+    "Memory is sampled runner-plus-job working set; scratch is peak observed size. These are measured scopes, not universal hardware performance guarantees.",
+    "A5 CLI wall duration was not recorded; its engine elapsed time is retained separately."
+  ]
+}

@@ -1,11 +1,11 @@
 {
   "schema_version": "greenlens.dependencies.v0.1",
-  "generated_utc": "2026-10-13T06:31:34.790Z",
+  "generated_utc": "2026-10-13T19:22:55.332Z",
   "scope": "Resolved native Windows Rust graph and locked npm graph",
   "target": "x86_64-pc-windows-msvc",
   "lockfiles": {
-    "Cargo.lock": "59d2c017b10f3787d4e1aed116c2c028f9c30e604c18c9caabd4ac7305564aca",
-    "apps/desktop/package-lock.json": "d00bb6b90b0abbe8ee21466bf5b5d8793f7e811ff0649bd81113e8181384accf"
+    "Cargo.lock": "e0d18808b61e9edc66df185ac0620b76eea59cab49a9d19f46858630be17d24f",
+    "apps/desktop/package-lock.json": "3e6fdfe9dd4b35026cfca74b37fb9f51e4030345fc65e8e7e74ac107b2a5eafd"
   },
   "scientific_engine_manifest": "dependencies/radiance.json",
   "supplemental_notice_manifest": "dependencies/license-supplements.json",
@@ -36,17 +36,17 @@
     }
   ],
   "policy": "Declarations are corroborated by the listed actual package license/notice files and their SHA-256 digests. This automated inventory flags gaps for review and does not infer grants from subprocess boundaries. Inapplicable optional npm platform packages are listed but not installed or bundled.",
-  "package_count": 358,
+  "package_count": 402,
   "license_counts": {
     "0BSD OR MIT OR Apache-2.0": 1,
     "Unlicense OR MIT": 8,
-    "BSD-3-Clause": 4,
+    "BSD-3-Clause": 5,
     "MIT OR Apache-2.0": 138,
     "Apache-2.0 OR MIT": 39,
     "MIT/Apache-2.0": 8,
     "BSD-3-Clause/MIT": 1,
     "BSD-3-Clause AND MIT": 1,
-    "MIT": 84,
+    "MIT": 119,
     "MPL-2.0": 17,
     "Apache-2.0 AND MIT": 1,
     "CC0-1.0 OR MIT-0 OR Apache-2.0": 1,
@@ -56,11 +56,15 @@
     "MIT OR Zlib OR Apache-2.0": 2,
     "MIT OR Apache-2.0 OR Zlib": 1,
     "Unlicense/MIT": 2,
-    "Apache-2.0": 25,
+    "Apache-2.0": 26,
     "Zlib OR Apache-2.0 OR MIT": 1,
     "(MIT OR Apache-2.0) AND Unicode-3.0": 1,
     "Zlib AND bzip2-1.0.6 AND CPL-1.0": 1,
-    "ISC": 1
+    "MIT-0": 2,
+    "BSD-2-Clause": 2,
+    "BlueOak-1.0.0": 1,
+    "CC0-1.0": 1,
+    "ISC": 2
   },
   "review_gaps": [],
   "packages": [
@@ -8748,6 +8752,354 @@
     },
     {
       "ecosystem": "npm",
+      "name": "@acemir/cssom",
+      "version": "0.9.32",
+      "source": "https://registry.npmjs.org/@acemir/cssom/-/cssom-0.9.32.tgz",
+      "repository": "acemir/CSSOM",
+      "source_download": "https://registry.npmjs.org/@acemir/cssom/-/cssom-0.9.32.tgz",
+      "integrity": "sha512-OijrAUu7rrJhSIoHNg6LMPS5e344nwUHA+1EFYYjrh64D+GmytUsfBQjci45TjT+rd5Spsp8B5xsZDT+TgyXXQ==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "e539937c489c4928ad7461669ec017f4d916fb3565fc26f5b8a0ce816d2ed23c",
+          "bytes": 1054
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@asamuzakjp/css-color",
+      "version": "4.1.2",
+      "source": "https://registry.npmjs.org/@asamuzakjp/css-color/-/css-color-4.1.2.tgz",
+      "repository": "git+https://github.com/asamuzaK/cssColor.git",
+      "source_download": "https://registry.npmjs.org/@asamuzakjp/css-color/-/css-color-4.1.2.tgz",
+      "integrity": "sha512-NfBUvBaYgKIuq6E/RBLY1m0IohzNHAYyaJGuTK79Z23uNwmz2jl1mPsC5ZxCCxylinKhT1Amn5oNTlx1wN8cQg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "bd4539377980dd797fc6a51d90e664e52b2b2625b2158f01d4c68b5fe107eacb",
+          "bytes": 1093
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@asamuzakjp/dom-selector",
+      "version": "6.8.1",
+      "source": "https://registry.npmjs.org/@asamuzakjp/dom-selector/-/dom-selector-6.8.1.tgz",
+      "repository": "git+https://github.com/asamuzaK/domSelector.git",
+      "source_download": "https://registry.npmjs.org/@asamuzakjp/dom-selector/-/dom-selector-6.8.1.tgz",
+      "integrity": "sha512-MvRz1nCqW0fsy8Qz4dnLIvhOlMzqDVBabZx6lH+YywFDdjXhMY37SmpV1XFX3JzG5GWHn63j6HX6QPr3lZXHvQ==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "7cdf9db3b91cc77b9ec947ad0c7126140f00e34528b67c3a58e9fc1a98055e14",
+          "bytes": 1093
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@asamuzakjp/nwsapi",
+      "version": "2.3.9",
+      "source": "https://registry.npmjs.org/@asamuzakjp/nwsapi/-/nwsapi-2.3.9.tgz",
+      "repository": "git://github.com/dperini/nwsapi.git",
+      "source_download": "https://registry.npmjs.org/@asamuzakjp/nwsapi/-/nwsapi-2.3.9.tgz",
+      "integrity": "sha512-n8GuYSrI9bF7FFZ/SjhwevlHc8xaVlb/7HmHelnc/PZXBD2ZR49NnN9sMMuDdEGPeeRQ5d0hqlSlEpgCX3Wl0Q==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "9b0ffd74f2cde7528141cc314ece705490d11054805da4a01ee6149498951b8f",
+          "bytes": 1084
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@csstools/color-helpers",
+      "version": "6.1.2",
+      "source": "https://registry.npmjs.org/@csstools/color-helpers/-/color-helpers-6.1.2.tgz",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "source_download": "https://registry.npmjs.org/@csstools/color-helpers/-/color-helpers-6.1.2.tgz",
+      "integrity": "sha512-grhRy3OKmniaAEKXMjua5z/EODX0MSqBGjunw8+j/3HQjOnahs2AGhvEOIYVUWcU6ScApbhLhVrQTX8XqrMrow==",
+      "declared_license": "MIT-0",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6",
+          "bytes": 930
+        }
+      ],
+      "supplemental_license_review": {
+        "review_date": "2026-10-14",
+        "declared_license": "MIT-0",
+        "source_download": "https://registry.npmjs.org/@csstools/color-helpers/-/color-helpers-6.1.2.tgz",
+        "source_integrity": "sha512-grhRy3OKmniaAEKXMjua5z/EODX0MSqBGjunw8+j/3HQjOnahs2AGhvEOIYVUWcU6ScApbhLhVrQTX8XqrMrow==",
+        "archive_sha256": "23fbce9d140e7611c37d3e92e862d2ed871731aa56ceba37c9e008588d5bf7b2",
+        "package_files_sha256": {
+          "package.json": "d2728c35a2a2c476361c44bf50b29c6f6851ec599c5a68727cb095525435379b",
+          "CHANGELOG.md": "0d4ad9d614d77d1c6fd810ce44c6b5ea63f9161a9c2733ac4057951994ba8130",
+          "LICENSE.md": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6",
+          "README.md": "c0c68659830b645e82d3b5986cd9e2e0ebb443333cd47b6c6b9944b6787f4a48",
+          "dist/index.mjs": "1f564c04a19ab384c311748ef2dd7495cb481f23e13dfed973f4d495f8b2215c",
+          "dist/index.d.ts": "341233b2ed9f5834a79d2e2d988f5d7da2ec543d29864b876794c28d972db58e"
+        },
+        "reason": "Reviewed the actual CSSTools MIT No Attribution text; it grants redistribution without an attribution condition. GreenLens voluntarily retains the complete original text and disclaimer. This exact-package review does not admit other MIT-0 packages.",
+        "review_sources": [
+          "https://spdx.org/licenses/MIT-0.html"
+        ],
+        "redistribution": {
+          "review": "manual_reviewed",
+          "requirements": [
+            "Redistribution is granted without an attribution condition in the reviewed MIT-0 text. GreenLens nevertheless retains the full text, original copyright line and warranty/liability disclaimer as its notice policy."
+          ]
+        }
+      },
+      "redistribution": {
+        "review": "manual_reviewed",
+        "requirements": [
+          "Redistribution is granted without an attribution condition in the reviewed MIT-0 text. GreenLens nevertheless retains the full text, original copyright line and warranty/liability disclaimer as its notice policy."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@csstools/css-calc",
+      "version": "3.4.3",
+      "source": "https://registry.npmjs.org/@csstools/css-calc/-/css-calc-3.4.3.tgz",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "source_download": "https://registry.npmjs.org/@csstools/css-calc/-/css-calc-3.4.3.tgz",
+      "integrity": "sha512-iex20d8CHVkyvg6B7UKV7uHnI2Bqo9g+EFfT9E0y+GvTvhZ/DwONJ+9aKb1dlqm0ZiGsL5RXjp0fCoJYnkeDjA==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "d00d032f517721b45c56c70c46bf904ebb71ad313df4d4db7722266b38069665",
+          "bytes": 1111
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@csstools/css-color-parser",
+      "version": "4.2.6",
+      "source": "https://registry.npmjs.org/@csstools/css-color-parser/-/css-color-parser-4.2.6.tgz",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "source_download": "https://registry.npmjs.org/@csstools/css-color-parser/-/css-color-parser-4.2.6.tgz",
+      "integrity": "sha512-iiPQ3iRWwnJkeEn6RIu6SJPr7hYrLz6XZ9s/QZl+2/LI5KQVjpl2fdmDSZKuD4xP6GMmMPgHFFXg6k1Wkz0Trg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "d00d032f517721b45c56c70c46bf904ebb71ad313df4d4db7722266b38069665",
+          "bytes": 1111
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@csstools/css-parser-algorithms",
+      "version": "4.0.2",
+      "source": "https://registry.npmjs.org/@csstools/css-parser-algorithms/-/css-parser-algorithms-4.0.2.tgz",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "source_download": "https://registry.npmjs.org/@csstools/css-parser-algorithms/-/css-parser-algorithms-4.0.2.tgz",
+      "integrity": "sha512-40cSKyMvK+tq4qz6Awrlye2WGuOKt3FwPgtGg6KTfbHOWNw+Rk1rzbAtZnZ6IBhsY491HLRnDXwoyBAijmmILA==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "d00d032f517721b45c56c70c46bf904ebb71ad313df4d4db7722266b38069665",
+          "bytes": 1111
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@csstools/css-syntax-patches-for-csstree",
+      "version": "1.1.15",
+      "source": "https://registry.npmjs.org/@csstools/css-syntax-patches-for-csstree/-/css-syntax-patches-for-csstree-1.1.15.tgz",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "source_download": "https://registry.npmjs.org/@csstools/css-syntax-patches-for-csstree/-/css-syntax-patches-for-csstree-1.1.15.tgz",
+      "integrity": "sha512-J0u7HkVl2nzSlhsiTOp4AmwcUQ3D+mGEEKfBy/7To5/y7F2OHwyLrXfrhR0SMgr4p5Lo+eaMVSeai24zUcBIxA==",
+      "declared_license": "MIT-0",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6",
+          "bytes": 930
+        }
+      ],
+      "supplemental_license_review": {
+        "review_date": "2026-10-14",
+        "declared_license": "MIT-0",
+        "source_download": "https://registry.npmjs.org/@csstools/css-syntax-patches-for-csstree/-/css-syntax-patches-for-csstree-1.1.15.tgz",
+        "source_integrity": "sha512-J0u7HkVl2nzSlhsiTOp4AmwcUQ3D+mGEEKfBy/7To5/y7F2OHwyLrXfrhR0SMgr4p5Lo+eaMVSeai24zUcBIxA==",
+        "archive_sha256": "47ec40a8a7bf32a5d22eb64477d2204c6e782b9ee5d4cfcfbc0c66c49036d07b",
+        "package_files_sha256": {
+          "dist/index.json": "c5c17f5066c8a553912b29d90c208c67db8e22b0c1363fa472d6f81e4b27d894",
+          "package.json": "2daafd7d5af42ec0eb1512d33edc84a2b667a132921722ad621ef56fc13a9bc7",
+          "CHANGELOG.md": "5d65107b94adcbfc2749b4da0460ea307b04639a34b39152d22c3c53ee0f2138",
+          "LICENSE.md": "947e32047a166cd05f04e45938d172b412c07cbee0b9735afd14bae30e02c2f6",
+          "README.md": "51b7fd60d6abdd1c6843eac62163834862b32bba898556a662403d50b1905947",
+          "dist/index.d.ts": "9dbc0fec358dec871565ca4150b81d8b8f5397aca593ec8a04a740a1af6096a6"
+        },
+        "reason": "Reviewed the actual CSSTools MIT No Attribution text; it grants redistribution without an attribution condition. GreenLens voluntarily retains the complete original text and disclaimer. This exact-package review does not admit other MIT-0 packages.",
+        "review_sources": [
+          "https://spdx.org/licenses/MIT-0.html"
+        ],
+        "redistribution": {
+          "review": "manual_reviewed",
+          "requirements": [
+            "Redistribution is granted without an attribution condition in the reviewed MIT-0 text. GreenLens nevertheless retains the full text, original copyright line and warranty/liability disclaimer as its notice policy."
+          ]
+        }
+      },
+      "redistribution": {
+        "review": "manual_reviewed",
+        "requirements": [
+          "Redistribution is granted without an attribution condition in the reviewed MIT-0 text. GreenLens nevertheless retains the full text, original copyright line and warranty/liability disclaimer as its notice policy."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@csstools/css-tokenizer",
+      "version": "4.0.2",
+      "source": "https://registry.npmjs.org/@csstools/css-tokenizer/-/css-tokenizer-4.0.2.tgz",
+      "repository": "git+https://github.com/csstools/postcss-plugins.git",
+      "source_download": "https://registry.npmjs.org/@csstools/css-tokenizer/-/css-tokenizer-4.0.2.tgz",
+      "integrity": "sha512-OoKoR0f76dCY666JlcbhmVTs2drYj1GUXZTYTcbUgJjh9Nv41aFfZ21bPQTERm5+L5cBDo466NltB2lplS5GBw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "d00d032f517721b45c56c70c46bf904ebb71ad313df4d4db7722266b38069665",
+          "bytes": 1111
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
       "name": "@dimforge/rapier3d-compat",
       "version": "0.12.0",
       "source": "https://registry.npmjs.org/@dimforge/rapier3d-compat/-/rapier3d-compat-0.12.0.tgz",
@@ -8773,6 +9125,36 @@
         "requirements": [
           "Retain applicable copyright, license and attribution notices; see exact retained text.",
           "Preserve applicable NOTICE material; identify modifications; no trademark rights are granted."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@exodus/bytes",
+      "version": "1.16.0",
+      "source": "https://registry.npmjs.org/@exodus/bytes/-/bytes-1.16.0.tgz",
+      "repository": "git+https://github.com/ExodusOSS/bytes.git",
+      "source_download": "https://registry.npmjs.org/@exodus/bytes/-/bytes-1.16.0.tgz",
+      "integrity": "sha512-IcpW84uEn3N7ETtNZMlxKhfl6Pec8rUNGOTBtWbK1FKhJxIFAptZyVrvVRVBimAJxJCgc3PxepxkdWWG4DVzfA==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "dbffd380d59504ba19fcf87ff5a1a33c37edf66d5b09966b0ad5368ab87bc2af",
+          "bytes": 1077
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
         ]
       },
       "modifications": "No upstream source modifications made by GreenLens."
@@ -10497,6 +10879,126 @@
     },
     {
       "ecosystem": "npm",
+      "name": "agent-base",
+      "version": "7.1.4",
+      "source": "https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz",
+      "repository": "https://github.com/TooTallNate/proxy-agents.git",
+      "source_download": "https://registry.npmjs.org/agent-base/-/agent-base-7.1.4.tgz",
+      "integrity": "sha512-MnA+YT8fwfJPgBx3m60MNqakm30XOkyIoH1y6huTQvC0PwZG7ki8NacLBcrPbNoo8vEZy7Jpuk7+jMO+CUovTQ==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+          "bytes": 1101
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "bidi-js",
+      "version": "1.1.0",
+      "source": "https://registry.npmjs.org/bidi-js/-/bidi-js-1.1.0.tgz",
+      "repository": "https://github.com/lojjic/bidi-js.git",
+      "source_download": "https://registry.npmjs.org/bidi-js/-/bidi-js-1.1.0.tgz",
+      "integrity": "sha512-fX1Onk0tdVPC7obPWB5EbJ1z7NVhLq4m2xZLq2YXBkxzMXIGRpNMU88n0EPgWseKl12J7zXs7qrDxPK4sRs2fg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "49d4d143fed599deb502a0fe6e02f49832f87e9a3a4cd0502e469596d50faa6d",
+          "bytes": 1071
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "css-tree",
+      "version": "3.2.1",
+      "source": "https://registry.npmjs.org/css-tree/-/css-tree-3.2.1.tgz",
+      "repository": "csstree/csstree",
+      "source_download": "https://registry.npmjs.org/css-tree/-/css-tree-3.2.1.tgz",
+      "integrity": "sha512-X7sjQzceUhu1u7Y/ylrRZFU2FS6LRiFVp6rKLPg23y3x3c3DOKAwuXGDp+PAGjh6CSnCjYeAul8pcT8bAl+lSA==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "719a251ceca49c057ea90a1152af6546b767ec88e6d573bb6324454267b32c22",
+          "bytes": 1065
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "cssstyle",
+      "version": "5.3.7",
+      "source": "https://registry.npmjs.org/cssstyle/-/cssstyle-5.3.7.tgz",
+      "repository": "git+https://github.com/jsdom/cssstyle.git",
+      "source_download": "https://registry.npmjs.org/cssstyle/-/cssstyle-5.3.7.tgz",
+      "integrity": "sha512-7D2EPVltRrsTkhpQmksIu+LxeWAIEk6wRDMJ1qljlv+CKHJM+cJLlfhWIzNA44eAsHXSNe3+vO6DW1yCYx8SuQ==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "768faff9f6908c78d848b18770b2a93e3361d6e2ee35edf45c6a5ddf1f7cb185",
+          "bytes": 1050
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
       "name": "csstype",
       "version": "3.2.3",
       "source": "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz",
@@ -10514,6 +11016,96 @@
           "path": "LICENSE",
           "sha256": "11d55bd4541c75ee7879547ac49089c489163dae49551389713c3d026cab383e",
           "bytes": 1062
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "data-urls",
+      "version": "6.0.1",
+      "source": "https://registry.npmjs.org/data-urls/-/data-urls-6.0.1.tgz",
+      "repository": "git+https://github.com/jsdom/data-urls.git",
+      "source_download": "https://registry.npmjs.org/data-urls/-/data-urls-6.0.1.tgz",
+      "integrity": "sha512-euIQENZg6x8mj3fO6o9+fOW8MimUI4PpD/fZBhJfeioZVy9TUpM4UY7KjQNVZFlqwJ0UdzRDzkycB997HEq1BQ==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "528eec83cb836a0adda9f8fc3d6a2a70a710d6cc0be9a155f92212c8df28acfa",
+          "bytes": 1069
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "debug",
+      "version": "4.4.3",
+      "source": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
+      "repository": "git://github.com/debug-js/debug.git",
+      "source_download": "https://registry.npmjs.org/debug/-/debug-4.4.3.tgz",
+      "integrity": "sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "3a61c6c96caf5c1d9b623fb9b04c822b783dfcb78aa7e49c76a3f643e6ed7f95",
+          "bytes": 1139
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "decimal.js",
+      "version": "10.6.0",
+      "source": "https://registry.npmjs.org/decimal.js/-/decimal.js-10.6.0.tgz",
+      "repository": "https://github.com/MikeMcl/decimal.js.git",
+      "source_download": "https://registry.npmjs.org/decimal.js/-/decimal.js-10.6.0.tgz",
+      "integrity": "sha512-YpgQiITW3JXGntzdUmyUR1V812Hn8T1YVXhCu+wO3OpS4eU9l4YdD3qjyiKdV6mvV29zapkMeD390UVEf2lkUg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENCE.md",
+          "sha256": "3108b546bcff5d346923a82f48b2d252ca722f9088076db6d145f6b67757ad6c",
+          "bytes": 1104
         }
       ],
       "redistribution": {
@@ -10552,6 +11144,36 @@
         "requirements": [
           "Retain applicable copyright, license and attribution notices; see exact retained text.",
           "Preserve applicable NOTICE material; identify modifications; no trademark rights are granted."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "entities",
+      "version": "8.1.0",
+      "source": "https://registry.npmjs.org/entities/-/entities-8.1.0.tgz",
+      "repository": "https://github.com/fb55/entities.git",
+      "source_download": "https://registry.npmjs.org/entities/-/entities-8.1.0.tgz",
+      "integrity": "sha512-kxL7msIffSuh9aaFAMD7rxAIuTRMAHMeBtgHW2yUdWw732ZNh4MehkF2gdjvtdmikkaIP9bFDDJOPlsvm7avrA==",
+      "declared_license": "BSD-2-Clause",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+          "bytes": 1260
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
         ]
       },
       "modifications": "No upstream source modifications made by GreenLens."
@@ -10633,6 +11255,156 @@
       ],
       "cpus": null,
       "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "html-encoding-sniffer",
+      "version": "6.0.0",
+      "source": "https://registry.npmjs.org/html-encoding-sniffer/-/html-encoding-sniffer-6.0.0.tgz",
+      "repository": "git+https://github.com/jsdom/html-encoding-sniffer.git",
+      "source_download": "https://registry.npmjs.org/html-encoding-sniffer/-/html-encoding-sniffer-6.0.0.tgz",
+      "integrity": "sha512-CV9TW3Y3f8/wT0BRFc1/KAVQ3TUHiXmaAb6VW9vtiMFf7SLoMd1PdAc4W3KFOFETBJUb90KatHqlsZMWV+R9Gg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "528eec83cb836a0adda9f8fc3d6a2a70a710d6cc0be9a155f92212c8df28acfa",
+          "bytes": 1069
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "http-proxy-agent",
+      "version": "7.0.2",
+      "source": "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz",
+      "repository": "https://github.com/TooTallNate/proxy-agents.git",
+      "source_download": "https://registry.npmjs.org/http-proxy-agent/-/http-proxy-agent-7.0.2.tgz",
+      "integrity": "sha512-T1gkAiYYDWYx3V5Bmyu7HcfcvL7mUrTWiM6yOfa3PIphViJ/gFPbvidQ+veqSOHci/PxBcDabeUNCzpOODJZig==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "71368fd0f5b4129191e9afcd1e1ef2dc89a9090d3e4d80bbab92dafd032b3bef",
+          "bytes": 1102
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "https-proxy-agent",
+      "version": "7.0.6",
+      "source": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz",
+      "repository": "https://github.com/TooTallNate/proxy-agents.git",
+      "source_download": "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-7.0.6.tgz",
+      "integrity": "sha512-vK9P5/iUfdl95AI+JVyUuIcVtd4ofvtrOr3HNtM2yxC9bnMbEdp3x01OhQNnjb8IJYi38VlTE3mBXwcfvywuSw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "8d8c55319c7729d57be811c747452636688d54f19701ee0752b6b15ad3771d9a",
+          "bytes": 1101
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "is-potential-custom-element-name",
+      "version": "1.0.1",
+      "source": "https://registry.npmjs.org/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.1.tgz",
+      "repository": "https://github.com/mathiasbynens/is-potential-custom-element-name.git",
+      "source_download": "https://registry.npmjs.org/is-potential-custom-element-name/-/is-potential-custom-element-name-1.0.1.tgz",
+      "integrity": "sha512-bCYeRA2rVibKZd+s2625gGnGF/t7DSqDs4dP7CrLA1m7jKWz6pps0LpYLJN8Q64HtmPKJ1hrN3nzPNKFEKOUiQ==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE-MIT.txt",
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+          "bytes": 1077
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "jsdom",
+      "version": "27.4.0",
+      "source": "https://registry.npmjs.org/jsdom/-/jsdom-27.4.0.tgz",
+      "repository": "git+https://github.com/jsdom/jsdom.git",
+      "source_download": "https://registry.npmjs.org/jsdom/-/jsdom-27.4.0.tgz",
+      "integrity": "sha512-mjzqwWRD9Y1J1KUi7W97Gja1bwOOM5Ug0EZ6UDK3xS7j7mndrkwozHtSblfomlzyB4NepioNt+B2sOSzczVgtQ==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "242d37e7cab25cbafc36cc973ee88f9345fddf066afe4f72b7ac3d9ad4e24cce",
+          "bytes": 1056
+        }
+      ],
       "redistribution": {
         "review": "recognized_declared_license",
         "unrecognized_terms": [],
@@ -11000,6 +11772,199 @@
     },
     {
       "ecosystem": "npm",
+      "name": "lru-cache",
+      "version": "11.5.3",
+      "source": "https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.3.tgz",
+      "repository": "git+ssh://git@github.com/isaacs/node-lru-cache.git",
+      "source_download": "https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.3.tgz",
+      "integrity": "sha512-U4N8FgzmWxc8k1VH8Kr6lQg18U7Fjvby6wXHVRX/ZZ7IwWbRMgrRbP0Wrb5q5NVinryp4SQampHKdvtecItxUg==",
+      "declared_license": "BlueOak-1.0.0",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+          "bytes": 1552
+        }
+      ],
+      "supplemental_license_review": {
+        "review_date": "2026-10-14",
+        "declared_license": "BlueOak-1.0.0",
+        "source_download": "https://registry.npmjs.org/lru-cache/-/lru-cache-11.5.3.tgz",
+        "source_integrity": "sha512-U4N8FgzmWxc8k1VH8Kr6lQg18U7Fjvby6wXHVRX/ZZ7IwWbRMgrRbP0Wrb5q5NVinryp4SQampHKdvtecItxUg==",
+        "archive_sha256": "d18739bbd7d0091d30d2cca58e120c8b70ac09a5a21aa4b2b3e9afb2dc4084d8",
+        "package_files_sha256": {
+          "dist/commonjs/browser/diagnostics-channel.js": "342a214e2c8c7a112c7800e46af6145afe9d475c5c429453411a6863538f3a8a",
+          "dist/commonjs/diagnostics-channel.js": "2ca4bec4056a88ff22e80e3a48c11af153e75b6d76df31de98d19d8d09ac3407",
+          "dist/commonjs/node/diagnostics-channel.js": "90b60dd07afb7859ebd6963a065aa55645ecae0d668c3dbbb6c986bc7d484d61",
+          "dist/commonjs/react-native/diagnostics-channel.js": "f9bad41b60354f8d60964692f6ad76fc47359062fb9ae916e41813df8c7c58d4",
+          "dist/esm/browser/diagnostics-channel.js": "7f58f46fb04cb7d55691a0d18a22a24503eaeb6ff6d6430e8c53b34863e4a0a4",
+          "dist/esm/diagnostics-channel.js": "8317b8d0ea3c740c1613828a058d7fca8f1cf8efd2e92a88b7e5310f74c58133",
+          "dist/esm/node/diagnostics-channel.js": "a1e7d903bc560ebdc55b2014241c52b5bed1f9cb89155210c9787e89af80965e",
+          "dist/esm/react-native/diagnostics-channel.js": "5103bc027b17c7454555b854ee2f76a9de78a73a92935645c8aa0d9b736c4aaa",
+          "dist/commonjs/browser/index.js": "cceddfc98477e5fb3903979811fa744256fcf6ea291eb4c91a66e578481ca4ce",
+          "dist/commonjs/index.js": "cceddfc98477e5fb3903979811fa744256fcf6ea291eb4c91a66e578481ca4ce",
+          "dist/commonjs/node/index.js": "cceddfc98477e5fb3903979811fa744256fcf6ea291eb4c91a66e578481ca4ce",
+          "dist/commonjs/react-native/index.js": "cceddfc98477e5fb3903979811fa744256fcf6ea291eb4c91a66e578481ca4ce",
+          "dist/esm/browser/index.js": "0f53151ca5dc8875260996c7779d8c150809bbac44eb18ce9d11f49460665e6a",
+          "dist/esm/index.js": "0f53151ca5dc8875260996c7779d8c150809bbac44eb18ce9d11f49460665e6a",
+          "dist/esm/node/index.js": "0f53151ca5dc8875260996c7779d8c150809bbac44eb18ce9d11f49460665e6a",
+          "dist/esm/react-native/index.js": "0f53151ca5dc8875260996c7779d8c150809bbac44eb18ce9d11f49460665e6a",
+          "dist/commonjs/browser/index.min.js": "e68572bb74efeb966480dbf850cc198f02625b149f2018c1adeb3e034cbbe1fa",
+          "dist/commonjs/index.min.js": "e68572bb74efeb966480dbf850cc198f02625b149f2018c1adeb3e034cbbe1fa",
+          "dist/commonjs/node/index.min.js": "adc5795d0e23ec2528cc30236c4469b39a40322946f089a81daef1cfe7a8b928",
+          "dist/esm/browser/index.min.js": "de8cbf33aaab6c3baac77250443d991faeb82a87f772b8f2e1df39b75004dc88",
+          "dist/esm/index.min.js": "51fd7970cdf3cb675ec30bf13e2d5fbb5de918abb795a0aa61f66874494c5027",
+          "dist/esm/node/index.min.js": "9d59bb1a03f11f3ae91aa0bffbfd58a8c38de94cf011f960850740921b00e74d",
+          "dist/commonjs/browser/perf.js": "0806380d8180a201160b4b92e9f2ebf8cec2754c6df6fa171b2cb6ea44916295",
+          "dist/commonjs/node/perf.js": "0806380d8180a201160b4b92e9f2ebf8cec2754c6df6fa171b2cb6ea44916295",
+          "dist/commonjs/perf.js": "0806380d8180a201160b4b92e9f2ebf8cec2754c6df6fa171b2cb6ea44916295",
+          "dist/commonjs/react-native/perf.js": "0806380d8180a201160b4b92e9f2ebf8cec2754c6df6fa171b2cb6ea44916295",
+          "dist/esm/browser/perf.js": "41b40c08661446ed6c7f11f8a1f1e0cf5fe8b478bb73bf731e85bce81a373dee",
+          "dist/esm/node/perf.js": "41b40c08661446ed6c7f11f8a1f1e0cf5fe8b478bb73bf731e85bce81a373dee",
+          "dist/esm/perf.js": "41b40c08661446ed6c7f11f8a1f1e0cf5fe8b478bb73bf731e85bce81a373dee",
+          "dist/esm/react-native/perf.js": "41b40c08661446ed6c7f11f8a1f1e0cf5fe8b478bb73bf731e85bce81a373dee",
+          "dist/commonjs/package.json": "8005a3491db7d92f36ac66369861589f9c47123d3a7c71e643fc2c06168cd45a",
+          "dist/esm/package.json": "3ca9d4afd21425087cf31893b8f9f63c81b0b8408db5e343ca76e5f8aa26ab9a",
+          "package.json": "c085d38560434a8915fd1817cd17cee316118078b07f40302b32ef4d8bc760f4",
+          "dist/commonjs/browser/diagnostics-channel-browser.d.ts.map": "c4731863b085a3211d1835e04826345b87cfe56bc14f9ad1ef3670358d9ccc04",
+          "dist/esm/browser/diagnostics-channel-browser.d.ts.map": "c4731863b085a3211d1835e04826345b87cfe56bc14f9ad1ef3670358d9ccc04",
+          "dist/commonjs/browser/diagnostics-channel-browser.js.map": "fdcb88e26e571e7a5f1cfd33ff6641ffa5c377be74854f233bd1e35d2f10912c",
+          "dist/esm/browser/diagnostics-channel-browser.js.map": "71cff4399aaf1badddaebf70879f7722cfe0154723b149cfc1923cf81245bff8",
+          "dist/commonjs/diagnostics-channel-cjs.cjs.map": "9fab952a4646dc9b0562e9b073ae6a5386e33cd95a7cd4293bd4f602e76e7a77",
+          "dist/commonjs/diagnostics-channel-cjs.d.cts.map": "81caf89251e8e6d666d2dec08e0478e9eed328eb442935688bf2a2530ede5fe8",
+          "dist/esm/diagnostics-channel-esm.d.mts.map": "47c9c75db25a39f223b6c301c5d830b7bd2bf77e2b8e2f5129512f9b531ec638",
+          "dist/esm/diagnostics-channel-esm.mjs.map": "5a4467ad47cf88a89e7077dd6bd2bbebe9b715e7bc274d121a7d01db58fc445f",
+          "dist/commonjs/node/diagnostics-channel-node.d.ts.map": "a5b1ce7980ce24e37695a3f27228c04f1611d412db44148083e7a587a4223d29",
+          "dist/esm/node/diagnostics-channel-node.d.ts.map": "a5b1ce7980ce24e37695a3f27228c04f1611d412db44148083e7a587a4223d29",
+          "dist/commonjs/node/diagnostics-channel-node.js.map": "207a80d41687519bc1754ea7147ebb654529163a90975b4081240f7fc25f9bb7",
+          "dist/esm/node/diagnostics-channel-node.js.map": "41b62b59f9f70c8c1db5fd3f88b21b02f76e5956ad4a1e0e0e86d7d4af5f9a40",
+          "dist/commonjs/react-native/diagnostics-channel-react-native.d.ts.map": "49cc5a03d0da4ec02a7188d4e1bf5740afdd58a4dc1c7020426175200687c233",
+          "dist/esm/react-native/diagnostics-channel-react-native.d.ts.map": "49cc5a03d0da4ec02a7188d4e1bf5740afdd58a4dc1c7020426175200687c233",
+          "dist/commonjs/react-native/diagnostics-channel-react-native.js.map": "89d5c2a92302da775092c32b74c1848f0ef0ea97718332af6a95d17c41d4d15c",
+          "dist/esm/react-native/diagnostics-channel-react-native.js.map": "d4a1ccdf3fa52205af070264d6351f31dc1bd4caff604fdb0f2d80045b553ade",
+          "dist/commonjs/browser/index.d.ts.map": "73be4bb3be98de8e0daf846eb0d5f5942d8c2522db5472cbef0c0dd1f0fd3cae",
+          "dist/commonjs/index.d.ts.map": "9bfe7796a23528972be199904e46d349d538780f83525dafdd6acbc00c471cfb",
+          "dist/commonjs/node/index.d.ts.map": "73be4bb3be98de8e0daf846eb0d5f5942d8c2522db5472cbef0c0dd1f0fd3cae",
+          "dist/commonjs/react-native/index.d.ts.map": "73be4bb3be98de8e0daf846eb0d5f5942d8c2522db5472cbef0c0dd1f0fd3cae",
+          "dist/esm/browser/index.d.ts.map": "73be4bb3be98de8e0daf846eb0d5f5942d8c2522db5472cbef0c0dd1f0fd3cae",
+          "dist/esm/index.d.ts.map": "9bfe7796a23528972be199904e46d349d538780f83525dafdd6acbc00c471cfb",
+          "dist/esm/node/index.d.ts.map": "73be4bb3be98de8e0daf846eb0d5f5942d8c2522db5472cbef0c0dd1f0fd3cae",
+          "dist/esm/react-native/index.d.ts.map": "73be4bb3be98de8e0daf846eb0d5f5942d8c2522db5472cbef0c0dd1f0fd3cae",
+          "dist/commonjs/browser/index.js.map": "910d55bb1be3c2ab7841cbfdea78f1867ca597910129ac254a877bee91ae1fb0",
+          "dist/commonjs/index.js.map": "e47834644ddaff6fef4d3597f1c99b7cecc03d37e7e429d7f5495c90a36e93e9",
+          "dist/commonjs/node/index.js.map": "910d55bb1be3c2ab7841cbfdea78f1867ca597910129ac254a877bee91ae1fb0",
+          "dist/commonjs/react-native/index.js.map": "910d55bb1be3c2ab7841cbfdea78f1867ca597910129ac254a877bee91ae1fb0",
+          "dist/esm/browser/index.js.map": "a4ec7794172732a57205f5339a8d19c52b1afd1a486c8781c1fe9f4faf48de27",
+          "dist/esm/index.js.map": "bf6f97e7a59aeddfa731ebe857864f74f16fc7cfcf090d7af27f36effffc3ed0",
+          "dist/esm/node/index.js.map": "a4ec7794172732a57205f5339a8d19c52b1afd1a486c8781c1fe9f4faf48de27",
+          "dist/esm/react-native/index.js.map": "a4ec7794172732a57205f5339a8d19c52b1afd1a486c8781c1fe9f4faf48de27",
+          "dist/commonjs/browser/index.min.js.map": "ef58ef202dd4fbc5389562a6cfc16bde085aecda2fd2fd7738b11ca59508469a",
+          "dist/commonjs/index.min.js.map": "5587dfb844f6a55608c0887d030466a06c87a6fe827c379d99e1834d0525813b",
+          "dist/commonjs/node/index.min.js.map": "4db3c3e7b4ac173c871514162a7fa67a226829a437f7a4cfb0c4a9c2aba6b696",
+          "dist/esm/browser/index.min.js.map": "e6ebe1010782b9878d0915a7858b8c55e313a9dd8735e29fc1e111b5d45ed43f",
+          "dist/esm/index.min.js.map": "51f4117b4daba2c3c8d7b9017628e49cce7de83e8e825dfcf0e0b735755bb5c2",
+          "dist/esm/node/index.min.js.map": "bed574cb2c4d7ec8ec26b168867870c505f6ea674e02acc8abc6eb552466d143",
+          "dist/commonjs/browser/perf.d.ts.map": "309da63bfc61699451f321838d436f75be19501e7af922823585c870e4da7526",
+          "dist/commonjs/node/perf.d.ts.map": "309da63bfc61699451f321838d436f75be19501e7af922823585c870e4da7526",
+          "dist/commonjs/perf.d.ts.map": "396e2ac817ceac71533d1e94f0860067278d48d8a9b328170850431e166556ed",
+          "dist/commonjs/react-native/perf.d.ts.map": "309da63bfc61699451f321838d436f75be19501e7af922823585c870e4da7526",
+          "dist/esm/browser/perf.d.ts.map": "309da63bfc61699451f321838d436f75be19501e7af922823585c870e4da7526",
+          "dist/esm/node/perf.d.ts.map": "309da63bfc61699451f321838d436f75be19501e7af922823585c870e4da7526",
+          "dist/esm/perf.d.ts.map": "396e2ac817ceac71533d1e94f0860067278d48d8a9b328170850431e166556ed",
+          "dist/esm/react-native/perf.d.ts.map": "309da63bfc61699451f321838d436f75be19501e7af922823585c870e4da7526",
+          "dist/commonjs/browser/perf.js.map": "aa3b20c0a1bb56ff663f0ecd42db7180ab8f17922ecb00069664a1463c94a90d",
+          "dist/commonjs/node/perf.js.map": "aa3b20c0a1bb56ff663f0ecd42db7180ab8f17922ecb00069664a1463c94a90d",
+          "dist/commonjs/perf.js.map": "fe198f342ee90150cb124e14d2927aaa710b8076546ece295985d13b76395e11",
+          "dist/commonjs/react-native/perf.js.map": "aa3b20c0a1bb56ff663f0ecd42db7180ab8f17922ecb00069664a1463c94a90d",
+          "dist/esm/browser/perf.js.map": "25395bb6fa920eb3083c6108a90da85f0b5ca8dabe17be69283b93031b8b4d43",
+          "dist/esm/node/perf.js.map": "25395bb6fa920eb3083c6108a90da85f0b5ca8dabe17be69283b93031b8b4d43",
+          "dist/esm/perf.js.map": "b15163201e4a5781d7aea17b15ecfcdddb640d412992a57ee92bbc5688b3fd29",
+          "dist/esm/react-native/perf.js.map": "25395bb6fa920eb3083c6108a90da85f0b5ca8dabe17be69283b93031b8b4d43",
+          "LICENSE.md": "8a1af140fdfbf5afd3df27f7e662f989c5b963a300020dfafce42033cae9e004",
+          "README.md": "9ce0167d06ee43ab4fcab0d76b71f515da53bcf70c40b0b80129c987372fc13e",
+          "dist/commonjs/browser/diagnostics-channel.d.ts": "0f5abe6a6464b3f6087e25051cd8d11fedacc8daac9a34fa04618e0c34ddfe57",
+          "dist/commonjs/diagnostics-channel.d.ts": "a83354d261d0732e733a570f57471ac8ad44e9e2fe0b03db516795f8bdfe672e",
+          "dist/commonjs/node/diagnostics-channel.d.ts": "bf4f13b59c9ced7344ecaa1d9325871e85f8b44fc9248ced4e0cd7effeed0d4b",
+          "dist/commonjs/react-native/diagnostics-channel.d.ts": "8d4e3e034e7d98b6727bf49cf917957ef70f55f7a18c2870a0a7918f72a25c16",
+          "dist/esm/browser/diagnostics-channel.d.ts": "0f5abe6a6464b3f6087e25051cd8d11fedacc8daac9a34fa04618e0c34ddfe57",
+          "dist/esm/diagnostics-channel.d.ts": "6bd92fe424709528d102aff8436e358459b2860a215eb248e46ccbff9dc556ca",
+          "dist/esm/node/diagnostics-channel.d.ts": "bf4f13b59c9ced7344ecaa1d9325871e85f8b44fc9248ced4e0cd7effeed0d4b",
+          "dist/esm/react-native/diagnostics-channel.d.ts": "8d4e3e034e7d98b6727bf49cf917957ef70f55f7a18c2870a0a7918f72a25c16",
+          "dist/commonjs/browser/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/commonjs/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/commonjs/node/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/commonjs/react-native/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/esm/browser/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/esm/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/esm/node/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/esm/react-native/index.d.ts": "af13a1f1a9080c6ef01af4e4c63bbf6bbf93c2675a94bb8a1c20f36ad660a0d2",
+          "dist/commonjs/browser/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b",
+          "dist/commonjs/node/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b",
+          "dist/commonjs/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b",
+          "dist/commonjs/react-native/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b",
+          "dist/esm/browser/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b",
+          "dist/esm/node/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b",
+          "dist/esm/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b",
+          "dist/esm/react-native/perf.d.ts": "7d8571309d2edd1403e7e80a52a8f352115a4c9b0247da2f03d6a80b8b852c1b"
+        },
+        "reason": "Reviewed the actual Blue Oak 1.0.0 text. Distribution requires the complete license or canonical link; GreenLens supplies the complete original text. This exact-package review does not admit other BlueOak packages.",
+        "review_sources": [
+          "https://blueoakcouncil.org/license/1.0.0"
+        ],
+        "redistribution": {
+          "review": "manual_reviewed",
+          "requirements": [
+            "Give every recipient of any part of the software the full Blue Oak Model License 1.0.0 text or its canonical URL; GreenLens bundles the full reviewed text.",
+            "Preserve the license disclaimers and patent terms; no source modifications were made."
+          ]
+        }
+      },
+      "redistribution": {
+        "review": "manual_reviewed",
+        "requirements": [
+          "Give every recipient of any part of the software the full Blue Oak Model License 1.0.0 text or its canonical URL; GreenLens bundles the full reviewed text.",
+          "Preserve the license disclaimers and patent terms; no source modifications were made."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "mdn-data",
+      "version": "2.27.1",
+      "source": "https://registry.npmjs.org/mdn-data/-/mdn-data-2.27.1.tgz",
+      "repository": "https://github.com/mdn/data.git",
+      "source_download": "https://registry.npmjs.org/mdn-data/-/mdn-data-2.27.1.tgz",
+      "integrity": "sha512-9Yubnt3e8A0OKwxYSXyhLymGW4sCufcLG6VdiDdUGVkPhpqLxlvP5vl1983gQjJl3tqbrM731mjaZaP68AgosQ==",
+      "declared_license": "CC0-1.0",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "36ffd9dc085d529a7e60e1276d73ae5a030b020313e6c5408593a6ae2af39673",
+          "bytes": 6555
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
       "name": "meshoptimizer",
       "version": "1.1.1",
       "source": "https://registry.npmjs.org/meshoptimizer/-/meshoptimizer-1.1.1.tgz",
@@ -11016,6 +11981,36 @@
         {
           "path": "LICENSE.md",
           "sha256": "f03037ca7bad1e3eb7f4a63fa6084a8baabd5ba30d3c239a9a7f35705d873e26",
+          "bytes": 1079
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "ms",
+      "version": "2.1.3",
+      "source": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
+      "repository": "vercel/ms",
+      "source_download": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
+      "integrity": "sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "license.md",
+          "sha256": "1662fae9b5314d11cf51284e2dcd1f006a354f7343f08712a730fcff9a359801",
           "bytes": 1079
         }
       ],
@@ -11047,6 +12042,36 @@
           "path": "LICENSE",
           "sha256": "da4db1480d9beea3483a2eda5c53b22238d0827d57da162b48f122e04d2d9987",
           "bytes": 1095
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "parse5",
+      "version": "8.0.1",
+      "source": "https://registry.npmjs.org/parse5/-/parse5-8.0.1.tgz",
+      "repository": "git://github.com/inikulin/parse5.git",
+      "source_download": "https://registry.npmjs.org/parse5/-/parse5-8.0.1.tgz",
+      "integrity": "sha512-z1e/HMG90obSGeidlli3hj7cbocou0/wa5HacvI3ASx34PecNjNQeaHNo5WIZpWofN9kgkqV1q5YvXe3F0FoPw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "8c535800331e1e4439835555b3f9edc7fe9dee2fab0d8bbbd5a982e8b8343d4d",
+          "bytes": 1109
         }
       ],
       "redistribution": {
@@ -11150,6 +12175,36 @@
     },
     {
       "ecosystem": "npm",
+      "name": "punycode",
+      "version": "2.3.1",
+      "source": "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz",
+      "repository": "https://github.com/mathiasbynens/punycode.js.git",
+      "source_download": "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz",
+      "integrity": "sha512-vYt7UD1U9Wg6138shLtLOvdAu+8DsC/ilFtEVHcH+wydcSpNE20AfSOduf6MkRFahL5FY7X1oU7nKVZFtfq8Fg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE-MIT.txt",
+          "sha256": "483acb265f182907d1caf6cff9c16c96f31325ed23792832cc5d8b12d5f88c8a",
+          "bytes": 1077
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
       "name": "react-dom",
       "version": "19.3.0",
       "source": "https://registry.npmjs.org/react-dom/-/react-dom-19.3.0.tgz",
@@ -11210,6 +12265,36 @@
     },
     {
       "ecosystem": "npm",
+      "name": "require-from-string",
+      "version": "2.0.2",
+      "source": "https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz",
+      "repository": "floatdrop/require-from-string",
+      "source_download": "https://registry.npmjs.org/require-from-string/-/require-from-string-2.0.2.tgz",
+      "integrity": "sha512-Xf0nWe6RseziFMu+Ap9biiUbmplq6S9/p+7w7YXP/JBHhrUDDUhwa+vANyubuqfZWTveU//DYVGsDG7RKL/vEw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "license",
+          "sha256": "6ee0feb1f6ef996ff5a68600f8cf98909cf412d39ef3cdceaefd87d636fa1b7f",
+          "bytes": 1128
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
       "name": "rolldown",
       "version": "1.2.13",
       "source": "https://registry.npmjs.org/rolldown/-/rolldown-1.2.13.tgz",
@@ -11239,6 +12324,64 @@
         "unrecognized_terms": [],
         "requirements": [
           "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "saxes",
+      "version": "6.0.0",
+      "source": "https://registry.npmjs.org/saxes/-/saxes-6.0.0.tgz",
+      "repository": "https://github.com/lddubeau/saxes.git",
+      "source_download": "https://registry.npmjs.org/saxes/-/saxes-6.0.0.tgz",
+      "integrity": "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==",
+      "declared_license": "ISC",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "third-party/upstream/saxes-6.0.0-LICENSE.txt",
+          "source": "https://raw.githubusercontent.com/lddubeau/saxes/211fa0ebec9b628affc09219199639887174bfc3/LICENSE",
+          "sha256": "0fac2374380621b22e6b50451057721a9c52935b02d16d106a9f04897f061d0e",
+          "bytes": 3011
+        }
+      ],
+      "supplemental_license_review": {
+        "review_date": "2026-10-14",
+        "declared_license": "ISC",
+        "source_download": "https://registry.npmjs.org/saxes/-/saxes-6.0.0.tgz",
+        "source_integrity": "sha512-xAg7SOnEhrm5zI3puOOKyy1OMcMlIJZYNJY7xLBwSze0UjhPLnWfj2GF2EpT0jmzaJKIWKHLsaSSajf35bcYnA==",
+        "archive_sha256": "1cdf52fbbe1ccbd175c365d2b8e63f46e590e74aff23fa6a44a6ec51522e96db",
+        "package_files_sha256": {
+          "saxes.js": "d00e2ba27ed7d6ac961d03ff14d6b8c0eb5bf063ed2c996c22c6df06ac121423",
+          "package.json": "32052572b41c2a890ed0854798c48454cc5991dcaafe5fb1718a4253046acfd3",
+          "saxes.js.map": "bf0ebc4bc6bec1a50bf91fab8b5460212e753becea10409082edac58fa8c7d6c",
+          "README.md": "ade6061f7c778cdd868d9b0f711530e4c1ec1f33767222ce33bb05e295bf6f0c",
+          "saxes.d.ts": "a795d722f71f114bbb73ad6fbde87c11e3b64af808f91183e1db601ff456d37f"
+        },
+        "reason": "Published npm archive omits LICENSE. Verified SHA-512 against the lock and registry, compared all five archive members with installed bytes, and retained the entire upstream LICENSE from the exact registry gitHead. Both saxes/sax ISC notices and the historical MIT attribution remain intact.",
+        "review_sources": [
+          "https://registry.npmjs.org/saxes/6.0.0",
+          "https://raw.githubusercontent.com/lddubeau/saxes/211fa0ebec9b628affc09219199639887174bfc3/LICENSE"
+        ],
+        "redistribution": {
+          "review": "manual_reviewed",
+          "requirements": [
+            "Retain both upstream ISC copyright and permission notices in all copies, with the complete warranty and liability disclaimers.",
+            "Retain the complete upstream historical notice section; its included MIT text describes code upstream states is no longer used, not a new current-code license inference."
+          ]
+        },
+        "source_commit": "211fa0ebec9b628affc09219199639887174bfc3"
+      },
+      "redistribution": {
+        "review": "manual_reviewed",
+        "requirements": [
+          "Retain both upstream ISC copyright and permission notices in all copies, with the complete warranty and liability disclaimers.",
+          "Retain the complete upstream historical notice section; its included MIT text describes code upstream states is no longer used, not a new current-code license inference."
         ]
       },
       "modifications": "No upstream source modifications made by GreenLens."
@@ -11292,6 +12435,36 @@
           "path": "LICENSE",
           "sha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd",
           "bytes": 1526
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "symbol-tree",
+      "version": "3.2.4",
+      "source": "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz",
+      "repository": "https://github.com/jsdom/js-symbol-tree.git",
+      "source_download": "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz",
+      "integrity": "sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "9ea1eccdabe469767a9edb9249a840b2461cf91b2434bf8a3e2fc1f414311cb1",
+          "bytes": 1084
         }
       ],
       "redistribution": {
@@ -11365,6 +12538,126 @@
     },
     {
       "ecosystem": "npm",
+      "name": "tldts-core",
+      "version": "7.4.18",
+      "source": "https://registry.npmjs.org/tldts-core/-/tldts-core-7.4.18.tgz",
+      "repository": "git+ssh://git@github.com/remusao/tldts.git",
+      "source_download": "https://registry.npmjs.org/tldts-core/-/tldts-core-7.4.18.tgz",
+      "integrity": "sha512-KI2PKvCmvQI/xD6ypPqkU0i7oxNXR/O58RLRaHR4svsgVUQ2JE/XC8BtMbG6PSehD27I8sZJRcC1ASnCy6lp3g==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "c64182d48160db948b6aa97a984f1a32974ce4d2053900361264cd33853796cb",
+          "bytes": 1078
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tldts",
+      "version": "7.4.18",
+      "source": "https://registry.npmjs.org/tldts/-/tldts-7.4.18.tgz",
+      "repository": "git+ssh://git@github.com/remusao/tldts.git",
+      "source_download": "https://registry.npmjs.org/tldts/-/tldts-7.4.18.tgz",
+      "integrity": "sha512-somxA8xKAUzlAxl0TX/jMSYIbRNFIVGnI96pVGJPeMc5BsHmfVXn6mOJT6U++ELnl04eGfzpfcEuZe8WiASkXg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "c64182d48160db948b6aa97a984f1a32974ce4d2053900361264cd33853796cb",
+          "bytes": 1078
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tough-cookie",
+      "version": "6.0.2",
+      "source": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-6.0.2.tgz",
+      "repository": "git://github.com/salesforce/tough-cookie.git",
+      "source_download": "https://registry.npmjs.org/tough-cookie/-/tough-cookie-6.0.2.tgz",
+      "integrity": "sha512-exgYmnmL/sJpR3upZfXG5PoatXQii55xAiXGXzY+sROLZ/Y+SLcp9PgJNI9Vz37HpQ74WvDcLT8eqm+kV3FzrA==",
+      "declared_license": "BSD-3-Clause",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "22ec6791c91ba42c0516a05f4cbdde019aae4687f8a38c5ca7e8a69ee68f851d",
+          "bytes": 1485
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "tr46",
+      "version": "6.0.0",
+      "source": "https://registry.npmjs.org/tr46/-/tr46-6.0.0.tgz",
+      "repository": "git+https://github.com/jsdom/tr46.git",
+      "source_download": "https://registry.npmjs.org/tr46/-/tr46-6.0.0.tgz",
+      "integrity": "sha512-bLVMLPtstlZ4iMQHpFHTR7GAGj2jxi8Dg0s2h2MafAE4uSWF98FC/3MomU51iQAMf8/qDUbKWf5GxuvvVcXEhw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "499d6d466d064e0460427967a344e2a32fcb86ea8c6cd1a285ec4f1fa03fba67",
+          "bytes": 1076
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
       "name": "typescript",
       "version": "7.0.2",
       "source": "https://registry.npmjs.org/typescript/-/typescript-7.0.2.tgz",
@@ -11418,6 +12711,247 @@
           "path": "LICENSE.md",
           "sha256": "a47172e44a86a7e2cd1c16282341f7726ec60caafe3a6166fe3e0602005b6fa6",
           "bytes": 108786
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "w3c-xmlserializer",
+      "version": "5.0.0",
+      "source": "https://registry.npmjs.org/w3c-xmlserializer/-/w3c-xmlserializer-5.0.0.tgz",
+      "repository": "jsdom/w3c-xmlserializer",
+      "source_download": "https://registry.npmjs.org/w3c-xmlserializer/-/w3c-xmlserializer-5.0.0.tgz",
+      "integrity": "sha512-o8qghlI8NZHU1lLPrpi2+Uq7abh4GGPpYANlalzWxyWteJOCsr/P+oPBA49TOLu5FTZO4d3F9MnWJfiMo4BkmA==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "ab654de803cdaa9e2819ab2e934bdf7f757e308649ec231d78e80e92425cdc34",
+          "bytes": 1105
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "webidl-conversions",
+      "version": "8.0.1",
+      "source": "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-8.0.1.tgz",
+      "repository": "git+https://github.com/jsdom/webidl-conversions.git",
+      "source_download": "https://registry.npmjs.org/webidl-conversions/-/webidl-conversions-8.0.1.tgz",
+      "integrity": "sha512-BMhLD/Sw+GbJC21C/UgyaZX41nPt8bUTg+jWyDeg7e7YN4xOM05YPSIXceACnXVtqyEw/LMClUQMtMZ+PGGpqQ==",
+      "declared_license": "BSD-2-Clause",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.md",
+          "sha256": "a889cc4dbee2ae172c179856b25d75b0b7a5a136e1b97109b9b590b2ff1a879c",
+          "bytes": 1323
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "whatwg-mimetype",
+      "version": "4.0.0",
+      "source": "https://registry.npmjs.org/whatwg-mimetype/-/whatwg-mimetype-4.0.0.tgz",
+      "repository": "jsdom/whatwg-mimetype",
+      "source_download": "https://registry.npmjs.org/whatwg-mimetype/-/whatwg-mimetype-4.0.0.tgz",
+      "integrity": "sha512-QaKxh0eNIi2mE9p2vEdzfagOKHCcj1pJ56EEHGQOVxp8r9/iszLUUV7v89x9O1p/T+NlTM5W7jW6+cz4Fq1YVg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "528eec83cb836a0adda9f8fc3d6a2a70a710d6cc0be9a155f92212c8df28acfa",
+          "bytes": 1069
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "whatwg-mimetype",
+      "version": "5.0.0",
+      "source": "https://registry.npmjs.org/whatwg-mimetype/-/whatwg-mimetype-5.0.0.tgz",
+      "repository": "jsdom/whatwg-mimetype",
+      "source_download": "https://registry.npmjs.org/whatwg-mimetype/-/whatwg-mimetype-5.0.0.tgz",
+      "integrity": "sha512-sXcNcHOC51uPGF0P/D4NVtrkjSU2fNsm9iog4ZvZJsL3rjoDAzXZhkm2MWt1y+PUdggKAYVoMAIYcs78wJ51Cw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "528eec83cb836a0adda9f8fc3d6a2a70a710d6cc0be9a155f92212c8df28acfa",
+          "bytes": 1069
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "whatwg-url",
+      "version": "15.1.0",
+      "source": "https://registry.npmjs.org/whatwg-url/-/whatwg-url-15.1.0.tgz",
+      "repository": "git+https://github.com/jsdom/whatwg-url.git",
+      "source_download": "https://registry.npmjs.org/whatwg-url/-/whatwg-url-15.1.0.tgz",
+      "integrity": "sha512-2ytDk0kiEj/yu90JOAp44PVPUkO9+jVhyf+SybKlRHSDlvOOZhdPIrr7xTH64l4WixO2cP+wQIcgujkGBPPz6g==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "db480f236292a093e77a83c35431a8496624e1e664a3547768a9ce2bdde39877",
+          "bytes": 1076
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "ws",
+      "version": "8.22.0",
+      "source": "https://registry.npmjs.org/ws/-/ws-8.22.0.tgz",
+      "repository": "git+https://github.com/websockets/ws.git",
+      "source_download": "https://registry.npmjs.org/ws/-/ws-8.22.0.tgz",
+      "integrity": "sha512-Ydggc987+RO0AnWtZ/7Wq9FtNvcrL1b/RO0ud9mWjUPgDrsAAwQSF51sm2hm1XofbU/4jkpGEsLFsZZxU+1DOg==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "2b29dcfe0d6471f7e8c92c5fb38c9f93edee10330937055440192f1832b1ecef",
+          "bytes": 1183
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "xml-name-validator",
+      "version": "5.0.0",
+      "source": "https://registry.npmjs.org/xml-name-validator/-/xml-name-validator-5.0.0.tgz",
+      "repository": "jsdom/xml-name-validator",
+      "source_download": "https://registry.npmjs.org/xml-name-validator/-/xml-name-validator-5.0.0.tgz",
+      "integrity": "sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==",
+      "declared_license": "Apache-2.0",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9",
+          "bytes": 10173
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text.",
+          "Preserve applicable NOTICE material; identify modifications; no trademark rights are granted."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "xmlchars",
+      "version": "2.2.0",
+      "source": "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz",
+      "repository": "https://github.com/lddubeau/xmlchars.git",
+      "source_download": "https://registry.npmjs.org/xmlchars/-/xmlchars-2.2.0.tgz",
+      "integrity": "sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Development/build/test tooling; not intentionally shipped as an installed npm tree.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "45d196313c2647d313cc65ca9b093d2d6974b64d35ee7346f2c60c9d518dff2c",
+          "bytes": 1086
         }
       ],
       "redistribution": {

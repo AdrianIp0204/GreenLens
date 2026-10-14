@@ -9,13 +9,23 @@ pub mod display;
 mod document_tests;
 pub mod energy;
 pub mod energy_attachments;
+pub mod energy_catalog;
+pub mod energy_design_copy;
 pub mod energy_export;
 mod energy_job;
+pub mod energy_navigation;
+pub mod energy_preflight;
 pub mod energy_qualification;
 pub mod energy_report;
+pub mod energy_report_workbench;
+pub mod energy_sensitivity;
+#[cfg(test)]
+mod energy_sensitivity_portability_tests;
+pub mod energy_sensitivity_workflow;
 pub mod energy_series;
 pub mod energy_services;
 pub mod energy_weather;
+pub mod energy_workbench;
 pub mod persistence;
 pub mod qualification;
 mod report;
@@ -384,6 +394,7 @@ pub fn open_project(path: &Path) -> Result<ProjectView> {
         vec![]
     };
     let energy_assessments = energy_services::assessments(&project, &energy_results)?;
+    energy_sensitivity_workflow::evidence_members(path, &project)?;
     let climate_assessments =
         qualification::assessments_for_verified_view(&project, &climate_results)?;
     Ok(ProjectView {
@@ -409,6 +420,7 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
     if let Some(extension) = &project.energy {
         energy::verify_project_evidence(path, extension)?;
     }
+    energy_sensitivity_workflow::evidence_members(path, project)?;
     check_revision(path, expected)?;
     atomic_json(path, project)?;
     open_project(path)
@@ -454,7 +466,13 @@ fn copy_project(
                 && project
                     .energy
                     .as_ref()
-                    .is_none_or(|value| value.runs.is_empty() && value.weather.is_empty()),
+                    .is_none_or(|value| value.runs.is_empty()
+                        && value.weather.is_empty()
+                        && value.attachments.is_empty()
+                        && value
+                            .workbench
+                            .as_ref()
+                            .is_none_or(|w| w.sensitivity.is_empty())),
             "A project with historical runs requires its source directory for Save As"
         );
     }
@@ -475,6 +493,7 @@ fn copy_project(
         if let Some(extension) = &project.energy {
             energy::copy_project_evidence(source, destination, extension)?;
         }
+        energy_sensitivity_workflow::copy_evidence(source, destination, project)?;
     }
     let mut project = project.clone();
     if let Some((scratch, run)) = pending {

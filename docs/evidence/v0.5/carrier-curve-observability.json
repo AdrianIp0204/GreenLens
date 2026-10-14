@@ -1,0 +1,68 @@
+{
+  "schema_version": "greenlens.curve-observability-source-review.v1",
+  "review_date_utc": "2026-10-14",
+  "scope": "Read-only source and documentation review of the already selected Carrier/Miami proposal; no engine execution, new numerical inputs, candidate substitution or application source change.",
+  "upstream_commit": "4bd7a1f26fb749a83257855aba6760e26c8a3c8f",
+  "source_url_prefix": "https://github.com/NREL/EnergyPlus/blob/4bd7a1f26fb749a83257855aba6760e26c8a3c8f/src/EnergyPlus/",
+  "sources": [
+    {"path":"CurveManager.cc","bytes":194411,"sha256":"71d58441456991eb047e931e942806dc862ed125ddb646cf55d24786bb835e85"},
+    {"path":"DXCoils.cc","bytes":1101624,"sha256":"b2e7a42c6fa41ba3f7831cb659dda44ebc61316b8cf67cae60730a40e992eb97"},
+    {"path":"HVACManager.cc","bytes":197554,"sha256":"0067a38f84a6354e45f5c601ba0c711c79b1c0834f2a6f93994c7e32254fe560"},
+    {"path":"OutputProcessor.cc","bytes":231419,"sha256":"0ce7d19c23aec95c053ba769121436028440cd3edf2662842a0174dd02d5ed9b"}
+  ],
+  "application_source_observation": {
+    "path":"crates/greenlens-energyplus/src/model.rs",
+    "sha256":"bec3a873ee4103fc595b10175ea13e56f464a4ca605627ac16042ce2f49b1ef1",
+    "lines":[244,524],
+    "binding":"One native CUR name is created for each typed curve ID; every zone referring to that ID refers to the same native curve object. This is the current dirty development source observation, not a clean-build or engine execution claim."
+  },
+  "documentation": {
+    "url":"https://energyplus.readthedocs.io/en/v26.2.0/guides/input-output-reference/1.5-group-simulation-parameters.html",
+    "finding":"Detailed HVAC output is at the variable system timestep. It is not a record of each function evaluation or solver iteration."
+  },
+  "findings": [
+    {
+      "id":"preclamp-last-value-storage",
+      "source":"CurveManager.cc",
+      "lines":[147,153,236,243,2824,2842],
+      "finding":"Each one-/two-input Curve::value call assigns its original inputs to the same mutable curve inputs array, then clamps local arguments to published limits. Reporting binds those array cells as System/Average variables keyed by the curve name. No call history, per-call minimum/maximum, caller identity or out-of-domain counter is retained in this path."
+    },
+    {
+      "id":"detailed-is-final-system-sample",
+      "source":"OutputProcessor.cc",
+      "lines":[369,392,3398,3404,3460,3488,3499],
+      "finding":"UpdateDataandReport dereferences the current registered variable once. Detailed/EachCall writes that current value directly; higher frequencies aggregate these sampled values. EachCall means each OutputProcessor update, not each Curve::value call."
+    },
+    {
+      "id":"reporting-after-solver",
+      "source":"HVACManager.cc",
+      "lines":[280,363,450,468,859,880,891],
+      "finding":"HVAC simulation and its selected-equipment iteration loop precede the system-timestep output update. Requesting Detailed therefore does not expose all preceding component or controller iterations."
+    },
+    {
+      "id":"internal-capacity-input-iteration",
+      "source":"DXCoils.cc",
+      "lines":[9543,9558,9684,9686,9693,9735,9787,9799,9804,9813,10109,10147],
+      "finding":"The active single-speed coil computes entering wet bulb, then may repeatedly evaluate capacity temperature/flow curves inside its dry-evaporator ADP/bypass-factor loop. That loop changes temporary humidity and wet bulb before continuing. EIR later uses the loop's resulting wet bulb. A final node wet bulb or one final capacity-curve sample cannot independently reconstruct every earlier trial input."
+    },
+    {
+      "id":"shared-curve-overwrite",
+      "source":"application_source_observation",
+      "finding":"The four zones share the declared five curve IDs. A later zone call overwrites an earlier zone's curve inputs before the report update. Per-zone coil activity/node variables do not turn this one shared curve value into four caller-bound histories."
+    }
+  ],
+  "assessment": {
+    "detailed_outputs_can_prove_every_used_input_in_domain":false,
+    "observed_active_coil_out_of_domain_value":null,
+    "actual_candidate_applicability_failure_observed":false,
+    "operating_domain_prerequisite":"unverified_due_to_observability_gap",
+    "analytical_output_clipping_proof_remains_valid":true,
+    "detailed_use":"A caller-bound, contemporaneous non-stale pre-clamp sample outside the declared domain would be a falsifier. In-range samples alone are not sufficient for universal coverage. No such samples were generated or inspected in this review.",
+    "shared_curve_caution":"Duplicating curve objects per coil could distinguish callers but would still not record all internal iterations; it is not proposed as a complete remedy.",
+    "required_affirmative_evidence":"Either a proven bound covering every actual temperature/flow/part-load argument including internal dry-coil iterates, or an independently reviewed all-call domain-observation mechanism with caller/activity attribution and complete bounded receipts. No such proof or mechanism is established here.",
+    "recommendation":"Keep the declared annual demonstration stopped before execution, as its prerequisite requires. Do not treat Detailed output, zero native warnings, node conditions or passing numerical sensitivity as a substitute. Any later instrumentation or engine change requires separate review and identity; none is implemented or authorized by this record.",
+    "limits":"This is an observability result, not evidence that the unexecuted building necessarily leaves the curve domain. It does not change the selected weather, curves, bounds, availability, rating tuple, criteria or historical qualification."
+  },
+  "engine_runs":0,
+  "source_edits":0
+}

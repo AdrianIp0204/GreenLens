@@ -6,6 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
+import { validateNpmSupplement } from './license-supplement-binding.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
@@ -100,9 +101,13 @@ function addPackage(record, directory, explicitFile, companion) {
   }
   const supplement = supplements.packages[`${record.ecosystem}:${record.name}@${record.version}`];
   if (supplement) {
-    const sourceCommit = readJson(path.join(directory, '.cargo_vcs_info.json')).git.sha1;
-    if (sourceCommit !== supplement.source_commit || record.declared_license !== supplement.declared_license) {
-      throw new Error(`Supplemental license review no longer matches ${record.name}@${record.version}`);
+    if (record.ecosystem === 'npm') {
+      validateNpmSupplement(record, directory, supplement);
+    } else {
+      const sourceCommit = readJson(path.join(directory, '.cargo_vcs_info.json')).git.sha1;
+      if (record.ecosystem !== 'cargo' || sourceCommit !== supplement.source_commit || record.declared_license !== supplement.declared_license) {
+        throw new Error(`Supplemental license review no longer matches ${record.name}@${record.version}`);
+      }
     }
     if (supplement.selected_license) {
       if (!record.declared_license.split(/\s+OR\s+/).includes(supplement.selected_license)) throw new Error('Selected license is not a declared alternative');
@@ -111,10 +116,13 @@ function addPackage(record, directory, explicitFile, companion) {
     record.supplemental_license_review = { ...supplement, files: undefined };
     record.license_evidence.push(...retainedSupplement(record, supplement.files));
   }
-  record.redistribution = obligations(record.selected_license || record.declared_license);
+  // A scoped npm review is not a global license-name allowlist. Its exact
+  // package/source/notice bindings above must pass before applying obligations.
+  record.redistribution = record.ecosystem === 'npm' && supplement?.redistribution
+    ? supplement.redistribution : obligations(record.selected_license || record.declared_license);
   record.modifications = 'No upstream source modifications made by GreenLens.';
   if (record.installed && !record.license_evidence.length) gaps.push(`${record.ecosystem}:${record.name}@${record.version}: package has no retained license/notice file`);
-  if (record.installed && record.redistribution.review !== 'recognized_declared_license') gaps.push(`${record.ecosystem}:${record.name}@${record.version}: ${record.redistribution.review}: ${record.declared_license}`);
+  if (record.installed && !['recognized_declared_license', 'manual_reviewed'].includes(record.redistribution.review)) gaps.push(`${record.ecosystem}:${record.name}@${record.version}: ${record.redistribution.review}: ${record.declared_license}`);
   packages.push(record);
 }
 

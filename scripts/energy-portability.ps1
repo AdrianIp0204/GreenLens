@@ -6,6 +6,8 @@ param(
  [Parameter(Mandatory,ParameterSetName='Run')][string]$Project,
  [Parameter(Mandatory,ParameterSetName='Run')][string]$OutputDirectory,
  [Parameter(ParameterSetName='Run')][switch]$Replay,
+ [Parameter(ParameterSetName='Run')][string]$BaselineRun,
+ [Parameter(ParameterSetName='Run')][string]$ProposedRun,
  [Parameter(Mandatory,ParameterSetName='Functions')][switch]$FunctionsOnly
 )
 function Restore-EnergyVerificationPaths($Moves){
@@ -44,10 +46,19 @@ function Invoke-Cli([string]$Name,[string[]]$Arguments){
 Invoke-Cli 'copy' @('copy',$Project,$copy)
 $doc=Get-Content -LiteralPath (Join-Path $copy 'project.json') -Raw|ConvertFrom-Json -AsHashtable
 $runs=@($doc.energy.runs)
-if($runs.Count -ne 2 -or @($runs|Where-Object alternative_id -eq 'A').Count -ne 1 -or @($runs|Where-Object alternative_id -eq 'B').Count -ne 1){throw 'Cold fixture requires exactly one A/B pair'}
-$a=($runs|Where-Object alternative_id -eq A).id; $b=($runs|Where-Object alternative_id -eq B).id
+if([string]::IsNullOrEmpty($BaselineRun) -ne [string]::IsNullOrEmpty($ProposedRun)){throw 'Supply both explicit comparison run IDs or neither'}
+if($BaselineRun){
+ if($runs.Count -gt 4 -or @($runs|Where-Object { $_.id -ceq $BaselineRun -and $_.alternative_id -ceq 'A' }).Count -ne 1 -or @($runs|Where-Object { $_.id -ceq $ProposedRun -and $_.alternative_id -ceq 'B' }).Count -ne 1){throw 'Select one retained A/B pair within the four-run workbench verification bound'}
+ $a=$BaselineRun; $b=$ProposedRun
+}else{
+ if($runs.Count -ne 2 -or @($runs|Where-Object alternative_id -eq 'A').Count -ne 1 -or @($runs|Where-Object alternative_id -eq 'B').Count -ne 1){throw 'Multiple retained runs require explicit BaselineRun and ProposedRun; no favorable selection is inferred'}
+ $a=($runs|Where-Object alternative_id -eq A).id; $b=($runs|Where-Object alternative_id -eq B).id
+}
 $snapshot=[ordered]@{}
-foreach($directory in @('runs','weather')){foreach($file in Get-ChildItem -LiteralPath (Join-Path $copy $directory) -Recurse -File){$snapshot[[IO.Path]::GetRelativePath($copy,$file.FullName).Replace('\','/')]=(Get-FileHash -LiteralPath $file.FullName).Hash.ToLowerInvariant()}}
+foreach($directory in @('runs','weather','energy-assessments')){
+ $directoryPath=Join-Path $copy $directory
+ if(Test-Path -LiteralPath $directoryPath){foreach($file in Get-ChildItem -LiteralPath $directoryPath -Recurse -File){$snapshot[[IO.Path]::GetRelativePath($copy,$file.FullName).Replace('\','/')]=(Get-FileHash -LiteralPath $file.FullName).Hash.ToLowerInvariant()}}
+}
 $moves=[Collections.Generic.List[object]]::new();$oldEngine=$env:GREENLENS_ENERGYPLUS_DIR
 try {
  # Only known UUID-named run scratch owned by this project's retained runs.

@@ -69,13 +69,30 @@ export class DocumentHistory {
     if(!project.energy)throw new Error('Energy project missing.');
     const snapshot=(p)=>change.kind==='attachment'
       ?{kind:'attachment',id:change.id,included:p.energy.attachments.find(a=>a.id===change.id)?.include_in_export}
+      :change.kind==='report_issue'?{kind:'report_issue',metadata:clone(p.energy.workbench?.report_metadata??null)}
       :{kind:'report_settings',carbon_factor:clone(p.energy.carbon_factor),lighting_service_evidence:p.energy.lighting_service_evidence};
     this.busy=true;try {const before=snapshot(project),next=await configure(clone(project),clone(change)),after=snapshot(next);
       if(JSON.stringify(before)===JSON.stringify(after))return {project,changed:false};
       this.past.push({kind:'energy_metadata',alternativeId,before,after,label});this.future=[];return {project:next,changed:true};
     }finally{this.busy=false;}
   }
-  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata) {
+  async editEnergyGroup(project,alternativeId,targets,label,configure) {
+    if(this.busy)throw new Error('Wait for the current document edit to finish.');
+    const ids=[...new Set(targets)].sort();
+    if(!ids.length||ids.some(id=>!['A','B'].includes(id)||!project.energy?.designs[id]))throw new Error('Select existing thermal design targets explicitly.');
+    this.busy=true;
+    try{
+      const before=Object.fromEntries(ids.map(id=>[id,clone(project.energy.designs[id])]));
+      const next=await configure(clone(project));
+      if(ids.some(id=>!next.energy?.designs[id]))throw new Error('Rust returned an incomplete thermal transaction.');
+      for(const id of ['A','B'].filter(id=>!ids.includes(id)))if(JSON.stringify(project.energy?.designs[id])!==JSON.stringify(next.energy?.designs[id]))throw new Error('Thermal transaction changed an untargeted design.');
+      const after=Object.fromEntries(ids.map(id=>[id,clone(next.energy.designs[id])]));
+      if(JSON.stringify(before)===JSON.stringify(after))return{project,changed:false};
+      this.past.push({kind:'energy_group',alternativeId,before,after,label});this.future=[];
+      return{project:next,changed:true};
+    }finally{this.busy=false;}
+  }
+  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata,restoreEnergyGroup) {
     if (this.busy) throw new Error('Wait for the current document edit to finish.');
     const source = direction === 'undo' ? this.past : this.future;
     const target = direction === 'undo' ? this.future : this.past;
@@ -87,7 +104,10 @@ export class DocumentHistory {
       if (!current) throw new Error('The design alternative no longer exists.');
       const candidate = clone(direction === 'undo' ? entry.before : entry.after);
       let next, validated;
-      if(entry.kind==='energy_metadata') {
+      if(entry.kind==='energy_group') {
+        if(!restoreEnergyGroup)throw new Error('Atomic thermal restoration is unavailable.');
+        next=await restoreEnergyGroup(clone(project),candidate);validated=await validate(clone(current.model),entry.alternativeId,next);
+      }else if(entry.kind==='energy_metadata') {
         if(!restoreEnergyMetadata)throw new Error('The report metadata restoration service is unavailable.');
         next=await restoreEnergyMetadata(clone(project),candidate);validated=await validate(clone(current.model),entry.alternativeId,next);
       } else if (entry.kind === 'energy') {

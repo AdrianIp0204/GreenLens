@@ -1,6 +1,7 @@
 // Mirrors the versioned Rust energy wire contracts. Rust owns validation and arithmetic.
 export interface EnergyDesign { model: ThermalModel; study: EnergyStudy | null }
-export interface EnergyProject { schema_version: string; designs: Record<'A'|'B',EnergyDesign>; weather: {id:string;path:string;binding:EnergyWeatherBinding}[]; runs: EnergyRunSummary[]; carbon_factor: CarbonFactor|null; lighting_service_evidence:string|null; attachments?:EnergyAttachment[] }
+export interface EnergyProject { schema_version: string; designs: Record<'A'|'B',EnergyDesign>; weather: {id:string;path:string;binding:EnergyWeatherBinding}[]; runs: EnergyRunSummary[]; carbon_factor: CarbonFactor|null; lighting_service_evidence:string|null; attachments?:EnergyAttachment[];workbench?:{schema_version:string;locks:Record<string,string[]>;calendars:Record<string,EnergyCalendar>;report_metadata?:EnergyReportMetadata|null;sensitivity?:{id:string;path:string;plan_sha256:string;events:{sequence:number;file_sha256:string}[]}[]} }
+export interface EnergyReportMetadata {title:string;revision:string;issue_date:string|null;author:string|null;preparer:string|null;revision_history:{revision:string;issue_date:string;description:string}[]}
 export interface EnergyRunSummary {id:string; alternative_id:string; path:string; physical_input_hash:string; record_sha256:string}
 export interface EnergySeriesManifest {interval_count:number; interval_minutes:number; channels:{id:string;label:string;unit:string}[]}
 export interface EnergyRunRecord {id:string; alternative_id:string;model:ThermalModel;study:EnergyStudy;validated:ValidatedThermalModel;method:EnergyMethodIdentity;ledger:MeterLedger;series:EnergySeriesManifest;totals:EnergyTotals;provenance:{physical_input_hash:string;processing_identity:string;diagnostics:string[]}}
@@ -41,7 +42,7 @@ export type EnergyStudy = { schema_version: "greenlens.energy-study.v0.4"; weath
 export type EnergyTimestamp = { interval_index: number; month: number; day: number; start_minute: number; end_minute: number };
 export type EnergyTotals = { interval_count: 52560 | 105120; interval_seconds: 300 | 600; annual: EnergyPeriodTotal; monthly: (EnergyPeriodTotal)[]; demand_interval_seconds: 600; coincident_peak: CoincidentDemand; zone_comfort: (ComfortSummary)[]; building_comfort_union: ComfortSummary; comfort_definition: string; maximum_interval_reconciliation_residual_kw: number };
 export type EnergyUnit = "kwh" | "kw" | "kwh_per_m2" | "m2" | "hours" | "percent" | "kg_co2" | "kg_co2e" | "celsius" | "watts" | "m3_per_second" | "dimensionless";
-export type EnergyWeatherBinding = { original_sha256: string; normalized_sha256: string; time_axis_sha256: string; profile_id: "greenlens.energy-epw-explicit-fields.v1" };
+export type EnergyWeatherBinding = { original_sha256: string; normalized_sha256: string; time_axis_sha256: string; profile_id: "greenlens.energy-epw-explicit-fields.v1"|"greenlens.energy-epw-dry-envelope.v1" };
 export type EnergyWeatherSummary = { binding: EnergyWeatherBinding; location: WeatherLocation; source: InputSource; year_hours: 8760 };
 export type Fuel = "electricity";
 export type GlazingBasis = "whole_window" | "glass_without_frame";
@@ -76,4 +77,4 @@ export type Weekday = "monday" | "tuesday" | "wednesday" | "thursday" | "friday"
 export type ZoneGains = { people_per_floor_m2: number; occupancy_schedule: string; activity_schedule: string; people_sensible_fraction: number; people_radiant_fraction_of_sensible: number; lighting_w_per_floor_m2: number; lighting_schedule: string; lighting_radiant_fraction: number; lighting_visible_fraction: number; lighting_return_air_fraction: number; equipment_w_per_floor_m2: number; equipment_schedule: string; equipment_radiant_fraction: number; equipment_latent_fraction: number; equipment_lost_fraction: number; infiltration: InfiltrationRate; infiltration_schedule: string; source: InputSource };
 
 export interface EnergyAttachment {id:string;path:string;sha256:string;media_type:string;model_input_sha256:string;caption:string;rights:string;include_in_export:boolean}
-export type EnergyMetadataChange={kind:'attachment';id:string;included:boolean}|{kind:'report_settings';carbon_factor:CarbonFactor|null;lighting_service_evidence:string|null};
+export type EnergyMetadataChange={kind:'attachment';id:string;included:boolean}|{kind:'report_settings';carbon_factor:CarbonFactor|null;lighting_service_evidence:string|null}|{kind:'report_issue';metadata:EnergyReportMetadata|null};

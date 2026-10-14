@@ -129,8 +129,34 @@ test('Save, Save As, Run, Open and Close cannot ignore drafts; Cancel retains ed
 });
 test('Apply preserves rejected text/history, then validates A and B explicitly before Save',async()=>{
   await setup();await editName('Validated A');await click('Switch design');await editName('Validated B');await click('Switch design');
-  rejectEdit=true;await click('Save');await click('Apply',dialog());assert.ok(dialog());assert.match(dialog().textContent,/Synthetic validator rejected/);assert.equal(count('save_project_as'),0);assert.equal(doc.history.past.length,0);assert.equal(input('Name').value,'Validated A');
-  rejectEdit=false;await click('Apply',dialog());assert.equal(dialog(),null);assert.equal(doc.history.past.length,2);assert.equal(count('save_project_as'),1);assert.equal(disk.energy.designs.A.model.zones[0].name,'Validated A');assert.equal(disk.energy.designs.B.model.zones[0].name,'Validated B');assert.deepEqual(doc.energyDrafts.pending,[]);
+  rejectEdit=true;await click('Save');await click('Apply',dialog());assert.ok(dialog());assert.match(dialog().textContent,/Synthetic atomic restore rejection/);assert.equal(count('save_project_as'),0);assert.equal(doc.history.past.length,0);assert.equal(input('Name').value,'Validated A');
+  rejectEdit=false;await click('Apply',dialog());assert.equal(dialog(),null);assert.equal(doc.history.past.length,1);assert.equal(doc.history.past[0].kind,'energy_batch');assert.equal(count('save_project_as'),1);assert.equal(disk.energy.designs.A.model.zones[0].name,'Validated A');assert.equal(disk.energy.designs.B.model.zones[0].name,'Validated B');assert.deepEqual(doc.energyDrafts.pending,[]);
+});
+test('guarded Apply parses every actual-editor draft before accepting a valid earlier design',async()=>{
+  await setup();const accepted=structuredClone(doc.project);await editName('A must remain a draft');await click('Switch design');await type(input('Lighting W / m²'),'-');
+  await click('Save');await click('Apply',dialog());assert.match(dialog().textContent,/finite numeric/);
+  assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);assert.equal(doc.history.future.length,0);assert.equal(count('energy_restore_designs'),0);assert.equal(count('save_project_as'),0);
+  await click('Cancel',dialog());assert.equal(input('Lighting W / m²').value,'-');await click('Switch design');assert.equal(input('Name').value,'A must remain a draft');assert.deepEqual(doc.energyDrafts.pending,['A','B']);
+});
+test('a later Rust issue rejection retains all four draft categories and both history stacks; Cancel does not partially accept',async()=>{
+  await setup();await editName('Prior accepted edit');await click('Validate and apply');await click('Undo');
+  const accepted=structuredClone(doc.project),past=structuredClone(doc.history.past),future=structuredClone(doc.history.future);
+  await editName('Pending A');await click('advanced');const raw=JSON.stringify({...doc.energyDrafts.get('A').structured,model:{...doc.energyDrafts.get('A').structured.model,name:'Exact raw A'}} ,null,2)+'\n';await type(document.querySelector('textarea'),raw);
+  await click('Switch design');await editName('Pending B');
+  await act(()=>{doc.energyDrafts.updateReport(d=>({...d,service:'Pending service evidence',dirty:true}));doc.energyDrafts.updateIssue(d=>({...d,enabled:true,title:'Pending title',revision:'R2',issue_date:'2026-',dirty:true}));});
+  const drafts=()=>({a:structuredClone(doc.energyDrafts.get('A')),b:structuredClone(doc.energyDrafts.get('B')),report:structuredClone(doc.energyDrafts.report()),issue:structuredClone(doc.energyDrafts.issue())}),retained=drafts();
+  calls=[];await click('Save');await click('Apply',dialog());assert.match(dialog().textContent,/explicit report issue validation rejection/);assert.equal(count('energy_restore_designs'),1);assert.equal(count('energy_metadata'),2);
+  assert.deepEqual(doc.project,accepted);assert.deepEqual(doc.history.past,past);assert.deepEqual(doc.history.future,future);assert.deepEqual(drafts(),retained);assert.equal(count('save_project_as'),0);
+  await click('Cancel',dialog());assert.deepEqual(doc.project,accepted);assert.deepEqual(drafts(),retained);assert.deepEqual(doc.energyDrafts.pending,['A','B','report settings','report issue']);
+});
+test('all guarded draft categories commit as one undo/redo transaction and preserve later run evidence',async()=>{
+  await setup();const original=structuredClone(doc.project.energy);await editName('Batch A');await click('Switch design');await editName('Batch B');
+  await act(()=>{doc.energyDrafts.updateReport(d=>({...d,service:'Batch service text',dirty:true}));doc.energyDrafts.updateIssue(d=>({...d,enabled:true,title:'Batch report',revision:'R3',dirty:true}));});
+  appendEvidenceOnSave=true;await click('Save');await click('Apply',dialog());assert.equal(dialog(),null);assert.equal(doc.history.past.length,1);assert.equal(doc.history.past[0].kind,'energy_batch');assert.deepEqual(doc.energyDrafts.pending,[]);
+  const applied=structuredClone(doc.project.energy);assert.equal(applied.designs.A.model.zones[0].name,'Batch A');assert.equal(applied.designs.B.model.zones[0].name,'Batch B');assert.equal(applied.lighting_service_evidence,'Batch service text');assert.equal(applied.workbench.report_metadata.title,'Batch report');
+  rejectEdit=true;await click('Undo');assert.deepEqual(doc.project.energy,applied);assert.equal(doc.history.past.length,1);assert.equal(doc.history.future.length,0);
+  rejectEdit=false;await click('Undo');assert.deepEqual(doc.project.energy.designs,original.designs);assert.equal(doc.project.energy.lighting_service_evidence,original.lighting_service_evidence);assert.equal(doc.project.energy.workbench.report_metadata,null);assert.deepEqual(doc.project.energy.runs,applied.runs);assert.deepEqual(doc.project.energy.weather,applied.weather);
+  await act(async()=>doc.traverse('redo'));assert.deepEqual(doc.project.energy,applied);assert.equal(doc.history.past.length,1);assert.equal(doc.history.future.length,0);
 });
 test('invalid numeric/raw blocks Apply; Discard saves accepted inputs, never the stale candidate',async()=>{
   await setup();const accepted=structuredClone(doc.project);await type(input('Lighting W / m²'),'1e');await click('Save');await click('Apply',dialog());assert.match(dialog().textContent,/finite numeric/);assert.equal(count('energy_edit'),0);assert.equal(doc.history.past.length,0);
@@ -159,7 +185,7 @@ test('actual workspace tab/design and whole workspace unmount retain drafts; rep
   await click('model');await click('evidence');assert.equal(input('Explicit carbon factor JSON, or null for missing').value,'{ invalid');
   await click('Toggle panel');await click('Toggle panel');await click('evidence');assert.equal(input('Lighting-service equivalence evidence').value,'Exact local service text');
   await click('Save');await click('Apply',dialog());assert.ok(dialog());assert.equal(count('energy_metadata'),0);assert.equal(count('save_project_as'),0);await click('Cancel',dialog());
-  await type(input('Explicit carbon factor JSON, or null for missing'),'null');rejectEdit=true;await click('Save');await click('Apply',dialog());assert.match(dialog().textContent,/Synthetic report settings rejection/);assert.equal(count('save_project_as'),0);
+  await type(input('Explicit carbon factor JSON, or null for missing'),'null');rejectEdit=true;await click('Save');await click('Apply',dialog());assert.match(dialog().textContent,/Synthetic atomic restore rejection/);assert.equal(count('save_project_as'),0);
   rejectEdit=false;await click('Apply',dialog());assert.equal(dialog(),null);assert.equal(disk.energy.lighting_service_evidence,'Exact local service text');assert.deepEqual(doc.energyDrafts.pending,[]);
 });
 
@@ -203,12 +229,12 @@ test('typed New form retains invalid and rejected parameters, guards close, and 
 
 test('a later report-settings draft survives both successful and rejected in-flight Apply, and Save cannot skip it',async()=>{
   for(const fails of [false,true]){
-    await setup();let finish;metadataGate=new Promise(resolve=>{finish=resolve;});
+    await setup();const accepted=structuredClone(doc.project);let finish;metadataGate=new Promise(resolve=>{finish=resolve;});
     await act(()=>doc.energyDrafts.updateReport(d=>({...d,service:'Submitted report text',dirty:true})));
     await click('Save');await click('Apply',dialog());assert.equal(count('energy_metadata'),1);
     await act(()=>doc.energyDrafts.updateReport(d=>({...d,service:'Newer exact report text',dirty:true})));
     rejectEdit=fails;await act(async()=>finish());assert.equal(doc.energyDrafts.report().service,'Newer exact report text');assert.equal(doc.energyDrafts.report().dirty,true);assert.ok(dialog());assert.equal(count('save_project_as'),0);
-    assert.match(dialog().textContent,fails?/Synthetic report settings rejection/:/newer draft/);await click('Cancel',dialog());
+    assert.match(dialog().textContent,fails?/Synthetic report settings rejection/:/newer draft/);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);await click('Cancel',dialog());
   }
 });
 
@@ -241,6 +267,14 @@ test('real report issue fields preserve rejected dates/history, guard report/exp
 });
 test('later issue information survives in-flight Apply and cannot be silently cleared before Save',async()=>{
   for(const fails of [false,true]){await setup();let finish;metadataGate=new Promise(resolve=>{finish=resolve;});await act(()=>doc.energyDrafts.updateIssue(d=>({...d,enabled:true,title:'Submitted title',revision:'R1',dirty:true})));await click('Save');await click('Apply',dialog());await act(()=>doc.energyDrafts.updateIssue(d=>({...d,title:'Newer exact title',dirty:true})));rejectEdit=fails;await act(async()=>finish());assert.equal(doc.energyDrafts.issue().title,'Newer exact title');assert.ok(doc.energyDrafts.issue().dirty);assert.equal(count('save_project_as'),0);assert.ok(dialog());await click('Cancel',dialog());}
+});
+test('newer design, settings and issue drafts stop an in-flight batch before any accepted change',async()=>{
+  await setup();const accepted=structuredClone(doc.project);await editName('Submitted A');await click('Switch design');await editName('Submitted B');
+  await act(()=>{doc.energyDrafts.updateReport(d=>({...d,service:'Submitted service',dirty:true}));doc.energyDrafts.updateIssue(d=>({...d,enabled:true,title:'Submitted title',revision:'R1',dirty:true}));});
+  let finish;metadataGate=new Promise(resolve=>{finish=resolve;});await click('Save');await click('Apply',dialog());assert.equal(count('energy_restore_designs'),1);assert.equal(count('energy_metadata'),1);
+  await act(()=>{for(const id of ['A','B'])doc.energyDrafts.update(id,d=>structuredEdit(d,next=>{next.model.name=`Newer ${id}`;}));doc.energyDrafts.updateReport(d=>({...d,service:'Newer exact service',dirty:true}));doc.energyDrafts.updateIssue(d=>({...d,title:'Newer exact title',dirty:true}));});
+  await act(async()=>finish());assert.match(dialog().textContent,/newer draft/);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);assert.equal(count('save_project_as'),0);
+  assert.equal(doc.energyDrafts.get('A').structured.model.name,'Newer A');assert.equal(doc.energyDrafts.get('B').structured.model.name,'Newer B');assert.equal(doc.energyDrafts.report().service,'Newer exact service');assert.equal(doc.energyDrafts.issue().title,'Newer exact title');assert.deepEqual(doc.energyDrafts.pending,['A','B','report settings','report issue']);await click('Cancel',dialog());
 });
 
 test('actual object tree and preflight links route exact zone/window/fan fields without accepting or clearing drafts',async()=>{

@@ -1,6 +1,21 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { describeInventoryDifference as difference } from './license-inventory-diff.mjs';
+import { describeInventoryDifference as difference, validateInventoryLockfile } from './license-inventory-diff.mjs';
+
+test('exact lockfile bytes require the repository LF/no-BOM policy without normalization', () => {
+  const canonical = Buffer.from('{\n  "version": 1\n}\n');
+  const before = Buffer.from(canonical);
+  validateInventoryLockfile(canonical, 'apps/desktop/package-lock.json');
+  assert.deepEqual(canonical, before);
+  for (const invalid of [Buffer.from('{\r\n}\r\n'), Buffer.from('{\r}'), Buffer.from([0x7b, 0xc3, 0x28, 0x7d]), Buffer.concat([Buffer.from([0xef, 0xbb, 0xbf]), canonical])]) {
+    const snapshot = Buffer.from(invalid);
+    assert.throws(() => validateInventoryLockfile(invalid, 'apps/desktop/package-lock.json'), /matching .gitattributes.*regenerate/);
+    assert.deepEqual(invalid, snapshot);
+  }
+  // A JSON string's escaped backslash-r is data, not a line ending.
+  validateInventoryLockfile(Buffer.from('{"escaped":"\\r"}\n'), 'Cargo.lock');
+  assert.throws(() => validateInventoryLockfile('{}', 'Cargo.lock'), /bytes/);
+});
 
 test('identical serialized inventories keep the strict gate and do not mutate inputs', () => {
   const expected = { packages: [{ name: 'original-fixture', installed: true }] };

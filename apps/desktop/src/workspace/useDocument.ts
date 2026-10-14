@@ -4,7 +4,7 @@ import { getCurrentWindow } from '@tauri-apps/api/window';
 import type { Model, RunRecord, ValidatedModel } from '../types';
 import type { ClimateJobStatus as JobStatus, ClimateProjectDocument as Project, ClimateProjectView as ProjectView, ClimateRunRecord, CurrentClimateResult, Study, StudyHistorySnapshot, WeatherSource, WeatherSourceProfile } from '../climate-types';
 import { defaultDisplay, type ViewportDisplayState } from '../viewport/types';
-import { DocumentHistory, completedJobResult, documentSignature, hasPendingEvidence, protectReplacement } from './document.mjs';
+import { DocumentHistory, completedJobResult, documentSignature, hasPendingEvidence, protectReplacement, type EnergyDraftBatch } from './document.mjs';
 import { activeJob } from '../presentation.mjs';
 import { validatedEditLockReason } from './locks.mjs';
 import { useEnergyDrafts } from '../energy/useEnergyDrafts';
@@ -23,6 +23,13 @@ const restoreStudy=(project:Project,alternativeId:string,snapshot:StudyHistorySn
 const configureEnergy=(project:Project,alternativeId:string,design:EnergyDesign)=>invoke<Project>('energy_edit',{project,alternativeId,model:design.model,study:design.study});
 const restoreEnergyGroup=(project:Project,designs:Record<string,EnergyDesign>)=>invoke<Project>('energy_restore_designs',{project,designs});
 const configureEnergyMetadata=(project:Project,change:EnergyMetadataChange)=>invoke<Project>('energy_metadata',{project,change});
+const restoreEnergyBatch=async(project:Project,batch:EnergyDraftBatch)=>{
+  let next=project;
+  if(Object.keys(batch.designs).length)next=await restoreEnergyGroup(next,batch.designs);
+  if(batch.reportSettings!==undefined)next=await configureEnergyMetadata(next,{kind:'report_settings',...batch.reportSettings});
+  if(batch.reportIssue!==undefined)next=await configureEnergyMetadata(next,{kind:'report_issue',metadata:batch.reportIssue});
+  return next;
+};
 type GuardChoice = 'save'|'discard'|'cancel';
 export function useDocument() {
   const [project,setProject] = useState<Project|null>(null);
@@ -150,8 +157,8 @@ export function useDocument() {
   };
   const traverse=async(direction:'undo'|'redo')=>runAction(async()=>{
     const s=state.current;if(!s.project||activeJob(s.job))throw new Error('Finish or cancel the calculation before undo/redo.');
-    const entry=(direction==='undo'?history.current.past:history.current.future).at(-1);if(energyLocked&&(entry?.kind==='energy'||entry?.kind==='energy_group'))throw new Error('Unlock thermal inputs before restoring a thermal edit.');
-    const next=await history.current.traverse(s.project,direction,validateInStudy,checkEditLocks,restoreStudy,configureEnergy,configureEnergyMetadata,restoreEnergyGroup);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
+    const entry=(direction==='undo'?history.current.past:history.current.future).at(-1);if(energyLocked&&(entry?.kind==='energy'||entry?.kind==='energy_group'||entry?.kind==='energy_batch'&&Object.keys(entry.before.designs).length))throw new Error('Unlock thermal inputs before restoring a thermal edit.');
+    const next=await history.current.traverse(s.project,direction,validateInStudy,checkEditLocks,restoreStudy,configureEnergy,configureEnergyMetadata,restoreEnergyGroup,restoreEnergyBatch);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
   });
   const commitStudy=async(candidate:Study,label='Study settings')=>{
     const s=state.current;if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active document operation or calculation before editing.');return false;}
@@ -182,7 +189,19 @@ export function useDocument() {
     catch(e){setError(`Design copy rejected; document and history unchanged. ${errorText(e)}`);return false;}
     finally{actionBusy.current=false;setBusy(false);}
   };
-  const energyDrafts=useEnergyDrafts(project,commitEnergy,()=>lastEnergyError.current,value=>commitEnergyMetadata({kind:'report_settings',...value},'Report settings draft',true),metadata=>commitEnergyMetadata({kind:'report_issue',metadata},'Report issue draft',true));
+  const commitEnergyBatch=async(batch:EnergyDraftBatch,canCommit:()=>boolean):Promise<boolean>=>{
+    lastEnergyError.current='';
+    const s=state.current;
+    if(energyLocked&&Object.keys(batch.designs).length){lastEnergyError.current='Unlock thermal inputs before editing.';setError(lastEnergyError.current);return false;}
+    if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){lastEnergyError.current='Finish the active operation before applying thermal drafts.';setError(lastEnergyError.current);return false;}
+    actionBusy.current=true;setBusy(true);setError('');
+    try{
+      const next=await history.current.editEnergyBatch(s.project,s.alternative,batch,'Thermal and report drafts',restoreEnergyBatch,()=>state.current.project===s.project&&canCommit());
+      setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage(next.changed?'All drafts accepted by Rust together. One undo entry.':'No accepted input change.');return true;
+    }catch(e){lastEnergyError.current=`Draft batch rejected; document and history unchanged. ${errorText(e)}`;setError(lastEnergyError.current);return false;}
+    finally{actionBusy.current=false;setBusy(false);}
+  };
+  const energyDrafts=useEnergyDrafts(project,commitEnergy,()=>lastEnergyError.current,value=>commitEnergyMetadata({kind:'report_settings',...value},'Report settings draft',true),metadata=>commitEnergyMetadata({kind:'report_issue',metadata},'Report issue draft',true),commitEnergyBatch);
   const setEnergyObjectLocks=async(ids:string[])=>runAction(async()=>{const s=state.current;if(!s.project||activeJob(s.job))throw Error('Finish the calculation before changing edit locks.');const next=await invoke<Project>('energy_set_locks',{project:s.project,alternativeId:s.alternative,ids});setProject(next);state.current.project=next;setMessage('Thermal edit locks updated. Simulation inclusion is unchanged.');},'changing thermal edit locks');
   const commitEnergyTransaction=async(requests:Record<string,unknown>,expectedPreviewSha256:string,label:string):Promise<boolean>=>{
     if(!await energyDrafts.beforeAction('applying geometry'))return false;

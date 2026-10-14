@@ -18,6 +18,18 @@ export function hasPendingEvidence(job, results = [], climateResults = [], energ
     (job?.pending_evidence && !completedJobResult(job))
   );
 }
+// Only edited inputs belong in history. Restoring a batch must retain runs,
+// weather, attachments and other evidence added after that transaction.
+function energyBatchSnapshot(project, batch) {
+  if (!project.energy) throw new Error('Energy project missing.');
+  const designs = Object.fromEntries(Object.keys(batch.designs).sort().map(id => {
+    if (!['A','B'].includes(id) || !project.energy.designs[id]) throw new Error('The thermal design no longer exists.');
+    return [id, clone(project.energy.designs[id])];
+  }));
+  return { designs,
+    ...('reportSettings' in batch ? {reportSettings:{carbon_factor:clone(project.energy.carbon_factor),lighting_service_evidence:project.energy.lighting_service_evidence}} : {}),
+    ...('reportIssue' in batch ? {reportIssue:clone(project.energy.workbench?.report_metadata??null)} : {}) };
+}
 export class DocumentHistory {
   past = [];
   future = [];
@@ -92,7 +104,23 @@ export class DocumentHistory {
       return{project:next,changed:true};
     }finally{this.busy=false;}
   }
-  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata,restoreEnergyGroup) {
+  async editEnergyBatch(project,alternativeId,batch,label,configure,canCommit=()=>true) {
+    if(this.busy)throw new Error('Wait for the current document edit to finish.');
+    this.busy=true;
+    try {
+      const before=energyBatchSnapshot(project,batch);
+      // Services transform a disposable snapshot. Never adopt an intermediate
+      // design or report change, even when a later Rust validation fails.
+      const next=await configure(clone(project),clone(batch));
+      const after=energyBatchSnapshot(next,batch);
+      if(!canCommit())throw new Error('A newer draft was entered while Apply was pending. It is retained; review it before continuing.');
+      for(const id of ['A','B'].filter(id=>!(id in batch.designs)))if(JSON.stringify(project.energy?.designs[id])!==JSON.stringify(next.energy?.designs[id]))throw new Error('Thermal transaction changed an untargeted design.');
+      if(JSON.stringify(before)===JSON.stringify(after))return{project,changed:false};
+      this.past.push({kind:'energy_batch',alternativeId,before,after,label});this.future=[];
+      return{project:next,changed:true};
+    }finally{this.busy=false;}
+  }
+  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata,restoreEnergyGroup,restoreEnergyBatch) {
     if (this.busy) throw new Error('Wait for the current document edit to finish.');
     const source = direction === 'undo' ? this.past : this.future;
     const target = direction === 'undo' ? this.future : this.past;
@@ -104,7 +132,10 @@ export class DocumentHistory {
       if (!current) throw new Error('The design alternative no longer exists.');
       const candidate = clone(direction === 'undo' ? entry.before : entry.after);
       let next, validated;
-      if(entry.kind==='energy_group') {
+      if(entry.kind==='energy_batch') {
+        if(!restoreEnergyBatch)throw new Error('Atomic thermal draft restoration is unavailable.');
+        next=await restoreEnergyBatch(clone(project),candidate);validated=await validate(clone(current.model),entry.alternativeId,next);
+      }else if(entry.kind==='energy_group') {
         if(!restoreEnergyGroup)throw new Error('Atomic thermal restoration is unavailable.');
         next=await restoreEnergyGroup(clone(project),candidate);validated=await validate(clone(current.model),entry.alternativeId,next);
       }else if(entry.kind==='energy_metadata') {

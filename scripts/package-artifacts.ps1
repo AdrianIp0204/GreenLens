@@ -7,6 +7,8 @@ function Get-PackageDocumentPaths {
     @(
         'docs/installation.md','docs/replay.md','docs/persistence.md','docs/model-contract.md',
         'docs/evidence/v0.5/ci-29adf02-failure.json',
+        'docs/evidence/v0.5/ci-5c507f7-diagnostic.json',
+        'docs/evidence/v0.5/atomic-draft-repair.json',
         'docs/scientific-validation.md','docs/dependencies.md','docs/windows-runtime.md',
         'docs/windows-installer.md','docs/workspace-guide.md','docs/rhino-interaction-matrix.md',
         'docs/v0.2-native-verification.md','docs/images/v0.2/README.md','docs/v0.3-spec.md',

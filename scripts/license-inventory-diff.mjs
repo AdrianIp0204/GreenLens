@@ -1,9 +1,21 @@
-// Bounded diagnostics for the existing strict inventory comparison. This helper
-// does not normalize acceptance, mutate inventories, read files or run tools.
+// Inventory byte-policy checks and bounded strict-comparison diagnostics.
+// These helpers do not normalize bytes, mutate inputs, read files or run tools.
 const MAX_DIFFERENCES = 20;
 const MAX_SUMMARY_CHARS = 160;
 const MAX_PATH_CHARS = 240;
 const absolutePath = /(?:^|[\s"'(=])(?:[A-Za-z]:[\\/]|\\\\|\/(?!\/))/;
+
+// Git's required LF checkout policy must agree with the exact bytes hashed by
+// the inventory. A clean Git status alone can hide CRLF working-tree bytes.
+export function validateInventoryLockfile(bytes, relativePath) {
+  if (!(bytes instanceof Uint8Array)) throw new Error('Lockfile bytes are required');
+  const bom = bytes[0] === 0xef && bytes[1] === 0xbb && bytes[2] === 0xbf;
+  let validUtf8 = true;
+  try { new TextDecoder('utf-8', { fatal: true }).decode(bytes); } catch { validUtf8 = false; }
+  if (bom || bytes.includes(13) || !validUtf8) {
+    throw new Error(`${relativePath}: dependency inventory requires UTF-8 without BOM and LF line endings, matching .gitattributes. Rewrite the source file with that encoding, review it, then regenerate the inventory. Bytes are not normalized by this check.`);
+  }
+}
 
 function clip(text, limit) {
   return text.length <= limit ? text : `${text.slice(0, limit - 1)}…`;

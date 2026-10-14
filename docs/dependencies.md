@@ -40,6 +40,8 @@ This comparison uses the SHA-256 values of the reviewed Tauri-pinned NSIS 3.11 a
 
 Use `--strict --check` in CI and before building from a committed checkout. It verifies the resolved inventory and exact notice text without modifying either file. The comparison excludes only generation time and installer cache observation flags; package versions, lockfile hashes, notices, license choices and reviewed binary hashes must match. Add `--installer-cache <directory>` after bundling to verify all nine actual compiler/stub/plugin hashes without making the checkout dirty. Normal generation without `--check` records the current timestamp and cache observations for a reviewed source update.
 
+Both source lockfiles must use valid UTF-8 without BOM and LF line endings, as required by `.gitattributes`. The generator rejects different working-tree encoding/line endings before hashing; it does not normalize bytes or excuse an inventory difference. A clean Git status alone is insufficient because Git can consider CRLF working bytes equivalent to its LF blob. Review the exact committed bytes before regenerating. Strict mismatch diagnostics identify up to twenty bounded JSON field differences, including key-order-only differences, without weakening the original comparison or exposing machine paths.
+
 ## Conditions tracked by the review
 
 The exact retained license text controls. The inventory keeps AND/OR expressions intact, records whether upstream sources were modified, and records exact package-source download URLs. It flags expressions outside the reviewed policy for additional inspection.

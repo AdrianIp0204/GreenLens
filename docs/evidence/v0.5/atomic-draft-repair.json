@@ -1,0 +1,82 @@
+{
+  "schema": "greenlens.frontend-repair-evidence.v1",
+  "recorded_utc": "2026-10-14T02:32:54.4590731Z",
+  "baseline_commit": "5c507f72a14660188114dd7442c79a4c00e5bc01",
+  "source_binding": "Uncommitted frontend repair over the baseline commit, bound by the following exact file hashes; no claim that an older installed binary includes this repair.",
+  "file_sha256": {
+    "apps/desktop/src/energy/useEnergyDrafts.ts": "f6384652ba07f86e117f8e2893fa88951972893013e994a1b55ac6b4f26e8af7",
+    "apps/desktop/src/energy/EnergyDraftGuard.tsx": "07407ef4342f4fa6796a8904f6daf4a1a93e339b41894dbf18b738016e4e559a",
+    "apps/desktop/src/workspace/useDocument.ts": "ada96f6342ea709566584bd859dbb5db52df542077f97153af203653daec891a",
+    "apps/desktop/src/workspace/document.mjs": "809b5f4068fec9a0d9125b1f0888fb0d199f6bcb9b7466f5b6c108eed158a2fb",
+    "apps/desktop/src/workspace/document.d.mts": "bcd4b4859c866f67663ff59145ff9766790886c1d7271a73854bc96ad1b936a0",
+    "apps/desktop/tests/energy-drafts.test.mjs": "676abbad4f1b185952fa02e46fb2b9ecd317231ba1e609bcd6f08d3260bd523d",
+    "apps/desktop/tests/energy-history.test.mjs": "f43b543b006451ee55a27707f18a5c90fc5113462298212bf5fd377c52ffa838"
+  },
+  "defect": {
+    "reproduction": "A valid pending A design followed by invalid B numeric input was partially accepted during guarded Apply. The old loop accepted and removed A before B failed.",
+    "retained_pre_repair_receipt": {
+      "location": "External verification storage; original receipt preserved.",
+      "file": "output.txt",
+      "sha256": "0a14946e3e02e619b84221305b44ba3157090526b900416bd5b3522171f06714"
+    },
+    "observed_before": {
+      "accepted_B_changed": false,
+      "accepted_A_changed": true,
+      "history_entries": 1,
+      "remaining_drafts": [
+        "B"
+      ],
+      "save_calls": 0
+    }
+  },
+  "implementation": [
+    "Parse every pending design/report candidate before backend transformation.",
+    "Validate designs, report settings and report issue metadata on a disposable project using existing Rust-backed transformation services.",
+    "Adopt only after every transformation succeeds and captured draft identities remain current. No intermediate state adoption or rollback-by-mutation.",
+    "One accepted batch records one undo entry. Snapshots contain only targeted designs and report fields, preserving later evidence, independent settings and untargeted designs.",
+    "Keep individual Apply actions, reject invalid batches without accepted document or history changes, retain all draft text and concurrent newer drafts."
+  ],
+  "checks": [
+    {
+      "exit_code": 0,
+      "command": "npm run check",
+      "result": "TypeScript passed",
+      "working_directory": "apps/desktop"
+    },
+    {
+      "failed": 0,
+      "working_directory": "apps/desktop",
+      "exit_code": 0,
+      "tests": 31,
+      "command": "node --test tests/energy-drafts.test.mjs tests/energy-history.test.mjs",
+      "passed": 31,
+      "skipped": 0
+    },
+    {
+      "passed": 239,
+      "log_sha256": "e5052b5cf9923a291104da693d2b235eb1f36419ada9c438c5d08850d4140aba",
+      "working_directory": "apps/desktop",
+      "command": "npm test",
+      "tests": 239,
+      "duration_ms": 24736.9663,
+      "failed": 0,
+      "skipped": 0,
+      "exit_code": 0
+    }
+  ],
+  "regression_scope": [
+    "Actual ReactDOM ThermalEditor, EnergyWorkspace, draft guard and useDocument lifecycle; explicit Tauri IPC doubles.",
+    "A-valid/B-invalid preparse rejection with no backend edit, accepted state change or history entry.",
+    "Final Rust-backed issue validation rejection after temporary design and settings transforms; all four draft categories and existing redo stack retained after Cancel.",
+    "All four draft categories accepted together; one undo/redo restores complete input and report changes while later run/weather evidence survives.",
+    "Failed undo retains stacks and accepted document. New accepted edits clear redo.",
+    "Concurrent newer A/B, report settings and issue drafts reject the original batch before acceptance and remain available to edit.",
+    "Targeted batch history preserves independently added attachments, sensitivity records, edit locks, untargeted design and report settings."
+  ],
+  "limitations": [
+    "IPC doubles establish frontend transaction behavior, not native Rust validation or installed desktop acceptance.",
+    "WebGL follows its unavailable branch in JSDOM; these tests make no GPU/viewport/native gesture claim.",
+    "No simulation methods, scientific thresholds, engine binaries, immutable run evidence or public repository operations were changed by this repair.",
+    "Fresh packaging and exact-source Windows CI remain the coordinating agent responsibility."
+  ]
+}

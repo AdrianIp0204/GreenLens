@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { validateNpmSupplement } from './license-supplement-binding.mjs';
-import { describeInventoryDifference } from './license-inventory-diff.mjs';
+import { describeInventoryDifference, validateInventoryLockfile } from './license-inventory-diff.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const argv = process.argv.slice(2);
@@ -20,6 +20,14 @@ if (installerCacheIndex >= 0 && !argv[installerCacheIndex + 1]) throw new Error(
 const digest = data => createHash('sha256').update(data).digest('hex');
 const slash = text => text.replaceAll('\\', '/');
 const readJson = file => JSON.parse(fs.readFileSync(file, 'utf8'));
+const readLockfile = relative => {
+  const bytes = fs.readFileSync(path.join(root, relative));
+  validateInventoryLockfile(bytes, relative);
+  return bytes;
+};
+// Read and validate both exact source files before constructing the inventory.
+const cargoLockBytes = readLockfile('Cargo.lock');
+const npmLockBytes = readLockfile('apps/desktop/package-lock.json');
 const packages = [];
 const notices = new Map();
 const gaps = [];
@@ -127,7 +135,7 @@ function addPackage(record, directory, explicitFile, companion) {
   packages.push(record);
 }
 
-const cargoLock = fs.readFileSync(path.join(root, 'Cargo.lock'), 'utf8');
+const cargoLock = cargoLockBytes.toString('utf8');
 const lockedCrates = new Map();
 for (const block of cargoLock.split('[[package]]').slice(1)) {
   const get = key => block.match(new RegExp(`^${key} = "([^"]+)"`, 'm'))?.[1];
@@ -221,7 +229,7 @@ if (!npmOnly) {
 }
 
 const npmRoot = path.join(root, 'apps', 'desktop');
-const npmLock = readJson(path.join(npmRoot, 'package-lock.json'));
+const npmLock = JSON.parse(npmLockBytes.toString('utf8'));
 for (const [key, item] of Object.entries(npmLock.packages)) {
   if (!key) continue;
   const directory = path.join(npmRoot, key);
@@ -303,7 +311,7 @@ const inventory = {
   generated_utc: new Date().toISOString(),
   scope: npmOnly ? 'PARTIAL: npm only; no Rust graph was inspected' : 'Resolved native Windows Rust graph and locked npm graph',
   target: 'x86_64-pc-windows-msvc',
-  lockfiles: { 'Cargo.lock': digest(cargoLock), 'apps/desktop/package-lock.json': digest(fs.readFileSync(path.join(npmRoot, 'package-lock.json'))) },
+  lockfiles: { 'Cargo.lock': digest(cargoLockBytes), 'apps/desktop/package-lock.json': digest(npmLockBytes) },
   scientific_engine_manifest: 'dependencies/radiance.json',
   supplemental_notice_manifest: 'dependencies/license-supplements.json',
   installer_cache_verified: installerCacheIndex >= 0,

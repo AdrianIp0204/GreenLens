@@ -1,0 +1,168 @@
+{
+  "schema_version": "greenlens.v0.5-ci-inventory-diagnostic.v1",
+  "recorded_utc": "2026-10-14T02:24:08.0250703Z",
+  "source_commit": "5c507f72a14660188114dd7442c79a4c00e5bc01",
+  "run_id": 38500522173,
+  "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38500522173",
+  "status": "completed",
+  "conclusion": "failure",
+  "created_utc": "2026-10-14T02:20:33Z",
+  "updated_utc": "2026-10-14T02:22:11Z",
+  "jobs": [
+    {
+      "name": "build",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_utc": "2026-10-14T02:20:36Z",
+      "completed_utc": "2026-10-14T02:22:10Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38500522173/job/115646123666",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Exact clean source and native toolchain",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Frontend types, interaction regressions and production assets",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "number": 7,
+          "name": "Pinned Radiance for required legacy cancellation regressions",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 8,
+          "name": "Format, strict lint and unit/lifecycle regression suite",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 9,
+          "name": "Build and package exact-source unsigned binaries",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 10,
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 11,
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 12,
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 22,
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 23,
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "number": 24,
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 25,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "name": "energy",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_utc": "2026-10-14T02:22:11Z",
+      "completed_utc": "2026-10-14T02:22:10Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38500522173/job/115646564552",
+      "steps": []
+    },
+    {
+      "name": "static_compatibility",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_utc": "2026-10-14T02:22:11Z",
+      "completed_utc": "2026-10-14T02:22:10Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38500522173/job/115646565060",
+      "steps": []
+    }
+  ],
+  "inventory_difference": {
+    "identical": false,
+    "key_order_only": false,
+    "differences": [
+      {
+        "path": "lockfiles[\"apps/desktop/package-lock.json\"]",
+        "kind": "value_changed",
+        "expected": "3e6fdfe9dd4b35026cfca74b37fb9f51e4030345fc65e8e7e74ac107b2a5eafd",
+        "actual": "2566f3aa7d8b3cb2d105b24e06df190ad205d619369481b035dcaf911db91425"
+      }
+    ],
+    "truncated": false
+  },
+  "diagnostic_command": [
+    "node",
+    "scripts/license-inventory.mjs",
+    "--strict",
+    "--check"
+  ],
+  "failed_log": {
+    "logical_name": "ci-5c507f7-failed.log",
+    "sha256": "fde5a6639f69278450a15569d10202664fcf719b99af10676975de1e2c480ca2",
+    "bytes": 10205,
+    "publicly_bundled": false
+  },
+  "outcome": "Strict inventory rejected the exact-source checkout before frontend tests and expensive Rust compilation. Only the npm lockfile digest differs; object-key ordering and package/notice fields are not reported as differing. The failed run is retained; no rerun, cancellation or acceptance override was performed by this monitor.",
+  "limitations": [
+    "This is diagnostic failure evidence, not a package or scientific acceptance.",
+    "Dependent energy and static_compatibility jobs were skipped.",
+    "No installed native observation is established."
+  ]
+}

@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import type { EnergyDesign, EnergyReportMetadata } from './types';
+import type { EnergyDraftBatch } from '../workspace/document.mjs';
 import { EnergyDraftStore, draftCandidate, cleanReportDraft, reportCandidate, cleanIssueDraft, issueCandidate, type EnergyDraft, type ReportSettings, type ReportSettingsDraft, type ReportIssueDraft } from './drafts';
 
 type DraftProject={id:string;energy?:{designs:Record<'A'|'B',EnergyDesign>;workbench?:{report_metadata?:EnergyReportMetadata|null}}&ReportSettings|null};
 type Choice='apply'|'discard'|'cancel';
-export function useEnergyDrafts(project:DraftProject|null, commit:(design:EnergyDesign,label:string,id:string)=>Promise<boolean>, acceptedError:()=>string,commitReport:(value:ReportSettings)=>Promise<boolean>,commitIssue:(value:EnergyReportMetadata|null)=>Promise<boolean>){
+export function useEnergyDrafts(project:DraftProject|null, commit:(design:EnergyDesign,label:string,id:string)=>Promise<boolean>, acceptedError:()=>string,commitReport:(value:ReportSettings)=>Promise<boolean>,commitIssue:(value:EnergyReportMetadata|null)=>Promise<boolean>,commitBatch:(batch:EnergyDraftBatch,canCommit:()=>boolean)=>Promise<boolean>){
   const [store]=useState(()=>{try{return new EnergyDraftStore(window.localStorage);}catch{return new EnergyDraftStore();}});
   const [,refresh]=useState(0);
   const current=useRef(project);current.current=project;
@@ -50,7 +51,46 @@ export function useEnergyDrafts(project:DraftProject|null, commit:(design:Energy
     const ids=store.pending(pending.projectId);
     if(choice==='apply'){
       setGuard(g=>g&&({...g,applying:true,error:''}));
-      for(const id of ids)if(!await(id==='report settings'?applyReport():id==='report issue'?applyIssue():apply(id))){setGuard(g=>g&&({...g,applying:false,error:(id==='report settings'?report()?.error:id==='report issue'?issue()?.error:get(id)?.error)??'Apply failed; draft retained.'}));return;}
+      const p=current.current;
+      if(!p?.energy){setGuard(g=>g&&({...g,applying:false,error:'Energy project missing; drafts retained.'}));return;}
+      const capturedDesigns=new Map<string,EnergyDraft>();
+      const capturedReport=ids.includes('report settings')?report():null;
+      const capturedIssue=ids.includes('report issue')?issue():null;
+      let preparing='';
+      try{
+        const batch:EnergyDraftBatch={designs:{}};
+        // Parse every candidate before invoking any Rust transformation. Those
+        // transformations then validate a private snapshot before one adoption.
+        for(const id of ids){
+          preparing=id;
+          if(id==='report settings'&&capturedReport)batch.reportSettings=reportCandidate(capturedReport,p.energy);
+          else if(id==='report issue'&&capturedIssue)batch.reportIssue=issueCandidate(capturedIssue,p.energy.workbench?.report_metadata??null);
+          else{
+            const draft=get(id),accepted=p.energy.designs[id as 'A'|'B'];
+            if(!draft||!accepted)throw new Error('The thermal design no longer exists.');
+            capturedDesigns.set(id,draft);batch.designs[id]=draftCandidate(draft,accepted);
+          }
+        }
+        const unchanged=()=>current.current?.id===p.id&&JSON.stringify(store.pending(p.id))===JSON.stringify(ids)
+          &&[...capturedDesigns].every(([id,draft])=>store.entries.get(store.key(p.id,id))===draft)
+          &&(!capturedReport||store.reports.get(p.id)===capturedReport)
+          &&(!capturedIssue||store.issues.get(p.id)===capturedIssue);
+        preparing='';
+        if(!await commitBatch(batch,unchanged))throw new Error(acceptedError()||'Rust rejected the draft batch. Accepted inputs and history are unchanged.');
+        for(const [id,draft] of capturedDesigns)if(current.current?.id===p.id&&store.entries.get(store.key(p.id,id))===draft)store.discard(p.id,id,batch.designs[id]);
+        if(capturedReport&&current.current?.id===p.id&&store.reports.get(p.id)===capturedReport)store.setReport(p.id,cleanReportDraft(batch.reportSettings!));
+        if(capturedIssue&&current.current?.id===p.id&&store.issues.get(p.id)===capturedIssue)store.setIssue(p.id,cleanIssueDraft(batch.reportIssue!));
+      }catch(e){
+        const error=e instanceof Error?e.message:String(e);
+        // Keep all original text. Only annotate the candidate whose local parse
+        // failed; a Rust batch failure belongs to the whole guarded operation.
+        if(current.current?.id===p.id){
+          if(preparing==='report settings'&&report())store.setReport(p.id,{...report()!,error});
+          else if(preparing==='report issue'&&issue())store.setIssue(p.id,{...issue()!,error});
+          else if(preparing&&get(preparing))store.set(p.id,preparing,{...get(preparing)!,error});
+        }
+        setGuard(g=>g&&({...g,applying:false,error}));return;
+      }
     }else ids.forEach(id=>id==='report settings'?discardReport():id==='report issue'?discardIssue():discard(id));
     if(choice==='apply'&&store.pending(pending.projectId).length){setGuard(g=>g&&({...g,applying:false,error:'A newer draft was entered while Apply was pending. It is retained; review it before continuing.'}));return;}
     waiting.current=null;setGuard(null);pending.resolve(true);

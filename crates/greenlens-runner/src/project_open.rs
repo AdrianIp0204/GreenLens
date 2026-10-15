@@ -1,5 +1,7 @@
 //! Cancellable, read-only project intake. Reuse is confined to one verified
 //! snapshot; a later open always checks actual bytes again, never timestamps.
+//! Panel inspection may reuse a private verified record only after rehashing
+//! its complete pinned evidence set, without repeating annual arithmetic.
 use crate::{energy, energy_sensitivity_workflow, persistence, Project, ProjectView};
 use anyhow::{ensure, Context, Result};
 use serde::{Deserialize, Serialize};
@@ -16,6 +18,131 @@ use std::{
 
 pub const VERIFICATION_DEADLINE_SECONDS: u64 = 120;
 pub const MAX_SNAPSHOT_METADATA_BYTES: usize = 512 * 1024 * 1024;
+
+/// Only the full reader and its final byte fence can construct this token.
+/// It is process-local, never serialized or accepted from an IPC caller.
+pub(crate) struct VerifiedEnergyRun {
+    root: PathBuf,
+    summary: energy::EnergyRunSummary,
+    record: energy::EnergyRunRecord,
+    members: BTreeMap<String, String>,
+    metadata_bytes: usize,
+}
+impl VerifiedEnergyRun {
+    pub(crate) fn root(&self) -> &Path {
+        &self.root
+    }
+    pub(crate) fn summary(&self) -> &energy::EnergyRunSummary {
+        &self.summary
+    }
+    pub(crate) fn record(&self) -> &energy::EnergyRunRecord {
+        &self.record
+    }
+    pub(crate) fn members(&self) -> &BTreeMap<String, String> {
+        &self.members
+    }
+    pub(crate) fn metadata_bytes(&self) -> usize {
+        self.metadata_bytes
+    }
+
+    fn from_fenced(
+        root: &Path,
+        summary: &energy::EnergyRunSummary,
+        record: energy::EnergyRunRecord,
+        observed: &BTreeMap<String, String>,
+    ) -> Result<Self> {
+        energy::validate_summary_binding(&record, summary)?;
+        let mut names = energy::evidence_files(&record);
+        names.push("checksums.json".into());
+        let members = names
+            .into_iter()
+            .map(|name| {
+                let name = format!("{}/{name}", summary.path);
+                let digest = observed
+                    .get(&name)
+                    .with_context(|| format!("Validated energy member was not observed: {name}"))?;
+                Ok((name, digest.clone()))
+            })
+            .collect::<Result<BTreeMap<_, _>>>()?;
+        let root = std::fs::canonicalize(root)?;
+        let metadata_bytes = serde_json::to_vec(&(&root, summary, &record, &members))?.len();
+        Ok(Self {
+            root,
+            summary: summary.clone(),
+            record,
+            members,
+            metadata_bytes,
+        })
+    }
+}
+
+/// Bounded scoped byte observation for independent inspection service calls.
+fn inspection_scope<T>(
+    root: &Path,
+    cancel: Arc<AtomicBool>,
+    action: impl FnOnce(&Arc<Control>) -> Result<T>,
+) -> Result<T> {
+    let control = Arc::new(Control {
+        root: root.into(),
+        started: Instant::now(),
+        cancel,
+        progress: Mutex::new(OpenProgress {
+            schema_version: "greenlens.project-open-progress.v1".into(),
+            stage: "energy_inspection".into(),
+            run_id: None,
+            runs_completed: 0,
+            runs_total: 1,
+            bytes_read: 0,
+            files_verified: 0,
+            numeric_passes: BTreeMap::new(),
+            elapsed_ms: 0,
+        }),
+        observed: Mutex::new(BTreeMap::new()),
+        last_emitted: Mutex::new(Instant::now()),
+        emit: Box::new(|_| {}),
+    });
+    // These readers are independent service calls. Refuse accidental nested
+    // instrumentation rather than hide a parent operation's cancellation.
+    ensure!(
+        ACTIVE.with(|active| active.borrow().is_none()),
+        "Nested energy inspection must use the verified snapshot provider"
+    );
+    let _guard = ActiveGuard(ACTIVE.with(|active| active.replace(Some(control.clone()))));
+    control.checkpoint(0, false)?;
+    let result = action(&control)?;
+    control.checkpoint(0, false)?;
+    Ok(result)
+}
+
+pub(crate) fn verify_energy_for_inspection(
+    root: &Path,
+    summary: &energy::EnergyRunSummary,
+) -> Result<VerifiedEnergyRun> {
+    inspection_scope(root, Arc::new(AtomicBool::new(false)), |control| {
+        let record = energy::read_run(root, summary)?;
+        let observed = control.observed.lock().unwrap().clone();
+        verify_member_bytes(root, &observed)?;
+        VerifiedEnergyRun::from_fenced(root, summary, record, &observed)
+    })
+}
+
+fn verify_member_bytes(root: &Path, members: &BTreeMap<String, String>) -> Result<()> {
+    for (name, expected) in members {
+        ensure!(
+            persistence::evidence_file_hash(&persistence::regular_child(root, name)?)? == *expected,
+            "Energy evidence changed since complete verification: {name}; reopen the project to validate the changed evidence"
+        );
+    }
+    Ok(())
+}
+
+pub(crate) fn check_energy_member_bytes(
+    root: &Path,
+    members: &BTreeMap<String, String>,
+    cancel: Arc<AtomicBool>,
+) -> Result<()> {
+    inspection_scope(root, cancel, |_| verify_member_bytes(root, members))
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -70,6 +197,12 @@ thread_local! {
     // Read instrumentation is deliberately scoped to the single blocking intake
     // operation; ordinary readers and scientific outputs are unaffected.
     static ACTIVE: RefCell<Option<Arc<Control>>> = const { RefCell::new(None) };
+    #[cfg(test)]
+    static TEST_NUMERIC_PASSES: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
+}
+#[cfg(test)]
+pub(crate) fn test_numeric_passes() -> usize {
+    TEST_NUMERIC_PASSES.with(|count| count.get())
 }
 struct ActiveGuard(Option<Arc<Control>>);
 impl Drop for ActiveGuard {
@@ -164,6 +297,8 @@ pub(crate) fn observed_file(path: &Path, digest: &str) -> Result<()> {
     })
 }
 pub(crate) fn numeric_pass(run_id: &str) -> Result<()> {
+    #[cfg(test)]
+    TEST_NUMERIC_PASSES.with(|count| count.set(count.get() + 1));
     ACTIVE.with(|active| {
         let active = active.borrow();
         if let Some(c) = active.as_ref() {
@@ -340,9 +475,9 @@ fn verify_snapshot(
     // inspected. Rehash actual members before publishing the candidate; this
     // fence never decodes values or rederives arithmetic a second time.
     let observed = control.observed.lock().unwrap().clone();
-    for (name, expected) in observed {
+    for (name, expected) in &observed {
         ensure!(
-            persistence::evidence_file_hash(&persistence::regular_child(path, &name)?)? == expected,
+            persistence::evidence_file_hash(&persistence::regular_child(path, name)?)? == *expected,
             "Evidence changed before snapshot acceptance: {name}"
         );
     }
@@ -373,7 +508,32 @@ fn verify_snapshot(
         serde_json::to_vec(&view)?.len() <= MAX_SNAPSHOT_METADATA_BYTES,
         "Verified project metadata exceeds the 512 MiB intake budget; retain fewer runs"
     );
+    // Cache only fully fenced records after every acceptance/cancellation/size
+    // check. Opening always reprocesses each run; this merely prevents a later
+    // panel remount from repeating arithmetic on those same unchanged bytes.
+    let seeds = view
+        .project
+        .energy
+        .as_ref()
+        .map(|extension| {
+            extension
+                .runs
+                .iter()
+                .zip(&view.energy_results)
+                .rev()
+                .take(8)
+                .map(|(summary, record)| {
+                    control.checkpoint(0, false)?;
+                    VerifiedEnergyRun::from_fenced(path, summary, record.clone(), &observed)
+                })
+                .collect::<Result<Vec<_>>>()
+        })
+        .transpose()?
+        .unwrap_or_default();
     control.checkpoint(0, false)?;
+    for seed in seeds {
+        crate::energy_verified_cache::seed(seed);
+    }
     Ok(view)
 }
 

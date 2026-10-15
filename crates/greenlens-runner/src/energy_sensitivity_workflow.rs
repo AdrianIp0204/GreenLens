@@ -425,7 +425,7 @@ pub fn inspect(root: &Path, project: &Project, id: &str) -> Result<EnergySensiti
             energy::validate_summary_binding(run, summary)?;
             return Ok(run.clone());
         }
-        let run = energy::read_run(root, summary)?;
+        let run = crate::energy_verified_cache::read_run(root, summary)?;
         checked.insert(summary.id.clone(), run.clone());
         Ok(run)
     })
@@ -467,7 +467,7 @@ fn inspect_with_runs(
                     && &r.run_id == job_id
                     && &r.record_sha256 == record_sha256)
                     && canonical_hash(&run.provenance.processes)? == canonical_hash(processes)?,
-                "Collected receipt differs from the fully reprocessed run"
+                "Collected receipt differs from the fully validated retained run"
             );
             let reserved = files.iter().find(|f| matches!(&f.event, EnergySensitivityEvent::Reserved {slot_id:id} if id == slot_id)).context("Missing attempt reservation")?;
             let started = utc(&run.provenance.started_utc)?;

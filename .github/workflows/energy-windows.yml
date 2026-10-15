@@ -269,6 +269,10 @@ jobs:
           $env:GREENLENS_TEST_RETAINED_ENERGY_PROJECT = Join-Path $env:ENERGY_EVIDENCE 'production/project-10'
           cargo test -p greenlens-runner --test reference_intake --locked --offline retained_energy_evidence_is_immutable_through_reference_import_and_cold_copy -- --ignored --nocapture
           if ($LASTEXITCODE -ne 0) { throw 'Required retained-energy reference intake/cold-copy regression failed' }
+          # The fixed 120-second production intake budget also applies here.
+          # Use optimized native code for this full four-run performance check.
+          cargo test -p greenlens-runner --lib --release --locked --offline retained_report_and_sensitivity_panel_requests_do_not_repeat_numeric_traversal -- --ignored --nocapture
+          if ($LASTEXITCODE -ne 0) { throw 'Required retained-energy panel remount reuse regression failed' }
       - name: Retain qualification failure as job failure after independent delivery checks
         if: always()
         env:

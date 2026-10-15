@@ -24,6 +24,7 @@ mod energy_sensitivity_portability_tests;
 pub mod energy_sensitivity_workflow;
 pub mod energy_series;
 pub mod energy_services;
+mod energy_verified_cache;
 pub mod energy_weather;
 pub mod energy_workbench;
 pub mod persistence;

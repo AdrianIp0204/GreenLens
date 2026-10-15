@@ -238,7 +238,7 @@ pub fn selected_run(root: &Path, project: &Project, id: &str) -> Result<EnergyRu
         .as_ref()
         .and_then(|e| e.runs.iter().find(|r| r.id == id))
         .context("Selected energy snapshot is not retained in this project")?;
-    read_run(root, summary)
+    crate::energy_verified_cache::read_run(root, summary)
 }
 
 pub fn rows(

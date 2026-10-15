@@ -1,5 +1,12 @@
 # Progress and acceptance evidence
 
+## 2026-10-16 — installed follow-up repairs
+
+- Implemented and committed at `fa1e207bb65bcfd5c4e808adf55d6eb90665dce8`: exact-content Save/Save As verification reuse and readable mapping tables. The retained four-run regression, strict lint and 306 frontend tests passed before the next interaction work.
+- Failed installed observations on d19: reference selection and active panel reset during Energy/Daylight remount; viewport maximize mouse input is captured by native camera controls. Narrow remount/pointer regressions and repairs are in progress. The fa1 local candidate build was deliberately interrupted before packaging, not reported as successful.
+- Verified additional d19 observations: saved Rust-reviewed portable orthographic report view, 8 m reference measurement, facility-peak date navigation, and a complete baseline search finding no occupied unmet interval. Camera and section continuity were observed independently of the failed selection. A 900×844 CSS layout at 125% was observed; requested exact layout and full installed acceptance remain unverified.
+- Blocked private case: no decoded geometry and no justified analytical scope. The unrelated recovery document stays excluded. Original source bytes are preserved; the exhausted conversion investigation is not restarted. The smallest remedy remains a recoverable same-case source or lawful local GLB from an authorized reader that can open it.
+
 Current v0.6 status, 2026-10-16: application source `d19f2a1c07c53903612829296937bb6048adf083` has an identified unsigned package and installed candidate. Synthetic cold reports, all 85 PDF pages/eight PNGs, bounded import resources and four-run real replay are verified. First CLI progress fails the fixed 250 ms target; installed Save As exposed redundant numerical traversal now under repair. Native workflow is partial; hosted completion remains pending after CI-only `93a58e9` fixes the four-run fixture. Private geometry remains undecoded and blocked. See the [current acceptance supplement](v0.6-acceptance.md#d19-candidate-cold-reports-and-replay--2026-10-16); historical failures and interrupted attempts below keep their original scope.
 
 ## 2026-10-13 — v0.4 shared service integration checkpoint

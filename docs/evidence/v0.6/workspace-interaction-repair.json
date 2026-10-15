@@ -1,0 +1,95 @@
+{
+  "schema_version": "greenlens.workspace-interaction-repair.v1",
+  "recorded_utc": "2026-10-15T18:55:57.0722291+00:00",
+  "base_commit": "fa1e207bb65bcfd5c4e808adf55d6eb90665dce8",
+  "source_identity": "Working changes bound by exact file inventory; no new installed artifact claimed",
+  "implemented": [
+    "Document/design-scoped active panel and inspector",
+    "Revision-bound reference selection withheld until matching admitted manifest",
+    "Pointer capture boundary for viewport title/maximize controls"
+  ],
+  "environment": {
+    "node": "24.14.0",
+    "platform": "native Windows"
+  },
+  "checks": {
+    "typescript_exit": 0,
+    "production_assets_exit": 0,
+    "full_frontend_exit": 0,
+    "frontend_wall_seconds": 48.1506172,
+    "skipped": 0,
+    "typescript_seconds": 4.0361159,
+    "failed": 0,
+    "test_runner_duration_ms": 44802.417,
+    "cancelled": 0,
+    "passed": 311,
+    "tests": 311
+  },
+  "retained_failure": {
+    "pass": 308,
+    "type": "Test-loader missing runtime module",
+    "module": "thermal-presentation",
+    "failed_test_files": 1,
+    "code": "ERR_MODULE_NOT_FOUND",
+    "repair": "Existing comparison loader now reads the actual shared display contract and uses its bounded store; existing scientific non-mutation assertions preserved"
+  },
+  "limits": [
+    "Real React/Three/DOM event tests with GPU draw port or IPC doubles where declared; not installed acceptance",
+    "No new simulation or scientific qualification",
+    "Private source remains undecoded; no private-case substitution",
+    "First d19 CLI progress failure remains unchanged"
+  ],
+  "source_files": [
+    {
+      "path": "apps/desktop/src/energy/EnergyWorkspace.tsx",
+      "sha256": "33117b75d0f80d05d10da7f2832629f02e69c96bc46b5eb199f8c0a1710a576d"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalView.tsx",
+      "sha256": "cf62a095ffc9e658a7eccd9e5382ca4120a0c448af38b61a98696200d326f452"
+    },
+    {
+      "path": "apps/desktop/src/energy/thermal-presentation.ts",
+      "sha256": "058e4846ccb387bbc0e21d894df9034c09153007fca652d467c43a31eeaf5e89"
+    },
+    {
+      "path": "apps/desktop/tests/energy-drafts.test.mjs",
+      "sha256": "49ab2be3c70be24eb77a44a0ab164b5fc41ac9eae5662e396c091d30f04f1730"
+    },
+    {
+      "path": "apps/desktop/tests/energy-comparison.test.mjs",
+      "sha256": "14a779a44740861bc62b11333668ae2a75ee97cd0dc703a313f078c8cdb66e7b"
+    },
+    {
+      "path": "apps/desktop/tests/thermal-presentation.test.mjs",
+      "sha256": "521f4aa6aed8e78fa52ed19fe2dab942ef36477aaa9fc4a3e258cf60f69affd4"
+    }
+  ],
+  "logs": [
+    {
+      "sha256": "7a5304713a18ec7a5f06431e8a57de0557049b831924ddd57c1fed3931ebec9d",
+      "name": "frontend.log",
+      "bytes": 122618
+    },
+    {
+      "sha256": "30957e1c2986cf1dc6600ab442a135b280137eaf651d3365c04be5481c791613",
+      "name": "typescript-02.log",
+      "bytes": 155
+    },
+    {
+      "sha256": "8a5da7a118e3bc15ecbd618ac1a36178279ddd081e8a131994a62355557b43a3",
+      "name": "frontend-02.log",
+      "bytes": 35682
+    },
+    {
+      "sha256": "1cf2eb0a338cd54be080aecd8774f4a8354f7e0316ca20feffed44cdb2406e0b",
+      "name": "frontend-build.log",
+      "bytes": 2013
+    },
+    {
+      "sha256": "8fc72d01ccc68834b32b9e5289f2396d69b61a6d74cd186d8f9937079b5ece5c",
+      "name": "package-documents.log",
+      "bytes": 212
+    }
+  ]
+}

@@ -1,10 +1,19 @@
 import { useRef, useState } from 'react';
 import type { CameraState, ViewId } from '../viewport/types';
+import type { ThermalInspectorTarget } from './thermal-inspector-target';
 import { validReferencePresentation, type ReferencePresentation } from './reference-presentation';
 
 export const THERMAL_VIEWS:ViewId[]=['top','perspective','front','right'];
 export const THERMAL_LAYERS=['surface','window','overhang','shading'] as const;
 export type ThermalLayer=typeof THERMAL_LAYERS[number];
+export const ENERGY_PANELS=['model','reference','results','series','history','designs','compare','weather','preflight','sensitivity','reports','evidence'] as const;
+export type EnergyPanel=typeof ENERGY_PANELS[number];
+export interface ThermalWorkspacePresentation {
+  panel:EnergyPanel;
+  inspector:ThermalInspectorTarget|null;
+  reference_selection:{revision_sha256:string;occurrence_id:string}|null;
+}
+export function defaultThermalWorkspacePresentation():ThermalWorkspacePresentation{return{panel:'model',inspector:null,reference_selection:null};}
 export interface ThermalSceneObject {id:string;label:string;kind:'zone'|ThermalLayer;zone_id:string|null;storey:number|null;polygons_m:[number,number,number][][]}
 export interface ThermalScene {schema_version:'greenlens.thermal-scene.v1';model_sha256:string;coordinates:string;objects:ThermalSceneObject[]}
 export interface ThermalPresentation {
@@ -20,15 +29,24 @@ export interface ThermalPresentation {
   tree_width:number;
   inspector_width:number;
   reference?:ReferencePresentation;
+  /** Optional additive local state; legacy v1 entries remain readable. */
+  workspace?:ThermalWorkspacePresentation;
 }
 export function defaultThermalPresentation():ThermalPresentation{return{schema_version:'greenlens.thermal-presentation.v1',cameras:{},active_view:'perspective',maximized_view:null,selected:null,hidden:[],isolated:null,layers:{surface:true,window:true,overhang:true,shading:true},grid:true,tree_width:210,inspector_width:320};}
 const finite=(value:unknown)=>typeof value==='number'&&Number.isFinite(value)&&Math.abs(value)<=1e9;
 const point=(value:unknown):value is number[]=>Array.isArray(value)&&value.length===3&&value.every(finite);
 const ids=(value:unknown):value is string[]=>Array.isArray(value)&&value.length<=1024&&new Set(value).size===value.length&&value.every(id=>typeof id==='string'&&id.length<=256);
+const identifier=(value:unknown)=>typeof value==='string'&&value.length>0&&value.length<=256;
+export function validThermalWorkspacePresentation(value:unknown):value is ThermalWorkspacePresentation {
+  const p=value as ThermalWorkspacePresentation;if(!p||!ENERGY_PANELS.includes(p.panel))return false;
+  if(p.inspector!==null){const target=p.inspector;if(!target?.object||!identifier(target.object.kind)||!identifier(target.object.id)||target.object.zone_id!==null&&!identifier(target.object.zone_id)||typeof target.field_path!=='string'||target.field_path.length>1024)return false;}
+  return p.reference_selection===null||Boolean(p.reference_selection&&typeof p.reference_selection.revision_sha256==='string'&&/^[a-f0-9]{64}$/.test(p.reference_selection.revision_sha256)&&identifier(p.reference_selection.occurrence_id));
+}
 export function validThermalPresentation(value:unknown):value is ThermalPresentation {
   const p=value as ThermalPresentation;if(!p||p.schema_version!=='greenlens.thermal-presentation.v1'||!THERMAL_VIEWS.includes(p.active_view)||p.maximized_view!==null&&!THERMAL_VIEWS.includes(p.maximized_view)||p.selected!==null&&(typeof p.selected!=='string'||p.selected.length>256)||!ids(p.hidden)||p.isolated!==null&&!ids(p.isolated)||typeof p.grid!=='boolean')return false;
   if(!p.layers||!THERMAL_LAYERS.every(k=>typeof p.layers[k]==='boolean')||!Number.isFinite(p.tree_width)||p.tree_width<150||p.tree_width>420||!Number.isFinite(p.inspector_width)||p.inspector_width<260||p.inspector_width>520||!p.cameras||typeof p.cameras!=='object'||Array.isArray(p.cameras))return false;
   if(p.reference!==undefined&&!validReferencePresentation(p.reference))return false;
+  if(p.workspace!==undefined&&!validThermalWorkspacePresentation(p.workspace))return false;
   return Object.entries(p.cameras).every(([id,c])=>THERMAL_VIEWS.includes(id as ViewId)&&c&&point(c.position)&&point(c.target)&&point(c.up)&&c.up.some(n=>n!==0)&&c.position.some((n,i)=>n!==c.target[i])&&finite(c.zoom)&&c.zoom>0&&c.zoom<=10000);
 }
 

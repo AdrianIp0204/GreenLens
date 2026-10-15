@@ -10,8 +10,11 @@ import {transformWithOxc} from 'vite';
 const dom=new JSDOM('<div id="root"></div>',{url:'https://greenlens.local/'});
 for(const name of ['window','document','HTMLElement','HTMLInputElement','Event','MouseEvent','KeyboardEvent','WheelEvent'])globalThis[name]=dom.window[name];
 globalThis.IS_REACT_ACT_ENVIRONMENT=true;globalThis.devicePixelRatio=1;
-// jsdom lacks pointer capture; real OrbitControls still handles every pointer event.
-HTMLElement.prototype.setPointerCapture=function(){};HTMLElement.prototype.releasePointerCapture=function(){};
+// jsdom lacks pointer capture. Record real OrbitControls calls so embedded
+// buttons cannot accidentally start navigation; this is not native acceptance.
+const pointerCaptures=new Map(),captureCalls=[];
+HTMLElement.prototype.setPointerCapture=function(id){pointerCaptures.set(id,this);captureCalls.push({id,element:this});};
+HTMLElement.prototype.releasePointerCapture=function(id){if(pointerCaptures.get(id)===this)pointerCaptures.delete(id);};
 globalThis.ResizeObserver=class{constructor(callback){this.callback=callback;}observe(){this.callback();}disconnect(){}};
 HTMLElement.prototype.getBoundingClientRect=function(){let left=0,top=0,width=800,height=600;if(this.classList.contains('thermal-viewport')){if(this.style.display==='none')width=height=0;else if(!this.parentElement.classList.contains('is-maximized')){const i=[...this.parentElement.querySelectorAll('.thermal-viewport')].indexOf(this);width=400;height=300;left=i%2*400;top=Math.floor(i/2)*300;}}return{left,top,width,height,right:left+width,bottom:top+height};};
 Object.defineProperties(HTMLElement.prototype,{clientWidth:{get(){return this.getBoundingClientRect().width;}},clientHeight:{get(){return this.getBoundingClientRect().height;}}});
@@ -49,6 +52,30 @@ test('maximize/restore, tree selection, fit selected, visibility, layers, locks 
   await click(button('Hide'));assert.equal(objectVisible(scene.objects[2],controller.value,scene.objects),false);await click(button('Show'));await click(button('Isolate'));assert.deepEqual(controller.value.isolated,['window:w']);assert.equal(objectVisible(scene.objects[1],controller.value,scene.objects),false);await click(button('Show all'));
   await click(button('Lock'));assert.deepEqual(lockCalls,[['window:w']]);assert.equal(JSON.stringify(scene),original);
   const separator=document.querySelector('[role=separator]');await act(()=>separator.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true})));assert.equal(controller.value.tree_width,226);await click(button('Reset layout'));assert.equal(controller.value.tree_width,210);assert.equal(controller.value.selected,'window:w');
+});
+test('viewport buttons intercept pointer-down before native controls, retaining focus, selection and cameras',async()=>{
+  await setup();await click([...document.querySelectorAll('[role=treeitem]')].find(b=>b.title.startsWith('window:w')));
+  const before=snapshot(),selectedBefore=selected,sceneBefore=JSON.stringify(scene),pointerId=29;
+  const pointer=type=>{const e=new MouseEvent(type,{clientX:440,clientY:15,button:0,buttons:type==='pointerdown'?1:0,bubbles:true,cancelable:true});Object.defineProperties(e,{pointerId:{value:pointerId},pointerType:{value:'mouse'}});return e;};
+  const press=async target=>{
+    assert.ok(target);const capturesBefore=captureCalls.length;await act(()=>target.focus());
+    const down=pointer('pointerdown');await act(()=>target.dispatchEvent(down));
+    assert.equal(captureCalls.length,capturesBefore,'button press must not reach OrbitControls.setPointerCapture');
+    assert.equal(pointerCaptures.has(pointerId),false);assert.equal(document.activeElement,target,'pane press must not steal button focus');
+    assert.equal(down.defaultPrevented,false,'button default action must remain available');
+    await act(()=>target.dispatchEvent(pointer('pointerup')));await click(target);
+    assert.equal(selected,selectedBefore,'button press must not ray-pick or clear selection');
+    assert.equal(controller.value.selected,'window:w');sameCameras(snapshot(),before);
+  };
+  await press(document.querySelector('[aria-label="Maximize Top view"]'));assert.equal(controller.value.maximized_view,'top');assert.equal(controller.value.active_view,'top');
+  assert.equal([...document.querySelectorAll('.thermal-viewport')].filter(p=>p.style.display!=='none').length,1);
+  await press(document.querySelector('[aria-label="Restore Top view"]'));assert.equal(controller.value.maximized_view,null);
+  const title=[...pane('Front').querySelectorAll('button')].find(b=>b.textContent==='Front');
+  await press(title);assert.equal(controller.value.active_view,'front');await press(title);
+  await act(()=>title.dispatchEvent(new MouseEvent('dblclick',{bubbles:true})));assert.equal(controller.value.maximized_view,'front');
+  await press(title);await press(title);await act(()=>title.dispatchEvent(new MouseEvent('dblclick',{bubbles:true})));assert.equal(controller.value.maximized_view,null);
+  await act(()=>title.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true,cancelable:true})));sameCameras(snapshot(),before);
+  assert.equal(JSON.stringify(scene),sceneBefore);
 });
 test('keyboard focus preserves native text and search survives view updates without changing model or camera',async()=>{
   await setup();const before=snapshot(),search=document.querySelector('input[type=search]');await act(()=>{Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(search,'glazing');search.dispatchEvent(new Event('input',{bubbles:true}));});assert.equal(document.querySelectorAll('[role=treeitem]').length,1);await act(()=>search.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowRight',bubbles:true})));sameCameras(snapshot(),before);assert.equal(JSON.stringify(scene),original);

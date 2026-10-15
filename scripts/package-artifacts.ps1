@@ -12,6 +12,7 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.6/candidate-opening-d19.json','docs/evidence/v0.6/cold-reports-d19.json',
         'docs/evidence/v0.6/report-visual-coverage-d19.json','docs/evidence/v0.6/reference-resource-d19.json',
         'docs/evidence/v0.6/replay-d19.json','docs/evidence/v0.6/ci-d19-and-93a58e9.json',
+        'docs/evidence/v0.6/workspace-interaction-repair.json',
         'docs/evidence/v0.6/opening-baseline.json','scripts/profile-project-opening.ps1',
         'schemas/reference-model-v0.6.schema.json','schemas/architectural-scope-v0.6.schema.json',
         'scripts/reference-synthetic-fixture.mjs',

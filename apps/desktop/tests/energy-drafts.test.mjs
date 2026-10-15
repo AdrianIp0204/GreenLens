@@ -38,9 +38,11 @@ const {default:ReferenceGuard}=await import(await load(path.join(src,'reference/
 const {useDocument}=await import(await load(path.join(src,'workspace/useDocument.ts')));
 const {default:Workspace}=await import(await load(path.join(src,'energy/EnergyWorkspace.tsx')));
 const {EnergyDraftStore,fieldEdit,structuredEdit,cleanDraft,draftCandidate}=await import(await load(path.join(src,'energy/drafts.ts')));
+const {ThermalPresentationStore,defaultThermalPresentation,validThermalPresentation}=await import(await load(path.join(src,'energy/thermal-presentation.ts')));
 const inputs=JSON.parse(fs.readFileSync(new URL('../../../examples/energy/revision1-inputs.json',import.meta.url)));
 const daylight=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
 let doc,root,calls,rejectEdit=false,closeHandler,disk,fullWorkspace=false,appendEvidenceOnSave=false,metadataGate=null,sceneObjects=false,preflightIssues=[],referenceImportGate=null,referenceScopeGate=null,reportRuns=false,reportGate=null,reportError=null,saveDestination='test-project';
+let referenceManifestGate=null,referenceRevision='2'.repeat(64);
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 // Real ThermalView follows its WebGL-unavailable branch; no viewport acceptance claim.
 dom.window.HTMLCanvasElement.prototype.getContext=()=>{throw Error('No WebGL context in DOM test');};
@@ -55,6 +57,8 @@ function Harness(){
   doc=useDocument();const [show,setShow]=React.useState(true),draft=doc.energyDrafts.get(doc.alternative);
   return React.createElement(React.Fragment,null,
     React.createElement('button',{onClick:()=>setShow(s=>!s)},'Toggle panel'),
+    React.createElement('button',{onClick:()=>setShow(false)},'Daylight'),
+    React.createElement('button',{onClick:()=>setShow(true)},'Energy'),
     React.createElement('button',{onClick:()=>doc.setAlternative(doc.alternative==='A'?'B':'A')},'Switch design'),
     React.createElement('button',{onClick:()=>{const requests=Object.fromEntries(['A','B'].map(id=>{const candidate=structuredClone(doc.project.energy.designs[id]);candidate.model.name=`Grouped ${id}`;return[id,{candidate}];}));void doc.commitEnergyTransaction(requests,'explicit-test-preview','Two-design geometry');}},'Group geometry'),
     ...['Save','Save As','Run','Open','Close','Undo'].map(label=>React.createElement('button',{key:label,onClick:()=>void ({Save:doc.save,'Save As':doc.saveAs,Run:()=>doc.startEnergy(''),Open:()=>doc.replace('Open'),Close:()=>doc.replace('Close'),Undo:()=>doc.traverse('undo')})[label]()},label)),
@@ -66,6 +70,7 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
   fullWorkspace=workspace;
   if(root)await act(()=>root.unmount());if(!retainCache)window.localStorage.clear();
   calls=[];rejectEdit=false;appendEvidenceOnSave=false;metadataGate=null;reportRuns=reports;reportGate=null;reportError=null;saveDestination='test-project';disk=fixture();sceneObjects=objects;preflightIssues=[];referenceImportGate=null;referenceScopeGate=null;
+  referenceManifestGate=null;referenceRevision=referenceHash('2');
   globalThis.__draftWindow={onCloseRequested:async cb=>{closeHandler=cb;return()=>{};},destroy:async()=>calls.push(['destroy'])};
   globalThis.__draftIPC=async(command,args)=>{
     calls.push([command,args]);
@@ -111,8 +116,8 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
     if(command==='verify_project')return view({...fixture(),id:'other-project-id'});
     if(command==='cancel_project_verification')return;
     if(command==='dialog_open_reference_glb')return 'original-synthetic.glb';
-    if(command==='reference_import'){if(referenceImportGate)await referenceImportGate;const next=structuredClone(args.project);next.architecture={schema_version:'greenlens.architectural-project.v1',assets:[referenceAsset],active_asset_id:referenceAsset.id,scope:next.architecture?.scope??null};return view(next);}
-    if(command==='reference_manifest')return referenceManifest();
+    if(command==='reference_import'){if(referenceImportGate)await referenceImportGate;const next=structuredClone(args.project);next.architecture={schema_version:'greenlens.architectural-project.v1',assets:[{...referenceAsset,revision_sha256:referenceRevision}],active_asset_id:referenceAsset.id,scope:next.architecture?.scope??null};return view(next);}
+    if(command==='reference_manifest'){if(referenceManifestGate)await referenceManifestGate;return{...referenceManifest(),revision_sha256:args.project.architecture.assets[0].revision_sha256};}
     if(command==='reference_chunk')return[{occurrence_index:0,material_index:null,vertices_m:[[0,0,0],[1,0,0],[0,1,0]]}];
     if(command==='reference_scope_context')return referenceContext(args.project);
     if(command==='reference_scope_assess')return referenceAssessment();
@@ -398,6 +403,52 @@ test('actual report guard completion survives tab and discipline remounts with i
   // An unsuccessful attempt cannot overwrite the retained successful receipt.
   reportError=Error('Original synthetic renderer failure');const earlier=doc.latestReport;await click('Generate reports…');assert.equal(doc.latestReport,earlier);assert.match(doc.error,/synthetic renderer failure/);assert.match(document.querySelector('[aria-label="Completed report output"]').textContent,/historical request/);
   await click('Open');assert.notEqual(doc.documentId,originalDocumentId);assert.equal(doc.project.id,'other-project-id');assert.equal(doc.latestReport,null);assert.equal(document.querySelector('[aria-label="Completed report output"]'),null);
+});
+
+test('actual Energy workspace restores panel and exact inspector across discipline remounts and isolates designs without accepting drafts',async()=>{
+  await setup({workspace:true,objects:true});const accepted=structuredClone(doc.project),zone=accepted.energy.designs.A.model.zones[2],window=zone.windows[0];
+  await act(()=>[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith(`${window.id} · window`)).click());
+  const width=()=>document.querySelector(`[data-thermal-kind="window"][data-thermal-id="${window.id}"] [data-thermal-field="/width_m"]`);
+  await type(width(),'-');await click('reports');await click('Daylight');assert.equal(document.querySelector('[aria-label="Building energy workspace"]'),null);
+  await click('Energy');assert.equal(button('reports').getAttribute('aria-pressed'),'true');assert.ok(document.querySelector('[aria-label="Report workbench"]'));
+  await click('model');assert.match(document.querySelector('[aria-label="Inspector target"]').textContent,new RegExp(window.id));assert.equal(width().value,'-');assert.equal(doc.thermalPresentation.value.selected,window.id);
+  await click('Proposed B');assert.equal(button('model').getAttribute('aria-pressed'),'true');assert.equal(doc.thermalPresentation.value.workspace?.inspector??null,null);await click('weather');
+  await click('Baseline A');assert.equal(button('model').getAttribute('aria-pressed'),'true');assert.match(document.querySelector('[aria-label="Inspector target"]').textContent,new RegExp(window.id));assert.equal(width().value,'-');
+  await click('Proposed B');assert.equal(button('weather').getAttribute('aria-pressed'),'true');await click('Daylight');await click('Energy');assert.equal(button('weather').getAttribute('aria-pressed'),'true');
+  assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);assert.equal(count('energy_edit'),0);assert.equal(count('energy_start'),0);
+});
+
+test('actual reference selection waits for admitted geometry after discipline remount and resets for missing IDs, changed revision and another document',async()=>{
+  await setup({workspace:true,objects:true});await prepareReferenceImport();await click('Choose local GLB and import');const energy=structuredClone(doc.project.energy);
+  const selected=()=>[...document.querySelectorAll('[role="treeitem"][aria-selected="true"]')].find(el=>el.title.startsWith('synthetic-occurrence '));
+  const selectReference=async()=>{await click('Reference');await act(()=>[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith('synthetic-occurrence ')).click());};
+  await selectReference();assert.ok(selected());const retained=structuredClone(doc.thermalPresentation.value.workspace.reference_selection);assert.equal(doc.thermalPresentation.value.selected,null);
+  await click('Daylight');let resume;referenceManifestGate=new Promise(resolve=>resume=resolve);await click('Energy');
+  assert.equal(button('reference').getAttribute('aria-pressed'),'true');assert.equal(selected(),undefined);assert.deepEqual(doc.thermalPresentation.value.workspace.reference_selection,retained);
+  await act(async()=>{referenceManifestGate=null;resume();});assert.ok(selected());assert.deepEqual(doc.thermalPresentation.value.workspace.reference_selection,retained);
+  await click('Proposed B');assert.equal(button('model').getAttribute('aria-pressed'),'true');assert.equal(doc.thermalPresentation.value.workspace?.reference_selection??null,null);
+  await click('Baseline A');assert.equal(button('reference').getAttribute('aria-pressed'),'true');assert.ok(selected());
+  await act(()=>doc.thermalPresentation.update(p=>({...p,workspace:{...p.workspace,reference_selection:{...retained,occurrence_id:'no-such-retained-occurrence'}}})));assert.equal(doc.thermalPresentation.value.workspace.reference_selection,null);assert.equal(selected(),undefined);
+  await selectReference();referenceRevision=referenceHash('9');await act(async()=>doc.importReference(referenceManifest().options));
+  assert.equal(doc.project.architecture.assets[0].revision_sha256,referenceRevision);assert.equal(doc.thermalPresentation.value.workspace.reference_selection,null);assert.equal(selected(),undefined);assert.deepEqual(doc.project.energy,energy);
+  await selectReference();await click('Open');assert.equal(doc.project.id,'other-project-id');assert.equal(button('model').getAttribute('aria-pressed'),'true');assert.equal(doc.thermalPresentation.value.workspace?.reference_selection??null,null);assert.equal(doc.thermalPresentation.value.workspace?.inspector??null,null);
+  assert.equal(count('energy_edit'),0);assert.equal(count('energy_start'),0);assert.equal(doc.history.past.length,0);
+});
+
+test('retained absent inspector is cleared on discipline entry after its explicit field-link warning',async()=>{
+  await setup({workspace:true,objects:true});const accepted=structuredClone(doc.project),zone=accepted.energy.designs.A.model.zones[0];
+  preflightIssues=[{code:'test.absent-retained-target',kind:'invalid_input',severity:'error',object:{kind:'window',id:'removed-window',zone_id:zone.id},field_path:'/width_m',message:'Synthetic absent target',remedy:'Inspect the exact object.'}];
+  await click('preflight');await click('removed-window · /width_m');assert.match(document.querySelector('[aria-label="Inspector target"]').textContent,/exact target is absent/);
+  await click('Daylight');await click('Energy');assert.equal(doc.thermalPresentation.value.workspace.inspector,null);assert.equal(doc.thermalPresentation.value.selected,null);assert.equal(document.querySelector('[aria-label="Inspector target"]'),null);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);
+});
+
+test('additive bounded workspace presentation preserves legacy entries and rejects malformed persisted navigation',()=>{
+  const old=defaultThermalPresentation();assert.equal(validThermalPresentation(old),true);let text;
+  const store=new ThermalPresentationStore({getItem:()=>null,setItem:(key,value)=>{text=value;}}),key='["display-fixture","A"]';
+  const workspace={panel:'reference',inspector:{object:{kind:'window',id:'window-3',zone_id:'zone-3'},field_path:'/width_m'},reference_selection:{revision_sha256:referenceHash('2'),occurrence_id:'synthetic-occurrence'}};
+  store.set(key,{...old,workspace});const restored=new ThermalPresentationStore({getItem:()=>text,setItem(){}});assert.deepEqual(restored.get(key).workspace,workspace);assert.equal(restored.get('["display-fixture","B"]').workspace,undefined);assert.equal(restored.get('["other","A"]').workspace,undefined);
+  const legacy=new ThermalPresentationStore({getItem:()=>JSON.stringify([[key,old]]),setItem(){}});assert.equal(legacy.warning,'');assert.deepEqual(legacy.get(key),old);
+  for(const invalid of [{...workspace,panel:'execute-shell'},{...workspace,inspector:{...workspace.inspector,field_path:'x'.repeat(1025)}},{...workspace,inspector:{object:{kind:'window',id:[],zone_id:null},field_path:''}},{...workspace,reference_selection:{...workspace.reference_selection,revision_sha256:'not-a-hash'}},{...workspace,reference_selection:{...workspace.reference_selection,occurrence_id:'x'.repeat(257)}}])assert.equal(validThermalPresentation({...old,workspace:invalid}),false);
 });
 
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});

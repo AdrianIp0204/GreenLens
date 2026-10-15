@@ -1,0 +1,278 @@
+{
+  "schema": "greenlens.v06-ci-status.v1",
+  "observed_utc": "2026-10-15T18:11:47.4230962Z",
+  "repository": "https://github.com/AdrianIp0204/GreenLens",
+  "runs": [
+    {
+      "id": 38771257775,
+      "source_commit": "d19f2a1c07c53903612829296937bb6048adf083",
+      "branch": "codex/v0.6-architectural-intake",
+      "workflow": "Bounded energy Windows verification",
+      "event": "push",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_utc": "2026-10-15T16:42:33Z",
+      "updated_utc": "2026-10-15T18:10:38Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38771257775",
+      "jobs": [
+        {
+          "name": "build",
+          "id": 116547352635,
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T16:42:35Z",
+          "completed_utc": "2026-10-15T17:36:18Z",
+          "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38771257775/job/116547352635",
+          "steps": [
+            {
+              "name": "Exact clean source and native toolchain",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Frontend types, interaction regressions and production assets",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Pinned Radiance for required legacy cancellation regressions",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Format, strict lint and unit/lifecycle regression suite",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Build and package exact-source unsigned binaries",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "energy",
+          "id": 116573025566,
+          "status": "completed",
+          "conclusion": "failure",
+          "started_utc": "2026-10-15T17:36:21Z",
+          "completed_utc": "2026-10-15T17:54:17Z",
+          "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38771257775/job/116573025566",
+          "steps": [
+            {
+              "name": "Run actions/download-artifact@v4",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Frozen CLI and independently installed pinned runtimes",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Explicit native lifecycle regression",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Explicit native report render regression",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Fixed four annual executions and complete immutable inspection",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Independent complete-series arithmetic and frozen scientific criteria",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Cold reports, export integrity and distributed replay despite numerical failure",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Retained real energy evidence through architectural intake and cold copy",
+              "status": "completed",
+              "conclusion": "failure"
+            },
+            {
+              "name": "Retain qualification failure as job failure after independent delivery checks",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Collect native diagnostics after any outcome",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        },
+        {
+          "name": "static_compatibility",
+          "id": 116573025606,
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T17:36:21Z",
+          "completed_utc": "2026-10-15T18:10:37Z",
+          "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38771257775/job/116573025606",
+          "steps": [
+            {
+              "name": "Frozen CLI identity and pinned static engine",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Required real static analytical suite",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Distributed CLI static A/B, copy, export and replay",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Historical v0.1 replay without annual executables",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "completed",
+              "conclusion": "success"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 38780110435,
+      "source_commit": "93a58e9b4617b508da93979f25b8c63872480ee8",
+      "branch": "codex/v0.6-architectural-intake",
+      "workflow": "Bounded energy Windows verification",
+      "event": "push",
+      "status": "in_progress",
+      "conclusion": "",
+      "created_utc": "2026-10-15T17:46:24Z",
+      "updated_utc": "2026-10-15T17:46:27Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38780110435",
+      "jobs": [
+        {
+          "name": "build",
+          "id": 116577785969,
+          "status": "in_progress",
+          "conclusion": "",
+          "started_utc": "2026-10-15T17:46:26Z",
+          "completed_utc": "0001-01-01T00:00:00Z",
+          "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38780110435/job/116577785969",
+          "steps": [
+            {
+              "name": "Exact clean source and native toolchain",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Frontend types, interaction regressions and production assets",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Pinned Radiance for required legacy cancellation regressions",
+              "status": "completed",
+              "conclusion": "success"
+            },
+            {
+              "name": "Format, strict lint and unit/lifecycle regression suite",
+              "status": "in_progress",
+              "conclusion": ""
+            },
+            {
+              "name": "Build and package exact-source unsigned binaries",
+              "status": "pending",
+              "conclusion": ""
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": ""
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": ""
+            },
+            {
+              "name": "Run actions/upload-artifact@v4",
+              "status": "pending",
+              "conclusion": ""
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "confirmed_failure": {
+    "run_id": 38771257775,
+    "job": "energy",
+    "step": "Retained real energy evidence through architectural intake and cold copy",
+    "test": "energy_verified_cache::tests::retained_report_and_sensitivity_panel_requests_do_not_repeat_numeric_traversal",
+    "source_file": "crates/greenlens-runner/src/energy_verified_cache.rs",
+    "source_line": 316,
+    "message": "Fixture must include full A/B sensitivity evidence",
+    "test_seconds": 3.07,
+    "classification": "CI fixture wiring deficiency, not a reported numerical/scientific criterion failure",
+    "cause": "The d19 workflow supplies production/project-10, which contains only the two ten-minute runs; the remount regression requires the full four-slot retained sensitivity evidence.",
+    "smallest_remedy": "Already committed in 93a58e9: assemble the fixed four original production runs in a fresh fixture, admit through the shared CLI, retain/finalize its genuine reuse-only sensitivity declaration, and point only the remount test at it.",
+    "raw_job_log": "ci-d19-energy-job.log",
+    "raw_job_log_sha256": "5de1e8cc57a3ba578b59937dbf0d796a944a23c7b164cb02984d50a6cafb13ff"
+  },
+  "source_coverage": {
+    "application_source_commit": "d19f2a1c07c53903612829296937bb6048adf083",
+    "repair_commit": "93a58e9b4617b508da93979f25b8c63872480ee8",
+    "changed_paths": [
+      ".github/workflows/energy-windows.yml",
+      "scripts/prepare-energy-remount-fixture.ps1",
+      "scripts/test-energy-remount-fixture.ps1"
+    ],
+    "application_source_changed": false,
+    "repair_ci_complete": false,
+    "earlier_failed_ci_preserved": true
+  },
+  "limitations": [
+    "Snapshot of hosted checks at observed_utc, not a promise of later completion.",
+    "The d19 energy job remains failed despite the successful scientific and portability stages.",
+    "Hosted build/package/service tests do not establish installed desktop interaction or private-case acceptance.",
+    "No workflow was cancelled, retried or mutated by this review; no engines or builds were launched."
+  ],
+  "source_receipt_sha256": "9f76dfbd5b7b8a6bd63550d13c845578f1cc68a4c03753aad4adaf45e58d7577"
+}

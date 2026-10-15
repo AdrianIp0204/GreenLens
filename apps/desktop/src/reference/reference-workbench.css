@@ -17,9 +17,25 @@
 .reference-workbench code { overflow-wrap: anywhere; }
 .reference-draft-note, .reference-warning { border-left: 3px solid #e9b96a; padding-left: .6rem; }
 .reference-workbench [role=alert], .reference-workbench [role=alertdialog] { border-left: 3px solid #e49a7c; padding: .55rem; background: #382e28; }
-.reference-table { overflow: auto; max-height: 22rem; }
+.reference-table { overflow: auto; max-height: 22rem; max-width: 100%; min-width: 0; }
 .reference-table table { width: 100%; border-collapse: collapse; }
 .reference-table th, .reference-table td { text-align: left; vertical-align: top; padding: .4rem; border-bottom: 1px solid #3c4848; overflow-wrap: anywhere; }
 .reference-table thead { position: sticky; top: 0; background: #202d2c; }
+.reference-table tbody th { position: static; top: auto; }
+/* Global data-table headers are sticky and buttons do not wrap. Neither rule
+   suits revision IDs in the narrow inspector: keep one header and bound columns. */
+.reference-mapping-table table { table-layout: fixed; }
+.reference-mapping-table caption { text-align: left; padding: .35rem 0; font-size: 10px; line-height: 1.4; color: #52665c; }
+.reference-mapping-table .reference-occurrence-column { width: 42%; }
+.reference-mapping-table .reference-state-column { width: 23%; }
+.reference-mapping-table .reference-target-column { width: 35%; }
+.reference-mapping-table th, .reference-mapping-table td { padding: .35rem .3rem; white-space: normal; line-height: 1.4; }
+.reference-mapping-table thead { z-index: 1; background: #e6eded; }
+.reference-mapping-table thead th { position: static; top: auto; }
+.reference-mapping-table tbody th { background: transparent; font-weight: normal; }
+.reference-mapping-table .reference-occurrence-button { display: block; width: 100%; min-width: 0; max-width: 100%; margin: 0; padding: .25rem; white-space: normal; overflow-wrap: anywhere; text-align: left; line-height: 1.4; font-size: 11px; }
+.reference-mapping-table code { display: block; font-size: 9px; line-height: 1.4; margin-top: .2rem; overflow-wrap: anywhere; white-space: normal; }
+.reference-mapping-table .reference-target-list { list-style: none; margin: 0; padding: 0; }
+.reference-mapping-table .reference-target-list li + li { margin-top: .5rem; }
 .reference-actions { display: flex; flex-wrap: wrap; gap: .2rem; }
 @media (max-width: 700px) { .reference-facts { grid-template-columns: 1fr; } .reference-facts dd { margin-bottom: .4rem; } }

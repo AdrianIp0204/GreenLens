@@ -19,7 +19,8 @@ use std::{
 pub const VERIFICATION_DEADLINE_SECONDS: u64 = 120;
 pub const MAX_SNAPSHOT_METADATA_BYTES: usize = 512 * 1024 * 1024;
 
-/// Only the full reader and its final byte fence can construct this token.
+/// Only the full reader and its final byte fence, or an exact byte-checked
+/// copy of an existing token, can construct this token.
 /// It is process-local, never serialized or accepted from an IPC caller.
 pub(crate) struct VerifiedEnergyRun {
     root: PathBuf,
@@ -142,6 +143,26 @@ pub(crate) fn check_energy_member_bytes(
     cancel: Arc<AtomicBool>,
 ) -> Result<()> {
     inspection_scope(root, cancel, |_| verify_member_bytes(root, members))
+}
+
+/// Transfer already validated metadata to a new root only after all copied
+/// members, including the outer seal, equal the original pinned bytes. A new
+/// self-consistent seal cannot substitute different source evidence mid-copy.
+/// This does not change explicit project opening: that still rederives every
+/// retained run and performs its own final content fence.
+pub(crate) fn verify_copied_energy(
+    destination: &Path,
+    source: &VerifiedEnergyRun,
+) -> Result<VerifiedEnergyRun> {
+    inspection_scope(destination, Arc::new(AtomicBool::new(false)), |_| {
+        verify_member_bytes(destination, source.members())?;
+        VerifiedEnergyRun::from_fenced(
+            destination,
+            source.summary(),
+            source.record().clone(),
+            source.members(),
+        )
+    })
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]

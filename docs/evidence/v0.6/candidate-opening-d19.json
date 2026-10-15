@@ -1,0 +1,189 @@
+{
+  "schema_version": "greenlens.v06-candidate-opening-checkpoint.v1",
+  "created_utc": "2026-10-15T17:45:49.4369711Z",
+  "source_commit": "d19f2a1c07c53903612829296937bb6048adf083",
+  "source_dirty": false,
+  "candidate": {
+    "state": "built_and_installed_workflow_partial",
+    "application_version": "0.6.0",
+    "artifacts": [
+      {
+        "relative_path": "GreenLens_0.6.0_x64-setup.exe",
+        "bytes": 5842895,
+        "sha256": "1d4a1518901a317bc7fd0134d1711dffc6f0bb40acd445c4e8774e7ce43184fd"
+      },
+      {
+        "relative_path": "GreenLens-CLI-0.6.0-windows-x64.zip",
+        "bytes": 11486697,
+        "sha256": "a9670572f5f371a61666ab772b77c54970514ba29a677b0c6a39b65cedaf5772"
+      },
+      {
+        "relative_path": "GreenLens-CLI-0.6.0-windows-x64/greenlens.exe",
+        "bytes": 13250048,
+        "sha256": "88f390ff6fc24fabf0082d2cad42952866e9068fdf43c5272551c4ca74431bef"
+      }
+    ],
+    "actual_artifact_hashes_checked": true,
+    "build_receipt_sha256": "4403b6335eb7de957adb70c60c5a844aa43013f7feacbf1efd14418142c56278",
+    "license_audit": {
+      "packages": 402,
+      "notice_texts": 230,
+      "review_gaps": [],
+      "partial": false,
+      "check": true,
+      "installer_cache_verified": true,
+      "receipt_sha256": "9d9fb7418ae06a428c032500f061ecb5d92a5bb1249b72d700f158a85a576ba7"
+    },
+    "installed_acceptance": false,
+    "private_case_accepted": false,
+    "scope": "Identified local production package and installation payload; full installed interaction, clean-machine installation and hosted CI acceptance are separate.",
+    "installer_identity": {
+      "observed_utc": "2026-10-15T17:48:36.237Z",
+      "receipt_sha256": "66f0397ab2a3b82a5968df4d440b629f382969a42068ea0d6cce10e730bf5d82",
+      "installer_exit_code": 0,
+      "installed_executable_bytes": 25730048,
+      "installed_executable_sha256": "56558283bac7256026d1cd42cbcc8854a1e4445a38c461a70d885b512ec6021f",
+      "extracted_installer_payload_byte_identical": true,
+      "restored_build_executable_sha256": "1a4e53480a96a9322b12642af3892a83dc631c5bce4205241f0cdbf14907789d",
+      "build_difference_bytes": 3,
+      "build_marker": "__TAURI_BUNDLE_TYPE_VAR_UNK",
+      "installed_marker": "__TAURI_BUNDLE_TYPE_VAR_NSS",
+      "all_other_build_bytes_equal": true,
+      "pinned_bundler_url": "https://github.com/tauri-apps/tauri/blob/30da1fd6e17de6107ecc850c95dfb16b5729f2dd/crates/tauri-bundler/src/bundle.rs",
+      "conclusion": "The installed executable is byte-identical to the executable extracted from the identified installer. Relative to the restored build artifact, its only differences are the exact three-byte UNK to NSS bundle marker substitution implemented by the pinned Tauri bundler. No arbitrary differences were accepted.",
+      "initial_literal_comparison_failure_preserved": true
+    }
+  },
+  "opening": {
+    "status": "execution_and_wall_targets_pass_first_progress_target_failed",
+    "executable_sha256": "88f390ff6fc24fabf0082d2cad42952866e9068fdf43c5272551c4ca74431bef",
+    "collector_sha256": "126bda5b9d639ae6714fbbf6fc8198addc3a5b7571f4cc239cd87f9d820bcaf6",
+    "summary_sha256": "8e7bb4b7115d36c64042794ebf109180d009762d7adca09f1fd425c9f44627a0",
+    "declaration_sha256": "7dc7d8af2dfdc3480eb277f78cf8b01d64089836158ae32255ee9c2c952f8fb6",
+    "planned_processes": 3,
+    "executed_processes": 3,
+    "unexecuted_processes": 0,
+    "extra_retries": 0,
+    "frozen_limits": {
+      "first_progress_ms": 250,
+      "first_copy_open_ms": 30000,
+      "warm_open_ms": 20000,
+      "hard_process_ms": 120000,
+      "cooperative_cancel_ms": 1000,
+      "adapter_metadata_limit_bytes": 536870912,
+      "collector_process_working_set_guard_bytes": 2147483648
+    },
+    "measurements": [
+      {
+        "ordinal": 1,
+        "context": "First-copy fresh-process open; copy/hash can warm OS cache",
+        "wall_ms": 3608.1042,
+        "receipt_verification_ms": 2845,
+        "first_progress_arrival_ms": 673.8992,
+        "collector_start_to_backend_receipt_start_ms": 605.2592,
+        "observed_os_peak_working_set_bytes": 49004544,
+        "sampled_peak_working_set_bytes": 43765760,
+        "progress_events": 32,
+        "completed": true,
+        "exit_code": 0,
+        "verified_runs": 4,
+        "numeric_passes_per_run": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "bytes_read": 399446341,
+        "files_verified": 302,
+        "wall_target_ms": 30000,
+        "wall_target_pass": true,
+        "first_progress_target_ms": 250,
+        "first_progress_target_pass": false,
+        "measurement_receipt_sha256": "949994259635e95c762b6f39b23ec2c94a912aa15c1f54a87cbc9b4e57d05810"
+      },
+      {
+        "ordinal": 2,
+        "context": "Declared warm repetition in a fresh process",
+        "wall_ms": 2950.4572,
+        "receipt_verification_ms": 2813,
+        "first_progress_arrival_ms": 107.1743,
+        "collector_start_to_backend_receipt_start_ms": 53.2726,
+        "observed_os_peak_working_set_bytes": 48398336,
+        "sampled_peak_working_set_bytes": 45117440,
+        "progress_events": 30,
+        "completed": true,
+        "exit_code": 0,
+        "verified_runs": 4,
+        "numeric_passes_per_run": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "bytes_read": 399446341,
+        "files_verified": 302,
+        "wall_target_ms": 20000,
+        "wall_target_pass": true,
+        "first_progress_target_ms": 250,
+        "first_progress_target_pass": true,
+        "measurement_receipt_sha256": "d2107d7edcf6a021c00f7dd753f9d302721632f03ce136d65cc5122357fc1b01"
+      },
+      {
+        "ordinal": 3,
+        "context": "Declared warm repetition in a fresh process",
+        "wall_ms": 2943.8117,
+        "receipt_verification_ms": 2819,
+        "first_progress_arrival_ms": 130.9852,
+        "collector_start_to_backend_receipt_start_ms": 51.2258,
+        "observed_os_peak_working_set_bytes": 48443392,
+        "sampled_peak_working_set_bytes": 45494272,
+        "progress_events": 31,
+        "completed": true,
+        "exit_code": 0,
+        "verified_runs": 4,
+        "numeric_passes_per_run": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "bytes_read": 399446341,
+        "files_verified": 302,
+        "wall_target_ms": 20000,
+        "wall_target_pass": true,
+        "first_progress_target_ms": 250,
+        "first_progress_target_pass": true,
+        "measurement_receipt_sha256": "9db8154b7349482a0c26cf7937b3c890483797676331de8241c9b3593f453da7"
+      }
+    ],
+    "first_progress_failures": 1,
+    "opening_targets_pass": false,
+    "complete_opening_acceptance": false,
+    "root_cause": "Not established. Backend receipt start timestamps describe where measured latency precedes the verification interval; they do not identify antivirus, filesystem, loader or other causes.",
+    "environment": {
+      "platform": "Native Windows x64",
+      "logical_processors": 20,
+      "collector_shell": "7.6.5"
+    },
+    "limitations": [
+      "CLI progress arrival is not visible desktop feedback.",
+      "Copy/hash can warm OS caches; no cache eviction or hardware-cold-cache claim.",
+      "Observed process working set is not metadata allocation.",
+      "Cooperative cancellation was not exercised in these three opens.",
+      "No native interaction, engine run, scientific qualification or performance-wide pass follows from this receipt."
+    ]
+  },
+  "pending": [
+    "Installed native workflow and physical observations",
+    "Observed Save As repeated traversal repair; d19 measurements do not qualify replacement source",
+    "Final exact-source Windows CI",
+    "Clean-machine installation"
+  ],
+  "acceptance_complete": false,
+  "related_receipts": [
+    "reference-resource-d19.json",
+    "cold-reports-d19.json",
+    "replay-d19.json",
+    "ci-d19-and-93a58e9.json"
+  ]
+}

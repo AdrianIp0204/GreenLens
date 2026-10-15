@@ -86,6 +86,10 @@ fn cache() -> &'static Mutex<BoundedCache<VerifiedEnergyRun>> {
 }
 
 pub(crate) fn seed(verified: VerifiedEnergyRun) {
+    retain(Arc::new(verified));
+}
+
+fn retain(verified: Arc<VerifiedEnergyRun>) {
     let key = Key {
         root: verified.root().into(),
         summary: verified.summary().clone(),
@@ -93,7 +97,7 @@ pub(crate) fn seed(verified: VerifiedEnergyRun) {
     let bytes = verified.metadata_bytes();
     // This optional acceleration cannot fail an otherwise valid project open.
     if let Ok(mut cache) = cache().lock() {
-        cache.insert(key, Arc::new(verified), bytes);
+        cache.insert(key, verified, bytes);
     }
 }
 
@@ -101,6 +105,10 @@ pub(crate) fn read_run(
     root: &Path,
     summary: &EnergyRunSummary,
 ) -> Result<crate::energy::EnergyRunRecord> {
+    Ok(read_verified(root, summary)?.record().clone())
+}
+
+fn read_verified(root: &Path, summary: &EnergyRunSummary) -> Result<Arc<VerifiedEnergyRun>> {
     let root = std::fs::canonicalize(root).context("Cannot resolve energy project directory")?;
     let key = Key {
         root: root.clone(),
@@ -120,12 +128,35 @@ pub(crate) fn read_run(
             }
             return Err(error.context("Previously verified energy evidence is no longer unchanged"));
         }
-        return Ok(verified.record().clone());
+        return Ok(verified);
     }
-    let verified = project_open::verify_energy_for_inspection(&root, summary)?;
-    let record = verified.record().clone();
-    seed(verified);
-    Ok(record)
+    let verified = Arc::new(project_open::verify_energy_for_inspection(&root, summary)?);
+    retain(Arc::clone(&verified));
+    Ok(verified)
+}
+
+/// Save As uses trusted metadata plus exact byte equality across the copy.
+/// The destination token is unavailable until promotion and the original
+/// pinned-member comparison both succeed. The final project open remains a
+/// separate complete numeric pass; sensitivity inspection need not add one.
+pub(crate) fn copy_run(
+    source: &Path,
+    destination: &Path,
+    summary: &EnergyRunSummary,
+) -> Result<()> {
+    let verified = read_verified(source, summary)?;
+    copy_verified_run(&verified, destination)
+}
+
+fn copy_verified_run(verified: &VerifiedEnergyRun, destination: &Path) -> Result<()> {
+    crate::persistence::promote_run(
+        &verified.root().join(&verified.summary().path),
+        destination,
+        &verified.summary().id,
+    )?;
+    let copied = project_open::verify_copied_energy(destination, verified)?;
+    seed(copied);
+    Ok(())
 }
 
 #[cfg(test)]
@@ -388,5 +419,143 @@ mod tests {
             "A new self-consistent seal cannot inherit the prior trust token"
         );
         assert_eq!(project_open::test_numeric_passes(), after_open + 2);
+
+        // Actual Save As and Save use the same services as the installed app.
+        // A warm source copy requires only the final destination open's one
+        // pass/run. A cold source requires one source pass plus that final
+        // destination pass; copied sensitivity receipts add no numeric pass.
+        assert_eq!(energy.runs.len(), 4, "Use the fixed four-run CI fixture");
+        let original_manifest = std::fs::read(root.join("project.json")).unwrap();
+        let source_tokens = energy
+            .runs
+            .iter()
+            .map(|run| read_verified(&root, run).unwrap())
+            .collect::<Vec<_>>();
+        let copies_parent = crate::local_root()
+            .unwrap()
+            .join("verification/retained-copy-regression");
+        std::fs::create_dir_all(&copies_parent).unwrap();
+        let copies = tempfile::tempdir_in(copies_parent).unwrap();
+        let destination = copies.path().join("warm complete copy");
+        let before_copy = project_open::test_numeric_passes();
+        let copied_view = crate::save_project_as(
+            Some(&root),
+            &destination,
+            &view.project,
+            Some(&view.revision),
+        )
+        .unwrap();
+        assert_eq!(
+            project_open::test_numeric_passes() - before_copy,
+            energy.runs.len(),
+            "Warm Save As must not rederive copied runs during promotion or sensitivity inspection"
+        );
+        let receipt = copied_view.project_verification.as_ref().unwrap();
+        assert_eq!(receipt.progress.numeric_passes.len(), energy.runs.len());
+        assert!(receipt
+            .progress
+            .numeric_passes
+            .values()
+            .all(|count| *count == 1));
+        assert_eq!(
+            greenlens_core::canonical_hash(&view.energy_results).unwrap(),
+            greenlens_core::canonical_hash(&copied_view.energy_results).unwrap()
+        );
+        for token in &source_tokens {
+            project_open::check_energy_member_bytes(
+                &destination,
+                token.members(),
+                Arc::new(AtomicBool::new(false)),
+            )
+            .unwrap();
+        }
+        let before_save = project_open::test_numeric_passes();
+        crate::save_project(
+            &destination,
+            &copied_view.project,
+            Some(&copied_view.revision),
+        )
+        .unwrap();
+        assert_eq!(
+            project_open::test_numeric_passes() - before_save,
+            energy.runs.len(),
+            "Warm Save must use byte-checked records before its final full open"
+        );
+        {
+            let mut cache = cache().lock().unwrap();
+            cache
+                .entries
+                .retain(|entry| entry.key.root != canonical_root);
+            cache.bytes = cache.entries.iter().map(|entry| entry.bytes).sum();
+        }
+        let cold_destination = copies.path().join("cold complete copy");
+        let before_cold_copy = project_open::test_numeric_passes();
+        crate::save_project_as(
+            Some(&root),
+            &cold_destination,
+            &view.project,
+            Some(&view.revision),
+        )
+        .unwrap();
+        assert_eq!(
+            project_open::test_numeric_passes() - before_cold_copy,
+            2 * energy.runs.len(),
+            "Cold Save As needs one source validation and one final destination pass/run"
+        );
+
+        // Change an owned source after its token was obtained, and rewrite its
+        // seal consistently. Promotion alone would accept this new seal; the
+        // exact copied-byte fence must reject it without issuing a new token.
+        let mutable_source = copies.path().join("changed source");
+        std::fs::create_dir_all(&mutable_source).unwrap();
+        persistence::promote_run(&root.join(&summary.path), &mutable_source, &summary.id).unwrap();
+        let old_token = read_verified(&mutable_source, summary).unwrap();
+        let changed_root = mutable_source.join(&summary.path);
+        std::fs::write(changed_root.join("engine/eplusout.end"), &altered).unwrap();
+        let mut changed_seal: persistence::Checksums =
+            persistence::read_json(&changed_root.join("checksums.json")).unwrap();
+        changed_seal.sha256.insert(
+            "engine/eplusout.end".into(),
+            persistence::bytes_hash(&altered),
+        );
+        persistence::write_json(&changed_root.join("checksums.json"), &changed_seal).unwrap();
+        let rejected_destination = copies.path().join("rejected changed copy");
+        std::fs::create_dir_all(&rejected_destination).unwrap();
+        let before_rejection = project_open::test_numeric_passes();
+        assert!(copy_verified_run(&old_token, &rejected_destination).is_err());
+        assert_eq!(project_open::test_numeric_passes(), before_rejection);
+        let rejected_root = std::fs::canonicalize(&rejected_destination).unwrap();
+        assert!(!cache()
+            .lock()
+            .unwrap()
+            .entries
+            .iter()
+            .any(|entry| entry.key.root == rejected_root));
+        assert!(!rejected_destination.join("project.json").exists());
+        assert_eq!(
+            std::fs::read(root.join("project.json")).unwrap(),
+            original_manifest
+        );
+        for token in &source_tokens {
+            project_open::check_energy_member_bytes(
+                &root,
+                token.members(),
+                Arc::new(AtomicBool::new(false)),
+            )
+            .unwrap();
+        }
+        println!(
+            "{}",
+            serde_json::json!({
+                "schema": "greenlens.retained-document-write-regression.v1",
+                "runs": energy.runs.len(),
+                "warm_save_as_numeric_passes": energy.runs.len(),
+                "warm_save_numeric_passes": energy.runs.len(),
+                "cold_save_as_numeric_passes": 2 * energy.runs.len(),
+                "changed_source_copy_rejected": true,
+                "original_run_bytes_and_manifest_unchanged": true,
+                "native_simulations": 0
+            })
+        );
     }
 }

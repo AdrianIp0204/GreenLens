@@ -1,0 +1,100 @@
+{
+  "schema_version": "greenlens.v06-reference-resource-checkpoint.v1",
+  "observed_utc": "2026-10-15T17:44:09.4007759Z",
+  "source_commit": "d19f2a1c07c53903612829296937bb6048adf083",
+  "cli_sha256": "88f390ff6fc24fabf0082d2cad42952866e9068fdf43c5272551c4ca74431bef",
+  "source_receipt_sha256": "9d3517221249874530f3a78eaa7376be689310af582cfa1424aed9bb6fcc9e8a",
+  "protocol_sha256": "d8a8a5bd0d2da3ba126ab832b381d64d3c94f8984cdea137590a46825b3ee73d",
+  "fixture": "Original repeated single triangle; physically meaningless admission/resource probe",
+  "planned_imports": 2,
+  "executed_imports": 2,
+  "maximum_retries": 0,
+  "limits": {
+    "triangles": 1000000,
+    "import_seconds": 30,
+    "process_seconds": 120,
+    "process_working_set_guard_bytes": 2147483648,
+    "normalized_geometry_bytes": 83886080
+  },
+  "cases": [
+    {
+      "name": "at-limit",
+      "requested_triangles": 1000000,
+      "input_bytes": 12001032,
+      "input_sha256": "691cf2c92d07358ccdd3d10a3d70f839e673274a3de9c096366b68fe8b204e3e",
+      "wall_ms": 2886.2625,
+      "exit_code": 0,
+      "sampled_peak_working_set_bytes": 188211200,
+      "observed_os_peak_working_set_bytes": 188215296,
+      "memory_within_budget": true,
+      "wall_within_budget": true,
+      "published_reference": true,
+      "normalized_bytes": 80001968,
+      "triangles": 1000000,
+      "chunk_count": 123,
+      "core_import_resources": {
+        "elapsed_ms": 701,
+        "source_bytes": 12001032,
+        "json_bytes": 968,
+        "normalized_bytes": 80001968,
+        "decoded_allocation_estimate_bytes": 92674872
+      },
+      "seal_verified": true,
+      "rejection_mechanism": null,
+      "manifest_unchanged": false,
+      "unadvertised_reference_directories": null,
+      "failures": [],
+      "passed": true,
+      "stdout": {
+        "name": "at-limit-import.stdout.txt",
+        "bytes": 565,
+        "sha256": "15dc982afa8be39d98c75996a9fd30af898d4e4e27a9fef9b6600359eca9fa57"
+      },
+      "stderr": {
+        "name": "at-limit-import.stderr.txt",
+        "bytes": 96800,
+        "sha256": "cd578af8b030d23c162da3ec52cc958548ebaa9e72119a98cf19ce88da28b01f"
+      }
+    },
+    {
+      "name": "over-limit",
+      "requested_triangles": 1000001,
+      "input_bytes": 12001044,
+      "input_sha256": "fc1b0b56e003c52420a308e375ce73543622140d924982fa1603220cf7c44b92",
+      "wall_ms": 308.0709,
+      "exit_code": 1,
+      "sampled_peak_working_set_bytes": 40574976,
+      "observed_os_peak_working_set_bytes": 45809664,
+      "memory_within_budget": true,
+      "wall_within_budget": true,
+      "published_reference": false,
+      "normalized_bytes": 0,
+      "triangles": null,
+      "chunk_count": null,
+      "core_import_resources": null,
+      "seal_verified": null,
+      "rejection_mechanism": "accessor_count_bound_before_triangle_decoding",
+      "manifest_unchanged": true,
+      "unadvertised_reference_directories": 0,
+      "failures": [],
+      "passed": true,
+      "stdout": {
+        "name": "over-limit-import.stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "name": "over-limit-import.stderr.txt",
+        "bytes": 1264,
+        "sha256": "145df8240fac6026286a72153afb1ce7af8fc4385c09ba28c0f630f236cf04c1"
+      }
+    }
+  ],
+  "passed": true,
+  "claim": "Bounded synthetic CLI admission/resource observations only; no private architectural or scientific acceptance.",
+  "limitations": [
+    "CLI process peaks do not include GPU rendering or total system memory.",
+    "No user cancellation or private architectural geometry was exercised.",
+    "The allocation estimate is not an independent measured allocation peak."
+  ]
+}

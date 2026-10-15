@@ -116,6 +116,38 @@ test('retained mapping controls page and search every historical ID without rebi
   assert.equal(JSON.stringify(props.draft.scope),draftBefore);assert.equal(JSON.stringify(props.scope),acceptedBefore);assert.equal(count('assess'),0);assert.equal(count('save'),0);
 });
 
+test('narrow mapping controls wrap full IDs, retain real selection and show only exactly bound target labels',async()=>{
+  await setup({accepted:true});
+  const occurrenceId=`ref-${hash('c')}`,historicalId=`ref-${hash('d')}`,zoneId='original-zone-with-a-deliberately-long-stable-identifier';
+  props.reference.occurrences[0]={...props.reference.occurrences[0],id:occurrenceId,label:'Original source occurrence with a long readable architectural description'};
+  props.context.designs.A.targets[0]={...props.context.designs.A.targets[0],object_id:zoneId,label:'Original lower floor perimeter zone'};
+  props.scope.mappings=[
+    {occurrence_id:occurrenceId,status:'mapped',targets:[{design_id:'A',object_id:zoneId,kind:'zone',model_input_sha256:hash('a')}],rationale:'Reviewed original fixture mapping'},
+    {occurrence_id:historicalId,status:'mapped',targets:[{design_id:'B',object_id:'zone-1',kind:'zone',model_input_sha256:hash('8')}],rationale:'Historical binding stays inspectable'},
+  ];
+  await draw();const acceptedBefore=JSON.stringify(props.scope);await click('Edit accepted scope');const draftBefore=JSON.stringify(props.draft.scope);
+  const style=document.createElement('style');
+  // Load the actual shared styles too: their nowrap buttons and sticky <th>
+  // rules caused the installed-panel defect. jsdom verifies the cascade and
+  // real control behavior; installed pixel/layout observation remains separate.
+  style.textContent=fs.readFileSync(fileURLToPath(new URL('../src/styles.css',import.meta.url)),'utf8')+'\n'+fs.readFileSync(source('reference-workbench.css'),'utf8');document.head.append(style);
+  try {
+    const wrapper=document.querySelector('.reference-mapping-table');wrapper.style.width='260px';
+    const table=wrapper.querySelector('table'),rows=table.querySelectorAll('tbody tr'),selectButton=rows[0].querySelector('button');
+    assert.equal(window.getComputedStyle(table).tableLayout,'fixed');assert.equal(window.getComputedStyle(selectButton).whiteSpace,'normal');assert.equal(window.getComputedStyle(selectButton).maxWidth,'100%');
+    assert.equal(window.getComputedStyle(rows[0].querySelector('th')).position,'static');assert.equal(window.getComputedStyle(table.querySelector('thead')).position,'sticky');assert.equal(window.getComputedStyle(table.querySelector('thead th')).position,'static');
+    assert.equal(window.getComputedStyle(table.querySelector('caption')).textAlign,'left');assert.equal(table.querySelectorAll('colgroup col').length,3);
+    assert.equal(rows[0].querySelector('th').scope,'row');assert.equal(rows[0].querySelector('code').textContent,occurrenceId);assert.equal(selectButton.title,occurrenceId);
+    assert.match(rows[0].querySelector('td:last-child').textContent,/A: Original lower floor perimeter zone/);assert.equal(rows[0].querySelector('td:last-child code').textContent,zoneId);
+    assert.equal(rows[1].querySelector('td:last-child').textContent,'B: zone-1');assert.doesNotMatch(rows[1].textContent,/Zone one proposed/);
+    selectButton.focus();assert.equal(document.activeElement,selectButton);await act(async()=>selectButton.dispatchEvent(new MouseEvent('click',{bubbles:true})));
+    assert.equal(props.selectedOccurrenceId,occurrenceId);assert.equal(selectButton.getAttribute('aria-pressed'),'true');assert.equal(field('Mapping rationale').value,'Reviewed original fixture mapping');
+    const historicalButton=rows[1].querySelector('button');await act(async()=>historicalButton.dispatchEvent(new MouseEvent('click',{bubbles:true})));
+    assert.equal(props.selectedOccurrenceId,historicalId);assert.equal(field('Mapping rationale').value,'Historical binding stays inspectable');assert.match(document.querySelector('.reference-mapping').textContent,/absent from active revision/);
+    assert.equal(JSON.stringify(props.draft.scope),draftBefore);assert.equal(JSON.stringify(props.scope),acceptedBefore);assert.equal(count('assess'),0);assert.equal(count('save'),0);
+  } finally { style.remove(); }
+});
+
 test('assumption status and source fields preserve missing versus declared values through section and panel navigation',async()=>{
   await setup();await startScope();await click('Add assumption');assert.equal(props.draft.scope.value.assumptions[0].value,null);
   await type('Input field','Location scenario');await type('Units','degrees');await type('Source / citation','Original synthetic concept-stage fixture');await type('Assumption rationale','No actual site has been established.');await type('Affected analysis scope','All explicitly modeled zones');await type('Input status','synthetic');await type('Declared value','Illustrative scenario only');

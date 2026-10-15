@@ -1,0 +1,164 @@
+{
+  "schema_version": "greenlens.v0.6-replay-receipt-audit.v1",
+  "audited_utc": "2026-10-15T18:01:16.066Z",
+  "source_commit": "d19f2a1c07c53903612829296937bb6048adf083",
+  "cli_sha256": "88f390ff6fc24fabf0082d2cad42952866e9068fdf43c5272551c4ca74431bef",
+  "package_sha256": "19dcdf18f350ce4d9798f755a27ea4e16c9676a1fc1c7475a148490e741caacb",
+  "receipt_hashes": {
+    "declaration.json": {
+      "sha256": "48c2cae04e531b71542374771f71d25c6dcb5f24ab6921f686a930064f1266cc",
+      "bytes": 67531
+    },
+    "replay-check.json": {
+      "sha256": "c2cd3bad60ee2c4239bf49de5f47e4bdcb9ff0b915a4177522c0195630a663b3",
+      "bytes": 1043556
+    },
+    "replay.process.json": {
+      "sha256": "3e3deeb558e3062bb59e3961aa8d9919f6dd4c23ba0d6dfb5fb4db0a1c2ddb5e",
+      "bytes": 991839
+    },
+    "replay.stdout.json": {
+      "sha256": "ebeb677f11f06cfeaeb2e3d469ab7f493edc09481d93fbecf1ec4b782fbc39d2",
+      "bytes": 2765
+    },
+    "summary.json": {
+      "sha256": "41a6547aa35b3f6913a1ca1cbdfa2eff128f9ac057bbb027af742fcd200a80ce",
+      "bytes": 60886
+    },
+    "tamper-check.json": {
+      "sha256": "4cf4c434e60ef65a30888775a2890bd01c689b7104fcad47a6b498c7332f4a65",
+      "bytes": 1117367
+    },
+    "tamper-inspect.process.json": {
+      "sha256": "c04b4b9fb1ca0695d72b58843429746f8ce2cc41b321a69c3dde0c428c138113",
+      "bytes": 1070933
+    },
+    "tamper-inspect.stdout.json": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "tamper-mutation.json": {
+      "sha256": "9d75bb8103f70f4169e72289c4b71e9f3d674a6d42f6737a1502792beeb6eb94",
+      "bytes": 647
+    }
+  },
+  "independent_numeric_audit": {
+    "runs": [
+      {
+        "source_record_sha256": "fddc5fd86eb85a681193513ecee5753ca4bebb94c24aa219aa2df61721faea64",
+        "replay_record_sha256": "0d534c576b4ab13c4b64a60a32d167c623a1b46058a30790bf09fa9ae74ad149",
+        "interval_minutes": 10,
+        "intervals": 52560,
+        "channels": 34,
+        "checked_values": 1787040,
+        "finite": true,
+        "chunk_count": 53,
+        "byte_identical_chunks": 53,
+        "maximum_absolute_difference_across_channel_units": 0,
+        "maximum_allowance_ratio": 0,
+        "engine_elapsed_ms": 24203,
+        "native_receipt_sha256": "164c48383d9539e536ab5d28fd4d5cb757a75cf7455d4d2a678eee5ca0d7f97e"
+      },
+      {
+        "source_record_sha256": "aebc18d1de2b88e906ea1ca82b1d0930a3310c593991eea9876dbcff38aa653c",
+        "replay_record_sha256": "be2344c310ae867bfe1c1c0c4dbcaea0dbc8204f22a69dd6e3c28fb25f71a179",
+        "interval_minutes": 10,
+        "intervals": 52560,
+        "channels": 34,
+        "checked_values": 1787040,
+        "finite": true,
+        "chunk_count": 53,
+        "byte_identical_chunks": 53,
+        "maximum_absolute_difference_across_channel_units": 0,
+        "maximum_allowance_ratio": 0,
+        "engine_elapsed_ms": 15705,
+        "native_receipt_sha256": "423163f65e82391ef469a9ab52a0693ab84113056883b5b4bd879d8b797ac5e1"
+      },
+      {
+        "source_record_sha256": "f892d7757001749f192066d66a5c58ac8227f5ec28adc589a30aec4f421fb95e",
+        "replay_record_sha256": "68bdaf05a721f6d41f428ad9f0162687903dcc9ec622ab039ddb7d614bb3aaae",
+        "interval_minutes": 5,
+        "intervals": 105120,
+        "channels": 34,
+        "checked_values": 3574080,
+        "finite": true,
+        "chunk_count": 53,
+        "byte_identical_chunks": 53,
+        "maximum_absolute_difference_across_channel_units": 0,
+        "maximum_allowance_ratio": 0,
+        "engine_elapsed_ms": 32680,
+        "native_receipt_sha256": "49eb2c92c3cf4c9c832db673b8845f60a6c44ba81d1285318bac8f103a342463"
+      },
+      {
+        "source_record_sha256": "47b5ad1bc9680517bd58680c93aed838d3a2a21c4c8db35ba000acb22d75bd84",
+        "replay_record_sha256": "3d189fc2f0c58261d2eea72fd9a2ca05c2af82038ff439d3f4e19ac2bca2b85b",
+        "interval_minutes": 5,
+        "intervals": 105120,
+        "channels": 34,
+        "checked_values": 3574080,
+        "finite": true,
+        "chunk_count": 53,
+        "byte_identical_chunks": 53,
+        "maximum_absolute_difference_across_channel_units": 0,
+        "maximum_allowance_ratio": 0,
+        "engine_elapsed_ms": 35477,
+        "native_receipt_sha256": "012250a02e2c94572706d8bc7126d359dbb1c9a764adf7d2e737b65186b7a173"
+      }
+    ],
+    "checked_values": 10722240,
+    "finite": true,
+    "chunk_count": 212,
+    "maximum_absolute_difference_across_channel_units": 0,
+    "maximum_allowance_ratio": 0,
+    "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)",
+    "exact_channel_labels_units_ordering_time_policy": true
+  },
+  "resources": {
+    "replay_process_stopwatch_ms": 186384.8534,
+    "replay_receipt_timestamp_span_ms": 187734,
+    "summed_native_engine_ms": 108065,
+    "cli_sampled_peak_working_set_bytes": 56918016,
+    "cli_observed_os_peak_working_set_bytes": 58757120,
+    "maximum_native_sampled_runner_plus_job_working_set_bytes": 634396672,
+    "maximum_native_process_scratch_bytes": 40243055,
+    "replay_scratch_before_bytes": 1221455865,
+    "replay_scratch_after_bytes": 1591614251,
+    "new_replay_scratch_bytes": 370158386,
+    "new_replay_scratch_files": 685,
+    "tamper_process_stopwatch_ms": 1124.7273,
+    "tamper_receipt_timestamp_span_ms": 3128,
+    "tamper_scratch_bytes": 132753228,
+    "tamper_scratch_live_samples": 0,
+    "note": "Process stopwatch excludes subsequent scratch inventory. CLI OS/sample peak excludes child processes. Native sampled runner+Windows Job peak covers each engine stage; these maxima are not added. Scratch includes imported retained evidence plus replay products. Tamper scratch had zero live samples; value is the final retained size."
+  },
+  "tamper": {
+    "exit_code": 1,
+    "only_changed_member": "references/<synthetic-asset-id>/geometry/00000.bin",
+    "changed_payload_bytes": 1,
+    "seals_unchanged": true,
+    "explicit_integrity_rejection": true,
+    "no_success_output": true,
+    "mutated_package_sha256": "6ff4999a8bb4972f69ead05b7b465ef063ea1cd3f10bc9950641797e6ecbe96d"
+  },
+  "preservation": {
+    "source_zip_fresh_hash_matches": true,
+    "project_fresh_files": 306,
+    "project_fresh_bytes": 127184609,
+    "project_file_hashes_match_pre_and_post_receipts": true
+  },
+  "scope": "Independent rereading, hashing and arithmetic audit of retained replay results. No simulator or CLI rerun. Identical-recipe integration agreement only; not physical validation, scientific qualification, installed acceptance or private-case acceptance.",
+  "passed": true,
+  "timestamp_representation_changes": [
+    {
+      "field": "started_utc",
+      "native_raw": "2026-10-15T17:50:57.467437+00:00",
+      "collector_serialized": "2026-10-16T01:50:57.467437+08:00",
+      "same_instant": true
+    }
+  ],
+  "audit_method_note": "The first duplicate-object check stopped on PowerShell reserialization of an ISO timestamp to an equivalent local offset. A second audit-tooling stop corrected an erroneous fixed-1008-interval chunk assumption to the existing 168-hour storage contract (1008/2016 intervals at10/5minutes). Both prior scripts and findings are retained externally. This audit checks exact UTC instants to nanosecond precision, all other duplicated native fields verbatim, and raw native receipt hashes. Original receipts, numerical thresholds and calculations were not changed or rerun.",
+  "source_audit_sha256": "965eacdd4f8d2196846cdb5a192c6c3a36a936dda89918a2d828c13434e95ea9",
+  "private_case": false,
+  "acceptance_complete": false,
+  "run_scope": "Original synthetic four-zone/two-storey example; retained real A/B ten- and five-minute runs"
+}

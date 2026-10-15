@@ -401,7 +401,7 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
         climate::verify_project_evidence(path, extension)?;
     }
     if let Some(extension) = &project.energy {
-        energy::verify_project_evidence(path, extension)?;
+        energy::verify_project_evidence_for_save(path, extension)?;
     }
     energy_sensitivity_workflow::evidence_members(path, project)?;
     if let Some(extension) = &project.architecture {

@@ -1,0 +1,194 @@
+{
+  "schema_version": "greenlens.v06-cold-report-checkpoint.v1",
+  "created_utc": "2026-10-15T17:31:19.1171497Z",
+  "source_commit": "d19f2a1c07c53903612829296937bb6048adf083",
+  "cli_sha256": "88f390ff6fc24fabf0082d2cad42952866e9068fdf43c5272551c4ca74431bef",
+  "fixture": "Original synthetic four-zone/two-storey architectural reference with four retained real EnergyPlus runs and a finalized sensitivity assessment",
+  "private_case": false,
+  "implemented": "Bounded intake, portable reference scope/report assets and verified-snapshot reuse remain implemented in this source; this receipt records retained-evidence inspection/regeneration only.",
+  "cold_check": {
+    "completed": true,
+    "copied_project_original_unavailable": true,
+    "matched_original_job_scratch_unavailable": true,
+    "engine_discovery_failed_as_required": true,
+    "retained_members_unchanged": 305,
+    "retained_source_exclusion": "Original architectural source and conversion files excluded from the normalized-reference package by explicit policy.",
+    "source_restore_wrapper": "Original synthetic conversion and development project restored/unchanged, as recorded by the external wrapper",
+    "timing_claim": "Functional check while compilation ran; no idle-machine benchmark claim",
+    "receipts": [
+      {
+        "name": "cold-evidence.json",
+        "sha256": "e98ca772e51f4c361174ba73c9d4525b706190f2e36c39d62d8894972e6d256a"
+      },
+      {
+        "name": "reference-archive.json",
+        "sha256": "cab98d89a3eeec42240c29032a9683363158a40f3263857af106b86037a602a8"
+      },
+      {
+        "name": "export.json",
+        "sha256": "83d6c2e9dee0419617f1074242ddeae54575975bac34890903d096b957e35694"
+      },
+      {
+        "name": "package-inspect.json",
+        "sha256": "cdd99700efffb01219281976d1cc15544eab8101490d7308ef5174040a450bf5"
+      },
+      {
+        "name": "report.json",
+        "sha256": "ce4080513e722636832d48564c4978db977efe3bbf632374f7608cd366f04d7a"
+      },
+      {
+        "name": "cold-preparation-wrapper.json",
+        "sha256": "b57e1ddf59c03f758cb99815e51f93e9b8b6046513a9c1a2b971b60dc591544c"
+      }
+    ]
+  },
+  "package": {
+    "entries": 356,
+    "uncompressed_bytes": 132753228,
+    "zip_bytes": 21746685,
+    "zip_sha256": "19dcdf18f350ce4d9798f755a27ea4e16c9676a1fc1c7475a148490e741caacb",
+    "normalized_reference_members": 3,
+    "normalized_reference_bytes": 11968,
+    "limits": {
+      "entries": 5000,
+      "per_entry_bytes": 67108864,
+      "uncompressed_bytes": 268435456
+    },
+    "integrity_scope": "Complete retained evidence and report bindings checked; no simulator or renderer was executed."
+  },
+  "visual_review": {
+    "status": "all_declared_pages_and_images_reviewed",
+    "pdf_pages": 85,
+    "performance_pngs": 8,
+    "duplicate_review_keys": 0,
+    "omitted_review_keys": 0,
+    "all_actual_image_hashes_rechecked": true,
+    "family_receipts": [
+      {
+        "name": "root-review.json",
+        "sha256": "d87cfb23c973687c42735eebffb65c774ec18d1936c75ed0e882d4269ac35dff"
+      },
+      {
+        "name": "appendix-review.json",
+        "sha256": "570f1124856ea40893c0e4c3c8f7cc3de0722145efe0d4680d38a0b5bcdd9374"
+      },
+      {
+        "name": "technical-review.json",
+        "sha256": "2d513f9e52ce971ac1d042178237b22ef67021905a18cd56ad687eb126a3cc55"
+      }
+    ],
+    "products": [
+      {
+        "file": "assessment.pdf",
+        "bytes": 70963,
+        "sha256": "df1b1fb71a6371d2daa3c4068e5a0a95e40eecb2e4f78efe028bfe082b5cdb60",
+        "pages": 4,
+        "dpi": 144
+      },
+      {
+        "file": "executive.pdf",
+        "bytes": 70963,
+        "sha256": "df1b1fb71a6371d2daa3c4068e5a0a95e40eecb2e4f78efe028bfe082b5cdb60",
+        "pages": 4,
+        "dpi": 144
+      },
+      {
+        "file": "input-appendix.pdf",
+        "bytes": 1008114,
+        "sha256": "504a1867bdc17550932584830e872ce69e997ac9cb527c2ac73bea62121fc257",
+        "pages": 47,
+        "dpi": 144
+      },
+      {
+        "file": "performance.pdf",
+        "bytes": 246291,
+        "sha256": "c1c4f7dd4f1cf48c54b8e5bd511d2ea1d9d2feaccba892e177351d8fb6f9d69c",
+        "pages": 8,
+        "dpi": 144
+      },
+      {
+        "file": "technical.pdf",
+        "bytes": 470402,
+        "sha256": "5e4d0c9a80dc0604ea70e298d10f10667096acf630a9be584f89de6a630fc1cf",
+        "pages": 22,
+        "dpi": 144
+      }
+    ],
+    "blocking_findings": [],
+    "nonblocking_findings": [
+      "Short nonempty contents/end-of-section pages have whitespace.",
+      "Dense appendix rows use continued text and repeated table headers.",
+      "A signed near-zero residual retains negative zero at displayed precision."
+    ],
+    "numeric_proof_from_visual_review": false
+  },
+  "canonical_reconciliation": {
+    "status": "existing_Rust_report_validation_and_package_rederivation_passed",
+    "claim": "Successful actual CLI package inspection reopens immutable run evidence, recomputes the canonical report and compares physical/results/comparison bindings. Report generation validates the canonical dataset before deriving all report products. This receipt reads those checks and retained results; it does not claim a new independent simulation or PDF pixel-level numeric extraction.",
+    "retained_report_dataset_sha256": "73e82ce76c2ed1f04b5c2ede8f1bd24edb529acb0277efa8cf766ca190dd1c39",
+    "checks": [
+      "Complete annual dimensions and aligned ten-minute demand",
+      "Annual/monthly/end-use reconciliation and defined numerical residual tolerances",
+      "Coincident peak timestamp and end-use contribution reconciliation",
+      "Comfort denominators and exact supported-zone coverage",
+      "Recomputed comparison from identical case totals",
+      "Canonical immutable physical/results bindings and derived report supplements"
+    ],
+    "cases": [
+      {
+        "case": "baseline",
+        "intervals": 52560,
+        "interval_seconds": 600,
+        "gross_floor_area_m2": 192.0,
+        "annual_kwh": 16307.089802617933,
+        "annual_residual_kwh": 0.0,
+        "peak_kw": 5.516090229474726,
+        "peak_residual_kw": 0.0,
+        "maximum_interval_residual_kw": 1.5522042910257975E-15,
+        "maximum_monthly_residual_kwh": 2.2737367544323206E-13,
+        "maximum_zone_occupied_cooling_unmet_percent": 0.0,
+        "native_warnings": 1,
+        "native_severe_errors": 0
+      },
+      {
+        "case": "proposed",
+        "intervals": 52560,
+        "interval_seconds": 600,
+        "gross_floor_area_m2": 192.0,
+        "annual_kwh": 12617.357232381652,
+        "annual_residual_kwh": 1.8189894035458565E-12,
+        "peak_kw": 4.045870430025533,
+        "peak_residual_kw": 0.0,
+        "maximum_interval_residual_kw": 1.5522042910257975E-15,
+        "maximum_monthly_residual_kwh": 2.2737367544323206E-13,
+        "maximum_zone_occupied_cooling_unmet_percent": 0.0,
+        "native_warnings": 1,
+        "native_severe_errors": 0
+      }
+    ],
+    "unresolved_material_issue_found": false,
+    "remaining_limit": "No independent exhaustive comparison of every PDF/PNG text cell to machine-readable values in this supplement; existing shared-Rust serialization/checks and actual package inspection provide the recorded numerical evidence."
+  },
+  "pending": [
+    "Installed native importer-to-report workflow and required physical observations",
+    "Observed Save As repeated traversal repair; d19 results do not qualify replacement source",
+    "Final exact-source Windows CI",
+    "Clean-machine installation"
+  ],
+  "blocked": [
+    "Anonymous private architectural case remains undecoded; a recoverable source or lawful local GLB is required before defensible mapping and private annual/report acceptance"
+  ],
+  "historical_status": "Stopped v0.3 daylight and v0.5 real-weather qualification failures remain unchanged. Synthetic workflow success does not qualify the private building or unknown user models.",
+  "acceptance_complete": false,
+  "failed": [
+    "First-copy fresh-process CLI progress arrival 673.8992 ms exceeded unchanged 250 ms target; no extra retry, cause unassigned."
+  ],
+  "related_receipts": [
+    "candidate-opening-d19.json",
+    "report-visual-coverage-d19.json",
+    "reference-resource-d19.json",
+    "replay-d19.json",
+    "ci-d19-and-93a58e9.json"
+  ],
+  "source_receipt_sha256": "ba92cb8db978bb8eb609fc894ddd349f6330dd77f753f798fd15b0a33237709b"
+}

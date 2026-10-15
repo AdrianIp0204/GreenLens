@@ -454,12 +454,22 @@ pub fn verify_project_evidence(root: &Path, project: &EnergyProject) -> Result<(
     load_project_evidence(root, project)?;
     Ok(())
 }
+/// Document writes may reuse only Rust-validated records whose exact retained
+/// bytes still match. Explicit open/export readers keep their full validation
+/// policy; save_project also performs its final full open after publication.
+pub(crate) fn verify_project_evidence_for_save(root: &Path, project: &EnergyProject) -> Result<()> {
+    verify_project_assets(root, project)?;
+    for summary in &project.runs {
+        crate::energy_verified_cache::read_run(root, summary)?;
+    }
+    Ok(())
+}
 pub fn copy_project_evidence(
     source: &Path,
     destination: &Path,
     project: &EnergyProject,
 ) -> Result<()> {
-    verify_project_evidence(source, project)?;
+    verify_project_assets(source, project)?;
     for weather in &project.weather {
         promote_weather(&source.join(&weather.path), destination, &weather.id)?;
     }
@@ -467,9 +477,9 @@ pub fn copy_project_evidence(
         crate::energy_attachments::copy(source, destination, item)?;
     }
     for run in &project.runs {
-        promote_run(&source.join(&run.path), destination, &run.id)?;
+        crate::energy_verified_cache::copy_run(source, destination, run)?;
     }
-    verify_project_evidence(destination, project)
+    verify_project_assets(destination, project)
 }
 pub fn append_run(project: &mut EnergyProject, run: &EnergyRunRecord) -> Result<()> {
     validate_record(run)?;

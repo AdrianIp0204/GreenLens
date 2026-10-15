@@ -107,6 +107,9 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
   const changeReconciliation = (id: string, change: (row: ScopeReconciliation, draft: ReferenceScopeDraft) => void) => updateScope((value, draft) => { const row = value.reconciliations.find(r => r.id === id); if (row) change(row, draft); });
   const boundDesigns = candidate ? Object.keys(candidate.design_model_sha256) : [];
   const allTargets = context ? Object.entries(context.designs).flatMap(([design_id, design]) => design.targets.map(t => ({ ...t, design_id, model_input_sha256: design.model_input_sha256 }))) : [];
+  // A current object's name must not be presented as the name of a target bound
+  // to a different historical model. Stable IDs remain visible in either case.
+  const targetLabels = new Map(allTargets.map(t => [JSON.stringify([t.design_id, t.object_id, t.kind, t.model_input_sha256]), t.label]));
   const staleBinding = candidate && (candidate.reference_revision_sha256 !== reference?.revision_sha256 || boundDesigns.some(id => candidate.design_model_sha256[id] !== context?.designs[id]?.model_input_sha256));
 
   return <section className="reference-workbench" aria-label="Architectural reference and study scope">
@@ -171,7 +174,10 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
         {input('Search retained mappings', mappingQuery, text => { setMappingQuery(text); setMappingPage(0); })}
         <p aria-live="polite">Showing {filteredMappings.length ? mappingStart + 1 : 0}–{mappingStart + visibleMappings.length} of {filteredMappings.length.toLocaleString()} matching retained mappings ({candidate.mappings.length.toLocaleString()} total). Search includes historical occurrence IDs, labels, states and analytical targets.</p>
         <div className="reference-actions"><button disabled={shownMappingPage === 0} onClick={() => setMappingPage(shownMappingPage - 1)}>Previous mappings</button><button disabled={mappingStart + visibleMappings.length >= filteredMappings.length} onClick={() => setMappingPage(shownMappingPage + 1)}>Next mappings</button></div>
-        <div className="reference-table"><table><caption>Explicit source classifications — omitted occurrences remain unresolved</caption><thead><tr><th>Occurrence</th><th>State</th><th>Targets</th></tr></thead><tbody>{visibleMappings.map(m => <tr key={m.occurrence_id}><th><button title={m.occurrence_id} onClick={() => select(m.occurrence_id)}>{occurrenceById.get(m.occurrence_id)?.label || 'Historical occurrence'}<br /><code>{m.occurrence_id}</code></button></th><td>{mappingLabels[m.status]}</td><td>{m.targets.map(t => `${t.design_id}: ${t.object_id}`).join('; ') || 'No analytical target'}</td></tr>)}</tbody></table></div>
+        <div className="reference-table reference-mapping-table"><table><caption>Explicit source classifications — omitted occurrences remain unresolved</caption><colgroup><col className="reference-occurrence-column" /><col className="reference-state-column" /><col className="reference-target-column" /></colgroup><thead><tr><th scope="col">Occurrence</th><th scope="col">State</th><th scope="col">Targets</th></tr></thead><tbody>{visibleMappings.map(m => <tr key={m.occurrence_id}><th scope="row"><button className="reference-occurrence-button" title={m.occurrence_id} aria-pressed={selected === m.occurrence_id} onClick={() => select(m.occurrence_id)}><span>{occurrenceById.get(m.occurrence_id)?.label || 'Historical occurrence'}</span><code>{m.occurrence_id}</code></button></th><td>{mappingLabels[m.status]}</td><td>{m.targets.length ? <ul className="reference-target-list">{m.targets.map(t => {
+          const label = targetLabels.get(JSON.stringify([t.design_id, t.object_id, t.kind, t.model_input_sha256]));
+          return <li key={`${t.design_id}/${t.object_id}`}><span>{t.design_id}: {label || t.object_id}</span>{label && <code>{t.object_id}</code>}</li>;
+        })}</ul> : 'No analytical target'}</td></tr>)}</tbody></table></div>
       </details>
 
       <details><summary>Assumption and readiness register ({candidate.assumptions.length})</summary>

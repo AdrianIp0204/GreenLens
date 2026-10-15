@@ -5,6 +5,13 @@ $ErrorActionPreference = 'Stop'
 function Get-PackageDocumentPaths {
     # Explicit compact evidence only: no directory-wide evidence/archive copies.
     @(
+        'docs/v0.6-spec.md','docs/v0.6-implementation-plan.md','docs/v0.6-acceptance.md',
+        'docs/v0.6-reference-contracts.md','docs/v0.6-intake-licenses.md','docs/v0.6-delivery.md',
+        'docs/evidence/v0.6/frontend-development-checkpoint.json',
+        'docs/evidence/v0.6/opening-development-checkpoint.json',
+        'docs/evidence/v0.6/opening-baseline.json','scripts/profile-project-opening.ps1',
+        'schemas/reference-model-v0.6.schema.json','schemas/architectural-scope-v0.6.schema.json',
+        'scripts/reference-synthetic-fixture.mjs',
         'docs/installation.md','docs/replay.md','docs/persistence.md','docs/model-contract.md',
         'docs/evidence/v0.5/ci-29adf02-failure.json',
         'docs/evidence/v0.5/ci-5c507f7-diagnostic.json',

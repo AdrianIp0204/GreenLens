@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::HashSet,
     fs::{self, File, OpenOptions},
-    io::{Read, Write},
+    io::Write,
     path::{Path, PathBuf},
 };
 
@@ -263,19 +263,23 @@ impl EnergySeriesReader {
             .chunks
             .get(index)
             .context("Energy chunk outside retained axis")?;
-        let file = File::open(regular_child(&self.root, &entry.file)?)?;
+        let path = regular_child(&self.root, &entry.file)?;
+        let file = File::open(&path)?;
         ensure!(
             file.metadata()?.len() == entry.bytes as u64,
             "Truncated/oversized energy chunk"
         );
-        let mut bytes = Vec::with_capacity(entry.bytes + 1);
-        file.take(entry.bytes as u64 + 1).read_to_end(&mut bytes)?;
+        drop(file);
+        let bytes = crate::persistence::read_evidence_bytes(&path, entry.bytes as u64)?;
         ensure!(
             bytes.len() == entry.bytes && bytes_hash(&bytes) == entry.sha256,
             "Energy chunk checksum mismatch"
         );
         let mut values = Vec::with_capacity(entry.bytes / 8);
         for (i, scalar) in bytes.as_chunks::<8>().0.iter().enumerate() {
+            if i % 4096 == 0 {
+                crate::project_open::checkpoint(0)?;
+            }
             let value = f64::from_le_bytes(*scalar);
             self.manifest.channels[i % self.manifest.channels.len()].validate_value(value)?;
             values.push(value);
@@ -289,6 +293,9 @@ impl EnergySeriesReader {
                 .chunks_exact(self.manifest.channels.len())
                 .enumerate()
             {
+                if offset % 256 == 0 {
+                    crate::project_open::checkpoint(0)?;
+                }
                 visitor(chunk.start + offset, row)?;
             }
         }

@@ -55,6 +55,12 @@ fn native_energy_conflict_copy_cancel_and_staleness() {
         .unwrap();
     assert!(!app.status().unwrap().pending_evidence);
     assert_eq!(recovered.energy_results.len(), 1);
+    let opening = recovered
+        .project_verification
+        .as_ref()
+        .expect("Verified open receipt");
+    assert_eq!(opening.progress.numeric_passes.len(), 1);
+    assert_eq!(opening.progress.numeric_passes.get(&run.id), Some(&1));
     assert_eq!(
         disk_before,
         fs::read(original.join("project.json")).unwrap()

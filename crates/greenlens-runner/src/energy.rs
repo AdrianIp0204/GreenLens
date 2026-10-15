@@ -372,6 +372,7 @@ pub fn read_run_directory(root: &Path) -> Result<EnergyRunRecord> {
         &zones,
         3600 / u32::from(run.study.zone_timesteps_per_hour),
     )?;
+    crate::project_open::numeric_pass(&run.id)?;
     series.visit(|index, values| {
         totals.push(&decoder.decode(index, values)?)?;
         Ok(())
@@ -415,16 +416,27 @@ pub fn read_run(root: &Path, summary: &EnergyRunSummary) -> Result<EnergyRunReco
         "Invalid energy run path"
     );
     let record = read_run_directory(&root.join(&summary.path))?;
+    validate_summary_binding(&record, summary)?;
+    Ok(record)
+}
+pub(crate) fn validate_summary_binding(
+    record: &EnergyRunRecord,
+    summary: &EnergyRunSummary,
+) -> Result<()> {
     ensure!(
         record.id == summary.id
             && record.alternative_id == summary.alternative_id
             && record.provenance.physical_input_hash == summary.physical_input_hash
-            && canonical_hash(&record)? == summary.record_sha256,
+            && canonical_hash(record)? == summary.record_sha256,
         "Energy manifest/result binding mismatch"
     );
-    Ok(record)
+    Ok(())
 }
 pub fn load_project_evidence(root: &Path, project: &EnergyProject) -> Result<Vec<EnergyRunRecord>> {
+    verify_project_assets(root, project)?;
+    project.runs.iter().map(|run| read_run(root, run)).collect()
+}
+pub(crate) fn verify_project_assets(root: &Path, project: &EnergyProject) -> Result<()> {
     validate_extension(project)?;
     for weather in &project.weather {
         let (asset, _) = energy_weather::open(&root.join(&weather.path))?;
@@ -436,7 +448,7 @@ pub fn load_project_evidence(root: &Path, project: &EnergyProject) -> Result<Vec
     for item in &project.attachments {
         crate::energy_attachments::verify(root, item)?;
     }
-    project.runs.iter().map(|run| read_run(root, run)).collect()
+    Ok(())
 }
 pub fn verify_project_evidence(root: &Path, project: &EnergyProject) -> Result<()> {
     load_project_evidence(root, project)?;
@@ -626,6 +638,28 @@ mod selection_tests {
                 raw_representation: "No output; selection test only".into(),
             },
         }
+    }
+    #[test]
+    fn verified_provider_cannot_reuse_another_summary_or_modified_record() {
+        // Identity-binding test only: these intentionally incomplete records
+        // are never admitted as scientific or process evidence.
+        let case = greenlens_core::energy::synthetic_energy_report()
+            .unwrap()
+            .baseline;
+        let run = selection_record(&case, "2026-01-03T00:00:00Z");
+        let mut summary = EnergyRunSummary {
+            id: run.id.clone(),
+            alternative_id: run.alternative_id.clone(),
+            path: format!("runs/{}", run.id),
+            physical_input_hash: run.provenance.physical_input_hash.clone(),
+            record_sha256: canonical_hash(&run).unwrap(),
+        };
+        validate_summary_binding(&run, &summary).unwrap();
+        summary.record_sha256 = "f".repeat(64);
+        assert!(validate_summary_binding(&run, &summary).is_err());
+        summary.record_sha256 = canonical_hash(&run).unwrap();
+        summary.alternative_id = "B".into();
+        assert!(validate_summary_binding(&run, &summary).is_err());
     }
     #[test]
     fn restored_energy_inputs_find_newest_compatible_completion_independent_of_collection_order() {

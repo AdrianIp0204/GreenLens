@@ -1,0 +1,5 @@
+import type {useReferenceDrafts} from './useReferenceDrafts';
+export default function ReferenceDraftGuard({drafts}:{drafts:ReturnType<typeof useReferenceDrafts>}){
+  const guard=drafts.guard;if(!guard)return null;
+  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="reference-draft-title"><h2 id="reference-draft-title">Resolve architectural drafts before {guard.reason}</h2><p>These local reference and scope edits are not accepted project inputs. Apply validates the candidate in Rust. Discard keeps the accepted record. Cancel returns to editing.</p>{guard.error&&<p role="alert">{guard.error}</p>}<div className="button-row"><button disabled={guard.applying} onClick={()=>void drafts.resolve('apply')}>Apply</button><button disabled={guard.applying} onClick={()=>void drafts.resolve('discard')}>Discard</button><button autoFocus disabled={guard.applying} onClick={()=>void drafts.resolve('cancel')}>Cancel</button></div></section></div>;
+}

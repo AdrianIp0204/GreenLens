@@ -1,0 +1,738 @@
+{
+  "schema_version": "greenlens.frontend-checkpoint.v1",
+  "started_utc": "2026-10-15T14:43:51.8613532Z",
+  "finished_utc": "2026-10-15T14:44:13.2140678Z",
+  "source_identity": "uncommitted v0.6 working files; exact byte inventory below, no commit or binary identity claimed",
+  "inventory_unchanged_during_checks": true,
+  "source_inventory_sha256": "c2b9283ad72fef99debe62fce3cb958696dac8e0bd2c28433079306b8f96e4eb",
+  "environment": {
+    "platform": "native Windows",
+    "node": "v24.14.0"
+  },
+  "commands": [
+    {
+      "command": "npm run check",
+      "working_directory": "apps/desktop",
+      "exit_code": 0
+    },
+    {
+      "command": "npm test",
+      "working_directory": "apps/desktop",
+      "exit_code": 0
+    }
+  ],
+  "test_summary": {
+    "tests": 287.0,
+    "pass": 287.0,
+    "fail": 0.0,
+    "cancelled": 0.0,
+    "skipped": 0.0,
+    "todo": 0.0,
+    "duration_ms": 17925.0538
+  },
+  "logs": [
+    {
+      "name": "frontend-documented-checkpoint-types.log",
+      "bytes": 155,
+      "sha256": "30957e1c2986cf1dc6600ab442a135b280137eaf651d3365c04be5481c791613"
+    },
+    {
+      "name": "frontend-documented-checkpoint-tests.log",
+      "bytes": 32297,
+      "sha256": "286dcc0475463d944a761b36462fbf8e29a6a93d999503bbd046d928a6f28f97"
+    }
+  ],
+  "scope": "Actual React/DOM, unit and interaction checks with explicit service doubles where documented. No installed-native, GPU, engine, PDF visual or private-case acceptance.",
+  "source_files": [
+    {
+      "path": "apps/desktop/package-lock.json",
+      "bytes": 72060,
+      "sha256": "caa5def41a7c43f644aa72087732dca72ea9d68c1368a50d9bad169d54574ced"
+    },
+    {
+      "path": "apps/desktop/package.json",
+      "bytes": 735,
+      "sha256": "f65ee6ca8bbbb3dcb98289e8876274dee092c7d0907a3521450537b29a6e0b32"
+    },
+    {
+      "path": "apps/desktop/src/App.tsx",
+      "bytes": 39021,
+      "sha256": "b814afd2ca4b4cca002e3346fc5bfd747fafab42aec02dc31249ff455f2fece2"
+    },
+    {
+      "path": "apps/desktop/src/climate-types.ts",
+      "bytes": 11632,
+      "sha256": "2cd463f24dcb35f1540fefcbd3dd5f74c996b191d59f857186421fb443c0e8db"
+    },
+    {
+      "path": "apps/desktop/src/energy/actions.d.mts",
+      "bytes": 397,
+      "sha256": "5cde0065fe043005f3665a9f9c20bbf65a374aa201b470932100cc6fd7d776d6"
+    },
+    {
+      "path": "apps/desktop/src/energy/actions.mjs",
+      "bytes": 862,
+      "sha256": "908729afbb4a3f0ee1da6850a790463ab290d061770c0afa218c092a0907b192"
+    },
+    {
+      "path": "apps/desktop/src/energy/authoring-types.ts",
+      "bytes": 1584,
+      "sha256": "99bbc8b82b8ba29b2b6103ff6ee5607b479195ebbb058878ba77660670901be5"
+    },
+    {
+      "path": "apps/desktop/src/energy/authoring.css",
+      "bytes": 1910,
+      "sha256": "43e813d77f067ac8331332e4c9b90160ab802d5a72a004327668b2f192a233b8"
+    },
+    {
+      "path": "apps/desktop/src/energy/DesignCopy.tsx",
+      "bytes": 3057,
+      "sha256": "cd60732506b5e7e8acfca17957edac6e26a4d27808d6802f90c2705b2c002367"
+    },
+    {
+      "path": "apps/desktop/src/energy/drafts.ts",
+      "bytes": 14627,
+      "sha256": "8fe2ec09a94c4116059e11012b9a72530c523c969f01a2399cf1876feaee73e0"
+    },
+    {
+      "path": "apps/desktop/src/energy/energy-dependency-settings.ts",
+      "bytes": 2656,
+      "sha256": "30e465c1209868db36e472d0b15bf936eb474ec3168eef1cee671af39f731c91"
+    },
+    {
+      "path": "apps/desktop/src/energy/energy-investigation.css",
+      "bytes": 1754,
+      "sha256": "893ce9ae2e4b0a4c5a73df198f37cecbdb2653d574e6e6d8380d516e3491c599"
+    },
+    {
+      "path": "apps/desktop/src/energy/energy.css",
+      "bytes": 7109,
+      "sha256": "0e959110c10faca0680f9cf9d74b8956a43523563df0fbe5303ab94c9825d0a3"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergyAssessment.tsx",
+      "bytes": 1612,
+      "sha256": "bd0036dfab63525e42e5fecbb28084d320d984ed19b75f94e73013124653e3b0"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergyCommandBar.tsx",
+      "bytes": 2278,
+      "sha256": "cca1af4182213e7af658304242a2848aed4e034b180b4c0f9fef94b5f7f342cf"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergyDependencySettings.tsx",
+      "bytes": 3973,
+      "sha256": "86ff41136cd7f9dab51bc2881c9fbfa3eda5b7c660783109a70fae3f0679018b"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergyDraftGuard.tsx",
+      "bytes": 1192,
+      "sha256": "07407ef4342f4fa6796a8904f6daf4a1a93e339b41894dbf18b738016e4e559a"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergyInvestigation.tsx",
+      "bytes": 13736,
+      "sha256": "e22488017af5fcfd30fc38db43144da3f477c34a0d8aae758a26fb0bdec40aa6"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergyPreflight.tsx",
+      "bytes": 1494,
+      "sha256": "49d32b3cbad2c7337b94570b2a078d668bb9318f5e74f3b07a803baaa77934cb"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergySensitivity.tsx",
+      "bytes": 8687,
+      "sha256": "1cb5eadff2c8d56c3ce1a6dfb660cc8b3c142a485d2b0a5605bc2b586aba2fa4"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergySeries.tsx",
+      "bytes": 3205,
+      "sha256": "66fe3196feea429c85b28ac1b47a5db7729eb8aa5b6ebe5b80273a54f5de4126"
+    },
+    {
+      "path": "apps/desktop/src/energy/EnergyWorkspace.tsx",
+      "bytes": 30632,
+      "sha256": "824b0604d4edae405c4a2606ee29689d11759d2d032620b39b405257686d19b5"
+    },
+    {
+      "path": "apps/desktop/src/energy/EvidenceSettings.tsx",
+      "bytes": 6437,
+      "sha256": "a6e24148ebf3cd740f2d5061e4ddbef302bbe320d03b76b546fcc83e27caafcb"
+    },
+    {
+      "path": "apps/desktop/src/energy/GeometryAuthoring.tsx",
+      "bytes": 17579,
+      "sha256": "0d69857a7865fcba58ab3772217b6979a599c1bf8d27e23cd404848c63b4a1e0"
+    },
+    {
+      "path": "apps/desktop/src/energy/investigation-types.ts",
+      "bytes": 1630,
+      "sha256": "de487cdf90f247b84b4f7ea25bd533e064d34d9aab310edcba806dd6d3ae370f"
+    },
+    {
+      "path": "apps/desktop/src/energy/NewEnergyProject.tsx",
+      "bytes": 4535,
+      "sha256": "7af830764c9fd9ff546a9fa3ad8be465f50d81dbfc8e587dc7b60cd5c48f4d65"
+    },
+    {
+      "path": "apps/desktop/src/energy/reference-presentation.ts",
+      "bytes": 5808,
+      "sha256": "afce8cfd32e3bc595f2fd05c8462cfecaf1ed13ea6de26149a641120dc54daed"
+    },
+    {
+      "path": "apps/desktop/src/energy/ReferenceOverlay.ts",
+      "bytes": 7341,
+      "sha256": "a7a8f1d34302acc534bbd108e1023ac8e5e06ce10c92ae4594c8ae0367931182"
+    },
+    {
+      "path": "apps/desktop/src/energy/report-workbench.css",
+      "bytes": 933,
+      "sha256": "9fe8b291822869f7567e71368feb786bbc7c0305c77da5a1f0ea6012501d07f2"
+    },
+    {
+      "path": "apps/desktop/src/energy/ReportIssueFields.tsx",
+      "bytes": 2994,
+      "sha256": "3ea5591eaa79c47500c3acadaf183ce80d8c7d1f4805a27d791c579a7b17d6bb"
+    },
+    {
+      "path": "apps/desktop/src/energy/ReportWorkbench.tsx",
+      "bytes": 10579,
+      "sha256": "56b20b604f62da34f1455c3e0dd6c35bae3da069b0de48f27d06eaa1efc1a17b"
+    },
+    {
+      "path": "apps/desktop/src/energy/response.d.mts",
+      "bytes": 98,
+      "sha256": "670e5f24896dddda95f6a508faa45f80871dffedceafd7f0194b6211a97b18c8"
+    },
+    {
+      "path": "apps/desktop/src/energy/response.mjs",
+      "bytes": 2595,
+      "sha256": "d5043b61622cb7a004c15df5fede74dc7600838cdb1a55a0a54a2ed90589c48f"
+    },
+    {
+      "path": "apps/desktop/src/energy/run-history.css",
+      "bytes": 758,
+      "sha256": "129ff8dadf4527c348770a6ac3346c7bf48c3c2bf593c229229228cfde804952"
+    },
+    {
+      "path": "apps/desktop/src/energy/RunHistory.tsx",
+      "bytes": 6964,
+      "sha256": "2ea0bfcf03d9d0f4c281befd8e76715afa05978e65409ce41005d75994091e8f"
+    },
+    {
+      "path": "apps/desktop/src/energy/ScheduleEditor.tsx",
+      "bytes": 10404,
+      "sha256": "bc013fc134aade26802573cc344f6a47645a05d2024393afa770b747c6e745c7"
+    },
+    {
+      "path": "apps/desktop/src/energy/thermal-inspector-target.ts",
+      "bytes": 3176,
+      "sha256": "62c84ff5a7f0c044ae48a45ded851852766ca12c6938ea6d6d709445d2f0dac6"
+    },
+    {
+      "path": "apps/desktop/src/energy/thermal-object-ids.ts",
+      "bytes": 836,
+      "sha256": "bfa7202f14a84d24386500183d217041cf4f120a793b57ec36ef4b34437d644f"
+    },
+    {
+      "path": "apps/desktop/src/energy/thermal-presentation.ts",
+      "bytes": 5330,
+      "sha256": "27592281b0e34d89b4adb60479cc040983c65c9e4cce51eab6cf4622fe972af7"
+    },
+    {
+      "path": "apps/desktop/src/energy/thermal-view.css",
+      "bytes": 5307,
+      "sha256": "5252ca1cccd451428c87a16482cd7e435013b9f2a9d77e331b26243c9bcaf3e7"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalCalendarEditor.tsx",
+      "bytes": 6398,
+      "sha256": "e4468246fdad6e7b1f62d5987425f15322ac81b5a19dc0a493b2c339c363c88c"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalDifferences.tsx",
+      "bytes": 2003,
+      "sha256": "b53733f4762717d7da0ae4ed5ea36627b708ec0d2dba35837e4d18cfe8554131"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalEditor.tsx",
+      "bytes": 10706,
+      "sha256": "ef3964ebd830c7f636804bbb6701aa0b9b2b3dd1575a830f36653fe98c2ec769"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalInspectorResizer.tsx",
+      "bytes": 1764,
+      "sha256": "f462851be4be935eb553133dce96e82aa66945fceb78abd047c281c2ae49732b"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalResourceEditors.tsx",
+      "bytes": 21622,
+      "sha256": "f1ee80861778f1f3b18959c468ac676fd3c79020097558dc5245e4c50e7cc065"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalView.tsx",
+      "bytes": 22843,
+      "sha256": "aa29397c5ece23cc3820589c8b50bb34790347d89d434538948c4e70661f2f96"
+    },
+    {
+      "path": "apps/desktop/src/energy/ThermalViewport.ts",
+      "bytes": 15014,
+      "sha256": "3795e7dc80d12aa551f5498fe43ff15b6fc682ae81962eef6cf15cc6a7129537"
+    },
+    {
+      "path": "apps/desktop/src/energy/types.ts",
+      "bytes": 15339,
+      "sha256": "f434bfc985fe3b7a02fa3a02113aa00f517d461d7785be3444fc863d3f90146c"
+    },
+    {
+      "path": "apps/desktop/src/energy/useEnergyDrafts.ts",
+      "bytes": 8921,
+      "sha256": "f6384652ba07f86e117f8e2893fa88951972893013e994a1b55ac6b4f26e8af7"
+    },
+    {
+      "path": "apps/desktop/src/energy/useEnergyRead.ts",
+      "bytes": 973,
+      "sha256": "37880d2c8ee50f4a30120c1e23a68d7dd6a646dd15668ea6523135a4bcac2d97"
+    },
+    {
+      "path": "apps/desktop/src/main.tsx",
+      "bytes": 225,
+      "sha256": "e81aec37c1befe991a35934ed8b90b73e7262a01e4dffae60e1ce87967ff09b4"
+    },
+    {
+      "path": "apps/desktop/src/presentation.mjs",
+      "bytes": 1429,
+      "sha256": "f4db42883ac866da3a6c3cba41ba2f2f34cd00b48f43e688720a38961e6627e0"
+    },
+    {
+      "path": "apps/desktop/src/reference/reference-drafts.ts",
+      "bytes": 10560,
+      "sha256": "268f2b9b23e26b3c9f3ca17a5505f0b30062a5553b02782e95c8d52531dec971"
+    },
+    {
+      "path": "apps/desktop/src/reference/reference-workbench.css",
+      "bytes": 2334,
+      "sha256": "3ca9248c4a88bc7b7b6bdf3d6ed6dd3a85e75bb7f1141bb66849b766f2c63aa7"
+    },
+    {
+      "path": "apps/desktop/src/reference/ReferenceDraftGuard.tsx",
+      "bytes": 1009,
+      "sha256": "a66f5368847444fd6743959c40ccbea2727bdd7b21fdc21a19f1ba26b3daf9f9"
+    },
+    {
+      "path": "apps/desktop/src/reference/ReferenceWorkbench.tsx",
+      "bytes": 33836,
+      "sha256": "ffbaf374b9b021ad1d28be48ff77b18c862a197756ccd25fe4a0cd89ee0eac86"
+    },
+    {
+      "path": "apps/desktop/src/reference/types.ts",
+      "bytes": 6741,
+      "sha256": "94d975946f1ab2da6c10c84dba1612fd71b2e1d17272852307ce044960f4b863"
+    },
+    {
+      "path": "apps/desktop/src/reference/useReferenceDrafts.ts",
+      "bytes": 3401,
+      "sha256": "4ee9bb3a7d61a3588175ea85dffae63307c49269de0231402f9970b93c5269b7"
+    },
+    {
+      "path": "apps/desktop/src/reference/useReferenceModel.ts",
+      "bytes": 3735,
+      "sha256": "fd0f40f4e4c842f9b676e1413c58469e5bf445f841f51c7564292ba766437878"
+    },
+    {
+      "path": "apps/desktop/src/SceneView.tsx",
+      "bytes": 5230,
+      "sha256": "6379908f7ec73d89270f9babf9d12d0c8a448451af8afe917b9eb3855fc28448"
+    },
+    {
+      "path": "apps/desktop/src/styles.css",
+      "bytes": 15037,
+      "sha256": "d15f06a80a7af67fedf1656085de92c48679c9ef94a30c849bae5609e4c25937"
+    },
+    {
+      "path": "apps/desktop/src/types.ts",
+      "bytes": 3161,
+      "sha256": "40432fec431a5f22f230e00fe4d9c8b5b334d7da4355522678ca0f08f15ad64a"
+    },
+    {
+      "path": "apps/desktop/src/viewport/entities.ts",
+      "bytes": 2309,
+      "sha256": "ecbaed033ce5ffe5f8eab9c9a41921f77b2cfcfacda434acb2b3c05f78c595fa"
+    },
+    {
+      "path": "apps/desktop/src/viewport/interaction.mjs",
+      "bytes": 10688,
+      "sha256": "4b4f326aaeeb04321f1d7c1697a6f837cd8ae3c7f27dc095ddb33e4ff8ac0847"
+    },
+    {
+      "path": "apps/desktop/src/viewport/README.md",
+      "bytes": 6604,
+      "sha256": "054c0e327202e42ac3042dbbcf3b8aac2c759dbf7ecb06f7ce27214be4e99d28"
+    },
+    {
+      "path": "apps/desktop/src/viewport/types.ts",
+      "bytes": 3177,
+      "sha256": "6e0c3f8782e7de700ce9e368c719e693822d0fdf26dddbf37ec3f2db5cbf479f"
+    },
+    {
+      "path": "apps/desktop/src/viewport/viewport.css",
+      "bytes": 3239,
+      "sha256": "c3595757760fb5809b8d8d0ff7eed7eec72feb207ab4635978e29c864f0ffd0d"
+    },
+    {
+      "path": "apps/desktop/src/viewport/ViewportEngine.ts",
+      "bytes": 43893,
+      "sha256": "8656f0b955e657bdb6e39e927108d7e6a8f61aa8e110fb2ba57558f0a36001b8"
+    },
+    {
+      "path": "apps/desktop/src/vite-env.d.ts",
+      "bytes": 38,
+      "sha256": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5"
+    },
+    {
+      "path": "apps/desktop/src/workspace/AnalysisContent.tsx",
+      "bytes": 8233,
+      "sha256": "ec85c73df59b7286f84ff461b7da4c09e6012e268fb7344798b6f0d9bc154798"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-pair-context.d.ts",
+      "bytes": 1117,
+      "sha256": "6e02df205c21429704cc72141f3e18950b2ccf0997a07b9c1e579d48845373a4"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-pair-context.mjs",
+      "bytes": 2381,
+      "sha256": "0678ea5d8af90de5a2f579fe732281d8fbb78184f32ccbf140355fe18fa11130"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-presentation.d.mts",
+      "bytes": 1366,
+      "sha256": "c07018879eaf718bc9c5efa3cd70c50039ea1a3f09b9d6124a2d84776034656d"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-presentation.mjs",
+      "bytes": 3977,
+      "sha256": "9ca73130d637c2b737c6885c103149b92bdc3faf81c045c11a295a817205398d"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-results.css",
+      "bytes": 2823,
+      "sha256": "8fa4f49d856f2770f7d7808b6aacb3218509160275810ee0dfacb416cd2452f0"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-study-form.d.mts",
+      "bytes": 991,
+      "sha256": "65016ed4279ddcd843681e3c4887f9fc704e5c890662d851f2dc7a25f45b1f12"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-study-form.mjs",
+      "bytes": 3974,
+      "sha256": "5dca8e3802a1a7262c4a6808a97a585955d1c860b00071aba51f33dbf3d187dc"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-study-task.d.mts",
+      "bytes": 316,
+      "sha256": "4023e272aaf738f9027e1aeb64e36704b0d62e8c04f921b90d1722087a0ec3cf"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-study-task.mjs",
+      "bytes": 637,
+      "sha256": "f34903ed27b39185d569e651110f830a020f24c11d5b01198ff56b6df4db5502"
+    },
+    {
+      "path": "apps/desktop/src/workspace/climate-study.css",
+      "bytes": 3426,
+      "sha256": "a2961c3d13e1722a4b52da4e4b7cd8d9c1a5852b0c4ac98412c5f1d668873259"
+    },
+    {
+      "path": "apps/desktop/src/workspace/ClimateResultsContent.tsx",
+      "bytes": 16015,
+      "sha256": "8e932d50a064957965061f947503a055c9ec4f6520ec4d08a024e9f07a0c43b3"
+    },
+    {
+      "path": "apps/desktop/src/workspace/ClimateStudyPanel.tsx",
+      "bytes": 20988,
+      "sha256": "944c2c934bdfe3ea47892aaa427f908c0c710ea5b6cb98c82b8c2d1397ca1124"
+    },
+    {
+      "path": "apps/desktop/src/workspace/commands.d.mts",
+      "bytes": 636,
+      "sha256": "bbf672767d6b95d4dd69b543e8a4c1f8db795428469a0f57b02b699bfbeceda9"
+    },
+    {
+      "path": "apps/desktop/src/workspace/commands.mjs",
+      "bytes": 8342,
+      "sha256": "c7c7084888b0bc4efea61be5d7942907501f62d2bbfc08e9a09613fe715b7fdd"
+    },
+    {
+      "path": "apps/desktop/src/workspace/comparison.css",
+      "bytes": 568,
+      "sha256": "121d084efea14dcb6ea35ae8dfdd2def50d4b5288a281080ce88c014057fb7e4"
+    },
+    {
+      "path": "apps/desktop/src/workspace/comparison.d.mts",
+      "bytes": 924,
+      "sha256": "ec1400d34545d517df58a6ebaffc88849957c71893d23ae3f4ab06da78c8fb58"
+    },
+    {
+      "path": "apps/desktop/src/workspace/comparison.mjs",
+      "bytes": 2089,
+      "sha256": "5ca3d47d0793211001f0de57f8fa8b5c7ccac357e3e12ba6a4959b96badbf404"
+    },
+    {
+      "path": "apps/desktop/src/workspace/document.d.mts",
+      "bytes": 4752,
+      "sha256": "e9b19a99e77ce8563f7106a625c1946a910e94a160715dd9094808cb344b8472"
+    },
+    {
+      "path": "apps/desktop/src/workspace/document.mjs",
+      "bytes": 12746,
+      "sha256": "2783f0ab2d45f2f7ac49065d62f80b1c4e516dd82606103512644f4358108cc4"
+    },
+    {
+      "path": "apps/desktop/src/workspace/locks.d.mts",
+      "bytes": 343,
+      "sha256": "5d039034c0dbcbe1734a0ccc67f59caff565865acf71ae89cdccec22087f50df"
+    },
+    {
+      "path": "apps/desktop/src/workspace/locks.mjs",
+      "bytes": 2737,
+      "sha256": "d9f1a28fa26981bb4c0850409f80084afc9067cacdb0da1faf3e77dfc9ca170c"
+    },
+    {
+      "path": "apps/desktop/src/workspace/project-intake.ts",
+      "bytes": 741,
+      "sha256": "c8bcec9b2be6d02d5a3cde6e609e59659129da0d8e09b478e83af87c6b042841"
+    },
+    {
+      "path": "apps/desktop/src/workspace/PropertiesPanel.tsx",
+      "bytes": 8130,
+      "sha256": "4930ff378ac4013a68eed0b6bf506cab81a2a6e11c77c22a431cfae0fa6b2f6b"
+    },
+    {
+      "path": "apps/desktop/src/workspace/QualificationStatus.tsx",
+      "bytes": 3770,
+      "sha256": "fb31eaf2d69a60acdc265d7bfacbc73b45e152333ac4ce8f6e77ac7ba21e620b"
+    },
+    {
+      "path": "apps/desktop/src/workspace/SelectionBar.tsx",
+      "bytes": 1600,
+      "sha256": "945ebb4cffd417ef3bb9ddad5982ba8c8e2258460cb798cf83e3797ba80c6cef"
+    },
+    {
+      "path": "apps/desktop/src/workspace/useClimateResults.ts",
+      "bytes": 12099,
+      "sha256": "dfdc155a3e85573ae5d1f80386c11175d4d5b54bb661db2102e07d03bdfc829a"
+    },
+    {
+      "path": "apps/desktop/src/workspace/useDocument.ts",
+      "bytes": 41022,
+      "sha256": "74475b7949dec11b84a8ee5af89a3a0d81bcbaeedd328818dc5df83eeba0f6ed"
+    },
+    {
+      "path": "apps/desktop/src/workspace/useHistoricalComparison.ts",
+      "bytes": 1792,
+      "sha256": "3f9d3171e503753416a40da7c9807f6cfc9d4240f9c8be1dec567dcaa8573a69"
+    },
+    {
+      "path": "apps/desktop/src/workspace/WeatherCalendarPicker.tsx",
+      "bytes": 3637,
+      "sha256": "07db09650a9c12f023d58439f51c6551d40fef407167279ba334f752635769cf"
+    },
+    {
+      "path": "apps/desktop/tests/app-inspection.test.mjs",
+      "bytes": 12690,
+      "sha256": "c8884824d0655571d9fc5283f9322f4e2d99b4d7a02b037f631835739b5e7a5d"
+    },
+    {
+      "path": "apps/desktop/tests/climate-document.test.mjs",
+      "bytes": 8877,
+      "sha256": "edca759b08959cd505e9beb1a758ffc5960577f9fa272f0fb2ada6778ef76354"
+    },
+    {
+      "path": "apps/desktop/tests/climate-loading.test.mjs",
+      "bytes": 14787,
+      "sha256": "2646f990770696e3c34cbcc010c28e05ace1bb87dba5c2c99750a05ad577c122"
+    },
+    {
+      "path": "apps/desktop/tests/climate-pair-context.test.mjs",
+      "bytes": 6393,
+      "sha256": "713a2c4056c642d2db03762d299067c919284ccfb1876ef65b078e9a8ba25cdb"
+    },
+    {
+      "path": "apps/desktop/tests/climate-presentation.test.mjs",
+      "bytes": 5749,
+      "sha256": "f6514ebda5426eec6781c018cdeed4ecc35bbd86ace4b1a3861605b77259f7e8"
+    },
+    {
+      "path": "apps/desktop/tests/climate-qualification.test.mjs",
+      "bytes": 6399,
+      "sha256": "b45e5862c1a6ef08233fed36c2fb8fd76cdadcf6831656aedc2eaff97debfb6a"
+    },
+    {
+      "path": "apps/desktop/tests/climate-study-form.test.mjs",
+      "bytes": 5859,
+      "sha256": "ed38ce9ad60ee5491d4132553e1e16dd16636eaa5cbc5fc0de9d932df88cbb4b"
+    },
+    {
+      "path": "apps/desktop/tests/climate-study-task.test.mjs",
+      "bytes": 2830,
+      "sha256": "2e9f8c39edb657d60872cc5a685a4a1656cb9f57e5ea6571da625766e7a1c083"
+    },
+    {
+      "path": "apps/desktop/tests/comparison.test.mjs",
+      "bytes": 4712,
+      "sha256": "1369af062f0977da0efa510bfe0188dc4c0ab54bbf77f6a34b5c8e38069aae2a"
+    },
+    {
+      "path": "apps/desktop/tests/design-copy.test.mjs",
+      "bytes": 6851,
+      "sha256": "653704a096838afd19e5fe77d6258dcfe0d374df484d5cf67befe3ea3d83e8d9"
+    },
+    {
+      "path": "apps/desktop/tests/document.test.mjs",
+      "bytes": 17669,
+      "sha256": "41550635873cc969a359fa14fcffcf57548a07f5decc64018db4fae6559523ed"
+    },
+    {
+      "path": "apps/desktop/tests/energy-comparison.test.mjs",
+      "bytes": 7695,
+      "sha256": "4e41b5f00ed582c4882705b1b0e53f1a7dd52129bf641c1021c404be2cc7222f"
+    },
+    {
+      "path": "apps/desktop/tests/energy-dependencies.test.mjs",
+      "bytes": 8166,
+      "sha256": "0d641b76d17e296e7c318bf68357d4b92b87bbf5204fb2e62bb4b39f06ba1840"
+    },
+    {
+      "path": "apps/desktop/tests/energy-drafts.test.mjs",
+      "bytes": 45967,
+      "sha256": "dfeef9f832e0b5dce6d249035d39a94ba2d4ef4feac7b44dbdbbfea8e1bca937"
+    },
+    {
+      "path": "apps/desktop/tests/energy-history.test.mjs",
+      "bytes": 11648,
+      "sha256": "40e2b038cd274cc8e9b46173779880466d2b09597be18d42630d84c1c8e9330b"
+    },
+    {
+      "path": "apps/desktop/tests/energy-investigation.test.mjs",
+      "bytes": 7734,
+      "sha256": "df16b9150723f42f719e357c7e71eb6fad1af2c00b321a18b8f08adac9742ffd"
+    },
+    {
+      "path": "apps/desktop/tests/energy-presentation.test.mjs",
+      "bytes": 7543,
+      "sha256": "22ea8972785abd78e7318799e9d779549186e1218b602f1e5787715acd6a358b"
+    },
+    {
+      "path": "apps/desktop/tests/energy-schedules.test.mjs",
+      "bytes": 12967,
+      "sha256": "907a1e913ede228f5e0e78f8da31d01189173f696f69f6a2c91b772741ad9969"
+    },
+    {
+      "path": "apps/desktop/tests/energy-sensitivity.test.mjs",
+      "bytes": 12328,
+      "sha256": "44338df6a4f117e5b1d87ce302a3d3c137d5bd42228d75efc5dcd01d29abe5cc"
+    },
+    {
+      "path": "apps/desktop/tests/historical-sensor-selection.test.mjs",
+      "bytes": 7330,
+      "sha256": "a769113d2655a1aa8096fa12dcd788f4bd5c4c5e412188346db9795da4e2d2b3"
+    },
+    {
+      "path": "apps/desktop/tests/historical-weather-navigation.test.mjs",
+      "bytes": 6688,
+      "sha256": "dae8daf04a021850be4899c1bec734f3032297b9b2014a14b11d1c85c2da9c15"
+    },
+    {
+      "path": "apps/desktop/tests/presentation.test.mjs",
+      "bytes": 3151,
+      "sha256": "65e4b84cd401b3bfc87f670f4bd7616c451ba15ac1ca85e5276b8f1746a28e6f"
+    },
+    {
+      "path": "apps/desktop/tests/project-opening.test.mjs",
+      "bytes": 19075,
+      "sha256": "72ddfe0baa77cece3b89637f3174d2ca0b39294dc10fec86fb6548eb183401ee"
+    },
+    {
+      "path": "apps/desktop/tests/reference-drafts.test.mjs",
+      "bytes": 9366,
+      "sha256": "c3131fd19c036b865e9d1cbd6461de77ec865c1e8bee2e7917c119341794c222"
+    },
+    {
+      "path": "apps/desktop/tests/reference-view.test.mjs",
+      "bytes": 15718,
+      "sha256": "cb3049e05a645f27084e1144ddc0bbaca1ec5acd8d13b8f77f8642f65a3cda5e"
+    },
+    {
+      "path": "apps/desktop/tests/reference-workbench.test.mjs",
+      "bytes": 25330,
+      "sha256": "69db2e9969b3f2a367f4f0f5322992e5cb4cbb1ffd4962ebb4c83404b680cceb"
+    },
+    {
+      "path": "apps/desktop/tests/report-workbench.test.mjs",
+      "bytes": 9841,
+      "sha256": "be06bf66bb157ccdbcfcd55d34b5b02147570ebcb2f2b42262fba573c2fa096d"
+    },
+    {
+      "path": "apps/desktop/tests/run-history.test.mjs",
+      "bytes": 7804,
+      "sha256": "308d024e0e4066cdcac0d1424cbc117339fb04132b04fd99232c1b81504dca50"
+    },
+    {
+      "path": "apps/desktop/tests/thermal-presentation.test.mjs",
+      "bytes": 14681,
+      "sha256": "f2c9902d75f9ea7036ad1cc294e6ecc6ba2c25980dfc41ab4c36b5fa3452f00c"
+    },
+    {
+      "path": "apps/desktop/tests/thermal-resources.test.mjs",
+      "bytes": 18500,
+      "sha256": "38125d20320b38f3b166f38b0a895deca05b0fb7f6c4ff0ada2946d189c802d7"
+    },
+    {
+      "path": "apps/desktop/tests/viewport-browser-verification.md",
+      "bytes": 10314,
+      "sha256": "4d65fc2d3d14161c179d8889a4c81b8ebd2978b98ed7ffaeedbba56d4031d0ab"
+    },
+    {
+      "path": "apps/desktop/tests/viewport-events.test.mjs",
+      "bytes": 16176,
+      "sha256": "3e3a846efe9fbd30f2b3e017015157b24d853e13b92411ec667220768dd5adfa"
+    },
+    {
+      "path": "apps/desktop/tests/viewport-fixture-b.json",
+      "bytes": 22077,
+      "sha256": "b3cf27fac1b6581a14ac40620ac4b8891fe493aef1b8a31bd584038c2f464f13"
+    },
+    {
+      "path": "apps/desktop/tests/viewport-fixture.json",
+      "bytes": 21544,
+      "sha256": "fc47eb65c6e985c8c966b30c2e15f1589bcc6987e62fcc3a3f30d02a563dd0a7"
+    },
+    {
+      "path": "apps/desktop/tests/viewport-harness.html",
+      "bytes": 243,
+      "sha256": "d8f6b1e35099c3bed3745816757f1ea9bb6e5c961a79d7f58099e8befd284c44"
+    },
+    {
+      "path": "apps/desktop/tests/viewport-harness.tsx",
+      "bytes": 8360,
+      "sha256": "bbd68bc030a1822f0bb572fb5d01f4c5ea2a3efdcec0529b004831a441a2ff34"
+    },
+    {
+      "path": "apps/desktop/tests/viewport.test.mjs",
+      "bytes": 10433,
+      "sha256": "09fc45e1bed2895a28d2818838c22fb17864a0c701aac65e5e350dc5002d95f9"
+    },
+    {
+      "path": "apps/desktop/tsconfig.json",
+      "bytes": 399,
+      "sha256": "aa711a663d158d4bcffaba7d430da6df731eb155e74407d73985be901216cad2"
+    },
+    {
+      "path": "apps/desktop/vite.config.ts",
+      "bytes": 280,
+      "sha256": "48c89d55b811d03a8f60fd0ac269e168ce15e6d86fcb964580b65e9794f5918f"
+    }
+  ]
+}

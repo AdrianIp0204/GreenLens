@@ -1,0 +1,25 @@
+.reference-workbench { min-width: 0; font-size: .83rem; line-height: 1.45; }
+.reference-workbench header h2 { margin: .3rem 0; }
+.reference-workbench details { border-top: 1px solid #3c4848; padding: .65rem 0; }
+.reference-workbench summary { cursor: pointer; font-weight: 600; padding: .2rem 0; }
+.reference-workbench fieldset { min-width: 0; margin: .65rem 0; border: 1px solid #52615f; border-radius: 4px; padding: .65rem; }
+.reference-workbench legend { padding: 0 .35rem; }
+.reference-workbench label { display: flex; flex-direction: column; gap: .2rem; margin: .4rem 0; min-width: 0; }
+.reference-workbench label:has(input[type=checkbox]) { flex-direction: row; align-items: flex-start; gap: .5rem; }
+.reference-workbench input:not([type=checkbox]), .reference-workbench textarea, .reference-workbench select { width: 100%; min-width: 0; box-sizing: border-box; font: inherit; padding: .35rem; }
+.reference-workbench textarea { min-height: 4.5rem; resize: vertical; }
+.reference-workbench button { margin: .2rem .35rem .2rem 0; padding: .35rem .5rem; }
+.reference-workbench :focus-visible { outline: 2px solid #68c8b6; outline-offset: 2px; }
+.reference-form-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(170px,1fr)); gap: .25rem .7rem; }
+.reference-facts { display: grid; grid-template-columns: minmax(100px,.8fr) minmax(0,1.8fr); gap: .35rem .65rem; }
+.reference-facts dt { font-weight: 600; }
+.reference-facts dd { margin: 0; overflow-wrap: anywhere; }
+.reference-workbench code { overflow-wrap: anywhere; }
+.reference-draft-note, .reference-warning { border-left: 3px solid #e9b96a; padding-left: .6rem; }
+.reference-workbench [role=alert], .reference-workbench [role=alertdialog] { border-left: 3px solid #e49a7c; padding: .55rem; background: #382e28; }
+.reference-table { overflow: auto; max-height: 22rem; }
+.reference-table table { width: 100%; border-collapse: collapse; }
+.reference-table th, .reference-table td { text-align: left; vertical-align: top; padding: .4rem; border-bottom: 1px solid #3c4848; overflow-wrap: anywhere; }
+.reference-table thead { position: sticky; top: 0; background: #202d2c; }
+.reference-actions { display: flex; flex-wrap: wrap; gap: .2rem; }
+@media (max-width: 700px) { .reference-facts { grid-template-columns: 1fr; } .reference-facts dd { margin-bottom: .4rem; } }

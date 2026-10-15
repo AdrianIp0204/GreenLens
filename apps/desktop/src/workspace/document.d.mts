@@ -2,6 +2,7 @@ import type { Model, ValidatedModel, RunRecord } from '../types';
 import type { ClimateProjectDocument as Project, ClimateJobStatus, ClimateRunRecord, Study, StudyHistorySnapshot } from '../climate-types';
 import type { EnergyDesign, EnergyRunRecord, EnergyMetadataChange, EnergyReportMetadata } from '../energy/types';
 import type { ReportSettings } from '../energy/drafts';
+import type {ArchitecturalScope} from '../reference/types';
 export type EnergyDraftBatch={designs:Record<string,EnergyDesign>;reportSettings?:ReportSettings;reportIssue?:EnergyReportMetadata|null};
 export function clone<T>(value:T):T;
 export function documentSignature(project:Project|null):string;
@@ -9,6 +10,7 @@ export function studySnapshot(project:Project,alternativeId:string):StudyHistory
 export function completedJobResult(job:ClimateJobStatus|null):RunRecord|ClimateRunRecord|EnergyRunRecord|null;
 export function hasPendingEvidence(job:ClimateJobStatus|null,results?:RunRecord[],climateResults?:ClimateRunRecord[],energyResults?:EnergyRunRecord[]):boolean;
 export type HistoryEntry =
+ | {kind:'architectural_scope';alternativeId:string;before:ArchitecturalScope|null;after:ArchitecturalScope|null;label:string}
  | { kind:'geometry'; alternativeId:string; before:Model; after:Model; label:string }
  | { kind:'study'; alternativeId:string; before:StudyHistorySnapshot; after:StudyHistorySnapshot; label:string }
  | { kind:'energy'; alternativeId:string; before:EnergyDesign; after:EnergyDesign; label:string }
@@ -23,6 +25,7 @@ export type ConfigureEnergy = (project:Project,alternativeId:string,snapshot:Ene
 export type ConfigureEnergyMetadata = (project:Project,change:EnergyMetadataChange)=>Promise<Project>;
 export type RestoreEnergyGroup = (project:Project,designs:Record<string,EnergyDesign>)=>Promise<Project>;
 export type RestoreEnergyBatch = (project:Project,batch:EnergyDraftBatch)=>Promise<Project>;
+export type ConfigureScope=(project:Project,scope:ArchitecturalScope|null,restoring:boolean)=>Promise<Project>;
 export class DocumentHistory {
  past:HistoryEntry[]; future:HistoryEntry[]; busy:boolean;
  reset():void;
@@ -32,7 +35,8 @@ export class DocumentHistory {
  editEnergyMetadata(project:Project,alternativeId:string,change:EnergyMetadataChange,label:string,configure:ConfigureEnergyMetadata):Promise<{project:Project;changed:boolean}>;
  editEnergyGroup(project:Project,alternativeId:string,targets:string[],label:string,configure:(project:Project)=>Promise<Project>):Promise<{project:Project;changed:boolean}>;
  editEnergyBatch(project:Project,alternativeId:string,batch:EnergyDraftBatch,label:string,configure:RestoreEnergyBatch,canCommit?:()=>boolean):Promise<{project:Project;changed:boolean}>;
- traverse(project:Project,direction:'undo'|'redo',validate:ValidateModel,checkEdit?:CheckEdit,restoreStudy?:RestoreStudy,restoreEnergy?:ConfigureEnergy,restoreEnergyMetadata?:ConfigureEnergyMetadata,restoreEnergyGroup?:RestoreEnergyGroup,restoreEnergyBatch?:RestoreEnergyBatch):Promise<{project:Project;validated:ValidatedModel;alternativeId:string;label:string}>;
+ editScope(project:Project,alternativeId:string,candidate:ArchitecturalScope|null,label:string,configure:ConfigureScope):Promise<{project:Project;changed:boolean}>;
+ traverse(project:Project,direction:'undo'|'redo',validate:ValidateModel,checkEdit?:CheckEdit,restoreStudy?:RestoreStudy,restoreEnergy?:ConfigureEnergy,restoreEnergyMetadata?:ConfigureEnergyMetadata,restoreEnergyGroup?:RestoreEnergyGroup,restoreEnergyBatch?:RestoreEnergyBatch,restoreScope?:ConfigureScope):Promise<{project:Project;validated:ValidatedModel;alternativeId:string;label:string}>;
 }
 export function protectReplacement(options:{needsGuard:boolean;decide:()=>Promise<'save'|'discard'|'cancel'>;save:()=>Promise<boolean>;discard:()=>Promise<void>;proceed:()=>Promise<void>}):Promise<boolean>;
 export function isTextTarget(target:unknown):boolean;

@@ -189,6 +189,18 @@ fn save_as_copies_exact_receipts_and_reopens_without_original_source() {
     drop(source);
     let reopened = crate::open_project(target.path()).unwrap();
     let session = workflow::inspect(target.path(), &reopened.project, &reference.id).unwrap();
+    assert_eq!(
+        serde_json::to_value(&reopened.energy_sensitivity_sessions[&reference.id]).unwrap(),
+        serde_json::to_value(&session).unwrap(),
+        "Open returns the same checked session without requiring panel inspection"
+    );
+    assert!(reopened
+        .project_verification
+        .as_ref()
+        .unwrap()
+        .progress
+        .numeric_passes
+        .is_empty());
     assert!(session.finalized && session.next_slot_id.is_none());
     let result = session.result.unwrap();
     assert!(!result.assessment.all_declared_runs_integrity_checked);

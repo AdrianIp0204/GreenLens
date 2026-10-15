@@ -137,6 +137,16 @@ pub(crate) async fn energy_sensitivity_action(
     .await
 }
 #[tauri::command]
+pub(crate) async fn energy_sensitivity_input_identity(
+    project: Project,
+    alternatives: Vec<String>,
+) -> CommandResult<String> {
+    blocking(move || {
+        greenlens_runner::energy_sensitivity::current_inputs_identity(&project, &alternatives)
+    })
+    .await
+}
+#[tauri::command]
 pub(crate) async fn energy_sensitivity_inspect(
     path: String,
     project: Project,

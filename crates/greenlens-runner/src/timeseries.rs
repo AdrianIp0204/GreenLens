@@ -12,7 +12,7 @@ use serde::{Deserialize, Serialize};
 use std::{
     collections::HashSet,
     fs::{self, File, OpenOptions},
-    io::{Read, Write},
+    io::Write,
     path::{Path, PathBuf},
 };
 
@@ -230,19 +230,22 @@ impl SeriesReader {
             .get(index)
             .context("Chunk index outside time axis")?;
         let path = regular_child(&self.root, &entry.file)?;
-        let file = File::open(path)?;
+        let file = File::open(&path)?;
         ensure!(
             file.metadata()?.len() == entry.bytes as u64,
             "Truncated or oversized climate chunk"
         );
-        let mut bytes = Vec::with_capacity(entry.bytes + 1);
-        file.take(entry.bytes as u64 + 1).read_to_end(&mut bytes)?;
+        drop(file);
+        let bytes = crate::persistence::read_evidence_bytes(&path, entry.bytes as u64)?;
         ensure!(
             bytes.len() == entry.bytes && bytes_hash(&bytes) == entry.sha256,
             "Climate chunk checksum mismatch"
         );
         let mut values = Vec::with_capacity(bytes.len() / BYTES_PER_SAMPLE);
-        for sample in bytes.as_chunks::<BYTES_PER_SAMPLE>().0 {
+        for (sample_index, sample) in bytes.as_chunks::<BYTES_PER_SAMPLE>().0.iter().enumerate() {
+            if sample_index % 256 == 0 {
+                crate::project_open::checkpoint(0)?;
+            }
             let mut value = [0.0; 4];
             for (i, scalar) in sample.as_chunks::<8>().0.iter().enumerate() {
                 value[i] = f64::from_le_bytes(*scalar);
@@ -276,6 +279,7 @@ impl SeriesReader {
                 .chunks_exact(self.manifest.sensor_ids.len())
                 .enumerate()
             {
+                crate::project_open::checkpoint(0)?;
                 visitor(entry.start + offset, hour)?;
             }
         }

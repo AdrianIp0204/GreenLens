@@ -1,7 +1,9 @@
 //! Versioned, engine-independent scientific contracts for GreenLens v0.1.
 //! All coordinates use metres, +X east, +Y north and +Z up.
 
+pub mod architectural_scope;
 pub mod energy;
+pub mod reference;
 pub mod study;
 pub mod weather;
 

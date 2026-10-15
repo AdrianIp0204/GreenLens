@@ -886,6 +886,15 @@ pub fn render(
     typst: Option<&TypstConfig>,
     cancel: &AtomicBool,
 ) -> Result<EnergyReportArtifacts> {
+    render_with_architecture(data, destination, typst, cancel, None)
+}
+pub fn render_with_architecture(
+    data: &EnergyReportWorkbenchData,
+    destination: &Path,
+    typst: Option<&TypstConfig>,
+    cancel: &AtomicBool,
+    architecture: Option<&old::architectural::ArchitecturalReport>,
+) -> Result<EnergyReportArtifacts> {
     data.validate()?;
     ensure!(
         data.template_sha256 == template_sha256(),
@@ -974,6 +983,30 @@ pub fn render(
     performance.dataset_sha256 = data.derived_sha256.clone();
     docs.push(performance);
     names.push("performance");
+    let architectural_template = architecture.map(|_| old::architectural::template(TEMPLATE));
+    if let Some(scope) = architecture {
+        scope.validate_binding(&data.base, Some(&data.derived_sha256))?;
+        generated.extend(scope.products()?);
+        for (name, doc) in names.iter().zip(&mut docs) {
+            let mut sections = if *name == "input-appendix" {
+                scope.detail_sections()?
+            } else {
+                vec![scope.summary()?]
+            };
+            if *name == "technical" {
+                sections.push(Section::figure(
+                    "Architectural reference — plan",
+                    "reference-plan.svg",
+                    scope.data.figures[0].caption.clone(),
+                ));
+                sections.push(Section::figure("Selected retained analytical abstraction", "baseline-model.svg", "Baseline retained thermal geometry; scope reconciliation remains separate from the source architecture.".into()));
+            }
+            sections.append(&mut doc.sections);
+            doc.sections = sections;
+            old::architectural::clarify_sections(&mut doc.sections);
+            doc.dataset_sha256 = scope.data.report_sha256.clone();
+        }
+    }
     let file_names = generated
         .iter()
         .map(|(n, _)| n.clone())
@@ -985,13 +1018,23 @@ pub fn render(
         .collect::<Vec<_>>();
     old::create_fresh(destination)?;
     let mut result = EnergyReportArtifacts {
-        schema_version: "greenlens.energy-report-artifacts.v0.5".into(),
-        dataset_sha256: data.derived_sha256.clone(),
+        schema_version: if architecture.is_some() {
+            "greenlens.energy-report-artifacts.v0.6"
+        } else {
+            "greenlens.energy-report-artifacts.v0.5"
+        }
+        .into(),
+        dataset_sha256: architecture
+            .map(|a| a.data.report_sha256.clone())
+            .unwrap_or_else(|| data.derived_sha256.clone()),
         renderer_status: "not_requested".into(),
         renderer_message: "Validated workbench HTML/CSV/JSON/SVG written; PDF/PNG not requested."
             .into(),
         typst_executable_sha256: None,
-        template_sha256: template_sha256(),
+        template_sha256: architectural_template
+            .as_ref()
+            .map(|t| old::sha(t.as_bytes()))
+            .unwrap_or_else(template_sha256),
         renderer_work_id: None,
         renderer_inputs: BTreeMap::new(),
         artifacts: vec![],
@@ -1027,7 +1070,7 @@ pub fn render(
             old::NativeDocuments {
                 docs: &docs,
                 generated: &refs,
-                template: TEMPLATE,
+                template: architectural_template.as_deref().unwrap_or(TEMPLATE),
                 stages: &stages,
             },
             destination,

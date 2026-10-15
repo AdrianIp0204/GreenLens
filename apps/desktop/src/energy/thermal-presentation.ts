@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import type { CameraState, ViewId } from '../viewport/types';
+import { validReferencePresentation, type ReferencePresentation } from './reference-presentation';
 
 export const THERMAL_VIEWS:ViewId[]=['top','perspective','front','right'];
 export const THERMAL_LAYERS=['surface','window','overhang','shading'] as const;
@@ -18,6 +19,7 @@ export interface ThermalPresentation {
   grid:boolean;
   tree_width:number;
   inspector_width:number;
+  reference?:ReferencePresentation;
 }
 export function defaultThermalPresentation():ThermalPresentation{return{schema_version:'greenlens.thermal-presentation.v1',cameras:{},active_view:'perspective',maximized_view:null,selected:null,hidden:[],isolated:null,layers:{surface:true,window:true,overhang:true,shading:true},grid:true,tree_width:210,inspector_width:320};}
 const finite=(value:unknown)=>typeof value==='number'&&Number.isFinite(value)&&Math.abs(value)<=1e9;
@@ -26,6 +28,7 @@ const ids=(value:unknown):value is string[]=>Array.isArray(value)&&value.length<
 export function validThermalPresentation(value:unknown):value is ThermalPresentation {
   const p=value as ThermalPresentation;if(!p||p.schema_version!=='greenlens.thermal-presentation.v1'||!THERMAL_VIEWS.includes(p.active_view)||p.maximized_view!==null&&!THERMAL_VIEWS.includes(p.maximized_view)||p.selected!==null&&(typeof p.selected!=='string'||p.selected.length>256)||!ids(p.hidden)||p.isolated!==null&&!ids(p.isolated)||typeof p.grid!=='boolean')return false;
   if(!p.layers||!THERMAL_LAYERS.every(k=>typeof p.layers[k]==='boolean')||!Number.isFinite(p.tree_width)||p.tree_width<150||p.tree_width>420||!Number.isFinite(p.inspector_width)||p.inspector_width<260||p.inspector_width>520||!p.cameras||typeof p.cameras!=='object'||Array.isArray(p.cameras))return false;
+  if(p.reference!==undefined&&!validReferencePresentation(p.reference))return false;
   return Object.entries(p.cameras).every(([id,c])=>THERMAL_VIEWS.includes(id as ViewId)&&c&&point(c.position)&&point(c.target)&&point(c.up)&&c.up.some(n=>n!==0)&&c.position.some((n,i)=>n!==c.target[i])&&finite(c.zoom)&&c.zoom>0&&c.zoom<=10000);
 }
 

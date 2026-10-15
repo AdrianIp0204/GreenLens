@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { invoke, isTauri } from '@tauri-apps/api/core';
+import { Channel, invoke, isTauri } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import type { Model, RunRecord, ValidatedModel } from '../types';
 import type { ClimateJobStatus as JobStatus, ClimateProjectDocument as Project, ClimateProjectView as ProjectView, ClimateRunRecord, CurrentClimateResult, Study, StudyHistorySnapshot, WeatherSource, WeatherSourceProfile } from '../climate-types';
@@ -10,6 +10,12 @@ import { validatedEditLockReason } from './locks.mjs';
 import { useEnergyDrafts } from '../energy/useEnergyDrafts';
 import { useThermalPresentation } from '../energy/thermal-presentation';
 import type { EnergyDesign, EnergyRunRecord, EnergyCalendar, EnergyMetadataChange } from '../energy/types';
+import type { OpenOperation, OpenProgress, ProjectAdmission, ProjectVerificationReceipt } from './project-intake';
+import type { Session } from '../energy/EnergySensitivity';
+import type {ArchitecturalScope,ReferenceImportOptions,ReferenceProgress} from '../reference/types';
+import {useReferenceDrafts} from '../reference/useReferenceDrafts';
+import {parseReferenceImportDraft,parseReferenceScopeDraft} from '../reference/reference-drafts';
+import {reportRequestBinding,type ReportOutput} from '../energy/report-request';
 
 export const errorText = (e: unknown) => typeof e === 'string' ? e : e instanceof Error ? e.message : JSON.stringify(e);
 const validate = (model:Model) => invoke<ValidatedModel>('validate', { model });
@@ -38,6 +44,13 @@ export function useDocument() {
   const [results,setResults] = useState<RunRecord[]>([]);
   const [climateResults,setClimateResults] = useState<ClimateRunRecord[]>([]);
   const [energyResults,setEnergyResults] = useState<EnergyRunRecord[]>([]);
+  const [sensitivitySnapshots,setSensitivitySnapshots]=useState<Record<string,Session>>({});
+  const [projectVerification,setProjectVerification]=useState<ProjectVerificationReceipt|null>(null);
+  const [referenceProgress,setReferenceProgress]=useState<ReferenceProgress|null>(null);
+  const referenceTicket=useRef<number|null>(null);
+  const [opening,setOpening]=useState<OpenOperation|null>(null);
+  const openingRef=useRef<OpenOperation|null>(null);
+  const mounted=useRef(true);
   const [studyDefaults,setStudyDefaults] = useState<Study|null>(null);
   const [currentClimateState,setCurrentClimateState] = useState<{key:string;result:CurrentClimateResult|null}|null>(null);
   const [display,setDisplay] = useState<ViewportDisplayState>(defaultDisplay);
@@ -45,6 +58,11 @@ export function useDocument() {
   const [revision,setRevision] = useState<string|null>(null);
   const [savedSignature,setSavedSignature] = useState('');
   const [documentId,setDocumentId] = useState(0);
+  // Session-scoped UI receipt. It survives panel/discipline unmounts and Save As,
+  // but never follows a different or newly opened document into its workspace.
+  const [reportCompletion,setReportCompletion]=useState<{documentId:number;projectId:string;output:ReportOutput}|null>(null);
+  const currentDocumentId=useRef(documentId);currentDocumentId.current=documentId;
+  const latestReport=reportCompletion?.documentId===documentId&&reportCompletion.projectId===project?.id?reportCompletion.output:null;
   const [job,setJob] = useState<JobStatus|null>(null);
   const [busy,setBusy] = useState(false);
   const [validating,setValidating] = useState(false);
@@ -85,12 +103,14 @@ export function useDocument() {
   const acceptProject = useCallback((value:ProjectView,directory:string,reset=false)=>{
     setProject(value.project);setRevision(value.revision);setResults(value.results);setClimateResults(value.climate_results??[]);setPath(directory);setSavedSignature(documentSignature(value.project));
     setEnergyResults(value.energy_results??[]);
+    setSensitivitySnapshots(value.energy_sensitivity_sessions??{});setProjectVerification(value.project_verification??null);
     state.current={...state.current,project:value.project,revision:value.revision,results:value.results,climateResults:value.climate_results??[],energyResults:value.energy_results??[],path:directory,savedSignature:documentSignature(value.project)};
     if(reset){setDisplay((value.project.display_state as ViewportDisplayState|null)??defaultDisplay());history.current.reset();setHistoryVersion(v=>v+1);setAlternative('A');setDocumentId(v=>v+1);setValidated(null);}
   },[]);
   const newDocument=useCallback(async()=>{
     const value=await invoke<Project>('example');
     setEnergyResults([]);
+    setSensitivitySnapshots({});setProjectVerification(null);
     setProject(value);setResults([]);setClimateResults([]);setCurrentClimateState(null);setRevision(null);setSavedSignature('');setPath('');setJob(null);setAlternative('A');setDisplay(defaultDisplay());setDocumentId(v=>v+1);setValidated(null);setCollectionError(false);
     history.current.reset();setHistoryVersion(v=>v+1);attemptedCollection.current=null;
     state.current={...state.current,project:value,path:'',results:[],climateResults:[],energyResults:[],revision:null,job:null,savedSignature:''};
@@ -128,12 +148,13 @@ export function useDocument() {
   },[running]);
   useEffect(()=>{if(job?.state==='completed'&&attemptedCollection.current!==job.id&&!actionBusy.current)void collect(job);},[job,collect,busy]);
   const lastEnergyError=useRef('');
-  const runAction=async(body:()=>Promise<void>,reason='this document action',skipDrafts=false,skipAuthoring=false)=>{
+  const runAction=async(body:()=>Promise<void>,reason='this document action',skipDrafts=false,skipAuthoring=false,skipReference=false)=>{
     if(authoringOpen.current&&!skipAuthoring){
       if(authoringRequestPending.current)return;
       if(!authoringLifecycle.current){setError('Finish, Discard or Cancel the geometry operation before another document action.');return;}
       authoringRequestPending.current=true;try{if(!await authoringLifecycle.current(reason))return;}finally{authoringRequestPending.current=false;}
     }
+    if(!skipReference&&!skipDrafts&&!await referenceDrafts.beforeAction(reason))return;
     if(!skipDrafts&&!await energyDrafts.beforeAction(reason))return;
     if(actionBusy.current||collecting.current){setError('Wait for the current document operation to finish.');return;}
     actionBusy.current=true;setBusy(true);setError('');
@@ -158,7 +179,7 @@ export function useDocument() {
   const traverse=async(direction:'undo'|'redo')=>runAction(async()=>{
     const s=state.current;if(!s.project||activeJob(s.job))throw new Error('Finish or cancel the calculation before undo/redo.');
     const entry=(direction==='undo'?history.current.past:history.current.future).at(-1);if(energyLocked&&(entry?.kind==='energy'||entry?.kind==='energy_group'||entry?.kind==='energy_batch'&&Object.keys(entry.before.designs).length))throw new Error('Unlock thermal inputs before restoring a thermal edit.');
-    const next=await history.current.traverse(s.project,direction,validateInStudy,checkEditLocks,restoreStudy,configureEnergy,configureEnergyMetadata,restoreEnergyGroup,restoreEnergyBatch);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
+    const next=await history.current.traverse(s.project,direction,validateInStudy,checkEditLocks,restoreStudy,configureEnergy,configureEnergyMetadata,restoreEnergyGroup,restoreEnergyBatch,configureScope);setProject(next.project);setAlternative(next.alternativeId);setValidated(next.validated);state.current.project=next.project;state.current.validated=next.validated;setHistoryVersion(v=>v+1);setMessage(`${direction==='undo'?'Undid':'Redid'} ${next.label}.`);
   });
   const commitStudy=async(candidate:Study,label='Study settings')=>{
     const s=state.current;if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active document operation or calculation before editing.');return false;}
@@ -202,6 +223,38 @@ export function useDocument() {
     finally{actionBusy.current=false;setBusy(false);}
   };
   const energyDrafts=useEnergyDrafts(project,commitEnergy,()=>lastEnergyError.current,value=>commitEnergyMetadata({kind:'report_settings',...value},'Report settings draft',true),metadata=>commitEnergyMetadata({kind:'report_issue',metadata},'Report issue draft',true),commitEnergyBatch);
+  const configureScope=(project:Project,scope:ArchitecturalScope|null,restoring:boolean)=>invoke<Project>('reference_scope_apply',{path:state.current.path,project,scope,restoring});
+  const commitReferenceScope=async(scope:ArchitecturalScope|null)=>{
+    const s=state.current;if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active operation before editing architectural scope.');return false;}
+    actionBusy.current=true;setBusy(true);setError('');
+    try{const next=await history.current.editScope(s.project,s.alternative,scope,scope?'Architectural scope':'Clear architectural scope',configureScope);setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage('Scope accepted by Rust as one derived-document transaction. Physical simulation inputs are unchanged.');return true;}
+    catch(e){setError(`Scope rejected; draft and history retained. ${errorText(e)}`);return false;}
+    finally{actionBusy.current=false;setBusy(false);}
+  };
+  const importReference=async(options:ReferenceImportOptions)=>{
+    let imported=false;
+    await runAction(async()=>{
+      if(activeJob(state.current.job)||hasPendingEvidence(state.current.job,state.current.results,state.current.climateResults,state.current.energyResults))throw Error('Finish or save the current calculation before importing architecture.');
+      const file=await invoke<string|null>('dialog_open_reference_glb',{initialPath:null});if(!file)return;
+      if(!(await save()))return;
+      const s=state.current,ticket=await invoke<number>('prepare_project_verification');
+      if(!mounted.current){await invoke('cancel_project_verification',{ticket});throw Error('Document closed before reference import started.');}
+      referenceTicket.current=ticket;
+      const channel=new Channel<ReferenceProgress>();channel.onmessage=p=>{if(referenceTicket.current===ticket)setReferenceProgress(p);};
+      setReferenceProgress({stage:'reading local GLB',completed:0,total:1,processed_bytes:0});
+      try{const view=await invoke<ProjectView>('reference_import',{path:s.path,project:s.project,expectedRevision:s.revision,file,options,ticket,onProgress:channel});
+        if(!mounted.current)return;acceptProject(view,s.path);setMessage('Admitted reference assets saved. Prior scope remains revision-bound; review mapping and measure dimensions before analytical use.');imported=true;
+      }finally{referenceTicket.current=null;setReferenceProgress(null);}
+    },'reference import',false,false,true);
+    return imported;
+  };
+  const referenceDrafts=useReferenceDrafts(project?.id,async draft=>{
+    if(draft.import&&draft.scope)throw Error('Apply the import or scope separately in the Reference panel; importing a new revision cannot silently rebind the scope draft.');
+    if(draft.import)return importReference(parseReferenceImportDraft(draft.import));
+    if(draft.scope)return commitReferenceScope(parseReferenceScopeDraft(draft.scope));
+    return true;
+  });
+  const cancelReferenceImport=async()=>{if(referenceTicket.current!==null)await invoke('cancel_project_verification',{ticket:referenceTicket.current});};
   const setEnergyObjectLocks=async(ids:string[])=>runAction(async()=>{const s=state.current;if(!s.project||activeJob(s.job))throw Error('Finish the calculation before changing edit locks.');const next=await invoke<Project>('energy_set_locks',{project:s.project,alternativeId:s.alternative,ids});setProject(next);state.current.project=next;setMessage('Thermal edit locks updated. Simulation inclusion is unchanged.');},'changing thermal edit locks');
   const commitEnergyTransaction=async(requests:Record<string,unknown>,expectedPreviewSha256:string,label:string):Promise<boolean>=>{
     if(!await energyDrafts.beforeAction('applying geometry'))return false;
@@ -229,11 +282,34 @@ export function useDocument() {
   };
   const decide=(reason:string)=>new Promise<GuardChoice>(resolve=>{guardResolver.current=resolve;setGuard(reason);});
   const resolveGuard=(choice:GuardChoice)=>{const resolve=guardResolver.current;guardResolver.current=null;setGuard(null);resolve?.(choice);};
-  const replace=async(kind:'New'|'New Energy'|'Energy example'|'Open'|'Close')=>runAction(async()=>{
+  const cancelOpening=async()=>{
+    const active=openingRef.current;if(!active)return;
+    active.cancelled=true;setOpening({...active});
+    await invoke('cancel_project_verification',{ticket:active.ticket});
+  };
+  const verifyCandidate=async(directory:string,admission:ProjectAdmission)=>{
+    const ticket=await invoke<number>('prepare_project_verification');
+    if(!mounted.current){await invoke('cancel_project_verification',{ticket});throw new Error('Document closed before project verification started.');}
+    const operation:OpenOperation={ticket,name:admission.project_name,cancelled:false,progress:null};
+    openingRef.current=operation;setOpening({...operation});
+    const channel=new Channel<OpenProgress>();
+    channel.onmessage=progress=>{if(openingRef.current===operation){operation.progress=progress;setOpening({...operation});}};
+    try{
+      const candidate=await invoke<ProjectView>('verify_project',{path:directory,admission,ticket,onProgress:channel});
+      if(operation.cancelled||openingRef.current!==operation)throw new Error('Project opening cancelled; the previous document and evidence are retained.');
+      return candidate;
+    }finally{if(openingRef.current===operation){openingRef.current=null;setOpening(null);}}
+  };
+  useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;if(referenceTicket.current!==null)void invoke('cancel_project_verification',{ticket:referenceTicket.current});const operation=openingRef.current;if(operation){operation.cancelled=true;openingRef.current=null;void invoke('cancel_project_verification',{ticket:operation.ticket});}};},[]);
+  const replace=async(kind:'New'|'New Energy'|'Energy example'|'Open'|'Close')=>{
+    let selected:string|null=null,admission:ProjectAdmission|null=null;
+    if(kind==='Open'){
+      if(actionBusy.current||collecting.current){setError('Wait for the current document operation to finish.');return;}
+      try{selected=await invoke<string|null>('dialog_open_project',{initialPath:state.current.path||null});if(!selected)return;admission=await invoke<ProjectAdmission>('admit_project',{path:selected});}
+      catch(e){setError(errorText(e));return;}
+    }
+    return runAction(async()=>{
     if(kind==='New Energy'){setEnergyNewOpen(true);return;}
-    const selected=kind==='Open'?await invoke<string|null>('dialog_open_project',{initialPath:state.current.path||null}):null;
-    if(kind==='Open'&&!selected)return;
-    if(selected)await invoke<ProjectView>('open_project',{path:selected});
     let discardPending=false;
     const s=state.current;
     await protectReplacement({needsGuard:documentSignature(s.project)!==s.savedSignature||activeJob(s.job)||Boolean(hasPendingEvidence(s.job,s.results,s.climateResults,s.energyResults)),
@@ -242,10 +318,11 @@ export function useDocument() {
       proceed:async()=>{
         if(kind==='Energy example'){const destination=await invoke<string|null>('dialog_save_project',{initialPath:null});if(!destination)return;await cancelAndWait();const value=await invoke<ProjectView>('energy_create_example',{path:destination});await invoke('discard_job');setJob(null);state.current.job=null;acceptProject(value,destination,true);setMessage('Original synthetic thermal example saved; no engine has run.');}
         else if(kind==='New'){await invoke<Project>('example');await invoke('discard_job');await newDocument();}
-        else if(kind==='Open'&&selected){const value=await invoke<ProjectView>('open_project',{path:selected});await invoke('discard_job');setJob(null);state.current.job=null;setCollectionError(false);acceptProject(value,selected,true);setMessage('Project opened; run metadata integrity checked.');}
+        else if(kind==='Open'&&selected&&admission){const value=await verifyCandidate(selected,admission);await cancelAndWait();await invoke('discard_job');setJob(null);state.current.job=null;setCollectionError(false);acceptProject(value,selected,true);setMessage('Project opened; retained evidence integrity and arithmetic checked once per run. Scientific qualification is separate.');}
         else {await invoke('prepare_close',{discardPending});closing.current=true;try{await getCurrentWindow().destroy();}catch(e){closing.current=false;throw e;}}
       }});
-  });
+  },kind);
+  };
   const closeRef=useRef(()=>{});closeRef.current=()=>{void replace('Close');};
   useEffect(()=>{if(!isTauri())return;let live=true;let unlisten:(()=>void)|undefined;
     getCurrentWindow().onCloseRequested(event=>{if(closing.current)return;event.preventDefault();closeRef.current();}).then(stop=>{if(live)unlisten=stop;else stop();}).catch(e=>setError(`Close protection could not initialize: ${errorText(e)}`));
@@ -291,6 +368,7 @@ export function useDocument() {
       const current=state.current;
       result=await invoke<Record<string,unknown>>('energy_sensitivity_action',{path:current.path,project:current.project,expectedRevision:current.revision,action,engineDir:engineDir.trim()||null});
       if(result.view)acceptProject(result.view as ProjectView,current.path);
+      if(result.session){const session=result.session as Session;setSensitivitySnapshots(previous=>({...previous,[session.reference.id]:session}));}
       if(result.job){const status=result.job as JobStatus;attemptedCollection.current=null;setJob(status);state.current.job=status;}
       setMessage('Numerical sensitivity step recorded. Execution, integrity and qualification remain separate.');
     },'checking numerical sensitivity');
@@ -324,14 +402,17 @@ export function useDocument() {
     const destination=await invoke<string|null>('dialog_export_evidence',{initialPath:state.current.path||null});if(!destination)return;
     await invoke('export_project',{path:state.current.path,destination,selectedRuns:selectedRuns??null});setMessage('Portable evidence ZIP and offline report exported.');
   });
-  const energyReport=async(a:string,b:string,typstDir:string,htmlOnly:boolean,portableZip:boolean)=>{let output:import('../energy/ReportWorkbench').ReportOutput|undefined;await runAction(async()=>{
+  const energyReport=async(a:string,b:string,typstDir:string,htmlOnly:boolean,portableZip:boolean)=>{let output:ReportOutput|undefined;await runAction(async()=>{
     if(activeJob(state.current.job))throw new Error('Finish or cancel the calculation before rendering reports.');
     if(!(await save()))return;
     const destination=await invoke<string|null>('dialog_energy_report',{portableZip});if(!destination)return;
-    const artifacts=await invoke<{artifacts?:{path:string}[];renderer_status?:string}>('energy_report',{path:state.current.path,project:state.current.project,a,b,destination,typstDir:typstDir.trim()||null,htmlOnly,portableZip});
-    output={destination,files:portableZip?[]:(artifacts.artifacts??[]).map(a=>a.path),renderer_status:artifacts.renderer_status??'Portable package completed',message:portableZip?'Portable A/B evidence ZIP completed at the selected path.':'All listed products were finalized and integrity checked.'};
+    const request=state.current,requestDocumentId=currentDocumentId.current;if(!request.project)throw Error('No open document.');
+    const binding=reportRequestBinding(request.path,request.project,a,b,typstDir,htmlOnly,portableZip);
+    const artifacts=await invoke<{artifacts?:{path:string}[];renderer_status?:string;dataset_sha256?:string;report_dataset_sha256?:string}>('energy_report',{path:request.path,project:request.project,a,b,destination,typstDir:typstDir.trim()||null,htmlOnly,portableZip});
+    output={destination,files:portableZip?[]:(artifacts.artifacts??[]).map(a=>a.path),renderer_status:artifacts.renderer_status??'Portable package completed',message:portableZip?'Portable A/B evidence ZIP completed at the selected path.':'All listed products were finalized and integrity checked.',request_binding:binding,dataset_sha256:artifacts.dataset_sha256??artifacts.report_dataset_sha256};
+    if(mounted.current)setReportCompletion({documentId:requestDocumentId,projectId:request.project.id,output});
     setMessage(portableZip?'Portable A/B energy evidence and reports exported.':htmlOnly?'HTML, CSV, JSON and SVG reports written; PDF/PNG explicitly not requested.':'Offline HTML, PDF, PNG, CSV, JSON and SVG reports written.');
   });return output;};
-  return {thermalPresentation,copyEnergyDesign,setEnergyObjectLocks,energyDrafts,registerEnergyAuthoringLifecycle,energyAuthoringOpen,setEnergyAuthoringOpen,energyNewOpen,setEnergyNewOpen,commitEnergyTransaction,newEnergy,project,alternative,setAlternative,model,validated,results,climateResults,energyResults,energyLocked,setEnergyLocked,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
+  return {latestReport,referenceDrafts,referenceProgress,importReference,commitReferenceScope,cancelReferenceImport,opening,cancelOpening,projectVerification,sensitivitySnapshots,thermalPresentation,copyEnergyDesign,setEnergyObjectLocks,energyDrafts,registerEnergyAuthoringLifecycle,energyAuthoringOpen,setEnergyAuthoringOpen,energyNewOpen,setEnergyNewOpen,commitEnergyTransaction,newEnergy,project,alternative,setAlternative,model,validated,results,climateResults,energyResults,energyLocked,setEnergyLocked,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
     commit,commitStudy,commitEnergy,commitEnergyMetadata,attachEnergyEvidence,attachWeather,importWeather,importEnergyWeather,startEnergy,energySensitivity,energyReport,traverse,replace,save:()=>runAction(async()=>{await save();},'Save'),saveAs:()=>runAction(async()=>{await save(true);},'Save As'),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');},'Cancel calculation',true),exportEvidence,runAction};
 }

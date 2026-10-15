@@ -213,13 +213,27 @@ pub(crate) fn write_new_evidence_bytes(root: &Path, name: &str, bytes: &[u8]) ->
     Ok(())
 }
 
-fn read_limited(mut source: impl Read, limit: u64) -> Result<Vec<u8>> {
+pub(crate) fn read_limited(mut source: impl Read, limit: u64) -> Result<Vec<u8>> {
     let mut bytes = Vec::new();
     let probe_limit = limit.checked_add(1).context("Read limit overflow")?;
-    source.by_ref().take(probe_limit).read_to_end(&mut bytes)?;
+    let mut limited = source.by_ref().take(probe_limit);
+    let mut buffer = [0u8; 64 * 1024];
+    loop {
+        crate::project_open::checkpoint(0)?;
+        let count = match limited.read(&mut buffer) {
+            Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
+            result => result?,
+        };
+        if count == 0 {
+            break;
+        }
+        bytes.extend_from_slice(&buffer[..count]);
+        crate::project_open::checkpoint(count as u64)?;
+    }
     ensure!(
         bytes.len() as u64 <= limit,
-        "JSON exceeds 64 MiB safety limit"
+        "Evidence exceeds its bounded read limit of {limit} bytes ({} MiB)",
+        limit as f64 / (1024.0 * 1024.0)
     );
     Ok(bytes)
 }
@@ -253,12 +267,57 @@ fn open_limited_file(path: &Path, limit: u64, too_large: &str) -> Result<File> {
 
 /// The actual read stays bounded if an external writer grows the opened file.
 pub fn read_json_bytes(path: &Path) -> Result<Vec<u8>> {
+    read_evidence_bytes(path, MAX_EVIDENCE_FILE_BYTES)
+}
+pub(crate) fn read_evidence_bytes(path: &Path, limit: u64) -> Result<Vec<u8>> {
+    ensure!(
+        limit <= MAX_EVIDENCE_FILE_BYTES,
+        "Evidence read exceeds the shared file bound"
+    );
     let file = open_limited_file(
         path,
-        MAX_EVIDENCE_FILE_BYTES,
-        "JSON exceeds 64 MiB safety limit",
+        limit,
+        &format!(
+            "Evidence exceeds its bounded read limit of {limit} bytes ({} MiB)",
+            limit as f64 / (1024.0 * 1024.0)
+        ),
     )?;
-    read_limited(file, MAX_EVIDENCE_FILE_BYTES)
+    let bytes = read_limited(file, limit)?;
+    crate::project_open::observed_file(path, &bytes_hash(&bytes))?;
+    Ok(bytes)
+}
+
+/// Explicit cooperative checks outside a project-open snapshot, while retaining
+/// the same checked Windows file handle, byte limit and observed-content binding.
+pub(crate) fn read_evidence_bytes_checked(
+    path: &Path,
+    limit: u64,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<Vec<u8>> {
+    checkpoint(0)?;
+    ensure!(
+        limit <= MAX_EVIDENCE_FILE_BYTES,
+        "Evidence read exceeds the shared file bound"
+    );
+    let file = open_limited_file(
+        path,
+        limit,
+        &format!(
+            "Evidence exceeds its bounded read limit of {limit} bytes ({} MiB)",
+            limit as f64 / (1024.0 * 1024.0)
+        ),
+    )?;
+    let bytes = read_limited(
+        CheckpointReader {
+            source: file,
+            checkpoint,
+        },
+        limit,
+    )?;
+    checkpoint(0)?;
+    crate::project_open::observed_file(path, &bytes_hash(&bytes))?;
+    checkpoint(0)?;
+    Ok(bytes)
 }
 
 fn hash_limited(source: &mut impl Read, limit: u64) -> Result<String> {
@@ -268,6 +327,7 @@ fn hash_limited(source: &mut impl Read, limit: u64) -> Result<String> {
     let mut buffer = [0u8; 64 * 1024];
     let mut total = 0u64;
     loop {
+        crate::project_open::checkpoint(0)?;
         let count = match limited.read(&mut buffer) {
             Err(error) if error.kind() == std::io::ErrorKind::Interrupted => continue,
             result => result?,
@@ -278,13 +338,16 @@ fn hash_limited(source: &mut impl Read, limit: u64) -> Result<String> {
         total += count as u64; // bounded by the checked limit + one probe byte
         ensure!(total <= limit, "Evidence file too large");
         digest.update(&buffer[..count]);
+        crate::project_open::checkpoint(count as u64)?;
     }
     Ok(format!("{:x}", digest.finalize()))
 }
 
-fn evidence_file_hash(path: &Path) -> Result<String> {
+pub(crate) fn evidence_file_hash(path: &Path) -> Result<String> {
     let mut file = open_limited_file(path, MAX_EVIDENCE_FILE_BYTES, "Evidence file too large")?;
-    hash_limited(&mut file, MAX_EVIDENCE_FILE_BYTES)
+    let digest = hash_limited(&mut file, MAX_EVIDENCE_FILE_BYTES)?;
+    crate::project_open::observed_file(path, &digest)?;
+    Ok(digest)
 }
 
 pub fn read_json<T: DeserializeOwned>(path: &Path) -> Result<T> {
@@ -493,6 +556,172 @@ pub fn promote_weather(source: &Path, project: &Path, id: &str) -> Result<()> {
 pub(crate) fn promote_attachment(source: &Path, project: &Path, id: &str) -> Result<()> {
     promote_evidence(source, project, "attachments", id)
 }
+/// Reference identities come from an independently checked manifest, never a
+/// seal encountered later during copying. Limits are per member, in bytes.
+pub(crate) type BoundReferenceMembers = BTreeMap<String, (String, u64)>;
+
+fn verify_bound_reference_seal(
+    root: &Path,
+    members: &BoundReferenceMembers,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<Checksums> {
+    checkpoint(0)?;
+    ensure!(
+        !members.is_empty() && members.len() <= 124,
+        "Invalid bound reference member count"
+    );
+    let expected: BTreeMap<_, _> = members
+        .iter()
+        .map(|(name, (digest, _))| (name.clone(), digest.clone()))
+        .collect();
+    let checksums: Checksums = serde_json::from_slice(&read_evidence_bytes_checked(
+        &regular_child(root, "checksums.json")?,
+        64 * 1024,
+        checkpoint,
+    )?)?;
+    ensure!(
+        checksums.schema_version == "0.1.0" && checksums.sha256 == expected,
+        "Reference seal differs from bound manifest members or digests"
+    );
+    // Only independently declared members are opened; an unexpected seal entry
+    // cannot cause unrelated file reads, even after a source replacement.
+    for (name, (digest, limit)) in members {
+        checkpoint(0)?;
+        ensure!(
+            *limit <= MAX_EVIDENCE_FILE_BYTES,
+            "Bound reference member exceeds archive limit"
+        );
+        let path = regular_child(root, name)?;
+        let file = open_limited_file(
+            &path,
+            *limit,
+            "Bound reference member exceeds declared byte limit",
+        )?;
+        let actual = hash_limited(
+            &mut CheckpointReader {
+                source: file,
+                checkpoint: &mut *checkpoint,
+            },
+            *limit,
+        )?;
+        crate::project_open::observed_file(&path, &actual)?;
+        ensure!(
+            actual == *digest,
+            "Reference content differs from bound manifest: {name}"
+        );
+    }
+    Ok(checksums)
+}
+
+/// Exact-bound reference promotion uses streaming 64 KiB checks and a checked
+/// staging directory. The manifest of the portable project is never written.
+pub(crate) fn promote_reference_bound(
+    source: &Path,
+    project: &Path,
+    id: &str,
+    members: &BoundReferenceMembers,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<()> {
+    Uuid::parse_str(id).context("Invalid reference identifier")?;
+    verify_bound_reference_seal(source, members, checkpoint)?;
+    let (references, _destination_guards) =
+        create_checked_directories(project, Path::new("references"))?;
+    let target = references.join(id);
+    if fs::symlink_metadata(&target).is_ok() {
+        let _existing_guard = DirectoryGuard::open(&target)?;
+        verify_bound_reference_seal(&target, members, checkpoint)?;
+        return Ok(());
+    }
+    let temporary = references.join(format!(".pending-{}", Uuid::new_v4()));
+    fs::create_dir(&temporary)?;
+    let files = members
+        .iter()
+        .map(|(name, (_, limit))| (name.as_str(), *limit))
+        .chain(std::iter::once(("checksums.json", 64 * 1024)));
+    for (name, limit) in files {
+        checkpoint(0)?;
+        let relative = relative_path(name)?;
+        let destination = temporary.join(&relative);
+        let parent = relative.parent().unwrap_or_else(|| Path::new(""));
+        let (_parent, _parent_guards) = create_checked_directories(&temporary, parent)?;
+        let source = open_limited_file(
+            &regular_child(source, name)?,
+            limit,
+            "Bound reference member exceeds declared byte limit",
+        )?;
+        let mut destination = OpenOptions::new()
+            .create_new(true)
+            .write(true)
+            .open(destination)?;
+        copy_bounded(
+            &mut CheckpointReader {
+                source,
+                checkpoint: &mut *checkpoint,
+            },
+            &mut destination,
+            limit,
+        )?;
+        destination.sync_all()?;
+        checkpoint(0)?;
+    }
+    verify_bound_reference_seal(&temporary, members, checkpoint)?;
+    checkpoint(0)?;
+    fs::rename(temporary, target)?;
+    Ok(())
+}
+
+struct CheckpointReader<'a, R, F> {
+    source: R,
+    checkpoint: &'a mut F,
+}
+impl<R: Read, F: FnMut(u64) -> Result<()>> Read for CheckpointReader<'_, R, F> {
+    fn read(&mut self, buffer: &mut [u8]) -> std::io::Result<usize> {
+        (self.checkpoint)(0).map_err(std::io::Error::other)?;
+        let length = buffer.len().min(64 * 1024);
+        let count = self.source.read(&mut buffer[..length])?;
+        (self.checkpoint)(count as u64).map_err(std::io::Error::other)?;
+        Ok(count)
+    }
+}
+
+fn verify_seal_checked(
+    root: &Path,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<Checksums> {
+    let checksums_path = regular_child(root, "checksums.json")?;
+    let file = open_limited_file(
+        &checksums_path,
+        MAX_EVIDENCE_FILE_BYTES,
+        "Evidence file too large",
+    )?;
+    let bytes = read_limited(
+        CheckpointReader {
+            source: file,
+            checkpoint,
+        },
+        MAX_EVIDENCE_FILE_BYTES,
+    )?;
+    crate::project_open::observed_file(&checksums_path, &bytes_hash(&bytes))?;
+    let checksums: Checksums = serde_json::from_slice(&bytes)?;
+    ensure!(
+        checksums.schema_version == "0.1.0" && !checksums.sha256.is_empty(),
+        "Unsupported/empty checksums"
+    );
+    for (name, digest) in &checksums.sha256 {
+        let path = regular_child(root, name)?;
+        let file = open_limited_file(&path, MAX_EVIDENCE_FILE_BYTES, "Evidence file too large")?;
+        let actual = hash_limited(
+            &mut CheckpointReader {
+                source: file,
+                checkpoint,
+            },
+            MAX_EVIDENCE_FILE_BYTES,
+        )?;
+        crate::project_open::observed_file(&path, &actual)?;
+        ensure!(actual == *digest, "Evidence integrity failure: {name}");
+    }
+    Ok(checksums)
+}
 
 /// Also bounds a source which grows after its metadata was inspected. A failed
 /// destination is staging only and must never be promoted by its caller.
@@ -511,14 +740,24 @@ pub fn copy_bounded(
 }
 
 fn promote_evidence(source: &Path, project: &Path, prefix: &str, id: &str) -> Result<()> {
+    promote_evidence_checked(source, project, prefix, id, &mut |_| Ok(()))
+}
+
+fn promote_evidence_checked(
+    source: &Path,
+    project: &Path,
+    prefix: &str,
+    id: &str,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<()> {
     Uuid::parse_str(id).context("Invalid evidence identifier")?;
-    let sums = verify_seal(source)?;
+    let sums = verify_seal_checked(source, checkpoint)?;
     let (runs, _destination_guards) = create_checked_directories(project, Path::new(prefix))?;
     let target = runs.join(id);
     if fs::symlink_metadata(&target).is_ok() {
         let _existing_guard = DirectoryGuard::open(&target)?;
         ensure!(
-            verify_seal(&target)?.sha256 == sums.sha256,
+            verify_seal_checked(&target, checkpoint)?.sha256 == sums.sha256,
             "Evidence identity conflict"
         );
         return Ok(());
@@ -539,12 +778,148 @@ fn promote_evidence(source: &Path, project: &Path, prefix: &str, id: &str) -> Re
             .create_new(true)
             .write(true)
             .open(destination)?;
-        copy_bounded(&mut source, &mut destination, MAX_EVIDENCE_FILE_BYTES)?;
+        copy_bounded(
+            &mut CheckpointReader {
+                source: &mut source,
+                checkpoint,
+            },
+            &mut destination,
+            MAX_EVIDENCE_FILE_BYTES,
+        )?;
         destination.sync_all()?;
+        checkpoint(0)?;
     }
-    verify_seal(&temporary)?;
+    verify_seal_checked(&temporary, checkpoint)?;
+    checkpoint(0)?;
     fs::rename(temporary, target)?;
     Ok(())
+}
+
+#[cfg(test)]
+mod cancellable_reference_promotion_tests {
+    use super::*;
+    #[test]
+    fn explicitly_checked_evidence_read_stops_after_one_64_kib_block() {
+        let root = tempfile::tempdir().unwrap();
+        let path = root.path().join("synthetic.bin");
+        fs::write(&path, vec![3u8; 512 * 1024]).unwrap();
+        let mut observed = 0u64;
+        let error = read_evidence_bytes_checked(&path, 512 * 1024, &mut |count| {
+            assert!(count <= 64 * 1024);
+            observed += count;
+            ensure!(count == 0, "Synthetic cancellation after first read block");
+            Ok(())
+        })
+        .unwrap_err();
+        assert!(error.to_string().contains("Synthetic cancellation"));
+        assert_eq!(observed, 64 * 1024);
+        let original = fs::read(&path).unwrap();
+        assert_eq!(
+            read_evidence_bytes_checked(&path, 512 * 1024, &mut |_| Ok(())).unwrap(),
+            original
+        );
+    }
+    #[test]
+    fn cancellation_interrupts_a_sealed_member_at_a_bounded_read() {
+        let root = tempfile::tempdir().unwrap();
+        let source = root.path().join("source");
+        let destination = root.path().join("project");
+        fs::create_dir(&source).unwrap();
+        fs::create_dir(&destination).unwrap();
+        fs::write(source.join("synthetic.bin"), vec![0u8; 512 * 1024]).unwrap();
+        seal(&source, &["synthetic.bin"]).unwrap();
+        let mut observed = 0;
+        let members = BoundReferenceMembers::from([(
+            "synthetic.bin".into(),
+            (
+                evidence_file_hash(&source.join("synthetic.bin")).unwrap(),
+                512 * 1024,
+            ),
+        )]);
+        let result = promote_reference_bound(
+            &source,
+            &destination,
+            &Uuid::new_v4().to_string(),
+            &members,
+            &mut |bytes| {
+                assert!(bytes <= 64 * 1024);
+                observed += bytes;
+                ensure!(observed < 128 * 1024, "Synthetic cancellation checkpoint");
+                Ok(())
+            },
+        );
+        assert!(result
+            .unwrap_err()
+            .to_string()
+            .contains("Synthetic cancellation"));
+        assert!(observed < 192 * 1024);
+        assert!(!destination.join("references").exists());
+    }
+
+    #[test]
+    fn bound_copy_rejects_a_consistent_reseal_between_verification_and_copy() {
+        let root = tempfile::tempdir().unwrap();
+        let source = root.path().join("source");
+        let destination = root.path().join("project");
+        fs::create_dir(&source).unwrap();
+        fs::create_dir(&destination).unwrap();
+        let original = vec![3u8; 4096];
+        let changed = vec![7u8; 4096];
+        fs::write(source.join("synthetic.bin"), &original).unwrap();
+        seal(&source, &["synthetic.bin"]).unwrap();
+        let members =
+            BoundReferenceMembers::from([("synthetic.bin".into(), (bytes_hash(&original), 4096))]);
+        let mut read_original = false;
+        let mut mutated = false;
+        let id = Uuid::new_v4().to_string();
+        let error = promote_reference_bound(&source, &destination, &id, &members, &mut |count| {
+            if count == original.len() as u64 {
+                read_original = true;
+            } else if read_original && !mutated && count == 0 {
+                // At EOF after the original payload's hash update, replace
+                // both bytes and seal coherently. No timing/sleep race.
+                fs::write(source.join("synthetic.bin"), &changed)?;
+                write_json(
+                    &source.join("checksums.json"),
+                    &Checksums {
+                        schema_version: "0.1.0".into(),
+                        sha256: BTreeMap::from([("synthetic.bin".into(), bytes_hash(&changed))]),
+                    },
+                )?;
+                mutated = true;
+            }
+            Ok(())
+        })
+        .unwrap_err();
+        assert!(mutated, "Mutation checkpoint was never exercised");
+        assert!(error.to_string().contains("bound manifest"), "{error:#}");
+        assert!(!destination.join("references").join(id).exists());
+        assert!(!destination.join("project.json").exists());
+    }
+
+    #[test]
+    fn existing_reference_target_cannot_substitute_its_own_valid_seal() {
+        let root = tempfile::tempdir().unwrap();
+        let source = root.path().join("source");
+        let destination = root.path().join("project");
+        fs::create_dir(&source).unwrap();
+        fs::create_dir(&destination).unwrap();
+        let original = b"original";
+        fs::write(source.join("synthetic.bin"), original).unwrap();
+        seal(&source, &["synthetic.bin"]).unwrap();
+        let members =
+            BoundReferenceMembers::from([("synthetic.bin".into(), (bytes_hash(original), 8))]);
+        let id = Uuid::new_v4().to_string();
+        promote_reference_bound(&source, &destination, &id, &members, &mut |_| Ok(())).unwrap();
+        let target = destination.join("references").join(&id);
+        fs::write(target.join("synthetic.bin"), b"modified").unwrap();
+        seal(&target, &["synthetic.bin"]).unwrap();
+        let error = promote_reference_bound(&source, &destination, &id, &members, &mut |_| Ok(()))
+            .unwrap_err();
+        assert!(error.to_string().contains("bound manifest"), "{error:#}");
+        assert!(!destination.join("project.json").exists());
+        assert_eq!(fs::read(source.join("synthetic.bin")).unwrap(), original);
+    }
 }
 
 pub fn zip_directory(root: &Path, files: &[String], destination: &Path) -> Result<()> {

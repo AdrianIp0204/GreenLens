@@ -50,3 +50,26 @@ test('batch failure and changed draft checks do not mutate source or history, an
   const edit=await history.editEnergyBatch(p,'A',batch,'Accepted',configure),undo=await history.traverse(edit.project,'undo',validate,undefined,undefined,undefined,undefined,undefined,configure);assert.equal(history.future.length,1);
   await history.editEnergyBatch(undo.project,'A',{designs:{A:{model:{value:3},study:null}}},'Another accepted',configure);assert.equal(history.future.length,0);assert.equal(history.past.length,1);
 });
+
+test('architectural scope undo restores historical binding while preserving later reference revisions and simulation evidence',async()=>{
+  const history=new DocumentHistory(),p=project();
+  p.architecture={schema_version:'greenlens.architectural-project.v1',assets:[{id:'source-first',revision_sha256:'revision-first'}],active_asset_id:'source-first',scope:null};
+  const calls=[],applyScope=async(p,scope,restoring)=>{calls.push({scope:structuredClone(scope),restoring});p.architecture.scope=scope;return p;};
+  const candidate={title:'Original declared portion',reference_revision_sha256:'revision-first',design_model_sha256:{A:'accepted-model-first'},mappings:[{occurrence_id:'first-occurrence',status:'mapped'}]};
+  const edited=await history.editScope(p,'A',candidate,'Declared scope',applyScope);
+  assert.equal(history.past.length,1);assert.equal(history.past[0].kind,'architectural_scope');assert.notEqual(documentSignature(edited.project),documentSignature(p));assert.equal(p.architecture.scope,null);
+  const later=structuredClone(edited.project);later.architecture.assets.push({id:'source-later',revision_sha256:'revision-later'});later.architecture.active_asset_id='source-later';later.energy.runs.push({id:'energy-later'});later.energy.weather.push({id:'weather-later'});later.energy.attachments=[{id:'attachment-later'}];later.energy.workbench={sensitivity:[{id:'sensitivity-later'}]};later.climate.runs.push({id:'climate-later'});later.runs.push({id:'static-later'});
+  const undo=await history.traverse(later,'undo',validate,undefined,undefined,undefined,undefined,undefined,undefined,applyScope);
+  assert.equal(undo.project.architecture.scope,null);assert.deepEqual(undo.project.architecture.assets,later.architecture.assets);assert.equal(undo.project.architecture.active_asset_id,'source-later');assert.deepEqual(undo.project.energy,later.energy);assert.deepEqual(undo.project.runs,later.runs);assert.deepEqual(undo.project.climate,later.climate);
+  const redo=await history.traverse(undo.project,'redo',validate,undefined,undefined,undefined,undefined,undefined,undefined,applyScope);
+  assert.deepEqual(redo.project,later);assert.equal(redo.project.architecture.scope.reference_revision_sha256,'revision-first','redo does not silently rebind to the newer source');assert.deepEqual(calls.map(c=>c.restoring),[false,true,true]);
+});
+
+test('scope rejection and rejected historical restore leave source and both history stacks unchanged',async()=>{
+  const history=new DocumentHistory(),p=project();p.architecture={assets:[{id:'reference'}],active_asset_id:'reference',scope:null};const before=structuredClone(p);
+  await assert.rejects(history.editScope(p,'A',{title:'Invalid'},'Invalid scope',async(p,scope)=>{p.architecture.scope=scope;throw Error('Rust scope validation rejected');}),/Rust scope validation rejected/);assert.deepEqual(p,before);assert.equal(history.past.length,0);assert.equal(history.future.length,0);
+  const apply=async(p,scope)=>{p.architecture.scope=scope;return p;};const edited=await history.editScope(p,'A',{title:'First'},'First scope',apply);
+  await assert.rejects(history.traverse(edited.project,'undo',validate,undefined,undefined,undefined,undefined,undefined,undefined,async()=>{throw Error('Retained source integrity failed');}),/Retained source integrity failed/);assert.equal(history.past.length,1);assert.equal(history.future.length,0);assert.deepEqual(edited.project.architecture.scope,{title:'First'});
+  const unchanged=await history.editScope(edited.project,'A',{title:'First'},'Identical',apply);assert.equal(unchanged.changed,false);assert.equal(history.past.length,1);
+  const undo=await history.traverse(edited.project,'undo',validate,undefined,undefined,undefined,undefined,undefined,undefined,apply);assert.equal(history.future.length,1);await history.editScope(undo.project,'A',{title:'New scope'},'New scope',apply);assert.equal(history.future.length,0);assert.equal(history.past.length,1);
+});

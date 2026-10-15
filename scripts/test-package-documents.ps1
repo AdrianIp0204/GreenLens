@@ -44,6 +44,12 @@ foreach ($notice in @('Typst-LICENSE.txt','Typst-NOTICE.txt','Typst-assets-NOTIC
     }
 }
 foreach ($required in @(
+    'docs/v0.6-spec.md','docs/v0.6-implementation-plan.md','docs/v0.6-acceptance.md',
+    'docs/v0.6-delivery.md','docs/v0.6-reference-contracts.md','docs/v0.6-intake-licenses.md',
+    'docs/evidence/v0.6/opening-baseline.json','docs/evidence/v0.6/frontend-development-checkpoint.json',
+    'docs/evidence/v0.6/opening-development-checkpoint.json',
+    'schemas/reference-model-v0.6.schema.json','schemas/architectural-scope-v0.6.schema.json',
+    'scripts/reference-synthetic-fixture.mjs','scripts/profile-project-opening.ps1',
     'docs/v0.3-reference-protocol.md','docs/v0.3-engine-investigation.md','docs/v0.3-engine-investigation.json',
     'scripts/annual-validation-plan.json','dependencies/weather.json','docs/v0.3-paired-adapter-integration.md',
     'docs/evidence/v0.3-engine/rust-primary-stream-bridge.json','docs/evidence/v0.3-engine/hammersley-candidate-transport.json',

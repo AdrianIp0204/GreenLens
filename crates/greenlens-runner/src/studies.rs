@@ -343,7 +343,9 @@ pub fn import_weather_asset(
             &Uuid::new_v4().to_string(),
         )?);
     }
-    project.schema_version = if project.energy.is_some() {
+    project.schema_version = if project.architecture.is_some() {
+        "0.6.0"
+    } else if project.energy.is_some() {
         "0.4.0"
     } else {
         "0.3.0"
@@ -373,7 +375,9 @@ pub fn configure(project: &Project, alternative: &str, study: Study) -> Result<P
         .get_or_insert_with(climate::ClimateProject::default)
         .studies
         .insert(alternative.into(), study);
-    result.schema_version = if result.energy.is_some() {
+    result.schema_version = if result.architecture.is_some() {
+        "0.6.0"
+    } else if result.energy.is_some() {
         "0.4.0"
     } else {
         "0.3.0"
@@ -665,10 +669,14 @@ pub fn restore_study(
         match &snapshot.study {
             Some(_) =>
                 snapshot.project_schema_version == "0.3.0"
-                    || (snapshot.project_schema_version == "0.4.0" && project.energy.is_some()),
+                    || (snapshot.project_schema_version == "0.4.0" && project.energy.is_some())
+                    || (snapshot.project_schema_version == "0.6.0"
+                        && project.architecture.is_some()),
             None =>
                 snapshot.project_schema_version == crate::SCHEMA_VERSION
-                    || (snapshot.project_schema_version == "0.4.0" && project.energy.is_some()),
+                    || (snapshot.project_schema_version == "0.4.0" && project.energy.is_some())
+                    || (snapshot.project_schema_version == "0.6.0"
+                        && project.architecture.is_some()),
         },
         "Study history schema and legacy absence marker differ"
     );
@@ -688,7 +696,9 @@ pub fn restore_study(
         })
     {
         restored.climate = None;
-        restored.schema_version = if restored.energy.is_some() {
+        restored.schema_version = if restored.architecture.is_some() {
+            "0.6.0".into()
+        } else if restored.energy.is_some() {
             "0.4.0".into()
         } else {
             snapshot.project_schema_version.clone()

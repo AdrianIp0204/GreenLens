@@ -17,24 +17,47 @@ const host={
   getCurrentWindow:()=>({onCloseRequested:async()=>()=>{}}),
   // Climate fixtures have no thermal drafts; their lifecycle is covered by real DOM tests.
   useEnergyDrafts:()=>({beforeAction:async()=>true}),
+  // These legacy climate fixtures have no architecture. Real reference draft
+  // parsing/guards and Open ordering are covered by their DOM/hook suites.
+  useReferenceDrafts:()=>({beforeAction:async()=>true}),
+  parseReferenceImportDraft:()=>{throw Error('Unexpected reference import in climate-only fixture');},
+  parseReferenceScopeDraft:()=>{throw Error('Unexpected scope edit in climate-only fixture');},
   useThermalPresentation:()=>({}),
   defaultDisplay:()=>({layers:{},objects:{},cameras:{}}),
   fmt:String,ClimateTimeControl:()=>null,ClimateLegend:()=>null,
 };
 globalThis.__greenlensLoadingHost=host;
 globalThis.window={setTimeout,clearTimeout,setInterval,clearInterval};
-async function load(relative){
-  const url=new URL(relative,import.meta.url);
-  const {code}=await transformWithOxc(fs.readFileSync(url,'utf8'),url.pathname,{jsx:{runtime:'automatic'}});
-  const linked=code.replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_q,specifier)=>{
-    if(['react','@tauri-apps/api/core','@tauri-apps/api/window','../viewport/types','../energy/useEnergyDrafts','../energy/thermal-presentation','./AnalysisContent'].includes(specifier))return `const ${binding.replace(/\bas\b/g,':')}=globalThis.__greenlensLoadingHost;`;
-    const target=specifier.startsWith('.')?new URL(specifier,url).href:import.meta.resolve(specifier);
-    if(specifier==='./QualificationStatus')return `const QualificationStatus=globalThis.__greenlensLoadingHost.QualificationStatus;`;
-    if(specifier==='./WeatherCalendarPicker')return `const WeatherCalendarPicker=globalThis.__greenlensLoadingHost.WeatherCalendarPicker;`;
-    return `import ${binding} from ${JSON.stringify(target)};`;
-  }).replace(/import\s+['"][^'"]+\.css['"];?/g,'');
-  return import(`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`);
+const moduleCache=new Map();
+async function moduleUrl(url){
+  if(moduleCache.has(url.href))return moduleCache.get(url.href);
+  const task=(async()=>{
+    const {code}=await transformWithOxc(fs.readFileSync(url,'utf8'),url.pathname,{jsx:{runtime:'automatic'}});
+    let linked=code;
+    for(const match of code.matchAll(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g)){
+      const [,binding,,specifier]=match;let replacement;
+      if(['react','@tauri-apps/api/core','@tauri-apps/api/window','../viewport/types','../energy/useEnergyDrafts','../energy/thermal-presentation','../reference/useReferenceDrafts','../reference/reference-drafts','./AnalysisContent'].includes(specifier))replacement=`const ${binding.replace(/\bas\b/g,':')}=globalThis.__greenlensLoadingHost;`;
+      else if(specifier==='./QualificationStatus')replacement=`const QualificationStatus=globalThis.__greenlensLoadingHost.QualificationStatus;`;
+      else if(specifier==='./WeatherCalendarPicker')replacement=`const WeatherCalendarPicker=globalThis.__greenlensLoadingHost.WeatherCalendarPicker;`;
+      else{
+        let target;
+        if(specifier.startsWith('.')){
+          let resolved=new URL(specifier,url);
+          if(!/\.[a-z]+$/i.test(resolved.pathname))resolved=['.ts','.tsx','.mjs','.js'].map(extension=>new URL(specifier+extension,url)).find(candidate=>fs.existsSync(candidate));
+          assert.ok(resolved,`Resolve actual production dependency ${specifier}`);
+          // Load shared helpers (including report-request) as real source, not
+          // an unrelated climate stub or an extensionless Node file URL.
+          target=/\.tsx?$/.test(resolved.pathname)?await moduleUrl(resolved):resolved.href;
+        }else target=import.meta.resolve(specifier);
+        replacement=`import ${binding} from ${JSON.stringify(target)};`;
+      }
+      linked=linked.replace(match[0],replacement);
+    }
+    linked=linked.replace(/import\s+['"][^'"]+\.css['"];?/g,'');
+    return `data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`;
+  })();moduleCache.set(url.href,task);return task;
 }
+async function load(relative){return import(await moduleUrl(new URL(relative,import.meta.url)));}
 const {useDocument}=await load('../src/workspace/useDocument.ts');
 const {useClimateResults,useClimateAssessment}=await load('../src/workspace/useClimateResults.ts');
 host.QualificationStatus=(await load('../src/workspace/QualificationStatus.tsx')).QualificationStatus;

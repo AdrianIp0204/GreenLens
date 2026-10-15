@@ -27,7 +27,9 @@ pub mod energy_services;
 pub mod energy_weather;
 pub mod energy_workbench;
 pub mod persistence;
+pub mod project_open;
 pub mod qualification;
+pub mod reference;
 mod report;
 pub mod studies;
 #[cfg(test)]
@@ -77,6 +79,8 @@ pub struct Project {
     pub climate: Option<climate::ClimateProject>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub energy: Option<energy::EnergyProject>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub architecture: Option<reference::ArchitecturalProject>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -111,6 +115,11 @@ pub struct ProjectView {
         std::collections::BTreeMap<String, greenlens_core::energy::EnergyAssessment>,
     #[serde(default)]
     pub climate_assessments: std::collections::BTreeMap<String, qualification::RunAssessment>,
+    #[serde(default)]
+    pub project_verification: Option<project_open::ProjectVerificationReceipt>,
+    #[serde(default)]
+    pub energy_sensitivity_sessions:
+        std::collections::BTreeMap<String, energy_sensitivity_workflow::EnergySensitivitySession>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Comparison {
@@ -142,20 +151,29 @@ pub fn example() -> Project {
         display_state: None,
         climate: None,
         energy: None,
+        architecture: None,
     }
 }
 pub fn validate_project(project: &Project) -> Result<()> {
     ensure!(
         (project.schema_version == SCHEMA_VERSION
             && project.climate.is_none()
-            && project.energy.is_none())
+            && project.energy.is_none()
+            && project.architecture.is_none())
             || (project.schema_version == "0.3.0"
                 && project.climate.is_some()
-                && project.energy.is_none())
-            || (project.schema_version == "0.4.0" && project.energy.is_some()),
+                && project.energy.is_none()
+                && project.architecture.is_none())
+            || (project.schema_version == "0.4.0"
+                && project.energy.is_some()
+                && project.architecture.is_none())
+            || (project.schema_version == "0.6.0" && project.architecture.is_some()),
         "Unsupported project schema"
     );
     Uuid::parse_str(&project.id)?;
+    if let Some(extension) = &project.architecture {
+        reference::validate_extension(extension)?;
+    }
     if let Some(display) = &project.display_state {
         display.validate()?;
     }
@@ -368,44 +386,8 @@ fn read_run(root: &Path, summary: &RunSummary) -> Result<RunRecord> {
     Ok(run)
 }
 pub fn open_project(path: &Path) -> Result<ProjectView> {
-    let manifest = regular_child(path, "project.json")?;
-    let bytes = read_json_bytes(&manifest)?;
-    let revision = bytes_hash(&bytes);
-    let project: Project = serde_json::from_slice(&bytes)?;
-    validate_project(&project)?;
-    let results = project
-        .runs
-        .iter()
-        .map(|s| read_run(path, s))
-        .collect::<Result<Vec<_>>>()?;
-    let climate_results = if let Some(extension) = &project.climate {
-        climate::verify_project_evidence(path, extension)?;
-        extension
-            .runs
-            .iter()
-            .map(|run| climate::read_result_metadata(path, run))
-            .collect::<Result<Vec<_>>>()?
-    } else {
-        vec![]
-    };
-    let energy_results = if let Some(extension) = &project.energy {
-        energy::load_project_evidence(path, extension)?
-    } else {
-        vec![]
-    };
-    let energy_assessments = energy_services::assessments(&project, &energy_results)?;
-    energy_sensitivity_workflow::evidence_members(path, &project)?;
-    let climate_assessments =
-        qualification::assessments_for_verified_view(&project, &climate_results)?;
-    Ok(ProjectView {
-        project,
-        revision,
-        results,
-        climate_results,
-        energy_results,
-        energy_assessments,
-        climate_assessments,
-    })
+    let admitted = project_open::admit_project(path)?;
+    project_open::verify_admitted_project(path, &admitted, Arc::new(AtomicBool::new(false)), |_| {})
 }
 pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> Result<ProjectView> {
     validate_project(project)?;
@@ -421,6 +403,9 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
         energy::verify_project_evidence(path, extension)?;
     }
     energy_sensitivity_workflow::evidence_members(path, project)?;
+    if let Some(extension) = &project.architecture {
+        reference::verify_project(path, extension, &AtomicBool::new(false))?;
+    }
     check_revision(path, expected)?;
     atomic_json(path, project)?;
     open_project(path)
@@ -458,7 +443,8 @@ fn copy_project(
         }
     } else {
         ensure!(
-            project.runs.is_empty()
+            project.architecture.is_none()
+                && project.runs.is_empty()
                 && project
                     .climate
                     .as_ref()
@@ -494,6 +480,9 @@ fn copy_project(
             energy::copy_project_evidence(source, destination, extension)?;
         }
         energy_sensitivity_workflow::copy_evidence(source, destination, project)?;
+        if let Some(extension) = &project.architecture {
+            reference::copy_evidence(source, destination, extension)?;
+        }
     }
     let mut project = project.clone();
     if let Some((scratch, run)) = pending {
@@ -644,7 +633,12 @@ impl CompletedRunRef<'_> {
                 }
                 promote_run(scratch, destination, &run.id)?;
                 energy::append_run(extension, run)?;
-                project.schema_version = "0.4.0".into();
+                project.schema_version = if project.architecture.is_some() {
+                    "0.6.0"
+                } else {
+                    "0.4.0"
+                }
+                .into();
             }
             Self::Climate(run) => {
                 let retained = climate::read_run_directory(scratch)?;
@@ -666,7 +660,9 @@ impl CompletedRunRef<'_> {
                 }
                 promote_run(scratch, destination, &run.id)?;
                 climate::append_run(extension, run)?;
-                project.schema_version = if project.energy.is_some() {
+                project.schema_version = if project.architecture.is_some() {
+                    "0.6.0"
+                } else if project.energy.is_some() {
                     "0.4.0"
                 } else {
                     "0.3.0"

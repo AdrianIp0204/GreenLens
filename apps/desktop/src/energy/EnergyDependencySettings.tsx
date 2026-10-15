@@ -24,12 +24,12 @@ export default function EnergyDependencySettings({settings,disabled=false}:Props
   };
   const current=result?.key===key?result.value:null;
   const pathField=(field:keyof EnergyDependencyPaths,label:string)=><label>{label}<input value={paths[field]} disabled={disabled} spellCheck={false} autoComplete="off" placeholder="Pinned installation default" onChange={e=>settings.setPath(field,e.target.value)}/></label>;
-  return <section aria-label="Local energy dependencies">
+  return <section className="energy-dependency-settings" aria-label="Local energy dependencies">
     <h3>Local installations</h3>
     <p className="energy-note">Directory settings stay on this machine, outside the project and exports. Empty fields use the separately installed pinned defaults.</p>
-    {pathField('engineDir','EnergyPlus directory')}{pathField('typstDir','Typst directory')}
-    <button disabled={disabled||busy} onClick={()=>void check()}>{busy?'Checking installation hashes…':'Check local installations'}</button>
-    <button disabled={disabled} onClick={settings.reset}>Use default locations</button>
+    <div className="energy-dependency-paths">{pathField('engineDir','EnergyPlus directory')}{pathField('typstDir','Typst directory')}</div>
+    <div className="energy-inline"><button disabled={disabled||busy} onClick={()=>void check()}>{busy?'Checking installation hashes…':'Check local installations'}</button>
+    <button disabled={disabled} onClick={settings.reset}>Use default locations</button></div>
     {settings.warning&&<p role="alert">{settings.warning}</p>}{error&&<p role="alert">{error}</p>}
     {!current&&!busy&&<p role="status">Installation readiness has not been checked for these settings.</p>}
     {current&&<><p role="status">EnergyPlus: {current.energyplus_ready?'pinned installation ready':'missing or altered'}. Typst and fonts: {current.typst_and_fonts_ready?'pinned installation ready':'missing or altered'}.</p>

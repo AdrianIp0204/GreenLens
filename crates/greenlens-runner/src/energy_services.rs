@@ -492,15 +492,34 @@ fn render_reports_impl(
     let stage = crate::local_root()?
         .join("energy-report-deliveries")
         .join(Uuid::new_v4().to_string());
-    let mut products = if workbench {
-        crate::energy_report_workbench::render(
-            &workbench_report_data(root, project, a, b)?,
+    let workbench_data = if workbench {
+        Some(workbench_report_data(root, project, a, b)?)
+    } else {
+        None
+    };
+    let architecture = crate::energy_report::architectural::prepare_project(
+        root,
+        project,
+        workbench_data.as_ref().map(|d| &d.base).unwrap_or(&data),
+        workbench_data.as_ref().map(|d| d.derived_sha256.as_str()),
+        cancel,
+    )?;
+    let mut products = if let Some(workbench_data) = &workbench_data {
+        crate::energy_report_workbench::render_with_architecture(
+            workbench_data,
             &stage,
             typst,
             cancel,
+            architecture.as_ref(),
         )?
     } else {
-        crate::energy_report::render(&data, &stage, typst, cancel)?
+        crate::energy_report::render_with_architecture(
+            &data,
+            &stage,
+            typst,
+            cancel,
+            architecture.as_ref(),
+        )?
     };
     for item in &project
         .energy

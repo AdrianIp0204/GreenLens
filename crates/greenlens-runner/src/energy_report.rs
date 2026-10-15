@@ -1,5 +1,7 @@
 //! Offline reports from one validated immutable Rust dataset. Imported text is
 //! never a template, command, SVG or path. Rendering establishes no qualification.
+#[path = "energy_report_architectural.rs"]
+pub mod architectural;
 use anyhow::{ensure, Context, Result};
 use greenlens_core::energy::*;
 use greenlens_process::{execute, file_hash, scratch_sizes, Limits, NativeRequest, ProcessOutcome};
@@ -1123,6 +1125,15 @@ pub fn render(
     typst: Option<&TypstConfig>,
     cancel: &AtomicBool,
 ) -> Result<EnergyReportArtifacts> {
+    render_with_architecture(data, destination, typst, cancel, None)
+}
+pub fn render_with_architecture(
+    data: &EnergyReportData,
+    destination: &Path,
+    typst: Option<&TypstConfig>,
+    cancel: &AtomicBool,
+    architecture: Option<&architectural::ArchitecturalReport>,
+) -> Result<EnergyReportArtifacts> {
     data.validate()?;
     let p = data.presentation()?;
     let hash = data.dataset_sha256()?;
@@ -1130,19 +1141,55 @@ pub fn render(
         !cancel.load(Ordering::SeqCst),
         "Report cancelled before writing"
     );
-    let docs = documents(data, &p, &hash)?;
+    let mut docs = documents(data, &p, &hash)?;
+    if let Some(scope) = architecture {
+        scope.validate_binding(data, None)?;
+        for (i, doc) in docs.iter_mut().enumerate() {
+            let mut sections = if i == 1 {
+                scope.detail_sections()?
+            } else {
+                vec![scope.summary()?]
+            };
+            sections.append(&mut doc.sections);
+            doc.sections = sections;
+            architectural::clarify_sections(&mut doc.sections);
+            doc.dataset_sha256 = scope.data.report_sha256.clone();
+        }
+    }
+    let architectural_template = architecture.map(|_| architectural::template(TEMPLATE));
     create_fresh(destination)?;
     let mut result=EnergyReportArtifacts{schema_version:"greenlens.energy-report-artifacts.v0.4".into(),dataset_sha256:hash,renderer_status:"not_requested".into(),renderer_message:"HTML, CSV, JSON and SVG available. PDF/PNG require the separately installed pinned Typst renderer.".into(),typst_executable_sha256:None,template_sha256:sha(TEMPLATE.as_bytes()),renderer_work_id:None,renderer_inputs:BTreeMap::new(),artifacts:vec![],processes:vec![]};
-    let generated = [
-        ("energy-report.json", serde_json::to_vec_pretty(data)?),
-        ("performance.json", serde_json::to_vec_pretty(&p)?),
-        ("performance.csv", csv(&p)?.into_bytes()),
-        ("inputs.csv", inputs_csv(data)?.into_bytes()),
-        ("baseline-model.svg", model_svg(&data.baseline).into_bytes()),
-        ("proposed-model.svg", model_svg(&data.proposed).into_bytes()),
-        ("annual.svg", chart(&p, false).into_bytes()),
-        ("monthly.svg", chart(&p, true).into_bytes()),
+    let mut products = vec![
+        (
+            "energy-report.json".to_string(),
+            serde_json::to_vec_pretty(data)?,
+        ),
+        ("performance.json".into(), serde_json::to_vec_pretty(&p)?),
+        ("performance.csv".into(), csv(&p)?.into_bytes()),
+        ("inputs.csv".into(), inputs_csv(data)?.into_bytes()),
+        (
+            "baseline-model.svg".into(),
+            model_svg(&data.baseline).into_bytes(),
+        ),
+        (
+            "proposed-model.svg".into(),
+            model_svg(&data.proposed).into_bytes(),
+        ),
+        ("annual.svg".into(), chart(&p, false).into_bytes()),
+        ("monthly.svg".into(), chart(&p, true).into_bytes()),
     ];
+    if let Some(scope) = architecture {
+        products.extend(scope.products()?);
+        result.schema_version = "greenlens.energy-report-artifacts.v0.6".into();
+        result.dataset_sha256 = scope.data.report_sha256.clone();
+        result.template_sha256 = sha(architectural_template.as_ref().unwrap().as_bytes());
+    }
+    let names = products.iter().map(|(n, _)| n.clone()).collect::<Vec<_>>();
+    let generated = names
+        .iter()
+        .map(String::as_str)
+        .zip(products.into_iter().map(|(_, b)| b))
+        .collect::<Vec<_>>();
     for (name, bytes) in &generated {
         write_new(&destination.join(name), bytes)?;
         result.artifacts.push(artifact(destination, name)?);
@@ -1157,7 +1204,27 @@ pub fn render(
     }
     check_budget(destination)?;
     if let Some(config) = typst {
-        let outcome = render_native(&docs, &generated, destination, config, cancel, &mut result);
+        let outcome = if let Some(template) = &architectural_template {
+            render_native_documents(
+                NativeDocuments {
+                    docs: &docs,
+                    generated: &generated,
+                    template,
+                    stages: &[
+                        ("assessment", 0, false),
+                        ("input-appendix", 1, false),
+                        ("performance", 2, false),
+                        ("performance-pages", 2, true),
+                    ],
+                },
+                destination,
+                config,
+                cancel,
+                &mut result,
+            )
+        } else {
+            render_native(&docs, &generated, destination, config, cancel, &mut result)
+        };
         if let Err(error) = outcome {
             result.renderer_status = if cancel.load(Ordering::SeqCst) {
                 "cancelled"

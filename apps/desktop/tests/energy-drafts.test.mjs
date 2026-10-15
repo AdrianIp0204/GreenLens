@@ -19,7 +19,7 @@ async function load(filename){
     let linked=code.replace(/import\s+['"][^'"]+\.css['"];?/g,'');
     for(const m of [...code.matchAll(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g)]){
       const spec=m[3];let target;
-      if(spec==='@tauri-apps/api/core')target='data:text/javascript,'+encodeURIComponent('export const invoke=(...a)=>globalThis.__draftIPC(...a);export const isTauri=()=>true;');
+      if(spec==='@tauri-apps/api/core')target='data:text/javascript,'+encodeURIComponent('export const invoke=(...a)=>globalThis.__draftIPC(...a);export const isTauri=()=>true;export class Channel { onmessage=()=>{}; }');
       else if(spec==='@tauri-apps/api/window')target='data:text/javascript,'+encodeURIComponent('export const getCurrentWindow=()=>globalThis.__draftWindow;');
       else if(spec.startsWith('.')){
         let resolved=path.resolve(path.dirname(filename),spec);
@@ -34,17 +34,23 @@ async function load(filename){
 const src=fileURLToPath(new URL('../src/',import.meta.url));
 const {default:Editor}=await import(await load(path.join(src,'energy/ThermalEditor.tsx')));
 const {default:Guard}=await import(await load(path.join(src,'energy/EnergyDraftGuard.tsx')));
+const {default:ReferenceGuard}=await import(await load(path.join(src,'reference/ReferenceDraftGuard.tsx')));
 const {useDocument}=await import(await load(path.join(src,'workspace/useDocument.ts')));
 const {default:Workspace}=await import(await load(path.join(src,'energy/EnergyWorkspace.tsx')));
 const {EnergyDraftStore,fieldEdit,structuredEdit,cleanDraft,draftCandidate}=await import(await load(path.join(src,'energy/drafts.ts')));
 const inputs=JSON.parse(fs.readFileSync(new URL('../../../examples/energy/revision1-inputs.json',import.meta.url)));
 const daylight=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
-let doc,root,calls,rejectEdit=false,closeHandler,disk,fullWorkspace=false,appendEvidenceOnSave=false,metadataGate=null,sceneObjects=false,preflightIssues=[];
+let doc,root,calls,rejectEdit=false,closeHandler,disk,fullWorkspace=false,appendEvidenceOnSave=false,metadataGate=null,sceneObjects=false,preflightIssues=[],referenceImportGate=null,referenceScopeGate=null,reportRuns=false,reportGate=null,reportError=null,saveDestination='test-project';
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 // Real ThermalView follows its WebGL-unavailable branch; no viewport acceptance claim.
 dom.window.HTMLCanvasElement.prototype.getContext=()=>{throw Error('No WebGL context in DOM test');};
-function fixture(){return {schema_version:'0.4.0',id:'draft-fixture',name:'Draft fixture',alternatives:['A','B'].map(id=>({id,model:structuredClone(daylight.model)})),runs:[],energy:{designs:Object.fromEntries(['A','B'].map(id=>[id,{model:structuredClone(inputs.cases[id].model),study:structuredClone(inputs.cases[id].study)}])),weather:[],runs:[],carbon_factor:null,lighting_service_evidence:null}};}
+function fixture(){return {schema_version:'0.4.0',id:'draft-fixture',name:'Draft fixture',alternatives:['A','B'].map(id=>({id,model:structuredClone(daylight.model)})),runs:[],energy:{designs:Object.fromEntries(['A','B'].map(id=>[id,{model:structuredClone(inputs.cases[id].model),study:structuredClone(inputs.cases[id].study)}])),weather:[],runs:reportRuns?[{id:'report-a',alternative_id:'A'},{id:'report-b',alternative_id:'B'}]:[],carbon_factor:null,lighting_service_evidence:null}};}
 function view(p){return{project:structuredClone(p),revision:'test-revision',results:[],climate_results:[],energy_results:[]};}
+const referenceHash=value=>value.repeat(64);
+const referenceAsset={id:'synthetic-reference',path:'references/synthetic/manifest.json',revision_sha256:referenceHash('2'),manifest_sha256:referenceHash('4'),geometry_sha256:referenceHash('3')};
+function referenceManifest(){return{schema_version:'greenlens.reference-model.v1',importer_id:'greenlens.glb-static-triangles/1',source_sha256:referenceHash('1'),revision_sha256:referenceHash('2'),geometry_sha256:referenceHash('3'),options:{scene_index:null,metres_per_source_unit:1,clockwise_rotation_deg:0,translation_m:[0,0,0],declared_north_clockwise_deg:null,conversion:null},source_units:'metres',coordinate_convention:'Right-handed X/Y/Z-up',selected_scene:0,source_node_count:1,source_mesh_count:1,source_material_count:0,source_texture_count:0,occurrences:[{id:'synthetic-occurrence',node_index:0,parent_id:null,label:'Original fixture',node_path:[0],source_mesh_index:0,world_from_mesh:[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],mirrored:false,bounds:{min_m:[0,0,0],max_m:[1,1,0]},triangle_count:1,triangle_area_m2:.5}],materials:[],chunks:[{path:'geometry/00000.bin',sha256:referenceHash('5'),byte_length:88,triangle_count:1}],bounds:{min_m:[0,0,0],max_m:[1,1,0]},triangle_count:1,triangle_area_m2:.5,warnings:[],exclusions:[],storage_policy:'Original synthetic IPC fixture only',resources:{elapsed_ms:1,source_bytes:100,normalized_bytes:88,json_bytes:100,decoded_allocation_estimate_bytes:200}};}
+function referenceContext(project){return{reference_options_sha256:referenceHash('6'),designs:Object.fromEntries(Object.entries(project.energy.designs).map(([id,design])=>[id,{model_input_sha256:referenceHash(id==='A'?'a':'b'),targets:design.model.zones.map(z=>({object_id:z.id,kind:'zone',label:z.name}))}]))};}
+function referenceAssessment(){return{schema_version:'greenlens.architectural-scope-assessment.v1',scope_sha256:referenceHash('7'),report_binding_sha256:referenceHash('8'),relationship:'current',stale_reasons:[],coverage_percent:null,reconciliations:[],unresolved_mapping_count:1,missing_assumption_count:0,disclosure:'Synthetic IPC fixture only'};}
 function Harness(){
   doc=useDocument();const [show,setShow]=React.useState(true),draft=doc.energyDrafts.get(doc.alternative);
   return React.createElement(React.Fragment,null,
@@ -54,12 +60,12 @@ function Harness(){
     ...['Save','Save As','Run','Open','Close','Undo'].map(label=>React.createElement('button',{key:label,onClick:()=>void ({Save:doc.save,'Save As':doc.saveAs,Run:()=>doc.startEnergy(''),Open:()=>doc.replace('Open'),Close:()=>doc.replace('Close'),Undo:()=>doc.traverse('undo')})[label]()},label)),
     show&&fullWorkspace&&React.createElement(Workspace,{doc}),
     show&&!fullWorkspace&&draft&&React.createElement(Editor,{entry:draft,zoneId:draft.structured.model.zones[0].id,disabled:doc.busy||Boolean(doc.energyDrafts.guard),onChange:change=>doc.energyDrafts.update(doc.alternative,change),onApply:()=>doc.energyDrafts.apply(doc.alternative),onDiscard:()=>doc.energyDrafts.discard(doc.alternative)}),
-    React.createElement(Guard,{drafts:doc.energyDrafts}));
+    React.createElement(Guard,{drafts:doc.energyDrafts}),React.createElement(ReferenceGuard,{drafts:doc.referenceDrafts}));
 }
-async function setup({retainCache=false,workspace=false,objects=false}={}){
+async function setup({retainCache=false,workspace=false,objects=false,reports=false}={}){
   fullWorkspace=workspace;
   if(root)await act(()=>root.unmount());if(!retainCache)window.localStorage.clear();
-  calls=[];rejectEdit=false;appendEvidenceOnSave=false;metadataGate=null;disk=fixture();sceneObjects=objects;preflightIssues=[];
+  calls=[];rejectEdit=false;appendEvidenceOnSave=false;metadataGate=null;reportRuns=reports;reportGate=null;reportError=null;saveDestination='test-project';disk=fixture();sceneObjects=objects;preflightIssues=[];referenceImportGate=null;referenceScopeGate=null;
   globalThis.__draftWindow={onCloseRequested:async cb=>{closeHandler=cb;return()=>{};},destroy:async()=>calls.push(['destroy'])};
   globalThis.__draftIPC=async(command,args)=>{
     calls.push([command,args]);
@@ -67,9 +73,16 @@ async function setup({retainCache=false,workspace=false,objects=false}={}){
     if(command==='study_defaults')return{calculation:{mode:'static_overcast'}};
     if(command==='validate')return {...daylight,model:args.model};
     if(command==='energy_validate')return{model:args.model,surfaces:[],gross_floor_area_m2:1};
-    if(command==='energy_default_runs')return {};
+    if(command==='energy_default_runs')return reportRuns?{A:'report-a',B:'report-b'}:{};
+    if(command==='energy_result')return null;
+    if(command==='energy_report_preflight')return{schema_version:'greenlens.energy-attachment-preflight.v1',ready:true,items:[]};
+    if(command==='energy_sensitivity_export_selection')return{included_session_id:null,included_run_ids:['report-a','report-b'],excluded_session_ids:[],policy:'Original synthetic retained-run selection'};
+    if(command==='dialog_energy_report')return 'synthetic-report-output';
+    if(command==='energy_report'){if(reportGate)await reportGate;if(reportError)throw reportError;return{artifacts:[{path:'executive.html'}],renderer_status:'Synthetic IPC completion only',dataset_sha256:'d'.repeat(64)};}
+    if(command==='energy_open_report')return;
     if(command==='energy_scene')return{schema_version:'greenlens.thermal-scene.v1',model_sha256:'synthetic',coordinates:'world ENU',objects:sceneObjects?args.model.zones.flatMap(z=>[{id:z.id,label:z.name,kind:'zone',zone_id:z.id,storey:z.storey,polygons_m:[]},...z.surfaces.map(s=>({id:s.id,label:s.id,kind:'surface',zone_id:z.id,storey:z.storey,polygons_m:[]})),...z.windows.flatMap(w=>[{id:w.id,label:w.id,kind:'window',zone_id:z.id,storey:z.storey,polygons_m:[]},...(w.overhang?[{id:`overhang:${w.id}`,label:`Overhang ${w.id}`,kind:'overhang',zone_id:z.id,storey:z.storey,polygons_m:[]}]:[])])]):[]};
     if(command==='energy_preflight')return{schema_version:'greenlens.thermal-preflight.v1',can_prepare:false,coverage:'Synthetic issue-routing fixture; no native validation claim.',issues:preflightIssues};
+    if(command==='energy_dependencies')return{schema_version:'greenlens.energy-dependencies.v1',energyplus_ready:true,typst_and_fonts_ready:true,issues:[]};
     if(command==='energy_metadata'){if(metadataGate)await metadataGate;if(rejectEdit)throw Error('Synthetic report settings rejection');const next=structuredClone(args.project);if(args.change.kind==='report_issue'){const m=args.change.metadata;if(m&&(!m.title||!m.revision||m.issue_date&&!/^\d{4}-\d{2}-\d{2}$/.test(m.issue_date)))throw Error('Synthetic explicit report issue validation rejection');next.energy.workbench={...(next.energy.workbench??{locks:{},calendars:{}}),report_metadata:m};}else Object.assign(next.energy,{carbon_factor:args.change.carbon_factor,lighting_service_evidence:args.change.lighting_service_evidence});return next;}
     if(command==='energy_new'){
       if(rejectEdit)throw Error('Synthetic new-project validation rejection');
@@ -90,9 +103,20 @@ async function setup({retainCache=false,workspace=false,objects=false}={}){
       if(rejectEdit)throw Error('Synthetic validator rejected the cooling input');
       const next=structuredClone(args.project);next.energy.designs[args.alternativeId]={model:args.model,study:args.study};return next;
     }
-    if(command==='dialog_save_project')return 'test-project';
+    if(command==='dialog_save_project')return saveDestination;
     if(command==='save_project_as'||command==='save_project'){disk=structuredClone(args.project);if(appendEvidenceOnSave){disk.energy.runs.push({id:'completed-after-edit'});disk.energy.weather.push({id:'weather-after-edit'});}return view(disk);}
     if(command==='dialog_open_project')return 'other-project';
+    if(command==='admit_project')return{schema_version:'greenlens.project-admission.v1',project_id:'other-project-id',project_name:'Other project',manifest_sha256:'f'.repeat(64),static_runs:0,climate_runs:0,energy_runs:0,evidence_checked:false};
+    if(command==='prepare_project_verification')return 1;
+    if(command==='verify_project')return view({...fixture(),id:'other-project-id'});
+    if(command==='cancel_project_verification')return;
+    if(command==='dialog_open_reference_glb')return 'original-synthetic.glb';
+    if(command==='reference_import'){if(referenceImportGate)await referenceImportGate;const next=structuredClone(args.project);next.architecture={schema_version:'greenlens.architectural-project.v1',assets:[referenceAsset],active_asset_id:referenceAsset.id,scope:next.architecture?.scope??null};return view(next);}
+    if(command==='reference_manifest')return referenceManifest();
+    if(command==='reference_chunk')return[{occurrence_index:0,material_index:null,vertices_m:[[0,0,0],[1,0,0],[0,1,0]]}];
+    if(command==='reference_scope_context')return referenceContext(args.project);
+    if(command==='reference_scope_assess')return referenceAssessment();
+    if(command==='reference_scope_apply'){if(referenceScopeGate)await referenceScopeGate;const next=structuredClone(args.project);next.architecture.scope=args.scope;return next;}
     if(command==='open_project')return view({...fixture(),id:'other-project-id'});
     if(command==='energy_start')return{id:'running-test',state:'queued',log:[]};
     if(command==='cancel_and_wait')return null;
@@ -123,8 +147,8 @@ test('real editor retains structured, incomplete numeric and invalid raw drafts 
 test('Save, Save As, Run, Open and Close cannot ignore drafts; Cancel retains edits',async()=>{
   for(const action of ['Save','Save As','Run','Open','Close']){
     await setup();await editName('Unapplied');calls=[];
-    await click(action);assert.ok(dialog());assert.equal(calls.length,0);
-    await click('Cancel',dialog());assert.equal(dialog(),null);assert.equal(input('Name').value,'Unapplied');assert.equal(calls.length,0);
+    await click(action);assert.ok(dialog());assert.deepEqual(calls.map(c=>c[0]),action==='Open'?['dialog_open_project','admit_project']:[]);
+    await click('Cancel',dialog());assert.equal(dialog(),null);assert.equal(input('Name').value,'Unapplied');assert.deepEqual(calls.map(c=>c[0]),action==='Open'?['dialog_open_project','admit_project']:[]);assert.equal(count('verify_project'),0);
   }
 });
 test('Apply preserves rejected text/history, then validates A and B explicitly before Save',async()=>{
@@ -198,10 +222,10 @@ test('grouped A/B geometry has one undo entry; failed restore preserves both sta
   await act(async()=>{await doc.traverse('redo');});assert.equal(doc.project.energy.designs.A.model.name,'Grouped A');assert.equal(doc.project.energy.designs.B.model.name,'Grouped B');assert.deepEqual(doc.project.energy.runs,[{id:'completed-after-edit'}]);
 });
 
-test('an active geometry modal blocks native close and other document actions before IPC',async()=>{
+test('an active geometry modal blocks document mutation and verification while allowing cheap Open admission',async()=>{
   await setup();await act(()=>doc.setEnergyAuthoringOpen(true));calls=[];
   for(const action of ['Save','Save As','Run','Open','Close','Undo'])await click(action);
-  await act(async()=>closeHandler({preventDefault(){}}));assert.equal(calls.length,0);assert.match(doc.error,/geometry operation/);
+  await act(async()=>closeHandler({preventDefault(){}}));assert.deepEqual(calls.map(c=>c[0]),['dialog_open_project','admit_project']);assert.equal(count('verify_project'),0);assert.match(doc.error,/geometry operation/);
   await act(()=>doc.setEnergyAuthoringOpen(false));await click('Save');assert.equal(count('save_project_as'),1);
 });
 
@@ -303,6 +327,77 @@ test('scene overhang aliases preserve the original selection identity and DX rem
   await setup({workspace:true,objects:true});await click('Proposed B');const accepted=structuredClone(doc.project),zone=doc.project.energy.designs.B.model.zones.find(z=>z.windows.some(w=>w.overhang)),window=zone.windows.find(w=>w.overhang);
   const id=`overhang:${window.id}`,item=[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith(`${id} · overhang`));assert.ok(item);await act(()=>item.click());assert.equal(doc.thermalPresentation.value.selected,id);assert.match(document.querySelector('[aria-label="Inspector target"]').textContent,new RegExp(id));assert.equal(document.activeElement.dataset.thermalKind,'overhang');assert.equal(document.activeElement.dataset.thermalId,window.id);
   await click('Baseline A');await click('Proposed B');assert.match(document.querySelector('[aria-label="Inspector target"]').textContent,new RegExp(id));await click('systems');await click('Remove DX and make zone unconditioned');assert.ok(button('Add explicit synthetic DX system'));await click('Add explicit synthetic DX system');assert.ok(button('Remove DX and make zone unconditioned'));assert.equal(doc.energyDrafts.get('B').dirty,true);assert.equal(doc.history.past.length,0);assert.deepEqual(doc.project,accepted);assert.equal(count('energy_start'),0);
+});
+
+test('actual workspace has one searchable object hierarchy with zone properties and a reachable thermal lock',async()=>{
+  await setup({workspace:true,objects:true});const accepted=structuredClone(doc.project),zone=doc.project.energy.designs.A.model.zones[2];
+  assert.equal(document.querySelectorAll('[role="tree"][aria-label="Thermal objects"]').length,1);assert.equal(document.querySelector('.energy-zones'),null);
+  const item=[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith(`${zone.id} · zone`));await act(()=>item.click());
+  assert.equal(doc.thermalPresentation.value.selected,zone.id);assert.equal(input('Name').value,zone.name);assert.equal(doc.energyDrafts.get('A').section,'zone');
+  await click('Lock thermal inputs');assert.equal(doc.energyLocked,true);assert.equal(input('Name').matches(':disabled'),true);assert.equal(button('Create / edit geometry…').disabled,true);
+  await click('Unlock thermal inputs');assert.equal(input('Name').matches(':disabled'),false);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);
+});
+
+test('actual workspace readiness and job panels remain compact, keyboard dismissible and do not mutate scientific inputs',async()=>{
+  await setup({workspace:true,objects:true});const accepted=structuredClone(doc.project),workspace=document.querySelector('[aria-label="Building energy workspace"]');
+  const panel=document.querySelector('.energy-utility-panel');assert.equal(panel.hidden,true);assert.equal(count('energy_dependencies'),0);
+  await click('Readiness & settings');assert.equal(panel.hidden,false);assert.equal(document.querySelector('#energy-local-settings').hidden,false);assert.equal(document.querySelector('#energy-current-job').hidden,true);
+  assert.equal(document.activeElement.getAttribute('aria-label'),'Close readiness or job panel');
+  await type(input('EnergyPlus directory'),'C:\\local tooling\\EnergyPlus');await click('Check local installations');assert.equal(count('energy_dependencies'),1);
+  assert.match(document.querySelector('#energy-local-settings').textContent,/EnergyPlus: pinned installation ready/);
+  await act(()=>input('EnergyPlus directory').dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true})));assert.equal(panel.hidden,true);assert.equal(document.activeElement,button('Readiness & settings',workspace));
+  await click('results',workspace);await click('Readiness & settings');assert.equal(input('EnergyPlus directory').value,'C:\\local tooling\\EnergyPlus');assert.match(document.querySelector('#energy-local-settings').textContent,/EnergyPlus: pinned installation ready/);assert.equal(count('energy_dependencies'),1);
+  await click('Close panel');await click('Current job');assert.equal(document.querySelector('#energy-local-settings').hidden,true);assert.equal(document.querySelector('#energy-current-job').hidden,false);assert.match(document.querySelector('[aria-label="Current job log"]').textContent,/No job/);
+  await click('Close panel');assert.equal(document.activeElement,button('Current job',workspace));assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);assert.equal(count('energy_start'),0);
+});
+
+async function prepareReferenceImport(){
+  const workspace=document.querySelector('[aria-label="Building energy workspace"]');await click('reference',workspace);await click('Prepare local GLB import');
+  for(const label of ['I reviewed the explicit scale; source dimension checks must be recorded before relying on a mapping.','I reviewed the axis, origin and orientation choices; unknown true north stays unknown.']){
+    const control=[...document.querySelectorAll('label')].find(el=>el.textContent.trim()===label)?.querySelector('input');assert.ok(control,label);await act(async()=>control.dispatchEvent(new MouseEvent('click',{bubbles:true})));
+  }
+  return workspace;
+}
+
+test('actual workspace navigation consumes a successful import draft after its panel unmounts',async()=>{
+  await setup({workspace:true});const workspace=await prepareReferenceImport();let finish;referenceImportGate=new Promise(resolve=>finish=resolve);
+  await click('Choose local GLB and import');assert.equal(count('reference_import'),1);assert.equal(doc.busy,true);const acceptedBefore=structuredClone(doc.project.energy);
+  await click('results',workspace);assert.equal(document.querySelector('[aria-label="Architectural reference and study scope"]'),null);
+  await act(async()=>finish());assert.equal(doc.project.architecture.active_asset_id,referenceAsset.id);assert.equal(doc.referenceDrafts.draft.import,null);assert.deepEqual(doc.project.energy,acceptedBefore);
+  assert.equal(JSON.parse(window.localStorage.getItem(`greenlens.reference-draft.v1:${doc.project.id}`)).import,null);
+  await click('reference',workspace);assert.ok(button('Prepare another reference revision'));assert.equal(button('Choose local GLB and import'),undefined);
+  const saved=count('save_project');await click('Save');assert.equal(doc.referenceDrafts.guard,null);assert.equal(count('save_project'),saved+1);assert.equal(count('reference_import'),1);
+});
+
+test('actual workspace scope-save completion consumes only its reviewed category after navigation',async()=>{
+  await setup({workspace:true});const workspace=await prepareReferenceImport();await click('Choose local GLB and import');await click('Start scope for current revision');
+  await type(input('Scope title'),'Original navigation fixture');await type(input('Study purpose'),'Verify draft ownership through actual panel navigation');
+  await type(input('Included scope (one item per line)'),'Explicit synthetic portion');await type(input('Boundary-condition consequences'),'Only declared analytical boundaries');await click('Review scope in Rust');
+  const accepted=structuredClone(doc.referenceDrafts.draft.scope.value);let finish;referenceScopeGate=new Promise(resolve=>finish=resolve);await click('Save accepted scope');
+  assert.equal(count('reference_scope_apply'),1);await click('results',workspace);assert.equal(document.querySelector('[aria-label="Architectural reference and study scope"]'),null);
+  await act(async()=>doc.referenceDrafts.update({...doc.referenceDrafts.draft,import:{scale:'-',rotation:'0',x:'0',y:'0',z:'0',scene:'',north:'',application:'',version:'',options:'',note:'Independent later intake draft',dimensions_checked:false,orientation_checked:false}}));
+  await act(async()=>finish());assert.deepEqual(doc.project.architecture.scope,accepted);assert.equal(doc.referenceDrafts.draft.scope,null);assert.equal(doc.referenceDrafts.draft.import.note,'Independent later intake draft');assert.equal(doc.history.past.length,1);
+  await click('reference',workspace);assert.ok(button('Edit accepted scope'));assert.equal(input('Metres per source unit').value,'-');assert.equal(doc.referenceDrafts.draft.scope,null);
+});
+
+test('actual report guard completion survives tab and discipline remounts with its post-Apply binding, but does not follow another document',async()=>{
+  await setup({workspace:true,reports:true});await click('Save');const originalDocumentId=doc.documentId;
+  await click('evidence');await act(()=>[...document.querySelectorAll('label')].find(e=>e.textContent==='Use explicit report issue information').querySelector('input').click());
+  await type(input('Report title'),'Navigation fixture');await type(input('Report revision'),'R2');
+  let applyFinish,renderFinish;metadataGate=new Promise(resolve=>applyFinish=resolve);reportGate=new Promise(resolve=>renderFinish=resolve);
+  await click('reports');await click('Generate reports…');assert.ok(dialog());assert.equal(count('energy_report'),0);await click('Apply',dialog());
+  await click('results');assert.equal(document.querySelector('[aria-label="Report workbench"]'),null);await act(async()=>applyFinish());
+  assert.equal(count('energy_report'),1);const request=calls.find(([c])=>c==='energy_report')[1];assert.equal(request.project.energy.workbench.report_metadata.revision,'R2');assert.equal(doc.latestReport,null);
+  await act(async()=>renderFinish());assert.equal(doc.latestReport.request_binding.report_revision,'R2');assert.equal(doc.latestReport.request_binding.baseline_run_id,'report-a');assert.equal(doc.latestReport.dataset_sha256,'d'.repeat(64));
+  await click('reports');let completed=document.querySelector('[aria-label="Completed report output"]');assert.match(completed.textContent,/matches current request/);assert.match(completed.textContent,/report revision R2/);
+  await click('Open executive.html');assert.deepEqual(calls.find(([c])=>c==='energy_open_report')[1],{destination:'synthetic-report-output',path:'executive.html'});
+  await click('Toggle panel');await click('Toggle panel');await click('reports');assert.match(document.querySelector('[aria-label="Completed report output"]').textContent,/matches current request/);assert.equal(count('energy_report'),1);
+  // A new destination keeps the completed link and its original source binding.
+  saveDestination='copied-report-project';await click('Save As');assert.equal(doc.documentId,originalDocumentId);assert.equal(doc.path,saveDestination);
+  completed=document.querySelector('[aria-label="Completed report output"]');assert.match(completed.textContent,/historical request/);assert.match(completed.textContent,/test-project/);assert.equal(doc.latestReport.request_binding.project_path,'test-project');
+  // An unsuccessful attempt cannot overwrite the retained successful receipt.
+  reportError=Error('Original synthetic renderer failure');const earlier=doc.latestReport;await click('Generate reports…');assert.equal(doc.latestReport,earlier);assert.match(doc.error,/synthetic renderer failure/);assert.match(document.querySelector('[aria-label="Completed report output"]').textContent,/historical request/);
+  await click('Open');assert.notEqual(doc.documentId,originalDocumentId);assert.equal(doc.project.id,'other-project-id');assert.equal(doc.latestReport,null);assert.equal(document.querySelector('[aria-label="Completed report output"]'),null);
 });
 
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});

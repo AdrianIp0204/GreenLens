@@ -20,6 +20,7 @@ const host={
   },
   Assessment:()=>null,Cell:()=>null,ThermalEditor:()=>null,GeometryAuthoring:()=>null,NewEnergyProject:()=>null,EvidenceSettings:()=>null,ThermalView:()=>null,EnergyInvestigation:()=>null,ThermalDifferences:()=>null,EnergyPreflight:()=>null,ReportWorkbench:()=>null,ThermalInspectorResizer:()=>null,EnergySensitivity:()=>null,EnergyCommandBar:()=>null,RunHistory:()=>null,EnergyDependencySettings:()=>null,
   DesignCopy:()=>null,useEnergyDependencyPaths:()=>({paths:{engineDir:'',typstDir:''},warning:'',setPath(){},reset(){}}),
+  ReferenceWorkbench:()=>null,useReferenceModel:()=>({overlay:null,context:null,assessment:null,error:''}),
   readable:s=>s.charAt(0).toUpperCase()+s.slice(1).replaceAll('_',' '),
 };
 globalThis.__energyComparisonHost=host;
@@ -28,9 +29,12 @@ const {code}=await transformWithOxc(fs.readFileSync(sourceUrl,'utf8'),sourceUrl.
 const inspectorUrl=new URL('../src/energy/thermal-inspector-target.ts',import.meta.url);
 const inspector=await transformWithOxc(fs.readFileSync(inspectorUrl,'utf8'),inspectorUrl.pathname);
 const inspectorModule=`data:text/javascript;base64,${Buffer.from(inspector.code).toString('base64')}`;
+const referenceDraftUrl=new URL('../src/reference/reference-drafts.ts',import.meta.url);
+const referenceDraft=await transformWithOxc(fs.readFileSync(referenceDraftUrl,'utf8'),referenceDraftUrl.pathname);
+const referenceDraftModule=`data:text/javascript;base64,${Buffer.from(referenceDraft.code).toString('base64')}`;
 // This older read-only comparison projection test excludes unrelated panels.
-// Real editing, metadata and viewport interactions have dedicated DOM suites.
-const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./GeometryAuthoring','./NewEnergyProject','./EvidenceSettings','./ThermalView','./EnergyInvestigation','./ThermalDifferences','./EnergyPreflight','./ReportWorkbench','./ThermalInspectorResizer','./EnergySensitivity','./EnergyCommandBar','./RunHistory','./EnergyDependencySettings','./energy-dependency-settings','./DesignCopy']);
+// Real editing, metadata, reference and viewport interactions have dedicated DOM suites.
+const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./GeometryAuthoring','./NewEnergyProject','./EvidenceSettings','./ThermalView','./EnergyInvestigation','./ThermalDifferences','./EnergyPreflight','./ReportWorkbench','./ThermalInspectorResizer','./EnergySensitivity','./EnergyCommandBar','./RunHistory','./EnergyDependencySettings','./energy-dependency-settings','./DesignCopy','../reference/ReferenceWorkbench','../reference/useReferenceModel']);
 const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_q,specifier)=>{
   if(mocked.has(specifier)){
     const parts=[],named=binding.match(/\{([^}]+)\}/)?.[1];
@@ -39,7 +43,7 @@ const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/impo
     if(!defaultName.startsWith('{'))parts.push(`const ${defaultName}=globalThis.__energyComparisonHost.${defaultName};`);
     return parts.join('\n');
   }
-  return `import ${binding} from ${JSON.stringify(specifier==='./thermal-inspector-target'?inspectorModule:specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
+  return `import ${binding} from ${JSON.stringify(specifier==='./thermal-inspector-target'?inspectorModule:specifier==='../reference/reference-drafts'?referenceDraftModule:specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
 });
 const {default:EnergyWorkspace}=await import(`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`);
 const nodes=t=>!t||typeof t!=='object'?[]:Array.isArray(t)?t.flatMap(nodes):[t,...nodes(t.props?.children)];

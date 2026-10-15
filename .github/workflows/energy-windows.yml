@@ -1,7 +1,7 @@
 name: Bounded energy Windows verification
 on:
   push:
-    branches: [main, codex/v0.4-energy-reporting, codex/v0.5-thermal-workbench]
+    branches: [main, codex/v0.4-energy-reporting, codex/v0.5-thermal-workbench, codex/v0.6-architectural-intake]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -262,6 +262,13 @@ jobs:
         if: ${{ !cancelled() && steps.production.outcome == 'success' }}
         run: |
           ./scripts/energy-portability.ps1 -Cli $env:ENERGY_CLI -Project (Join-Path $env:ENERGY_EVIDENCE 'production/project-10') -OutputDirectory (Join-Path $env:ENERGY_EVIDENCE 'portability') -Replay
+      - name: Retained real energy evidence through architectural intake and cold copy
+        if: ${{ !cancelled() && steps.production.outcome == 'success' }}
+        run: |
+          . ./scripts/dev-env.ps1
+          $env:GREENLENS_TEST_RETAINED_ENERGY_PROJECT = Join-Path $env:ENERGY_EVIDENCE 'production/project-10'
+          cargo test -p greenlens-runner --test reference_intake --locked --offline retained_energy_evidence_is_immutable_through_reference_import_and_cold_copy -- --ignored --nocapture
+          if ($LASTEXITCODE -ne 0) { throw 'Required retained-energy reference intake/cold-copy regression failed' }
       - name: Retain qualification failure as job failure after independent delivery checks
         if: always()
         env:

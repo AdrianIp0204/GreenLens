@@ -277,6 +277,19 @@ pub fn evaluate(
     completed: &BTreeMap<String, String>,
     interruptions: &[EnergySensitivityInterruption],
 ) -> Result<EnergySensitivityResult> {
+    evaluate_with_runs(project, plan, completed, interruptions, &mut |summary| {
+        read_run(root, summary)
+    })
+}
+/// Internal provider must return records checked by the full immutable reader.
+/// This seam never accepts frontend/serialized verification claims.
+pub(crate) fn evaluate_with_runs(
+    project: &Project,
+    plan: &EnergySensitivityPlan,
+    completed: &BTreeMap<String, String>,
+    interruptions: &[EnergySensitivityInterruption],
+    runs: &mut impl FnMut(&crate::energy::EnergyRunSummary) -> Result<EnergyRunRecord>,
+) -> Result<EnergySensitivityResult> {
     plan.validate()?;
     let energy = project.energy.as_ref().context("Energy document missing")?;
     ensure!(
@@ -285,8 +298,9 @@ pub fn evaluate(
             .all(|id| plan.slots.iter().any(|s| &s.slot_id == id)),
         "Completion map contains undeclared slots"
     );
-    let mut runs = Vec::new();
+    let mut assessed_runs = Vec::new();
     for planned in &plan.slots {
+        crate::project_open::checkpoint(0)?;
         let id = if let Some(reuse) = &planned.reuse {
             ensure!(
                 completed
@@ -304,7 +318,8 @@ pub fn evaluate(
                 .iter()
                 .find(|r| &r.id == id)
                 .context("Completed sensitivity run is not retained by this project")?;
-            let run = read_run(root, summary)?;
+            let run = runs(summary)?;
+            crate::energy::validate_summary_binding(&run, summary)?;
             let slot = plan
                 .declaration
                 .slots
@@ -328,7 +343,7 @@ pub fn evaluate(
                 run.model == *model && run.study == study,
                 "Retained typed inputs differ from the exact declared snapshots"
             );
-            runs.push(EnergySensitivityRun {
+            assessed_runs.push(EnergySensitivityRun {
                 slot_id: slot.id.clone(),
                 run_id: run.id,
                 record_sha256: seal,
@@ -347,7 +362,7 @@ pub fn evaluate(
         .collect::<Vec<_>>();
     let current = current_inputs_identity(project, &targets)?;
     Ok(EnergySensitivityResult{schema_version:"greenlens.energy-sensitivity-result.v1".into(),plan_sha256:plan.identity()?,current_inputs_match:current==plan.current_inputs_sha256,
-        assessment:assess_energy_sensitivity(&plan.declaration,&runs,interruptions)?,evidence_scope:"Every attached run was fully integrity-checked and reprocessed from immutable series, original weather, recipe, inputs and process receipts. Interruption receipt hashes are orchestration bindings; this function does not independently open those external receipts or authorize execution.".into()})
+        assessment:assess_energy_sensitivity(&plan.declaration,&assessed_runs,interruptions)?,evidence_scope:"Every attached run was fully integrity-checked and reprocessed from immutable series, original weather, recipe, inputs and process receipts. Interruption receipt hashes are orchestration bindings; this function does not independently open those external receipts or authorize execution.".into()})
 }
 
 #[cfg(test)]

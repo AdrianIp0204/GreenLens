@@ -17,6 +17,8 @@ use std::{
 };
 use tauri::Manager;
 mod energy;
+mod project_intake;
+mod reference;
 
 type CommandResult<T> = Result<T, String>;
 fn error(e: impl std::fmt::Display) -> String {
@@ -632,7 +634,20 @@ pub fn run() {
     tauri::Builder::default()
         .manage(Application::default())
         .manage(energy::ReportControl::default())
+        .manage(project_intake::IntakeControl::default())
         .invoke_handler(tauri::generate_handler![
+            reference::dialog_open_reference_glb,
+            reference::reference_manifest,
+            reference::reference_chunk,
+            reference::reference_measure,
+            reference::reference_scope_context,
+            reference::reference_scope_assess,
+            reference::reference_scope_apply,
+            reference::reference_import,
+            project_intake::admit_project,
+            project_intake::prepare_project_verification,
+            project_intake::verify_project,
+            project_intake::cancel_project_verification,
             example,
             validate,
             doctor,
@@ -705,6 +720,7 @@ pub fn run() {
             energy::energy_navigate_pair,
             energy::energy_sensitivity_action,
             energy::energy_sensitivity_inspect,
+            energy::energy_sensitivity_input_identity,
             energy::energy_sensitivity_export_selection,
             energy::energy_compare,
             energy::energy_report_preflight,

@@ -419,13 +419,30 @@ fn read_files(
 }
 /// Fully validates imported/reopened sidecar state and all attached run evidence.
 pub fn inspect(root: &Path, project: &Project, id: &str) -> Result<EnergySensitivitySession> {
+    let mut checked = BTreeMap::new();
+    inspect_with_runs(root, project, id, &mut |summary| {
+        if let Some(run) = checked.get(&summary.id) {
+            energy::validate_summary_binding(run, summary)?;
+            return Ok(run.clone());
+        }
+        let run = energy::read_run(root, summary)?;
+        checked.insert(summary.id.clone(), run.clone());
+        Ok(run)
+    })
+}
+fn inspect_with_runs(
+    root: &Path,
+    project: &Project,
+    id: &str,
+    runs: &mut impl FnMut(&energy::EnergyRunSummary) -> Result<energy::EnergyRunRecord>,
+) -> Result<EnergySensitivitySession> {
     let (mut session, files) = read_files(root, project, reference(project, id)?)?;
-    let result = sensitivity::evaluate(
-        root,
+    let result = sensitivity::evaluate_with_runs(
         project,
         &session.plan,
         &session.completed,
         &session.interruptions,
+        runs,
     )?;
     for file in &files {
         if let EnergySensitivityEvent::Collected {
@@ -443,7 +460,8 @@ pub fn inspect(root: &Path, project: &Project, id: &str) -> Result<EnergySensiti
                 .iter()
                 .find(|r| &r.id == job_id)
                 .context("Collected sensitivity run missing")?;
-            let run = energy::read_result_metadata(root, summary)?;
+            let run = runs(summary)?;
+            energy::validate_summary_binding(&run, summary)?;
             ensure!(
                 result.assessment.runs.iter().any(|r| &r.slot_id == slot_id
                     && &r.run_id == job_id
@@ -467,6 +485,20 @@ pub fn inspect(root: &Path, project: &Project, id: &str) -> Result<EnergySensiti
     }
     session.result = session.finalized.then_some(result);
     Ok(session)
+}
+
+pub(crate) fn inspect_all_with_runs(
+    root: &Path,
+    project: &Project,
+    runs: &mut impl FnMut(&energy::EnergyRunSummary) -> Result<energy::EnergyRunRecord>,
+) -> Result<BTreeMap<String, EnergySensitivitySession>> {
+    validate_references(references(project))?;
+    let mut sessions = BTreeMap::new();
+    for r in references(project) {
+        crate::project_open::checkpoint(0)?;
+        sessions.insert(r.id.clone(), inspect_with_runs(root, project, &r.id, runs)?);
+    }
+    Ok(sessions)
 }
 
 fn persist_event(

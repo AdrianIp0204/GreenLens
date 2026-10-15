@@ -86,6 +86,13 @@ fn export_pair_impl(
         crate::energy_sensitivity_workflow::export_selection(root, &view.project, a, b)?;
     // Excluded evidence metadata can itself be private; omit it from public products.
     dataset.evidence.retain(|e| e.included);
+    let architecture = energy_report::architectural::prepare_project(
+        root,
+        &view.project,
+        supplement.as_ref().map(|d| &d.base).unwrap_or(&dataset),
+        supplement.as_ref().map(|d| d.derived_sha256.as_str()),
+        cancel,
+    )?;
     let mut project = view.project;
     // Selection deliberately bounds comparison to one explicit pair. The saved
     // document retains its current inputs; reports use the immutable snapshots.
@@ -138,6 +145,14 @@ fn export_pair_impl(
         budget.add(&name, fs::metadata(regular_child(root, &name)?)?.len())?;
         files.push(name);
     }
+    if let Some(reference) = &project.architecture {
+        // Every admitted revision is required by the portable project. Do not
+        // silently retain its manifest while omitting geometry assets.
+        for name in crate::reference::evidence_members(root, reference)? {
+            budget.add(&name, fs::metadata(regular_child(root, &name)?)?.len())?;
+            files.push(name);
+        }
+    }
     ensure!(!cancel.load(Ordering::SeqCst), "Export cancelled");
     let stage = crate::local_root()?
         .join("energy-exports")
@@ -145,11 +160,26 @@ fn export_pair_impl(
     fs::create_dir_all(&stage)?;
     energy::copy_project_evidence(root, &stage, extension)?;
     crate::energy_sensitivity_workflow::copy_evidence(root, &stage, &project)?;
+    if let Some(reference) = &project.architecture {
+        crate::reference::copy_evidence(root, &stage, reference)?;
+    }
     write_json(&stage.join("project.json"), &project)?;
     let reports = if let Some(data) = &supplement {
-        crate::energy_report_workbench::render(data, &stage.join("reports"), Some(typst), cancel)?
+        crate::energy_report_workbench::render_with_architecture(
+            data,
+            &stage.join("reports"),
+            Some(typst),
+            cancel,
+            architecture.as_ref(),
+        )?
     } else {
-        energy_report::render(&dataset, &stage.join("reports"), Some(typst), cancel)?
+        energy_report::render_with_architecture(
+            &dataset,
+            &stage.join("reports"),
+            Some(typst),
+            cancel,
+            architecture.as_ref(),
+        )?
     };
     ensure!(
         reports.renderer_status == "completed",
@@ -171,9 +201,13 @@ fn export_pair_impl(
     }
     write_json(
         &stage.join("energy-export.json"),
-        &json!({"schema_version":if workbench {"greenlens.energy-export.v0.5"}else{"greenlens.energy-export.v0.4"},"baseline_run_id":a,"proposed_run_id":b,"report_dataset_sha256":dataset.dataset_sha256()?,"workbench_report_sha256":supplement.as_ref().map(|d|&d.derived_sha256),"sensitivity":sensitivity,"assessment_authority":"Supplementary report only; the compiled application independently recomputes integrity and qualification without altering run evidence."}),
+        &json!({"schema_version":if architecture.is_some(){"greenlens.energy-export.v0.6"}else if workbench {"greenlens.energy-export.v0.5"}else{"greenlens.energy-export.v0.4"},"baseline_run_id":a,"proposed_run_id":b,"report_dataset_sha256":dataset.dataset_sha256()?,"workbench_report_sha256":supplement.as_ref().map(|d|&d.derived_sha256),"architectural_report_sha256":architecture.as_ref().map(|d|&d.data.report_sha256),"architectural_storage":architecture.as_ref().map(|_|energy_report::architectural::STORAGE_DISCLOSURE),"sensitivity":sensitivity,"assessment_authority":"Supplementary report only; the compiled application independently recomputes integrity and qualification without altering run evidence."}),
     )?;
     fs::write(stage.join("REPLAY.txt"),"GreenLens energy evidence\nInspect/regenerate reports without EnergyPlus or the original weather/cache. Original/normalized weather, immutable inputs and all retained native channels are included.\nPDF regeneration requires the pinned separately installed Typst/font package.\nInstall pinned EnergyPlus 26.2.0 separately for replay: greenlens energy replay evidence.zip --engine-dir <compatible-engine-directory>\nReplay regenerates trusted epJSON from authoritative inputs using the compiled recognized adapter; no imported executable recipe or report is executed.\nEvery channel is checked within max(1e-6 in its unit, 0.1% of reference), with exact shape, channel labels and interval-end local-standard timestamps.\nAgreement is integration verification, not general physical validation or certification.\n")?;
+    if architecture.is_some() {
+        use std::io::Write;
+        writeln!(fs::OpenOptions::new().append(true).open(stage.join("REPLAY.txt"))?, "\n{}\nArchitectural scope and figure identities are checked against the selected retained run snapshots. Historical scope remains explicitly labeled; no source-to-model binding is imported as scientific qualification.", energy_report::architectural::STORAGE_DISCLOSURE)?;
+    }
     files.extend(["energy-export.json".into(), "REPLAY.txt".into()]);
     seal(
         &stage,
@@ -185,7 +219,7 @@ fn export_pair_impl(
     ensure!(!cancel.load(Ordering::SeqCst), "Export cancelled");
     zip_directory(&stage, &files, destination)?;
     Ok(
-        json!({"schema_version":"greenlens.energy-export-result.v0.4","entries":files.len(),"package_bytes":fs::metadata(destination)?.len(),"package_sha256":greenlens_process::file_hash(destination)?,"report_dataset_sha256":dataset.dataset_sha256()?,"baseline_run_id":a,"proposed_run_id":b}),
+        json!({"schema_version":if architecture.is_some(){"greenlens.energy-export-result.v0.6"}else{"greenlens.energy-export-result.v0.4"},"entries":files.len(),"package_bytes":fs::metadata(destination)?.len(),"package_sha256":greenlens_process::file_hash(destination)?,"report_dataset_sha256":dataset.dataset_sha256()?,"architectural_report_sha256":architecture.as_ref().map(|d|&d.data.report_sha256),"architectural_storage":architecture.as_ref().map(|_|energy_report::architectural::STORAGE_DISCLOSURE),"baseline_run_id":a,"proposed_run_id":b}),
     )
 }
 
@@ -259,6 +293,7 @@ pub fn replay(package: &Path, engine_dir: Option<&Path>, cancel: &AtomicBool) ->
             .context("Missing report hash")?,
     )?;
     validate_workbench_supplement(&imported, &selection, &retained_data)?;
+    validate_architectural_supplement(&imported, &view.project, &selection, &retained_data)?;
     let mut results = vec![];
     for id in view
         .project
@@ -301,7 +336,11 @@ pub fn replay(package: &Path, engine_dir: Option<&Path>, cancel: &AtomicBool) ->
 fn recognized_package(selection: &Value) -> bool {
     matches!(
         selection["schema_version"].as_str(),
-        Some("greenlens.energy-export.v0.4" | "greenlens.energy-export.v0.5")
+        Some(
+            "greenlens.energy-export.v0.4"
+                | "greenlens.energy-export.v0.5"
+                | "greenlens.energy-export.v0.6"
+        )
     )
 }
 fn validate_workbench_supplement(
@@ -309,7 +348,10 @@ fn validate_workbench_supplement(
     selection: &Value,
     base: &greenlens_core::energy::EnergyReportData,
 ) -> Result<()> {
-    if selection["schema_version"] == "greenlens.energy-export.v0.5" {
+    if selection["schema_version"] == "greenlens.energy-export.v0.5"
+        || (selection["schema_version"] == "greenlens.energy-export.v0.6"
+            && selection["workbench_report_sha256"].is_string())
+    {
         let data: greenlens_core::energy::EnergyReportWorkbenchData =
             read_json(&regular_child(root, "reports/workbench-report.json")?)?;
         data.validate()?;
@@ -319,6 +361,32 @@ fn validate_workbench_supplement(
                     == selection["workbench_report_sha256"].as_str(),
             "Supplementary report identity differs from retained immutable dataset"
         );
+    }
+    Ok(())
+}
+
+fn validate_architectural_supplement(
+    root: &Path,
+    project: &crate::Project,
+    selection: &Value,
+    base: &greenlens_core::energy::EnergyReportData,
+) -> Result<()> {
+    if selection["schema_version"] == "greenlens.energy-export.v0.6" {
+        energy_report::architectural::validate_retained_package(
+            root,
+            project,
+            base,
+            selection["workbench_report_sha256"].as_str(),
+            selection["architectural_report_sha256"]
+                .as_str()
+                .context("Missing architectural report binding")?,
+        )?;
+        ensure!(
+            selection["architectural_storage"] == energy_report::architectural::STORAGE_DISCLOSURE,
+            "Architectural asset inclusion policy is missing or unsupported"
+        );
+    } else {
+        ensure!(project.architecture.is_none(), "An architectural project requires v0.6 export with complete normalized assets and report binding");
     }
     Ok(())
 }
@@ -398,14 +466,87 @@ pub fn inspect_package(package: &Path) -> Result<Value> {
             .context("Missing report hash")?,
     )?;
     validate_workbench_supplement(&imported, &selection, &retained)?;
+    validate_architectural_supplement(&imported, &view.project, &selection, &retained)?;
+    let architecture = if selection["schema_version"] == "greenlens.energy-export.v0.6" {
+        Some(read_json::<
+            energy_report::architectural::ArchitecturalReportData,
+        >(&regular_child(
+            &imported,
+            "reports/architecture-report.json",
+        )?)?)
+    } else {
+        None
+    };
     Ok(
-        json!({"schema_version":"greenlens.energy-package-inspection.v0.4","package_sha256":greenlens_process::file_hash(package)?,"retained_report_dataset_sha256":retained.dataset_sha256()?,"current_report":data,"scope":"Complete retained evidence and report bindings checked; no simulator or renderer was executed."}),
+        json!({"schema_version":"greenlens.energy-package-inspection.v0.4","package_sha256":greenlens_process::file_hash(package)?,"retained_report_dataset_sha256":retained.dataset_sha256()?,"current_report":data,"architectural_report":architecture,"scope":"Complete retained evidence and report bindings checked; no simulator or renderer was executed."}),
     )
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn legacy_packages_remain_recognized_and_architecture_cannot_hide_in_old_envelopes() {
+        for version in [
+            "greenlens.energy-export.v0.4",
+            "greenlens.energy-export.v0.5",
+            "greenlens.energy-export.v0.6",
+        ] {
+            assert!(recognized_package(&json!({"schema_version":version})));
+        }
+        assert!(!recognized_package(
+            &json!({"schema_version":"greenlens.energy-export.unknown"})
+        ));
+        let base = greenlens_core::energy::synthetic_energy_report().unwrap();
+        let mut project = crate::example();
+        validate_architectural_supplement(
+            Path::new("."),
+            &project,
+            &json!({"schema_version":"greenlens.energy-export.v0.4"}),
+            &base,
+        )
+        .unwrap();
+        project.architecture = Some(crate::reference::ArchitecturalProject {
+            schema_version: "greenlens.architectural-project.v1".into(),
+            assets: vec![],
+            active_asset_id: String::new(),
+            scope: None,
+        });
+        assert!(validate_architectural_supplement(
+            Path::new("."),
+            &project,
+            &json!({"schema_version":"greenlens.energy-export.v0.5"}),
+            &base
+        )
+        .is_err());
+        assert!(validate_architectural_supplement(
+            Path::new("."),
+            &project,
+            &json!({"schema_version":"greenlens.energy-export.v0.6"}),
+            &base
+        )
+        .is_err());
+    }
+    #[test]
+    fn architectural_assets_use_unchanged_shared_archive_limits() {
+        let mut budget = PackageBudget::default();
+        assert!(budget
+            .add(
+                "references/example/geometry/chunk.bin",
+                64 * 1024 * 1024 + 1
+            )
+            .is_err());
+        let mut budget = PackageBudget::default();
+        for i in 0..4 {
+            budget
+                .add(
+                    &format!("references/example/geometry/{i}.bin"),
+                    64 * 1024 * 1024,
+                )
+                .unwrap();
+        }
+        assert!(budget.add("reports/architecture-report.json", 1).is_err());
+    }
     #[test]
     fn supplementary_assessment_changes_preserve_replay_but_changed_evidence_rejects() {
         let retained = greenlens_core::energy::synthetic_energy_report().unwrap();

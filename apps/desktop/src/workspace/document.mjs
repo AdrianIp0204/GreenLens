@@ -2,7 +2,7 @@
 export const clone = value => structuredClone(value);
 export function documentSignature(project) {
   if (!project) return '';
-  return JSON.stringify({ schema_version: project.schema_version, id: project.id, name: project.name, alternatives: project.alternatives, runs: project.runs, climate: project.climate ?? null, energy: project.energy ?? null });
+  return JSON.stringify({ schema_version: project.schema_version, id: project.id, name: project.name, alternatives: project.alternatives, runs: project.runs, climate: project.climate ?? null, energy: project.energy ?? null, architecture:project.architecture??null });
 }
 // History records one alternative's study, never a whole project snapshot that
 // could erase immutable runs or weather imported after the edit.
@@ -120,7 +120,16 @@ export class DocumentHistory {
       return{project:next,changed:true};
     }finally{this.busy=false;}
   }
-  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata,restoreEnergyGroup,restoreEnergyBatch) {
+  async editScope(project, alternativeId, candidate, label, configure) {
+    if(this.busy)throw new Error('Wait for the current document edit to finish.');
+    this.busy=true;
+    try{
+      const before=clone(project.architecture?.scope??null),next=await configure(clone(project),clone(candidate),false),after=clone(next.architecture?.scope??null);
+      if(JSON.stringify(before)===JSON.stringify(after))return {project,changed:false};
+      this.past.push({kind:'architectural_scope',alternativeId,before,after,label});this.future=[];return {project:next,changed:true};
+    }finally{this.busy=false;}
+  }
+  async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata,restoreEnergyGroup,restoreEnergyBatch,restoreScope) {
     if (this.busy) throw new Error('Wait for the current document edit to finish.');
     const source = direction === 'undo' ? this.past : this.future;
     const target = direction === 'undo' ? this.future : this.past;
@@ -132,7 +141,10 @@ export class DocumentHistory {
       if (!current) throw new Error('The design alternative no longer exists.');
       const candidate = clone(direction === 'undo' ? entry.before : entry.after);
       let next, validated;
-      if(entry.kind==='energy_batch') {
+      if(entry.kind==='architectural_scope') {
+        if(!restoreScope)throw new Error('Architectural scope restoration is unavailable.');
+        next=await restoreScope(clone(project),candidate,true);validated=await validate(clone(current.model),entry.alternativeId,next);
+      }else if(entry.kind==='energy_batch') {
         if(!restoreEnergyBatch)throw new Error('Atomic thermal draft restoration is unavailable.');
         next=await restoreEnergyBatch(clone(project),candidate);validated=await validate(clone(current.model),entry.alternativeId,next);
       }else if(entry.kind==='energy_group') {

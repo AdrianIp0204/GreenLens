@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greenlens.dev/schemas/reference-model-v0.6.schema.json",
+  "title": "GreenLens bounded normalized architectural reference v1",
+  "description": "A normalized geometry-only record, separate from ThermalModel. Rust manifest validation plus all sealed chunk verification is authoritative. Original architectural source and GLB are excluded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "importer_id", "source_sha256", "revision_sha256", "geometry_sha256", "options", "source_units", "coordinate_convention", "selected_scene", "source_node_count", "source_mesh_count", "source_material_count", "source_texture_count", "occurrences", "materials", "chunks", "bounds", "triangle_count", "triangle_area_m2", "warnings", "exclusions", "storage_policy", "resources"],
+  "properties": {
+    "schema_version": {"const": "greenlens.reference-model.v1"},
+    "importer_id": {"const": "greenlens.glb-static-triangles/1"},
+    "source_sha256": {"$ref": "#/$defs/hash"},
+    "revision_sha256": {"$ref": "#/$defs/hash"},
+    "geometry_sha256": {"$ref": "#/$defs/hash"},
+    "source_units": {"const": "metres (glTF 2.0)"},
+    "coordinate_convention": {"const": "right-handed +X east/local-right, +Y north/local-back, +Z up; true north only when declared"},
+    "storage_policy": {"const": "normalized-geometry-only; original architectural source and GLB excluded"},
+    "selected_scene": {"type": "integer", "minimum": 0, "maximum": 255},
+    "source_node_count": {"type": "integer", "minimum": 1, "maximum": 20000},
+    "source_mesh_count": {"type": "integer", "minimum": 1, "maximum": 40000},
+    "source_material_count": {"type": "integer", "minimum": 0, "maximum": 4096},
+    "source_texture_count": {"type": "integer", "minimum": 0, "maximum": 1024},
+    "triangle_count": {"type": "integer", "minimum": 1, "maximum": 1000000},
+    "triangle_area_m2": {"type": "number", "exclusiveMinimum": 0},
+    "bounds": {"$ref": "#/$defs/bounds"},
+    "options": {
+      "type": "object", "additionalProperties": false,
+      "required": ["scene_index", "metres_per_source_unit", "clockwise_rotation_deg", "translation_m", "declared_north_clockwise_deg", "conversion"],
+      "properties": {
+        "scene_index": {"type": ["integer", "null"], "minimum": 0, "maximum": 255},
+        "metres_per_source_unit": {"type": "number", "minimum": 0.000001, "maximum": 1000},
+        "clockwise_rotation_deg": {"type": "number", "minimum": -360, "maximum": 360},
+        "translation_m": {"$ref": "#/$defs/vec3"},
+        "declared_north_clockwise_deg": {"type": ["number", "null"], "minimum": 0, "exclusiveMaximum": 360},
+        "conversion": {
+          "oneOf": [{"type": "null"}, {"type": "object", "additionalProperties": false,
+            "required": ["application", "version", "options", "provenance_note"],
+            "properties": {"application": {"$ref": "#/$defs/text"}, "version": {"$ref": "#/$defs/text"}, "options": {"$ref": "#/$defs/text"}, "provenance_note": {"$ref": "#/$defs/text"}}}]
+        }
+      }
+    },
+    "occurrences": {"type": "array", "minItems": 1, "maxItems": 20000, "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "node_index", "parent_id", "label", "node_path", "source_mesh_index", "world_from_mesh", "mirrored", "bounds", "triangle_count", "triangle_area_m2"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^ref-[0-9a-f]{64}$"},
+        "node_index": {"type": "integer", "minimum": 0, "maximum": 19999},
+        "parent_id": {"type": ["string", "null"], "pattern": "^ref-[0-9a-f]{64}$"},
+        "label": {"type": "string", "maxLength": 512},
+        "node_path": {"type": "array", "minItems": 1, "maxItems": 64, "items": {"type": "integer", "minimum": 0, "maximum": 19999}},
+        "source_mesh_index": {"type": ["integer", "null"], "minimum": 0, "maximum": 39999},
+        "world_from_mesh": {"type": "array", "minItems": 16, "maxItems": 16, "items": {"type": "number"}},
+        "mirrored": {"type": "boolean"},
+        "bounds": {"oneOf": [{"$ref": "#/$defs/bounds"}, {"type": "null"}]},
+        "triangle_count": {"type": "integer", "minimum": 0, "maximum": 1000000},
+        "triangle_area_m2": {"type": "number", "minimum": 0}
+      }
+    }},
+    "materials": {"type": "array", "maxItems": 4096, "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_index", "label", "base_color_rgba", "double_sided", "alpha_mode"],
+      "properties": {
+        "source_index": {"type": "integer", "minimum": 0, "maximum": 4095},
+        "label": {"type": "string", "maxLength": 512},
+        "base_color_rgba": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "number", "minimum": 0, "maximum": 1}},
+        "double_sided": {"type": "boolean"}, "alpha_mode": {"enum": ["OPAQUE", "MASK", "BLEND"]}
+      }
+    }},
+    "chunks": {"type": "array", "minItems": 1, "maxItems": 123, "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "byte_length", "triangle_count"],
+      "properties": {
+        "path": {"type": "string", "pattern": "^geometry/[0-9]{5}\\.bin$"},
+        "sha256": {"$ref": "#/$defs/hash"},
+        "byte_length": {"type": "integer", "minimum": 96, "maximum": 655376},
+        "triangle_count": {"type": "integer", "minimum": 1, "maximum": 8192}
+      }
+    }},
+    "warnings": {"type": "array", "maxItems": 128, "items": {"$ref": "#/$defs/text"}},
+    "exclusions": {"type": "array", "maxItems": 128, "items": {"$ref": "#/$defs/text"}},
+    "resources": {"type": "object", "additionalProperties": false,
+      "required": ["elapsed_ms", "source_bytes", "json_bytes", "normalized_bytes", "decoded_allocation_estimate_bytes"],
+      "properties": {
+        "elapsed_ms": {"type": "integer", "minimum": 0, "maximum": 30000},
+        "source_bytes": {"type": "integer", "minimum": 0, "maximum": 134217728},
+        "json_bytes": {"type": "integer", "minimum": 0, "maximum": 8388608},
+        "normalized_bytes": {"type": "integer", "minimum": 0, "maximum": 83886080},
+        "decoded_allocation_estimate_bytes": {"type": "integer", "minimum": 0, "maximum": 402653184}
+      }
+    }
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "text": {"type": "string", "maxLength": 2048},
+    "vec3": {"type": "array", "minItems": 3, "maxItems": 3, "items": {"type": "number", "minimum": -100000000, "maximum": 100000000}},
+    "bounds": {"type": "object", "additionalProperties": false, "required": ["min_m", "max_m"], "properties": {"min_m": {"$ref": "#/$defs/vec3"}, "max_m": {"$ref": "#/$defs/vec3"}}}
+  }
+}

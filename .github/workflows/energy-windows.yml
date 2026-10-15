@@ -77,6 +77,7 @@ jobs:
           ./scripts/test-build-provenance.ps1 -OutputDirectory (Join-Path $env:ENERGY_BUILD_EVIDENCE 'provenance')
           ./scripts/test-package-documents.ps1
           ./scripts/test-energy-portability.ps1
+          ./scripts/test-energy-remount-fixture.ps1
           ./scripts/test-energy-input-preflight.ps1
           node --test scripts/test-license-supplement-binding.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }
@@ -269,6 +270,11 @@ jobs:
           $env:GREENLENS_TEST_RETAINED_ENERGY_PROJECT = Join-Path $env:ENERGY_EVIDENCE 'production/project-10'
           cargo test -p greenlens-runner --test reference_intake --locked --offline retained_energy_evidence_is_immutable_through_reference_import_and_cold_copy -- --ignored --nocapture
           if ($LASTEXITCODE -ne 0) { throw 'Required retained-energy reference intake/cold-copy regression failed' }
+          # The production protocol keeps 10/5-minute runs in separate projects.
+          # Build a new four-run fixture, then let shared services declare exact
+          # reuse and finalize it. No missing-slot execution is permitted.
+          ./scripts/prepare-energy-remount-fixture.ps1 -Cli $env:ENERGY_CLI -ProductionRoot (Join-Path $env:ENERGY_EVIDENCE 'production') -OutputDirectory (Join-Path $env:ENERGY_EVIDENCE 'remount-fixture')
+          $env:GREENLENS_TEST_RETAINED_ENERGY_PROJECT = Join-Path $env:ENERGY_EVIDENCE 'remount-fixture/project-four'
           # The fixed 120-second production intake budget also applies here.
           # Use optimized native code for this full four-run performance check.
           cargo test -p greenlens-runner --lib --release --locked --offline retained_report_and_sensitivity_panel_requests_do_not_repeat_numeric_traversal -- --ignored --nocapture

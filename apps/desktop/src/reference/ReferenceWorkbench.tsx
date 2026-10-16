@@ -35,12 +35,31 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
   const [chosen, setChosen] = useState(''), [preview, setPreview] = useState<ScopeAssessment | null>(null);
   const [mappingQuery, setMappingQuery] = useState(''), [mappingPage, setMappingPage] = useState(0);
   const [confirm, setConfirm] = useState<'discard' | 'clear' | 'restart' | null>(null);
+  const confirmation = useRef<HTMLDivElement>(null), cancelButton = useRef<HTMLButtonElement>(null);
+  const confirmationTrigger = useRef<{ documentId: string; button: HTMLButtonElement } | null>(null);
+  const restoreTrigger = useRef<typeof confirmationTrigger.current>(null);
   const mounted = useRef(true); useEffect(() => { mounted.current = true; return () => { mounted.current = false; }; }, []);
   const signature = JSON.stringify([documentId, props.draft, reference?.revision_sha256, context]);
   const latest = useRef(signature); latest.current = signature;
   const previewSignature = useRef('');
   useEffect(() => { setPreview(null); setError(''); }, [signature]);
-  useEffect(() => { setChosen(''); setQuery(''); setMappingQuery(''); setMappingPage(0); setConfirm(null); }, [documentId]);
+  useEffect(() => { setChosen(''); setQuery(''); setMappingQuery(''); setMappingPage(0); setConfirm(null); confirmationTrigger.current = null; restoreTrigger.current = null; }, [documentId]);
+  useEffect(() => {
+    if (confirm) {
+      if (confirmationTrigger.current?.documentId !== documentId) return;
+      // This inline prompt precedes a long editor. Move to its safe choice and
+      // reveal it even when the action originated at the bottom of the panel.
+      cancelButton.current?.focus({ preventScroll: true });
+      confirmation.current?.scrollIntoView?.({ block: 'nearest' });
+    } else {
+      const trigger = restoreTrigger.current;
+      restoreTrigger.current = null; confirmationTrigger.current = null;
+      if (trigger?.documentId === documentId && trigger.button.isConnected && !trigger.button.disabled) {
+        trigger.button.focus({ preventScroll: true });
+        trigger.button.scrollIntoView?.({ block: 'nearest' });
+      }
+    }
+  }, [confirm, documentId]);
   const controlled = props.draft?.document_id === documentId ? props.draft : null;
   const edit = (change: (draft: ReferenceWorkbenchDraft) => void) => {
     const candidate = clone(controlled ?? newReferenceDraft(documentId)); change(candidate); props.onDraftChange(candidate);
@@ -56,6 +75,13 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
   const mappingStart = shownMappingPage * mappingPageSize;
   const visibleMappings = filteredMappings.slice(mappingStart, mappingStart + mappingPageSize);
   const lock = Boolean(props.disabled || busy || props.importProgress);
+  const requestConfirmation = (kind: NonNullable<typeof confirm>, button: HTMLButtonElement) => {
+    confirmationTrigger.current = { documentId, button }; restoreTrigger.current = null; setConfirm(kind);
+  };
+  const cancelConfirmation = () => {
+    if (lock) return;
+    restoreTrigger.current = confirmationTrigger.current; setConfirm(null);
+  };
   const selected = props.selectedOccurrenceId ?? chosen;
   const occurrence = reference?.occurrences.find(o => o.id === selected);
   const mapping = candidate?.mappings.find(m => m.occurrence_id === selected);
@@ -142,16 +168,18 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
 
     <section aria-label="Accepted scope status"><h3>Study scope</h3>
       {scope ? <><p>Accepted: {scope.title} · {scope.scope_kind.replaceAll('_', ' ')} · reference <code title={scope.reference_revision_sha256}>{short(scope.reference_revision_sha256)}</code>.</p>{assessment ? <Assessment value={assessment} /> : <p>Scope relationship has not been assessed for the current inputs.</p>}</> : <p>No analytical scope is accepted. Visible geometry alone does not establish study coverage.</p>}
-      <div className="reference-actions">{scope && !candidate && <button disabled={lock} onClick={() => edit(d => { d.scope = { value: clone(scope), numbers: {} }; })}>Edit accepted scope</button>}<button disabled={lock || !reference || !context} onClick={() => candidate || scope ? setConfirm('restart') : startScope()}>Start scope for current revision</button>{scope && <button disabled={lock} onClick={() => setConfirm('clear')}>Clear accepted scope…</button>}</div>
+      <div className="reference-actions">{scope && !candidate && <button disabled={lock} onClick={() => edit(d => { d.scope = { value: clone(scope), numbers: {} }; })}>Edit accepted scope</button>}<button disabled={lock || !reference || !context} onClick={e => candidate || scope ? requestConfirmation('restart', e.currentTarget) : startScope()}>Start scope for current revision</button>{scope && <button disabled={lock} onClick={e => requestConfirmation('clear', e.currentTarget)}>Clear accepted scope…</button>}</div>
       {!context && reference && <p>Valid accepted thermal designs and the Rust scope context are required to map this reference.</p>}
       {Boolean(scope?.report_views?.length)&&<details><summary>Accepted portable report views ({scope!.report_views!.length})</summary><ul>{scope!.report_views!.map(view=><li key={view.id}>{view.title} · design {view.design_id} · {view.vertical_span_m} m vertical frame · {view.aspect_ratio.toFixed(3)} width/height{view.section?` · section ${view.section.axis}=${view.section.offset_m} m, keep ${view.section.keep}`:' · no section'}. Reference {short(view.reference_revision_sha256)}.</li>)}</ul><p>Definitions travel with the accepted scope and change only report identities. Source assets and analytical inputs remain independent.</p></details>}
     </section>
 
-    {confirm && <div role="alertdialog" aria-label="Confirm reference scope action"><p>{confirm === 'clear' ? 'Clear only the accepted study scope? Retained geometry and simulation evidence remain. Any unapplied scope draft stays available.' : confirm === 'restart' ? 'Start a new draft bound to the current reference and accepted thermal designs? This replaces the current scope draft; the accepted scope remains until a valid save.' : 'Discard the unapplied scope draft and its preview? Accepted inputs remain unchanged.'}</p><button disabled={lock} onClick={() => {
+    {confirm && <div ref={confirmation} role="alertdialog" aria-label="Confirm reference scope action" onKeyDown={e => {
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); cancelConfirmation(); }
+    }}><p>{confirm === 'clear' ? 'Clear only the accepted study scope? Retained geometry and simulation evidence remain. Any unapplied scope draft stays available.' : confirm === 'restart' ? 'Start a new draft bound to the current reference and accepted thermal designs? This replaces the current scope draft; the accepted scope remains until a valid save.' : 'Discard the unapplied scope draft and its preview? Accepted inputs remain unchanged.'}</p><button disabled={lock} onClick={() => {
       if (confirm === 'restart') startScope();
       else if (confirm === 'discard') { edit(d => { d.scope = null; }); setConfirm(null); }
       else void perform(async () => { if (await props.onClearScope()) setConfirm(null); });
-    }}>{confirm === 'clear' ? 'Clear scope' : confirm === 'restart' ? 'Start new scope draft' : 'Discard scope draft'}</button><button disabled={lock} onClick={() => setConfirm(null)}>Cancel — keep editing</button></div>}
+    }}>{confirm === 'clear' ? 'Clear scope' : confirm === 'restart' ? 'Start new scope draft' : 'Discard scope draft'}</button><button ref={cancelButton} disabled={lock} onClick={cancelConfirmation}>Cancel — keep editing</button></div>}
 
     {candidate && controlled?.scope && <fieldset disabled={lock || Boolean(confirm)} className="reference-scope-editor">
       <legend>Unapplied scope and source mapping</legend>
@@ -206,7 +234,7 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
         {candidate.coverage.status === 'unknown' ? input('Why coverage is unknown', candidate.coverage.reason, text => updateScope(v => { if (v.coverage.status === 'unknown') v.coverage.reason = text; })) : <><div className="reference-form-grid">{input('Included source floor area (m²)', controlled.scope.numbers['coverage.included'] ?? String(candidate.coverage.included_m2), text => updateScope((_v, d) => { d.numbers['coverage.included'] = text; }), true)}{input('Whole-building source floor area (m²)', controlled.scope.numbers['coverage.whole'] ?? String(candidate.coverage.whole_building_m2), text => updateScope((_v, d) => { d.numbers['coverage.whole'] = text; }), true)}{input('Coverage source', candidate.coverage.source, text => updateScope(v => { if (v.coverage.status === 'declared_floor_area') v.coverage.source = text; }))}</div>{area('Coverage measurement method', candidate.coverage.method, text => updateScope(v => { if (v.coverage.status === 'declared_floor_area') v.coverage.method = text; }))}</>}
         {candidate.scope_kind === 'whole_building' && <>{area('Whole-building review evidence', candidate.whole_building_review ?? '', text => updateScope(v => { v.whole_building_review = text || null; }))}<p>Rust rejects a whole-building claim without complete occurrence classification, zone mappings, measured coverage and floor-area reconciliation. Unsupported geometry cannot be made equivalent by this declaration.</p></>}
       </details>
-      <div className="reference-actions"><button onClick={() => void review()}>Review scope in Rust</button><button disabled={!preview || preview.relationship !== 'current' || previewSignature.current !== signature} onClick={() => void save()}>Save accepted scope</button><button onClick={() => setConfirm('discard')}>Discard scope draft…</button></div>
+      <div className="reference-actions"><button onClick={() => void review()}>Review scope in Rust</button><button disabled={!preview || preview.relationship !== 'current' || previewSignature.current !== signature} onClick={() => void save()}>Save accepted scope</button><button onClick={e => requestConfirmation('discard', e.currentTarget)}>Discard scope draft…</button></div>
     </fieldset>}
     {preview && <section aria-label="Rust scope preview"><h3>Rust scope preview</h3><Assessment value={preview} /></section>}
     <p role="status">{busy ? 'Checking reference action…' : 'Simulation inclusion follows accepted analytical inputs. Reference visibility never changes it.'}</p>

@@ -16,7 +16,7 @@
 .reference-facts dd { margin: 0; overflow-wrap: anywhere; }
 .reference-workbench code { overflow-wrap: anywhere; }
 .reference-draft-note, .reference-warning { border-left: 3px solid #e9b96a; padding-left: .6rem; }
-.reference-workbench [role=alert], .reference-workbench [role=alertdialog] { border-left: 3px solid #e49a7c; padding: .55rem; background: #382e28; }
+.reference-workbench [role=alert], .reference-workbench [role=alertdialog] { border-left: 3px solid #b66b43; padding: .55rem; background: #fff4e9; color: #512b18; }
 .reference-table { overflow: auto; max-height: 22rem; max-width: 100%; min-width: 0; }
 .reference-table table { width: 100%; border-collapse: collapse; }
 .reference-table th, .reference-table td { text-align: left; vertical-align: top; padding: .4rem; border-bottom: 1px solid #3c4848; overflow-wrap: anywhere; }

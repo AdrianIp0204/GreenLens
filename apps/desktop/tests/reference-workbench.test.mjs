@@ -193,6 +193,84 @@ test('discard and clear require distinct confirmations and preserve the other dr
   await click('Clear accepted scope…');await click('Cancel — keep editing');assert.equal(count('clear'),0);await click('Clear accepted scope…');await click('Clear scope');assert.equal(count('clear'),1);assert.equal(props.draft.import.scale,'0.01');
 });
 
+test('scope confirmation reveals and focuses safe Cancel, preserves invalid drafts and returns focus only on cancellation',async()=>{
+  await setup({accepted:true});await click('Edit accepted scope');await type('Scope title','Retained unapplied edit');
+  await type('Coverage basis','declared_floor_area');await type('Included source floor area (m²)','-');
+  await click('Prepare another reference revision');await type('Metres per source unit','0.01');
+  const draftBefore=JSON.stringify(props.draft),acceptedBefore=JSON.stringify(props.scope),scrolls=[];
+  const original=Object.getOwnPropertyDescriptor(HTMLElement.prototype,'scrollIntoView');
+  // jsdom has no layout. Observe the real component's explicit scroll request;
+  // an installed long/scrolled inspector is still required for pixel evidence.
+  Object.defineProperty(HTMLElement.prototype,'scrollIntoView',{configurable:true,value:function(options){scrolls.push({element:this,options});}});
+  let escapedOutside=0;const onEscape=e=>{if(e.key==='Escape')escapedOutside++;};document.body.addEventListener('keydown',onEscape);
+  try {
+    const trigger=button('Discard scope draft…');trigger.focus();await click('Discard scope draft…');
+    const prompt=document.querySelector('[role="alertdialog"]'),cancel=button('Cancel — keep editing');
+    assert.equal(document.activeElement,cancel);assert.equal(prompt.isConnected,true);
+    assert.deepEqual(scrolls,[{element:prompt,options:{block:'nearest'}}]);
+    assert.equal(document.querySelector('.reference-scope-editor').disabled,true);
+    assert.equal(JSON.stringify(props.draft),draftBefore);assert.equal(JSON.stringify(props.scope),acceptedBefore);
+    const escape=new window.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true});
+    await act(async()=>cancel.dispatchEvent(escape));
+    assert.equal(escape.defaultPrevented,true);assert.equal(escapedOutside,0);assert.equal(document.querySelector('[role="alertdialog"]'),null);
+    assert.equal(document.activeElement,trigger);assert.deepEqual(scrolls.at(-1),{element:trigger,options:{block:'nearest'}});
+    assert.equal(document.querySelector('.reference-scope-editor').disabled,false);
+    assert.equal(JSON.stringify(props.draft),draftBefore);assert.equal(JSON.stringify(props.scope),acceptedBefore);
+    for(const text of ['Clear accepted scope…','Start scope for current revision']){
+      scrolls.length=0;const invoker=button(text);invoker.focus();await click(text);
+      const current=document.querySelector('[role="alertdialog"]');assert.equal(document.activeElement,button('Cancel — keep editing'));
+      assert.deepEqual(scrolls,[{element:current,options:{block:'nearest'}}]);await click('Cancel — keep editing');
+      assert.equal(document.activeElement,invoker);assert.equal(JSON.stringify(props.draft),draftBefore);assert.equal(JSON.stringify(props.scope),acceptedBefore);
+    }
+    assert.equal(count('assess'),0);assert.equal(count('save'),0);assert.equal(count('clear'),0);
+    await click('Discard scope draft…');await click('Discard scope draft');
+    assert.equal(props.draft.scope,null);assert.equal(props.draft.import.scale,'0.01');assert.equal(JSON.stringify(props.scope),acceptedBefore);
+    assert.notEqual(document.activeElement,trigger);assert.equal(trigger.isConnected,false);
+  } finally {
+    document.body.removeEventListener('keydown',onEscape);
+    if(original)Object.defineProperty(HTMLElement.prototype,'scrollIntoView',original);else delete HTMLElement.prototype.scrollIntoView;
+  }
+});
+
+test('scope confirmation never restores an old document or disconnected trigger and does not steal focus on unmount',async()=>{
+  await setup({accepted:true});await click('Edit accepted scope');
+  const scrolls=[],original=Object.getOwnPropertyDescriptor(HTMLElement.prototype,'scrollIntoView');
+  Object.defineProperty(HTMLElement.prototype,'scrollIntoView',{configurable:true,value:function(options){scrolls.push({element:this,options});}});
+  const outside=document.createElement('button');outside.textContent='Outside current panel';document.body.append(outside);
+  try {
+    const oldTrigger=button('Discard scope draft…');oldTrigger.focus();await click('Discard scope draft…');
+    outside.focus();scrolls.length=0;
+    const replacement=newReferenceDraft('replacement-document');replacement.scope=newScopeDraft(props.reference,props.context);
+    props={...props,documentId:'replacement-document',draft:replacement};await draw();
+    assert.equal(document.querySelector('[role="alertdialog"]'),null);assert.equal(document.activeElement,outside);assert.deepEqual(scrolls,[]);
+    await click('Discard scope draft…');const disconnected=button('Discard scope draft…');
+    await act(async()=>props.onDraftChange({...props.draft,scope:null}));assert.equal(disconnected.isConnected,false);
+    const refocuses=[];disconnected.focus=()=>refocuses.push('stale trigger');scrolls.length=0;
+    await click('Cancel — keep editing');assert.deepEqual(refocuses,[]);assert.deepEqual(scrolls,[]);
+    await click('Clear accepted scope…');outside.focus();scrolls.length=0;
+    await act(async()=>root.render(React.createElement('p',null,'Another panel')));
+    assert.equal(document.activeElement,outside);assert.deepEqual(scrolls,[]);assert.equal(count('clear'),0);assert.equal(count('save'),0);
+  } finally {
+    outside.remove();if(original)Object.defineProperty(HTMLElement.prototype,'scrollIntoView',original);else delete HTMLElement.prototype.scrollIntoView;
+  }
+});
+
+test('reference confirmation and validation messages retain readable foreground/background contrast in the actual style cascade',async()=>{
+  await setup({accepted:true});await click('Clear accepted scope…');
+  const style=document.createElement('style');style.textContent=
+    fs.readFileSync(fileURLToPath(new URL('../src/styles.css',import.meta.url)),'utf8')+'\n'+
+    fs.readFileSync(fileURLToPath(new URL('../src/energy/energy.css',import.meta.url)),'utf8')+'\n'+
+    fs.readFileSync(source('reference-workbench.css'),'utf8');document.head.append(style);
+  document.getElementById('root').className='energy-workspace';
+  const luminance=color=>{const rgb=color.match(/[\d.]+/g).slice(0,3).map(Number).map(v=>v/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return .2126*rgb[0]+.7152*rgb[1]+.0722*rgb[2];};
+  const assertContrast=element=>{const css=window.getComputedStyle(element),a=luminance(css.color),b=luminance(css.backgroundColor);assert.ok((Math.max(a,b)+.05)/(Math.min(a,b)+.05)>=4.5,'Reference message text must remain readable against its own background');};
+  try {
+    assertContrast(document.querySelector('[role="alertdialog"]'));
+    await click('Cancel — keep editing');await click('Edit accepted scope');reply=new Error('Original fixture validation error');await click('Review scope in Rust');
+    assertContrast(document.querySelector('[role="alert"]'));assert.equal(count('save'),0);
+  } finally {style.remove();document.getElementById('root').className='';}
+});
+
 test('late review cannot enable acceptance for a different document or overwritten draft',async()=>{
   await setup();await startScope();const pending=deferred();reply=pending.promise;await click('Review scope in Rust');assert.equal(button('Review scope in Rust').closest('fieldset').disabled,true);
   const replacement=newReferenceDraft('other-document');replacement.scope=newScopeDraft(props.reference,props.context);replacement.scope.value.title='Other document draft';props={...props,documentId:'other-document',draft:replacement};await draw();await act(async()=>pending.resolve(assessment()));assert.equal(button('Save accepted scope').disabled,true);assert.equal(document.querySelector('[aria-label="Rust scope preview"]'),null);assert.equal(props.draft.scope.value.title,'Other document draft');assert.equal(count('save'),0);

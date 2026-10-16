@@ -1,0 +1,70 @@
+{
+  "schema_version": "greenlens.native-delivery-observations.v0.8",
+  "recorded_date_utc": "2026-10-16",
+  "source_commit": "310c7223799c829c85da9ea8c8553d0a60224f05",
+  "clean_build": true,
+  "release_acceptance": "incomplete",
+  "scope": "One declared retained-copy/history/PDF inspection after the scope-admission repair; no new issue, rendering, simulation or cancellation allowance.",
+  "artifacts": {
+    "installer": { "bytes": 7353685, "sha256": "9cb7504989dbdd92857efbec9645b0947ee3f70a6b44f49de757b0d78364a638" },
+    "installed_executable": { "bytes": 31155712, "sha256": "a1fd0f251e75b37daa4723717c6b76afb1bf321b760c4690113b2440f8f65828" },
+    "raw_build_executable_sha256": "e323ea789d1608ef33c59d231b06f3fdc38a2e459b5720b8c1845266d834587d",
+    "distributed_cli": { "bytes": 16669696, "sha256": "15a31bf6dbfac4970d0a40fa1313d82fa0d16cf375c19a93a0338ca076897d9f" },
+    "cli_archive": { "bytes": 12739952, "sha256": "0e412e4f54534d1980d6d75ec3637bc23c3d4a0817a1c1308ead81f63ba5fd25" },
+    "installer_exit": 0,
+    "signed": false,
+    "payload_binding": "Initial raw-executable equality check rejected three bytes. Inspection of pinned tauri-utils 2.10.1 src/platform.rs establishes the documented bundle-type patch. Replacing the sole __TAURI_BUNDLE_TYPE_VAR_UNK with __TAURI_BUNDLE_TYPE_VAR_NSS in memory produces the entire installed executable exactly; no other byte differs. Neither executable was modified by this check."
+  },
+  "build_seconds": { "checks": 334.5763347, "cli": 148.4641083, "desktop": 370.9685161, "total": 861.3529021 },
+  "local_tests": {
+    "core": { "passed": 107, "failed": 0, "ignored": 0 },
+    "runner": { "passed": 235, "failed": 0, "ignored": 5, "seconds": 293.36 },
+    "focused_admission_core": 18,
+    "focused_admission_runner": 6,
+    "strict_workspace_all_targets_clippy": "passed before packaging",
+    "ignored_disclosure": "Ignored checks are not real-engine acceptance. Hosted required engine checks are separate."
+  },
+  "native": {
+    "environment": "Existing Windows workstation, per-user installed production assets, no development server; not clean-machine verification.",
+    "document_open": "Observed native folder selection and Save/Discard/Cancel guard for the untouched startup example; the retained candidate was accepted after integrity/arithmetic verification.",
+    "history": "Observed issue 8d51a892887273071c2236a85e2e49e7aba3c1855a33bd96c48beaa6fdc9d171 bound to original scope 8378c41db3d3957e047f0c4ff079e5f495560b18febfd2961475305c5a3d9981, explicitly labeled an earlier accepted revision. Conflicting provenance and missing exact-pair sensitivity remain visible.",
+    "pdf": "Observed correct retained executive PDF page 1 and four-page count in the offline preview; Escape closes it.",
+    "pdf_bytes": 77181,
+    "pdf_sha256": "21e765ee6c12d6fc4575de91a15b1663c1685defba96e7af576d722cdeca44f3",
+    "closure": "Unchanged document closes normally; no application process remains.",
+    "retained_members": 576,
+    "retained_bytes": 224928962,
+    "changed_members": 0,
+    "manifest_sha256": "0c366cda4f2ef44d5d5a12b97f246f02fb2b9a374eef7540254c5f1426747772",
+    "automation_limitation": "An accessibility-index PDF click was rejected as outside the window; refreshed visible-coordinate input succeeded. This was not a PDF/application failure.",
+    "not_repeated": ["external handoff/reveal/Save Copy", "new issue or revision acceptance", "report regeneration", "EnergyPlus execution", "native cancellation", "physical held modifiers", "client-size/DPI qualification"]
+  },
+  "distributed_cli_inspection": {
+    "exit": 0,
+    "status": "Retained issue inspection passed; exact renderer recipe remains recognized.",
+    "progress_observation": { "elapsed_ms": 6890, "files_verified": 576, "bytes_read": 737274753, "retained_runs": 7, "numeric_passes_each": 1 },
+    "timing_disclosure": "Observed CLI progress, not the inherited native first-progress timing protocol. No new render/replay was requested."
+  },
+  "report_review": "Existing reviewed products are unchanged. The 82-page/eight-PNG review and 49/88 regeneration observations retain their 7c7090e source and exact product identities; they are not fresh 310c722 rendering observations.",
+  "external_receipt_sha256": {
+    "artifact-identities.json": "c6d3a598a49ecaa17089939c120b99010c9317f6b9779fabb5ec48698e25c5e8",
+    "build-timings.json": "53f4a69b78c78902482a09389994d59668ed8506bad68a43b647ad9095738456",
+    "core-tests.txt": "b654059f6409e9b08cea22a8a9092ad79391a83691b0ad24c144c86408793922",
+    "runner-tests.txt": "46a1fc056eb61e8cae72796811f0b57ee1cd20b3d476198e22fed61c61d2a7bc",
+    "native-history.png": "d8de49ab133eba495fd219e502a581d3f54e275724f84f81b7ea29ed64822394",
+    "native-executive-pdf.png": "4ed2f18e413ef0ee8f8133c40ccc23035be6e19878b74ed5985d71304230b976",
+    "native-preservation.json": "f2774014fc301320fb50d874c88a3f8a591211cf25e003db823b08b4f6a93331",
+    "cli-inspect.json": "db4bf2ebb9af9cff906e10bb909d070783938703718606025bde6cd0ede27bf7"
+  },
+  "ci_checkpoint": {
+    "observed_utc": "2026-10-16T11:53:11Z",
+    "exact_application_source_run": 38894051294,
+    "status": "in_progress",
+    "frontend_types_tests_assets": "passed",
+    "active_step": "Format, strict lint and unit/lifecycle regression suite",
+    "required_engine_and_static_jobs": "not yet started at checkpoint; no acceptance claimed",
+    "previous_7c_run": { "id": 38887504722, "status": "completed", "conclusion": "failure", "build": "success", "static_compatibility": "success", "energy": "failed in upstream metadata acquisition before engine execution" },
+    "documentation_followup": "Receipt-only commit does not build another candidate or rerun identical annual workloads. It must not be labeled an exact-source green result; the application-source run continues separately."
+  },
+  "privacy": "Raw receipts, screenshots and local paths remain outside source and public artifacts. This is an original synthetic study, not the private architectural benchmark."
+}

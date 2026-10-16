@@ -1,0 +1,156 @@
+{
+  "schema_version": "greenlens.verification.receipt.v1",
+  "date_utc": "2026-10-16",
+  "evidence_id": "v0.8-openskp-gate-a",
+  "scope": "External native feasibility only; no app dependency, worker adoption, independent SKP qualification or private probe",
+  "openskp_source": "dceb9fff0efc9668961530b535d5375c001343dc",
+  "source_preflight": "Initial ordinary Git status falsely reported long-path modifications and stopped before compiler/parser execution. Per-command core.longpaths=true verified exact clean sources before the one build.",
+  "sources": {
+    "miniz": "77d0dce8627735138c51770d1799a1ef48f2117d",
+    "tinygltf": "488a70a3df62a4df1a736e9e56fb8836580c4888",
+    "flatbuffers": "7e163021e59cca4f8e1e35a7c828b5c6b7915953",
+    "googletest": "52eb8108c5bdec04579160ae17225d66034bd723"
+  },
+  "toolchain": {
+    "platform": "Windows x64",
+    "compiler": "MSVC 19.50.35725.0",
+    "compiler_sha256": "3516d835aa768f13ee55c426e7c845e79c97eec3e8c9fad632896fde4676794c",
+    "linker": "14.50.35725.0",
+    "linker_sha256": "ee9b29be652eee20affa6963a7ce54d01271b0f1b2443e315ea86469cbb95694",
+    "cmake": "4.1.2-msvc8",
+    "cmake_sha256": "b3520db74c86c83a9b39b550e8c5d76172f3658bced480ef25bf06e8f2c10bf1",
+    "ninja_sha256": "ff29bcb5f547174bae6b73c84278cce9b674e8ebc2f3c3926ab21030b33f34b8",
+    "runtime_configuration": "MultiThreadedDLL",
+    "configuration": "Release; Ninja; 2 build workers; all FetchContent sources supplied locally; downloads and updates disconnected; examples/WASM/GoogleMock/Abseil disabled"
+  },
+  "outcome": {
+    "configure_exit": 0,
+    "build_exit": 0,
+    "smoke_exit": 0,
+    "configure_attempts": 1,
+    "build_attempts": 1,
+    "smoke_attempts": 1,
+    "source_modifications": 0,
+    "compiler_repairs": 0,
+    "tests": 21,
+    "failures": 0,
+    "errors": 0,
+    "disabled": 0,
+    "skipped": 0,
+    "configure_seconds": 7.726359,
+    "build_seconds": 134.25701,
+    "smoke_process_seconds": 0.0509361,
+    "smoke_test_body_seconds": 0.002,
+    "total_collector_seconds": 143.2592982,
+    "build_tree_bytes": 165710990
+  },
+  "memory": {
+    "status": "incomplete",
+    "configure_sampled_root_working_set_bytes": 22282240,
+    "build_sampled_root_working_set_bytes": 14041088,
+    "smoke_peak_bytes": null,
+    "limitation": "Only root CMake working sets were sampled; compiler/linker descendants and aggregate committed memory were not measured. The short smoke completed between samples; raw zero means unobserved. The 1 GiB memory bound and production containment are not verified."
+  },
+  "test_cases": [
+    "Create.SingleFaceRoundTrips",
+    "Create.SharedVerticesAndEdgesAreDeduplicated",
+    "Glb.SerializesSceneAndBinaryData",
+    "Glb.SerializesAnEmptyScene",
+    "Glb.RejectsMalformedGeometry",
+    "Glb.RejectsNonFiniteAndInvalidPbrValues",
+    "Tlv.CheckedReadsAndVarints",
+    "Tlv.ReadsFloat64LittleEndian",
+    "Tlv.RecursiveContainers",
+    "Vff.HeaderAndVersion",
+    "Legacy.GatesInstanceGuidByFileVersion",
+    "Transforms.Composition",
+    "Transforms.TranslatesPoint",
+    "Transforms.DetectsMirrorsAndTransformsNormalsByInverseTranspose",
+    "Scene.UsesOneDoubleSidedPrimitiveWhenFaceMaterialsMatch",
+    "Scene.PreservesDistinctFrontAndBackFaceMaterials",
+    "Scene.KeepsWindingAndNormalsAlignedForMirroredInstances",
+    "Triangulator.ComputesFaceNormal",
+    "Triangulator.SplitsQuadConsistently",
+    "Triangulator.Concave",
+    "Triangulator.Hole"
+  ],
+  "test_interpretation": "Small upstream synthetic primitive/transform/triangulator/scene/GLB checks and two writer-parser roundtrips. No contributed architectural SKP fixture was used. Writer-parser agreement is integration, not independent format/geometry validation.",
+  "products": [
+    {
+      "id": "tests/openskp_tests.exe",
+      "bytes": 3510272,
+      "sha256": "60894b82819f4108df6879b9e4f461a03e2d9636ad2da357da3896327d555014"
+    },
+    {
+      "id": "OpenSkp.lib",
+      "bytes": 56279744,
+      "sha256": "4049b7eb8f949402915f44c1413a4e46fe6c3455432b3015434f181289f576c6"
+    },
+    {
+      "id": "lib/gtest.lib",
+      "bytes": 5784250,
+      "sha256": "ce534f0d1f531b3c53cb3773ad98c5fc9a1e19fa8023691db92b955396d57705"
+    },
+    {
+      "id": "lib/gtest_main.lib",
+      "bytes": 9958,
+      "sha256": "bec84b177e94c6545612587312932b118200d7fb7441afd1c96447d637c87b06"
+    }
+  ],
+  "raw_receipt_hashes": [
+    {
+      "id": "preflight-failure.json",
+      "bytes": 311,
+      "sha256": "88bf591c686c123cd686855fa3dfa23a61a2a69bdc129a2a1dc04c09f46f621c"
+    },
+    {
+      "id": "configure.json",
+      "bytes": 1716,
+      "sha256": "d0eaba04ef48082eb967469da19a37910513387af6be97a30e011d285ac5549b"
+    },
+    {
+      "id": "configure.stdout.txt",
+      "bytes": 1449,
+      "sha256": "402699c09b7ec7bffed8e965ad1bbb6fbe7a4abe327e7a5d3628e951648abf95"
+    },
+    {
+      "id": "build.json",
+      "bytes": 379,
+      "sha256": "745d12729465ddbfc7144f3888fa8d90d23f689387a7680a34625d2c329f99e5"
+    },
+    {
+      "id": "build.stdout.txt",
+      "bytes": 6409,
+      "sha256": "ed59eea79f5d0265c1f408a7d0e07c1562a26b76c89bf1463eee8cbc24bf59cb"
+    },
+    {
+      "id": "synthetic-smoke.json",
+      "bytes": 1113,
+      "sha256": "7d50823b3fc9117c2db6233f37606a101e8bc27daa97398fb5ff029c7a2c299f"
+    },
+    {
+      "id": "synthetic-smoke.stdout.txt",
+      "bytes": 3989,
+      "sha256": "68e77a48782641cd2b47920d5add5e6feb398361a7ddb6d77f0435cd5c299055"
+    },
+    {
+      "id": "synthetic-smoke.xml",
+      "bytes": 7889,
+      "sha256": "7c5997c4c7ca8db7dd531b69d2258b9686130d7c7d9b01b4da0c113fae421eb4"
+    },
+    {
+      "id": "summary.json",
+      "bytes": 322,
+      "sha256": "b131c23fdd545ca8c10b416b524bd44b36b0628fe3024cd62d47326246120b29"
+    }
+  ],
+  "remaining": {
+    "independent_legacy_2013_fixture": "blocked",
+    "modern_numeric_oracle": "not established",
+    "bounded_worker": "not implemented",
+    "resource_containment_and_cancellation": "unverified",
+    "private_probe": "not attempted; allowance unused",
+    "application_adoption": "not adopted"
+  },
+  "privacy": "Sanitized receipt contains artifact basenames and hashes only; raw paths and logs remain external."
+}

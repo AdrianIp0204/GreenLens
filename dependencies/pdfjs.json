@@ -1,0 +1,164 @@
+{
+  "schema_version": "greenlens.pdf-preview-dependency.v1",
+  "review_date": "2026-10-16",
+  "package": {
+    "name": "pdfjs-dist",
+    "version": "6.4.299",
+    "source": "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-6.4.299.tgz",
+    "integrity": "sha512-AVl138zALtfaAPvADulE0PZThbYzCBS79nL4pOSL/6Sm/4AH5A21BD9VHt97OlCuzJuCpmeZtAtkinisF4Vb1g==",
+    "optional": false
+  },
+  "upstream_build": "d0991a0d5",
+  "archive": {
+    "bytes": 8539589,
+    "sha256": "86269b40170eb41740ea05ad2102d71d33de4f122b34eb2f478be0ea7779c415"
+  },
+  "license": "Apache-2.0",
+  "modifications": "No upstream source modifications. GreenLens supplies a bounded read-only component and pinned worker configuration.",
+  "reviewed_files": {
+    "package.json": {
+      "bytes": 711,
+      "sha256": "8103b756525a79ec119558e9796062228290acfd5178a6b7fc93e6979511f604"
+    },
+    "LICENSE": {
+      "bytes": 10174,
+      "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+    },
+    "build/pdf.mjs": {
+      "bytes": 860818,
+      "sha256": "dd13af821c9c3e1778653340d6539a1ba07bc56cba40073a4c727864cf0c232a"
+    },
+    "build/pdf.worker.mjs": {
+      "bytes": 2229713,
+      "sha256": "07ceb740d746e5d9012fcf9f27d5c7dea09f7d2f5e74f5c8109e5787551a2333"
+    },
+    "build/pdf.worker.min.mjs": {
+      "bytes": 1264342,
+      "sha256": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18"
+    }
+  },
+  "shipped_modules": [
+    "pdfjs-dist/build/pdf.mjs reachable production code",
+    "pdfjs-dist/build/pdf.worker.min.mjs as a same-origin dedicated worker"
+  ],
+  "excluded_assets": [
+    "web viewer and PDF scripting sandbox",
+    "Node canvas native binaries and ICU data",
+    "standard_fonts",
+    "cmaps",
+    "iccs",
+    "wasm",
+    "image_decoders"
+  ],
+  "optional_dependency": {
+    "name": "@napi-rs/canvas",
+    "version": "1.0.11",
+    "source": "https://registry.npmjs.org/@napi-rs/canvas/-/canvas-1.0.11.tgz",
+    "integrity": "sha512-vt5tog1cr+QKadIddGe+3LrcX0EmjEd0izF717Uwf92mBmgYfq2XRmL2r4bZU40spB69exxhrBn9I91HYEr/7w==",
+    "optional": true,
+    "license": "MIT",
+    "package_manifest": {
+      "bytes": 4872,
+      "sha256": "c189bbe7adf9ed5948d3ed82b8fd834b365c5d4adcb9bebe57e2ace3c54a3dff"
+    },
+    "license_file": {
+      "bytes": 1075,
+      "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6"
+    },
+    "usage": "Optional Node runtime support installed by npm; not used by the browser component and not authorized for redistribution as native code."
+  },
+  "installed_optional_platform": {
+    "name": "@napi-rs/canvas-win32-x64-msvc",
+    "version": "1.0.11",
+    "source": "https://registry.npmjs.org/@napi-rs/canvas-win32-x64-msvc/-/canvas-win32-x64-msvc-1.0.11.tgz",
+    "integrity": "sha512-DFYp/ZQRdKunI/LPc0UkRXG1vlNjJKOJf8O8Ctb8+wm2Nt2ELg9Eamc31D2VoakkfGo8L+z0Iejz6WtFbQwyGw==",
+    "optional": true,
+    "declared_license": "MIT",
+    "package_manifest": {
+      "bytes": 832,
+      "sha256": "dd3765d3af7cdbf22d61b0330a28efb695e453e899f527f52fc223d99f46b80c"
+    },
+    "sbom": {
+      "bytes": 71208,
+      "sha256": "af0b3af01a73d229ffabb515a7d6c0857784e359df39b0da59949e946415bf71"
+    },
+    "sbom_components": 107,
+    "review": "Inspected package metadata and bundled SBOM. Native dependency includes additional libraries and has no standalone package license file. Native redistribution is not approved by this browser-only review; production assets must exclude this package and all native/ICU files."
+  },
+  "policy": {
+    "input": "Backend-verified retained owned report PDF bytes, never a URL or arbitrary uploaded PDF.",
+    "max_pdf_bytes": 8388608,
+    "max_pages": 160,
+    "max_canvas_pixels": 8000000,
+    "load_deadline_ms": 30000,
+    "page_deadline_ms": 15000,
+    "worker": "Explicit dedicated same-origin module Worker; destroyed on close, identity change, failure or deadline. No silent fake-worker fallback.",
+    "fetch": "No PDF URL, no auxiliary resource fetch, useWorkerFetch=false, rejecting BinaryDataFactory.",
+    "fonts": "Embedded report font outlines only; useSystemFonts=false and disableFontFace=true.",
+    "actions": "No annotation/form/text-link layer, XFA, attachments, PDF scripting sandbox or action dispatch.",
+    "wasm": false,
+    "eval": "Pinned core and worker have no eval()/new Function constructor path. isEvalSupported was removed by this PDF.js version, so setting false is explanatory rather than a relied-on control.",
+    "csp": "worker-src self; script-src self; no blob/remote worker, unsafe-eval, frame or PDF object permission required.",
+    "limits_disclosure": "maxImageSize can omit oversized PDF raster images. The preview discloses this bound and is not a completeness or integrity check; verified original PDF bytes remain available.",
+    "max_product_ipc_bytes": 8388608,
+    "boundary_note": "Component and retained-product IPC use the same 8 MiB bound."
+  },
+  "verification": {
+    "synthetic_component_tests": 7,
+    "synthetic_component_tests_passed": 7,
+    "typescript": "passed after replacing obsolete document.destroy with loading-task.destroy",
+    "production_asset_exclusion": {
+      "status": "observed for this development production build only",
+      "source_status": "Working tree, not a frozen installed candidate",
+      "asset_count": 7,
+      "assets": [
+        {
+          "path": "assets/index-BmYTimHB.js",
+          "bytes": 1293148,
+          "sha256": "8d106629babe5b5138cf30aae97303a0848c961aac111d7276cfd78bae1bc7f8"
+        },
+        {
+          "path": "assets/index-BWVfOrmd.css",
+          "bytes": 49530,
+          "sha256": "e67d4126f0b4f0b718ec556688169a8ba45d428aabbb9f4fb6b35942a91e5919"
+        },
+        {
+          "path": "assets/pdf-DwqRMaW7.js",
+          "bytes": 430241,
+          "sha256": "e57892731ff0a1bfdafe7931521d332b49196f2d443fed7e7b3d1b9135550360"
+        },
+        {
+          "path": "assets/pdf.worker.min-CjEcRF4W.mjs",
+          "bytes": 1264342,
+          "sha256": "9536359f1b8367850d485731ca1d5e45c159a7b7a0912325e539937aa21ceb18"
+        },
+        {
+          "path": "assets/SceneView-CRQpAJph.css",
+          "bytes": 3278,
+          "sha256": "660d0cd86ecb5ef1412ee12f05567894c578cdeb9fefcc1bb1eddfa9db947415"
+        },
+        {
+          "path": "assets/SceneView-DLLhziPL.js",
+          "bytes": 30345,
+          "sha256": "6927077710c73b8c65c9de69f151a14db804761d7e8ce5e448ca5c8a56a1ef47"
+        },
+        {
+          "path": "index.html",
+          "bytes": 444,
+          "sha256": "1f77cfc6f5146270a24c58fda9b0585e005cadd02c89dc62a4d75eb3d207f740"
+        }
+      ],
+      "native_or_icu_files": 0,
+      "font_cmap_icc_wasm_files": 0,
+      "worker_exact_upstream_bytes": true,
+      "limitation": "Pinned generic JavaScript includes unreachable Node-support strings; no native packages/binaries are bundled. This does not establish installed preview or final package acceptance."
+    },
+    "installed_rendering": "not yet observed"
+  },
+  "references": [
+    "https://mozilla.github.io/pdf.js/api/draft/module-pdfjsLib.html",
+    "https://registry.npmjs.org/pdfjs-dist/6.4.299",
+    "https://github.com/mozilla/pdf.js",
+    "https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/worker-src"
+  ]
+}

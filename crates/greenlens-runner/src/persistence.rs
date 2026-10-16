@@ -5,7 +5,7 @@ use sha2::{Digest, Sha256};
 use std::{
     collections::BTreeMap,
     fs::{self, File, OpenOptions},
-    io::{Read, Write},
+    io::{Read, Seek, SeekFrom, Write},
     path::{Component, Path, PathBuf},
 };
 use uuid::Uuid;
@@ -210,6 +210,160 @@ pub(crate) fn write_new_evidence_bytes(root: &Path, name: &str, bytes: &[u8]) ->
         .open(root.join(relative))?;
     file.write_all(bytes)?;
     file.sync_all()?;
+    Ok(())
+}
+
+/// Verify a bounded sibling temporary before publishing a new file without
+/// replacing an existing destination. The checkpoint receives cumulative bytes
+/// written and read (at most twice the input length). It may cancel at any point
+/// before publication. Once publication succeeds there is no late cancellation
+/// error: the caller must report the created copy even if a viewer handoff stops.
+pub(crate) fn write_new_verified_evidence_bytes(
+    root: &Path,
+    name: &str,
+    bytes: &[u8],
+    expected_sha256: &str,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<()> {
+    ensure!(
+        bytes.len() as u64 <= MAX_EVIDENCE_FILE_BYTES,
+        "Evidence file too large"
+    );
+    checkpoint(0)?;
+    let relative = relative_path(name)?;
+    let parent = relative.parent().unwrap_or_else(|| Path::new(""));
+    let (parent, _guards) = create_checked_directories(root, parent)?;
+    let target = root.join(relative);
+    let temporary = parent.join(format!(".delivery-{}.tmp", Uuid::new_v4()));
+    let mut options = OpenOptions::new();
+    options.create_new(true).read(true).write(true);
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        use windows_sys::Win32::Storage::FileSystem::{
+            DELETE, FILE_GENERIC_READ, FILE_GENERIC_WRITE, FILE_SHARE_DELETE, FILE_SHARE_READ,
+        };
+        // Deny another writer while retaining the handle through promotion.
+        options
+            .access_mode(FILE_GENERIC_READ | FILE_GENERIC_WRITE | DELETE)
+            .share_mode(FILE_SHARE_READ | FILE_SHARE_DELETE);
+    }
+    let mut file = options.open(&temporary)?;
+    let result = (|| {
+        let mut processed = 0u64;
+        for chunk in bytes.chunks(64 * 1024) {
+            checkpoint(processed)?;
+            file.write_all(chunk)?;
+            processed += chunk.len() as u64;
+            checkpoint(processed)?;
+        }
+        file.sync_all()?;
+        file.seek(SeekFrom::Start(0))?;
+        let mut digest = Sha256::new();
+        let mut read_bytes = 0u64;
+        let mut buffer = [0u8; 64 * 1024];
+        loop {
+            checkpoint(processed)?;
+            // Probe one extra byte to detect growth without an unbounded read.
+            let remaining = bytes.len() as u64 + 1 - read_bytes;
+            let limit = buffer.len().min(remaining as usize);
+            let count = file.read(&mut buffer[..limit])?;
+            if count == 0 {
+                break;
+            }
+            read_bytes += count as u64;
+            ensure!(
+                read_bytes <= bytes.len() as u64,
+                "Written copy size changed"
+            );
+            digest.update(&buffer[..count]);
+            processed += count as u64;
+            checkpoint(processed)?;
+        }
+        ensure!(
+            read_bytes == bytes.len() as u64
+                && format!("{:x}", digest.finalize()) == expected_sha256,
+            "Written copy failed integrity verification; no destination was published"
+        );
+        checkpoint(processed)?;
+        promote_new_file(&file, &temporary, &target)?;
+        Ok(())
+    })();
+    #[cfg(windows)]
+    if result.is_err() {
+        discard_owned_temporary(&file);
+    }
+    drop(file);
+    // Windows publication/cleanup binds the held file, even if another actor
+    // renamed its path. The portable hard-link fallback removes its temp name.
+    #[cfg(not(windows))]
+    let _ = fs::remove_file(&temporary);
+    result
+}
+
+#[cfg(windows)]
+fn promote_new_file(file: &File, _source: &Path, target: &Path) -> Result<()> {
+    use std::os::windows::{ffi::OsStrExt, io::AsRawHandle};
+    use windows_sys::Win32::Storage::FileSystem::{
+        FileRenameInfo, SetFileInformationByHandle, FILE_RENAME_INFO,
+    };
+    let name: Vec<u16> = target.as_os_str().encode_wide().collect();
+    ensure!(!name.contains(&0), "Invalid copy destination");
+    let name_bytes = name.len() * std::mem::size_of::<u16>();
+    let offset = std::mem::offset_of!(FILE_RENAME_INFO, FileName);
+    let size = (offset + name_bytes).max(std::mem::size_of::<FILE_RENAME_INFO>());
+    let mut storage = vec![0u64; size.div_ceil(std::mem::size_of::<u64>())];
+    let buffer_size: u32 = size.try_into().context("Copy destination path too large")?;
+    let name_size: u32 = name_bytes.try_into().context("Copy filename too large")?;
+    // SAFETY: the zeroed buffer is aligned for FILE_RENAME_INFO and large enough
+    // for the variable-length UTF-16 filename. ReplaceIfExists remains false.
+    // The live handle is the exact file written and hashed above; no pathname
+    // lookup can substitute another source between verification and rename.
+    let success = unsafe {
+        let info = storage.as_mut_ptr().cast::<FILE_RENAME_INFO>();
+        (*info).FileNameLength = name_size;
+        std::ptr::copy_nonoverlapping(
+            name.as_ptr(),
+            storage.as_mut_ptr().cast::<u8>().add(offset).cast::<u16>(),
+            name.len(),
+        );
+        SetFileInformationByHandle(
+            file.as_raw_handle(),
+            FileRenameInfo,
+            info.cast(),
+            buffer_size,
+        )
+    };
+    if success == 0 {
+        return Err(std::io::Error::last_os_error().into());
+    }
+    Ok(())
+}
+
+#[cfg(windows)]
+fn discard_owned_temporary(file: &File) {
+    use std::os::windows::io::AsRawHandle;
+    use windows_sys::Win32::Storage::FileSystem::{
+        FileDispositionInfo, SetFileInformationByHandle, FILE_DISPOSITION_INFO,
+    };
+    let disposition = FILE_DISPOSITION_INFO { DeleteFile: true };
+    // SAFETY: this marks only the owned temporary handle for deletion on close.
+    // Failure may leave an unadvertised temp, but never deletes a replaced path.
+    let _ = unsafe {
+        SetFileInformationByHandle(
+            file.as_raw_handle(),
+            FileDispositionInfo,
+            (&disposition as *const FILE_DISPOSITION_INFO).cast(),
+            std::mem::size_of::<FILE_DISPOSITION_INFO>() as u32,
+        )
+    };
+}
+
+#[cfg(not(windows))]
+fn promote_new_file(_file: &File, source: &Path, target: &Path) -> Result<()> {
+    // A sibling hard link publishes the already verified bytes atomically and
+    // refuses an existing name. Temporary cleanup cannot undo this success.
+    fs::hard_link(source, target)?;
     Ok(())
 }
 
@@ -466,16 +620,32 @@ pub fn check_revision(root: &Path, expected: Option<&str>) -> Result<()> {
 /// Publish an accepted project without allowing an older client/undo snapshot
 /// to remove immutable revisions or issued reports. Callers retain WriterLock.
 pub fn atomic_project(root: &Path, project: &crate::Project) -> Result<String> {
+    atomic_project_cancellable(root, project, &std::sync::atomic::AtomicBool::new(false))
+}
+
+pub fn atomic_project_cancellable(
+    root: &Path,
+    project: &crate::Project,
+    cancel: &std::sync::atomic::AtomicBool,
+) -> Result<String> {
     crate::validate_project(project)?;
     if revision(root)?.is_some() {
         let previous: crate::Project = read_json(&regular_child(root, "project.json")?)?;
         crate::study_revisions::validate_preserved(&previous, project)?;
         crate::report_issues::validate_preserved(&previous, project)?;
     }
-    atomic_json(root, project)
+    crate::capacity::require_publication(root, project, &[], cancel)?;
+    atomic_json_cancellable(root, project, cancel)
 }
 
 pub fn atomic_json(root: &Path, value: &impl Serialize) -> Result<String> {
+    atomic_json_cancellable(root, value, &std::sync::atomic::AtomicBool::new(false))
+}
+fn atomic_json_cancellable(
+    root: &Path,
+    value: &impl Serialize,
+    cancel: &std::sync::atomic::AtomicBool,
+) -> Result<String> {
     let temporary = root.join(format!(".project-{}.tmp", Uuid::new_v4()));
     let mut data = serde_json::to_vec_pretty(value)?;
     data.push(b'\n');
@@ -490,6 +660,10 @@ pub fn atomic_json(root: &Path, value: &impl Serialize) -> Result<String> {
     file.write_all(&data)?;
     file.sync_all()?;
     drop(file);
+    if cancel.load(std::sync::atomic::Ordering::Relaxed) {
+        let _ = fs::remove_file(&temporary);
+        bail!("Project publication cancelled; the previous manifest is unchanged");
+    }
     atomic_replace(&temporary, &root.join("project.json"))?;
     Ok(bytes_hash(&data))
 }
@@ -1144,6 +1318,137 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn verified_new_copy_cancellation_during_write_or_hash_never_publishes_partial_bytes() {
+        let bytes = vec![17u8; 2 * 64 * 1024 + 3];
+        for cancel_at in [64 * 1024, bytes.len() + 64 * 1024] {
+            let directory = tempfile::tempdir().unwrap();
+            let prior = directory.path().join("already open.pdf");
+            fs::write(&prior, b"existing viewer bytes").unwrap();
+            let mut observed = 0;
+            let result = write_new_verified_evidence_bytes(
+                directory.path(),
+                "issued copy 空間.pdf",
+                &bytes,
+                &bytes_hash(&bytes),
+                &mut |processed| {
+                    observed = processed;
+                    ensure!(processed < cancel_at as u64, "synthetic cancellation");
+                    Ok(())
+                },
+            );
+            assert!(result.unwrap_err().to_string().contains("cancellation"));
+            assert_eq!(observed, cancel_at as u64);
+            assert!(!directory.path().join("issued copy 空間.pdf").exists());
+            assert_eq!(fs::read(&prior).unwrap(), b"existing viewer bytes");
+            assert_eq!(fs::read_dir(directory.path()).unwrap().count(), 1);
+        }
+    }
+
+    #[test]
+    fn verified_new_copy_rejects_wrong_digest_and_concurrent_destination_without_clobbering() {
+        let directory = tempfile::tempdir().unwrap();
+        let target = directory.path().join("issued.pdf");
+        let bytes = b"original synthetic retained product";
+        assert!(write_new_verified_evidence_bytes(
+            directory.path(),
+            "issued.pdf",
+            bytes,
+            &"0".repeat(64),
+            &mut |_| Ok(())
+        )
+        .is_err());
+        assert_eq!(fs::read_dir(directory.path()).unwrap().count(), 0);
+        let mut intervened = false;
+        let result = write_new_verified_evidence_bytes(
+            directory.path(),
+            "issued.pdf",
+            bytes,
+            &bytes_hash(bytes),
+            &mut |processed| {
+                if processed == 2 * bytes.len() as u64 && !intervened {
+                    fs::write(&target, b"another writer's complete file")?;
+                    intervened = true;
+                }
+                Ok(())
+            },
+        );
+        assert!(result.is_err());
+        assert!(intervened);
+        assert_eq!(
+            fs::read(&target).unwrap(),
+            b"another writer's complete file"
+        );
+        assert_eq!(fs::read_dir(directory.path()).unwrap().count(), 1);
+    }
+
+    #[test]
+    fn verified_new_copy_publishes_exact_bytes_and_has_no_late_cancellation_checkpoint() {
+        let directory = tempfile::tempdir().unwrap();
+        let target = directory.path().join("copies 空間/issued copy.pdf");
+        let bytes = vec![23u8; 65_537];
+        let mut processed_bytes = 0;
+        write_new_verified_evidence_bytes(
+            directory.path(),
+            "copies 空間/issued copy.pdf",
+            &bytes,
+            &bytes_hash(&bytes),
+            &mut |processed| {
+                ensure!(!target.exists(), "late cancellation after publication");
+                assert!(processed >= processed_bytes);
+                processed_bytes = processed;
+                Ok(())
+            },
+        )
+        .unwrap();
+        assert_eq!(processed_bytes, 2 * bytes.len() as u64);
+        assert_eq!(fs::read(&target).unwrap(), bytes);
+        assert_eq!(fs::read_dir(target.parent().unwrap()).unwrap().count(), 1);
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn verified_copy_publication_and_cleanup_follow_the_verified_handle_not_a_replaced_path() {
+        for cancel_after_replacement in [false, true] {
+            let directory = tempfile::tempdir().unwrap();
+            let moved = directory.path().join("renamed owned temporary.pdf");
+            let target = directory.path().join("issued.pdf");
+            let bytes = b"verified original synthetic bytes";
+            let mut replacement = None;
+            let result = write_new_verified_evidence_bytes(
+                directory.path(),
+                "issued.pdf",
+                bytes,
+                &bytes_hash(bytes),
+                &mut |processed| {
+                    if processed == 2 * bytes.len() as u64 && replacement.is_none() {
+                        let temporary = fs::read_dir(directory.path())?
+                            .next()
+                            .context("temporary missing")??
+                            .path();
+                        fs::rename(&temporary, &moved)?;
+                        fs::write(&temporary, b"foreign replacement must not be touched")?;
+                        replacement = Some(temporary);
+                        ensure!(!cancel_after_replacement, "synthetic cancellation");
+                    }
+                    Ok(())
+                },
+            );
+            if cancel_after_replacement {
+                assert!(result.unwrap_err().to_string().contains("cancellation"));
+                assert!(!target.exists());
+            } else {
+                result.unwrap();
+                assert_eq!(fs::read(&target).unwrap(), bytes);
+            }
+            assert!(!moved.exists());
+            assert_eq!(
+                fs::read(replacement.unwrap()).unwrap(),
+                b"foreign replacement must not be touched"
+            );
+        }
+    }
 
     #[test]
     fn oversized_external_revision_preserves_pending_climate_evidence() {

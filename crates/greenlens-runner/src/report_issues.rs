@@ -12,7 +12,7 @@ use crate::{
 };
 use anyhow::{ensure, Context, Result};
 use greenlens_core::{
-    architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA, canonical_hash, reference::decode_chunk,
+    architectural_scope::scope_content_sha256, canonical_hash, reference::decode_chunk,
     study_revision::ScopeRevision,
 };
 use serde::{Deserialize, Serialize};
@@ -392,10 +392,7 @@ fn figures(
             aligned_views::AlignedFigureRequest {
                 schema_version: aligned_views::ALIGNED_FIGURE_SCHEMA.into(),
                 scope_revision_sha256: revision.revision_sha256.clone(),
-                scope_content_sha256: canonical_hash(&(
-                    ARCHITECTURAL_SCOPE_SCHEMA,
-                    &revision.scope,
-                ))?,
+                scope_content_sha256: scope_content_sha256(&revision.scope)?,
                 selected_run_id: case.run_id.clone(),
                 selected_record_sha256: case.record_sha256.clone(),
                 view: view.clone(),
@@ -554,6 +551,9 @@ fn validate_product_bindings(c: &IssueContent, products: &IssueProductManifest) 
     json_product!("energy-report.json", &d.base);
     json_product!("typed-differences.json", &d.typed_comparison);
     json_product!("performance.json", &p);
+    for (name, bytes) in issuance::required_supplement_products(c)? {
+        required.insert(name, Some(bytes_hash(&bytes)));
+    }
     if let Some(e) = &c.sensitivity {
         json_product!("issue-sensitivity.json", e);
     }
@@ -1290,7 +1290,7 @@ pub fn issue(
         )?;
         checkpoint(&cancel)?;
         check_revision(root, expected_revision)?;
-        view.revision = atomic_project(root, project)?;
+        view.revision = crate::persistence::atomic_project_cancellable(root, project, &cancel)?;
         return Ok(ReportIssueResult {
             view,
             issue: retained,
@@ -1300,6 +1300,12 @@ pub fn issue(
         issues(project).len() < MAX_ISSUES,
         "Report issue capacity is 32; preserve this study and start a separately scoped document"
     );
+    crate::capacity::require_start(
+        root,
+        project,
+        &crate::capacity::Operation::ReportIssue,
+        &cancel,
+    )?;
     let token = Uuid::new_v4().to_string();
     let stage = stage_root(&token)?;
     fs::create_dir_all(&stage)?;
@@ -1428,7 +1434,7 @@ pub fn publish_staged_issue(
     )?;
     checkpoint(&cancel)?;
     check_revision(root, expected_revision)?;
-    view.revision = atomic_project(root, &candidate)?;
+    view.revision = crate::persistence::atomic_project_cancellable(root, &candidate, &cancel)?;
     Ok(ReportIssueResult {
         view,
         issue: inspection,

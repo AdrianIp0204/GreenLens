@@ -1,11 +1,11 @@
 {
   "schema_version": "greenlens.dependencies.v0.1",
-  "generated_utc": "2026-10-16T04:16:16.302Z",
+  "generated_utc": "2026-10-16T09:05:38.654Z",
   "scope": "Resolved native Windows Rust graph and locked npm graph",
   "target": "x86_64-pc-windows-msvc",
   "lockfiles": {
-    "Cargo.lock": "87edaec0465f542641c5d3f0953aeba31142954e35d95aa42d00e8e05a95c890",
-    "apps/desktop/package-lock.json": "220e65d91b99181990bb6511542a8ad3f0f869f7bf5ce480694eb34a2d7f1850"
+    "Cargo.lock": "88daf8984cf3756e75528f3fa54437844eec7f2744fab97f12c345c1a7087f0d",
+    "apps/desktop/package-lock.json": "69effdec4e6592d011b0fa706dbf93b5ef1de5ef20c8a7c04e4f325b0ad7508b"
   },
   "scientific_engine_manifest": "dependencies/radiance.json",
   "supplemental_notice_manifest": "dependencies/license-supplements.json",
@@ -36,7 +36,7 @@
     }
   ],
   "policy": "Declarations are corroborated by the listed actual package license/notice files and their SHA-256 digests. This automated inventory flags gaps for review and does not infer grants from subprocess boundaries. Inapplicable optional npm platform packages are listed but not installed or bundled.",
-  "package_count": 402,
+  "package_count": 415,
   "license_counts": {
     "0BSD OR MIT OR Apache-2.0": 1,
     "Unlicense OR MIT": 8,
@@ -46,7 +46,7 @@
     "MIT/Apache-2.0": 8,
     "BSD-3-Clause/MIT": 1,
     "BSD-3-Clause AND MIT": 1,
-    "MIT": 119,
+    "MIT": 131,
     "MPL-2.0": 17,
     "Apache-2.0 AND MIT": 1,
     "CC0-1.0 OR MIT-0 OR Apache-2.0": 1,
@@ -56,7 +56,7 @@
     "MIT OR Zlib OR Apache-2.0": 2,
     "MIT OR Apache-2.0 OR Zlib": 1,
     "Unlicense/MIT": 2,
-    "Apache-2.0": 26,
+    "Apache-2.0": 27,
     "Zlib OR Apache-2.0 OR MIT": 1,
     "(MIT OR Apache-2.0) AND Unicode-3.0": 1,
     "Zlib AND bzip2-1.0.6 AND CPL-1.0": 1,
@@ -9161,6 +9161,381 @@
     },
     {
       "ecosystem": "npm",
+      "name": "@napi-rs/canvas-android-arm64",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-android-arm64/-/canvas-android-arm64-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-android-arm64/-/canvas-android-arm64-1.0.11.tgz",
+      "integrity": "sha512-dtJS4FQEfH9OwSYLtMrEnj7T8DzBbJc/97LI/OkiWOYpW/iW5t6R/gcxVrUXS8l45gCVpwMufgucRe/pe0ISqA==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "android"
+      ],
+      "cpus": [
+        "arm64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-darwin-arm64",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-darwin-arm64/-/canvas-darwin-arm64-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-darwin-arm64/-/canvas-darwin-arm64-1.0.11.tgz",
+      "integrity": "sha512-J/JylWoJTG8OQqZaiqly4IODyAxNofUlZo0wtSBJtHk6AdymbdIkPynAM1JvQaZpPaG5h+msk9QuK8y4i1ooqw==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "darwin"
+      ],
+      "cpus": [
+        "arm64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-darwin-x64",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-darwin-x64/-/canvas-darwin-x64-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-darwin-x64/-/canvas-darwin-x64-1.0.11.tgz",
+      "integrity": "sha512-nlecCk3xy06eAGC7krZtzNDm9UNTHKuHQYK8ZYegdjzgSL8anGt/eLJZm86OWaNgZkwQwvDqfSmG8Nqe6MPZNQ==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "darwin"
+      ],
+      "cpus": [
+        "x64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-linux-arm-gnueabihf",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-linux-arm-gnueabihf/-/canvas-linux-arm-gnueabihf-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-linux-arm-gnueabihf/-/canvas-linux-arm-gnueabihf-1.0.11.tgz",
+      "integrity": "sha512-DKImmG+sTPolE0kGPsYPBxTtOjb3INALp32O2lW2CfSr0bAzSEKKuu+GrQbtilClyoPOahUErS3OrznFDraoWA==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "linux"
+      ],
+      "cpus": [
+        "arm"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-linux-arm64-gnu",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-linux-arm64-gnu/-/canvas-linux-arm64-gnu-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-linux-arm64-gnu/-/canvas-linux-arm64-gnu-1.0.11.tgz",
+      "integrity": "sha512-55sykACGENj5j1rhj+81AO8JbR9HYgGjRZ7/H+pNr4VE1DvINKYNMTcutk8ZmWxk276jAQvUKJ3+Kdj9GXU3lQ==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "linux"
+      ],
+      "cpus": [
+        "arm64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-linux-arm64-musl",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-linux-arm64-musl/-/canvas-linux-arm64-musl-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-linux-arm64-musl/-/canvas-linux-arm64-musl-1.0.11.tgz",
+      "integrity": "sha512-6Jz6jys17yXydO+WdJgu7JhoB4K7/w9sWHByzzTmLjQghUx3TDMWvLv+UcCdnWhg4oprET67EMymnrETdeGNAg==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "linux"
+      ],
+      "cpus": [
+        "arm64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-linux-riscv64-gnu",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-linux-riscv64-gnu/-/canvas-linux-riscv64-gnu-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-linux-riscv64-gnu/-/canvas-linux-riscv64-gnu-1.0.11.tgz",
+      "integrity": "sha512-lf2XeEebWiUYVOVEjLXxF7dfXrBBSEOBn9AqBh39VYXrPt5cDqI+1t58IFSjn8npqkg5jIOs8TQbjKABbFW1gQ==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "linux"
+      ],
+      "cpus": [
+        "riscv64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-linux-x64-gnu",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-linux-x64-gnu/-/canvas-linux-x64-gnu-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-linux-x64-gnu/-/canvas-linux-x64-gnu-1.0.11.tgz",
+      "integrity": "sha512-iDapw7nFSE5tsmQxcH2+KotJhyfVPmHd6vUOQN/Em+8WNbkZJwJ/rDowlJMFnMl0SYSDSfgKCNUGi6Sn5++Smg==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "linux"
+      ],
+      "cpus": [
+        "x64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-linux-x64-musl",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-linux-x64-musl/-/canvas-linux-x64-musl-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-linux-x64-musl/-/canvas-linux-x64-musl-1.0.11.tgz",
+      "integrity": "sha512-26q26AyITo3CGZX4HWFIMgBMA1lu3YN07gxzBm4tW6Hglq/OVyTP50kDrmWuKybCX6dh3m8Ly+c7YhI+sqCgCQ==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "linux"
+      ],
+      "cpus": [
+        "x64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-win32-arm64-msvc",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-win32-arm64-msvc/-/canvas-win32-arm64-msvc-1.0.11.tgz",
+      "repository": null,
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-win32-arm64-msvc/-/canvas-win32-arm64-msvc-1.0.11.tgz",
+      "integrity": "sha512-cUO96IdsfvIj2S+2PNcDSkTcLhjPj8pIOEWRV1Kj70MOP4wnE9zSk7N4C1EKHlFGRcgdR5AkbnBZj0dfHK9nbQ==",
+      "declared_license": "MIT",
+      "installed": false,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "win32"
+      ],
+      "cpus": [
+        "arm64"
+      ],
+      "license_evidence": [],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas-win32-x64-msvc",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas-win32-x64-msvc/-/canvas-win32-x64-msvc-1.0.11.tgz",
+      "repository": "git+https://github.com/Brooooooklyn/canvas.git",
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-win32-x64-msvc/-/canvas-win32-x64-msvc-1.0.11.tgz",
+      "integrity": "sha512-DFYp/ZQRdKunI/LPc0UkRXG1vlNjJKOJf8O8Ctb8+wm2Nt2ELg9Eamc31D2VoakkfGo8L+z0Iejz6WtFbQwyGw==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": [
+        "win32"
+      ],
+      "cpus": [
+        "x64"
+      ],
+      "license_evidence": [
+        {
+          "path": "third-party/pdfjs/optional-node-canvas-LICENSE-MIT.txt",
+          "source": "https://registry.npmjs.org/@napi-rs/canvas/-/canvas-1.0.11.tgz",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "bytes": 1075
+        }
+      ],
+      "supplemental_license_review": {
+        "review_date": "2026-10-16",
+        "declared_license": "MIT",
+        "source_download": "https://registry.npmjs.org/@napi-rs/canvas-win32-x64-msvc/-/canvas-win32-x64-msvc-1.0.11.tgz",
+        "source_integrity": "sha512-DFYp/ZQRdKunI/LPc0UkRXG1vlNjJKOJf8O8Ctb8+wm2Nt2ELg9Eamc31D2VoakkfGo8L+z0Iejz6WtFbQwyGw==",
+        "package_files_sha256": {
+          "package.json": "dd3765d3af7cdbf22d61b0330a28efb695e453e899f527f52fc223d99f46b80c",
+          "sbom.cdx.json": "af0b3af01a73d229ffabb515a7d6c0857784e359df39b0da59949e946415bf71"
+        },
+        "companion_notice": {
+          "package": "@napi-rs/canvas",
+          "version": "1.0.11",
+          "source_download": "https://registry.npmjs.org/@napi-rs/canvas/-/canvas-1.0.11.tgz",
+          "source_integrity": "sha512-vt5tog1cr+QKadIddGe+3LrcX0EmjEd0izF717Uwf92mBmgYfq2XRmL2r4bZU40spB69exxhrBn9I91HYEr/7w==",
+          "package_json_sha256": "c189bbe7adf9ed5948d3ed82b8fd834b365c5d4adcb9bebe57e2ace3c54a3dff",
+          "license_sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "review": "Exact same-version parent lists this optional platform package and provides the retained project MIT license. This companion notice does not cover every embedded native dependency."
+        },
+        "distribution_scope": "Optional Node support installed by npm. Not used by GreenLens browser rendering; native package and all embedded native libraries/ICU data are excluded from release assets. Native redistribution is not approved by this review.",
+        "reason": "The platform npm archive omits a standalone license. Its exact-version parent MIT notice is retained for the optional package inventory. The bundled SBOM was inspected and includes additional library obligations; this record does not reinterpret the native bundle as wholly MIT. Distribution is limited to PDF.js browser core/worker; production asset exclusion is mandatory.",
+        "redistribution": {
+          "review": "manual_reviewed",
+          "requirements": [
+            "Retain the exact parent project MIT notice for inventory traceability.",
+            "Do not distribute the optional Node canvas package, native .node libraries or ICU data. Verify their exclusion from production assets.",
+            "If native distribution is proposed later, independently audit and retain every applicable embedded-library notice from the exact native SBOM before redistribution. This entry grants no such approval."
+          ]
+        }
+      },
+      "redistribution": {
+        "review": "manual_reviewed",
+        "requirements": [
+          "Retain the exact parent project MIT notice for inventory traceability.",
+          "Do not distribute the optional Node canvas package, native .node libraries or ICU data. Verify their exclusion from production assets.",
+          "If native distribution is proposed later, independently audit and retain every applicable embedded-library notice from the exact native SBOM before redistribution. This entry grants no such approval."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "@napi-rs/canvas",
+      "version": "1.0.11",
+      "source": "https://registry.npmjs.org/@napi-rs/canvas/-/canvas-1.0.11.tgz",
+      "repository": "git+https://github.com/Brooooooklyn/canvas.git",
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas/-/canvas-1.0.11.tgz",
+      "integrity": "sha512-vt5tog1cr+QKadIddGe+3LrcX0EmjEd0izF717Uwf92mBmgYfq2XRmL2r4bZU40spB69exxhrBn9I91HYEr/7w==",
+      "declared_license": "MIT",
+      "installed": true,
+      "usage": "Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.",
+      "optional": true,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+          "bytes": 1075
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
       "name": "@oxc-project/types",
       "version": "0.153.0",
       "source": "https://registry.npmjs.org/@oxc-project/types/-/types-0.153.0.tgz",
@@ -12079,6 +12454,37 @@
         "unrecognized_terms": [],
         "requirements": [
           "Retain applicable copyright, license and attribution notices; see exact retained text."
+        ]
+      },
+      "modifications": "No upstream source modifications made by GreenLens."
+    },
+    {
+      "ecosystem": "npm",
+      "name": "pdfjs-dist",
+      "version": "6.4.299",
+      "source": "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-6.4.299.tgz",
+      "repository": "git+https://github.com/mozilla/pdf.js.git",
+      "source_download": "https://registry.npmjs.org/pdfjs-dist/-/pdfjs-dist-6.4.299.tgz",
+      "integrity": "sha512-AVl138zALtfaAPvADulE0PZThbYzCBS79nL4pOSL/6Sm/4AH5A21BD9VHt97OlCuzJuCpmeZtAtkinisF4Vb1g==",
+      "declared_license": "Apache-2.0",
+      "installed": true,
+      "usage": "Frontend dependency; reachable bundled modules may be distributed in desktop assets.",
+      "optional": false,
+      "platforms": null,
+      "cpus": null,
+      "license_evidence": [
+        {
+          "path": "LICENSE",
+          "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+          "bytes": 10174
+        }
+      ],
+      "redistribution": {
+        "review": "recognized_declared_license",
+        "unrecognized_terms": [],
+        "requirements": [
+          "Retain applicable copyright, license and attribution notices; see exact retained text.",
+          "Preserve applicable NOTICE material; identify modifications; no trademark rights are granted."
         ]
       },
       "modifications": "No upstream source modifications made by GreenLens."

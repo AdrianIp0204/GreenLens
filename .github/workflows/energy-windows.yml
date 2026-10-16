@@ -1,7 +1,7 @@
 name: Bounded energy Windows verification
 on:
   push:
-    branches: [main, codex/v0.4-energy-reporting, codex/v0.5-thermal-workbench, codex/v0.6-architectural-intake, codex/v0.7-study-revisions]
+    branches: [main, codex/v0.4-energy-reporting, codex/v0.5-thermal-workbench, codex/v0.6-architectural-intake, codex/v0.7-study-revisions, codex/v0.8-reliable-intake]
   pull_request:
   workflow_dispatch:
 permissions:

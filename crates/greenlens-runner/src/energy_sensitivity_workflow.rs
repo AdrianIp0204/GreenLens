@@ -674,6 +674,26 @@ pub fn next(
         .context("Declared portable weather is missing")?;
     let (_, parsed) = energy_weather::open(&root.join(&weather.path))?;
     validate_weather_context(model, &study, &parsed.data)?;
+    // Forecast the declared slot, including the five-minute shape, rather
+    // than the currently displayed ten-minute design. No scientific rebinding.
+    let mut capacity_candidate = project.clone();
+    let candidate_design = capacity_candidate
+        .energy
+        .as_mut()
+        .unwrap()
+        .designs
+        .get_mut(&slot.alternative_id)
+        .context("Sensitivity design missing")?;
+    candidate_design.model = model.clone();
+    candidate_design.study = Some(study.clone());
+    crate::capacity::require_start(
+        root,
+        &capacity_candidate,
+        &crate::capacity::Operation::EnergyRun {
+            alternative: slot.alternative_id.clone(),
+        },
+        &std::sync::atomic::AtomicBool::new(false),
+    )?;
     let reserved = persist_event(
         root,
         project,

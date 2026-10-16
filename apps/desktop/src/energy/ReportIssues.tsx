@@ -3,7 +3,8 @@ import type {Project} from '../types';
 import type {EnergyAssessment} from './types';
 import {useEnergyRead} from './useEnergyRead';
 import EvidenceInspection from './EvidenceInspection';
-import {productPurpose,type ReportIssueInspection,type ReportIssueAction,type ReportIssueActionResult,type ReportIssueProduct,type IssueProduct} from './report-issues';
+import {productPurpose,type ReportIssueInspection,type ReportIssueAction,type ReportIssueActionResult,type ReportIssueProduct,type IssueProduct,type ProductAction} from './report-issues';
+import {IssuedPdfPreview} from './IssuedPdfPreview';
 
 type Props={documentInstance:number;path:string|null;project:Project|null;a:string;b:string;scopeId?:string|null;onScopeChange:(id:string|null)=>void;selectedId?:string|null;onSelect:(id:string|null)=>void;disabled:boolean;htmlOnly:boolean;nativeReady:boolean;createReady:boolean;onAction:(action:ReportIssueAction)=>Promise<ReportIssueActionResult|undefined>;onNavigate:(panel:'reference'|'evidence'|'compare'|'sensitivity')=>void;pending:{items:{token:string;message:string}[];warning:string}};
 function Assessment({value,label}:{value:EnergyAssessment;label:string}){return <div><h5>{label} · recorded at issuance</h5><p>Execution: {value.execution}. Evidence: {value.evidence_integrity.replaceAll('_',' ')}. Input relationship then: {value.current_physical_inputs}. Scientific assessment: <strong>{value.scientific.status.replaceAll('_',' ')}</strong>.</p><p>{value.scientific.reason}</p><p>These frozen assessments are not a new comparison with today’s editor inputs.</p></div>;}
@@ -12,14 +13,15 @@ export default function ReportIssues({documentInstance,path,project,a,b,scopeId,
   const summary=issues.find(row=>row.id===selectedId);
   const read=useEnergyRead<ReportIssueInspection>('report_issue_inspect',path&&project&&summary?{path,project,id:summary.id}:null);
   const [busy,setBusy]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState(''),[preview,setPreview]=useState<{key:string;path:string;src:string}|null>(null);
+  const [pdf,setPdf]=useState<{key:string;path:string;sha256:string;bytes:Uint8Array}|null>(null);
   const mounted=useRef(true);useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;};},[]);
   const context=JSON.stringify([documentInstance,project?.id,path,selectedId]);
-  const [productRequest,setProductRequest]=useState<{context:string;sequence:number;product:IssueProduct;args:{path:string;project:Project;id:string;product:string;open:boolean}}|null>(null);
+  const [productRequest,setProductRequest]=useState<{context:string;sequence:number;product:IssueProduct;args:{path:string;project:Project;id:string;product:string;action:ProductAction}}|null>(null);
   const nextProduct=useRef(0);
   const productRead=useEnergyRead<ReportIssueProduct>('report_issue_product',productRequest?.context===context?productRequest.args:null,productRequest?.sequence??0);
   const documentKey=JSON.stringify([documentInstance,project?.id,path]),latestDocument=useRef(documentKey);latestDocument.current=documentKey;
   useEffect(()=>{setError('');setMessage('');setPreview(null);},[documentKey]);
-  useEffect(()=>{setPreview(null);setError('');setProductRequest(null);},[context]);
+  useEffect(()=>{setPreview(null);setPdf(null);setError('');setProductRequest(null);},[context]);
   const perform=async(action:ReportIssueAction)=>{
     if(busy||disabled||productRead.loading)return;const owner=documentKey;setBusy(true);setError('');setMessage('');
     try{const result=await onAction(action);if(!mounted.current||latestDocument.current!==owner)return;
@@ -30,10 +32,10 @@ export default function ReportIssues({documentInstance,path,project,a,b,scopeId,
       else setMessage('No new issue or export was accepted. Any existing issues remain available; check document messages or unresolved drafts.');
     }catch(e){if(mounted.current&&latestDocument.current===owner)setError(String(e));}finally{if(mounted.current)setBusy(false);}
   };
-  const inspectProduct=(product:IssueProduct,open:boolean)=>{
+  const inspectProduct=(product:IssueProduct,action:ProductAction)=>{
     if(!read.value||!path||!project||productRead.loading||busy)return;
-    setError('');setPreview(null);
-    setProductRequest({context,sequence:++nextProduct.current,product,args:{path,project,id:read.value.summary.id,product:product.path,open}});
+    setError('');setPreview(null);setPdf(null);setMessage('');
+    setProductRequest({context,sequence:++nextProduct.current,product,args:{path,project,id:read.value.summary.id,product:product.path,action}});
   };
   useEffect(()=>{
     const result=productRead.value,request=productRequest;
@@ -41,7 +43,17 @@ export default function ReportIssues({documentInstance,path,project,a,b,scopeId,
     const {product,args}=request;
     try{
       if(result.issue_id!==args.id||result.path!==product.path||result.sha256!==product.sha256)throw Error('Product response differs from the selected immutable issue.');
-      if(args.open){if(result.opened!==true)throw Error('The native viewer did not confirm opening this retained product.');setMessage(`Opened retained ${product.path} in its registered local application.`);}
+      if(['open','save_copy','reveal'].includes(args.action)){
+        if(result.status==='cancelled')setMessage('Save Copy cancelled. No destination was written or viewer requested.');
+        else{
+          if(result.integrity!=='verified'||result.copy!=='verified'||result.viewer_display!=='not_observed'||!result.prepared)throw Error('Verified copy receipt is incomplete.');
+          setMessage(`Issued bytes checked; ${result.prepared.reused?'existing exact copy reused':'copy written and checked'}: ${result.prepared.path}. ${result.handoff==='requested'?'Windows handoff requested. Viewer display has not been confirmed.':result.handoff==='failed'?`Handoff failed: ${result.message??'No display confirmation'}`:'No viewer was requested.'}`);
+        }
+      }
+      else if(args.action==='preview_pdf'){
+        if(result.media_type!=='application/pdf'||!Array.isArray(result.bytes)||result.bytes.length>8*1024*1024||!result.bytes.every(byte=>Number.isInteger(byte)&&byte>=0&&byte<=255))throw Error('Retained PDF exceeds the bounded preview response. Use Save Copy.');
+        setPdf({key:context,path:product.path,sha256:product.sha256,bytes:new Uint8Array(result.bytes)});
+      }
       else{
         let src:string;
         if(result.media_type==='image/svg+xml'&&typeof result.svg==='string'&&new TextEncoder().encode(result.svg).length<=8*1024*1024)src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(result.svg)}`;
@@ -76,7 +88,8 @@ export default function ReportIssues({documentInstance,path,project,a,b,scopeId,
       {inspected.content.sensitivity&&<details><summary>Retained numerical sensitivity outcome: {inspected.content.sensitivity.result.assessment.numerical_sensitivity_passed?'passed':'failed'}</summary><p>Frozen limits: ≤1% annual electricity, ≤3% aligned ten-minute facility peak, and the declared cooling-comfort criterion. Missing cases: {inspected.content.sensitivity.result.assessment.missing_slots.join(', ')||'None'}.</p><ul>{inspected.content.sensitivity.result.assessment.criteria.map(row=><li key={row.id}>{row.id}: {row.passed?'passed':'failed'} · {row.explanation}</li>)}</ul></details>}
       <details><summary>Frozen renderer and report metadata</summary><p>{inspected.content.renderer.method} · {inspected.content.renderer.figure_method}</p><p>Template: {inspected.content.renderer.template_sha256}. Typst: {inspected.content.renderer.typst_version} / {inspected.content.renderer.typst_executable_sha256}.</p><p>Author: {inspected.content.workbench.metadata.author??'Not supplied'}; preparer: {inspected.content.workbench.metadata.preparer??'Not supplied'}. No approval is inferred.</p></details>
       <p>{inspected.regeneration_message}</p><button disabled={disabled||busy||productRead.loading||!inspected.regeneration_available||(inspected.summary.include_pdf&&!nativeReady)} onClick={()=>void perform({kind:'regenerate',id:inspected.summary.id})}>Regenerate exact issue into folder…</button>
-      <EvidenceInspection label="Checking the requested retained report product" read={productRead}/>{productRead.error&&<p role="alert">{productRead.error}</p>}<div aria-label="Retained issue products">{Object.entries(groups).map(([purpose,products])=><section key={purpose}><h5>{purpose}</h5><ul>{products.map(product=><li key={product.path}><span>{product.path} · {product.bytes.toLocaleString()} bytes</span>{/\.(?:svg|png)$/i.test(product.path)&&<button disabled={busy||productRead.loading} onClick={()=>void inspectProduct(product,false)}>Preview {product.path}</button>}{/\.(?:pdf|png)$/i.test(product.path)&&<button disabled={busy||productRead.loading} onClick={()=>void inspectProduct(product,true)}>Open retained {product.path}</button>}</li>)}</ul></section>)}</div>
+      <EvidenceInspection label="Checking the requested retained report product" read={productRead}/>{productRead.error&&<p role="alert">{productRead.error}</p>}<p>Offline PDF preview displays checked issued bytes. External Open requests a Windows handoff; it does not confirm viewer display. Viewer copies are reused by content hash, bounded to 128 products / 256 MiB, and never automatically evicted while a viewer may need them. Save Copy uses a new filename.</p><div aria-label="Retained issue products">{Object.entries(groups).map(([purpose,products])=><section key={purpose}><h5>{purpose}</h5><ul>{products.map(product=><li key={product.path}><span>{product.path} · {product.bytes.toLocaleString()} bytes</span>{/\.(?:svg|png)$/i.test(product.path)&&<button disabled={busy||productRead.loading} onClick={()=>void inspectProduct(product,'preview')}>Preview {product.path}</button>}{/\.pdf$/i.test(product.path)&&<button disabled={busy||productRead.loading||product.bytes>8*1024*1024} title={product.bytes>8*1024*1024?'Above the 8 MiB inline preview bound; use Save Copy':''} onClick={()=>void inspectProduct(product,'preview_pdf')}>Preview PDF {product.path}</button>}{/\.(?:pdf|png)$/i.test(product.path)&&<><button disabled={busy||productRead.loading} onClick={()=>void inspectProduct(product,'open')}>Open retained {product.path}</button><button disabled={busy||productRead.loading} onClick={()=>void inspectProduct(product,'save_copy')}>Save Copy {product.path}…</button><button disabled={busy||productRead.loading} onClick={()=>void inspectProduct(product,'reveal')}>Open copy folder {product.path}</button></>}</li>)}</ul></section>)}</div>
+      {pdf?.key===context&&<IssuedPdfPreview bytes={pdf.bytes} identity={`${context}:${pdf.sha256}`} label={`${inspected.summary.report_revision} · ${pdf.path}`} onClose={()=>setPdf(null)}/>}
       {preview?.key===context&&<figure aria-label="Rendered issue product preview"><img src={preview.src} alt={`Retained issue ${inspected.summary.report_revision}: ${preview.path}`}/><figcaption>Actual product: {preview.path} · issue {inspected.summary.id}. Figures are reference/analytical drawings, not spatial simulation fields.</figcaption></figure>}
     </section>}
     <p>Complete issue export retains every issued report, required scope/reference history and retained evidence within the shared archive limits. It does not silently select only the current pair or include external original proprietary sources.</p><button disabled={disabled||busy||productRead.loading||!path||issues.length===0} onClick={()=>void perform({kind:'export'})}>Export complete issued project ZIP…</button>

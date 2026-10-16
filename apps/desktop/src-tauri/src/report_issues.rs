@@ -6,7 +6,7 @@ use greenlens_runner::{
 };
 use serde::Deserialize;
 use serde_json::{json, Value};
-use std::{io::Write, path::Path};
+use std::path::Path;
 use tauri::Manager;
 
 #[derive(Deserialize)]
@@ -69,6 +69,55 @@ pub(crate) async fn report_issue_action(
     }).await
 }
 
+#[derive(Debug, Deserialize, PartialEq, Eq)]
+#[serde(rename_all = "snake_case")]
+pub(crate) enum ProductAction {
+    Preview,
+    PreviewPdf,
+    Open,
+    SaveCopy,
+    Reveal,
+}
+
+#[cfg(windows)]
+fn request_handoff(target: &Path) -> anyhow::Result<()> {
+    use std::os::windows::ffi::OsStrExt;
+    #[link(name = "shell32")]
+    unsafe extern "system" {
+        fn ShellExecuteW(
+            window: *mut std::ffi::c_void,
+            verb: *const u16,
+            file: *const u16,
+            parameters: *const u16,
+            directory: *const u16,
+            show: i32,
+        ) -> isize;
+    }
+    let file = target
+        .as_os_str()
+        .encode_wide()
+        .chain(Some(0))
+        .collect::<Vec<_>>();
+    let verb = "open".encode_utf16().chain(Some(0)).collect::<Vec<_>>();
+    // Windows accepts a filename, not a command string; no shell interpolation.
+    let code = unsafe {
+        ShellExecuteW(
+            std::ptr::null_mut(),
+            verb.as_ptr(),
+            file.as_ptr(),
+            std::ptr::null(),
+            std::ptr::null(),
+            1,
+        )
+    };
+    ensure!(code>32,"Windows handoff failed (code {code}). The verified copy remains available. Use Save Copy or Open copy folder; a registered PDF viewer may be missing or broken");
+    Ok(())
+}
+#[cfg(not(windows))]
+fn request_handoff(_target: &Path) -> anyhow::Result<()> {
+    anyhow::bail!("Native report handoff requires Windows")
+}
+
 /// Only products enumerated by a verified immutable issue may be opened. HTML
 /// and imported SVG markup are not executed. The frontend renders owned SVG as
 /// an image data URL and never inserts it through innerHTML/object/iframe.
@@ -76,11 +125,12 @@ pub(crate) async fn report_issue_action(
 #[allow(clippy::too_many_arguments)] // Tauri transports the query and cancellable progress channel separately.
 pub(crate) async fn report_issue_product(
     app: tauri::AppHandle,
+    window: tauri::WebviewWindow,
     path: String,
     project: Project,
     id: String,
     product: String,
-    open: bool,
+    action: ProductAction,
     ticket: u64,
     on_progress: tauri::ipc::Channel<greenlens_runner::project_open::OpenProgress>,
 ) -> CommandResult<Value> {
@@ -88,33 +138,38 @@ pub(crate) async fn report_issue_product(
         .state::<crate::evidence_inspection::EvidenceControl>()
         .start(ticket)?;
     let result=blocking(move|| {
-        let (media_type,bytes)=service::product_bytes_with_progress(Path::new(&path),&project,&id,&product,!open,cancel.clone(),move|progress|{let _=on_progress.send(progress);})?;
+        let (media_type,bytes)=service::product_bytes_with_progress(Path::new(&path),&project,&id,&product,action==ProductAction::Preview,cancel.clone(),move|progress|{let _=on_progress.send(progress);})?;
         ensure!(!cancel.load(std::sync::atomic::Ordering::Relaxed),"Report product inspection cancelled; no product was opened");
         let sha256=greenlens_runner::persistence::bytes_hash(&bytes);
-        if !open {
+        if matches!(action, ProductAction::Preview | ProductAction::PreviewPdf) {
             ensure!(bytes.len()<=8*1024*1024,"Preview exceeds 8 MiB; open the preserved PDF instead");
+            if action==ProductAction::PreviewPdf { ensure!(media_type=="application/pdf", "PDF preview requires an issued PDF product"); }
             return if media_type=="image/svg+xml" {
                 Ok(json!({"path":product,"issue_id":id,"sha256":sha256,"media_type":media_type,"svg":String::from_utf8(bytes)?}))
             } else {Ok(json!({"path":product,"issue_id":id,"sha256":sha256,"media_type":media_type,"bytes":bytes}))};
         }
         ensure!(media_type=="application/pdf" || media_type=="image/png","Only retained PDF/PNG products may be opened externally");
-        // Open a private verified copy, not a project filename that another
-        // writer could replace between verification and the viewer's read.
-        let copy=greenlens_runner::local_root()?.join("report-product-open").join(format!("{}",std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH)?.as_nanos()));
-        std::fs::create_dir_all(&copy)?;
-        let name=Path::new(&product).file_name().context("Product filename missing")?;
-        let target=copy.join(name);let mut file=std::fs::OpenOptions::new().write(true).create_new(true).open(&target)?;
-        file.write_all(&bytes)?;file.sync_all()?;drop(file);
-        ensure!(!cancel.load(std::sync::atomic::Ordering::Relaxed),"Report product inspection cancelled; no product was opened");
-        #[cfg(windows)] {
-            use std::os::windows::ffi::OsStrExt;
-            #[link(name="shell32")] unsafe extern "system" {fn ShellExecuteW(window:*mut std::ffi::c_void,verb:*const u16,file:*const u16,parameters:*const u16,directory:*const u16,show:i32)->isize;}
-            let target=target.as_os_str().encode_wide().chain(Some(0)).collect::<Vec<_>>();let verb="open".encode_utf16().chain(Some(0)).collect::<Vec<_>>();
-            let code=unsafe{ShellExecuteW(std::ptr::null_mut(),verb.as_ptr(),target.as_ptr(),std::ptr::null(),std::ptr::null(),1)};
-            ensure!(code>32,"Windows could not open the retained product; choose a default PDF/image viewer (code {code})");
-            Ok(json!({"path":product,"opened":true,"issue_id":id,"sha256":sha256}))
-        }
-        #[cfg(not(windows))] {let _=target;anyhow::bail!("Opening retained report products requires native Windows")}
+        let extension=if media_type=="application/pdf" {"pdf"} else {"png"};
+        let copied=if action==ProductAction::SaveCopy {
+            #[cfg(windows)] {
+                let destination=crate::file_dialog(None,"Save verified report copy to a new filename",&window)
+                    .add_filter("Retained report product",&[extension])
+                    .set_file_name(Path::new(&product).file_name().context("Product filename missing")?.to_string_lossy())
+                    .save_file();
+                let Some(destination)=destination else {return Ok(json!({"path":product,"issue_id":id,"sha256":sha256,"status":"cancelled","integrity":"verified","copy":"not_prepared","handoff":"not_requested","viewer_display":"not_observed"}));};
+                greenlens_runner::report_product_delivery::save_copy(&destination,&bytes,&sha256,extension,&cancel)?
+            }
+            #[cfg(not(windows))] {let _=window;anyhow::bail!("Save Copy requires a native Windows dialog");}
+        } else {
+            greenlens_runner::report_product_delivery::prepare_cached(&greenlens_runner::local_root()?.join("report-product-copies-v1"),&bytes,&sha256,extension,&cancel)?
+        };
+        let (handoff,message)=if cancel.load(std::sync::atomic::Ordering::Relaxed) {
+            ("not_requested",Some("The verified copy was completed before cancellation. No viewer or folder handoff was requested.".to_owned()))
+        } else if action==ProductAction::SaveCopy {("not_requested",None)} else {
+            let target=if action==ProductAction::Reveal {copied.path.parent().context("Copy folder missing")?} else {&copied.path};
+            match request_handoff(target) { Ok(())=>("requested",None),Err(error)=>("failed",Some(error.to_string())) }
+        };
+        Ok(json!({"schema_version":"greenlens.report-product-delivery.v1","path":product,"issue_id":id,"sha256":sha256,"status":"prepared","integrity":"verified","copy":"verified","prepared":copied,"handoff":handoff,"viewer_display":"not_observed","message":message}))
     }).await;
     app.state::<crate::evidence_inspection::EvidenceControl>()
         .finish(ticket)?;

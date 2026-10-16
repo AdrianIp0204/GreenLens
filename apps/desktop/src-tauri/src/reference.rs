@@ -13,14 +13,25 @@ pub async fn reference_revision_prepare(
     path: String,
     project: Project,
     parent_revision_sha256: String,
+    candidate_scope: Option<ArchitecturalScope>,
 ) -> CommandResult<greenlens_core::study_revision::CarryForwardPlan> {
     blocking(move || {
-        greenlens_runner::study_revisions::prepare(
-            Path::new(&path),
-            &project,
-            &parent_revision_sha256,
-            &std::sync::atomic::AtomicBool::new(false),
-        )
+        let cancel = std::sync::atomic::AtomicBool::new(false);
+        match candidate_scope {
+            Some(scope) => greenlens_runner::study_revisions::prepare_candidate(
+                Path::new(&path),
+                &project,
+                &parent_revision_sha256,
+                &scope,
+                &cancel,
+            ),
+            None => greenlens_runner::study_revisions::prepare(
+                Path::new(&path),
+                &project,
+                &parent_revision_sha256,
+                &cancel,
+            ),
+        }
     })
     .await
 }

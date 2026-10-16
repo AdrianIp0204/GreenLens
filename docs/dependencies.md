@@ -4,6 +4,8 @@ The v0.6 architectural importer is original Rust code using existing locked depe
 
 Original GreenLens code and synthetic examples are Apache-2.0. See `LICENSE` and `NOTICE`. Third-party terms continue to apply to their own code and assets. The project does not treat a subprocess boundary as a licensing exemption.
 
+The v0.8 offline retained-PDF preview uses pinned PDF.js 6.4.299 browser core/worker under Apache-2.0. `dependencies/pdfjs.json` binds the audited source; notices are retained under `third-party/pdfjs`. Optional Node canvas packages are inventoried but excluded from browser assets and the installer. Their native redistribution is not approved. No SKP parser or SDK is integrated.
+
 ## Reproducible inventory
 
 After the native toolchain is established and both lockfiles are current:

@@ -1,4 +1,18 @@
 # Progress and acceptance evidence
+
+## v0.8 — 2026-10-16 active continuation
+
+Development supplement: v2 typed-field/candidate revision contracts, byte-aware review guards, renderer/2 complete mapping disclosures, bounded offline PDF preview, verified-copy delivery, capacity service/CLI/panels and hierarchy navigation are implemented. Old v1 verification/rendering routes remain. No scientific method, private conversion or annual calculation was changed or executed for this supplement.
+
+Local checks: workspace check and strict Clippy pass after fixing one needless borrow. Scope core tests pass 17/17; runner history passes 5/5, including legacy history and cold copy. Capacity passes 10/10 with sparse original fixtures. Initial full runner: 220 pass / 1 fail / 5 ignored; the failed old test attempted an unreviewed title change and was repaired to use explicit review, then passed. The ignored engine checks were not executed and do not count as engine acceptance. Initial frontend failures were test-loader/obsolete-dropdown regressions; focused repairs pass and the full recheck passes 399/399 (zero skipped), with TypeScript passing. Production assets build successfully; no native canvas or auxiliary font/Wasm files are emitted. Strict inventory: 415 packages, 231 notice texts, zero gaps; installer-cache verification also passes. Offline documentation copy passes 414 exact-byte files / 804 local links / 16,746,175 bytes under the unchanged 16 MiB policy. These are working-source checks, not installed acceptance.
+
+Hosted refresh: prior application 9899dd9 CI 38866458775 is completed success; documentation source 32a0a4e CI 38868600476 is also completed success. Neither qualifies v0.8. Native PDF, new report-page, exact-source hosted and converter rows remain pending/gated. Existing live EnergyPlus cancellation protocols remain exhausted.
+
+Implemented: sanitized scope, plan and acceptance ledger persisted; branch `codex/v0.8-reliable-intake` created from clean `32a0a4e` without resetting history. Ownership separates versioned provenance/candidate editing, versioned report completeness, dependency feasibility and root PDF/capacity integration. Root owns native/Cargo builds.
+
+Verified: intended existing remote/authentication and baseline state inspected. The old externally handed-off PDF remains readable by ordinary file I/O with its original issued digest, while the registered viewer visibly reports file-not-found. A separately copied identical PDF also shows that viewer error. A shell return code did not verify display; cause remains under investigation. No private model or exhausted engine-cancellation experiment was repeated.
+
+Unverified: installed candidate, report pages, final old-product regeneration and exact-source CI remain pending; prior source records do not qualify v0.8. Failed/stopped v0.3/v0.5 scientific protocols and inherited v0.7 acceptance remain unchanged. Optional SKP compatibility must pass its independently known fixture gate before any private probe or import exposure.
 ## Completed finite headless protocol supplement — 2026-10-16
 
 The frozen 5654b9e CLI has now completed all five declared phases: Prepare, Run, Reports, Cold and Replay. The [final receipt](evidence/v0.7/issue-protocol-5654b9e-final.json) and [readable supplement](evidence/v0.7/issue-protocol-5654b9e-final.md) supersede the earlier pending Cold/Replay status for this source only. R1/S1 and R2/S2 retain their exact intended pairs. Both cold-regenerated sets, 44 products each, match issued bytes without EnergyPlus; the original source/working roots and eight known run scratch directories were unavailable during that check and were restored afterwards.

@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:scope-carry-forward:v2",
+  "title": "GreenLens reviewed editable scope candidate v2",
+  "description": "Rust produces an immutable mechanical proposal and separately binds the editable complete candidate. Any candidate or exact-context change requires a new plan digest before atomic acceptance. This is a document review, not professional approval or physics qualification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "parent_revision_sha256",
+    "target_context_sha256",
+    "proposed_scope",
+    "candidate_scope",
+    "rows",
+    "plan_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "greenlens.scope-carry-forward.v2"
+    },
+    "parent_revision_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "target_context_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "proposed_scope": {
+      "$ref": "architectural-scope-v0.8.schema.json"
+    },
+    "candidate_scope": {
+      "$ref": "architectural-scope-v0.8.schema.json"
+    },
+    "rows": {
+      "type": "array",
+      "maxItems": 65536,
+      "items": {
+        "$ref": "#/$defs/row"
+      }
+    },
+    "plan_sha256": {
+      "$ref": "#/$defs/hash"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "key",
+        "change",
+        "requires_review",
+        "before",
+        "after",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/hash"
+        },
+        "kind": {
+          "enum": [
+            "scope",
+            "reference",
+            "mapping",
+            "assumption",
+            "reconciliation",
+            "report_view",
+            "input"
+          ]
+        },
+        "key": {
+          "type": "string"
+        },
+        "change": {
+          "enum": [
+            "unchanged",
+            "changed",
+            "deleted",
+            "added",
+            "unresolved"
+          ]
+        },
+        "requires_review": {
+          "type": "boolean"
+        },
+        "before": {},
+        "after": {},
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -21,7 +21,8 @@ async function load(filename){
     let linked=code.replace(/import\s+['"][^'"]+\.css['"];?/g,'');
     for(const m of [...code.matchAll(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g)]){
       const spec=m[3];let target;
-      if(spec==='@tauri-apps/api/core')target=inspectionCore('__draftIPC','export const isTauri=()=>true;');
+      if(spec.endsWith('?url'))target='data:text/javascript,'+encodeURIComponent(`export default ${JSON.stringify(import.meta.resolve(spec.slice(0,-4)))};`);
+      else if(spec==='@tauri-apps/api/core')target=inspectionCore('__draftIPC','export const isTauri=()=>true;');
       else if(spec==='@tauri-apps/api/window')target='data:text/javascript,'+encodeURIComponent('export const getCurrentWindow=()=>globalThis.__draftWindow;');
       else if(spec.startsWith('.')){
         let resolved=path.resolve(path.dirname(filename),spec);
@@ -66,10 +67,18 @@ function revisionArchitecture(){
   const second={...structuredClone(first),revision_sha256:referenceHash('d'),parent_revision_sha256:first.revision_sha256,scope:{...structuredClone(scope),title:'Retained scope S2',mappings:[{...structuredClone(scope.mappings[0]),rationale:'S2 live mapping rationale'}]}};
   return{schema_version:'greenlens.architectural-project.v1',assets:[referenceAsset],active_asset_id:referenceAsset.id,scope:second.scope,scope_history:{schema_version:'greenlens.scope-history.v1',revisions:[first,second],active_revision_sha256:second.revision_sha256}};
 }
-function carryPlan(project,parent){
+function carryPlan(project,parent,candidate){
   const revision=project.architecture.scope_history.revisions.find(r=>r.revision_sha256===parent);
   const rows=[{id:'mapping-unchanged',kind:'mapping',key:'synthetic-occurrence',change:'unchanged',requires_review:false,before:revision.scope.mappings[0],after:revision.scope.mappings[0],reason:'Exact geometry unchanged'},{id:'cop-changed',kind:'input',key:'zone cooling COP',change:'changed',requires_review:true,before:3.2,after:3.5,reason:'Efficiency input changed; service unchanged'},{id:'assumption-changed',kind:'assumption',key:'cop-source',change:'changed',requires_review:true,before:revision.scope.assumptions[0],after:revision.scope.assumptions[0],reason:'Review source declaration against the changed applied COP'}];
   if(revisionPlanMode==='geometry')rows.push({id:'deleted-target',kind:'mapping',key:'removed-zone',change:'deleted',requires_review:true,before:'removed-zone',after:null,reason:'No equivalent target inferred'},{id:'new-source',kind:'reference',key:'new-source-revision',change:'unresolved',requires_review:true,before:referenceHash('2'),after:referenceHash('9'),reason:'Reimport requires object reconciliation'});
+  if(revisionPlanMode==='v2'){
+    const proposed_scope={...structuredClone(revision.scope),schema_version:'greenlens.architectural-scope.v2'};
+    proposed_scope.assumptions[0].status='missing';proposed_scope.assumptions[0].value=null;
+    if(candidate?.title==='Reject this candidate')throw Error('Synthetic invalid candidate: title fixture rejected; no revision accepted');
+    const candidate_scope=structuredClone(candidate??proposed_scope);
+    rows[2].after=structuredClone(candidate_scope.assumptions[0]);
+    return{schema_version:'greenlens.scope-carry-forward.v2',parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash(candidate?'8':'7'),proposed_scope,candidate_scope,rows};
+  }
   return{schema_version:'greenlens.scope-carry-forward.v1',parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash('7'),proposed_scope:structuredClone(revision.scope),rows};
 }
 function Harness(){
@@ -117,7 +126,7 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
       return{destination:args.action.destination,issue_id:args.action.id,verification:'Synthetic IPC only'};
     }
     if(command==='report_issue_inspect'){if(issueInspectGate)await issueInspectGate;return structuredClone(issueEvidence.get(args.id));}
-    if(command==='report_issue_product'){if(issueProductGate)await issueProductGate;const issue=issueEvidence.get(args.id),product=issue.products.products.find(row=>row.path===args.product);return{issue_id:args.id,path:args.product,sha256:product.sha256,media_type:args.product.endsWith('.svg')?'image/svg+xml':'image/png',svg:'<svg xmlns="http://www.w3.org/2000/svg"><text>Original retained analytical figure</text></svg>',bytes:[137,80,78,71],opened:args.open};}
+    if(command==='report_issue_product'){if(issueProductGate)await issueProductGate;const issue=issueEvidence.get(args.id),product=issue.products.products.find(row=>row.path===args.product),base={issue_id:args.id,path:args.product,sha256:product.sha256};return ['open','save_copy','reveal'].includes(args.action)?{...base,status:'prepared',integrity:'verified',copy:'verified',prepared:{path:'owned-output-copy',sha256:product.sha256,bytes:product.bytes,reused:false},handoff:args.action==='save_copy'?'not_requested':'requested',viewer_display:'not_observed'}:{...base,media_type:args.product.endsWith('.svg')?'image/svg+xml':'image/png',svg:'<svg xmlns="http://www.w3.org/2000/svg"><text>Original retained analytical figure</text></svg>',bytes:[137,80,78,71]};}
 
     if(command==='energy_scene')return{schema_version:'greenlens.thermal-scene.v1',model_sha256:'synthetic',coordinates:'world ENU',objects:sceneObjects?args.model.zones.flatMap(z=>[{id:z.id,label:z.name,kind:'zone',zone_id:z.id,storey:z.storey,polygons_m:[]},...z.surfaces.map(s=>({id:s.id,label:s.id,kind:'surface',zone_id:z.id,storey:z.storey,polygons_m:[]})),...z.windows.flatMap(w=>[{id:w.id,label:w.id,kind:'window',zone_id:z.id,storey:z.storey,polygons_m:[]},...(w.overhang?[{id:`overhang:${w.id}`,label:`Overhang ${w.id}`,kind:'overhang',zone_id:z.id,storey:z.storey,polygons_m:[]}]:[])])]):[]};
     if(command==='energy_preflight')return{schema_version:'greenlens.thermal-preflight.v1',can_prepare:false,coverage:'Synthetic issue-routing fixture; no native validation claim.',issues:preflightIssues};
@@ -155,8 +164,8 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
     if(command==='reference_chunk')return[{occurrence_index:0,material_index:null,vertices_m:[[0,0,0],[1,0,0],[0,1,0]]}];
     if(command==='reference_scope_context')return referenceContext(args.project);
     if(command==='reference_scope_assess')return referenceAssessment();
-    if(command==='reference_revision_prepare'){if(revisionPrepareGate)await revisionPrepareGate;return carryPlan(args.project,args.parentRevisionSha256);}
-    if(command==='reference_revision_accept'){if(revisionAcceptGate)await revisionAcceptGate;if(rejectEdit)throw Error('Synthetic revision context rejection');const plan=carryPlan(args.project,args.parentRevisionSha256);assert.equal(args.expectedPlanSha256,plan.plan_sha256);assert.deepEqual(args.scope,plan.proposed_scope);assert.ok(plan.rows.filter(r=>r.requires_review).every(r=>args.decisions.some(d=>d.row_id===r.id&&d.rationale.trim())));const next=structuredClone(args.project),old=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.parentRevisionSha256),revision={...structuredClone(old),revision_sha256:referenceHash('e'),parent_revision_sha256:old.revision_sha256,scope:structuredClone(args.scope),carry_forward_plan_sha256:plan.plan_sha256,review_decisions:structuredClone(args.decisions)};next.architecture.scope_history.revisions.push(revision);next.architecture.scope_history.active_revision_sha256=revision.revision_sha256;next.architecture.scope=revision.scope;return next;}
+    if(command==='reference_revision_prepare'){if(revisionPrepareGate)await revisionPrepareGate;return carryPlan(args.project,args.parentRevisionSha256,args.candidateScope);}
+    if(command==='reference_revision_accept'){if(revisionAcceptGate)await revisionAcceptGate;if(rejectEdit)throw Error('Synthetic revision context rejection');const plan=carryPlan(args.project,args.parentRevisionSha256,revisionPlanMode==='v2'?args.scope:undefined);assert.equal(args.expectedPlanSha256,plan.plan_sha256);assert.deepEqual(args.scope,plan.candidate_scope??plan.proposed_scope);assert.ok(plan.rows.filter(r=>r.requires_review).every(r=>args.decisions.some(d=>d.row_id===r.id&&d.rationale.trim())));const next=structuredClone(args.project),old=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.parentRevisionSha256),revision={...structuredClone(old),revision_sha256:referenceHash('e'),parent_revision_sha256:old.revision_sha256,scope:structuredClone(args.scope),carry_forward_plan_sha256:plan.plan_sha256,review_decisions:structuredClone(args.decisions)};next.architecture.scope_history.revisions.push(revision);next.architecture.scope_history.active_revision_sha256=revision.revision_sha256;next.architecture.scope=revision.scope;return next;}
     if(command==='reference_revision_activate'){const next=structuredClone(args.project);next.architecture.scope_history.active_revision_sha256=args.revisionSha256;next.architecture.scope=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.revisionSha256)?.scope??null;return next;}
     if(command==='reference_scope_apply'){if(referenceScopeGate)await referenceScopeGate;const next=structuredClone(args.project);next.architecture.scope=args.scope;return next;}
     if(command==='open_project')return view({...fixture(),id:'other-project-id'});
@@ -514,7 +523,7 @@ test('actual workspace inspects a historical mapping independently of a live ref
 test('historical inspection survives reimport and delayed loading but is isolated by document and design',async()=>{
   await setup({workspace:true,objects:true});await prepareReferenceImport();await click('Choose local GLB and import');await click('Start scope for current revision');
   await type(input('Scope title'),'Original accepted scope');await type(input('Study purpose'),'Test historical inspection identity');await type(input('Included scope (one item per line)'),'Original synthetic occurrence');await type(input('Boundary-condition consequences'),'No physical interpretation in this fixture');
-  await type(input('Source occurrence'),'synthetic-occurrence');await type(input('Mapping state'),'excluded');await type(input('Mapping rationale'),'Revision two exact row');await click('Review scope in Rust');await click('Save accepted scope');
+  const occurrence=document.querySelector('button[data-occurrence-id="synthetic-occurrence"]');assert.ok(occurrence,'Actual active hierarchy exposes the exact admitted occurrence');assert.equal(occurrence.disabled,false);await act(()=>occurrence.click());await type(input('Mapping state'),'excluded');await type(input('Mapping rationale'),'Revision two exact row');await click('Review scope in Rust');await click('Save accepted scope');
   const accepted=JSON.stringify(doc.project.architecture.scope),oldInspection=structuredClone(doc.thermalPresentation.value.workspace.reference_inspection);
   referenceRevision=referenceHash('9');await act(async()=>doc.importReference(referenceManifest().options));
   assert.equal(doc.thermalPresentation.value.workspace.reference_selection,null);assert.deepEqual(doc.thermalPresentation.value.workspace.reference_inspection,oldInspection);
@@ -687,7 +696,9 @@ test('issue draft Apply remains validated and binds accepted metadata without er
 
 test('issued product preview opens only enumerated exact bytes and late image response cannot replace another issue',async()=>{
   await issueSetup();await click('Issue exact selected report');await click('Preview figures/aligned-1.svg');let image=document.querySelector('[aria-label="Rendered issue product preview"] img');assert.ok(image.src.startsWith('data:image/svg+xml;'));assert.match(decodeURIComponent(image.src),/Original retained analytical figure/);assert.equal(document.querySelector('svg text'),null);assert.equal(document.querySelector('object,iframe'),null);
-  await click('Open retained executive.pdf');let request=calls.filter(([command])=>command==='report_issue_product').at(-1)[1];assert.equal(request.open,true);assert.equal(request.id,referenceHash('1'));assert.equal(request.product,'executive.pdf');
+  await click('Open retained executive.pdf');let request=calls.filter(([command])=>command==='report_issue_product').at(-1)[1];assert.equal(request.action,'open');assert.equal(request.id,referenceHash('1'));assert.equal(request.product,'executive.pdf');assert.match(issuePanel().textContent,/Viewer display has not been confirmed/);assert.doesNotMatch(issuePanel().textContent,/Opened retained executive.pdf/);
+  await click('Save Copy executive.pdf…');assert.equal(calls.filter(([command])=>command==='report_issue_product').at(-1)[1].action,'save_copy');assert.match(issuePanel().textContent,/No viewer was requested/);
+  await click('Open copy folder executive.pdf');assert.equal(calls.filter(([command])=>command==='report_issue_product').at(-1)[1].action,'reveal');assert.match(issuePanel().textContent,/Windows handoff requested/);
   await type(input('Issue scope revision'),referenceHash('d'));await click('Issue exact selected report');let finish;issueProductGate=new Promise(resolve=>finish=resolve);await click('Preview figures/aligned-1.svg');await type(input('Inspect issued report'),referenceHash('1'));await act(async()=>finish());assert.equal(document.querySelector('[aria-label="Rendered issue product preview"]'),null);
   const original=globalThis.__draftIPC;globalThis.__draftIPC=async(command,args)=>command==='report_issue_product'?{issue_id:referenceHash('f'),path:args.product,sha256:referenceHash('a'),media_type:'image/svg+xml',svg:'<svg/>'}:original(command,args);await click('Preview figures/aligned-1.svg');assert.match(issuePanel().textContent,/Product response differs/);assert.equal(document.querySelector('[aria-label="Rendered issue product preview"]'),null);globalThis.__draftIPC=original;
 });
@@ -753,3 +764,38 @@ test('choosing a historical other-design row opens that exact result and retains
 });
 
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});
+
+
+const editableCandidate=()=>document.querySelector('[aria-label="Editable carry-forward candidate"]');
+function candidateInput(label){const container=editableCandidate(),field=[...container.querySelectorAll('label')].find(l=>l.firstChild?.textContent===label);assert.ok(field,`candidate field ${label}`);return field.querySelector('input,textarea,select');}
+async function startV2Review(){await scopeReviewSetup();revisionPlanMode='v2';await click('Review changes and carry forward');assert.ok(editableCandidate());}
+async function finishV2Review(){await reviewDecision('cop-changed','reviewed','The supported efficiency change keeps service unchanged.');await reviewDecision('assumption-changed','reviewed','Explicit corrected synthetic source declaration for this candidate.');}
+
+test('v2 actual workspace edits corrected source candidate, reviews atomically, and retains immutable parent',async()=>{
+  await startV2Review();const before=structuredClone(doc.project),history=doc.history.past.length,proposal=structuredClone(doc.scopeReviewDrafts.draft.plan.proposed_scope);
+  assert.equal(button('Save accepted scope',editableCandidate()),undefined,'candidate cannot create an intermediate accepted scope');
+  await type(candidateInput('Input status'),'synthetic');await type(candidateInput('Declared value'),'3.8');
+  await type(candidateInput('Source / citation'),'Original declared concept-stage equipment assumption');
+  assert.equal(doc.scopeReviewDrafts.draft.candidate.value.assumptions[0].value,'3.8');assert.deepEqual(doc.scopeReviewDrafts.draft.plan.proposed_scope,proposal);
+  assert.equal(button('Accept reviewed scope revision').disabled,true);assert.equal(count('reference_revision_accept'),0);
+  await click('reports');await click('reference');assert.equal(candidateInput('Declared value').value,'3.8');
+  await click('Proposed B');await click('reference');assert.equal(editableCandidate(),null);await click('Baseline A');assert.equal(candidateInput('Declared value').value,'3.8');
+  await click('Review edited candidate in Rust');await finishV2Review();await click('Accept reviewed scope revision');
+  assert.equal(count('reference_revision_accept'),1);assert.equal(doc.history.past.length,history+1);assert.equal(doc.scopeReviewDrafts.draft,null);
+  assert.deepEqual(doc.project.architecture.scope_history.revisions.slice(0,2),before.architecture.scope_history.revisions);assert.equal(doc.project.architecture.scope.assumptions[0].value,'3.8');
+  assert.deepEqual(doc.project.energy.designs,before.energy.designs);assert.equal(count('energy_start'),0);
+});
+
+test('v2 invalid candidate and cancelled late review keep edits and history without intermediate acceptance',async()=>{
+  await startV2Review();const accepted=structuredClone(doc.project),past=doc.history.past.length;
+  await type(candidateInput('Scope title'),'Reject this candidate');await click('Review edited candidate in Rust');assert.match(scopeHistoryPanel().textContent,/Synthetic invalid candidate/);
+  assert.equal(candidateInput('Scope title').value,'Reject this candidate');assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);
+  await type(candidateInput('Scope title'),'Reviewed replacement title');let finish;revisionPrepareGate=new Promise(r=>finish=r);
+  await click('Review edited candidate in Rust');await click('Cancel review request');await act(async()=>finish());
+  assert.equal(doc.scopeReviewDrafts.draft.plan.plan_sha256,referenceHash('7'));assert.equal(candidateInput('Scope title').value,'Reviewed replacement title');assert.equal(count('reference_revision_accept'),0);
+  revisionPrepareGate=null;await click('Review edited candidate in Rust');await finishV2Review();
+  await type(document.querySelector('[aria-label="Review rationale cop-changed"]'),'é'.repeat(1024)+'界');
+  assert.equal(button('Accept reviewed scope revision').disabled,true);assert.match(scopeHistoryPanel().textContent,/-3 UTF-8 bytes remaining/);
+  await click('Save');await click('Apply',dialog());assert.ok(dialog());assert.match(dialog().textContent,/2048 UTF-8 bytes/);assert.equal(doc.scopeReviewDrafts.draft.decisions['cop-changed'].rationale,'é'.repeat(1024)+'界');assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);await click('Cancel',dialog());
+  await type(document.querySelector('[aria-label="Review rationale cop-changed"]'),'é'.repeat(1024));assert.equal(button('Accept reviewed scope revision').disabled,false);
+});

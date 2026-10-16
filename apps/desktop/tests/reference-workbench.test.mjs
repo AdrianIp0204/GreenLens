@@ -51,6 +51,7 @@ async function setup({accepted=false}={}){
 }
 const button=text=>[...document.querySelectorAll('button')].find(b=>b.textContent===text);
 async function click(text){const el=button(text);assert.ok(el,`Button ${text}`);assert.equal(el.disabled,false,`${text} enabled`);await act(async()=>el.dispatchEvent(new MouseEvent('click',{bubbles:true})));}
+async function selectOccurrence(id){const el=[...document.querySelectorAll('button[data-occurrence-id]')].find(row=>row.dataset.occurrenceId===id);assert.ok(el,`Active hierarchy occurrence ${id}`);assert.equal(el.disabled,false);await act(async()=>el.dispatchEvent(new MouseEvent('click',{bubbles:true})));}
 function field(text){const label=[...document.querySelectorAll('label')].find(el=>[...el.childNodes].filter(n=>n.nodeType===3).map(n=>n.textContent).join('').trim()===text);assert.ok(label,`Label ${text}`);return label.querySelector('input,select,textarea');}
 async function type(text,value){const el=field(text),type=el.tagName==='SELECT'?HTMLSelectElement:el.tagName==='TEXTAREA'?HTMLTextAreaElement:HTMLInputElement;await act(async()=>{Object.getOwnPropertyDescriptor(type.prototype,'value').set.call(el,value);el.dispatchEvent(new Event(el.tagName==='SELECT'?'change':'input',{bubbles:true}));});}
 async function check(text){const el=field(text);assert.equal(el.type,'checkbox');await act(async()=>el.dispatchEvent(new MouseEvent('click',{bubbles:true})));}
@@ -85,7 +86,7 @@ test('import completion never consumes a newer intake edit or a different docume
 });
 
 test('real mapping controls retain occurrence identity and bind explicit A/B targets without changing accepted scope',async()=>{
-  await setup();await startScope();await type('Source occurrence','original-occurrence-1');await type('Mapping state','mapped');await type('Mapping rationale','Selected source occurrence corresponds to this explicit zone and window.');
+  await setup();await startScope();await selectOccurrence('original-occurrence-1');await type('Mapping state','mapped');await type('Mapping rationale','Selected source occurrence corresponds to this explicit zone and window.');
   await check('A · Zone one · zone · zone-1');await check('A · Window one · window · window-1');await check('B · Zone one proposed · zone · zone-1');
   const map=props.draft.scope.value.mappings[0];assert.equal(map.occurrence_id,'original-occurrence-1');assert.equal(map.targets.length,3);assert.deepEqual(map.targets.map(t=>t.model_input_sha256),[hash('a'),hash('a'),hash('b')]);assert.equal(props.scope,null);assert.equal(count('save'),0);
   await type('Mapping state','context_only');assert.equal(props.draft.scope.value.mappings[0].targets.length,0);await check('A · Context shade · detached shading · shade-1');assert.equal(props.draft.scope.value.mappings[0].targets[0].object_id,'shade-1');
@@ -169,14 +170,14 @@ test('reimport preserves historical draft bindings and shows a stale assessment 
 });
 
 test('source reconciliation retains exact numeric text and displays only Rust-returned analytical values',async()=>{
-  await setup();await startScope();await type('Source occurrence','original-occurrence-0');await click('Add measurement for selected occurrence');await check('Zone one · zone-1');await check('A source measurement is available');await type('Source value (m²)','-');await click('Review scope in Rust');assert.equal(count('assess'),0);assert.equal(field('Source value (m²)').value,'-');
+  await setup();await startScope();await selectOccurrence('original-occurrence-0');await click('Add measurement for selected occurrence');await check('Zone one · zone-1');await check('A source measurement is available');await type('Source value (m²)','-');await click('Review scope in Rust');assert.equal(count('assess'),0);assert.equal(field('Source value (m²)').value,'-');
   await type('Source value (m²)','23.75');await type('Measurement source','Original synthetic measurement record');await type('Source measurement method','Declared test number');await type('Selected scope / abstraction method','Compare explicitly selected source and analytical floor areas.');
   reply={...assessment(),reconciliations:[{id:'measure-1',design_id:'A',unit:'square_metres',source_value:23.75,analytical_value:24,analytical_minus_source:.25,relative_difference_percent:1.0526315789473684}]};await click('Review scope in Rust');
   const sent=calls.find(c=>c[0]==='assess')[1];assert.equal(sent.reconciliations[0].source_measurement.value,23.75);assert.deepEqual(sent.reconciliations[0].analytical_object_ids,['zone-1']);assert.match(document.querySelector('[aria-label="Rust scope preview"]').textContent,/1\.0526315789473684/);assert.match(document.body.textContent,/Coverage: Unknown/);
 });
 
 test('changing reconciliation design preserves the building target for north rotation and clears zone-specific targets',async()=>{
-  await setup();await startScope();await type('Source occurrence','original-occurrence-0');await click('Add measurement for selected occurrence');await type('Measurement','north_rotation');await type('Design','B');await type('Selected scope / abstraction method','Compare declared orientation for the selected design.');
+  await setup();await startScope();await selectOccurrence('original-occurrence-0');await click('Add measurement for selected occurrence');await type('Measurement','north_rotation');await type('Design','B');await type('Selected scope / abstraction method','Compare declared orientation for the selected design.');
   assert.deepEqual(props.draft.scope.value.reconciliations[0].analytical_object_ids,['model:building']);assert.equal(props.draft.scope.value.reconciliations[0].design_id,'B');
   await click('Review scope in Rust');let sent=calls.filter(c=>c[0]==='assess').at(-1)[1];assert.equal(sent.reconciliations[0].measure,'north_rotation');assert.equal(sent.reconciliations[0].design_id,'B');assert.deepEqual(sent.reconciliations[0].analytical_object_ids,['model:building']);assert.equal(props.scope,null);assert.equal(count('save'),0);
   await type('Measurement','floor_area');await check('Zone one proposed · zone-1');assert.deepEqual(props.draft.scope.value.reconciliations[0].analytical_object_ids,['zone-1']);await type('Design','A');assert.deepEqual(props.draft.scope.value.reconciliations[0].analytical_object_ids,[]);assert.equal(button('Save accepted scope').disabled,true);

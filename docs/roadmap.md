@@ -1,5 +1,9 @@
 # GreenLens roadmap
 
+## Active bounded v0.8: reliable intake and report delivery
+
+The `docs/v0.8-spec.md` extends the existing revision/report workbench with truthful PDF delivery, versioned field provenance, editable reviewed reconciliation, complete disclosures and capacity readiness. Optional direct SKP must pass pinned dependency, isolated native worker and independently known compatibility gates before exposure or one separately declared private probe. Existing GLB remains available if these gates fail. All earlier incomplete acceptance remains explicit; no scientific or geometry expansion follows from this phase.
+
 ## Active bounded v0.7: study revisions and report issuance
 
 The [v0.7 specification](v0.7-spec.md) authorizes reviewed immutable scope carry-forward, actual-input provenance, selected-snapshot aligned report figures and durable exact-bound report issues, with responsive verification and professional report workspace integration. It extends existing v0.6 intake/workbench/report services and does not accept v0.6's remaining failed/unverified/private-case requirements. Completion and finite execution are governed by the [plan](v0.7-implementation-plan.md) and [ledger](v0.7-acceptance.md).

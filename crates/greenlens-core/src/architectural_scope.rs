@@ -13,6 +13,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::{BTreeMap, BTreeSet};
 
 pub const ARCHITECTURAL_SCOPE_SCHEMA: &str = "greenlens.architectural-scope.v1";
+pub const ARCHITECTURAL_SCOPE_SCHEMA_V2: &str = "greenlens.architectural-scope.v2";
 pub const SCOPE_ASSESSMENT_SCHEMA: &str = "greenlens.architectural-scope-assessment.v1";
 pub const MAX_SCOPE_MAPPINGS: usize = 20_000;
 pub const MAX_SCOPE_ASSUMPTIONS: usize = 2048;
@@ -22,6 +23,13 @@ pub const REFERENCE_REPORT_VIEW_SCHEMA: &str = "greenlens.reference-report-view.
 pub const MAX_REFERENCE_REPORT_VIEWS: usize = 8;
 /// Bookkeeping tolerance, not a geometry approximation or qualification limit.
 pub const COVERAGE_AREA_TOLERANCE_M2: f64 = 1e-6;
+
+/// The v1 prefix is preserved exactly; v2 source-link semantics are separately
+/// identified even though both versions share the bounded declaration shape.
+pub fn scope_content_sha256(scope: &ArchitecturalScope) -> Result<String> {
+    validate_declaration(scope)?;
+    canonical_hash(&(scope.schema_version.as_str(), scope))
+}
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
@@ -85,6 +93,14 @@ pub enum AssumptionStatus {
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 pub enum AssumptionLink {
     Study,
+    /// Explicit typed paths are admitted only by the v2 scope contract. The
+    /// design's exact retained EnergyStudy is authoritative, never free text.
+    StudyField {
+        design_id: String,
+    },
+    CalendarField {
+        design_id: String,
+    },
     ReferenceOccurrence {
         occurrence_id: String,
     },
@@ -316,7 +332,10 @@ fn unique(values: &[String], field: &str) -> Result<()> {
     Ok(())
 }
 pub fn validate_declaration(scope: &ArchitecturalScope) -> Result<()> {
-    if scope.schema_version != ARCHITECTURAL_SCOPE_SCHEMA {
+    if !matches!(
+        scope.schema_version.as_str(),
+        ARCHITECTURAL_SCOPE_SCHEMA | ARCHITECTURAL_SCOPE_SCHEMA_V2
+    ) {
         return Err(invalid(
             "scope.schema_version",
             "Unsupported architectural scope schema",
@@ -537,6 +556,22 @@ pub fn validate_declaration(scope: &ArchitecturalScope) -> Result<()> {
                 return Err(invalid(
                     "assumption.field",
                     "Use a JSON Pointer such as /width_m into the linked thermal object",
+                ));
+            }
+        }
+        if let AssumptionLink::StudyField { design_id }
+        | AssumptionLink::CalendarField { design_id } = &a.link
+        {
+            if scope.schema_version != ARCHITECTURAL_SCOPE_SCHEMA_V2 {
+                return Err(invalid("assumption.link", "Typed study/calendar links require architectural-scope.v2; historical v1 semantics cannot be changed"));
+            }
+            if !scope.design_model_sha256.contains_key(design_id) {
+                return Err(invalid("assumption.design_id", "Unknown bound design"));
+            }
+            if !a.field.starts_with('/') || a.field == "/" {
+                return Err(invalid(
+                    "assumption.field",
+                    "Select an exact JSON Pointer into the retained study or calendar",
                 ));
             }
         }
@@ -948,7 +983,7 @@ pub fn assess_scope(
             ..
         } => Some(100. * (included_m2 / whole_building_m2)),
     };
-    let scope_sha256 = canonical_hash(&(ARCHITECTURAL_SCOPE_SCHEMA, scope))?;
+    let scope_sha256 = scope_content_sha256(scope)?;
     let current_models = designs
         .iter()
         .filter(|(id, _)| scope.design_model_sha256.contains_key(*id))

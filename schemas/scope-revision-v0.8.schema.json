@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greenlens.dev/schemas/scope-revision-v0.8.schema.json",
+  "title": "GreenLens immutable scope revision v2",
+  "description": "V2 derived documentation with field-specific study/calendar provenance and exact reviewed candidate binding. Parents may be preserved v1 or v2 revisions. Rust dispatches historical verification unchanged and recomputes candidate/decision acceptance; no run bytes or physical identity are modified.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "revision_sha256",
+    "parent_revision_sha256",
+    "reference",
+    "designs",
+    "scope",
+    "carry_forward_plan_sha256",
+    "review_decisions",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "greenlens.scope-revision.v2"
+    },
+    "revision_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "parent_revision_sha256": {
+      "$ref": "#/$defs/optionalHash"
+    },
+    "reference": {
+      "$ref": "#/$defs/reference"
+    },
+    "designs": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 2,
+      "propertyNames": {
+        "enum": [
+          "A",
+          "B"
+        ]
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/design"
+      }
+    },
+    "scope": {
+      "$ref": "architectural-scope-v0.8.schema.json"
+    },
+    "carry_forward_plan_sha256": {
+      "$ref": "#/$defs/optionalHash"
+    },
+    "review_decisions": {
+      "type": "array",
+      "maxItems": 65536,
+      "items": {
+        "$ref": "#/$defs/decision"
+      }
+    },
+    "provenance": {
+      "$ref": "input-provenance-v0.8.schema.json"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "optionalHash": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/hash"
+        }
+      ]
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "asset_id",
+        "manifest_sha256",
+        "manifest"
+      ],
+      "properties": {
+        "asset_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "manifest_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "manifest": {
+          "$ref": "reference-model-v0.6.schema.json"
+        }
+      }
+    },
+    "design": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "calendar",
+        "study"
+      ],
+      "properties": {
+        "model": {
+          "$ref": "thermal-model-v0.4.schema.json"
+        },
+        "calendar": {
+          "$ref": "energy-study-v0.4.schema.json#/$defs/EnergyCalendar"
+        },
+        "study": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/study"
+            }
+          ]
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "row_id",
+        "resolution",
+        "rationale"
+      ],
+      "properties": {
+        "row_id": {
+          "$ref": "#/$defs/hash"
+        },
+        "resolution": {
+          "enum": [
+            "reviewed",
+            "unresolved"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048,
+          "x-maxUtf8Bytes": 2048,
+          "description": "Rust and the editor enforce 2048 UTF-8 bytes, not 2048 characters. Invalid acceptance retains the draft."
+        }
+      }
+    },
+    "study": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "weather",
+        "calendar",
+        "zone_timesteps_per_hour"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "greenlens.energy-study.v0.4"
+        },
+        "weather": {
+          "$ref": "#/$defs/weather"
+        },
+        "calendar": {
+          "$ref": "energy-study-v0.4.schema.json#/$defs/EnergyCalendar"
+        },
+        "zone_timesteps_per_hour": {
+          "enum": [
+            6,
+            12
+          ]
+        }
+      }
+    },
+    "weather": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "original_sha256",
+        "normalized_sha256",
+        "time_axis_sha256",
+        "profile_id"
+      ],
+      "properties": {
+        "original_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "normalized_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "time_axis_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "profile_id": {
+          "enum": [
+            "greenlens.energy-epw-explicit-fields.v1",
+            "greenlens.energy-epw-dry-envelope.v1"
+          ],
+          "description": "Recognized historical admission identities, not scientific qualification or permission to restart a stopped protocol."
+        }
+      }
+    }
+  }
+}

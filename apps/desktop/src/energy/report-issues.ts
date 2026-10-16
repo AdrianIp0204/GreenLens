@@ -29,7 +29,8 @@ export interface ReportIssueInspection {
 }
 export type ReportIssueAction={kind:'create';a:string;b:string;scope_sha256:string;html_only:boolean}|{kind:'regenerate';id:string}|{kind:'recover';token:string}|{kind:'export'};
 export type ReportIssueActionResult={view?:ProjectView;issue?:ReportIssueInspection;destination?:string;issue_id?:string;artifacts?:unknown;[key:string]:unknown};
-export interface ReportIssueProduct {opened?:boolean;path:string;media_type:string;svg?:string;bytes?:number[];issue_id?:string;sha256?:string}
+export type ProductAction='preview'|'preview_pdf'|'open'|'save_copy'|'reveal';
+export interface ReportIssueProduct {path:string;media_type?:string;svg?:string;bytes?:number[];issue_id?:string;sha256?:string;status?:'prepared'|'cancelled';integrity?:'verified';copy?:'verified'|'not_prepared';prepared?:{path:string;sha256:string;bytes:number;reused:boolean};handoff?:'requested'|'failed'|'not_requested';viewer_display?:'not_observed';message?:string}
 
 export function productPurpose(path:string):string {
   if(/(?:executive|technical|assessment)\.(?:pdf|html)$/.test(path))return 'Assessment reports';

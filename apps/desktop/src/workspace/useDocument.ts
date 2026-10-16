@@ -15,7 +15,7 @@ import type { Session } from '../energy/EnergySensitivity';
 import type {ArchitecturalScope,ReferenceImportOptions,ReferenceProgress} from '../reference/types';
 import {useReferenceDrafts} from '../reference/useReferenceDrafts';
 import {useScopeReviewDrafts} from '../reference/useScopeReviewDrafts';
-import {scopeReviewContextKey,reviewDecisions} from '../reference/scope-review-drafts';
+import {scopeReviewContextKey,reviewDecisions,reviewCandidate} from '../reference/scope-review-drafts';
 import {parseReferenceImportDraft,parseReferenceScopeDraft} from '../reference/reference-drafts';
 import {reportRequestBinding,type ReportOutput} from '../energy/report-request';
 import {usePendingReportIssues} from '../energy/usePendingReportIssues';
@@ -271,7 +271,7 @@ export function useDocument() {
     if(draft.scope)return commitReferenceScope(parseReferenceScopeDraft(draft.scope));
     return true;
   });
-  const scopeReviewDrafts=useScopeReviewDrafts(project?.id,alternative,draft=>acceptScopeRevision(draft.plan,draft.plan.proposed_scope,reviewDecisions(draft),{key:draft.context_key,design:draft.design_id}));
+  const scopeReviewDrafts=useScopeReviewDrafts(project?.id,alternative,draft=>acceptScopeRevision(draft.plan,reviewCandidate(draft),reviewDecisions(draft),{key:draft.context_key,design:draft.design_id}));
   const cancelReferenceImport=async()=>{if(referenceTicket.current!==null)await invoke('cancel_project_verification',{ticket:referenceTicket.current});};
   const setEnergyObjectLocks=async(ids:string[])=>runAction(async()=>{const s=state.current;if(!s.project||activeJob(s.job))throw Error('Finish the calculation before changing edit locks.');const next=await invoke<Project>('energy_set_locks',{project:s.project,alternativeId:s.alternative,ids});setProject(next);state.current.project=next;setMessage('Thermal edit locks updated. Simulation inclusion is unchanged.');},'changing thermal edit locks');
   const commitEnergyTransaction=async(requests:Record<string,unknown>,expectedPreviewSha256:string,label:string):Promise<boolean>=>{

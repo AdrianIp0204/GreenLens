@@ -1,13 +1,16 @@
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {invoke} from '@tauri-apps/api/core';
 import type {useDocument} from '../workspace/useDocument';
-import type {ScopeCarryForwardPlan} from './types';
-import {reviewDecisions,scopeReviewContextKey,validScopeCarryForwardPlan} from './scope-review-drafts';
+import type {ScopeCarryForwardPlan,ReferenceModel,ScopeContext} from './types';
+import {reviewDecisions,scopeReviewContextKey,validScopeCarryForwardPlan,rationaleBytes,MAX_REVIEW_RATIONALE_BYTES} from './scope-review-drafts';
+import ReferenceWorkbench from './ReferenceWorkbench';
+import {parseReferenceScopeDraft} from './reference-drafts';
+import type {ReferenceOccurrenceSelection} from './selection';
 // Load shared table rules first, then this panel's narrow-layout overrides.
 import './reference-workbench.css';
 import './scope-revisions.css';
 
-type Props={doc:ReturnType<typeof useDocument>;selectedRevision:string|null|undefined;onSelectRevision:(id:string|null)=>void;disabled:boolean};
+type Props={doc:ReturnType<typeof useDocument>;selectedRevision:string|null|undefined;onSelectRevision:(id:string|null)=>void;disabled:boolean;reference?:ReferenceModel|null;context?:ScopeContext|null};
 const PAGE=100,short=(v:string)=>v.slice(0,12),label=(v:string)=>v.replaceAll('_',' ');
 function valueText(value:unknown){const text=typeof value==='string'?value:JSON.stringify(value);return text?.length>4096?`${text.slice(0,4096)}… (display shortened; retained value is complete)`:text??'Not present';}
 function Pages({page,total,onChange,kind}:{page:number;total:number;onChange:(page:number)=>void;kind:string}){
@@ -15,11 +18,13 @@ function Pages({page,total,onChange,kind}:{page:number;total:number;onChange:(pa
 }
 /** Historical inspection is deliberately read-only and never sets the active
  * viewport occurrence or the editable current scope draft. */
-export default function ScopeRevisions({doc,selectedRevision,onSelectRevision,disabled}:Props){
+export default function ScopeRevisions({doc,selectedRevision,onSelectRevision,disabled,reference=null,context=null}:Props){
   const history=doc.project?.architecture?.scope_history,revisions=history?.revisions??[];
   const selected=selectedRevision===undefined?history?.active_revision_sha256??'':selectedRevision??'';
   const revision=revisions.find(r=>r.revision_sha256===selected);
   const reviews=doc.scopeReviewDrafts,draft=reviews.draft;
+  const [candidateSelection,setCandidateSelection]=useState<ReferenceOccurrenceSelection|null>(null);
+  const candidateEditor=useRef<HTMLDivElement>(null);
   const [mappingId,setMappingId]=useState<string|null>(null),[mappingPage,setMappingPage]=useState(0),[provenancePage,setProvenancePage]=useState(0),[reviewPage,setReviewPage]=useState(0);
   const [query,setQuery]=useState(''),[requiredOnly,setRequiredOnly]=useState(true),[preparing,setPreparing]=useState(false),[error,setError]=useState(''),[notice,setNotice]=useState('');
   const mounted=useRef(true),sequence=useRef(0);
@@ -27,7 +32,7 @@ export default function ScopeRevisions({doc,selectedRevision,onSelectRevision,di
   const latest=useRef(requestKey);latest.current=requestKey;
   const ownerKey=JSON.stringify([doc.documentId,doc.project?.id,doc.alternative]),latestOwner=useRef(ownerKey);latestOwner.current=ownerKey;
   useEffect(()=>{mounted.current=true;return()=>{mounted.current=false;sequence.current++;};},[]);
-  useEffect(()=>{setMappingId(null);setMappingPage(0);setProvenancePage(0);setQuery('');setError('');setNotice('');setPreparing(false);sequence.current++;},[doc.documentId,doc.alternative,selected]);
+  useEffect(()=>{setMappingId(null);setCandidateSelection(null);setMappingPage(0);setProvenancePage(0);setQuery('');setError('');setNotice('');setPreparing(false);sequence.current++;},[doc.documentId,doc.alternative,selected]);
   useEffect(()=>{setReviewPage(0);},[draft?.plan.plan_sha256,requiredOnly]);
   const mappings=useMemo(()=>revision?.scope.mappings.filter(m=>[m.occurrence_id,m.status,m.rationale,...m.targets.map(t=>`${t.design_id} ${t.object_id}`)].join(' ').toLowerCase().includes(query.toLowerCase()))??[],[revision,query]);
   const mappingPages=Math.min(mappingPage,Math.max(0,Math.ceil(mappings.length/PAGE)-1)),provenancePages=Math.min(provenancePage,Math.max(0,Math.ceil((revision?.provenance.rows.length??0)/PAGE)-1));
@@ -46,6 +51,26 @@ export default function ScopeRevisions({doc,selectedRevision,onSelectRevision,di
     }catch(e){if(mounted.current&&sequence.current===token&&latest.current===binding)setError(String(e));}
     finally{if(mounted.current&&sequence.current===token)setPreparing(false);}
   };
+  const reviewCandidate=async()=>{
+    if(!draft?.candidate||!doc.path||disabled||stale||preparing)return;
+    const token=++sequence.current,binding=requestKey,candidateSignature=JSON.stringify(draft.candidate);setPreparing(true);setError('');
+    try{
+      const candidateScope=parseReferenceScopeDraft(draft.candidate);
+      const plan=await invoke<ScopeCarryForwardPlan>('reference_revision_prepare',{path:doc.path,project:doc.project,parentRevisionSha256:draft.plan.parent_revision_sha256,candidateScope});
+      if(!mounted.current||sequence.current!==token||latest.current!==binding)return;
+      if(!validScopeCarryForwardPlan(plan)||plan.parent_revision_sha256!==draft.plan.parent_revision_sha256)throw Error('Candidate review has an invalid exact parent binding. The draft is retained.');
+      reviews.refreshPlan(plan,contextKey,candidateSignature);setNotice('Rust reviewed the complete candidate. Confirm affected rows before accepting one revision.');
+    }catch(e){if(mounted.current&&sequence.current===token&&latest.current===binding)setError(String(e));}
+    finally{if(mounted.current&&sequence.current===token)setPreparing(false);}
+  };
+  const editRow=(kind:string,key:string)=>{
+    const container=candidateEditor.current;if(!container)return;
+    const exact=[...container.querySelectorAll<HTMLElement>('[data-scope-key]')].find(el=>el.dataset.scopeKey===`${kind}:${key}`);
+    const target=exact??container;
+    for(let p:HTMLElement|null=target;p&&p!==container.parentElement;p=p.parentElement)if(p.tagName==='DETAILS')(p as HTMLDetailsElement).open=true;
+    if(kind==='mapping'&&reference?.occurrences.some(o=>o.id===key))setCandidateSelection({revision_sha256:reference.revision_sha256,occurrence_id:key});
+    target.scrollIntoView?.({block:'nearest'});target.querySelector<HTMLElement>('input,select,textarea,button')?.focus({preventScroll:true});
+  };
   const cancelPrepare=()=>{sequence.current++;setPreparing(false);setNotice('Pending review request cancelled. Any later response is ignored; no revision was accepted.');};
   const accept=async()=>{
     if(!draft||stale||decisionError||disabled||reviews.applying)return;setError('');setNotice('');const owner=ownerKey;
@@ -63,7 +88,7 @@ export default function ScopeRevisions({doc,selectedRevision,onSelectRevision,di
       <button disabled={disabled||!doc.path||preparing||Boolean(draft)} onClick={()=>void prepare()}>Review changes and carry forward</button>{!doc.path&&<p>Save the project before preparing a retained revision review.</p>}
     </>}
     {preparing&&<p role="status">Preparing an exact-context review in Rust… <button onClick={cancelPrepare}>Cancel review request</button></p>}
-    {draft&&<section aria-label="Pending scope carry-forward review"><h3>Pending review · design {draft.design_id}</h3><p>This draft is not accepted scope history. Parent <code>{draft.plan.parent_revision_sha256}</code>; plan <code>{draft.plan.plan_sha256}</code>.</p>{stale&&<p role="alert">Accepted reference or analytical context changed. This review is stale and remains intact. Discard it explicitly, then prepare a new review; it cannot be rebound automatically.</p>}<p>{(['unchanged','changed','deleted','added','unresolved'] as const).map(change=>`${label(change)}: ${draft.plan.rows.filter(row=>row.change===change).length}`).join(' · ')}</p><p>Proposed retained mappings: {draft.plan.proposed_scope.mappings.length}; assumptions: {draft.plan.proposed_scope.assumptions.length}; reconciliations: {draft.plan.proposed_scope.reconciliations.length}; report views: {draft.plan.proposed_scope.report_views?.length??0}. The exact Rust proposal is accepted; old revisions are never edited.</p><label><input type="checkbox" checked={requiredOnly} onChange={e=>setRequiredOnly(e.target.checked)}/>Show only rows requiring review</label><div className="reference-table"><table><caption>Typed changes and explicit decisions</caption><thead><tr><th>Object / field / change</th><th>Before / proposed</th><th>Review</th></tr></thead><tbody>{rows.slice(reviewPages*PAGE,(reviewPages+1)*PAGE).map(row=>{const decision=draft.decisions[row.id];return <tr key={row.id}><th>{row.kind}: {row.key}<br/>{label(row.change)}<p>{row.reason}</p></th><td><details><summary>Before</summary><pre>{valueText(row.before)}</pre></details><details><summary>Proposed</summary><pre>{valueText(row.after)}</pre></details></td><td>{row.requires_review?<><label>Decision for {row.key}<select aria-label={`Review decision ${row.id}`} disabled={reviews.applying} value={decision?.resolution??''} onChange={e=>reviews.updateDecision(row.id,e.target.value?{resolution:e.target.value as 'reviewed'|'unresolved',rationale:decision?.rationale??''}:null)}><option value="">Not reviewed</option><option value="reviewed">Reviewed</option><option value="unresolved">Unresolved — disclose</option></select></label><label>Rationale for {row.key}<textarea aria-label={`Review rationale ${row.id}`} maxLength={16384} disabled={reviews.applying||!decision} value={decision?.rationale??''} onChange={e=>decision&&reviews.updateDecision(row.id,{...decision,rationale:e.target.value})}/></label></>:<p>Unchanged; retained without a new decision.</p>}</td></tr>;})}</tbody></table></div><Pages page={reviewPages} total={rows.length} onChange={setReviewPage} kind="Review rows"/>{decisionError&&<p>{decisionError}</p>}<p>Unresolved decisions remain explicit disclosures. Review acceptance is not physical validation, certification or scientific qualification.</p><button disabled={disabled||reviews.applying||stale||Boolean(decisionError)} onClick={()=>void accept()}>Accept reviewed scope revision</button><button disabled={reviews.applying} onClick={()=>{reviews.discard();setNotice('Review discarded. Accepted scope history, input drafts and scientific inputs are unchanged.');}}>Discard review</button></section>}
+    {draft&&<section aria-label="Pending scope carry-forward review"><h3>Pending review · design {draft.design_id}</h3><p>This draft is not accepted scope history. Parent <code>{draft.plan.parent_revision_sha256}</code>; plan <code>{draft.plan.plan_sha256}</code>.</p>{stale&&<p role="alert">Accepted reference or analytical context changed. This review is stale and remains intact. Discard it explicitly, then prepare a new review; it cannot be rebound automatically.</p>}<p>{(['unchanged','changed','deleted','added','unresolved'] as const).map(change=>`${label(change)}: ${draft.plan.rows.filter(row=>row.change===change).length}`).join(' · ')}</p><p>Proposed retained mappings: {draft.plan.proposed_scope.mappings.length}; assumptions: {draft.plan.proposed_scope.assumptions.length}; reconciliations: {draft.plan.proposed_scope.reconciliations.length}; report views: {draft.plan.proposed_scope.report_views?.length??0}. The immutable parent, Rust proposal and editable candidate are distinct; old revisions are never edited.</p>{draft.candidate&&<><details><summary>Immutable before and original Rust proposal</summary><p>Parent revision {draft.plan.parent_revision_sha256} remains unchanged. The rows below retain the before values; the proposal is not overwritten by candidate editing.</p><pre>{valueText(draft.plan.proposed_scope)}</pre></details><div ref={candidateEditor}>{reference&&context?<ReferenceWorkbench candidateMode documentId={`${draft.document_id}:${draft.design_id}:candidate`} reference={reference} context={context} scope={null} assessment={null} draft={{schema_version:'greenlens.reference-workbench-draft.v1',document_id:`${draft.document_id}:${draft.design_id}:candidate`,import:null,scope:draft.candidate}} onDraftChange={value=>{if(value?.scope)reviews.updateCandidate(value.scope);}} onConsumeDraft={()=>false} activeOccurrenceId={candidateSelection?.occurrence_id??null} inspectedOccurrence={candidateSelection} onInspectOccurrence={setCandidateSelection} onSelectOccurrence={id=>setCandidateSelection(id?{revision_sha256:reference.revision_sha256,occurrence_id:id}:null)} onImport={async()=>false} onAssess={async()=>{throw Error('Use Review edited candidate for the exact-context transaction.');}} onSaveScope={async()=>false} onClearScope={async()=>false} disabled={disabled||stale||preparing||reviews.applying}/>:<p role="status">Load the admitted current reference and Rust scope context to edit this candidate. Its draft remains intact.</p>}</div><button disabled={disabled||stale||preparing||reviews.applying} onClick={()=>void reviewCandidate()}>Review edited candidate in Rust</button></>}<label><input type="checkbox" checked={requiredOnly} onChange={e=>setRequiredOnly(e.target.checked)}/>Show only rows requiring review</label><div className="reference-table"><table><caption>Typed changes and explicit decisions</caption><thead><tr><th>Object / field / change</th><th>Before / proposed</th><th>Review</th></tr></thead><tbody>{rows.slice(reviewPages*PAGE,(reviewPages+1)*PAGE).map(row=>{const decision=draft.decisions[row.id];return <tr key={row.id}><th>{row.kind}: {row.key}<br/>{label(row.change)}<p>{row.reason}</p>{draft.candidate&&<button onClick={()=>editRow(row.kind,row.key)}>Edit candidate {row.kind}</button>}</th><td><details><summary>Before</summary><pre>{valueText(row.before)}</pre></details><details><summary>Proposed</summary><pre>{valueText(row.after)}</pre></details></td><td>{row.requires_review?<><label>Decision for {row.key}<select aria-label={`Review decision ${row.id}`} disabled={reviews.applying} value={decision?.resolution??''} onChange={e=>reviews.updateDecision(row.id,e.target.value?{resolution:e.target.value as 'reviewed'|'unresolved',rationale:decision?.rationale??''}:null)}><option value="">Not reviewed</option><option value="reviewed">Reviewed</option><option value="unresolved">Unresolved — disclose</option></select></label><label>Rationale for {row.key}<textarea aria-label={`Review rationale ${row.id}`} maxLength={16384} aria-invalid={Boolean(decision&&rationaleBytes(decision.rationale)>MAX_REVIEW_RATIONALE_BYTES)} disabled={reviews.applying||!decision} value={decision?.rationale??''} onChange={e=>decision&&reviews.updateDecision(row.id,{...decision,rationale:e.target.value})}/><span>{MAX_REVIEW_RATIONALE_BYTES-rationaleBytes(decision?.rationale??'')} UTF-8 bytes remaining of {MAX_REVIEW_RATIONALE_BYTES}. Over-limit text stays in the draft and cannot be applied.</span></label></>:<p>Unchanged; retained without a new decision.</p>}</td></tr>;})}</tbody></table></div><Pages page={reviewPages} total={rows.length} onChange={setReviewPage} kind="Review rows"/>{decisionError&&<p>{decisionError}</p>}<p>Unresolved decisions remain explicit disclosures. Review acceptance is not physical validation, certification or scientific qualification.</p><button disabled={disabled||reviews.applying||stale||Boolean(decisionError)} onClick={()=>void accept()}>Accept reviewed scope revision</button><button disabled={reviews.applying} onClick={()=>{reviews.discard();setNotice('Review discarded. Accepted scope history, input drafts and scientific inputs are unchanged.');}}>Discard review</button></section>}
     {reviews.warning&&<p role="alert">{reviews.warning}</p>}{error&&<p role="alert">{error}</p>}{notice&&<p role="status">{notice}</p>}
   </section>;
 }

@@ -1,0 +1,739 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:architectural-scope:v2",
+  "title": "GreenLens architectural scope v2 — typed study and calendar provenance",
+  "description": "Versioned derived documentation. Rust resolves exact scalar JSON pointers into retained typed A/B study/calendar snapshots and recomputes identities. V1 remains unchanged. Shape validation is not content integrity, complete provenance or scientific qualification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "title",
+    "purpose",
+    "scope_kind",
+    "reference_revision_sha256",
+    "reference_geometry_sha256",
+    "reference_options_sha256",
+    "design_model_sha256",
+    "mappings",
+    "included_scope",
+    "excluded_scope",
+    "boundary_consequences",
+    "assumptions",
+    "reconciliations",
+    "coverage",
+    "whole_building_review"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "greenlens.architectural-scope.v2"
+    },
+    "title": {
+      "$ref": "#/$defs/text"
+    },
+    "purpose": {
+      "$ref": "#/$defs/text"
+    },
+    "scope_kind": {
+      "enum": [
+        "partial_building",
+        "representative_study",
+        "whole_building"
+      ]
+    },
+    "reference_revision_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "reference_geometry_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "reference_options_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "design_model_sha256": {
+      "type": "object",
+      "minProperties": 1,
+      "maxProperties": 2,
+      "propertyNames": {
+        "$ref": "#/$defs/text"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/hash"
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "maxItems": 20000,
+      "items": {
+        "$ref": "#/$defs/mapping"
+      }
+    },
+    "included_scope": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "excluded_scope": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "boundary_consequences": {
+      "$ref": "#/$defs/text"
+    },
+    "assumptions": {
+      "type": "array",
+      "maxItems": 2048,
+      "items": {
+        "$ref": "#/$defs/assumption"
+      }
+    },
+    "reconciliations": {
+      "type": "array",
+      "maxItems": 4096,
+      "items": {
+        "$ref": "#/$defs/reconciliation"
+      }
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "whole_building_review": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/text"
+        }
+      ]
+    },
+    "report_views": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "$ref": "#/$defs/reportView"
+      },
+      "description": "Optional derived orthographic figure definitions; omitted when empty to preserve historical scope serialization."
+    }
+  },
+  "$defs": {
+    "point": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "number",
+        "minimum": -1000000000,
+        "maximum": 1000000000
+      }
+    },
+    "reportView": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "id",
+        "title",
+        "design_id",
+        "model_input_sha256",
+        "reference_revision_sha256",
+        "reference_geometry_sha256",
+        "eye_m",
+        "target_m",
+        "up",
+        "vertical_span_m",
+        "aspect_ratio",
+        "section"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "greenlens.reference-report-view.v1"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "design_id": {
+          "$ref": "#/$defs/text"
+        },
+        "model_input_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "reference_revision_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "reference_geometry_sha256": {
+          "$ref": "#/$defs/hash"
+        },
+        "eye_m": {
+          "$ref": "#/$defs/point"
+        },
+        "target_m": {
+          "$ref": "#/$defs/point"
+        },
+        "up": {
+          "$ref": "#/$defs/point"
+        },
+        "vertical_span_m": {
+          "type": "number",
+          "minimum": 1e-06,
+          "maximum": 1000000000
+        },
+        "aspect_ratio": {
+          "type": "number",
+          "minimum": 0.25,
+          "maximum": 4
+        },
+        "section": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "axis",
+                "offset_m",
+                "keep"
+              ],
+              "properties": {
+                "axis": {
+                  "enum": [
+                    "x",
+                    "y",
+                    "z"
+                  ]
+                },
+                "offset_m": {
+                  "type": "number",
+                  "minimum": -1000000000,
+                  "maximum": 1000000000
+                },
+                "keep": {
+                  "enum": [
+                    "above",
+                    "below"
+                  ]
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/text"
+      }
+    },
+    "unit": {
+      "enum": [
+        "metres",
+        "square_metres",
+        "cubic_metres",
+        "degrees_clockwise"
+      ]
+    },
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "design_id",
+        "object_id",
+        "kind",
+        "model_input_sha256"
+      ],
+      "properties": {
+        "design_id": {
+          "$ref": "#/$defs/text"
+        },
+        "object_id": {
+          "$ref": "#/$defs/text"
+        },
+        "kind": {
+          "enum": [
+            "zone",
+            "surface",
+            "window",
+            "overhang",
+            "detached_shading"
+          ]
+        },
+        "model_input_sha256": {
+          "$ref": "#/$defs/hash"
+        }
+      }
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "occurrence_id",
+        "status",
+        "targets",
+        "rationale"
+      ],
+      "properties": {
+        "occurrence_id": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "mapped",
+            "context_only",
+            "excluded",
+            "unresolved"
+          ]
+        },
+        "targets": {
+          "type": "array",
+          "maxItems": 64,
+          "items": {
+            "$ref": "#/$defs/target"
+          }
+        },
+        "rationale": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "mapped"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "targets": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "excluded",
+                  "unresolved"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "targets": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "context_only"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "targets": {
+                "items": {
+                  "properties": {
+                    "kind": {
+                      "const": "detached_shading"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "assumptionLink": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind"
+          ],
+          "properties": {
+            "kind": {
+              "const": "study"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "occurrence_id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "reference_occurrence"
+            },
+            "occurrence_id": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "design_id",
+            "object_id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "thermal_object"
+            },
+            "design_id": {
+              "$ref": "#/$defs/text"
+            },
+            "object_id": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "design_id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "study_field"
+            },
+            "design_id": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "design_id"
+          ],
+          "properties": {
+            "kind": {
+              "const": "calendar_field"
+            },
+            "design_id": {
+              "enum": [
+                "A",
+                "B"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "link",
+        "field",
+        "status",
+        "value",
+        "units",
+        "source",
+        "rationale",
+        "affected_scope"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/text"
+        },
+        "link": {
+          "$ref": "#/$defs/assumptionLink"
+        },
+        "field": {
+          "$ref": "#/$defs/text"
+        },
+        "status": {
+          "enum": [
+            "documented",
+            "measured",
+            "assumed",
+            "synthetic",
+            "missing",
+            "not_applicable"
+          ]
+        },
+        "value": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/text"
+            }
+          ]
+        },
+        "units": {
+          "$ref": "#/$defs/text"
+        },
+        "source": {
+          "$ref": "#/$defs/text"
+        },
+        "rationale": {
+          "$ref": "#/$defs/text"
+        },
+        "affected_scope": {
+          "$ref": "#/$defs/text"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "missing",
+                  "not_applicable"
+                ]
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/text"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "link": {
+                "properties": {
+                  "kind": {
+                    "enum": [
+                      "study_field",
+                      "calendar_field"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "field": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 4096,
+                "pattern": "^/(?:[^~]|~[01])*$",
+                "description": "Exact existing scalar JSON pointer in the selected study or calendar. Rust rejects absent designs/studies/fields, aggregates, and /calendar aliases in study_field."
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "link": {
+                "properties": {
+                  "kind": {
+                    "const": "study"
+                  }
+                }
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "missing"
+              },
+              "value": {
+                "type": "null"
+              }
+            },
+            "description": "Ambiguous legacy free text has no typed binding. It must remain explicitly missing until the author supplies a supported typed link."
+          }
+        }
+      ]
+    },
+    "sourceMeasurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "value",
+        "unit",
+        "source",
+        "method"
+      ],
+      "properties": {
+        "value": {
+          "type": "number",
+          "minimum": 0
+        },
+        "unit": {
+          "$ref": "#/$defs/unit"
+        },
+        "source": {
+          "$ref": "#/$defs/text"
+        },
+        "method": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "reconciliation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "design_id",
+        "occurrence_ids",
+        "analytical_object_ids",
+        "measure",
+        "source_measurement",
+        "method"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/text"
+        },
+        "design_id": {
+          "$ref": "#/$defs/text"
+        },
+        "occurrence_ids": {
+          "$ref": "#/$defs/ids"
+        },
+        "analytical_object_ids": {
+          "$ref": "#/$defs/ids"
+        },
+        "measure": {
+          "enum": [
+            "local_length_x",
+            "local_length_y",
+            "height",
+            "floor_area",
+            "volume",
+            "exterior_envelope_gross_area",
+            "opening_area",
+            "north_rotation"
+          ]
+        },
+        "source_measurement": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/sourceMeasurement"
+            }
+          ]
+        },
+        "method": {
+          "$ref": "#/$defs/text"
+        }
+      }
+    },
+    "coverage": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "reason"
+          ],
+          "properties": {
+            "status": {
+              "const": "unknown"
+            },
+            "reason": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "status",
+            "included_m2",
+            "whole_building_m2",
+            "source",
+            "method"
+          ],
+          "properties": {
+            "status": {
+              "const": "declared_floor_area"
+            },
+            "included_m2": {
+              "type": "number",
+              "minimum": 0
+            },
+            "whole_building_m2": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "source": {
+              "$ref": "#/$defs/text"
+            },
+            "method": {
+              "$ref": "#/$defs/text"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

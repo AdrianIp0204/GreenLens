@@ -222,6 +222,14 @@ pub fn start(
         .find(|w| w.binding == study.weather)
         .context("Study weather is missing")?;
     regular_child(root, &format!("{}/asset.json", weather.path))?;
+    crate::capacity::require_start(
+        root,
+        project,
+        &crate::capacity::Operation::EnergyRun {
+            alternative: alternative.into(),
+        },
+        &std::sync::atomic::AtomicBool::new(false),
+    )?;
     app.start_energy_for_project(
         design.model.clone(),
         study,

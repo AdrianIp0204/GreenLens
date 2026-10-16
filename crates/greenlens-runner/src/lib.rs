@@ -1,4 +1,5 @@
 //! Shared application services for the CLI and native desktop.
+pub mod capacity;
 pub mod climate;
 #[cfg(test)]
 mod climate_document_tests;
@@ -35,6 +36,7 @@ pub mod reference;
 mod report;
 pub mod report_issue_export;
 pub mod report_issues;
+pub mod report_product_delivery;
 pub mod studies;
 #[cfg(test)]
 mod studies_tests;

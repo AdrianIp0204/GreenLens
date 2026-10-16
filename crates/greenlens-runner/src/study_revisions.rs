@@ -345,7 +345,7 @@ fn append(project: &Project, revision: ScopeRevision) -> Result<Project> {
 pub fn initialize_scope(
     root: &Path,
     project: &Project,
-    scope: ArchitecturalScope,
+    mut scope: ArchitecturalScope,
     cancel: &AtomicBool,
 ) -> Result<Project> {
     checkpoint(cancel)?;
@@ -375,14 +375,16 @@ pub fn initialize_scope(
         let previous = selected(&next, &id)?;
         // The scope editor remains useful for same-context documentation edits.
         // A scientific/source change requires the explicit carry-forward review.
-        let plan = core::prepare_carry_forward(previous, &reference, &designs)?;
-        ensure!(!plan.rows.iter().any(|row| row.requires_review), "Source or analytical inputs changed. Use Review changes and carry forward before accepting a new scope revision");
         if previous.scope == scope && previous.reference == reference && previous.designs == designs
         {
             checkpoint(cancel)?;
             return Ok(next);
         }
-        core::accept_carry_forward(
+        scope.schema_version =
+            greenlens_core::architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
+        let plan = core::prepare_carry_forward_v2(previous, &reference, &designs, Some(&scope))?;
+        ensure!(!plan.rows.iter().any(|row| row.requires_review), "Scope documentation, source or analytical inputs changed. Use Review changes and carry forward to review the editable candidate before accepting a new scope revision");
+        core::accept_carry_forward_v2(
             previous,
             reference,
             designs,
@@ -391,7 +393,7 @@ pub fn initialize_scope(
             vec![],
         )?
     } else {
-        core::initial_revision(scope, reference, designs)?
+        core::initial_revision_v2(scope, reference, designs)?
     };
     checkpoint(cancel)?;
     let candidate = append(&next, revision)?;
@@ -409,7 +411,25 @@ pub fn prepare(
     crate::validate_project(project)?;
     let previous = selected(project, parent_revision_sha256)?;
     let (reference, designs) = current_context(root, project, cancel)?;
-    let plan = core::prepare_carry_forward(previous, &reference, &designs)?;
+    let plan = core::prepare_carry_forward_v2(previous, &reference, &designs, None)?;
+    checkpoint(cancel)?;
+    Ok(plan)
+}
+
+/// Recompute an edited candidate against the same immutable parent and current
+/// accepted context. This only returns a preview; it never mutates a project.
+pub fn prepare_candidate(
+    root: &Path,
+    project: &Project,
+    parent_revision_sha256: &str,
+    scope: &ArchitecturalScope,
+    cancel: &AtomicBool,
+) -> Result<CarryForwardPlan> {
+    checkpoint(cancel)?;
+    crate::validate_project(project)?;
+    let previous = selected(project, parent_revision_sha256)?;
+    let (reference, designs) = current_context(root, project, cancel)?;
+    let plan = core::prepare_carry_forward_v2(previous, &reference, &designs, Some(scope))?;
     checkpoint(cancel)?;
     Ok(plan)
 }
@@ -428,7 +448,14 @@ pub fn accept(
     crate::validate_project(project)?;
     let previous = selected(project, parent_revision_sha256)?;
     let (reference, designs) = current_context(root, project, cancel)?;
-    let revision = core::accept_carry_forward(
+    let accept = if scope.schema_version
+        == greenlens_core::architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA_V2
+    {
+        core::accept_carry_forward_v2
+    } else {
+        core::accept_carry_forward
+    };
+    let revision = accept(
         previous,
         reference,
         designs,
@@ -890,18 +917,44 @@ mod tests {
             &AtomicBool::new(false),
         )
         .unwrap();
-        let mut changed_scope = scope.clone();
+        let parent = &revisions(&first)[0].revision_sha256;
+        let mut changed_scope = revisions(&first)[0].scope.clone();
         changed_scope.title = "S2 reviewed documentation".into();
-        let second =
-            initialize_scope(&root, &first, changed_scope, &AtomicBool::new(false)).unwrap();
+        assert!(initialize_scope(
+            &root,
+            &first,
+            changed_scope.clone(),
+            &AtomicBool::new(false)
+        )
+        .is_err());
+        let plan = prepare_candidate(
+            &root,
+            &first,
+            parent,
+            &changed_scope,
+            &AtomicBool::new(false),
+        )
+        .unwrap();
+        let second = accept(
+            &root,
+            &first,
+            parent,
+            &plan.plan_sha256,
+            changed_scope,
+            decisions(&plan),
+            &AtomicBool::new(false),
+        )
+        .unwrap();
         let selected_first =
             activate(&second, Some(&revisions(&first)[0].revision_sha256)).unwrap();
         validate_preserved(&second, &selected_first).unwrap();
         assert!(validate_preserved(&second, &first).is_err());
         assert!(validate_preserved(&first, &imported.project).is_err());
         let mut legacy = imported.project.clone();
-        legacy.architecture.as_mut().unwrap().scope = Some(scope);
-        validate_preserved(&legacy, &first).unwrap();
+        legacy.architecture.as_mut().unwrap().scope = Some(scope.clone());
+        let adopted_legacy =
+            initialize_scope(&root, &legacy, scope, &AtomicBool::new(false)).unwrap();
+        validate_preserved(&legacy, &adopted_legacy).unwrap();
         assert!(validate_preserved(&legacy, &imported.project).is_err());
         let mut different_document = first.clone();
         different_document.id = uuid::Uuid::new_v4().to_string();

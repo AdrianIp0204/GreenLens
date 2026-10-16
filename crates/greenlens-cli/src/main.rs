@@ -18,6 +18,14 @@ struct Cli {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Actual retained capacity and operation lower bounds; does not verify scientific evidence.
+    Capacity {
+        project: PathBuf,
+        #[arg(long, value_parser = ["inspect", "import-reference", "report-issue", "energy-run"], default_value = "inspect")]
+        operation: String,
+        #[arg(long, default_value = "A")]
+        alternative: String,
+    },
     /// Immutable scope/evidence-bound report issuance and portable regeneration.
     ReportIssue {
         #[command(subcommand)]
@@ -142,6 +150,9 @@ enum ReferenceCommand {
         project: PathBuf,
         #[arg(long)]
         parent: String,
+        /// Optional complete edited v2 scope; recompute its exact review before acceptance.
+        #[arg(long)]
+        candidate: Option<PathBuf>,
     },
     /// Accept a recomputed review and complete scope; no implicit input rebinding.
     ScopeAccept {
@@ -273,6 +284,29 @@ impl From<ClimateField> for greenlens_runner::studies::ResultField {
 }
 fn execute() -> Result<()> {
     match Cli::parse().command {
+        Command::Capacity {
+            project,
+            operation,
+            alternative,
+        } => {
+            use greenlens_runner::capacity::{self, Operation};
+            let document = read_json(&project.join("project.json"))?;
+            let operation = match operation.as_str() {
+                "import-reference" => Operation::ImportReference,
+                "report-issue" => Operation::ReportIssue,
+                "energy-run" => Operation::EnergyRun { alternative },
+                _ => Operation::Inspect,
+            };
+            println!(
+                "{}",
+                serde_json::to_string_pretty(&capacity::inspect(
+                    Some(&project),
+                    &document,
+                    &operation,
+                    &std::sync::atomic::AtomicBool::new(false)
+                )?)?
+            );
+        }
         Command::ReportIssue { command } => report_issue::execute(command)?,
         Command::Open {
             project,
@@ -477,15 +511,30 @@ fn execute() -> Result<()> {
                         );
                     }
                 }
-                ReferenceCommand::ScopeReview { project, parent } => {
+                ReferenceCommand::ScopeReview {
+                    project,
+                    parent,
+                    candidate,
+                } => {
                     let cancel = intake_cancellation()?;
                     let view = verified_scope_project(&project, cancel.clone())?;
-                    let plan = greenlens_runner::study_revisions::prepare(
-                        &project,
-                        &view.project,
-                        &parent,
-                        &cancel,
-                    )?;
+                    let plan = if let Some(path) = candidate {
+                        let scope = read_json(&path)?;
+                        greenlens_runner::study_revisions::prepare_candidate(
+                            &project,
+                            &view.project,
+                            &parent,
+                            &scope,
+                            &cancel,
+                        )?
+                    } else {
+                        greenlens_runner::study_revisions::prepare(
+                            &project,
+                            &view.project,
+                            &parent,
+                            &cancel,
+                        )?
+                    };
                     println!("{}", serde_json::to_string_pretty(&plan)?);
                 }
                 ReferenceCommand::ScopeAccept {
@@ -930,5 +979,61 @@ fn main() {
     if let Err(error) = execute() {
         eprintln!("GreenLens: {error:#}");
         std::process::exit(1);
+    }
+}
+
+#[cfg(test)]
+mod reference_command_tests {
+    use super::*;
+
+    #[test]
+    fn edited_scope_review_is_explicit_and_legacy_proposal_command_remains_valid() {
+        let parent = "a".repeat(64);
+        let parsed = Cli::try_parse_from([
+            "greenlens",
+            "reference",
+            "scope-review",
+            "study",
+            "--parent",
+            &parent,
+        ])
+        .unwrap();
+        assert!(matches!(
+            parsed.command,
+            Command::Reference {
+                command: ReferenceCommand::ScopeReview {
+                    candidate: None,
+                    ..
+                }
+            }
+        ));
+        let parsed = Cli::try_parse_from([
+            "greenlens",
+            "reference",
+            "scope-review",
+            "study",
+            "--parent",
+            &parent,
+            "--candidate",
+            "edited scope.json",
+        ])
+        .unwrap();
+        let Command::Reference {
+            command: ReferenceCommand::ScopeReview { candidate, .. },
+        } = parsed.command
+        else {
+            panic!("Expected the bounded reference review command");
+        };
+        assert_eq!(candidate, Some(PathBuf::from("edited scope.json")));
+        assert!(Cli::try_parse_from([
+            "greenlens",
+            "reference",
+            "scope-review",
+            "study",
+            "--parent",
+            &parent,
+            "--candidate"
+        ])
+        .is_err());
     }
 }

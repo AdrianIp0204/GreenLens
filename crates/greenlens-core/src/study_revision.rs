@@ -11,6 +11,10 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::io::Write;
 
 pub const SCOPE_REVISION_SCHEMA: &str = "greenlens.scope-revision.v1";
+pub const SCOPE_REVISION_SCHEMA_V2: &str = "greenlens.scope-revision.v2";
+pub const CARRY_FORWARD_SCHEMA_V2: &str = "greenlens.scope-carry-forward.v2";
+pub const PROVENANCE_CHECKLIST_SCHEMA_V2: &str = "greenlens.input-provenance-checklist.v2";
+pub const MAX_REVIEW_RATIONALE_BYTES: usize = 2048;
 pub const CARRY_FORWARD_SCHEMA: &str = "greenlens.scope-carry-forward.v1";
 pub const PROVENANCE_CHECKLIST_SCHEMA: &str = "greenlens.input-provenance-checklist.v1";
 pub const MAX_SCOPE_REVISIONS: usize = 64;
@@ -142,6 +146,9 @@ pub struct CarryForwardPlan {
     pub parent_revision_sha256: String,
     pub target_context_sha256: String,
     pub proposed_scope: ArchitecturalScope,
+    /// Omitted in frozen v1 plans. V2 binds the editable candidate separately.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub candidate_scope: Option<ArchitecturalScope>,
     pub rows: Vec<CarryForwardRow>,
     pub plan_sha256: String,
 }
@@ -186,7 +193,10 @@ impl<'de> Deserialize<'de> for ScopeRevision {
         }
         let mut wire = WireRevision::deserialize(deserializer)?;
         bound(&wire, MAX_REVISION_BYTES, "revision").map_err(D::Error::custom)?;
-        if wire.schema_version != SCOPE_REVISION_SCHEMA {
+        if !matches!(
+            wire.schema_version.as_str(),
+            SCOPE_REVISION_SCHEMA | SCOPE_REVISION_SCHEMA_V2
+        ) {
             return Err(D::Error::custom("Unsupported immutable scope revision"));
         }
         if wire.designs.is_empty()
@@ -209,8 +219,8 @@ impl<'de> Deserialize<'de> for ScopeRevision {
             "revision.provenance",
         )
         .map_err(D::Error::custom)?;
-        let provenance =
-            provenance_checklist(&wire.designs, &wire.scope).map_err(D::Error::custom)?;
+        let provenance = checklist_for_revision(&wire.schema_version, &wire.designs, &wire.scope)
+            .map_err(D::Error::custom)?;
         if wire.provenance.rows.len() == provenance.rows.len() {
             for (received, expected) in wire.provenance.rows.iter_mut().zip(&provenance.rows) {
                 restore_provenance_number_representation(
@@ -343,20 +353,23 @@ impl ScopeRevision {
     pub fn identity(&self) -> Result<String> {
         let mut value = self.clone();
         value.revision_sha256.clear();
-        canonical_hash(&(SCOPE_REVISION_SCHEMA, value))
+        canonical_hash(&(self.schema_version.as_str(), value))
     }
 }
 impl CarryForwardPlan {
     pub fn identity(&self) -> Result<String> {
         let mut value = self.clone();
         value.plan_sha256.clear();
-        canonical_hash(&(CARRY_FORWARD_SCHEMA, value))
+        canonical_hash(&(self.schema_version.as_str(), value))
     }
 }
 
 pub fn validate_revision(revision: &ScopeRevision) -> Result<()> {
     bound(revision, MAX_REVISION_BYTES, "revision")?;
-    if revision.schema_version != SCOPE_REVISION_SCHEMA {
+    if !matches!(
+        revision.schema_version.as_str(),
+        SCOPE_REVISION_SCHEMA | SCOPE_REVISION_SCHEMA_V2
+    ) {
         return Err(invalid(
             "revision.schema_version",
             "Unsupported immutable scope revision",
@@ -386,7 +399,9 @@ pub fn validate_revision(revision: &ScopeRevision) -> Result<()> {
     }
     let models = validate_revision_context(&revision.reference, &revision.designs)?;
     validate_scope(&revision.scope, &revision.reference.manifest, &models)?;
-    if revision.provenance != provenance_checklist(&revision.designs, &revision.scope)? {
+    if revision.provenance
+        != checklist_for_revision(&revision.schema_version, &revision.designs, &revision.scope)?
+    {
         return Err(invalid(
             "revision.provenance",
             "Checklist does not match retained inputs and source declarations",
@@ -407,11 +422,32 @@ pub fn initial_revision(
     reference: RevisionReferenceSnapshot,
     designs: BTreeMap<String, RevisionDesignSnapshot>,
 ) -> Result<ScopeRevision> {
+    initial_revision_version(scope, reference, designs, false)
+}
+pub fn initial_revision_v2(
+    mut scope: ArchitecturalScope,
+    reference: RevisionReferenceSnapshot,
+    designs: BTreeMap<String, RevisionDesignSnapshot>,
+) -> Result<ScopeRevision> {
+    scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
+    initial_revision_version(scope, reference, designs, true)
+}
+fn initial_revision_version(
+    scope: ArchitecturalScope,
+    reference: RevisionReferenceSnapshot,
+    designs: BTreeMap<String, RevisionDesignSnapshot>,
+    v2: bool,
+) -> Result<ScopeRevision> {
+    let schema = if v2 {
+        SCOPE_REVISION_SCHEMA_V2
+    } else {
+        SCOPE_REVISION_SCHEMA
+    };
     let models = validate_revision_context(&reference, &designs)?;
     validate_scope(&scope, &reference.manifest, &models)?;
-    let provenance = provenance_checklist(&designs, &scope)?;
+    let provenance = checklist_for_revision(schema, &designs, &scope)?;
     let mut revision = ScopeRevision {
-        schema_version: SCOPE_REVISION_SCHEMA.into(),
+        schema_version: schema.into(),
         revision_sha256: String::new(),
         parent_revision_sha256: None,
         reference,
@@ -772,7 +808,45 @@ pub fn provenance_checklist(
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
     scope: &ArchitecturalScope,
 ) -> Result<ProvenanceChecklist> {
+    provenance_checklist_version(designs, scope, false)
+}
+pub fn provenance_checklist_v2(
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    scope: &ArchitecturalScope,
+) -> Result<ProvenanceChecklist> {
+    provenance_checklist_version(designs, scope, true)
+}
+fn checklist_for_revision(
+    schema: &str,
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    scope: &ArchitecturalScope,
+) -> Result<ProvenanceChecklist> {
+    match schema {
+        SCOPE_REVISION_SCHEMA => provenance_checklist(designs, scope),
+        SCOPE_REVISION_SCHEMA_V2 => provenance_checklist_v2(designs, scope),
+        _ => Err(invalid(
+            "revision.schema_version",
+            "Unsupported provenance semantics",
+        )),
+    }
+}
+fn provenance_checklist_version(
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    scope: &ArchitecturalScope,
+    v2: bool,
+) -> Result<ProvenanceChecklist> {
     validate_declaration(scope)?;
+    let expected_scope = if v2 {
+        ARCHITECTURAL_SCOPE_SCHEMA_V2
+    } else {
+        ARCHITECTURAL_SCOPE_SCHEMA
+    };
+    if scope.schema_version != expected_scope {
+        return Err(invalid("revision.scope.schema_version", "Scope and provenance versions must match; historical semantics are not upgraded implicitly"));
+    }
+    if v2 {
+        validate_typed_assumptions(designs, scope)?;
+    }
     let mut rows = vec![];
     for (design_id, design) in designs {
         for object in input_objects(design)? {
@@ -801,8 +875,18 @@ pub fn provenance_checklist(
                         // Study links use this explicit derived convention. Legacy
                         // descriptive study text remains present but is not inferred.
                         AssumptionLink::Study => {
-                            item.field
+                            !v2 && item.field
                                 == format!("{design_id}/{}{field_path}", object.assumption_object)
+                        }
+                        AssumptionLink::StudyField { design_id: id } => {
+                            v2 && id == design_id
+                                && object.object.kind == ThermalObjectKind::Study
+                                && item.field == field_path
+                        }
+                        AssumptionLink::CalendarField { design_id: id } => {
+                            v2 && id == design_id
+                                && object.object.kind == ThermalObjectKind::Calendar
+                                && item.field == field_path
                         }
                         AssumptionLink::ReferenceOccurrence { .. } => false,
                     })
@@ -844,7 +928,7 @@ pub fn provenance_checklist(
         .filter(|r| r.status == ProvenanceStatus::Conflicting)
         .count();
     let result = ProvenanceChecklist {
-        schema_version: PROVENANCE_CHECKLIST_SCHEMA.into(), rows, unreviewed_count, missing_count, conflicting_count,
+        schema_version: if v2 { PROVENANCE_CHECKLIST_SCHEMA_V2 } else { PROVENANCE_CHECKLIST_SCHEMA }.into(), rows, unreviewed_count, missing_count, conflicting_count,
         documentation_complete: unreviewed_count == 0 && missing_count == 0 && conflicting_count == 0,
         disclosure: "Source declarations and applied analytical values are separate. A citation alone does not establish review, equivalence, calibration or scientific qualification. Undocumented valid inputs may execute as Unassessed; this checklist is not an execution prohibition. Geometry does not supply thermal properties, schedules or HVAC. Weather and carbon evidence require their own exact report bindings.".into(),
     };
@@ -880,6 +964,60 @@ fn review_row(
     Ok(())
 }
 
+fn typed_assumption_value(
+    assumption: &ScopeAssumption,
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+) -> Result<Option<Value>> {
+    let (design_id, calendar) = match &assumption.link {
+        AssumptionLink::StudyField { design_id } => (design_id, false),
+        AssumptionLink::CalendarField { design_id } => (design_id, true),
+        _ => return Ok(None),
+    };
+    let Some(design) = designs.get(design_id) else {
+        return Ok(None);
+    };
+    let value = if calendar {
+        serde_json::to_value(&design.calendar)?
+    } else if let Some(study) = &design.study {
+        serde_json::to_value(study)?
+    } else {
+        return Ok(None);
+    };
+    // Calendar fields have one explicit namespace. Neither the entire study
+    // nor an arbitrary aggregate can stand in for a declared supported field.
+    if !calendar
+        && (assumption.field == "/schema_version"
+            || assumption.field == "/calendar"
+            || assumption.field.starts_with("/calendar/"))
+    {
+        return Ok(None);
+    }
+    Ok(value
+        .pointer(&assumption.field)
+        .filter(|v| !v.is_array() && !v.is_object())
+        .cloned())
+}
+
+fn validate_typed_assumptions(
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    scope: &ArchitecturalScope,
+) -> Result<()> {
+    for assumption in &scope.assumptions {
+        match &assumption.link {
+            AssumptionLink::StudyField { .. } | AssumptionLink::CalendarField { .. }
+                if typed_assumption_value(assumption, designs)?.is_none() =>
+            {
+                return Err(invalid("assumption.field", format!("Assumption {} must select an existing scalar field in its exact retained study/calendar; missing studies, aggregate objects and calendar aliases are not inferred", assumption.id)));
+            }
+            AssumptionLink::Study if assumption.status != AssumptionStatus::Missing => {
+                return Err(invalid("assumption.link", format!("Legacy study declaration {} has no typed field binding. Select an explicit study/calendar field or retain Missing with an explanation", assumption.id)));
+            }
+            _ => (),
+        }
+    }
+    Ok(())
+}
+
 fn assumption_value(
     assumption: &ScopeAssumption,
     reference: &ReferenceModel,
@@ -887,6 +1025,9 @@ fn assumption_value(
 ) -> Result<Option<Value>> {
     match &assumption.link {
         AssumptionLink::Study => Ok(Some(serde_json::to_value(designs)?)),
+        AssumptionLink::StudyField { .. } | AssumptionLink::CalendarField { .. } => {
+            typed_assumption_value(assumption, designs)
+        }
         AssumptionLink::ReferenceOccurrence { occurrence_id } => Ok(reference
             .occurrences
             .iter()
@@ -921,6 +1062,20 @@ pub fn prepare_carry_forward(
     reference: &RevisionReferenceSnapshot,
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
 ) -> Result<CarryForwardPlan> {
+    if previous.schema_version != SCOPE_REVISION_SCHEMA {
+        return Err(invalid(
+            "revision.parent",
+            "The frozen v1 review only accepts v1 parents",
+        ));
+    }
+    prepare_carry_forward_version(previous, reference, designs, false)
+}
+fn prepare_carry_forward_version(
+    previous: &ScopeRevision,
+    reference: &RevisionReferenceSnapshot,
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    v2: bool,
+) -> Result<CarryForwardPlan> {
     validate_revision(previous)?;
     let models = validate_revision_context(reference, designs)?;
     let context = revision_context_sha256(reference, designs)?;
@@ -948,6 +1103,9 @@ pub fn prepare_carry_forward(
                     .and_then(|objects| objects.get(object))
     };
     let mut scope = previous.scope.clone();
+    if v2 {
+        scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
+    }
     scope.reference_revision_sha256 = reference.manifest.revision_sha256.clone();
     scope.reference_geometry_sha256 = reference.manifest.geometry_sha256.clone();
     scope.reference_options_sha256 = canonical_hash(&reference.manifest.options)?;
@@ -1043,11 +1201,20 @@ pub fn prepare_carry_forward(
     }
     scope.assumptions.clear();
     for assumption in &previous.scope.assumptions {
-        let before = assumption_value(assumption, &previous.reference.manifest, &previous.designs)?;
-        let after = assumption_value(assumption, &reference.manifest, designs)?;
+        let ambiguous = v2 && matches!(assumption.link, AssumptionLink::Study);
+        let before = if ambiguous {
+            None
+        } else {
+            assumption_value(assumption, &previous.reference.manifest, &previous.designs)?
+        };
+        let after = if ambiguous {
+            None
+        } else {
+            assumption_value(assumption, &reference.manifest, designs)?
+        };
         let source_changed = matches!(assumption.link, AssumptionLink::ReferenceOccurrence { .. })
             && !same_reference;
-        let changed = before != after || source_changed;
+        let changed = before != after || source_changed || ambiguous;
         let mut proposed = assumption.clone();
         if changed {
             proposed.status = AssumptionStatus::Missing;
@@ -1057,11 +1224,11 @@ pub fn prepare_carry_forward(
             proposed.value = None;
         }
         review_row(&mut rows, RevisionRowKind::Assumption, assumption.id.clone(),
-            if after.is_none() { RevisionChangeKind::Deleted } else if changed { RevisionChangeKind::Changed } else { RevisionChangeKind::Unchanged },
+            if ambiguous { RevisionChangeKind::Unresolved } else if after.is_none() { RevisionChangeKind::Deleted } else if changed { RevisionChangeKind::Changed } else { RevisionChangeKind::Unchanged },
             Some(json!({"declaration":assumption,"applied_value":before})),
-            after.as_ref().map(|v| json!({"declaration":proposed,"applied_value":v})),
+            (after.is_some() || ambiguous).then(|| json!({"declaration":proposed,"applied_value":after})),
             "Declared source value is preserved separately from the applied analytical value. Changed input requires review; a missing target is not rebound.")?;
-        if after.is_some() {
+        if after.is_some() || ambiguous {
             scope.assumptions.push(proposed);
         }
     }
@@ -1119,12 +1286,13 @@ pub fn prepare_carry_forward(
             Some(json!({"kind":scope.scope_kind,"coverage":scope.coverage,"whole_building_review":scope.whole_building_review})),
             "A changed source or analytical geometry invalidates the previous coverage conclusion. The proposal discloses unknown coverage and requires explicit scope review.")?;
     }
-    let before = provenance_checklist(&previous.designs, &previous.scope)?
-        .rows
-        .into_iter()
-        .map(|row| (row.id.clone(), row))
-        .collect::<BTreeMap<_, _>>();
-    let after = provenance_checklist(designs, &scope)?
+    let before =
+        checklist_for_revision(&previous.schema_version, &previous.designs, &previous.scope)?
+            .rows
+            .into_iter()
+            .map(|row| (row.id.clone(), row))
+            .collect::<BTreeMap<_, _>>();
+    let after = provenance_checklist_version(designs, &scope, v2)?
         .rows
         .into_iter()
         .map(|row| (row.id.clone(), row))
@@ -1144,16 +1312,156 @@ pub fn prepare_carry_forward(
     }
     validate_declaration(&scope)?;
     let mut plan = CarryForwardPlan {
-        schema_version: CARRY_FORWARD_SCHEMA.into(),
+        schema_version: if v2 {
+            CARRY_FORWARD_SCHEMA_V2
+        } else {
+            CARRY_FORWARD_SCHEMA
+        }
+        .into(),
         parent_revision_sha256: previous.revision_sha256.clone(),
         target_context_sha256: context,
         proposed_scope: scope,
+        candidate_scope: None,
         rows,
         plan_sha256: String::new(),
     };
     bound(&plan, MAX_CARRY_FORWARD_BYTES, "revision.plan")?;
     plan.plan_sha256 = plan.identity()?;
     Ok(plan)
+}
+
+/// V2 binds the mechanical proposal and the user's complete candidate. Editing
+/// the candidate invalidates its preview digest; acceptance always recomputes.
+pub fn prepare_carry_forward_v2(
+    previous: &ScopeRevision,
+    reference: &RevisionReferenceSnapshot,
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    candidate: Option<&ArchitecturalScope>,
+) -> Result<CarryForwardPlan> {
+    let mut plan = prepare_carry_forward_version(previous, reference, designs, true)?;
+    let scope = candidate.unwrap_or(&plan.proposed_scope);
+    if scope.schema_version != ARCHITECTURAL_SCOPE_SCHEMA_V2 {
+        return Err(invalid(
+            "revision.candidate",
+            "The editable candidate requires architectural-scope.v2",
+        ));
+    }
+    let models = validate_revision_context(reference, designs)?;
+    validate_scope(scope, &reference.manifest, &models)?;
+    validate_typed_assumptions(designs, scope)?;
+    // Compare stable IDs, never array positions or display names. Full snapshots
+    // stay available in both the proposal and candidate, including deleted rows.
+    let inventories =
+        |s: &ArchitecturalScope| -> Result<Vec<(RevisionRowKind, BTreeMap<String, Value>)>> {
+            Ok(vec![
+                (
+                    RevisionRowKind::Mapping,
+                    s.mappings
+                        .iter()
+                        .map(|r| Ok((r.occurrence_id.clone(), serde_json::to_value(r)?)))
+                        .collect::<Result<_>>()?,
+                ),
+                (
+                    RevisionRowKind::Assumption,
+                    s.assumptions
+                        .iter()
+                        .map(|r| Ok((r.id.clone(), serde_json::to_value(r)?)))
+                        .collect::<Result<_>>()?,
+                ),
+                (
+                    RevisionRowKind::Reconciliation,
+                    s.reconciliations
+                        .iter()
+                        .map(|r| Ok((r.id.clone(), serde_json::to_value(r)?)))
+                        .collect::<Result<_>>()?,
+                ),
+                (
+                    RevisionRowKind::ReportView,
+                    s.report_views
+                        .iter()
+                        .map(|r| Ok((r.id.clone(), serde_json::to_value(r)?)))
+                        .collect::<Result<_>>()?,
+                ),
+            ])
+        };
+    for ((kind, proposed), (_, edited)) in inventories(&plan.proposed_scope)?
+        .into_iter()
+        .zip(inventories(scope)?)
+    {
+        for key in proposed
+            .keys()
+            .chain(edited.keys())
+            .collect::<BTreeSet<_>>()
+        {
+            if proposed.get(key) == edited.get(key) {
+                continue;
+            }
+            let after = if kind == RevisionRowKind::Assumption {
+                scope
+                    .assumptions
+                    .iter()
+                    .find(|a| &a.id == key)
+                    .map(|a| -> Result<Value> {
+                        let applied = if matches!(a.link, AssumptionLink::Study) {
+                            None
+                        } else {
+                            assumption_value(a, &reference.manifest, designs)?
+                        };
+                        Ok(json!({"declaration":a,"applied_value":applied}))
+                    })
+                    .transpose()?
+            } else {
+                edited.get(key).cloned()
+            };
+            if let Some(row) = plan
+                .rows
+                .iter_mut()
+                .find(|r| r.kind == kind && &r.key == key)
+            {
+                row.after = after;
+                row.requires_review = true;
+                row.change = if edited.contains_key(key) {
+                    RevisionChangeKind::Changed
+                } else {
+                    RevisionChangeKind::Deleted
+                };
+                row.reason.push_str(" The editable candidate changes this proposal; review the complete replacement explicitly.");
+            } else {
+                review_row(&mut plan.rows, kind, key.clone(), if proposed.contains_key(key) { RevisionChangeKind::Changed } else { RevisionChangeKind::Added }, proposed.get(key).cloned(), after,
+                    "The editable candidate adds or changes documentation; this is an explicit declaration, not inferred source equivalence.")?;
+            }
+        }
+    }
+    let metadata = |s: &ArchitecturalScope| json!({"title":s.title,"purpose":s.purpose,"scope_kind":s.scope_kind,"design_model_sha256":s.design_model_sha256,"included_scope":s.included_scope,"excluded_scope":s.excluded_scope,"boundary_consequences":s.boundary_consequences,"coverage":s.coverage,"whole_building_review":s.whole_building_review});
+    let before = metadata(&plan.proposed_scope);
+    let after = metadata(scope);
+    if before != after {
+        review_row(&mut plan.rows, RevisionRowKind::Scope, "candidate-documentation".into(), RevisionChangeKind::Changed, Some(before), Some(after), "Scope, coverage or boundary documentation was edited in the candidate and requires explicit review.")?;
+    }
+    plan.candidate_scope = Some(scope.clone());
+    bound(&plan, MAX_CARRY_FORWARD_BYTES, "revision.plan")?;
+    plan.plan_sha256 = plan.identity()?;
+    Ok(plan)
+}
+
+pub fn accept_carry_forward_v2(
+    previous: &ScopeRevision,
+    reference: RevisionReferenceSnapshot,
+    designs: BTreeMap<String, RevisionDesignSnapshot>,
+    expected_plan_sha256: &str,
+    scope: ArchitecturalScope,
+    decisions: Vec<ReviewDecision>,
+) -> Result<ScopeRevision> {
+    let plan = prepare_carry_forward_v2(previous, &reference, &designs, Some(&scope))?;
+    accept_reviewed_plan(
+        previous,
+        reference,
+        designs,
+        expected_plan_sha256,
+        scope,
+        decisions,
+        plan,
+    )
 }
 
 fn validate_decisions(decisions: &[ReviewDecision]) -> Result<()> {
@@ -1164,7 +1472,7 @@ fn validate_decisions(decisions: &[ReviewDecision]) -> Result<()> {
     for decision in decisions {
         hash("revision.decision.row_id", &decision.row_id)?;
         text("revision.decision.rationale", &decision.rationale)?;
-        if decision.rationale.len() > 2048 || !ids.insert(&decision.row_id) {
+        if decision.rationale.len() > MAX_REVIEW_RATIONALE_BYTES || !ids.insert(&decision.row_id) {
             return Err(invalid(
                 "revision.decisions",
                 "Review decisions require unique rows and rationale within 2048 bytes",
@@ -1182,9 +1490,28 @@ pub fn accept_carry_forward(
     designs: BTreeMap<String, RevisionDesignSnapshot>,
     expected_plan_sha256: &str,
     scope: ArchitecturalScope,
-    mut decisions: Vec<ReviewDecision>,
+    decisions: Vec<ReviewDecision>,
 ) -> Result<ScopeRevision> {
     let plan = prepare_carry_forward(previous, &reference, &designs)?;
+    accept_reviewed_plan(
+        previous,
+        reference,
+        designs,
+        expected_plan_sha256,
+        scope,
+        decisions,
+        plan,
+    )
+}
+fn accept_reviewed_plan(
+    previous: &ScopeRevision,
+    reference: RevisionReferenceSnapshot,
+    designs: BTreeMap<String, RevisionDesignSnapshot>,
+    expected_plan_sha256: &str,
+    scope: ArchitecturalScope,
+    mut decisions: Vec<ReviewDecision>,
+    plan: CarryForwardPlan,
+) -> Result<ScopeRevision> {
     if plan.plan_sha256 != expected_plan_sha256 {
         return Err(invalid(
             "revision.plan_sha256",
@@ -1244,9 +1571,14 @@ pub fn accept_carry_forward(
     let models = validate_revision_context(&reference, &designs)?;
     validate_scope(&scope, &reference.manifest, &models)?;
     decisions.sort_by(|a, b| a.row_id.cmp(&b.row_id));
-    let provenance = provenance_checklist(&designs, &scope)?;
+    let schema = if plan.schema_version == CARRY_FORWARD_SCHEMA_V2 {
+        SCOPE_REVISION_SCHEMA_V2
+    } else {
+        SCOPE_REVISION_SCHEMA
+    };
+    let provenance = checklist_for_revision(schema, &designs, &scope)?;
     let mut revision = ScopeRevision {
-        schema_version: SCOPE_REVISION_SCHEMA.into(),
+        schema_version: schema.into(),
         revision_sha256: String::new(),
         parent_revision_sha256: Some(previous.revision_sha256.clone()),
         reference,
@@ -1272,7 +1604,12 @@ pub fn validate_revision_parent(previous: &ScopeRevision, revision: &ScopeRevisi
             "Retained parent identity differs",
         ));
     }
-    let accepted = accept_carry_forward(
+    let accept = if revision.schema_version == SCOPE_REVISION_SCHEMA_V2 {
+        accept_carry_forward_v2
+    } else {
+        accept_carry_forward
+    };
+    let accepted = accept(
         previous,
         revision.reference.clone(),
         revision.designs.clone(),
@@ -1452,6 +1789,310 @@ mod tests {
                 rationale: "Explicit synthetic test review; no physical validation claim".into(),
             })
             .collect()
+    }
+
+    fn fixture_v2() -> ScopeRevision {
+        let old = fixture();
+        let mut designs = old.designs.clone();
+        for design in designs.values_mut() {
+            design.study = Some(EnergyStudy {
+                schema_version: ENERGY_STUDY_SCHEMA.into(),
+                weather: EnergyWeatherBinding {
+                    original_sha256: "a".repeat(64),
+                    normalized_sha256: "b".repeat(64),
+                    time_axis_sha256: "c".repeat(64),
+                    profile_id: crate::energy::weather::ENERGY_EPW_PROFILE.into(),
+                },
+                calendar: design.calendar.clone(),
+                zone_timesteps_per_hour: 6,
+            });
+        }
+        let mut scope = old.scope.clone();
+        let declaration = scope.assumptions[0].clone();
+        for (id, link, field, value) in [
+            (
+                "calendar",
+                AssumptionLink::CalendarField {
+                    design_id: "B".into(),
+                },
+                "/start_weekday",
+                "monday".into(),
+            ),
+            (
+                "weather",
+                AssumptionLink::StudyField {
+                    design_id: "B".into(),
+                },
+                "/weather/original_sha256",
+                "a".repeat(64),
+            ),
+        ] {
+            scope.assumptions.push(ScopeAssumption {
+                id: id.into(),
+                link,
+                field: field.into(),
+                value: Some(value),
+                ..declaration.clone()
+            });
+        }
+        initial_revision_v2(scope, old.reference, designs).unwrap()
+    }
+
+    #[test]
+    fn v2_cop_change_retains_typed_weather_calendar_and_accepts_corrected_candidate_once() {
+        let old = fixture_v2();
+        let immutable = serde_json::to_vec(&old).unwrap();
+        let mut designs = old.designs.clone();
+        designs.get_mut("B").unwrap().model.zones[0]
+            .cooling_system
+            .as_mut()
+            .unwrap()
+            .gross_rated_cop += 0.5;
+        let proposal = prepare_carry_forward_v2(&old, &old.reference, &designs, None).unwrap();
+        for key in ["weather", "calendar"] {
+            assert_eq!(
+                proposal
+                    .rows
+                    .iter()
+                    .find(|r| r.kind == RevisionRowKind::Assumption && r.key == key)
+                    .unwrap()
+                    .change,
+                RevisionChangeKind::Unchanged
+            );
+        }
+        let mut candidate = proposal.proposed_scope.clone();
+        let cop = candidate
+            .assumptions
+            .iter_mut()
+            .find(|a| a.id == "declared-cop")
+            .unwrap();
+        cop.status = AssumptionStatus::Synthetic;
+        cop.value = Some(
+            designs["B"].model.zones[0]
+                .cooling_system
+                .as_ref()
+                .unwrap()
+                .gross_rated_cop
+                .to_string(),
+        );
+        assert!(accept_carry_forward_v2(
+            &old,
+            old.reference.clone(),
+            designs.clone(),
+            &proposal.plan_sha256,
+            candidate.clone(),
+            decisions(&proposal)
+        )
+        .is_err());
+        let reviewed =
+            prepare_carry_forward_v2(&old, &old.reference, &designs, Some(&candidate)).unwrap();
+        let accepted = accept_carry_forward_v2(
+            &old,
+            old.reference.clone(),
+            designs,
+            &reviewed.plan_sha256,
+            candidate,
+            decisions(&reviewed),
+        )
+        .unwrap();
+        validate_revision_parent(&old, &accepted).unwrap();
+        assert_eq!(
+            accepted.scope.assumptions[0].status,
+            AssumptionStatus::Synthetic
+        );
+        assert_eq!(immutable, serde_json::to_vec(&old).unwrap());
+        let decoded: ScopeRevision =
+            serde_json::from_slice(&serde_json::to_vec(&accepted).unwrap()).unwrap();
+        assert_eq!(decoded, accepted);
+    }
+
+    #[test]
+    fn v2_calendar_and_weather_changes_review_only_exact_declared_fields() {
+        let old = fixture_v2();
+        let mut designs = old.designs.clone();
+        let b = designs.get_mut("B").unwrap();
+        b.calendar.start_weekday = Weekday::Tuesday;
+        b.study.as_mut().unwrap().calendar = b.calendar.clone();
+        let calendar = prepare_carry_forward_v2(&old, &old.reference, &designs, None).unwrap();
+        assert!(calendar
+            .rows
+            .iter()
+            .any(|r| r.kind == RevisionRowKind::Assumption
+                && r.key == "calendar"
+                && r.requires_review));
+        assert!(calendar
+            .rows
+            .iter()
+            .any(|r| r.kind == RevisionRowKind::Assumption
+                && r.key == "weather"
+                && !r.requires_review));
+        let b = designs.get_mut("B").unwrap();
+        b.study.as_mut().unwrap().weather.original_sha256 = "d".repeat(64);
+        let weather = prepare_carry_forward_v2(&old, &old.reference, &designs, None).unwrap();
+        assert!(weather
+            .rows
+            .iter()
+            .any(|r| r.kind == RevisionRowKind::Assumption
+                && r.key == "weather"
+                && r.requires_review));
+    }
+
+    #[test]
+    fn v2_candidate_design_scope_change_requires_explicit_review() {
+        let original = fixture_v2();
+        let mut scope = original.scope.clone();
+        for mapping in &mut scope.mappings {
+            mapping.status = MappingStatus::Excluded;
+            mapping.targets.clear();
+        }
+        scope.assumptions.clear();
+        scope.reconciliations.clear();
+        scope.report_views.clear();
+        let old = initial_revision_v2(scope, original.reference, original.designs).unwrap();
+        let before = serde_json::to_vec(&old).unwrap();
+        let mut candidate = old.scope.clone();
+        candidate.design_model_sha256.remove("B");
+        let plan =
+            prepare_carry_forward_v2(&old, &old.reference, &old.designs, Some(&candidate)).unwrap();
+        let review = plan
+            .rows
+            .iter()
+            .find(|r| r.kind == RevisionRowKind::Scope && r.key == "candidate-documentation")
+            .unwrap();
+        assert!(review.requires_review);
+        assert!(review.before.as_ref().unwrap()["design_model_sha256"]
+            .get("B")
+            .is_some());
+        assert!(review.after.as_ref().unwrap()["design_model_sha256"]
+            .get("B")
+            .is_none());
+        assert!(accept_carry_forward_v2(
+            &old,
+            old.reference.clone(),
+            old.designs.clone(),
+            &plan.plan_sha256,
+            candidate.clone(),
+            vec![]
+        )
+        .is_err());
+        let accepted = accept_carry_forward_v2(
+            &old,
+            old.reference.clone(),
+            old.designs.clone(),
+            &plan.plan_sha256,
+            candidate,
+            decisions(&plan),
+        )
+        .unwrap();
+        validate_revision_parent(&old, &accepted).unwrap();
+        assert_eq!(serde_json::to_vec(&old).unwrap(), before);
+        assert_eq!(accepted.designs.len(), 2);
+        assert_eq!(accepted.scope.design_model_sha256.len(), 1);
+    }
+
+    #[test]
+    fn v1_study_algorithm_and_bytes_remain_exact_while_v2_legacy_text_is_unresolved() {
+        let base = fixture();
+        let mut scope = base.scope.clone();
+        let mut declaration = scope.assumptions[0].clone();
+        declaration.id = "ambiguous".into();
+        declaration.link = AssumptionLink::Study;
+        declaration.field = "B/study:calendar/start_weekday".into();
+        scope.assumptions.push(declaration);
+        let old = initial_revision(scope, base.reference, base.designs).unwrap();
+        let bytes = serde_json::to_vec(&old).unwrap();
+        let mut designs = old.designs.clone();
+        designs.get_mut("B").unwrap().model.zones[0]
+            .cooling_system
+            .as_mut()
+            .unwrap()
+            .gross_rated_cop += 0.5;
+        let legacy = prepare_carry_forward(&old, &old.reference, &designs).unwrap();
+        assert!(legacy.candidate_scope.is_none());
+        assert!(!serde_json::to_string(&legacy)
+            .unwrap()
+            .contains("candidate_scope"));
+        assert_eq!(
+            legacy
+                .rows
+                .iter()
+                .find(|r| r.key == "ambiguous")
+                .unwrap()
+                .change,
+            RevisionChangeKind::Changed
+        );
+        let next = prepare_carry_forward_v2(&old, &old.reference, &old.designs, None).unwrap();
+        assert_eq!(
+            next.rows
+                .iter()
+                .find(|r| r.key == "ambiguous")
+                .unwrap()
+                .change,
+            RevisionChangeKind::Unresolved
+        );
+        assert_eq!(
+            next.proposed_scope.assumptions.last().unwrap().status,
+            AssumptionStatus::Missing
+        );
+        assert_eq!(
+            serde_json::to_vec(&serde_json::from_slice::<ScopeRevision>(&bytes).unwrap()).unwrap(),
+            bytes
+        );
+        validate_revision(&old).unwrap();
+    }
+
+    #[test]
+    fn typed_links_reject_v1_aggregates_missing_paths_and_invented_study_fields() {
+        let old = fixture_v2();
+        for path in [
+            "/schema_version",
+            "/weather",
+            "/calendar/start_weekday",
+            "/weather/missing",
+            "/model/zones/0",
+        ] {
+            let mut scope = old.scope.clone();
+            scope
+                .assumptions
+                .iter_mut()
+                .find(|a| a.id == "weather")
+                .unwrap()
+                .field = path.into();
+            assert!(
+                initial_revision_v2(scope, old.reference.clone(), old.designs.clone()).is_err(),
+                "{path}"
+            );
+        }
+        let mut scope = old.scope.clone();
+        scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA.into();
+        assert!(validate_declaration(&scope).is_err());
+    }
+
+    #[test]
+    fn review_rationale_uses_utf8_bytes_and_invalid_acceptance_does_not_mutate_parent() {
+        let old = fixture_v2();
+        let immutable = serde_json::to_vec(&old).unwrap();
+        let mut designs = old.designs.clone();
+        designs.get_mut("B").unwrap().model.zones[0]
+            .cooling_system
+            .as_mut()
+            .unwrap()
+            .gross_rated_cop += 0.5;
+        let plan = prepare_carry_forward_v2(&old, &old.reference, &designs, None).unwrap();
+        let mut choices = decisions(&plan);
+        choices[0].rationale = "é".repeat(1024);
+        validate_decisions(&choices).unwrap();
+        choices[0].rationale.push('界');
+        assert!(accept_carry_forward_v2(
+            &old,
+            old.reference.clone(),
+            designs,
+            &plan.plan_sha256,
+            plan.candidate_scope.clone().unwrap(),
+            choices
+        )
+        .is_err());
+        assert_eq!(serde_json::to_vec(&old).unwrap(), immutable);
     }
 
     #[test]

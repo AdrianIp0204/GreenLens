@@ -5,7 +5,7 @@
 use super::{old, Document, EnergyReportArtifacts, Section, TypstConfig};
 use anyhow::{ensure, Context, Result};
 use greenlens_core::{
-    architectural_scope::{assess_scope, ScopeAssessment, ARCHITECTURAL_SCOPE_SCHEMA},
+    architectural_scope::{assess_scope, scope_content_sha256, ScopeAssessment},
     canonical_hash,
     energy::{assess_energy_sensitivity, validate_thermal_model, EnergyReportWorkbenchData},
     study_revision::{validate_revision, ScopeRevision},
@@ -29,6 +29,8 @@ pub const MAX_ISSUE_CONTENT_BYTES: usize = 48 * 1024 * 1024;
 pub(super) const TEMPLATE: &str = include_str!("../../../reports/energy/issue.typ");
 const DEPENDENCY: &str = include_str!("../../../dependencies/typst.json");
 const MAX_PRESENTED_ROWS: usize = 80;
+#[path = "energy_report_issue_render_v2.rs"]
+mod v2;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -76,6 +78,34 @@ pub fn current_renderer_identity() -> Result<IssueRendererIdentity> {
         performance_png_ppi: 96,
         system_and_embedded_fonts_disabled: true,
     })
+}
+
+/// New issuance uses the current presentation; the v1 identity above and its
+/// rendering algorithm remain callable for exact historical regeneration.
+pub fn latest_renderer_identity() -> Result<IssueRendererIdentity> {
+    let mut identity = current_renderer_identity()?;
+    identity.method = v2::METHOD.into();
+    identity.document_schema = v2::DOCUMENT_SCHEMA.into();
+    identity.html_method = v2::HTML_METHOD.into();
+    identity.template_sha256 = old::sha(v2::TEMPLATE.as_bytes());
+    Ok(identity)
+}
+fn supported_renderer_identity(method: &str) -> Result<IssueRendererIdentity> {
+    match method {
+        ISSUE_RENDERER_METHOD => current_renderer_identity(),
+        v2::METHOD => latest_renderer_identity(),
+        _ => anyhow::bail!("Unsupported issue renderer recipe"),
+    }
+}
+
+/// Full, deterministic supplementary products required only by the new recipe.
+/// Product admission recomputes these bytes from frozen issue content.
+pub fn required_supplement_products(content: &IssueContent) -> Result<Vec<(String, Vec<u8>)>> {
+    if content.renderer.method == v2::METHOD {
+        v2::products(content)
+    } else {
+        Ok(vec![])
+    }
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -159,15 +189,16 @@ impl IssueContent {
                 .context("Figure design is absent from selected pair")?;
             ensure!(figure.schema_version == ALIGNED_FIGURE_SCHEMA && figure.method == ALIGNED_FIGURE_METHOD && figure.definition_sha256 == figure.identity()?
                 && binding.view == *view && binding.scope_revision_sha256 == self.scope_revision.revision_sha256
-                && binding.scope_content_sha256 == canonical_hash(&(ARCHITECTURAL_SCOPE_SCHEMA,&self.scope_revision.scope))?
+                && binding.scope_content_sha256 == scope_content_sha256(&self.scope_revision.scope)?
                 && binding.selected_run_id == case.run_id && binding.selected_record_sha256 == case.record_sha256,
                 "Figure must bind the exact issue scope revision, retained view and selected run/record");
         }
         if let Some(sensitivity) = &self.sensitivity {
             validate_sensitivity(sensitivity, &self.workbench)?;
         }
-        ensure!(self.renderer.method == ISSUE_RENDERER_METHOD && self.renderer.document_schema == "greenlens.energy-document.v0.7"
-            && self.renderer.html_method == "greenlens.owned-energy-html/1" && self.renderer.figure_method == ALIGNED_FIGURE_METHOD
+        let supported = supported_renderer_identity(&self.renderer.method)?;
+        ensure!(self.renderer.document_schema == supported.document_schema
+            && self.renderer.html_method == supported.html_method && self.renderer.figure_method == ALIGNED_FIGURE_METHOD
             && self.renderer.pdf_creation_timestamp == 0 && self.renderer.performance_png_ppi == 96 && self.renderer.system_and_embedded_fonts_disabled,
             "Unsupported issue renderer recipe; historical inspection requires its recognized reader");
         for value in std::iter::once(&self.renderer.template_sha256)
@@ -198,7 +229,7 @@ impl IssueContent {
     }
     pub fn ensure_supported_regeneration(&self) -> Result<()> {
         self.validate()?;
-        ensure!(self.renderer == current_renderer_identity()?, "Exact regeneration unavailable: this issue's template/renderer/fonts differ from the installed supported recipe. Inspect preserved products; do not replace the old issue");
+        ensure!(self.renderer == supported_renderer_identity(&self.renderer.method)?, "Exact regeneration unavailable: this issue's template/renderer/fonts differ from the installed supported recipe. Inspect preserved products; do not replace the old issue");
         Ok(())
     }
 }
@@ -271,7 +302,7 @@ pub fn prepare(
         scope_assessment,
         sensitivity,
         figures: figures.iter().map(|f| f.definition.clone()).collect(),
-        renderer: current_renderer_identity()?,
+        renderer: latest_renderer_identity()?,
         include_pdf,
     };
     content.content_sha256 = content.identity()?;
@@ -323,7 +354,46 @@ pub fn render_issue(
 }
 
 impl IssueReport {
+    pub(super) fn template(&self) -> &'static str {
+        if self.content.renderer.method == v2::METHOD {
+            v2::TEMPLATE
+        } else {
+            TEMPLATE
+        }
+    }
+    pub(super) fn artifact_schema(&self) -> &'static str {
+        if self.content.renderer.method == v2::METHOD {
+            "greenlens.energy-report-artifacts.v0.8"
+        } else {
+            "greenlens.energy-report-artifacts.v0.7"
+        }
+    }
+    pub(super) fn html(
+        &self,
+        document: &Document,
+        generated: &[(&str, Vec<u8>)],
+    ) -> Result<String> {
+        if self.content.renderer.method == v2::METHOD {
+            v2::html(document, generated)
+        } else {
+            old::html(document, generated)
+        }
+    }
     pub(super) fn augment(
+        &self,
+        data: &EnergyReportWorkbenchData,
+        names: &[&str],
+        docs: &mut [Document],
+        generated: &mut Vec<(String, Vec<u8>)>,
+        cancel: &AtomicBool,
+    ) -> Result<()> {
+        if self.content.renderer.method == v2::METHOD {
+            v2::augment(self, data, names, docs, generated, cancel)
+        } else {
+            self.augment_v1(data, names, docs, generated, cancel)
+        }
+    }
+    fn augment_v1(
         &self,
         data: &EnergyReportWorkbenchData,
         names: &[&str],
@@ -751,10 +821,12 @@ pub(crate) mod tests {
         )
         .unwrap();
         let figures = make_figures(&data, &revision, &reference);
-        (
-            prepare(data, revision, None, figures, false).unwrap(),
-            reference,
-        )
+        // Keep this original fixture on the frozen v1 renderer. New issuance
+        // defaults to v2; the old byte-algorithm regression remains independent.
+        let mut issue = prepare(data, revision, None, figures, false).unwrap();
+        issue.content.renderer = current_renderer_identity().unwrap();
+        issue.content.content_sha256 = issue.content.identity().unwrap();
+        (issue, reference)
     }
     fn make_figures(
         data: &EnergyReportWorkbenchData,

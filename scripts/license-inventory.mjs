@@ -257,7 +257,7 @@ for (const [key, item] of Object.entries(npmLock.packages)) {
     repository: typeof manifest.repository === 'string' ? manifest.repository : manifest.repository?.url || null,
     source_download: item.resolved || null,
     integrity: item.integrity || null, declared_license: license, installed,
-    usage: item.dev ? 'Development/build/test tooling; not intentionally shipped as an installed npm tree.' : 'Frontend dependency; reachable bundled modules may be distributed in desktop assets.',
+    usage: name.startsWith('@napi-rs/canvas') ? 'Optional PDF.js Node-only dependency, excluded from the browser bundle and installer; native redistribution is not approved by this inventory.' : item.dev ? 'Development/build/test tooling; not intentionally shipped as an installed npm tree.' : 'Frontend dependency; reachable bundled modules may be distributed in desktop assets.',
     optional: Boolean(item.optional), platforms: item.os || null, cpus: item.cpu || null,
   }, directory, null, companion);
 }

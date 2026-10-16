@@ -1037,8 +1037,8 @@ fn render_internal(
         .collect::<Vec<_>>();
     old::create_fresh(destination)?;
     let mut result = EnergyReportArtifacts {
-        schema_version: if issue.is_some() {
-            "greenlens.energy-report-artifacts.v0.7"
+        schema_version: if let Some(issue) = issue {
+            issue.artifact_schema()
         } else if architecture.is_some() {
             "greenlens.energy-report-artifacts.v0.6"
         } else {
@@ -1072,14 +1072,24 @@ fn render_internal(
     }
     for (name, d) in names.iter().zip(&docs) {
         let file = format!("{name}.html");
-        old::write_new(&destination.join(&file), old::html(d, &refs)?.as_bytes())?;
+        let html = if let Some(issue) = issue {
+            issue.html(d, &refs)?
+        } else {
+            old::html(d, &refs)?
+        };
+        old::write_new(&destination.join(&file), html.as_bytes())?;
         result.artifacts.push(old::artifact(destination, &file)?);
     }
     // Existing assessment filename remains an explicitly identified alias to
     // the selected primary new profile, never a legacy semantic projection.
     old::write_new(
         &destination.join("assessment.html"),
-        old::html(&docs[0], &refs)?.as_bytes(),
+        if let Some(issue) = issue {
+            issue.html(&docs[0], &refs)?
+        } else {
+            old::html(&docs[0], &refs)?
+        }
+        .as_bytes(),
     )?;
     result
         .artifacts
@@ -1096,8 +1106,8 @@ fn render_internal(
             old::NativeDocuments {
                 docs: &docs,
                 generated: &refs,
-                template: if issue.is_some() {
-                    issuance::TEMPLATE
+                template: if let Some(issue) = issue {
+                    issue.template()
                 } else {
                     architectural_template.as_deref().unwrap_or(TEMPLATE)
                 },

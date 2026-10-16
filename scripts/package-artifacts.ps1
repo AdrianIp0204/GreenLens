@@ -5,6 +5,10 @@ $ErrorActionPreference = 'Stop'
 function Get-PackageDocumentPaths {
     # Explicit compact evidence only: no directory-wide evidence/archive copies.
     @(
+        # Current compact launch/delivery guide; detailed v0.8 development contracts stay in source.
+        # Retain all historical bundled records within the unchanged documentation budget.
+        'docs/v0.8-usage.md','docs/v0.8-pdf-delivery.md','dependencies/pdfjs.json',
+        'third-party/pdfjs/LICENSE','third-party/pdfjs/NOTICE.txt',
         'docs/v0.7-spec.md','docs/v0.7-implementation-plan.md','docs/v0.7-acceptance.md',
         'docs/v0.7-contracts.md','docs/v0.7-issue-protocol.md','docs/v0.7-delivery.md',
         'schemas/scope-revision-v0.7.schema.json','schemas/report-issue-index-v0.7.schema.json',

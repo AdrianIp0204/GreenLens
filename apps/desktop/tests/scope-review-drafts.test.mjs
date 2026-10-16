@@ -35,3 +35,40 @@ test('request context excludes display and unrelated historical additions but bi
   const key=scopeReviewContextKey('saved',project,'A'),display=structuredClone(project);display.display_state={mode:'wireframe'};display.architecture.scope_history={revisions:[{revision_sha256:'historical'}]};assert.equal(scopeReviewContextKey('saved',display,'A'),key);
   const edited=structuredClone(project);edited.energy.designs.A.model.name='Changed accepted input';assert.notEqual(scopeReviewContextKey('saved',edited,'A'),key);assert.notEqual(scopeReviewContextKey('copy',project,'A'),key);assert.notEqual(scopeReviewContextKey('saved',project,'B'),key);edited.architecture.assets[0].manifest_sha256='b'.repeat(64);assert.notEqual(scopeReviewContextKey('saved',edited,'A'),key);
 });
+
+test('UTF-8 rationale admission matches the 2048-byte Rust boundary without losing over-limit draft text',()=>{
+  const d=draft(),store=new ScopeReviewDraftStore();
+  d.decisions.field={row_id:'field',resolution:'reviewed',rationale:'é'.repeat(1024)};
+  assert.equal(Buffer.byteLength(d.decisions.field.rationale),2048);assert.equal(reviewDecisions(d).length,1);
+  d.decisions.field.rationale+='界';store.set(d);
+  assert.equal(validScopeReviewDraft(d),true);assert.throws(()=>reviewDecisions(d),/2048 UTF-8 bytes \(2051 used\)/);
+  assert.equal(store.get('one','A').decisions.field.rationale,'é'.repeat(1024)+'界');
+  d.decisions.field.rationale='😀'.repeat(512);assert.equal(reviewDecisions(d).length,1);
+  d.decisions.field.rationale+='x';assert.throws(()=>reviewDecisions(d),/2049 used/);
+});
+
+test('v2 candidate is separate, retains incomplete numeric edits, and requires a fresh exact reviewed binding',()=>{
+  const d=draft();d.schema_version='greenlens.scope-review-draft.v2';d.plan.schema_version='greenlens.scope-carry-forward.v2';
+  d.plan.proposed_scope.schema_version='greenlens.architectural-scope.v2';
+  d.plan.candidate_scope=structuredClone(d.plan.proposed_scope);d.candidate={value:structuredClone(d.plan.candidate_scope),numbers:{}};
+  d.decisions.field={row_id:'field',resolution:'reviewed',rationale:'Reviewed exact candidate'};
+  assert.equal(validScopeReviewDraft(d),true);assert.equal(reviewDecisions(d).length,1);
+  const before=JSON.stringify(d.plan.proposed_scope);d.candidate.value.title='Corrected proposed scope';
+  assert.equal(JSON.stringify(d.plan.proposed_scope),before);assert.throws(()=>reviewDecisions(d),/not been reviewed in Rust/);
+  const store=new ScopeReviewDraftStore();store.set(d);assert.equal(store.get('one','A').candidate.value.title,'Corrected proposed scope');
+  d.plan.candidate_scope=Object.fromEntries(Object.entries(d.candidate.value).reverse());assert.equal(reviewDecisions(d).length,1,'IPC map key ordering does not alter exact structural equality');
+  d.candidate.value.coverage={status:'declared_floor_area',included_m2:10,whole_building_m2:10,source:'Original fixture',method:'Synthetic'};
+  d.candidate.numbers['coverage.included']='-';store.set(d);assert.throws(()=>reviewDecisions(d),/finite number/);assert.equal(store.get('one','A').candidate.numbers['coverage.included'],'-');
+});
+
+test('v1 review cannot silently carry the new editable candidate contract or typed study links',()=>{
+  const d=draft();d.candidate={value:structuredClone(scope),numbers:{}};assert.equal(validScopeReviewDraft(d),false);
+  const p=plan();p.candidate_scope=scope;assert.equal(validScopeCarryForwardPlan(p),false);
+  delete p.candidate_scope;p.proposed_scope.assumptions=[{id:'legacy',link:{kind:'study_field',design_id:'A'},field:'/weather/original_sha256',status:'documented',value:h,units:'sha256',source:'Synthetic',rationale:'Explicit fixture',affected_scope:'A'}];
+  assert.equal(validScopeCarryForwardPlan(p),false);
+  const mixed=draft();mixed.plan.schema_version='greenlens.scope-carry-forward.v2';mixed.plan.proposed_scope.schema_version='greenlens.architectural-scope.v2';mixed.plan.candidate_scope=structuredClone(mixed.plan.proposed_scope);
+  assert.equal(validScopeCarryForwardPlan(mixed.plan),true);assert.equal(validScopeReviewDraft(mixed),false,'A v1 local draft cannot conceal a v2 plan');
+  mixed.plan.candidate_scope.schema_version='greenlens.architectural-scope.v1';assert.equal(validScopeCarryForwardPlan(mixed.plan),false);
+  mixed.plan.candidate_scope.schema_version='greenlens.architectural-scope.v2';mixed.plan.proposed_scope.schema_version='greenlens.architectural-scope.v1';assert.equal(validScopeCarryForwardPlan(mixed.plan),false);
+  const v1=plan();v1.proposed_scope.schema_version='greenlens.architectural-scope.v2';assert.equal(validScopeCarryForwardPlan(v1),false);
+});

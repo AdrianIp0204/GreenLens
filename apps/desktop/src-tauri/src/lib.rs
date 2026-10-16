@@ -54,6 +54,22 @@ async fn open_project(path: String) -> CommandResult<ProjectView> {
     blocking(move || greenlens_runner::open_project(Path::new(&path))).await
 }
 #[tauri::command]
+async fn project_capacity(
+    path: Option<String>,
+    project: Project,
+    operation: greenlens_runner::capacity::Operation,
+) -> CommandResult<greenlens_runner::capacity::CapacityReport> {
+    blocking(move || {
+        greenlens_runner::capacity::inspect(
+            path.as_deref().map(Path::new),
+            &project,
+            &operation,
+            &std::sync::atomic::AtomicBool::new(false),
+        )
+    })
+    .await
+}
+#[tauri::command]
 async fn save_project(
     path: String,
     project: Project,
@@ -740,6 +756,7 @@ pub fn run() {
             energy::energy_cancel_report,
             report_issues::report_issue_action,
             report_issues::report_issue_product,
+            project_capacity,
             energy::dialog_energy_report
         ])
         .build(tauri::generate_context!())

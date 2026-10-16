@@ -4,8 +4,8 @@
 use anyhow::{ensure, Result};
 use greenlens_core::{
     architectural_scope::{
-        validate_declaration, ArchitecturalScope, MappingStatus, ReferenceReportView,
-        ReferenceSectionAxis, ReferenceSectionKeep, ARCHITECTURAL_SCOPE_SCHEMA,
+        scope_content_sha256, validate_declaration, ArchitecturalScope, MappingStatus,
+        ReferenceReportView, ReferenceSectionAxis, ReferenceSectionKeep,
     },
     canonical_hash,
     energy::{thermal_scene, EnergyCalendar, ThermalModel, ThermalScene},
@@ -307,7 +307,7 @@ where
         "Invalid scope revision or selected run binding"
     );
     ensure!(
-        request.scope_content_sha256 == canonical_hash(&(ARCHITECTURAL_SCOPE_SCHEMA, scope))?,
+        request.scope_content_sha256 == scope_content_sha256(scope)?,
         "Figure scope snapshot identity differs"
     );
     let view = &request.view;

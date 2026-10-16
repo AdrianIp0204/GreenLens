@@ -418,6 +418,12 @@ pub fn import_project(
         "GLB exceeds the128MiB source limit; export a declared supported subset locally"
     );
     let mut input = fs::File::open(file)?;
+    crate::capacity::require_start(
+        root,
+        project,
+        &crate::capacity::Operation::ImportReference,
+        cancel,
+    )?;
     let mut bytes = Vec::new();
     let mut block = [0u8; 65536];
     loop {
@@ -483,6 +489,12 @@ pub fn import_project(
     crate::validate_project(&candidate)?;
     let _lock = WriterLock::acquire(root)?;
     check_revision(root, expected_revision)?;
+    crate::capacity::require_publication(
+        root,
+        &candidate,
+        &[(format!("references/{id}"), stage.clone())],
+        cancel,
+    )?;
     ensure!(
         !cancel.load(Ordering::Relaxed),
         "Reference import cancelled"
@@ -557,7 +569,7 @@ pub fn import_project(
         "Reference import cancelled; the previous document is unchanged"
     );
     check_revision(root, expected_revision)?;
-    view.revision = atomic_project(root, &candidate)?;
+    view.revision = crate::persistence::atomic_project_cancellable(root, &candidate, cancel)?;
     Ok(view)
 }
 

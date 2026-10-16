@@ -2,6 +2,43 @@
   "schema_version": "greenlens.license-supplements.v0.1",
   "review_date": "2026-10-11",
   "packages": {
+    "npm:@napi-rs/canvas-win32-x64-msvc@1.0.11": {
+      "review_date": "2026-10-16",
+      "declared_license": "MIT",
+      "source_download": "https://registry.npmjs.org/@napi-rs/canvas-win32-x64-msvc/-/canvas-win32-x64-msvc-1.0.11.tgz",
+      "source_integrity": "sha512-DFYp/ZQRdKunI/LPc0UkRXG1vlNjJKOJf8O8Ctb8+wm2Nt2ELg9Eamc31D2VoakkfGo8L+z0Iejz6WtFbQwyGw==",
+      "package_files_sha256": {
+        "package.json": "dd3765d3af7cdbf22d61b0330a28efb695e453e899f527f52fc223d99f46b80c",
+        "sbom.cdx.json": "af0b3af01a73d229ffabb515a7d6c0857784e359df39b0da59949e946415bf71"
+      },
+      "companion_notice": {
+        "package": "@napi-rs/canvas",
+        "version": "1.0.11",
+        "source_download": "https://registry.npmjs.org/@napi-rs/canvas/-/canvas-1.0.11.tgz",
+        "source_integrity": "sha512-vt5tog1cr+QKadIddGe+3LrcX0EmjEd0izF717Uwf92mBmgYfq2XRmL2r4bZU40spB69exxhrBn9I91HYEr/7w==",
+        "package_json_sha256": "c189bbe7adf9ed5948d3ed82b8fd834b365c5d4adcb9bebe57e2ace3c54a3dff",
+        "license_sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6",
+        "review": "Exact same-version parent lists this optional platform package and provides the retained project MIT license. This companion notice does not cover every embedded native dependency."
+      },
+      "distribution_scope": "Optional Node support installed by npm. Not used by GreenLens browser rendering; native package and all embedded native libraries/ICU data are excluded from release assets. Native redistribution is not approved by this review.",
+      "reason": "The platform npm archive omits a standalone license. Its exact-version parent MIT notice is retained for the optional package inventory. The bundled SBOM was inspected and includes additional library obligations; this record does not reinterpret the native bundle as wholly MIT. Distribution is limited to PDF.js browser core/worker; production asset exclusion is mandatory.",
+      "redistribution": {
+        "review": "manual_reviewed",
+        "requirements": [
+          "Retain the exact parent project MIT notice for inventory traceability.",
+          "Do not distribute the optional Node canvas package, native .node libraries or ICU data. Verify their exclusion from production assets.",
+          "If native distribution is proposed later, independently audit and retain every applicable embedded-library notice from the exact native SBOM before redistribution. This entry grants no such approval."
+        ]
+      },
+      "files": [
+        {
+          "path": "third-party/pdfjs/optional-node-canvas-LICENSE-MIT.txt",
+          "source": "https://registry.npmjs.org/@napi-rs/canvas/-/canvas-1.0.11.tgz",
+          "sha256": "8802fecf9da4367bc23bcf20b21cc143785fc6c92b152f3fa7fbe6ce08d344d6"
+        }
+      ]
+    },
+
     "npm:@csstools/color-helpers@6.1.2": {
       "review_date": "2026-10-14",
       "declared_license": "MIT-0",

@@ -1,0 +1,248 @@
+{
+  "schema_version": "greenlens.v0.7-native-inspection-supplement.v1",
+  "recorded_date_utc": "2026-10-16",
+  "release_acceptance": "incomplete",
+  "candidate": {
+    "source": "8e54f2f4e2780242951e9a400c40869891392fc1",
+    "source_dirty": false,
+    "installed_utc": "2026-10-16T06:16:42.8129819+00:00",
+    "installer_exit": 0,
+    "installer_sha256": "4b9f9b9cfa1f0a336c53076575c5de085f697057336af03f033c5228a60a561c",
+    "extracted_payload_sha256": "881069722b105dbd7da61836e7c3c7c8fad449bb0baaf811b2d1574575e4aac0",
+    "installed_sha256": "881069722b105dbd7da61836e7c3c7c8fad449bb0baaf811b2d1574575e4aac0",
+    "cli_sha256": "c61dc11f2b335466870e836166945bc783928721af4feb5938a2e5379447523c",
+    "frontend_assets_manifest_sha256": "e6370e830393772e0486c218238aea2d02c8151079a16fb3f6c8f07799e8ea9e",
+    "signed": false,
+    "clean_machine": false
+  },
+  "opening": {
+    "collector_sha256": "126bda5b9d639ae6714fbbf6fc8198addc3a5b7571f4cc239cd87f9d820bcaf6",
+    "process_plan": [
+      "first-copy fresh process",
+      "warm fresh process",
+      "warm fresh process"
+    ],
+    "first_progress_limit_ms": 250,
+    "first_copy_wall_limit_ms": 30000,
+    "warm_wall_limit_ms": 20000,
+    "measurement_definition": "Unchanged collector arrival time for the first actual CLI progress event, not visible desktop rendering.",
+    "measurements": [
+      {
+        "ordinal": 1,
+        "first_progress_arrival_ms": 204.2173,
+        "wall_ms": 10973.5837,
+        "receipt_verification_ms": 10129,
+        "sampled_peak_working_set_bytes": 57651200,
+        "observed_os_peak_working_set_bytes": 58318848,
+        "exit_code": 0,
+        "completed": true,
+        "timing_targets_pass": true,
+        "verified_files": 687,
+        "bytes_read": 856592939,
+        "runs_verified": 8,
+        "numeric_passes": {
+          "0a8f9f8d-7415-4011-8957-8bc85c708d8d": 1,
+          "393bbca1-29a2-4a96-bcd4-6d3f5f359500": 1,
+          "3bbdc86e-d78c-4fbc-b0a7-f7952d341e4a": 1,
+          "5fb6b5ed-5b1e-4305-894c-f700292cf874": 1,
+          "8733596c-4bb5-43ad-9945-6b17603fe5ea": 1,
+          "910f87da-3ba4-4edc-808a-0af2d5354a3e": 1,
+          "d7032960-4a14-4158-a276-af515bdf534a": 1,
+          "f523dbb1-b134-4a1e-88db-f7d24a732f8c": 1
+        },
+        "manifest_sha256": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+        "content_snapshot_sha256": "126c002545088318c888de99324795270bcb61fea39aa17557c3250adc124531"
+      },
+      {
+        "ordinal": 2,
+        "first_progress_arrival_ms": 80.6488,
+        "wall_ms": 9889.199,
+        "receipt_verification_ms": 9257,
+        "sampled_peak_working_set_bytes": 57696256,
+        "observed_os_peak_working_set_bytes": 58322944,
+        "exit_code": 0,
+        "completed": true,
+        "timing_targets_pass": true,
+        "verified_files": 687,
+        "bytes_read": 856592939,
+        "runs_verified": 8,
+        "numeric_passes": {
+          "0a8f9f8d-7415-4011-8957-8bc85c708d8d": 1,
+          "393bbca1-29a2-4a96-bcd4-6d3f5f359500": 1,
+          "3bbdc86e-d78c-4fbc-b0a7-f7952d341e4a": 1,
+          "5fb6b5ed-5b1e-4305-894c-f700292cf874": 1,
+          "8733596c-4bb5-43ad-9945-6b17603fe5ea": 1,
+          "910f87da-3ba4-4edc-808a-0af2d5354a3e": 1,
+          "d7032960-4a14-4158-a276-af515bdf534a": 1,
+          "f523dbb1-b134-4a1e-88db-f7d24a732f8c": 1
+        },
+        "manifest_sha256": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+        "content_snapshot_sha256": "126c002545088318c888de99324795270bcb61fea39aa17557c3250adc124531"
+      },
+      {
+        "ordinal": 3,
+        "first_progress_arrival_ms": 74.2935,
+        "wall_ms": 10867.3144,
+        "receipt_verification_ms": 10214,
+        "sampled_peak_working_set_bytes": 57876480,
+        "observed_os_peak_working_set_bytes": 58732544,
+        "exit_code": 0,
+        "completed": true,
+        "timing_targets_pass": true,
+        "verified_files": 687,
+        "bytes_read": 856592939,
+        "runs_verified": 8,
+        "numeric_passes": {
+          "0a8f9f8d-7415-4011-8957-8bc85c708d8d": 1,
+          "393bbca1-29a2-4a96-bcd4-6d3f5f359500": 1,
+          "3bbdc86e-d78c-4fbc-b0a7-f7952d341e4a": 1,
+          "5fb6b5ed-5b1e-4305-894c-f700292cf874": 1,
+          "8733596c-4bb5-43ad-9945-6b17603fe5ea": 1,
+          "910f87da-3ba4-4edc-808a-0af2d5354a3e": 1,
+          "d7032960-4a14-4158-a276-af515bdf534a": 1,
+          "f523dbb1-b134-4a1e-88db-f7d24a732f8c": 1
+        },
+        "manifest_sha256": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+        "content_snapshot_sha256": "126c002545088318c888de99324795270bcb61fea39aa17557c3250adc124531"
+      }
+    ],
+    "timing_targets_pass": true,
+    "complete_opening_acceptance": false,
+    "engine_invocations": 0,
+    "limitations": [
+      "No OS cache eviction; copying and hashing touched the bytes before the first measured process.",
+      "Process working set does not measure metadata allocation.",
+      "Cooperative cancellation was not exercised by this collector; installed cancellation remained unobserved."
+    ],
+    "environment": {
+      "os": "Microsoft Windows NT 10.0.26200.0",
+      "powershell": "7.6.5",
+      "logical_processors": 20
+    }
+  },
+  "native": {
+    "recorded_utc": "2026-10-16T06:20:25.5589723+00:00",
+    "engine_invocations": 0,
+    "app_closed": true,
+    "inventoried_members": 688,
+    "changed_members": [],
+    "opening": "Observed native chooser and unsaved startup guard, previous document retained during actual six-of-eight-run and byte progress, then completed acceptance.",
+    "cancellation": {
+      "status": "not observed",
+      "click_sent_utc": "2026-10-16T06:18:32.551Z",
+      "post_action_utc": "2026-10-16T06:18:32.837Z",
+      "detail": "Post-action state was already completed. No cancellation pass or acknowledgement latency is claimed."
+    },
+    "historical_R1": {
+      "status": "failed",
+      "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+      "error": "Report issue response does not bind the selected immutable issue inventory.",
+      "diagnosis": "Backend numeric transport repair permits retained issue verification; frontend JSON.stringify comparison rejects reordered keys in nested run-binding objects."
+    },
+    "dependent_checks": "Save As, export and regeneration paused before observation. The key-order-independent strict structural frontend repair is working source and unverified in an installed candidate.",
+    "engine_cancellation_allowance": "No native engine-cancellation attempt started. Inherited three-attempt allowance remains exhausted; separately declared two-attempt engineering protocol remains unstarted."
+  },
+  "ci": {
+    "observed_date_utc": "2026-10-16",
+    "runs": [
+      {
+        "id": 38859293388,
+        "source": "8e54f2f4e2780242951e9a400c40869891392fc1",
+        "status": "in_progress",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38859293388"
+      },
+      {
+        "id": 38854768536,
+        "source": "d4fe09d6a9ebc1d0b21ade2d90165fae10549b05",
+        "status": "in_progress",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38854768536"
+      },
+      {
+        "id": 38850450244,
+        "source": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+        "status": "completed",
+        "conclusion": "failure",
+        "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38850450244"
+      }
+    ],
+    "final_source_success_claim": false
+  },
+  "raw_evidence_sha256": {
+    "build-complete.json": "be30d7f34cb6082f49ecee95ee436069d5bb95f4dd0b37cb081cb739386d84e5",
+    "installed-candidate.json": "0249880141bb5ac14de7bf6c836390e0ada1fb6af1e4e19bb80b0690eab36de9",
+    "observation-01.json": "9a5f2f22bc0611a6adca78c4d99e9f536dd5d45c8fc4f0ce3eededf43136405b",
+    "declaration.json": "44f2fc24f548ed9468f7f68e7e7039c0ab93edd387b5acb872c39ec6ff3a1b48",
+    "summary.json": "70dfa440ee934c6f25cde8e0531a7954a6ba147bd4d8b99f3d638dfc81b319ba",
+    "open-01.measurement.json": "d8b955742b9406c08bf22aa316de8a699db0fdda32070f0eeddeac0b3d2270ef",
+    "open-02.measurement.json": "e22534ff5cf391765856e189860927de279fa571e1eee197fad17bc3c78b6e1c",
+    "open-03.measurement.json": "93ea5b1f9a84e7cfc5a1c75836713b69f71e753cdd23e9a53a67d04eab3ac9b7",
+    "r1-inspection.json": "3a3c0fcf005deaacd6f2462636852f9d385ebfce37ae5e083a7e18cccba13f14",
+    "r2-inspection.json": "f2e187d0994f5e77386315171c358b7d205e5432f40f70202b6156b0ac7ac1a7"
+  },
+  "limitations": [
+    "Original synthetic retained evidence only; private geometry remains undecoded and blocked.",
+    "No engine, physical validation, complete native workflow, physical modifier or clean-machine success is established.",
+    "Historical failed timing and both installed inspection failures remain retained; no scientific thresholds or immutable report identities changed."
+  ],
+  "frontend_repair": {
+    "base_source": "8e54f2f4e2780242951e9a400c40869891392fc1",
+    "status": "working source; installed acceptance pending",
+    "rust_source_changed": false,
+    "source_files": [
+      {
+        "path": "apps/desktop/src/energy/report-issue-response.mjs",
+        "sha256": "d989005c63c05e6f1bf8e997a3270ac370150cf9cbaee0069d1ffaa4e60f7a88"
+      },
+      {
+        "path": "apps/desktop/tests/report-issue-response.test.mjs",
+        "sha256": "c451664c0c7274a7f9bee923f55f4645ceb142b156ced98fcd9469d64ca3d033"
+      }
+    ],
+    "full_frontend_tests": {
+      "passed": 367,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 56243.6527
+    },
+    "typescript": "passed",
+    "production_build_ms": 538,
+    "focused_tests_passed": 8,
+    "retained_R1_R2_bridge_checks": "Both genuine saved CLI inspection responses pass the repaired strict guard after the Tauri query bridge object-key order is reproduced; array order and scalar values remain unchanged. This is supplementary to installed acceptance.",
+    "production_assets": [
+      {
+        "path": "assets/index-BfJDlCOz.js",
+        "bytes": 1265260,
+        "sha256": "8e8846c02571a36ee7541019bb9f15e82b41b6201605f48ad107a113ada36d3e"
+      },
+      {
+        "path": "assets/index-FvACTnIK.css",
+        "bytes": 46866,
+        "sha256": "d89738ea55bc0e8268d2e848bd03da9fa77130c442f9dc2226673c08bc742099"
+      },
+      {
+        "path": "assets/SceneView-CRQpAJph.css",
+        "bytes": 3278,
+        "sha256": "660d0cd86ecb5ef1412ee12f05567894c578cdeb9fefcc1bb1eddfa9db947415"
+      },
+      {
+        "path": "assets/SceneView-DmuW8xCZ.js",
+        "bytes": 30339,
+        "sha256": "61651041efa20cf1c9405b71fa85c02785c7b6c14938dffd5b532375a72f78da"
+      },
+      {
+        "path": "index.html",
+        "bytes": 444,
+        "sha256": "1207732c0f8e0a04b02b918b92055cf42cd4fea9bfafd70406d5430267fb6599"
+      }
+    ],
+    "log_sha256": {
+      "full-frontend-tests.txt": "e59a1ee092f3d5b7caba68dad760366c4863b7f6a5189139ddf8f5cea69aa104",
+      "full-typecheck.txt": "0f64988f78a966e2262e11cac9fdaef2f4fe38ec6b0d48e85895c2be752d21b1",
+      "production-build.txt": "4d4f714896a23e59603ed6c5d7e443b523fea76cefb52abe96e477d4e78b531a",
+      "focused-tests.log": "463e068a4462f5a9233343ec14e0eea50047195ae2f07e372aad53b7e885e968",
+      "r1-after.json": "d0cb1af970b3af16f317f1fe4e30f372606b0d41d1e33156c7a4984eb9bed673",
+      "r2-after.json": "fd863b10c6be9a46547e723275f083a646a83351a5d7720e8eda08ed44e99128",
+      "assets-manifest.json": "12d9ae0faa57ab38c2899134930deaeb02ca79aa7f9f32450b3c2e2749c74504"
+    }
+  }
+}

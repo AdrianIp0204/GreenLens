@@ -11,6 +11,38 @@ function fixture(){
 test('issue response binds an independent issue ID and content hash without altering historical bytes',()=>{
   const {request,issue}=fixture(),before=JSON.stringify(issue),project=JSON.stringify(request.project);assert.notEqual(issue.summary.id,issue.summary.content_sha256);assert.ok(validIssueSummary(issue.summary));assert.equal(assertEnergyResponse('report_issue_inspect',request,issue),issue);assert.equal(JSON.stringify(issue),before);assert.equal(JSON.stringify(request.project),project);
 });
+test('typed retained summaries accept sorted IPC map keys without changing historical data',()=>{
+  const {request,issue}=fixture();
+  // EnergyEvidenceQuery returns serde_json::Value, whose object maps sort keys;
+  // the retained Project instead serializes IssueRunBinding in field order.
+  const sorted=value=>Array.isArray(value)?value.map(sorted):value&&typeof value==='object'?Object.fromEntries(Object.keys(value).sort().map(key=>[key,sorted(value[key])])):value;
+  const response=sorted(issue),before=JSON.stringify(response),project=JSON.stringify(request.project);
+  assert.notDeepEqual(Object.keys(request.project.report_issues.issues[0].baseline),Object.keys(response.summary.baseline));
+  assert.equal(assertEnergyResponse('report_issue_inspect',request,response),response);
+  assert.equal(JSON.stringify(response),before);assert.equal(JSON.stringify(request.project),project);
+});
+test('summary structure rejects changed dropped or extra fields and reordered arrays',()=>{
+  for(const edit of [
+    s=>s.baseline.run_id='other-a',s=>delete s.baseline.record_sha256,s=>s.baseline.extra='unexpected',
+    s=>delete s.title,s=>s.extra='unexpected',s=>s.include_pdf='true',
+    s=>s.baseline={...s.baseline,design_id:['A']},s=>s.sensitivity_run_ids.reverse(),
+    s=>s.sensitivity_run_ids[0]=null,s=>s.sensitivity_run_ids={0:'sensitivity-a',1:'sensitivity-b'},
+  ]){
+    const {request,issue}=fixture();issue.summary.sensitivity_run_ids=['sensitivity-a','sensitivity-b'];request.project.report_issues.issues[0].sensitivity_run_ids=[...issue.summary.sensitivity_run_ids];
+    edit(issue.summary);assert.throws(()=>assertEnergyResponse('report_issue_inspect',request,issue),/selected immutable issue inventory/);
+  }
+});
+test('summary structural comparison is bounded even when both sides contain oversized unknown data',()=>{
+  for(const extra of [
+    'x'.repeat(32769),{one:{two:{three:{four:{five:'too deep'}}}}},
+    Object.fromEntries(Array.from({length:33},(_,i)=>[`field-${i}`,i])),
+    Array.from({length:17},(_,i)=>i),
+    Array.from({length:16},()=>Array.from({length:16},()=>true)),
+  ]){
+    const {request,issue}=fixture();issue.summary.extra=extra;request.project.report_issues.issues[0].extra=structuredClone(extra);
+    assert.throws(()=>assertEnergyResponse('report_issue_inspect',request,issue),/selected immutable issue inventory/);
+  }
+});
 test('another issue scope run seal or sensitivity cannot be represented as the selected history',()=>{
   for(const edit of [v=>v.summary.id='9'.repeat(64),v=>v.summary.products_sha256='9'.repeat(64),v=>v.content.scope_revision.revision_sha256='9'.repeat(64),v=>v.content.workbench.base.proposed.record_sha256='9'.repeat(64),v=>v.content.workbench.base.baseline.run_id='other-a',v=>v.content.sensitivity={session_id:'assessment-for-another-pair'},v=>v.content.workbench.base.baseline.assessment.scientific.status='certified']){
     const {request,issue}=fixture();edit(issue);assert.throws(()=>assertEnergyResponse('report_issue_inspect',request,issue),/Report issue/);

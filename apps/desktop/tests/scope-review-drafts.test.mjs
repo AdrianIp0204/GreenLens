@@ -83,3 +83,18 @@ test('v3 candidate provenance is bounded, versioned, and cannot silently enter o
   const store=new ScopeReviewDraftStore();store.set(d);const snapshot=JSON.stringify(d.plan);
   d.candidate.value.title='Unreviewed candidate title';store.set(d);assert.equal(JSON.stringify(d.plan),snapshot);assert.throws(()=>reviewDecisions(d),/not been reviewed in Rust/);
 });
+
+test('v3 null applied inputs use the exact Rust missing union without inventing completeness',()=>{
+  const d=draft();d.schema_version='greenlens.scope-review-draft.v3';d.plan.schema_version='greenlens.scope-carry-forward.v3';d.plan.proposed_scope.schema_version='greenlens.architectural-scope.v3';d.plan.candidate_scope=structuredClone(d.plan.proposed_scope);d.candidate={value:structuredClone(d.plan.candidate_scope),numbers:{}};
+  const row={id:h,design_id:'A',object:{kind:'study',id:'study'},field_path:'',applied_value:null,units:null,declared_source:null,status:'unreviewed',source_declarations:[]};
+  d.plan.candidate_provenance={schema_version:'greenlens.input-provenance-checklist.v3',rows:[row],unreviewed_count:1,missing_count:1,conflicting_count:0,documentation_complete:false,disclosure:'Synthetic null-study response shape; Rust owns scientific validation.'};
+  d.decisions.field={row_id:'field',resolution:'unresolved',rationale:'No study is assigned; keep that absence explicit.'};
+  const store=new ScopeReviewDraftStore();store.set(d);assert.equal(store.get('one','A').plan.candidate_provenance.rows[0].applied_value,null);assert.equal(reviewDecisions(d)[0].resolution,'unresolved');
+  for(const status of ['unreviewed','documented','assumed','not_applicable','missing','conflicting']){
+    const value=structuredClone(d),p=value.plan.candidate_provenance;p.rows[0].status=status;p.unreviewed_count=Number(status==='unreviewed');p.conflicting_count=Number(status==='conflicting');
+    assert.equal(validScopeReviewDraft(value),true,`null + ${status} is one missing row, independently of source status`);
+    for(const wrong of [0,2]){const corrupt=structuredClone(value);corrupt.plan.candidate_provenance.missing_count=wrong;assert.equal(validScopeReviewDraft(corrupt),false,`${status} missing count ${wrong} must be rejected`);}
+    value.plan.candidate_provenance.documentation_complete=true;assert.equal(validScopeReviewDraft(value),false,'a source declaration cannot make an absent applied input complete');
+  }
+  for(const applied of [false,0,'',[]]){const value=structuredClone(d),p=value.plan.candidate_provenance;p.rows[0].applied_value=applied;p.missing_count=0;assert.equal(validScopeReviewDraft(value),true,'only null is absent; valid falsy values are not silently counted as missing');}
+});

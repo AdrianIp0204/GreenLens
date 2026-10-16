@@ -45,7 +45,10 @@ export function validScopeCarryForwardPlan(value:unknown):value is ScopeCarryFor
     if(!p.rows.every(row=>record(row)&&hash(row.id)&&!ids.has(row.id)&&Boolean(ids.add(row.id))&&text(row.design_id)&&record(row.object)&&text(row.object.kind)&&text(row.object.id)&&text(row.field_path)&&Object.hasOwn(row,'applied_value')&&(row.units===null||text(row.units))&&['unreviewed','documented','measured','assumed','synthetic','missing','not_applicable','conflicting'].includes(String(row.status))&&Array.isArray(row.source_declarations)&&row.source_declarations.length<=2048&&row.source_declarations.every(a=>record(a)&&['id','field','units','source','rationale','affected_scope'].every(k=>text(a[k]))&&['documented','measured','assumed','synthetic','missing','not_applicable'].includes(String(a.status))&&(a.value===null||text(a.value))&&record(a.link))))return false;
     const provenanceRows=p.rows;
     const count=(status:string)=>provenanceRows.filter(row=>record(row)&&row.status===status).length;
-    if(p.unreviewed_count!==count('unreviewed')||p.missing_count!==count('missing')||p.conflicting_count!==count('conflicting')||p.documentation_complete!==(p.unreviewed_count===0&&p.missing_count===0&&p.conflicting_count===0))return false;
+    // Match the authoritative checklist union: an absent applied input remains
+    // missing even if its source status is unreviewed or explicitly declared.
+    const missing=provenanceRows.filter(row=>record(row)&&(row.status==='missing'||row.applied_value===null)).length;
+    if(p.unreviewed_count!==count('unreviewed')||p.missing_count!==missing||p.conflicting_count!==count('conflicting')||p.documentation_complete!==(p.unreviewed_count===0&&p.missing_count===0&&p.conflicting_count===0))return false;
   }else if(value.candidate_provenance!=null)return false;
   const seen=new Set<string>();
   if(!value.rows.every(row=>record(row)&&text(row.id)&&Boolean(row.id)&&!seen.has(row.id)&&Boolean(seen.add(row.id))&&text(row.key)&&['scope','reference','mapping','assumption','reconciliation','report_view','input'].includes(String(row.kind))&&['unchanged','changed','deleted','added','unresolved'].includes(String(row.change))&&typeof row.requires_review==='boolean'&&text(row.reason)&&Object.hasOwn(row,'before')&&Object.hasOwn(row,'after')))return false;

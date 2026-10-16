@@ -96,7 +96,8 @@ function carryPlan(project,parent,candidate){
       if(holiday.some(a=>a.status!=='missing'&&a.value!==String(none)))throw Error('No-holidays declaration contradicts retained calendar; draft retained');
       const status=items=>!items.length?'unreviewed':items.some(a=>a.status!==items[0].status||a.value!==items[0].value)?'conflicting':items[0].status;
       const checklistRows=[{id:referenceHash('9'),design_id:'B',object:{kind:'cooling_system',id:'fixture-system'},field_path:'/gross_rated_cop',applied_value:3.8,units:'W/W',declared_source:null,status:status(cop),source_declarations:structuredClone(cop)},{id:referenceHash('0'),design_id:'A',object:{kind:'calendar',id:'calendar'},field_path:'/holidays/none',applied_value:none,units:'boolean',declared_source:null,status:status(holiday),source_declarations:structuredClone(holiday)}];
-      candidate_provenance={schema_version:'greenlens.input-provenance-checklist.v3',rows:checklistRows,unreviewed_count:checklistRows.filter(r=>r.status==='unreviewed').length,missing_count:checklistRows.filter(r=>r.status==='missing').length,conflicting_count:checklistRows.filter(r=>r.status==='conflicting').length,documentation_complete:checklistRows.every(r=>!['unreviewed','missing','conflicting'].includes(r.status)),disclosure:'Synthetic IPC fixture; no physics claim'};
+      if(project.energy.designs.B.study===null){const missingStudy={id:referenceHash('1'),design_id:'B',object:{kind:'study',id:'study'},field_path:'',applied_value:null,units:null,declared_source:null,status:'unreviewed',source_declarations:[]};checklistRows.push(missingStudy);rows.push({id:'unassigned-study',kind:'input',key:missingStudy.id,change:'unresolved',requires_review:true,before:{assigned:true},after:structuredClone(missingStudy),reason:'Unassigned study remains missing independently of source status'});}
+      candidate_provenance={schema_version:'greenlens.input-provenance-checklist.v3',rows:checklistRows,unreviewed_count:checklistRows.filter(r=>r.status==='unreviewed').length,missing_count:checklistRows.filter(r=>r.status==='missing'||r.applied_value===null).length,conflicting_count:checklistRows.filter(r=>r.status==='conflicting').length,documentation_complete:checklistRows.every(r=>!['unreviewed','missing','conflicting'].includes(r.status)&&r.applied_value!==null),disclosure:'Synthetic IPC fixture; no physics claim'};
       rows[1].after=structuredClone(checklistRows[0]);
       rows.push({id:'calendar-input',kind:'input',key:'calendar no-holidays policy',change:'changed',requires_review:true,before:null,after:structuredClone(checklistRows[1]),reason:'Review exact candidate calendar declaration'});
     }
@@ -935,4 +936,16 @@ test('v3 explicit no-holidays form rejects contradicted calendar and accepts exa
   await click('Accept reviewed scope revision');assert.equal(doc.history.past.length,past+1);assert.equal(count('reference_revision_accept'),1);
   assert.deepEqual(doc.project.architecture.scope_history.revisions.slice(0,2),accepted.architecture.scope_history.revisions);
   assert.deepEqual(doc.project.energy.designs,accepted.energy.designs);assert.equal(doc.project.architecture.scope.schema_version,'greenlens.architectural-scope.v3');assert.equal(count('energy_start'),0);
+});
+
+test('v3 actual workspace admits a null unassigned study and keeps its missing provenance visible after candidate review',async()=>{
+  await scopeReviewSetup();const candidate=structuredClone(doc.project.energy.designs.B);candidate.study=null;
+  await act(()=>doc.commitEnergyTransaction({B:{candidate}},'explicit-test-preview','Unassign proposed study'));
+  assert.equal(doc.project.energy.designs.B.study,null);const accepted=structuredClone(doc.project),past=doc.history.past.length;
+  revisionPlanMode='v3';await click('Review changes and carry forward');
+  const preview=()=>document.querySelector('[aria-label="Reviewed candidate input provenance"]');assert.ok(preview());assert.match(preview().textContent,/missing 2/);assert.match(preview().textContent,/B: study study/);
+  const absent=doc.scopeReviewDrafts.draft.plan.candidate_provenance.rows.find(row=>row.object.kind==='study');assert.equal(absent.applied_value,null);assert.equal(absent.status,'unreviewed');
+  await type(candidateInput('Input status'),'assumed');await type(candidateInput('Declared value'),'3.8');await type(candidateInput('Source / citation'),'Explicit synthetic COP source');await click('Review edited candidate in Rust');
+  assert.match(preview().textContent,/missing 1/);assert.match(preview().textContent,/Documentation is incomplete/);assert.equal(doc.scopeReviewDrafts.draft.plan.candidate_provenance.documentation_complete,false);
+  assert.equal(button('Accept reviewed scope revision').disabled,true,'missing review decisions still require explicit resolution');assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);assert.equal(count('reference_revision_accept'),0);assert.equal(count('energy_start'),0);
 });

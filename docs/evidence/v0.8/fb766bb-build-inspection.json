@@ -1,0 +1,42 @@
+{
+  "schema_version": "greenlens.delivery-checkpoint.v1",
+  "source_commit": "fb766bb24e63aa6cd61cc6a01792d9045faad731",
+  "source_dirty": false,
+  "status": "superseded_before_native_observation_by_null_input_admission_repair",
+  "installed": false,
+  "native_observed": false,
+  "frontend": {"passed": 427, "failed": 0, "skipped": 0, "duration_ms": 190087.5426},
+  "typescript": "passed",
+  "frontend_production_build": "passed",
+  "licenses": {"packages": 415, "notices": 231, "gaps": 0},
+  "artifacts": [
+    {"name": "GreenLens_0.8.0_x64-setup.exe", "bytes": 7365105, "sha256": "7562f3b7481c91704fbb1552df589a12f0c4964841efd46c50bfe46b2305161f", "signed": false},
+    {"name": "greenlens.exe", "bytes": 16832000, "sha256": "f68c481edb21b53c683a823be229e71ca3b7ad0fa37882177e78a9cc6a7f72c2"},
+    {"name": "greenlens-desktop.raw.exe", "bytes": 31178752, "sha256": "441ec41f38b320bb8f5391d7bff286d4d7b69071c0bd1efe539fa4bcfef249a1"},
+    {"name": "GreenLens-CLI-0.8.0-windows-x64.zip", "bytes": 12777139, "sha256": "72f7f4c4ba6877d154470c8add34c39f8b34429e637591a36f63ff7fa86607be"}
+  ],
+  "retained_issue_inspection": {
+    "exit_code": 0,
+    "wall_ms": 37055,
+    "renderer": "renderer/2 historical products only",
+    "products": 49,
+    "verified_runs": 7,
+    "numeric_passes_per_run": 1,
+    "original_members_unchanged": 576,
+    "original_bytes_unchanged": 224928962,
+    "extra_member": "existing empty lock only",
+    "renderer_requested": false,
+    "engine_requested": false,
+    "passive_audit_sha256": "9e735ea1bebcd7fc009ce072d6f99c08f4f90f32c821358543cddc357f4946cf",
+    "inspection_sha256": "ac99a05aa55c6836e5d8859492dd43674ec30e59d427ec35632d1482397fef74"
+  },
+  "ci": {
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38931663435",
+    "conclusion": "cancelled",
+    "passed_steps": ["frontend", "pinned prerequisites", "format, strict lint and unit/lifecycle suite"],
+    "cancelled_during": "build and package",
+    "dependent_engine_work_executed": false,
+    "reason": "Final review found a desktop-only null-input admission mismatch; required next-source checks remain enabled."
+  },
+  "limitations": ["No renderer/3 issue or new cold regeneration", "No native memory-headroom or workflow acceptance", "Previous stopped native and scientific protocols remain stopped"]
+}

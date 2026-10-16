@@ -1,0 +1,123 @@
+{
+  "schema_version": "greenlens.v0.7-native-ci-supplement.v1",
+  "recorded_date_utc": "2026-10-16",
+  "release_acceptance": "incomplete",
+  "scope": "Sanitized source-bound installed observation and separate hosted-test failure diagnosis. Original synthetic evidence only; no private architectural model or identifying metadata.",
+  "installed_candidate": {
+    "source_commit": "d4fe09d6a9ebc1d0b21ade2d90165fae10549b05",
+    "source_dirty": false,
+    "version": "0.7.0",
+    "installed_utc": "2026-10-16T05:36:43.7631115Z",
+    "installer_sha256": "fb6235063c58144d7328dfcd4babdb8e288128229f5e2de4fef7aac12ecc50b6",
+    "installer_exit": 0,
+    "extracted_payload_sha256": "300eced2e096f1c894fe906e2aaa292d6947e1dbb85d3ee29e77a070c18ecc31",
+    "installed_executable_sha256": "300eced2e096f1c894fe906e2aaa292d6947e1dbb85d3ee29e77a070c18ecc31",
+    "cli_sha256": "85f8a9766628ad8617a034f72d65e25d77dc8db1e784acf3f674bc15eae926a6",
+    "frontend_assets_manifest_sha256": "e6370e830393772e0486c218238aea2d02c8151079a16fb3f6c8f07799e8ea9e",
+    "signed": false,
+    "clean_machine": false
+  },
+  "native_observation": {
+    "observed_utc": "2026-10-16T05:42:49.3328710Z",
+    "embedded_production_assets": true,
+    "engine_invocations": 0,
+    "open": {
+      "status": "observed",
+      "details": "Native folder chooser and Save/Discard/Cancel guard were displayed. The previous synthetic document remained visible during admission and actual evidence progress, including five of eight runs and byte counts. The copied project opened successfully.",
+      "precise_first_frame_timing": "not measured"
+    },
+    "inspection_cancellation": {
+      "status": "not observed",
+      "details": "The attempted Cancel opening input failed because its indexed automation element was no longer available. The next observed state was completed opening. This does not establish cancellation or prior-document restoration."
+    },
+    "historical_report_inspection": {
+      "status": "failed",
+      "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+      "error": "Issued scope snapshot differs from retained history",
+      "details": "Selecting R1 in the installed Reports panel failed despite passing CLI inspection of the retained evidence. Dependent installed issuance, regeneration and Save As checks were stopped pending repair."
+    },
+    "post_observation_integrity": {
+      "checked_utc": "2026-10-16T05:46:53.1944540Z",
+      "inventoried_members": 688,
+      "portable_evidence_members": 687,
+      "operational_lock_files": 1,
+      "changed_members": [],
+      "immutable_evidence_unchanged": true,
+      "application_state": "closed after failed report inspection"
+    },
+    "repair_status": "Narrow numeric transport repair is in progress. Derived provenance must recover exact typed-number representation after JavaScript transport without changing canonical hashing, serialized historical records or immutable equality. No repaired installed success is claimed.",
+    "remaining_observations": [
+      "Repaired installed R1/R2 inspection, Save As, export and regeneration",
+      "Cooperative evidence cancellation and separately declared native process-tree cancellation",
+      "Physical simultaneous Shift-add/Ctrl-remove selection",
+      "Exact required client dimensions and DPI",
+      "Clean Windows installation"
+    ]
+  },
+  "hosted_ci": {
+    "source_commit": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+    "run_id": 38850450244,
+    "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38850450244",
+    "energy_job_id": 116826452788,
+    "energy_job_status": "completed",
+    "energy_job_conclusion": "failure",
+    "energy_job_completed_utc": "2026-10-16T05:44:08Z",
+    "failures": [
+      {
+        "test": "native_energy_conflict_copy_cancel_and_staleness",
+        "source_path": "crates/greenlens-runner/tests/energy_lifecycle.rs",
+        "source_line": 61,
+        "message": "Verified open receipt",
+        "test_seconds": 53.9
+      },
+      {
+        "test": "energy_verified_cache::tests::retained_report_and_sensitivity_panel_requests_do_not_repeat_numeric_traversal",
+        "source_path": "crates/greenlens-runner/src/energy_verified_cache.rs",
+        "source_line": 641,
+        "message": "called Option::unwrap() on a None value",
+        "test_seconds": 26.16
+      }
+    ],
+    "diagnosis": "Both required tests expected a read-only opening receipt from a newly published Save As candidate. That candidate intentionally lacks a receipt tied to its pre-publication manifest. The narrow correction asserts absence, explicitly opens the published copy and checks its exact manifest and numerical-pass counts. Existing Save As counters, conflict, integrity, cancellation and scientific criteria are retained.",
+    "passed_energy_checks": [
+      "Native report rendering",
+      "Four complete annual executions",
+      "Independent arithmetic and frozen scientific criteria",
+      "Cold reports, export and replay",
+      "Reference-intake/cold-copy test before the failing cache assertion"
+    ],
+    "passing_workflow_claim": false,
+    "status_scope": "Completed energy-job failure is confirmed. The older run-wide snapshot is not used to assert a final static-compatibility or overall workflow outcome. Later application source requires separate CI."
+  },
+  "working_source_test_repair": {
+    "base_commit": "d4fe09d6a9ebc1d0b21ade2d90165fae10549b05",
+    "source_status": "working changes; not a clean-source CI or installed-candidate result",
+    "native_lifecycle": {
+      "test": "native_energy_conflict_copy_cancel_and_staleness",
+      "result": "passed",
+      "passed": 1,
+      "failed": 0,
+      "ignored": 0,
+      "test_seconds": 71.52,
+      "log_sha256": "dac6069cd41066c8ce2101d8b1130acbfd26b1a531ad6853b571f0cd6090e7a5"
+    },
+    "optimized_retained_cache_recheck": "pending at this supplement",
+    "scientific_thresholds_changed": false,
+    "native_ui_acceptance": false
+  },
+  "raw_evidence_sha256": {
+    "installed-candidate.json": "076a26397bcf78e999f4d9f86b07f35c4dd3ab8db0b03f93ce6002e663dbd064",
+    "observation-01.json": "03a10f03bf88289ab8ac9c797ddf3d4f6b9483859431572d1b7d68875a2fe1aa",
+    "post-inspection-members.json": "4023960021051ab13560cdab9e4ea18a48ba5d8d17ab932d451f555da46e5417",
+    "protocol.json": "751fde1931fda5510c3a06a97cf509b232481e6431a9aab1d11f4f97fb7245cd",
+    "sanitized-diagnosis.json": "65051d1a08f6a9fc1b5231ae5db0fec00d47541c5923e2274885418bcbb5d7e6",
+    "energy-job-completed.log": "8ac03de00507f3769256efdb4dd98b8c435692ed13d3268785655a9d7e950d36",
+    "energy-job-completed.json": "9c79a54f1e94e2e094dfd609207f34e1906efd779d0cc7558a19d62581941616"
+  },
+  "limitations": [
+    "Local installation on an existing workstation does not establish clean-machine installation.",
+    "CLI integrity/replay and report review do not establish repaired installed interaction or physical validation.",
+    "The private architectural source remains undecoded and blocked; no unchanged conversion attempt occurred.",
+    "Stopped v0.3 and v0.5 qualification failures remain authoritative."
+  ]
+}

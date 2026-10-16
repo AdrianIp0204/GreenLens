@@ -55,7 +55,11 @@ fn native_energy_conflict_copy_cancel_and_staleness() {
         .unwrap();
     assert!(!app.status().unwrap().pending_evidence);
     assert_eq!(recovered.energy_results.len(), 1);
-    let opening = recovered
+    // Publication must not relabel a pre-publication verification receipt as an
+    // opening of the new manifest. Inspect the published copy explicitly.
+    assert!(recovered.project_verification.is_none());
+    let reopened = greenlens_runner::open_project(&copy).unwrap();
+    let opening = reopened
         .project_verification
         .as_ref()
         .expect("Verified open receipt");

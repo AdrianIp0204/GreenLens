@@ -146,7 +146,7 @@ pub struct CarryForwardPlan {
     pub plan_sha256: String,
 }
 
-#[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
+#[derive(Debug, Clone, Serialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct ScopeRevision {
     pub schema_version: String,
@@ -158,6 +158,101 @@ pub struct ScopeRevision {
     pub carry_forward_plan_sha256: Option<String>,
     pub review_decisions: Vec<ReviewDecision>,
     pub provenance: ProvenanceChecklist,
+}
+
+// JavaScript has one number type: a typed f64 such as 600.0 returns through
+// JSON.stringify as 600. Restore only that lossless representation change in
+// the derived checklist. The authoritative typed snapshots, serialization,
+// historical identity algorithm and subsequent validation remain unchanged.
+impl<'de> Deserialize<'de> for ScopeRevision {
+    fn deserialize<D: serde::Deserializer<'de>>(
+        deserializer: D,
+    ) -> std::result::Result<Self, D::Error> {
+        use serde::de::Error as _;
+        #[derive(Serialize, Deserialize)]
+        #[serde(deny_unknown_fields)]
+        struct WireRevision {
+            schema_version: String,
+            revision_sha256: String,
+            parent_revision_sha256: Option<String>,
+            reference: RevisionReferenceSnapshot,
+            designs: BTreeMap<String, RevisionDesignSnapshot>,
+            scope: ArchitecturalScope,
+            carry_forward_plan_sha256: Option<String>,
+            review_decisions: Vec<ReviewDecision>,
+            // These checklist/row/source types deny unknown fields and reject
+            // duplicate metadata keys, preserving the original reader behavior.
+            provenance: ProvenanceChecklist,
+        }
+        let mut wire = WireRevision::deserialize(deserializer)?;
+        bound(&wire, MAX_REVISION_BYTES, "revision").map_err(D::Error::custom)?;
+        if wire.schema_version != SCOPE_REVISION_SCHEMA {
+            return Err(D::Error::custom("Unsupported immutable scope revision"));
+        }
+        if wire.designs.is_empty()
+            || wire.designs.len() > 2
+            || wire
+                .designs
+                .keys()
+                .any(|id| !matches!(id.as_str(), "A" | "B"))
+        {
+            return Err(D::Error::custom("Retain one or both supported A/B designs"));
+        }
+        if wire.provenance.rows.len() > MAX_PROVENANCE_ROWS
+            || wire.review_decisions.len() > MAX_REVIEW_ROWS
+        {
+            return Err(D::Error::custom("Immutable revision exceeds its row limit"));
+        }
+        bound(
+            &wire.provenance,
+            MAX_CARRY_FORWARD_BYTES,
+            "revision.provenance",
+        )
+        .map_err(D::Error::custom)?;
+        let provenance =
+            provenance_checklist(&wire.designs, &wire.scope).map_err(D::Error::custom)?;
+        if wire.provenance.rows.len() == provenance.rows.len() {
+            for (received, expected) in wire.provenance.rows.iter_mut().zip(&provenance.rows) {
+                restore_provenance_number_representation(
+                    &mut received.applied_value,
+                    &expected.applied_value,
+                );
+            }
+        }
+        if wire.provenance != provenance {
+            return Err(D::Error::custom(
+                "Checklist does not match retained inputs and source declarations",
+            ));
+        }
+        Ok(Self {
+            schema_version: wire.schema_version,
+            revision_sha256: wire.revision_sha256,
+            parent_revision_sha256: wire.parent_revision_sha256,
+            reference: wire.reference,
+            designs: wire.designs,
+            scope: wire.scope,
+            carry_forward_plan_sha256: wire.carry_forward_plan_sha256,
+            review_decisions: wire.review_decisions,
+            provenance,
+        })
+    }
+}
+
+fn restore_provenance_number_representation(received: &mut Value, expected: &Value) {
+    let (Value::Number(actual), Value::Number(required)) = (&*received, expected) else {
+        return;
+    };
+    // No approximate numeric equality, floating-to-floating correction,
+    // wide-integer rounding or normalization of any other field is allowed.
+    const JS_MAX_SAFE_INTEGER: i64 = 9_007_199_254_740_991;
+    if required.is_f64()
+        && actual.as_i64().is_some_and(|n| {
+            (-JS_MAX_SAFE_INTEGER..=JS_MAX_SAFE_INTEGER).contains(&n)
+                && Some(n as f64) == required.as_f64()
+        })
+    {
+        *received = expected.clone();
+    }
 }
 
 fn bound(value: &impl Serialize, maximum: usize, field: &str) -> Result<()> {
@@ -1628,5 +1723,208 @@ mod tests {
         let roundtrip: ScopeRevision =
             serde_json::from_slice(&serde_json::to_vec(&accepted).unwrap()).unwrap();
         validate_revision(&roundtrip).unwrap();
+    }
+
+    // JSON.parse/stringify emits integral JavaScript numbers without a decimal
+    // suffix, including numbers originally serialized from typed f64 fields.
+    fn javascript_integral_numbers(value: &mut Value) -> usize {
+        match value {
+            Value::Array(items) => items.iter_mut().map(javascript_integral_numbers).sum(),
+            Value::Object(fields) => fields.values_mut().map(javascript_integral_numbers).sum(),
+            Value::Number(number) if number.is_f64() => {
+                let n = number.as_f64().unwrap();
+                if n.fract() == 0.0 && n.abs() <= 9_007_199_254_740_991.0 {
+                    *value = json!(n as i64);
+                    1
+                } else {
+                    0
+                }
+            }
+            _ => 0,
+        }
+    }
+
+    #[test]
+    fn javascript_scope_roundtrip_preserves_exact_revision_bytes_and_identity() {
+        let original = fixture();
+        let bytes = serde_json::to_vec(&original).unwrap();
+        let canonical = crate::canonical_json(&original).unwrap();
+        let mut wire = serde_json::to_value(&original).unwrap();
+        assert!(javascript_integral_numbers(&mut wire) > 1000);
+        assert_ne!(crate::canonical_json(&wire).unwrap(), canonical);
+        let restored: ScopeRevision =
+            serde_json::from_slice(&serde_json::to_vec(&wire).unwrap()).unwrap();
+        validate_revision(&restored).unwrap();
+        assert_eq!(restored, original);
+        assert_eq!(restored.identity().unwrap(), original.revision_sha256);
+        assert_eq!(serde_json::to_vec(&restored).unwrap(), bytes);
+        assert_eq!(crate::canonical_json(&restored).unwrap(), canonical);
+
+        // A second ordinary file deserialize has the same historical identity.
+        let from_disk: ScopeRevision = serde_json::from_slice(&bytes).unwrap();
+        assert_eq!(from_disk, restored);
+    }
+
+    #[test]
+    fn javascript_restoration_does_not_accept_changed_provenance() {
+        let original = fixture();
+        let mut wire = serde_json::to_value(&original).unwrap();
+        javascript_integral_numbers(&mut wire);
+        let numeric = original
+            .provenance
+            .rows
+            .iter()
+            .position(|row| row.applied_value.as_f64() == Some(20.0))
+            .unwrap();
+        let source = original
+            .provenance
+            .rows
+            .iter()
+            .position(|row| !row.source_declarations.is_empty())
+            .unwrap();
+        for case in 0..13 {
+            let mut altered = wire.clone();
+            match case {
+                0 => altered["provenance"]["rows"][numeric]["applied_value"] = json!(21),
+                1 => {
+                    altered["provenance"]["rows"][numeric]["applied_value"] = json!(20.000000000001)
+                }
+                2 => altered["provenance"]["documentation_complete"] = json!(true),
+                3 => altered["provenance"]["unreviewed_count"] = json!(0),
+                4 => altered["provenance"]["unexpected_field"] = json!("must not disappear"),
+                5 => altered["provenance"]["rows"][0]["unexpected_field"] = json!(true),
+                6 => altered["provenance"]["rows"][0]["id"] = json!("f".repeat(64)),
+                7 => altered["provenance"]["rows"][0]["status"] = json!("documented"),
+                8 => altered["provenance"]["rows"][0]["units"] = json!("wrong units"),
+                9 => {
+                    altered["provenance"]["rows"][source]["source_declarations"][0]["source"] =
+                        json!("changed source")
+                }
+                10 => altered["provenance"]["rows"]
+                    .as_array_mut()
+                    .unwrap()
+                    .swap(0, 1),
+                11 => {
+                    altered["provenance"]["rows"].as_array_mut().unwrap().pop();
+                }
+                12 => {
+                    altered["provenance"]
+                        .as_object_mut()
+                        .unwrap()
+                        .remove("disclosure");
+                }
+                _ => unreachable!(),
+            }
+            assert!(
+                serde_json::from_value::<ScopeRevision>(altered).is_err(),
+                "Changed provenance case {case} was accepted"
+            );
+        }
+        let mut changed_input = wire;
+        changed_input["designs"]["A"]["model"]["exterior_lighting_w"] = json!(21);
+        assert!(serde_json::from_value::<ScopeRevision>(changed_input).is_err());
+        assert_eq!(original.identity().unwrap(), original.revision_sha256);
+    }
+
+    #[test]
+    fn numeric_restoration_is_scalar_exact_and_safe_integer_bounded() {
+        for (required, received, allowed) in [
+            (json!(1.0), json!(1), true),
+            (json!(-1.0), json!(-1), true),
+            (json!(-0.0), json!(0), true),
+            (json!(0.0), json!(0), true),
+            (
+                json!(9_007_199_254_740_991.0),
+                json!(9_007_199_254_740_991_i64),
+                true,
+            ),
+            (
+                json!(-9_007_199_254_740_991.0),
+                json!(-9_007_199_254_740_991_i64),
+                true,
+            ),
+            (
+                json!(9_007_199_254_740_992.0),
+                json!(9_007_199_254_740_992_i64),
+                false,
+            ),
+            (
+                json!(9_007_199_254_740_992.0),
+                json!(9_007_199_254_740_993_i64),
+                false,
+            ),
+            (
+                json!(-9_007_199_254_740_992.0),
+                json!(-9_007_199_254_740_993_i64),
+                false,
+            ),
+            (json!(1.5), json!(1), false),
+            (json!(1.0), json!(1.0000000000000002), false),
+            (json!(1), json!(1.0), false),
+            (json!(1.0), json!("1"), false),
+            (json!(1.0), Value::Null, false),
+            (json!([1.0]), json!([1]), false),
+            (json!({"nested": 1.0}), json!({"nested": 1}), false),
+        ] {
+            let mut actual = received;
+            restore_provenance_number_representation(&mut actual, &required);
+            assert_eq!(
+                actual == required,
+                allowed,
+                "Expected {required}, received {actual}"
+            );
+        }
+        // Status/count metadata and source declarations are outside the only
+        // permitted restoration location, even when numbers happen to match.
+        let expected = json!({"rows": [{"applied_value": 1.0}], "count": 1.0});
+        let mut actual = json!({"rows": [{"applied_value": 1}], "count": 1});
+        restore_provenance_number_representation(&mut actual, &expected);
+        assert_ne!(actual, expected);
+        assert!(serde_json::from_str::<ScopeRevision>("{\"provenance\":NaN}").is_err());
+    }
+
+    #[test]
+    fn scope_wire_bounds_reject_before_derived_checklist_reconstruction() {
+        let mut wire = serde_json::to_value(fixture()).unwrap();
+        let row = serde_json::to_value(InputProvenanceRow {
+            id: String::new(),
+            design_id: String::new(),
+            object: ThermalObjectRef::model(),
+            field_path: String::new(),
+            applied_value: Value::Null,
+            units: None,
+            declared_source: None,
+            status: ProvenanceStatus::Unreviewed,
+            source_declarations: vec![],
+        })
+        .unwrap();
+        wire["provenance"]["rows"] = Value::Array(vec![row; MAX_PROVENANCE_ROWS + 1]);
+        let error = serde_json::from_value::<ScopeRevision>(wire.clone()).unwrap_err();
+        assert!(error.to_string().contains("row limit"));
+        wire["provenance"]["rows"] = json!([]);
+        wire["provenance"]["disclosure"] = json!("x".repeat(MAX_CARRY_FORWARD_BYTES + 1));
+        let error = serde_json::from_value::<ScopeRevision>(wire).unwrap_err();
+        assert!(error.to_string().contains("byte limit"));
+    }
+
+    #[test]
+    fn scope_wire_rejects_duplicate_provenance_metadata_keys() {
+        let wire = serde_json::to_string(&fixture()).unwrap();
+        let duplicate_summary = wire.replacen(
+            "\"documentation_complete\":false",
+            "\"documentation_complete\":true,\"documentation_complete\":false",
+            1,
+        );
+        assert_ne!(duplicate_summary, wire);
+        let error = serde_json::from_str::<ScopeRevision>(&duplicate_summary).unwrap_err();
+        assert!(error.to_string().contains("duplicate field"));
+        let duplicate_row = wire.replacen(
+            "\"status\":\"unreviewed\"",
+            "\"status\":\"documented\",\"status\":\"unreviewed\"",
+            1,
+        );
+        assert_ne!(duplicate_row, wire);
+        let error = serde_json::from_str::<ScopeRevision>(&duplicate_row).unwrap_err();
+        assert!(error.to_string().contains("duplicate field"));
     }
 }

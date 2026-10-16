@@ -16,6 +16,8 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.7/v0.7-verification-supplement-5654b9e.md',
         'docs/evidence/v0.7/v0.7-report-visual-coverage-5654b9e.json',
         'docs/evidence/v0.7/v0.7-report-visual-coverage-5654b9e.md',
+        'docs/evidence/v0.7/native-d4fe09d-and-ci-failure.json',
+        'docs/evidence/v0.7/numeric-transport-repair.json',
         'scripts/prepare-energy-history-fixture.ps1','scripts/verify-study-issues.ps1','scripts/test-study-issues-collector.ps1',
         'docs/v0.6-spec.md','docs/v0.6-implementation-plan.md','docs/v0.6-acceptance.md',
         'docs/v0.6-reference-contracts.md','docs/v0.6-intake-licenses.md','docs/v0.6-delivery.md',

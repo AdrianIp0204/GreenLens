@@ -1017,9 +1017,52 @@ mod tests {
             .tempdir_in(parent)
             .unwrap();
         let view = crate::open_project(&source).unwrap();
+        // The desktop sends the accepted Project back through JSON.stringify:
+        // integral f64 tokens become integer tokens. Exercise the same query
+        // decoder and exact history/export comparisons with that wire shape.
+        fn javascript_integer_tokens(value: &mut serde_json::Value) {
+            match value {
+                serde_json::Value::Number(number) if number.is_f64() => {
+                    let n = number.as_f64().unwrap();
+                    if n.fract() == 0.0 && n.abs() <= 9_007_199_254_740_991.0 {
+                        *number = serde_json::Number::from(n as i64);
+                    }
+                }
+                serde_json::Value::Array(rows) => {
+                    rows.iter_mut().for_each(javascript_integer_tokens)
+                }
+                serde_json::Value::Object(rows) => {
+                    rows.values_mut().for_each(javascript_integer_tokens)
+                }
+                _ => {}
+            }
+        }
+        let mut wire = serde_json::to_value(&view.project).unwrap();
+        javascript_integer_tokens(&mut wire);
+        let client: Project = serde_json::from_value(wire.clone()).unwrap();
+        assert_eq!(
+            canonical_hash(&client).unwrap(),
+            canonical_hash(&view.project).unwrap()
+        );
+        for issue in &client.report_issues.as_ref().unwrap().issues {
+            let query: crate::energy_inspection::EnergyEvidenceQuery = serde_json::from_value(
+                serde_json::json!({"command":"report_issue_inspect","arguments":{
+                    "path":source.to_str().unwrap(),"project":wire,"id":issue.id
+                }}),
+            )
+            .unwrap();
+            let inspected = query
+                .execute(Arc::new(AtomicBool::new(false)), |_| {})
+                .unwrap();
+            assert_eq!(inspected["summary"]["id"], issue.id);
+            assert_eq!(
+                inspected["summary"]["scope_revision_sha256"],
+                issue.scope_revision_sha256
+            );
+        }
         let cancel = Arc::new(AtomicBool::new(false));
         let package = temp.path().join("complete.zip");
-        export(&source, &view.project, &package, cancel.clone()).unwrap();
+        export(&source, &client, &package, cancel.clone()).unwrap();
         let copy = temp.path().join("portable");
         let reopened = extract(&package, &copy, cancel).unwrap();
         assert_eq!(

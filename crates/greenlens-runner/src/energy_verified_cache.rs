@@ -609,7 +609,7 @@ mod tests {
         assert_eq!(project_open::test_numeric_passes(), after_open + 2);
 
         // Actual Save As and Save use the same services as the installed app.
-        // A warm source copy requires only the final destination open's one
+        // A warm source copy requires only the final candidate verification's one
         // pass/run. A cold source requires one source pass plus that final
         // destination pass; copied sensitivity receipts add no numeric pass.
         assert_eq!(energy.runs.len(), 4, "Use the fixed four-run CI fixture");
@@ -638,7 +638,16 @@ mod tests {
             energy.runs.len(),
             "Warm Save As must not rederive copied runs during promotion or sensitivity inspection"
         );
-        let receipt = copied_view.project_verification.as_ref().unwrap();
+        assert!(copied_view.project_verification.is_none());
+        let before_reopen = project_open::test_numeric_passes();
+        let reopened = crate::open_project(&destination).unwrap();
+        assert_eq!(
+            project_open::test_numeric_passes() - before_reopen,
+            energy.runs.len(),
+            "An explicit published-copy open verifies every retained run once"
+        );
+        let receipt = reopened.project_verification.as_ref().unwrap();
+        assert_eq!(receipt.manifest_sha256, copied_view.revision);
         assert_eq!(receipt.progress.numeric_passes.len(), energy.runs.len());
         assert!(receipt
             .progress

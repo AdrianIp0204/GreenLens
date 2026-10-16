@@ -1,0 +1,90 @@
+{
+  "schema_version": "greenlens.numeric-transport-repair-check.v1",
+  "recorded_utc": "2026-10-16T06:04:41.366607Z",
+  "source_binding": {
+    "dirty": true,
+    "changed_rust_files": {
+      "crates/greenlens-core/src/study_revision.rs": "4ea42263f582e690502e8bd48470626319b94a31dac08c8ceac26ed7b2711362",
+      "crates/greenlens-runner/src/energy_verified_cache.rs": "9e699ae300521d9c7e7e50fd1e8a98bb5241617c203c4ad4ba24e2c72fb59adf",
+      "crates/greenlens-runner/src/report_issue_export.rs": "adb866208739560cba7f09557693b0d1c20eca5fc0311bab1fc5fc1b98dab489",
+      "crates/greenlens-runner/tests/energy_lifecycle.rs": "a672323e46e01c5b06d613b2e332a7a1a740d2bb106c7f71e02a25f273c068fa"
+    },
+    "parent": "d4fe09d6a9ebc1d0b21ade2d90165fae10549b05"
+  },
+  "implementation": "Typed v1 scope decoder restores only exactly equal safe-integral derived applied_value representations. Serializer and identities unchanged. Full checklist equality and later immutable validation remain required.",
+  "checks": {
+    "strict_workspace_all_targets_clippy": {
+      "seconds": 32.02,
+      "passed": true
+    },
+    "runner_release": {
+      "passed": 212,
+      "seconds": 86.84,
+      "ignored": 5,
+      "failed": 0,
+      "invocation": "Previously built exact release test binary; two threads"
+    },
+    "genuine_two_issue_roundtrip": {
+      "passed": 1,
+      "seconds": 54.56,
+      "assertions": [
+        "Desktop EnergyEvidenceQuery decoder accepts both JS-shaped historical issues",
+        "Canonical project and revision identities unchanged",
+        "Complete export/extract preserves every retained member byte"
+      ],
+      "engine_invocations": 0
+    },
+    "genuine_four_run_cache": {
+      "unchanged_source": true,
+      "seconds": 52.93,
+      "warm_save_as_passes": 4,
+      "cold_save_as_passes": 8,
+      "engine_invocations": 0,
+      "warm_save_passes": 4,
+      "passed": 1
+    },
+    "documentation": {
+      "files": 405,
+      "bytes": 16656419,
+      "limit": 16777216,
+      "links": 789,
+      "passed": true
+    },
+    "core": {
+      "weather_passed": 11,
+      "weather_external_ignored": 1,
+      "study_passed": 6,
+      "unit_passed": 100,
+      "failed": 0
+    }
+  },
+  "failures_retained": [
+    "Initial new test compilation referenced a private helper; switched to the existing public Project issue index without production API expansion",
+    "Earlier d4fe09d installed issue failure and 5654b9e stale receipt test failures remain recorded separately"
+  ],
+  "hosted_prior": {
+    "build": "success",
+    "conclusion": "failure",
+    "static_compatibility": "success",
+    "run": 38850450244,
+    "source": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+    "energy": "failure"
+  },
+  "raw_log_sha256": {
+    "v0.7-wire-core-tests.txt": "60a4c9c211022dadb1d8147fa78ed47922a82bb86316edc31b89f6904af17c4a",
+    "v0.7-wire-cache-release.txt": "3449ff9c1b6972290c834addabe6e44af32b11593c1f4296e265950b95f4db6d",
+    "v0.7-wire-cache-release-fixed.txt": "dc7d9c69f182fac1a59cb3eec650a3013fb1777161563700e72695ba3e539de4",
+    "v0.7-wire-issue-release.txt": "55f258e7526a12ca08571d09100986eecc702b541f04abd3af00142e1b81de41",
+    "v0.7-wire-runner-all.txt": "72a9ee04376e6740c6546343596f8b1673999cfe6f745bbdbf91e7d75d330b32",
+    "v0.7-wire-core-all.txt": "583926ca281d3a8bf5eafa9ba334dd82bdecd5dee3548909e446755975eda112",
+    "v0.7-wire-clippy.txt": "d3aba727b19c9c2cf4e0e460a316aa37d1d66e5f9856b5b25b65c49b1d5e24d2",
+    "package-document-check.json": "551f835f206f2db3686c2ceba75a4d651741e9ba29b7400acef7b1a65ddf7b2c"
+  },
+  "remaining": [
+    "Fresh clean candidate, installed recheck and opening performance",
+    "Exact-source hosted CI",
+    "Physical modifiers and exact client/DPI observations",
+    "Clean-machine installation",
+    "Private geometry remains blocked"
+  ]
+}

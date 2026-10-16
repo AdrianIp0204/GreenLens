@@ -1,0 +1,237 @@
+{
+  "schema_version": "greenlens.v08-legacy-regeneration-public.v1",
+  "recorded_utc": "2026-10-16T10:42:16.9689375Z",
+  "finished_utc": "2026-10-16T10:37:37.3711109Z",
+  "case": "Original synthetic retained R1/R2. No private architectural source.",
+  "source_commit_declared": "7c7090edba87fcd6167a0cf4650315483d3aa485",
+  "cli_sha256": "8d993882643776d78115b203241a2bfa9f050f5f776ba3e427335640fcb5d3f0",
+  "source_binding": "Clean release build declared by coordinator; build-timings source and unchanged checkout HEAD match. CLI bytes independently rehashed; no new CLI --version process was run by this audit.",
+  "current_checkout_head": "7c7090edba87fcd6167a0cf4650315483d3aa485",
+  "current_checkout_clean": true,
+  "recipe_sha256": "0a4f0b268a1e40a4d13b5dd968b63c81b999a12bceb45055c1df0d3580ef5253",
+  "collector_sha256": "dd50c6bc540cb931027f2e96f301bf968b001e2bc4234a746e1c78abea10b03b",
+  "result_receipt_sha256": "436ef5c9777d369716cff55836d4021cfbe12133d4cedadb90d2a09e899881a2",
+  "protocol_receipt_sha256": "6ed968756e6974586e87b91e3cd489229a2193d83717e602a44c4911278673f8",
+  "final_check_receipt_sha256": "1dc71dc68c824064ad001d99dbaeb25256d5a5571d2481785f0c061c47adc602",
+  "previous_visual_receipt": "docs/evidence/v0.7/v0.7-report-visual-coverage-5654b9e.json",
+  "previous_visual_receipt_sha256": "db018e7566e9bf87d063becbaf05bf959c5dcdc273d867961c8075d21c58a09c",
+  "issues": [
+    {
+      "label": "R1",
+      "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+      "content_sha256": "cb2a9ed0948e01cc1a837f64256054ec70544ddae2962db8689f882e522ddcf5",
+      "products_sha256": "81aa3349326f42f1c4f038207b847ddf1d0d634b96429029c45d63f75aea35c8",
+      "deterministic_product_count": 44,
+      "deterministic_product_bytes": 15918865,
+      "all_product_bytes_match_retained_and_prior_visual_receipt": true,
+      "total_output_entries": 45,
+      "total_output_bytes": 15925995,
+      "unique_pdf_pages_covered_by_exact_byte_reuse": 73,
+      "performance_pngs_covered_by_exact_byte_reuse": 8,
+      "pdf_products": [
+        {
+          "name": "assessment.pdf",
+          "bytes": 71822,
+          "pages": 4,
+          "sha256": "4b4b60ce173d0e0c8e37a664f39fe7047141f53dec765a791b64393732f9c658"
+        },
+        {
+          "name": "executive.pdf",
+          "bytes": 71822,
+          "pages": 4,
+          "sha256": "4b4b60ce173d0e0c8e37a664f39fe7047141f53dec765a791b64393732f9c658"
+        },
+        {
+          "name": "input-appendix.pdf",
+          "bytes": 935624,
+          "pages": 39,
+          "sha256": "2f2d39447b5653a71168fd9c2675b80b59e37e8e80225edd56eeb6185f4eb433"
+        },
+        {
+          "name": "performance.pdf",
+          "bytes": 247251,
+          "pages": 8,
+          "sha256": "4f2f12c74f71f9088d66dc5ca32e79b0d832bfbad3cc939c53c9bf1c903cc037"
+        },
+        {
+          "name": "technical.pdf",
+          "bytes": 475137,
+          "pages": 22,
+          "sha256": "571af5dc498b7e570c9edb9d2baca66b08d64692f2f1648c95197a1de09f8d50"
+        }
+      ],
+      "png_set_count": 8
+    },
+    {
+      "label": "R2",
+      "issue_id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+      "content_sha256": "ac557ba59d191545f0b908b3923bbde9ea019833e1ef1fe9c913776fd318a0be",
+      "products_sha256": "e9888abf73620b76559126392934aa6876a34ddbb6ee46723160685b6dd84c78",
+      "deterministic_product_count": 44,
+      "deterministic_product_bytes": 15823232,
+      "all_product_bytes_match_retained_and_prior_visual_receipt": true,
+      "total_output_entries": 45,
+      "total_output_bytes": 15830361,
+      "unique_pdf_pages_covered_by_exact_byte_reuse": 73,
+      "performance_pngs_covered_by_exact_byte_reuse": 8,
+      "pdf_products": [
+        {
+          "name": "assessment.pdf",
+          "bytes": 71333,
+          "pages": 4,
+          "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e"
+        },
+        {
+          "name": "executive.pdf",
+          "bytes": 71333,
+          "pages": 4,
+          "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e"
+        },
+        {
+          "name": "input-appendix.pdf",
+          "bytes": 939421,
+          "pages": 39,
+          "sha256": "81e791dd240808be756336e941d77f4907843764946a61043abac4d6f684ee81"
+        },
+        {
+          "name": "performance.pdf",
+          "bytes": 242512,
+          "pages": 8,
+          "sha256": "4aa3a7f52baf31d0e7761241cb782eaeeaccf2206c27506a14c8078ac5c33ae0"
+        },
+        {
+          "name": "technical.pdf",
+          "bytes": 473037,
+          "pages": 22,
+          "sha256": "2cab1926d36a141c7be82141c716c30b15790086036f9211edaf65fb7cc4dafe"
+        }
+      ],
+      "png_set_count": 8
+    }
+  ],
+  "commands": [
+    {
+      "name": "inspect-318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+      "exit_code": 0,
+      "wall_seconds": 41.2795211,
+      "peak_observed_working_set_bytes": 64389120,
+      "peak_observed_new_scratch_bytes": 0,
+      "peak_process_count": 2,
+      "failure": null,
+      "receipt_sha256": "e7dba112db260397cb0b6bf452b361e4aeaff607f7364e948f7bf866c6430916",
+      "observed_child_count": 1,
+      "children_passed_guard": true,
+      "exited_image_identity_unobserved": [],
+      "energyplus_observed": 0
+    },
+    {
+      "name": "inspect-4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+      "exit_code": 0,
+      "wall_seconds": 13.3095802,
+      "peak_observed_working_set_bytes": 54870016,
+      "peak_observed_new_scratch_bytes": 0,
+      "peak_process_count": 2,
+      "failure": null,
+      "receipt_sha256": "c1c8cece7b38656be718a33339d3c58c91b53bf069e7335a7f52afa90c5c1821",
+      "observed_child_count": 1,
+      "children_passed_guard": true,
+      "exited_image_identity_unobserved": [],
+      "energyplus_observed": 0
+    },
+    {
+      "name": "regenerate-318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+      "exit_code": 0,
+      "wall_seconds": 40.5940136,
+      "peak_observed_working_set_bytes": 152621056,
+      "peak_observed_new_scratch_bytes": 52294463,
+      "peak_process_count": 4,
+      "failure": null,
+      "receipt_sha256": "a7f8b0fbd7453535fac3ea5c3d72e868604cdb6b162b6ed5835206132b0df859",
+      "observed_child_count": 8,
+      "children_passed_guard": true,
+      "exited_image_identity_unobserved": [],
+      "energyplus_observed": 0
+    },
+    {
+      "name": "regenerate-4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+      "exit_code": 0,
+      "wall_seconds": 22.8685513,
+      "peak_observed_working_set_bytes": 125767680,
+      "peak_observed_new_scratch_bytes": 52191695,
+      "peak_process_count": 4,
+      "failure": null,
+      "receipt_sha256": "d3ed08adb26a7e4a1cf7d31b19c46ac630c52a31705089950fc5c039d5eb98ab",
+      "observed_child_count": 8,
+      "children_passed_guard": true,
+      "exited_image_identity_unobserved": [
+        {
+          "count": 2,
+          "name": "conhost.exe"
+        },
+        {
+          "count": 1,
+          "name": "typst.exe"
+        }
+      ],
+      "energyplus_observed": 0
+    }
+  ],
+  "original_checks": [
+    {
+      "name": "original_source",
+      "members": 521,
+      "status": "passed"
+    },
+    {
+      "name": "original_legacy",
+      "members": 687,
+      "status": "passed"
+    }
+  ],
+  "renderer": {
+    "method": "greenlens.energy-report-issue-renderer/1",
+    "document_schema": "greenlens.energy-document.v0.7",
+    "html_method": "greenlens.owned-energy-html/1",
+    "figure_method": "greenlens.reference-analytical-orthographic/2",
+    "template_sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697",
+    "typst_version": "0.15.1",
+    "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+    "font_sha256": {
+      "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+      "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+    },
+    "pdf_creation_timestamp": 0,
+    "performance_png_ppi": 96,
+    "system_and_embedded_fonts_disabled": true
+  },
+  "pinned_renderer_aliases_verified_as_same_held_file": true,
+  "limits": {
+    "package_entry_bytes": 67108864,
+    "energyplus_processes": 0,
+    "working_set_bytes": 2147483648,
+    "new_scratch_bytes": 2147483648,
+    "attempts_per_legacy_issue": 1,
+    "package_entries": 5000,
+    "commands_seconds": 600,
+    "processes": 16,
+    "package_total_uncompressed_bytes": 268435456
+  },
+  "legacy_attempts_consumed": [
+    "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+    "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337"
+  ],
+  "stopped_new_issue_collector_completed": false,
+  "total_deterministic_products": 88,
+  "total_deterministic_bytes": 31742097,
+  "new_simulations": 0,
+  "measurement_limit": "Process table, working set and new scratch sampled approximately every 400 ms; not instrumented absolute peaks. Already-exited children with unavailable image identity are disclosed separately.",
+  "visual_coverage": "Fresh all-product byte comparison against the prior exact visual receipt permits reuse of its 146 unique PDF pages and 16 performance PNG reviews. No new page inspection claimed.",
+  "not_established": [
+    "New renderer/2 issuance",
+    "Installed desktop acceptance",
+    "Physical qualification",
+    "Private benchmark completion",
+    "Clean-machine installation",
+    "Final-source hosted CI"
+  ]
+}

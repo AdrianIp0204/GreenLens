@@ -1,0 +1,1063 @@
+{
+  "schema_version": "greenlens.v08-issued-report-visual-coverage.v1",
+  "recorded_utc": "2026-10-16T10:55:23.7558097Z",
+  "case": "Original synthetic81-occurrence completeness fixture with genuine retained four-zone annual A/B evidence; no private architectural model",
+  "application_source_declared": "7c7090edba87fcd6167a0cf4650315483d3aa485",
+  "installed_payload_sha256": "92894b3384c7e31529622269f225d82368000a9ce083d7e9ca51e7205e1724a5",
+  "inspection_cli_sha256": "8d993882643776d78115b203241a2bfa9f050f5f776ba3e427335640fcb5d3f0",
+  "issue": {
+    "id": "8d51a892887273071c2236a85e2e49e7aba3c1855a33bd96c48beaa6fdc9d171",
+    "path": "report-issues/8d51a892887273071c2236a85e2e49e7aba3c1855a33bd96c48beaa6fdc9d171",
+    "content_sha256": "88ddcdae97357bed327772262642db62d773748a1a1b67317bb6f3bb205b9e55",
+    "content_file_sha256": "a000bb02d4141ca11e4f6dea1d8a26e5af01b77792b99988964e3ba49ed9d7da",
+    "products_sha256": "f59bb492f8328210bc5efe5913eb7348e46119e56faf45b96d02738402748cdb",
+    "products_file_sha256": "8af280acea8cfe2edf44a2ceaa7578218557f1a3cd6c10cd9161dc7671fdd796",
+    "receipt_file_sha256": "6ee6280000e4008f49e4b747d0634463497b02f35faa07e79e9c7f196a471765",
+    "scope_revision_sha256": "8378c41db3d3957e047f0c4ff079e5f495560b18febfd2961475305c5a3d9981",
+    "reference_asset_id": "4a08ff6f-aa51-4393-8cea-6b537bb81afd",
+    "reference_manifest_sha256": "4e2d7870cfced6d0d1a9316338c7a3c0710ed96451f9b0e64794622c81b86d25",
+    "baseline": {
+      "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+      "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+      "design_id": "A"
+    },
+    "proposed": {
+      "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+      "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+      "design_id": "B"
+    },
+    "sensitivity_session_id": null,
+    "sensitivity_run_ids": [],
+    "title": "Synthetic four-zone energy building — energy assessment",
+    "report_revision": "Draft",
+    "include_pdf": true
+  },
+  "runtime": {
+    "schema_version": "greenlens.report-issue-runtime.v1",
+    "content_sha256": "88ddcdae97357bed327772262642db62d773748a1a1b67317bb6f3bb205b9e55",
+    "issued_utc": "2026-10-16T10:49:17.298628500+00:00",
+    "renderer_status": "completed",
+    "process_count": 5,
+    "elapsed_ms": 5901,
+    "peak_working_set_bytes": 365027328,
+    "peak_scratch_bytes": 35698893,
+    "process_trees_empty": true
+  },
+  "renderer": {
+    "method": "greenlens.energy-report-issue-renderer/2",
+    "document_schema": "greenlens.energy-document.v0.8",
+    "html_method": "greenlens.owned-energy-html/2",
+    "figure_method": "greenlens.reference-analytical-orthographic/2",
+    "template_sha256": "e447d9f8398b3706c00312bea091b9c97256fc287e852687a175e91d99e23cb5",
+    "typst_version": "0.15.1",
+    "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+    "font_sha256": {
+      "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+      "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+    },
+    "pdf_creation_timestamp": 0,
+    "performance_png_ppi": 96,
+    "system_and_embedded_fonts_disabled": true
+  },
+  "coverage": {
+    "performance_pngs": 8,
+    "exact_byte_reused_reviewed_pages": 24,
+    "description": "Every unique page individually reviewed; transfer of24 prior partial-product observations requires exact complete PDF hashes. Partial generation itself was never accepted.",
+    "freshly_reviewed_pdf_pages": 58,
+    "assessment_pdf_exact_alias_of": "executive.pdf",
+    "unique_pdf_pages": 82
+  },
+  "pdfs": [
+    {
+      "coverage": "Individual prior page observations transferred by exact full PDF bytes",
+      "sha256": "21e765ee6c12d6fc4575de91a15b1663c1685defba96e7af576d722cdeca44f3",
+      "name": "executive.pdf",
+      "bytes": 77181,
+      "pages": 4,
+      "origin_receipt_sha256": "c0b388e29cbc03f77f9b655f08bed0bf7a2496837283b6dbcbd6dea872d57eaf",
+      "reviewed_pages": [
+        1,
+        2,
+        3,
+        4
+      ]
+    },
+    {
+      "coverage": "Individual prior page observations transferred by exact full PDF bytes",
+      "sha256": "c432e6156b7b657268586442985a0785dd29b660b468d25fe3ee8e13a5d7ab5e",
+      "name": "technical.pdf",
+      "bytes": 489200,
+      "pages": 20,
+      "origin_receipt_sha256": "c0b388e29cbc03f77f9b655f08bed0bf7a2496837283b6dbcbd6dea872d57eaf",
+      "reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20
+      ]
+    },
+    {
+      "coverage": "Every final issued page freshly rendered and visually inspected",
+      "sha256": "3027d58d39ba15d14c614be67ed59fa7b4881e27b2beff7b3b4a487e49044076",
+      "name": "input-appendix.pdf",
+      "bytes": 1283244,
+      "pages": 50,
+      "origin_receipt_sha256": "6f292692aae84858b547cc1c7fffe0c8c971a9a359afcee2d4ad08b4ddfa5e25",
+      "reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50
+      ]
+    },
+    {
+      "coverage": "Every final issued page freshly rendered and visually inspected",
+      "sha256": "996b6087eeee75e8c6e1fcc62dad8fea7d4f0ca896e46b60c8e9f2b92534bd96",
+      "name": "performance.pdf",
+      "bytes": 272928,
+      "pages": 8,
+      "origin_receipt_sha256": "6f292692aae84858b547cc1c7fffe0c8c971a9a359afcee2d4ad08b4ddfa5e25",
+      "reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    }
+  ],
+  "performance_pngs": [
+    {
+      "name": "performance-page-001.png",
+      "bytes": 288345,
+      "sha256": "eb38c2ef4abe37900333743738524db704561b6ac12df240d699fc61a33c7f87",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "performance-page-002.png",
+      "bytes": 326070,
+      "sha256": "25f3546b6e9159af6ea586a65bc018c8f219359a2231ee891065ebc7b85d7ce3",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "performance-page-003.png",
+      "bytes": 363567,
+      "sha256": "714793542173a5575f8746ed1a5fe787b971b21db17e4a741b1057a4ed7ed75d",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "performance-page-004.png",
+      "bytes": 198583,
+      "sha256": "d264a2389aeba26703c1f17e0e84033f6c867278dbaef9d7081b716b25b1a130",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "performance-page-005.png",
+      "bytes": 292313,
+      "sha256": "8d81efed135be7df6806f98f9dd393c83ab0d1d49a8a1d1667f4e977ba43e2d8",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "performance-page-006.png",
+      "bytes": 237724,
+      "sha256": "f61bea90247f8a30793dc9dc6e16ae7213b2135af0ecc21d0192ac540ac67730",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "performance-page-007.png",
+      "bytes": 269738,
+      "sha256": "b52df31d32cd217e7c1149dcc91cf768c2593382084ea8106f78d495e762c1c3",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    },
+    {
+      "name": "performance-page-008.png",
+      "bytes": 71699,
+      "sha256": "714c9718e3af9ce9cf07a96751461e1ada6c41b2561cf6ce53971098031bac3c",
+      "reviewed_at_original_resolution": true,
+      "source_unchanged": true
+    }
+  ],
+  "reviewed_page_rasters": [
+    {
+      "name": "executive-1.png",
+      "bytes": 262194,
+      "sha256": "b3bd7870743ac5edd363ef65bd32e67b2f7495ead5e91481c1fd338cdb9af2a6"
+    },
+    {
+      "name": "executive-2.png",
+      "bytes": 279233,
+      "sha256": "7934b4acf45f9daa8adf9c34337f25041b70ecededa91acbe313acbef6763a4e"
+    },
+    {
+      "name": "executive-3.png",
+      "bytes": 312922,
+      "sha256": "06da7580978c0db18e87172f39fab8601e6208cd91ecf1575e726d035928918a"
+    },
+    {
+      "name": "executive-4.png",
+      "bytes": 67671,
+      "sha256": "639fb51077ce11139b82e5c87ac2fd5904358e18aa8424fc14d58e9d641328bd"
+    },
+    {
+      "name": "technical-01.png",
+      "bytes": 229851,
+      "sha256": "9844c920b5ddd7d047c215ebe02f76666a1a14982ff86103e429af7654f4c543"
+    },
+    {
+      "name": "technical-02.png",
+      "bytes": 318179,
+      "sha256": "b23b99830b19feca278e7547401ebe3e90a6fb721ddf8e0e21b4a829e1eadab0"
+    },
+    {
+      "name": "technical-03.png",
+      "bytes": 330689,
+      "sha256": "764fa539170553da8819aa4f4352e8597d7eeb695c3d50329f51c394737aa1da"
+    },
+    {
+      "name": "technical-04.png",
+      "bytes": 233879,
+      "sha256": "5f2a7782e96336a13790d67bdf9b1a565d664a583d91aa7cd60797556c69779a"
+    },
+    {
+      "name": "technical-05.png",
+      "bytes": 121030,
+      "sha256": "e5042f0e72b343696920f4beb9054a33dbd4563b0bb07e5c5bac4e3647865abe"
+    },
+    {
+      "name": "technical-06.png",
+      "bytes": 162796,
+      "sha256": "374760afea1c78bb47aa9d27bc1a3acdf4f6a1b5c8a80766f245081bf80a3b57"
+    },
+    {
+      "name": "technical-07.png",
+      "bytes": 254828,
+      "sha256": "a59835489b905892a5a85b5ad52aacce73d0dfd6801edf44cf328619941c4dba"
+    },
+    {
+      "name": "technical-08.png",
+      "bytes": 326101,
+      "sha256": "c9e7a769c678e88364608ab57c0bdb15139cf53851e08df5fc4b476f3fb1837f"
+    },
+    {
+      "name": "technical-09.png",
+      "bytes": 172687,
+      "sha256": "3617d9b9ef5082fec0f4aac7e3e0c9f75d891dd68d5b956d9099c915e9e3b1ef"
+    },
+    {
+      "name": "technical-10.png",
+      "bytes": 156274,
+      "sha256": "05b83eb3ce8ec9945f2d9b76faba16a0bec0aa4940c8a5ee0315f8c7a0b4f2df"
+    },
+    {
+      "name": "technical-11.png",
+      "bytes": 221783,
+      "sha256": "b62d98a1e0bd82b5972deacc0ac735da29bdd5b593d835c7a3cd150887d4b369"
+    },
+    {
+      "name": "technical-12.png",
+      "bytes": 331309,
+      "sha256": "1beb1fa852dcad386b04848994d67136e614ffda4ea545563ce615e9cd60f88d"
+    },
+    {
+      "name": "technical-13.png",
+      "bytes": 164574,
+      "sha256": "240e7fe0f07dc4b60310e00317ce6dcdbbc696ba21f06297caab0e3324ec50f8"
+    },
+    {
+      "name": "technical-14.png",
+      "bytes": 258817,
+      "sha256": "4a55623b165bce01895eeb0803a502faecdc5839a546d7c4ee1006f18e182724"
+    },
+    {
+      "name": "technical-15.png",
+      "bytes": 328019,
+      "sha256": "ecda885d3d519d1c5922f0883677a6caa22b570e890242e8c04ad184b64279ee"
+    },
+    {
+      "name": "technical-16.png",
+      "bytes": 174066,
+      "sha256": "cb2680c8f0f8e20924842a1c7b68cbbe8b87fb892cfb918346d716182b87eadf"
+    },
+    {
+      "name": "technical-17.png",
+      "bytes": 158085,
+      "sha256": "ed4d93819749b6f037de7c04b46a9b2b096bee3c693901a3c9a05b44668b95e5"
+    },
+    {
+      "name": "technical-18.png",
+      "bytes": 223592,
+      "sha256": "95b9057c05b361088890bc8d8c3370224658b6b68960645bb446d8366457b970"
+    },
+    {
+      "name": "technical-19.png",
+      "bytes": 332663,
+      "sha256": "7cba8276ba3b2ab4c3cc11cdd65e3c1063ce9ec0bc0d38abf91750686a4d7c7d"
+    },
+    {
+      "name": "technical-20.png",
+      "bytes": 109506,
+      "sha256": "e2aaec0c7e9c34b05e73e58404be9aeca9307b3408c2c4a8e0682de5da33b602"
+    },
+    {
+      "name": "appendix-01.png",
+      "bytes": 287876,
+      "sha256": "95826e45fa68f911ac065e1ab0ec3512e012e44f19ab865e72f3c1c1abafaa0e"
+    },
+    {
+      "name": "appendix-02.png",
+      "bytes": 359640,
+      "sha256": "ce9fbbcef85742a7c394a0dfbeccb5f2bb7abdb1126b11bbc14933e47b991649"
+    },
+    {
+      "name": "appendix-03.png",
+      "bytes": 328443,
+      "sha256": "67f86b7d724c5424e448d45726ca43a2b434ed8b8d9ea93bcec5a3a1ad09ed93"
+    },
+    {
+      "name": "appendix-04.png",
+      "bytes": 318388,
+      "sha256": "127fc03633d03a5d57270127306f06c96f1bbf0ab829ca3505384c1cf702365c"
+    },
+    {
+      "name": "appendix-05.png",
+      "bytes": 327520,
+      "sha256": "1dc02e3746990b7ce23a2cc5c253421d8336bd1d1a2d2687d5489984b4a9dde3"
+    },
+    {
+      "name": "appendix-06.png",
+      "bytes": 319869,
+      "sha256": "17f6165ea5e1ceea31c427a036747aa6f13b88eeaf8d40270c26f0948648d08d"
+    },
+    {
+      "name": "appendix-07.png",
+      "bytes": 331665,
+      "sha256": "b2ba3464c2826eb14642a8daf97643f41b35a49174a712531066f8416b65b070"
+    },
+    {
+      "name": "appendix-08.png",
+      "bytes": 337881,
+      "sha256": "9746161133df3e08b0d1d18b6ba3ad8e775411e59a5e4cd66e7de6d36f5919ff"
+    },
+    {
+      "name": "appendix-09.png",
+      "bytes": 316394,
+      "sha256": "c525fafb1843f411b2197464d329406222cd042a6ad421f13cb85208061e65ef"
+    },
+    {
+      "name": "appendix-10.png",
+      "bytes": 331493,
+      "sha256": "9b715a63559f455d303492a105f1aa5993a691b271311931d7c45ba03600af5a"
+    },
+    {
+      "name": "appendix-11.png",
+      "bytes": 332203,
+      "sha256": "3fd15a22e1e743b781f7b5d99c83201e760fa8910a264f33303ebf35776e1543"
+    },
+    {
+      "name": "appendix-12.png",
+      "bytes": 320483,
+      "sha256": "2694b943747d2358dfd12cf1d74a828f6c612fbd7d2b8e7086396045b520ad57"
+    },
+    {
+      "name": "appendix-13.png",
+      "bytes": 326847,
+      "sha256": "624d4937a61c765d7fb2fb0bd0559cb6d203d6301eadbafc4ea7c925ffcc893a"
+    },
+    {
+      "name": "appendix-14.png",
+      "bytes": 324499,
+      "sha256": "72bee7a4f9ccab5fad30478716b416f56f4da51965a4b33f6a1f464e84467c71"
+    },
+    {
+      "name": "appendix-15.png",
+      "bytes": 346758,
+      "sha256": "7b3e13b7c5877b9fe75b17a58f851f4e538a481224ca021488d97df003eaaefe"
+    },
+    {
+      "name": "appendix-16.png",
+      "bytes": 320884,
+      "sha256": "28f804788bbed9e2561c5f4a41ec767e10f8479bb8ff7d83b4b62500f4c1325c"
+    },
+    {
+      "name": "appendix-17.png",
+      "bytes": 243925,
+      "sha256": "780bafd1fcc206b9fd8b507041cb3b6b84e21ee4fb4d0d38e92538556a5398c0"
+    },
+    {
+      "name": "appendix-18.png",
+      "bytes": 258146,
+      "sha256": "25f280397d383dd8101eb31cdab091361ad67cb6c29c4fd302b137963575da36"
+    },
+    {
+      "name": "appendix-19.png",
+      "bytes": 269287,
+      "sha256": "a7c76eee53a59c6d6236b81c49e777571cb41a4f87b1f6b908aaa0ffb6862b47"
+    },
+    {
+      "name": "appendix-20.png",
+      "bytes": 347444,
+      "sha256": "f53d21009cffb49a370bd369cb8b8162400b93ebe31eb18c9cf59b711c22cc52"
+    },
+    {
+      "name": "appendix-21.png",
+      "bytes": 367568,
+      "sha256": "e5bc4f9d61a44860f0ff4dd2ad2da4b1987dc66cc6d0cf272c85a42e79313acd"
+    },
+    {
+      "name": "appendix-22.png",
+      "bytes": 160239,
+      "sha256": "4bfea87a6d76b34372fdfcdf06dfec33d9510597c6b208ca15753b862ddb1a6e"
+    },
+    {
+      "name": "appendix-23.png",
+      "bytes": 229694,
+      "sha256": "1cf932243b6f68442ed59818364dfe3aa0d73247c63e9fa1d7e23138ce2e343e"
+    },
+    {
+      "name": "appendix-24.png",
+      "bytes": 237430,
+      "sha256": "ba9b74de37f90e823e6c79ee251d114e809f0002be41813b8422748b8c17f6c3"
+    },
+    {
+      "name": "appendix-25.png",
+      "bytes": 234196,
+      "sha256": "beb5377d68760568f414b0f145f40162d74e69efc8726eaa2914700e40e00f72"
+    },
+    {
+      "name": "appendix-26.png",
+      "bytes": 218853,
+      "sha256": "e27891a83ee8dc131af1b5a132455393447f05c196983fc0ceafdc7ba7f42dc2"
+    },
+    {
+      "name": "appendix-27.png",
+      "bytes": 243175,
+      "sha256": "9bde7839b801b83333167ad7813d57ed3bf3bd0a201ba7a548c61381d780803f"
+    },
+    {
+      "name": "appendix-28.png",
+      "bytes": 222960,
+      "sha256": "fdc69565fc708555ca359c9f146f3e5fbcd82120b1af42bb8be401e728b7b2ce"
+    },
+    {
+      "name": "appendix-29.png",
+      "bytes": 231326,
+      "sha256": "d95329279316de664c106b11903a705444d5fc56aaa8be7ebb7be81c7537c22e"
+    },
+    {
+      "name": "appendix-30.png",
+      "bytes": 233831,
+      "sha256": "06fdb5580d17c3cd4deb4188f2b0e793b32575fd2ab9db4c9a5ee515f9338852"
+    },
+    {
+      "name": "appendix-31.png",
+      "bytes": 221250,
+      "sha256": "13253826474affa889b656781cbc2ce52bfc707784a6b78deb379cf35b021b03"
+    },
+    {
+      "name": "appendix-32.png",
+      "bytes": 241779,
+      "sha256": "5c145af07140b380852292e00ed534f267cf9a893413608cff09e4400cb6bdd6"
+    },
+    {
+      "name": "appendix-33.png",
+      "bytes": 222945,
+      "sha256": "c2e96a1ea73ee0983eb705d5f6fa0feb5ba8f9364c52cafdac46f6126d47320b"
+    },
+    {
+      "name": "appendix-34.png",
+      "bytes": 243610,
+      "sha256": "32555c0ec0559bc62e80686a2ba278c5e7245044f949106cb2ea50f46096d77c"
+    },
+    {
+      "name": "appendix-35.png",
+      "bytes": 135272,
+      "sha256": "76fb8643e70ad0dd295ca391875b81ee6aa911def776c7d8621ef2b293872ff2"
+    },
+    {
+      "name": "appendix-36.png",
+      "bytes": 136142,
+      "sha256": "c2c28b21a8b7e5e1eda92cb1078683beab69bc344fc16facaa4df0c84b4ab8a0"
+    },
+    {
+      "name": "appendix-37.png",
+      "bytes": 241218,
+      "sha256": "5d17a2b0b3f8f0853ee5e683ef0ff08462cacf147350e2688b0139470cd5c65e"
+    },
+    {
+      "name": "appendix-38.png",
+      "bytes": 244640,
+      "sha256": "cff2f0c8a8b12dea33235f1052cc557ddda57be682dbdc6e1a17b2844d8a5c7d"
+    },
+    {
+      "name": "appendix-39.png",
+      "bytes": 229582,
+      "sha256": "e938d516a1192fb6a41609df4165f23c040c5d8e8c6823438c5c95dd865af7a2"
+    },
+    {
+      "name": "appendix-40.png",
+      "bytes": 225975,
+      "sha256": "e99375689ee30d677afc2b4a9287e127f3557fc6d8750bd9b23f9ceb0a1cd343"
+    },
+    {
+      "name": "appendix-41.png",
+      "bytes": 234663,
+      "sha256": "a0fe63037c17982f4d9c3f47344680720c0e3d125939d0105c9b35099c3e206f"
+    },
+    {
+      "name": "appendix-42.png",
+      "bytes": 228446,
+      "sha256": "213222786008f3f8d114986873b95233c5558c07b6c94e60927860c2139f4cd8"
+    },
+    {
+      "name": "appendix-43.png",
+      "bytes": 214521,
+      "sha256": "c7b99b25df1eed1596e3aacbecad48c37dc7b611d733f3076cd24fd6d8b08e98"
+    },
+    {
+      "name": "appendix-44.png",
+      "bytes": 240044,
+      "sha256": "f79da91a1d547377964adf3b3a49b2ce21f1617ffed1af439964aa9520b43ed9"
+    },
+    {
+      "name": "appendix-45.png",
+      "bytes": 216070,
+      "sha256": "54929d4eb79093ecd5f726be4e0f754215153f1b7ed5c02a6ceb3a0f2b385b6f"
+    },
+    {
+      "name": "appendix-46.png",
+      "bytes": 238689,
+      "sha256": "3c907151fd08cd897bfa9f56da4147554e83135190c817715f341f5ba7fe2e9d"
+    },
+    {
+      "name": "appendix-47.png",
+      "bytes": 227939,
+      "sha256": "6ded09a79363d378a6738e7973b2333e521857b652cb08ad27c2a0d9e1f8ec0f"
+    },
+    {
+      "name": "appendix-48.png",
+      "bytes": 231900,
+      "sha256": "af3d4ac65632c757917bfc4ae5d4142aad64d302ffa41a63a628abd43372bb02"
+    },
+    {
+      "name": "appendix-49.png",
+      "bytes": 258606,
+      "sha256": "40486810dc9c9aad28f5f04e4e60a2c821e15b5cc2c87a6f1525ff028edc59d4"
+    },
+    {
+      "name": "appendix-50.png",
+      "bytes": 33755,
+      "sha256": "c090d871fc32ff3cafe02e034d98846dcb5864570b2bf246ad997d0154936bcd"
+    },
+    {
+      "name": "performance-1.png",
+      "bytes": 276345,
+      "sha256": "6065dce2423a3d76f7ed1704c741f01551991ffdbc26e82db4eb4f2e49254645"
+    },
+    {
+      "name": "performance-2.png",
+      "bytes": 345215,
+      "sha256": "38cfe13e91640e5806603c5ba80173f06ed5d5497c5c0591c9d516a7405b63d8"
+    },
+    {
+      "name": "performance-3.png",
+      "bytes": 382388,
+      "sha256": "1a672acbb9ad1e4a3a7f88e8411ba27d0843654e9c25e8921291eb5438d50337"
+    },
+    {
+      "name": "performance-4.png",
+      "bytes": 219399,
+      "sha256": "204e599e126d896a0eee29f98d4b17fa901ebe3a75dce7017b2875a60b8156b7"
+    },
+    {
+      "name": "performance-5.png",
+      "bytes": 297379,
+      "sha256": "2d7f93f3bd8ba971ca7e815f817367f42db4648cba49852b94e11c27f911bf26"
+    },
+    {
+      "name": "performance-6.png",
+      "bytes": 247312,
+      "sha256": "e953cb391bc5f984e16187ecca09ea41b0b2364307047a1e6736ba93fcaf3da2"
+    },
+    {
+      "name": "performance-7.png",
+      "bytes": 244952,
+      "sha256": "fea0af64a8050d60536c8dbf6bc5f294b47ac4ea9286b196410a9f153625115e"
+    },
+    {
+      "name": "performance-8.png",
+      "bytes": 72934,
+      "sha256": "8cf6f9a10eb1fa02535d007757bf3e6a472d2603cf40c8539a007d09876498ce"
+    }
+  ],
+  "product_integrity": {
+    "bytes": 17487475,
+    "every_frozen_and_issued_product_length_and_sha256_checked_after_review": true,
+    "members": [
+      {
+        "path": "aligned-figures.json",
+        "bytes": 2,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      },
+      {
+        "path": "annual.svg",
+        "bytes": 1880,
+        "sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86"
+      },
+      {
+        "path": "assessment.html",
+        "bytes": 16377,
+        "sha256": "0ac9794e7b3966c4e9071d45662ec7adb204b979d642629f9858ad0668c1518a"
+      },
+      {
+        "path": "assessment.pdf",
+        "bytes": 77181,
+        "sha256": "21e765ee6c12d6fc4575de91a15b1663c1685defba96e7af576d722cdeca44f3"
+      },
+      {
+        "path": "baseline-model.svg",
+        "bytes": 3723,
+        "sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec"
+      },
+      {
+        "path": "energy-report.json",
+        "bytes": 209829,
+        "sha256": "5e997f6e3160298fdbef5cc79a5f36ed0ff527d037df70ca434eced5c904ae0c"
+      },
+      {
+        "path": "executive.html",
+        "bytes": 16377,
+        "sha256": "0ac9794e7b3966c4e9071d45662ec7adb204b979d642629f9858ad0668c1518a"
+      },
+      {
+        "path": "executive.pdf",
+        "bytes": 77181,
+        "sha256": "21e765ee6c12d6fc4575de91a15b1663c1685defba96e7af576d722cdeca44f3"
+      },
+      {
+        "path": "input-appendix.html",
+        "bytes": 170979,
+        "sha256": "9c23446ef46b1c26fe0e6a3b448a93d69f5de19639066760c2e2eb2373255edc"
+      },
+      {
+        "path": "input-appendix.pdf",
+        "bytes": 1283244,
+        "sha256": "3027d58d39ba15d14c614be67ed59fa7b4881e27b2beff7b3b4a487e49044076"
+      },
+      {
+        "path": "input-provenance.csv",
+        "bytes": 1361729,
+        "sha256": "440b35f856e4b5ac6e1c56556157d4806148ffd0eaf92a3c8361349ae3356b76"
+      },
+      {
+        "path": "input-provenance.json",
+        "bytes": 2744225,
+        "sha256": "d586398a1bdc1091fc484ede98a1981b8717f4d5c67eb8786a12e4df15b3087f"
+      },
+      {
+        "path": "inputs.csv",
+        "bytes": 69253,
+        "sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638"
+      },
+      {
+        "path": "issue-content.json",
+        "bytes": 3873179,
+        "sha256": "a000bb02d4141ca11e4f6dea1d8a26e5af01b77792b99988964e3ba49ed9d7da"
+      },
+      {
+        "path": "monthly.svg",
+        "bytes": 3248,
+        "sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e"
+      },
+      {
+        "path": "performance-page-001.png",
+        "bytes": 288345,
+        "sha256": "eb38c2ef4abe37900333743738524db704561b6ac12df240d699fc61a33c7f87"
+      },
+      {
+        "path": "performance-page-002.png",
+        "bytes": 326070,
+        "sha256": "25f3546b6e9159af6ea586a65bc018c8f219359a2231ee891065ebc7b85d7ce3"
+      },
+      {
+        "path": "performance-page-003.png",
+        "bytes": 363567,
+        "sha256": "714793542173a5575f8746ed1a5fe787b971b21db17e4a741b1057a4ed7ed75d"
+      },
+      {
+        "path": "performance-page-004.png",
+        "bytes": 198583,
+        "sha256": "d264a2389aeba26703c1f17e0e84033f6c867278dbaef9d7081b716b25b1a130"
+      },
+      {
+        "path": "performance-page-005.png",
+        "bytes": 292313,
+        "sha256": "8d81efed135be7df6806f98f9dd393c83ab0d1d49a8a1d1667f4e977ba43e2d8"
+      },
+      {
+        "path": "performance-page-006.png",
+        "bytes": 237724,
+        "sha256": "f61bea90247f8a30793dc9dc6e16ae7213b2135af0ecc21d0192ac540ac67730"
+      },
+      {
+        "path": "performance-page-007.png",
+        "bytes": 269738,
+        "sha256": "b52df31d32cd217e7c1149dcc91cf768c2593382084ea8106f78d495e762c1c3"
+      },
+      {
+        "path": "performance-page-008.png",
+        "bytes": 71699,
+        "sha256": "714c9718e3af9ce9cf07a96751461e1ada6c41b2561cf6ce53971098031bac3c"
+      },
+      {
+        "path": "performance.csv",
+        "bytes": 30203,
+        "sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be"
+      },
+      {
+        "path": "performance.html",
+        "bytes": 32060,
+        "sha256": "236f51e64b28fcd214d75430fbe7dd9f8acfea33d9bc2620164f36c39fdf8b14"
+      },
+      {
+        "path": "performance.json",
+        "bytes": 62585,
+        "sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80"
+      },
+      {
+        "path": "performance.pdf",
+        "bytes": 272928,
+        "sha256": "996b6087eeee75e8c6e1fcc62dad8fea7d4f0ca896e46b60c8e9f2b92534bd96"
+      },
+      {
+        "path": "presentation-coverage.json",
+        "bytes": 500440,
+        "sha256": "8c7c570a241d2032974aef4b1385a8beeefccec4b9ed14bc41993f55b0972bb7"
+      },
+      {
+        "path": "proposed-model.svg",
+        "bytes": 4393,
+        "sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644"
+      },
+      {
+        "path": "schedule-baseline-000.svg",
+        "bytes": 16448,
+        "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+      },
+      {
+        "path": "schedule-baseline-001.svg",
+        "bytes": 16473,
+        "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+      },
+      {
+        "path": "schedule-baseline-002.svg",
+        "bytes": 15704,
+        "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+      },
+      {
+        "path": "schedule-baseline-003.svg",
+        "bytes": 15715,
+        "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+      },
+      {
+        "path": "schedule-baseline-004.svg",
+        "bytes": 15710,
+        "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+      },
+      {
+        "path": "schedule-proposed-000.svg",
+        "bytes": 16448,
+        "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+      },
+      {
+        "path": "schedule-proposed-001.svg",
+        "bytes": 16473,
+        "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+      },
+      {
+        "path": "schedule-proposed-002.svg",
+        "bytes": 15704,
+        "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+      },
+      {
+        "path": "schedule-proposed-003.svg",
+        "bytes": 15715,
+        "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+      },
+      {
+        "path": "schedule-proposed-004.svg",
+        "bytes": 15710,
+        "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+      },
+      {
+        "path": "scope-assumptions.csv",
+        "bytes": 24760,
+        "sha256": "3d2ac601bbeb37ea7e9a3f51585cc5787cdfca0cddd258fb0f139905a0513ead"
+      },
+      {
+        "path": "scope-assumptions.json",
+        "bytes": 39686,
+        "sha256": "85f99334e228f5e776ecaefdfe2b37b1c5cc9c4acf5c3ff842b88d49cbdc774a"
+      },
+      {
+        "path": "scope-mappings.csv",
+        "bytes": 14212,
+        "sha256": "f89d9e9f2dd6a8a7f80c62335c3e5e402753969f41c0bf7a29edcc17ebe3f192"
+      },
+      {
+        "path": "scope-mappings.json",
+        "bytes": 21550,
+        "sha256": "0ac5c4b8e2c0eef16e1087ca3d4ca66cde3ee4796412daa99a86b5a58c285976"
+      },
+      {
+        "path": "scope-reconciliations.json",
+        "bytes": 169,
+        "sha256": "e33c93844edccac3a635c15cb74095e317178f2b5d99f0a1a5605df8c8cdffaf"
+      },
+      {
+        "path": "scope-revision.json",
+        "bytes": 3380575,
+        "sha256": "1cbb5615d64ffcd4637c7d5ff8e520b077a99085e4e0170b741df59b172bebcb"
+      },
+      {
+        "path": "technical.html",
+        "bytes": 236063,
+        "sha256": "61422beceab55bbe9539b37e706b600c9209326010565512cd5e748ccc1d236e"
+      },
+      {
+        "path": "technical.pdf",
+        "bytes": 489200,
+        "sha256": "c432e6156b7b657268586442985a0785dd29b660b468d25fe3ee8e13a5d7ab5e"
+      },
+      {
+        "path": "typed-differences.json",
+        "bytes": 16650,
+        "sha256": "fc504fee7f9ba8462a24ee1d52707f94b2cae9bd0ea036ec97a08835aadabd08"
+      },
+      {
+        "path": "workbench-report.json",
+        "bytes": 245455,
+        "sha256": "2bfed5cfa8e0a2fe026d39e2c24d6168cda80996f7f26cd09db0a7328e641710"
+      }
+    ],
+    "count": 49
+  },
+  "registers": [
+    {
+      "omitted_rows": 1,
+      "status_counts": {
+        "context only": 79,
+        "excluded": 1,
+        "unresolved": 1
+      },
+      "review_required_displayed": 1,
+      "total_rows": 81,
+      "complete_artifacts": [
+        "scope-mappings.json",
+        "scope-mappings.csv"
+      ],
+      "displayed_rows": 80,
+      "register": "mappings",
+      "review_required_total": 1,
+      "review_required_omitted": 0
+    },
+    {
+      "omitted_rows": 3,
+      "status_counts": {
+        "assumed": 2,
+        "missing": 1,
+        "synthetic": 80
+      },
+      "review_required_displayed": 1,
+      "total_rows": 83,
+      "complete_artifacts": [
+        "scope-assumptions.json",
+        "scope-assumptions.csv"
+      ],
+      "displayed_rows": 80,
+      "register": "assumptions",
+      "review_required_total": 1,
+      "review_required_omitted": 0
+    },
+    {
+      "omitted_rows": 6464,
+      "status_counts": {
+        "conflicting": 1,
+        "unreviewed": 6543
+      },
+      "review_required_displayed": 80,
+      "total_rows": 6544,
+      "complete_artifacts": [
+        "input-provenance.json",
+        "input-provenance.csv"
+      ],
+      "displayed_rows": 80,
+      "register": "provenance",
+      "review_required_total": 6544,
+      "review_required_omitted": 6464
+    },
+    {
+      "omitted_rows": 0,
+      "status_counts": {},
+      "review_required_displayed": 0,
+      "total_rows": 0,
+      "complete_artifacts": [
+        "scope-reconciliations.json"
+      ],
+      "displayed_rows": 0,
+      "register": "reconciliations",
+      "review_required_total": 0,
+      "review_required_omitted": 0
+    }
+  ],
+  "late_exceptions": {
+    "missing_assumption": {
+      "id": "source-080",
+      "display_position": 1,
+      "appendix_page": 8
+    },
+    "conflicting_cop": {
+      "applied_value": 3.6,
+      "display_position": 1,
+      "field": "/gross_rated_cop",
+      "appendix_page": 16,
+      "source_values": [
+        3.6,
+        3.7
+      ]
+    },
+    "unresolved_mapping": {
+      "source_index": 80,
+      "display_position": 1,
+      "appendix_page": 2
+    }
+  },
+  "typed_comparison": {
+    "total": 32,
+    "retained": 32,
+    "truncated": false
+  },
+  "arithmetic": {
+    "maximum_absolute_residual": 1.8189894035458565E-12,
+    "scope": "Independent arithmetic and Rust report/CSV identity checks only; no rerun, physical validation or timestep qualification.",
+    "script_sha256": "746fa1e1126f16dc5294314cc141f8acdfbbe3faec4b031780227a84053f788f",
+    "audit_receipt_sha256": "6022839dbb4bb9d73445e713daff8ff36011748cdeba02e97a5ef65a34826d7a",
+    "canonical_energy_report_sha256": "5e997f6e3160298fdbef5cc79a5f36ed0ff527d037df70ca434eced5c904ae0c",
+    "performance_csv_sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be",
+    "performance_json_sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80",
+    "performance_csv_rows": 318,
+    "numerical_checks": 592,
+    "tolerance": 1E-09
+  },
+  "review_tools": {
+    "argument_recipe": [
+      "-r",
+      "120",
+      "-png",
+      "<retained PDF>",
+      "<external review prefix>"
+    ],
+    "renderer": "Poppler pdftoppm",
+    "resolution_dpi": 120,
+    "sha256": "1ad6408dc3b02950d00ad407d79b6d52b1d6c3f3b85c96645455d58d390d8b20",
+    "version": "26.07.0"
+  },
+  "source_receipts": {
+    "shared_service_issue_audit_sha256": "2370e06907f312e674e7518e98b5d2dc0ad426fe2eadd370b1fbe2b2123d9166",
+    "prior_partial_review_sha256": "c0b388e29cbc03f77f9b655f08bed0bf7a2496837283b6dbcbd6dea872d57eaf",
+    "fresh_appendix_performance_review_sha256": "6f292692aae84858b547cc1c7fffe0c8c971a9a359afcee2d4ad08b4ddfa5e25"
+  },
+  "blocking_visual_defects": [],
+  "nonblocking_layout_limitations": [
+    "Some long table rows split across pages, leaving identifier/value continuation fragments under repeated headers. Adjacent pages retain complete content.",
+    "Appendix page50 is sparse: final weather-year row and optional-attachment absence disclosure. Performance page8 is sparse with required proposed comfort table and convention. No entirely empty continuation page."
+  ],
+  "explicit_disclosures": [
+    "Draft metadata; no invented preparer/reviewer/approval",
+    "Unknown floor-area coverage denominator and no architectural equivalence",
+    "Incomplete provenance; late unresolved/missing/conflicting rows and all omission counts",
+    "Missing exact-selected-pair sensitivity",
+    "No retained aligned architectural view; absence clearly stated",
+    "Exact-model limited scientific scope, synthetic weather and carbon, missing independent lighting equivalence",
+    "Own-case coincident facility peak timestamps and occupied comfort union definition"
+  ],
+  "not_established": [
+    "New aligned architectural figure generation: no view was retained in this scope",
+    "Independent physical validation",
+    "Private architectural benchmark",
+    "Clean-machine installation",
+    "Full installed release acceptance",
+    "Final-source hosted CI"
+  ]
+}

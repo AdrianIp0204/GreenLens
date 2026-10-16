@@ -1,0 +1,500 @@
+{
+  "schema": "greenlens.v06.native-checkpoint.v1",
+  "compiled_source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+  "installed_candidate": {
+    "schema": "greenlens.hosted-candidate-installed.v1",
+    "utc": "2026-10-16T09:31:34.6178754+08:00",
+    "source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+    "source_dirty": false,
+    "ci_run": 38789822806,
+    "artifact_id": 12003195055,
+    "artifact_sha256": "9d435ee193062dabdc8dc742707cab3fcce4e1dd9a5113765322c07b56e2d1b3",
+    "installer_sha256": "bc0d39304e14b4ee5d0b358eb25f9320f9bbc745c9229a53f03428a0520ffec2",
+    "installer_bytes": 5842414,
+    "installer_exit": 0,
+    "installed_sha256": "88c61583cfff251f35ad388dee96f2ab32621c42cf939188f2c24c8ba3f99582",
+    "installed_bytes": 25824256,
+    "exact_installer_payload_match": true,
+    "unsigned": true,
+    "clean_machine_test": false,
+    "workflow_accepted": false
+  },
+  "fixture": "Original synthetic four-zone/two-storey thermal case and original non-climatic weather",
+  "private_case_accepted": false,
+  "complete_v06_accepted": false,
+  "workspace": {
+    "cases": [
+      {
+        "status": "observed pass",
+        "id": 1,
+        "note": "Actual pointer Top maximize/restore; selected zone and framing retained"
+      },
+      {
+        "status": "observed pass",
+        "id": 2,
+        "note": "Actual Front title double-click maximize/restore; selection retained"
+      },
+      {
+        "status": "observed pass",
+        "id": 3,
+        "note": "Energy-Daylight-Energy restored Reference panel, exact mapped lower-west occurrence, clipped geometry and camera framing"
+      },
+      {
+        "status": "observed pass",
+        "id": 4,
+        "note": "zone1_window inspector retained through Reports and discipline remount; A Model/target and B Weather isolated"
+      },
+      {
+        "status": "not executed",
+        "id": 5,
+        "note": "Deferred before creating scope draft; conserve declared pointer budget after native picker and offscreen-element recovery"
+      },
+      {
+        "status": "observed pass",
+        "id": 6,
+        "note": "Normal close without save prompt; full retained inventory unchanged"
+      }
+    ],
+    "accepted_scientific_changes": 0,
+    "simulation_attempts": 0,
+    "retained_members": 305,
+    "retained_inventory_unchanged": true,
+    "before_sha256": "82beab45a038d3c527212a726b2b4daf7009c286b3a4cb55334366ebb8c2b4e8",
+    "after_sha256": "82beab45a038d3c527212a726b2b4daf7009c286b3a4cb55334366ebb8c2b4e8",
+    "pointer_actions": 30,
+    "retained_screenshots": 6,
+    "capture_budget_note": "More transient observation captures than planned were needed for dialog accessibility recovery; retained screenshot budget is six. Do not claim the full six-case protocol completed within all original capture limits.",
+    "layout": "Observed 1442x864 captured application window; exact requested client dimensions/DPI not established by capture alone",
+    "physical_modifier_selection": "unverified",
+    "later_mapping_followup": "The deferred mapping-table case was subsequently inspected during the separate Save As continuation; this does not retroactively accept the earlier complete capture protocol."
+  },
+  "save_as": {
+    "retained_members": 305,
+    "changed_members": [],
+    "extra_members": [],
+    "observed_upper_bound_ms": 24484,
+    "timing_scope": "UI input through later observation includes helper and independent check time; not operation-exclusive benchmark",
+    "unchanged_save_upper_bound_ms": 9269,
+    "mapping_table": "all three columns readable; occurrence ID wraps; state Mapped to analytical inputs; target A: Synthetic lower office zone1",
+    "scope_draft": "unchanged review copy explicitly discarded",
+    "all_305_members_unchanged_after_save_and_scope_review": true,
+    "confirmation_visibility": "Failed: prompt inserted above visible long form without focus/scroll; native scroll recovery used, explicit unchanged draft discard then observed",
+    "confirmation_outcome": "No remaining draft; accepted evidence unchanged",
+    "exact_layout_DPI_acceptance": false
+  },
+  "native_run_protocol": {
+    "attempts_declared": 3,
+    "attempts_consumed": 3,
+    "additional_attempts_permitted": 0,
+    "unchanged_model_inputs": true,
+    "new_five_minute_runs": 0,
+    "new_sensitivity_assessments": 0,
+    "engine_method": {
+      "method_id": "greenlens.energyplus.explicit-dx/1",
+      "adapter_version": "1",
+      "engine_version": "26.2.0",
+      "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+      "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+      "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c",
+      "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82"
+    },
+    "weather": {
+      "schema_version": "greenlens.energy-weather-asset.v0.4",
+      "binding": {
+        "original_sha256": "d648c9ab29f9b4c7953d153f15085e62c9e726ade50f0c1a65d94cdc5574618a",
+        "normalized_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+        "time_axis_sha256": "bc39582473077ca6bcaf3a8cf172197a623c7d898aff6f21dbecacafc04112e4",
+        "profile_id": "greenlens.energy-epw-explicit-fields.v1"
+      },
+      "source": {
+        "citation": "GreenLens original non-climatic thermal input",
+        "source_url": null,
+        "license": "Apache-2.0",
+        "rights_note": "Original synthetic fixture; no measured or typical-climate claim",
+        "synthetic_non_climatic": true
+      }
+    },
+    "audit_scope": "Read-only hashes, shapes, channel ordering and finite retained binary samples; canonical totals are copied from Rust results, not independently recalculated",
+    "new_processes_by_auditor": 0
+  },
+  "completed_runs": [
+    {
+      "attempt": 1,
+      "design": "A",
+      "run_id": "3bbdc86e-d78c-4fbc-b0a7-f7952d341e4a",
+      "source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+      "source_worktree_dirty": false,
+      "status": "completed",
+      "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+      "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "execution_input_sha256": "7063e49c513eb4bf1ed7893743b2e7506fd12174c992bb01bb5f4931979da09a",
+      "physical_result_sha256": "6502f1d05bfa293f16f22a352b5932eab8a2d6fd8063520d638d5cdaf42a1f82",
+      "registered_record_identity": "a5c8ac15a61c646beef953995b37ccd398f452132e1f74ce758f681ec212cbdd",
+      "results_file_sha256": "8810153cfd84c6280015552346033e2a49a46b0ebf7efb5aa71d12c054d310de",
+      "seal_sha256": "83ec411c3cd56c7b610175e3b400955740dd1592bec242010789d9db52581a57",
+      "sealed_members": 71,
+      "retained_bytes_including_seal": 22548677,
+      "shape": {
+        "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+        "finite_values": 1787040,
+        "interval_count": 52560,
+        "encoding": "float64_little_endian",
+        "channels": 34,
+        "ordering": "time_channel",
+        "chunks": 53,
+        "native_columns": 27,
+        "interval_minutes": 10
+      },
+      "process": {
+        "samples": 65,
+        "peak_observed_scratch_bytes": 19753241,
+        "sampled_peak_runner_plus_job_working_set_bytes": 472682496,
+        "process_tree_empty_recorded": true,
+        "elapsed_ms": 3327,
+        "state": "completed",
+        "exit_code": 0
+      },
+      "workflow_preparation_execution_wall_seconds": 4.2660928,
+      "rust_authoritative_totals": {
+        "maximum_interval_reconciliation_residual_kw": 1.5522042910257975E-15,
+        "coincident_peak": {
+          "timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          },
+          "facility_kw": 5.516090229474726,
+          "end_use_contributions_kw": {
+            "cooling_system": 1.7840902294747256,
+            "supply_fans": 0.24,
+            "ventilation_exhaust_fans": 0.016,
+            "interior_lighting": 1.92,
+            "exterior_lighting": 0.02,
+            "plug_equipment": 1.536
+          },
+          "reconciliation_residual_kw": 0.0
+        },
+        "annual": {
+          "facility_kwh": 16307.089802617933,
+          "end_uses_kwh": {
+            "cooling_system": 3596.9778026179333,
+            "supply_fans": 1160.64,
+            "ventilation_exhaust_fans": 52.416,
+            "interior_lighting": 6289.92,
+            "exterior_lighting": 175.2,
+            "plug_equipment": 5031.936
+          },
+          "reconciliation_residual_kwh": 0.0
+        },
+        "building_comfort_union": {
+          "zone_id": null,
+          "occupied_hours": 6136.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      },
+      "warning_count": 1,
+      "severe_count": 0,
+      "qualification_asserted": false,
+      "synthetic_geographic_warning_retained": true,
+      "historical_input_run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+      "historical_model_physical_execution_identity_match": true,
+      "historical_retained_series_byte_identical": true,
+      "historical_channel_identity_match": true
+    },
+    {
+      "attempt": 2,
+      "design": "B",
+      "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+      "source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+      "source_worktree_dirty": false,
+      "status": "completed",
+      "model_input_sha256": "b9f1b4e019696419c124c5a2751f475f19c7bba0c1df28d3934a123187227f97",
+      "physical_input_sha256": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+      "execution_input_sha256": "e783e018adc071963e5ce78a8b0b12e73b07d4da8a55909c2eeeb483e8f037c9",
+      "physical_result_sha256": "f34ec9c8142089793d07cfe100a92ac2ad0faf75aba27cca3fe538dbce8241d3",
+      "registered_record_identity": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+      "results_file_sha256": "eb3961493b8414b1c60d7b70f7a6615a64848d251a35b938e8567e5b8ef17a63",
+      "seal_sha256": "f5d845638255b11d313e43689dcdc8a4edabe68e58245b65b7fd6777b96aa5d7",
+      "sealed_members": 71,
+      "retained_bytes_including_seal": 22551970,
+      "shape": {
+        "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+        "finite_values": 1787040,
+        "interval_count": 52560,
+        "encoding": "float64_little_endian",
+        "channels": 34,
+        "ordering": "time_channel",
+        "chunks": 53,
+        "native_columns": 27,
+        "interval_minutes": 10
+      },
+      "process": {
+        "samples": 67,
+        "peak_observed_scratch_bytes": 21082235,
+        "sampled_peak_runner_plus_job_working_set_bytes": 508067840,
+        "process_tree_empty_recorded": true,
+        "elapsed_ms": 3431,
+        "state": "completed",
+        "exit_code": 0
+      },
+      "workflow_preparation_execution_wall_seconds": 4.4543373,
+      "rust_authoritative_totals": {
+        "maximum_interval_reconciliation_residual_kw": 1.5522042910257975E-15,
+        "coincident_peak": {
+          "timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          },
+          "facility_kw": 4.045870430025533,
+          "end_use_contributions_kw": {
+            "cooling_system": 1.1218704300255327,
+            "supply_fans": 0.2,
+            "ventilation_exhaust_fans": 0.016,
+            "interior_lighting": 1.152,
+            "exterior_lighting": 0.02,
+            "plug_equipment": 1.536
+          },
+          "reconciliation_residual_kw": 0.0
+        },
+        "annual": {
+          "facility_kwh": 12617.357232381652,
+          "end_uses_kwh": {
+            "cooling_system": 2616.65323238165,
+            "supply_fans": 967.2000000000002,
+            "ventilation_exhaust_fans": 52.416,
+            "interior_lighting": 3773.952,
+            "exterior_lighting": 175.2,
+            "plug_equipment": 5031.936
+          },
+          "reconciliation_residual_kwh": 1.8189894035458565E-12
+        },
+        "building_comfort_union": {
+          "zone_id": null,
+          "occupied_hours": 6136.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      },
+      "warning_count": 1,
+      "severe_count": 0,
+      "qualification_asserted": false,
+      "synthetic_geographic_warning_retained": true,
+      "historical_input_run_id": "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+      "historical_model_physical_execution_identity_match": true,
+      "historical_retained_series_byte_identical": true,
+      "historical_channel_identity_match": true
+    },
+    {
+      "attempt": 3,
+      "design": "A",
+      "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+      "source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+      "source_worktree_dirty": false,
+      "status": "completed",
+      "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+      "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+      "execution_input_sha256": "7063e49c513eb4bf1ed7893743b2e7506fd12174c992bb01bb5f4931979da09a",
+      "physical_result_sha256": "6502f1d05bfa293f16f22a352b5932eab8a2d6fd8063520d638d5cdaf42a1f82",
+      "registered_record_identity": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+      "results_file_sha256": "9f18394e17a4765c9ea52993a8b315f90bd68ec0d2840a888f8cb5483ca73cfd",
+      "seal_sha256": "2cba024b07a067e8610e90a9b3509c55fbac33c1d075c56cde8c5c4c24f7a5a0",
+      "sealed_members": 71,
+      "retained_bytes_including_seal": 22548668,
+      "shape": {
+        "time_policy": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+        "finite_values": 1787040,
+        "interval_count": 52560,
+        "encoding": "float64_little_endian",
+        "channels": 34,
+        "ordering": "time_channel",
+        "chunks": 53,
+        "native_columns": 27,
+        "interval_minutes": 10
+      },
+      "process": {
+        "samples": 67,
+        "peak_observed_scratch_bytes": 19753241,
+        "sampled_peak_runner_plus_job_working_set_bytes": 519622656,
+        "process_tree_empty_recorded": true,
+        "elapsed_ms": 3427,
+        "state": "completed",
+        "exit_code": 0
+      },
+      "workflow_preparation_execution_wall_seconds": 4.4079366,
+      "rust_authoritative_totals": {
+        "maximum_interval_reconciliation_residual_kw": 1.5522042910257975E-15,
+        "coincident_peak": {
+          "timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          },
+          "facility_kw": 5.516090229474726,
+          "end_use_contributions_kw": {
+            "cooling_system": 1.7840902294747256,
+            "supply_fans": 0.24,
+            "ventilation_exhaust_fans": 0.016,
+            "interior_lighting": 1.92,
+            "exterior_lighting": 0.02,
+            "plug_equipment": 1.536
+          },
+          "reconciliation_residual_kw": 0.0
+        },
+        "annual": {
+          "facility_kwh": 16307.089802617933,
+          "end_uses_kwh": {
+            "cooling_system": 3596.9778026179333,
+            "supply_fans": 1160.64,
+            "ventilation_exhaust_fans": 52.416,
+            "interior_lighting": 6289.92,
+            "exterior_lighting": 175.2,
+            "plug_equipment": 5031.936
+          },
+          "reconciliation_residual_kwh": 0.0
+        },
+        "building_comfort_union": {
+          "zone_id": null,
+          "occupied_hours": 6136.0,
+          "cooling_unmet_hours": 0.0,
+          "unmet_percent": 0.0
+        }
+      },
+      "warning_count": 1,
+      "severe_count": 0,
+      "qualification_asserted": false,
+      "synthetic_geographic_warning_retained": true,
+      "historical_input_run_id": "d7032960-4a14-4158-a276-af515bdf534a",
+      "historical_model_physical_execution_identity_match": true,
+      "historical_retained_series_byte_identical": true,
+      "historical_channel_identity_match": true
+    }
+  ],
+  "preexisting_evidence": {
+    "project_manifest_excluded": "Expected append-only run registrations; mutable manifest not treated as immutable evidence",
+    "inventory_sha256": "82beab45a038d3c527212a726b2b4daf7009c286b3a4cb55334366ebb8c2b4e8",
+    "all_byte_identical": true,
+    "bytes_checked": 126954587,
+    "members_checked": 304
+  },
+  "cancellation": {
+    "termination_not_established": true,
+    "intended_attempt": 3,
+    "completed_run_retained": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+    "no_retry": true,
+    "status": "unverified_too_late",
+    "actual_outcome": "Completed immutable evidence before Cancel input arrived",
+    "input_after_run_ms": 11695,
+    "receipt_records_no_energyplus_processes_after": 0
+  },
+  "later_confirmation_repair": {
+    "base_source": "aa7ff4adf75021a5098a151908903f1d6381885b",
+    "source_dirty": true,
+    "installed_or_CI_verified": false,
+    "source_files": [
+      {
+        "path": "apps/desktop/src/reference/ReferenceWorkbench.tsx",
+        "sha256": "6b89d2d5e0f6f119d4bf4f5945382ce6ba0b5747742b50c85a8fb343d338c7ed"
+      },
+      {
+        "path": "apps/desktop/src/reference/reference-workbench.css",
+        "sha256": "8ec990f17d5e4344ae7ff9aa682b1270db5d3f3cc38e67890201f7b382726269"
+      },
+      {
+        "path": "apps/desktop/tests/reference-workbench.test.mjs",
+        "sha256": "5d30b7e7140e18f3c8e839f7d976708ee1ef9d009c3d71074d284553330fd224"
+      }
+    ],
+    "implemented_changes": [
+      "Same-document trigger ownership; safe Cancel receives focus and confirmation requests nearest scrolling.",
+      "Escape within confirmation cancels without invoking destructive actions or leaking its key event.",
+      "Only cancellation restores a same-document, connected, enabled trigger; document change and unmount do not restore stale focus.",
+      "Scope/import/accepted values and Rust acceptance services are unchanged; confirmation visibility is display-only.",
+      "Reference-only validation/confirmation surfaces use explicit dark text on a light warning background."
+    ],
+    "typescript": "passed by coordinated root",
+    "frontend": {
+      "tests": 314,
+      "pass": 314,
+      "fail": 0,
+      "cancelled": 0,
+      "skipped": 0,
+      "duration_ms": 31969.345
+    },
+    "test_scope": "Actual React component confirms focus/scroll requests, safe cancellation, draft preservation, stale-trigger handling and contrast; jsdom has no layout. New installed long-panel recheck is required.",
+    "raw_logs": [
+      {
+        "name": "typescript.log",
+        "sha256": "30957e1c2986cf1dc6600ab442a135b280137eaf651d3365c04be5481c791613"
+      },
+      {
+        "name": "frontend-tests.log",
+        "sha256": "b9ffade707813ab17e017467f858dd8f3d72677793f527248cef8b8169bd1352"
+      },
+      {
+        "name": "source-audit.json",
+        "sha256": "e08206fc63b481edc05fb31b08a9d7c429a4a2cf0feae90674f64710bed0149f"
+      }
+    ]
+  },
+  "raw_receipts": [
+    {
+      "name": "native-runs-audit.json",
+      "sha256": "89bb41049774d7320e7e7d19b8a9fed17738e28faf08703d1967e71cf816384c"
+    },
+    {
+      "name": "workspace-observations.json",
+      "sha256": "770e5f166dbd4f0a35e12f739a4049dd77c026c3876abcdea7c8d41264917d8e"
+    },
+    {
+      "name": "save-and-mapping.json",
+      "sha256": "1aabca2b0639520268dc0a698ae4b8e8b53efbfd509594b2b18b44f715f11f0d"
+    },
+    {
+      "name": "save-as-comparison.json",
+      "sha256": "b74d82a8f4e97fb3558a7024a6a17835f9888cacda1a1a498655eaab7e0c8c15"
+    },
+    {
+      "name": "run-attempt-1.json",
+      "sha256": "c193831642ae463cac09b6efdfda1aab0c0a50e2c0a83ec7cf0b0891f67ef82d"
+    },
+    {
+      "name": "run-attempt-2.json",
+      "sha256": "59bb5a94e83362764af6f0aef2d31cfd8dbffd3114aad1a85b95f25dc0e79d43"
+    },
+    {
+      "name": "run-attempt-3.json",
+      "sha256": "b759715f5eaba14e93d013df663f68fa5039820b764624f7fa4c782e9c3cb920"
+    },
+    {
+      "name": "workflow-protocol.json",
+      "sha256": "3b2ea42403e53653b5f7b37f37dd4ddeea6dc4d12f18158e5edf2b73d53fa454"
+    },
+    {
+      "name": "installed-receipt.json",
+      "sha256": "c23a8850f8218c45b2098d3261bd72b10909ad150b899b81667bb42aafd5ca81"
+    }
+  ],
+  "limitations": [
+    "Successful completion and byte agreement do not establish physical validation or new scientific qualification.",
+    "Synthetic non-climatic input at zero latitude/longitude/timezone intentionally retains the native geographic warning.",
+    "Native input observations are attributed to the root verification owner and their bound receipts; this audit performs no UI interaction.",
+    "Recorded normal-exit process-tree-empty is not proof of cancellation; the intended cancellation attempt completed before input delivery.",
+    "Private architectural case remains undecoded and is not represented by this fixture.",
+    "No five-minute run, sensitivity assessment or replay was executed by this audit.",
+    "Memory and scratch values are sampled observations from retained supervised-process records.",
+    "Completed-before-Cancel evidence is correctly retained; this does not demonstrate cancellation or permit another attempt.",
+    "Save/Save As times are UI-to-later-observation upper bounds, not isolated operation benchmarks.",
+    "No raw screenshot or machine path is included. Native images remain external.",
+    "Current working confirmation repair has its own exact file identities and successful frontend checks, but is not the installed aa7 binary or its successful CI source.",
+    "Private architecture remains undecoded, and no private study or report is substituted by this original synthetic fixture."
+  ]
+}

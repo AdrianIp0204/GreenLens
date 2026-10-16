@@ -1,0 +1,458 @@
+{
+  "schema": "greenlens.hosted-ci-status.v1",
+  "observed_utc": "2026-10-16T01:31:26.8399657+00:00",
+  "source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+  "source_branch": "codex/v0.6-architectural-intake",
+  "repository": "https://github.com/AdrianIp0204/GreenLens",
+  "run_id": 38789822806,
+  "run_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38789822806",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-15T18:56:53Z",
+      "completed_utc": "2026-10-15T19:51:41Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38789822806/job/116611176010",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:56:54Z",
+          "completed_utc": "2026-10-15T18:56:55Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:56:55Z",
+          "completed_utc": "2026-10-15T18:57:05Z"
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:57:05Z",
+          "completed_utc": "2026-10-15T18:57:22Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:57:22Z",
+          "completed_utc": "2026-10-15T18:57:23Z"
+        },
+        {
+          "name": "Exact clean source and native toolchain",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:57:23Z",
+          "completed_utc": "2026-10-15T18:58:11Z"
+        },
+        {
+          "name": "Frontend types, interaction regressions and production assets",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:58:11Z",
+          "completed_utc": "2026-10-15T18:58:53Z"
+        },
+        {
+          "name": "Pinned Radiance for required legacy cancellation regressions",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:58:53Z",
+          "completed_utc": "2026-10-15T18:58:57Z"
+        },
+        {
+          "name": "Format, strict lint and unit/lifecycle regression suite",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T18:58:57Z",
+          "completed_utc": "2026-10-15T19:22:54Z"
+        },
+        {
+          "name": "Build and package exact-source unsigned binaries",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:22:54Z",
+          "completed_utc": "2026-10-15T19:51:16Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:16Z",
+          "completed_utc": "2026-10-15T19:51:20Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:20Z",
+          "completed_utc": "2026-10-15T19:51:23Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:23Z",
+          "completed_utc": "2026-10-15T19:51:26Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:27Z",
+          "completed_utc": "2026-10-15T19:51:29Z"
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:29Z",
+          "completed_utc": "2026-10-15T19:51:29Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:29Z",
+          "completed_utc": "2026-10-15T19:51:39Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:39Z",
+          "completed_utc": "2026-10-15T19:51:39Z"
+        }
+      ]
+    },
+    {
+      "name": "energy",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-15T19:51:44Z",
+      "completed_utc": "2026-10-15T20:10:43Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38789822806/job/116636923616",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:45Z",
+          "completed_utc": "2026-10-15T19:51:46Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:46Z",
+          "completed_utc": "2026-10-15T19:51:53Z"
+        },
+        {
+          "name": "Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:53Z",
+          "completed_utc": "2026-10-15T19:51:54Z"
+        },
+        {
+          "name": "Owned verification paths and clean source assertions",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:54Z",
+          "completed_utc": "2026-10-15T19:51:54Z"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:54Z",
+          "completed_utc": "2026-10-15T19:51:57Z"
+        },
+        {
+          "name": "Frozen CLI and independently installed pinned runtimes",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:57Z",
+          "completed_utc": "2026-10-15T19:52:40Z"
+        },
+        {
+          "name": "Explicit native lifecycle regression",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:52:40Z",
+          "completed_utc": "2026-10-15T19:56:06Z"
+        },
+        {
+          "name": "Explicit native report render regression",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:56:06Z",
+          "completed_utc": "2026-10-15T19:57:37Z"
+        },
+        {
+          "name": "Fixed four annual executions and complete immutable inspection",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:57:37Z",
+          "completed_utc": "2026-10-15T19:59:12Z"
+        },
+        {
+          "name": "Independent complete-series arithmetic and frozen scientific criteria",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:59:12Z",
+          "completed_utc": "2026-10-15T19:59:37Z"
+        },
+        {
+          "name": "Cold reports, export integrity and distributed replay despite numerical failure",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:59:37Z",
+          "completed_utc": "2026-10-15T20:00:53Z"
+        },
+        {
+          "name": "Retained real energy evidence through architectural intake and cold copy",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:00:53Z",
+          "completed_utc": "2026-10-15T20:10:17Z"
+        },
+        {
+          "name": "Retain qualification failure as job failure after independent delivery checks",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:10:17Z",
+          "completed_utc": "2026-10-15T20:10:17Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:10:17Z",
+          "completed_utc": "2026-10-15T20:10:30Z"
+        },
+        {
+          "name": "Collect native diagnostics after any outcome",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:10:30Z",
+          "completed_utc": "2026-10-15T20:10:31Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:10:31Z",
+          "completed_utc": "2026-10-15T20:10:38Z"
+        },
+        {
+          "name": "Post Run actions/setup-python@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:10:38Z",
+          "completed_utc": "2026-10-15T20:10:38Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:10:38Z",
+          "completed_utc": "2026-10-15T20:10:40Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:10:40Z",
+          "completed_utc": "2026-10-15T20:10:41Z"
+        }
+      ]
+    },
+    {
+      "name": "static_compatibility",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-15T19:51:43Z",
+      "completed_utc": "2026-10-15T20:11:18Z",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38789822806/job/116636923681",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:44Z",
+          "completed_utc": "2026-10-15T19:51:45Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:45Z",
+          "completed_utc": "2026-10-15T19:51:50Z"
+        },
+        {
+          "name": "Owned verification paths",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:50Z",
+          "completed_utc": "2026-10-15T19:51:50Z"
+        },
+        {
+          "name": "Run actions/download-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:50Z",
+          "completed_utc": "2026-10-15T19:51:52Z"
+        },
+        {
+          "name": "Frozen CLI identity and pinned static engine",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:51:52Z",
+          "completed_utc": "2026-10-15T19:52:05Z"
+        },
+        {
+          "name": "Required real static analytical suite",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T19:52:05Z",
+          "completed_utc": "2026-10-15T20:03:11Z"
+        },
+        {
+          "name": "Distributed CLI static A/B, copy, export and replay",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:03:11Z",
+          "completed_utc": "2026-10-15T20:08:30Z"
+        },
+        {
+          "name": "Historical v0.1 replay without annual executables",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:08:30Z",
+          "completed_utc": "2026-10-15T20:11:12Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:11:12Z",
+          "completed_utc": "2026-10-15T20:11:14Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:11:14Z",
+          "completed_utc": "2026-10-15T20:11:17Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "started_utc": "2026-10-15T20:11:17Z",
+          "completed_utc": "2026-10-15T20:11:17Z"
+        }
+      ]
+    }
+  ],
+  "hosted_artifact_listing": [
+    {
+      "id": 12004350254,
+      "name": "energy-native-evidence-aa7ff4adf75021a5098a151908903f1d6381885b",
+      "size_bytes": 91949115,
+      "expired": false,
+      "created_utc": "2026-10-15T20:10:30Z",
+      "expires_utc": "2026-10-29T20:10:18Z",
+      "github_archive_digest": "sha256:a05f5310ad6770f91f877d5e32c57326ce7e3a731f49c7b87cf9408a0a1ba748"
+    },
+    {
+      "id": 12004310454,
+      "name": "energy-native-jobs-aa7ff4adf75021a5098a151908903f1d6381885b",
+      "size_bytes": 52999382,
+      "expired": false,
+      "created_utc": "2026-10-15T20:10:38Z",
+      "expires_utc": "2026-10-29T20:10:32Z",
+      "github_archive_digest": "sha256:e71240ef1f66d204c8853e770dd5a85aed5647e8718b16076fc8fe47be5fc115"
+    },
+    {
+      "id": 12003195055,
+      "name": "energy-unsigned-investigation-aa7ff4adf75021a5098a151908903f1d6381885b",
+      "size_bytes": 17256763,
+      "expired": false,
+      "created_utc": "2026-10-15T19:51:23Z",
+      "expires_utc": "2026-10-29T19:51:21Z",
+      "github_archive_digest": "sha256:9d435ee193062dabdc8dc742707cab3fcce4e1dd9a5113765322c07b56e2d1b3"
+    },
+    {
+      "id": 12002954349,
+      "name": "energy-static-compatibility-aa7ff4adf75021a5098a151908903f1d6381885b",
+      "size_bytes": 4818509,
+      "expired": false,
+      "created_utc": "2026-10-15T20:11:14Z",
+      "expires_utc": "2026-10-29T20:11:12Z",
+      "github_archive_digest": "sha256:ff3632bb4d23b0c66662096cd2bc3d45480d8495e449d9348e2713e3b4fa0e24"
+    },
+    {
+      "id": 12002068690,
+      "name": "energy-cli-aa7ff4adf75021a5098a151908903f1d6381885b",
+      "size_bytes": 11339265,
+      "expired": false,
+      "created_utc": "2026-10-15T19:51:20Z",
+      "expires_utc": "2026-10-29T19:51:17Z",
+      "github_archive_digest": "sha256:ad7fcf68cb2dfa391ba2a123afe99a5ad88338906d4fffd02c5465b356490c5f"
+    },
+    {
+      "id": 12001724683,
+      "name": "energy-build-diagnostics-aa7ff4adf75021a5098a151908903f1d6381885b",
+      "size_bytes": 1906766,
+      "expired": false,
+      "created_utc": "2026-10-15T19:51:26Z",
+      "expires_utc": "2026-10-29T19:51:24Z",
+      "github_archive_digest": "sha256:d53194ad111b1d220408ca98845714bc86407926e4c7a048b2b49ebf715c01e9"
+    }
+  ],
+  "raw_responses": [
+    {
+      "name": "ci-38789822806.json",
+      "sha256": "592c96380594da392703f39b2511a45f3d4029c51567ea274a73f501badc4ab3"
+    },
+    {
+      "name": "ci-aa7-artifacts.json",
+      "sha256": "e54d67145c48f8e5f092b17916b5efff0d1bdf05626c2e6ceabb29695dacdd6f"
+    }
+  ],
+  "historical_successes": [
+    {
+      "run_id": 38786215060,
+      "source_commit": "fa1e207bb65bcfd5c4e808adf55d6eb90665dce8",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38786215060",
+      "raw_sha256": "b493bd47ec396d56e468adf107759e067b00db840caf5a0b7db56fa8fd3c2f55"
+    },
+    {
+      "run_id": 38780110435,
+      "source_commit": "93a58e9b4617b508da93979f25b8c63872480ee8",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38780110435",
+      "raw_sha256": "1d123a48d23d398797ed90bfe89f6eb8178c2af97789cfb7508faab5b14bbdd7"
+    }
+  ],
+  "limits": [
+    "This receipt records authenticated read-only GitHub status and artifact metadata; no artifact bytes were downloaded or inspected by this audit.",
+    "Hosted outputs have their own identities; they are not the local completed CLI or an installed application until separately downloaded, checked and installed.",
+    "CI native service/process tests do not establish actual installed user-interface acceptance, private-case geometry or clean-machine installation.",
+    "The failed d19 run 38771257775 remains failed; the fixture correction and later success do not rewrite its outcome.",
+    "No stopped v0.3/v0.5 scientific protocol was restarted and no scientific qualification is promoted by this CI status."
+  ],
+  "overall_v06_accepted": false,
+  "private_case_accepted": false
+}

@@ -1,0 +1,272 @@
+{
+  "schema": "greenlens.v06.cold-audit.v1",
+  "audited_utc": "2026-10-16T09:34:30.4413296+08:00",
+  "source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+  "cli_sha256": "331b2ab4a4212b9f22f04c77326517aa9090b8f41516789cf71b3008f7d00878",
+  "fixture": "Original synthetic four-zone, four-run, normalized-reference project with long-label scope evidence",
+  "status": "passed_bounded_cold_portability_checks",
+  "processes": {
+    "native_simulations": 0,
+    "native_ui_observations": 0,
+    "cold_collector": 10,
+    "retained_sensitivity_inspection": 1
+  },
+  "protocol": {
+    "memory_scope": "CLI-only OS high-water or sampled working set; not aggregate renderer/process-tree peak or a hard OS quota",
+    "retained_inspection_wall_seconds": 14.4665718,
+    "cold_wall_seconds": 211.4176103,
+    "timestamp_basis": "First collector declaration ISO time; final inspection receipt filesystem write time, observed locally. No isolated benchmark claim.",
+    "elapsed_to_final_receipt_seconds": 251.8866307,
+    "sampled_output_bytes": 169155758,
+    "limit_seconds": 1200,
+    "concurrency": "Native desktop compilation overlapped; functional observations, not isolated performance benchmarks",
+    "output_limit_bytes": 1073741824,
+    "maximum_observed_cli_peak_bytes": 52641792.0
+  },
+  "commands": [
+    {
+      "os_cli_peak_bytes": 52641792,
+      "wall_seconds": 38.5701036,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "copy"
+    },
+    {
+      "os_cli_peak_bytes": 2666496,
+      "wall_seconds": 0.1485391,
+      "expected_exit": "nonzero",
+      "exit_code": 1,
+      "name": "missing-engine"
+    },
+    {
+      "os_cli_peak_bytes": 48406528,
+      "wall_seconds": 8.2604332,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "inspect-A"
+    },
+    {
+      "os_cli_peak_bytes": 48381952,
+      "wall_seconds": 9.4692203,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "inspect-B"
+    },
+    {
+      "os_cli_peak_bytes": 48312320,
+      "wall_seconds": 8.9291785,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "reference-inspect"
+    },
+    {
+      "os_cli_peak_bytes": 48406528,
+      "wall_seconds": 8.7118108,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "reference-scope-context"
+    },
+    {
+      "os_cli_peak_bytes": 48574464,
+      "wall_seconds": 5.6040579,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "reference-scope-assess"
+    },
+    {
+      "os_cli_peak_bytes": 50954240,
+      "wall_seconds": 33.0392071,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "report"
+    },
+    {
+      "os_cli_peak_bytes": 52215808,
+      "wall_seconds": 66.7323097,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "export"
+    },
+    {
+      "os_cli_peak_bytes": 50745344,
+      "wall_seconds": 17.1826317,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "package-inspect"
+    },
+    {
+      "wall_seconds": 12.3141144,
+      "observed_cli_peak_bytes": 49156096,
+      "expected_exit": "zero",
+      "exit_code": 0,
+      "name": "retained-sensitivity-inspect"
+    }
+  ],
+  "unavailability": {
+    "unknown_external_weather_paths_proven_unavailable": false,
+    "external_conversion_path_hidden": false,
+    "energyplus_override_unavailable_and_doctor_failed": true,
+    "engine_installation_directories_modified": false,
+    "exact_four_original_run_scratch_directories_hidden": true,
+    "source_project_and_its_retained_weather_hidden": true
+  },
+  "preservation": {
+    "process_tree_cancellation_tested": false,
+    "unconfirmed_children": 0,
+    "move_records_restored": 5,
+    "inventories": [
+      {
+        "retained_bytes": 127184609,
+        "kind": "source",
+        "after_receipt_sha256": "580356f9424060eed96f5a0855f648ff7fda89ae7ae55bf4e678c6666e2331aa",
+        "non_evidence_excluded": [
+          ".greenlens.lock"
+        ],
+        "current_rehash_equal": true,
+        "before_after_equal": true,
+        "before_receipt_sha256": "580356f9424060eed96f5a0855f648ff7fda89ae7ae55bf4e678c6666e2331aa",
+        "retained_members": 305
+      },
+      {
+        "retained_bytes": 127184609,
+        "kind": "copy",
+        "after_receipt_sha256": "580356f9424060eed96f5a0855f648ff7fda89ae7ae55bf4e678c6666e2331aa",
+        "non_evidence_excluded": [
+          ".greenlens.lock"
+        ],
+        "current_rehash_equal": true,
+        "before_after_equal": true,
+        "before_receipt_sha256": "580356f9424060eed96f5a0855f648ff7fda89ae7ae55bf4e678c6666e2331aa",
+        "retained_members": 305
+      }
+    ],
+    "restoration_conflicts": 0,
+    "all_originals_exist_hidden_siblings_absent": true,
+    "parent_exit_not_descendant_join_proof": true
+  },
+  "archive": {
+    "compressed_bytes": 21746692,
+    "text_members_scanned": 130,
+    "uncompressed_bytes": 132753233,
+    "limits": {
+      "entries": 5000,
+      "entry_bytes": 67108864,
+      "uncompressed_bytes": 268435456
+    },
+    "sha256": "a61d169529a6a50f6c5b6105b611154ba22e814c91ac7124b756001333d27fcf",
+    "entries": 356,
+    "safe_unique_relative_names": true,
+    "outer_seal_entries_verified": 355,
+    "privacy_marker_findings": [],
+    "text_bytes_scanned": 43164339,
+    "maximum_entry_bytes": 5300731,
+    "privacy_scope": "Bounded text-format scan for local user paths and credential-shaped markers; regex does not establish absence of binary metadata or arbitrary identifying prose. Original synthetic fixture only."
+  },
+  "reports": {
+    "products_by_extension": [
+      {
+        "files": 5,
+        "extension": ".pdf"
+      },
+      {
+        "files": 8,
+        "extension": ".png"
+      },
+      {
+        "files": 19,
+        "extension": ".svg"
+      },
+      {
+        "files": 5,
+        "extension": ".html"
+      },
+      {
+        "files": 6,
+        "extension": ".json"
+      },
+      {
+        "files": 5,
+        "extension": ".csv"
+      }
+    ],
+    "prior_reviewed_pngs_reused": 8,
+    "changed_members": [
+      "report-artifacts.json"
+    ],
+    "changed_metadata_fields": 22,
+    "fresh_visual_review": false,
+    "byte_identical_to_prior_products": 47,
+    "change_scope": "Rendering work ID, timestamps, elapsed time, memory and sample count only",
+    "fresh_arithmetic_validation": false,
+    "total_products": 48,
+    "prior_reviewed_pdf_pages_reused": 85
+  },
+  "retained_sensitivity": {
+    "qualification_promoted": false,
+    "source_bytes_unchanged": true,
+    "recalculated": false,
+    "run_ids": [
+      "d7032960-4a14-4158-a276-af515bdf534a",
+      "910f87da-3ba4-4edc-808a-0af2d5354a3e",
+      "393bbca1-29a2-4a96-bcd4-6d3f5f359500",
+      "8733596c-4bb5-43ad-9945-6b17603fe5ea"
+    ],
+    "session_id": "04359cb5-3e15-43a9-a427-b8a3e50f2a26"
+  },
+  "preserved_harness_failures": [
+    {
+      "kind": "preflight_parameter_shadowing",
+      "effect": "Initial wrapper stopped before any CLI, move or output directory; corrected helper parameter isolation, then performed the declared collector once",
+      "initial_cli_processes": 0,
+      "initial_moves": 0
+    },
+    {
+      "kind": "nonterminating_root_datetime_guard_parse",
+      "effect": "Separate inspection started despite initial culture-dependent timestamp parse error; subsequent DateKind String observation and final receipt establish elapsed bound; original guard is not claimed effective",
+      "inspection_rerun": false,
+      "observation_elapsed_seconds": 279.9071137
+    }
+  ],
+  "evidence_sha256": {
+    "summary.json": "a0c8158e2367f7559f078c0881646c9fcfddfee96948bd87d2faf46228639dba",
+    "declaration.json": "5d0ae79abda22804bdaea34b570e1a4505a9f054eeb147f12e3e46b9ab06760b",
+    "combined-protocol.json": "1ee476e39456656cc716c49630a210772deb9e06112f989973a5440d699722e3",
+    "commands.json": "a41a1dc412332b24a16751da216010cb02fd163f86be8523c554f8e9ed15eda0",
+    "cold-evidence.json": "54437f676c65572fd69e9da51e3990a3c96263b904aebc606e97c1000b3bb1b6",
+    "reference-archive.json": "bba676a81165e1748569e2d6f3949b0287c091098b65eee3243798c50248b7d4",
+    "move-ledger.json": "270a3f6d3793dde82ad23f6ad0a18ed0b8664330f07195b0388871c55760f48c",
+    "shared-budget-observation.json": "c327024c791fb1c77e0657bc482e386aca2ba46c5fcd4f803c16f95bf2b7f422",
+    "package-inspect.json": "39c5baeedbc49144d125827f39297810f64be68a55b5755032fdebbbdb18bdc9",
+    "retained-sensitivity/inspection.json": "10cd613c633725c4d9de07bd46b87be2c0c307f6f4e9a4b6dca069e5bc150629",
+    "retained-sensitivity/commands.json": "50428c083b549f956bba202c314223ccd33c2158dd1848cc0808aa19a13d1292",
+    "report-byte-comparison-aa7.json": "d8036969b138831fe35f6572bda75af6dd0fdff433dd618fc1c5533054ba010e",
+    "wrapper-invocation-failure-01.json": "5192e923c99a555b9e049870e9efa634a750a4e72802d373e5faf3d1f009aa38"
+  },
+  "not_established": [
+    "Private-model intake or acceptance",
+    "Installed application workflow acceptance",
+    "Fresh EnergyPlus execution or replay",
+    "Independent physical validation or new scientific qualification",
+    "Complete original architectural-source archive",
+    "Aggregate native descendant memory or independently observed process-tree shutdown",
+    "Fresh report page inspection"
+  ],
+  "audit_additional_checks": {
+    "ten_command_stdout_stderr_hashes_rechecked": true,
+    "normalized_reference_members": {
+      "references/6b3a0883-dbed-46e8-b480-46c08115a781/reference.json": {
+        "bytes": 7878,
+        "sha256": "8c8d4203c486c024c6d5b7856133effcd98d8e723f112dea63fe2a8bf377bc5b"
+      },
+      "references/6b3a0883-dbed-46e8-b480-46c08115a781/geometry/00000.bin": {
+        "bytes": 3856,
+        "sha256": "8534b322f36db5c8f3c80532c6ca1a78be7ef2903b32add9b82978b1b5cc2dcc"
+      },
+      "references/6b3a0883-dbed-46e8-b480-46c08115a781/checksums.json": {
+        "bytes": 234,
+        "sha256": "276c7f39de652719fd61e6ea320e8f306cdc0e11cd5227adc46202d67e0a436f"
+      }
+    },
+    "cli_binary_rehashed": true
+  }
+}

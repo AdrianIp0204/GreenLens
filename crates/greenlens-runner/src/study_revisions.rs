@@ -349,6 +349,10 @@ pub fn initialize_scope(
     cancel: &AtomicBool,
 ) -> Result<Project> {
     checkpoint(cancel)?;
+    // Check the supplied declaration before adopting history or upgrading a
+    // recognized legacy scope. Unsupported versions and v1-only link rules
+    // cannot be bypassed by the later authoring-schema conversion.
+    greenlens_core::architectural_scope::validate_declaration(&scope)?;
     crate::validate_project(project)?;
     let mut next = project.clone();
     let extension = next
@@ -560,8 +564,9 @@ mod tests {
     use super::*;
     use greenlens_core::{
         architectural_scope::{
-            AnalyticalObjectKind, AnalyticalTarget, MappingStatus, ScopeCoverage, ScopeKind,
-            ScopeMapping, ARCHITECTURAL_SCOPE_SCHEMA,
+            AnalyticalObjectKind, AnalyticalTarget, AssumptionLink, AssumptionStatus,
+            MappingStatus, ScopeAssumption, ScopeCoverage, ScopeKind, ScopeMapping,
+            ARCHITECTURAL_SCOPE_SCHEMA, ARCHITECTURAL_SCOPE_SCHEMA_V2,
         },
         canonical_hash,
         reference::ReferenceImportOptions,
@@ -686,6 +691,74 @@ mod tests {
                         .into(),
             })
             .collect()
+    }
+
+    #[test]
+    fn scope_admission_rejects_original_schema_mismatches_without_changing_history_or_disk() {
+        let (_temp, root, imported, legacy_scope) = fixture();
+        let cancel = AtomicBool::new(false);
+        let disk_before = fs::read(root.join("project.json")).unwrap();
+        let mut typed_scope = legacy_scope.clone();
+        typed_scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
+        typed_scope.assumptions.push(ScopeAssumption {
+            id: "calendar-source".into(),
+            link: AssumptionLink::CalendarField {
+                design_id: "B".into(),
+            },
+            field: "/start_weekday".into(),
+            status: AssumptionStatus::Synthetic,
+            value: Some("monday".into()),
+            units: "weekday".into(),
+            source: "Original synthetic calendar declaration".into(),
+            rationale: "Admission regression; no physical validation claim".into(),
+            affected_scope: "Proposed study calendar".into(),
+        });
+        let accepted =
+            initialize_scope(&root, &imported.project, typed_scope.clone(), &cancel).unwrap();
+        let mut legacy_project = imported.project.clone();
+        legacy_project.architecture.as_mut().unwrap().scope = Some(legacy_scope.clone());
+
+        // Exercise first acceptance, an active v2 history, and an exact legacy
+        // projection that would otherwise be adopted before rejecting input.
+        for project in [&imported.project, &accepted, &legacy_project] {
+            let before = serde_json::to_vec(project).unwrap();
+            let mut unknown = typed_scope.clone();
+            unknown.schema_version = "greenlens.architectural-scope.v999".into();
+            let error = initialize_scope(&root, project, unknown, &cancel).unwrap_err();
+            assert!(error
+                .to_string()
+                .contains("Unsupported architectural scope schema"));
+
+            let mut mislabeled = typed_scope.clone();
+            mislabeled.schema_version = ARCHITECTURAL_SCOPE_SCHEMA.into();
+            let error = initialize_scope(&root, project, mislabeled, &cancel).unwrap_err();
+            assert!(error
+                .to_string()
+                .contains("Typed study/calendar links require"));
+            assert_eq!(serde_json::to_vec(project).unwrap(), before);
+            assert_eq!(fs::read(root.join("project.json")).unwrap(), disk_before);
+        }
+
+        // Supported new authoring upgrades v1, whereas adopting an existing
+        // legacy scope retains its exact v1 representation and identity.
+        let upgraded =
+            initialize_scope(&root, &imported.project, legacy_scope.clone(), &cancel).unwrap();
+        assert_eq!(
+            revisions(&upgraded)[0].schema_version,
+            core::SCOPE_REVISION_SCHEMA_V2
+        );
+        let legacy_bytes = serde_json::to_vec(&legacy_scope).unwrap();
+        let adopted = initialize_scope(&root, &legacy_project, legacy_scope, &cancel).unwrap();
+        assert_eq!(
+            revisions(&adopted)[0].schema_version,
+            core::SCOPE_REVISION_SCHEMA
+        );
+        assert_eq!(
+            serde_json::to_vec(&revisions(&adopted)[0].scope).unwrap(),
+            legacy_bytes
+        );
+        validate_preserved(&legacy_project, &adopted).unwrap();
+        assert_eq!(fs::read(root.join("project.json")).unwrap(), disk_before);
     }
 
     #[test]

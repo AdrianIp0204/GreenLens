@@ -429,6 +429,10 @@ pub fn initial_revision_v2(
     reference: RevisionReferenceSnapshot,
     designs: BTreeMap<String, RevisionDesignSnapshot>,
 ) -> Result<ScopeRevision> {
+    // Validate the caller's declared contract before the supported v1-to-v2
+    // authoring upgrade. Relabeling must not admit unknown schemas or v2 links
+    // that were incorrectly supplied under historical v1 semantics.
+    validate_declaration(&scope)?;
     scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
     initial_revision_version(scope, reference, designs, true)
 }
@@ -1808,6 +1812,7 @@ mod tests {
             });
         }
         let mut scope = old.scope.clone();
+        scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
         let declaration = scope.assumptions[0].clone();
         for (id, link, field, value) in [
             (
@@ -1836,6 +1841,48 @@ mod tests {
             });
         }
         initial_revision_v2(scope, old.reference, designs).unwrap()
+    }
+
+    #[test]
+    fn v2_initial_admission_checks_original_schema_before_supported_upgrade() {
+        let legacy = fixture();
+        let legacy_bytes = serde_json::to_vec(&legacy).unwrap();
+        let upgraded = initial_revision_v2(
+            legacy.scope.clone(),
+            legacy.reference.clone(),
+            legacy.designs.clone(),
+        )
+        .unwrap();
+        assert_eq!(upgraded.schema_version, SCOPE_REVISION_SCHEMA_V2);
+        assert_eq!(upgraded.scope.schema_version, ARCHITECTURAL_SCOPE_SCHEMA_V2);
+        let mut expected_scope = legacy.scope.clone();
+        expected_scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
+        assert_eq!(upgraded.scope, expected_scope);
+        validate_revision(&legacy).unwrap();
+        assert_eq!(serde_json::to_vec(&legacy).unwrap(), legacy_bytes);
+
+        let typed = fixture_v2();
+        let typed_bytes = serde_json::to_vec(&typed).unwrap();
+        let mut unknown = typed.scope.clone();
+        unknown.schema_version = "greenlens.architectural-scope.v999".into();
+        let error = initial_revision_v2(unknown, typed.reference.clone(), typed.designs.clone())
+            .unwrap_err();
+        assert!(error
+            .to_string()
+            .contains("Unsupported architectural scope schema"));
+        for id in ["calendar", "weather"] {
+            let mut mislabeled = typed.scope.clone();
+            mislabeled.schema_version = ARCHITECTURAL_SCOPE_SCHEMA.into();
+            mislabeled.assumptions.retain(|row| row.id == id);
+            let error =
+                initial_revision_v2(mislabeled, typed.reference.clone(), typed.designs.clone())
+                    .unwrap_err();
+            assert!(error
+                .to_string()
+                .contains("Typed study/calendar links require"));
+        }
+        validate_revision(&typed).unwrap();
+        assert_eq!(serde_json::to_vec(&typed).unwrap(), typed_bytes);
     }
 
     #[test]

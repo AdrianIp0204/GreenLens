@@ -83,6 +83,9 @@ function Assert-Products([string]$Root,$Manifest){
  return [ordered]@{products=$Manifest.products;product_count=$Manifest.products.Count;product_bytes=$total;pdf_count=$pdfs}
 }
 function Write-Receipt([string]$Path,$Value){$Value|ConvertTo-Json -Depth 24|Set-Content -LiteralPath $Path -Encoding utf8NoBOM}
+function Assert-RegenerationDeadline([double]$ElapsedSeconds){
+ if(![double]::IsFinite($ElapsedSeconds) -or $ElapsedSeconds -lt 0 -or $ElapsedSeconds -gt 600){throw 'The completed regeneration exceeded its fixed600-second deadline.'}
+}
 if($FunctionsOnly){return}
 
 $cache=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'GreenLens')).TrimEnd('\','/')
@@ -183,7 +186,9 @@ try{
  }
  if($record.exit_code -ne 0){throw 'The single CLI regeneration failed; inspect retained bounded stderr.'}
  if(!$typstCount -or $record.energyplus_observed){throw 'Pinned Typst was not observed, or a forbidden simulation process was observed.'}
- $record.command_seconds=$timer.Elapsed.TotalSeconds;$commandPassed=$true
+ $record.command_seconds=$timer.Elapsed.TotalSeconds
+ Assert-RegenerationDeadline $record.command_seconds
+ $commandPassed=$true
 }catch{$record.failure=$_.Exception.Message}
 finally{
  # The child inherited its isolated environment at process creation. Restore
@@ -211,6 +216,8 @@ try{
  $actual=Snapshot-Members $destination
  if($actual.member_count -ne ($products.products.Count+1)){throw 'Regeneration contains missing or unadvertised additional members.'}
  foreach($p in $products.products){if(!$actual.files.Contains($p.path)){throw 'A regenerated deterministic member is missing.'}}
+  $record.verification_seconds=$timer.Elapsed.TotalSeconds
+  Assert-RegenerationDeadline $record.verification_seconds
  $record.products_identical=$true;$record.completed=$true
 }catch{if(!$record.failure){$record.failure=$_.Exception.Message}else{$record.verification_failure=$_.Exception.Message}}
 $record.elapsed_seconds=$timer.Elapsed.TotalSeconds;$record.completed_utc=[DateTime]::UtcNow.ToString('o')

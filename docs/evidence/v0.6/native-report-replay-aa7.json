@@ -1,0 +1,136 @@
+{
+  "schema_version": "greenlens.native-audit-supplement.v1",
+  "status": "verified_synthetic_export_replay_and_report_audit_only",
+  "release_acceptance": "incomplete",
+  "source_commit": "aa7ff4adf75021a5098a151908903f1d6381885b",
+  "installed_payload_sha256": "88c61583cfff251f35ad388dee96f2ab32621c42cf939188f2c24c8ba3f99582",
+  "distributed_cli_sha256": "251603b9624e55b17b54ff05b932263055708d5897d27eb782fef75fdfda0a7a",
+  "package": {
+    "sha256": "c501f0abd13c8d88e0b6b81e658f1b033e0da544d00cf18b24f82c076f9aae6a",
+    "bytes": 9362713,
+    "entries": 203,
+    "uncompressed_bytes": 58220060,
+    "maximum_entry_bytes": 5300731,
+    "limits": {
+      "entries": 5000,
+      "entry_bytes": 67108864,
+      "uncompressed_bytes": 268435456
+    },
+    "hashed_members": 203,
+    "complete_valid_seals": 7,
+    "path_case_symlink_checks": "pass",
+    "unchanged_native_members": 152,
+    "identical_extracted_members": 203
+  },
+  "selected_runs": [
+    {
+      "design": "A",
+      "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+      "source_record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+      "replay_record_sha256": "aff3f7d7209a96974ada86b78e64ef9092648cdc946db20fe3d92cab5cbfceec"
+    },
+    {
+      "design": "B",
+      "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+      "source_record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+      "replay_record_sha256": "ff6ba2df73d5a139901c2a50be368411e933633820c130d07c793130f9cf2793"
+    }
+  ],
+  "replay": {
+    "state": "completed",
+    "source_clean": true,
+    "method_id": "greenlens.energyplus.explicit-dx/1",
+    "engine_version": "26.2.0",
+    "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+    "shape_per_run": [
+      52560,
+      34
+    ],
+    "encoding": "float64_little_endian",
+    "ordering": "time_channel",
+    "interval_minutes": 10,
+    "time_axis": "non_leap_local_standard_time_interval_end_excludes_warmup_sizing",
+    "independently_equal_chunks": 106,
+    "represented_values": 3574080,
+    "complete_series_and_method_study_input_bindings": "equal",
+    "cli_maximum_absolute_difference": 0,
+    "cli_tolerance": "max(1e-6 per channel unit, 0.1% of reference)",
+    "inspect_wall_seconds": 3.6045976,
+    "replay_wall_seconds": 19.0088527,
+    "replay_sampled_runner_plus_job_peak_bytes": 602546176,
+    "process_exits": [
+      0,
+      0
+    ],
+    "normal_job_empty": [
+      true,
+      true
+    ],
+    "scope": "Identical-recipe integration agreement, not physical validation. Timings overlap other work; collector-directory size is not engine scratch."
+  },
+  "reports": {
+    "base_dataset_sha256": "0a3fd524259519daa24bc00a9b69dca2e59f39d4a28a8a80c76ab6ece6ef0764",
+    "workbench_sha256": "83d375b6b89b4d5fd958830ab24c7e3a0fab4301139ff226e13860f2f35ea66d",
+    "architecture_sha256": "701240664a8f7b09286dec0ef268d9375fe1a9ba31acb1ee72417df6951eacdb",
+    "pdf_sha256": {
+      "executive.pdf": "12e6b21e8e601b4e20cba534b2eda55001883a9adb220ab7abce7c0506b4edf6",
+      "assessment.pdf": "12e6b21e8e601b4e20cba534b2eda55001883a9adb220ab7abce7c0506b4edf6",
+      "technical.pdf": "6c8604f84286590c261783ab8290f92dbf53c21c00bcf42b463f1aaa5679a504",
+      "input-appendix.pdf": "4fc9696fd8dc8885ba41fa6ac31c42d56ca0de681419b3e85e2da8a475cbf28b",
+      "performance.pdf": "0b073b6438f4a1ad19f8debf06df368b6deee4a36294c160f32d9cdc3b53bd80"
+    },
+    "pages_covered": 77,
+    "unique_pages_individually_viewed": 73,
+    "identical_executive_assessment_pages": 4,
+    "performance_pngs_individually_viewed": 8,
+    "render_dpi": 144,
+    "blocking_visual_findings": 0,
+    "arithmetic_comparisons": 260,
+    "recorded_checks": 860,
+    "presentation_cells": 318,
+    "maximum_arithmetic_difference": 3.552713678800501e-15,
+    "arithmetic_tolerance": 1e-8,
+    "canonical_hashes_independently_recomputed": true,
+    "native_artifact_seals": 46,
+    "native_to_package_report_files_equal": 46,
+    "other_file": "report-artifacts.json differs in 23 renderer work-ID, timing and resource fields; report products are identical.",
+    "nonblocking_observations": "Sparse meaningful contents continuation; dense identifiers; continued source cells; overlapping identical schedule curves; tiny signed-zero residuals; retained camera whitespace."
+  },
+  "scope": {
+    "reference_and_weather": "Original synthetic; non-climatic weather",
+    "architectural_scope": "partial_building",
+    "relationship": "current",
+    "mapped_occurrences": 1,
+    "unresolved_mappings": 6,
+    "coverage": "unknown",
+    "exact_selected_pair_sensitivity": "not_retained",
+    "historical_sensitivity": "Explicitly excluded; no transfer to the new pair."
+  },
+  "privacy": {
+    "utf8_members_scanned": 83,
+    "utf8_bytes_scanned": 25957439,
+    "marker_hits": 0,
+    "pdf_text_metadata_pages": 77,
+    "pdf_active_or_external_actions": 0,
+    "source_or_engine_binary_members": 0,
+    "limit": "Bounded scanning and visual inspection do not prove absence of every possible hidden datum."
+  },
+  "evidence_sha256": {
+    "package_replay_audit": "40d2758bc03c5dba538dd5df2421bcf4a8af11df7d737e8102133606f52d2486",
+    "package_inventory": "577d5dde10062204174f534d8aed5efc9a86a02a6abdb3391e200cabc6c2b2bc",
+    "cli_replay": "5b574f7e811cc34d305b043a7e33cfb2e902abf6063040614041389211433738",
+    "report_summary": "b090b2dfb5367ed4092f469e1d9f914772cf2277ad3e16ba167b3c7109aed078",
+    "numeric_binding": "ab697a353d550a9952009d760322c0603b84bb5131c7476b3ca8d3996d6268dd",
+    "visual": "f5cf515e210cceba82243b4ce93f481563fb2afc2274aff795bad74ba187c29b",
+    "pdf_privacy": "2084827a20124398541d312befcec20c9cc4071150d2eb33100f5188d4643b8f"
+  },
+  "limitations": [
+    "Auditors launched no simulation, report generation or application. Observations bind aa7 source and do not establish later candidates.",
+    "Original synthetic warning retained: one native warning per selected case, zero severe messages.",
+    "Historical d19 first-progress arrival 673.8992 ms fails unchanged 250 ms target. Cause unresolved; CLI arrival is not visible-desktop timing. No speculative remedy or retry erases this failure.",
+    "Private architectural geometry remains undecoded after the stopped finite investigation. A recoverable same-case source or lawful local neutral export is required; synthetic success does not satisfy private-case acceptance.",
+    "Selected-pair sensitivity, full installed workflow, cooperative cancellation, inherited physical modifier selection and requested layout coverage are not established here.",
+    "Historical failed daylight and real-weather qualification branches remain stopped. Execution, integrity, current-input relation and scientific status remain separate.",
+    "Audit preparation deviations and false-positive corrections remain in source receipts. No scientific or performance threshold changed."
+  ]
+}

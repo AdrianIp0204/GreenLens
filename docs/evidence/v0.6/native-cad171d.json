@@ -1,0 +1,96 @@
+{
+  "schema_version": "greenlens.installed-cold-confirmation-summary.v1",
+  "release_acceptance": "incomplete",
+  "source_commit": "cad171d174f6f28c2bf28c0d728360020255ac92",
+  "source_dirty": false,
+  "observed_utc": "2026-10-16T02:39:24Z",
+  "candidate": {
+    "origin": "local native Windows build; not hosted artifact",
+    "installer_bytes": 5846876,
+    "installer_sha256": "ee7673c1d53bec6eafd412178adc22c32b3ce61fff4a71d7074f568edb4b0d24",
+    "cli_zip_bytes": 11531471,
+    "cli_zip_sha256": "ff7523e808ccd8d66879c610d5c0acd46e9f0976b510097e7bdb45fdceaa0673",
+    "cli_executable_sha256": "0e363c32ef998766eb28731995bb819b89006cb0670a16faa4c4dbee87fe1b53",
+    "installed_bytes": 25821696,
+    "installed_sha256": "c52beb84f1d31981683f062044c021ee9c98cb0bc1f7b4b44ed231eed4e663d9",
+    "installed_equals_extracted_payload": true,
+    "installer_exit": 0,
+    "signature": "NotSigned",
+    "clean_machine": false,
+    "frontend": "Embedded production assets; no development server",
+    "license_review": {"packages": 402, "notice_texts": 230, "review_gaps": 0}
+  },
+  "rejected_prior_local_candidate": {
+    "source_commit": "cad171d174f6f28c2bf28c0d728360020255ac92",
+    "installed_sha256": "a1264d3402ac0692de26df1d84ea605a8212ce296da6f27e156fb8fc3789a9a5",
+    "status": "failed_native_startup",
+    "observation": "File directory index appeared instead of workspace; no project opened",
+    "cause": "External build override used a drive-letter frontendDist; pinned Tauri parsed its URL variant rather than embedding a directory",
+    "remedy": "Scheme-free relative directory override to external assets; rebuilt without application source changes",
+    "not_accepted_or_distributed": true
+  },
+  "checks": {
+    "typescript": "pass",
+    "frontend_tests": 314,
+    "frontend_failures_skips_cancellations": 0,
+    "production_assets": "pass",
+    "installed_startup": "pass",
+    "native_close": "Normal close observed; window absent afterwards",
+    "scope_confirmation": [
+      "Bottom-of-form Discard reveals readable prompt",
+      "Escape preserves draft and returns focus/scroll to trigger",
+      "Enter from returned trigger reopens prompt",
+      "Enter activates focused Cancel and preserves draft",
+      "Explicit Discard removes draft without changing accepted scope or geometry"
+    ],
+    "focus_evidence": "Visible focus ring and Enter behavior; UI Automation focus property reported only the WebView pane",
+    "physical_modifier_selection": "unverified"
+  },
+  "cold_copy": {
+    "retained_runs": 7,
+    "project_manifest_sha256": "74302544b5c5c43080a2f5af6abb40c46b5cc99469b4a0fcd47aa54d83057dfd",
+    "original_paths_temporarily_unavailable": {"retained_project": 1, "synthetic_conversion_glb": 1, "matched_job_scratch_directories": 7},
+    "paths_restored": 9,
+    "unchanged_portable_members": 521,
+    "progress": "Visible weather 0/7, energy 6/7 and byte counts; previous document retained until acceptance",
+    "open_observed_upper_bound_ms": 14579,
+    "timing_limit": "Includes helper and observation latency; no OS cache eviction, isolated timing or 250 ms first-event claim",
+    "engine_installation_hidden": false,
+    "scope": "Original synthetic partial building; seven occurrences, 48 triangles, one mapped/six unresolved, coverage and true north unknown"
+  },
+  "reports": {
+    "native_report_invocations": 1,
+    "new_energy_runs": 0,
+    "observed_upper_bound_ms": 19433,
+    "files": 47,
+    "bytes": 5003977,
+    "identical_generated_products_to_reviewed_aa7": 46,
+    "valid_product_seals": 46,
+    "only_changed_file": "report-artifacts.json",
+    "allowed_renderer_provenance_changes": 24,
+    "architecture_sha256": "701240664a8f7b09286dec0ef268d9375fe1a9ba31acb1ee72417df6951eacdb",
+    "prior_visual_coverage_reused_by_exact_bytes": {"pdf_pages": 77, "unique_pages_viewed": 73, "identical_executive_assessment_pages": 4, "png_images": 8},
+    "prior_arithmetic_checks_reused_by_exact_bytes": {"comparisons": 260, "presentation_cells": 318, "max_difference": 3.552713678800501e-15, "audit_only_tolerance": 1e-8},
+    "typst_processes": 5,
+    "all_exit_zero_and_trees_empty": true,
+    "sum_process_elapsed_ms": 4419,
+    "sampled_runner_plus_job_peak_bytes": 214769664,
+    "observed_scratch_bytes": 35591153,
+    "exact_selected_pair_sensitivity": "not_retained; historical session excluded",
+    "review_reuse_not_new_visual_or_physical_validation": true
+  },
+  "external_receipt_sha256": {
+    "report_reuse_audit": "6c47036551fe2ae563faa5c10ffa3439520ef617f617ba2ac7cde5e7032ce10b",
+    "guard_readiness_audit": "8e1fa36bb22335769e4dd6922c4c5460c58eebc45232e00682adaeb76883b381",
+    "embedded_asset_config_audit": "afc8021660465675adba0a084588f47d2043aedad9aac91a0c56b870128c3594",
+    "frontend_check_receipt": "f03b17656909be688bc8e9c666880c0b49f59a367c2db24e5344e491b6ef97f0"
+  },
+  "limitations": [
+    "No private geometry decoded, analytical mapping, private calculation or report; lawful recoverable source/neutral export remains required.",
+    "No new annual simulation, timestep sensitivity or replay claimed for cad171d; aa7 annual/report/replay evidence retains its exact source.",
+    "The installed 1442 by 864 window capture does not establish exact requested client sizes or display scaling.",
+    "Native process-tree cancellation, cooperative opening cancellation, physical modifier selection and clean-machine installation remain unverified.",
+    "Historical first-progress arrival 673.8992 ms fails the unchanged 250 ms criterion. No retry erases that outcome.",
+    "Execution, integrity, input relationship and scientific status remain distinct; failed qualification branches stay stopped."
+  ]
+}

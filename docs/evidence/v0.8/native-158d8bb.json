@@ -1,0 +1,68 @@
+{
+  "schema_version": "greenlens.native-observations.v08",
+  "source_commit": "158d8bb1af8ffb6b109dca374406624e583e78ee",
+  "installed_executable_sha256": "e1403799cec3188ff2b0b4929e1638cd5a5c7bf1ac898f5704b46a073c9b146f",
+  "observation_method": "Supported sky native screenshots and input; production installed application; no development server",
+  "observations": [
+    {
+      "id": "r2-pdf",
+      "status": "observed",
+      "detail": "Retained R2 executive.pdf page 1 of 4 displayed exact title, draft status, issue scope and annual table; Next page displayed annual end-use bars on page 2; Escape closed preview."
+    },
+    {
+      "id": "save-copy-cancel",
+      "status": "observed",
+      "detail": "Native Save Copy dialog opened; Escape cancelled without choosing a destination. No successful copy claimed for that request."
+    },
+    {
+      "id": "save-copy-unicode",
+      "status": "verified",
+      "detail": "Native Save Copy destination contains spaces/non-ASCII; copied 71333-byte executive PDF hash equals retained R2",
+      "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e"
+    },
+    {
+      "id": "folder-handoff",
+      "status": "failed",
+      "detail": "Open copy folder produced Explorer Location is not available. Actual directory and checked PDF exist; separate direct Explorer address navigation also failed. No cause established. Native app and Explorer share observed user/session; directory chain reports no reparse points. No security/association settings changed."
+    },
+    {
+      "id": "r1-pdf",
+      "detail": "Retained R1 executive page 1 of 4 visibly renders S1, original proposed run and annual electricity 12617.36 kWh; R2 separately shows 12472.54 kWh. Historical content is not rebound.",
+      "status": "observed"
+    },
+    {
+      "members": 687,
+      "detail": "Uncertain issue estimate exceeds remaining capacity; warning is visible.",
+      "remaining_bytes": 11284612,
+      "estimated_issue_bytes": 15930833,
+      "status": "observed",
+      "retained_bytes": 257150844,
+      "id": "capacity"
+    },
+    {
+      "manifest_sha256": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+      "id": "immutable-after-inspection",
+      "detail": "686 non-manifest members match prior snapshot in both original and isolated native copy; both manifests retain original digest.",
+      "portable_members": 687,
+      "status": "verified"
+    }
+  ],
+  "limits": [
+    "No exact client/DPI assertion",
+    "No live EnergyPlus cancellation attempt",
+    "No private model intake",
+    "No clean-machine claim",
+    "First progress not instrumented"
+  ],
+  "updated_utc": "2026-10-16T10:06:07.7341736Z",
+  "installer_sha256": "d49b79ba5ff4f5d97548ba3d7305a8bfe8ddeca69412329ccb1a6faf12cc7091",
+  "cli_sha256": "64ce99e7994b9ff32598f63b249084a01b47d3bf9d6389d6d6716286a1721d98",
+  "ci": {
+    "runner_passed": 229,
+    "dependent_energy_static": "not executed",
+    "status": "failed",
+    "runner_ignored": 5,
+    "run_id": 38880402142,
+    "runner_failed": 3
+  }
+}

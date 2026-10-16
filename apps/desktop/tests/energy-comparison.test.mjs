@@ -44,6 +44,7 @@ async function displayModule(url){
 }
 const presentationModule=await displayModule(new URL('../src/energy/thermal-presentation.ts',import.meta.url));
 const referenceSelectionModule=await displayModule(new URL('../src/reference/selection.ts',import.meta.url));
+const scopeReviewDraftModule=await displayModule(new URL('../src/reference/scope-review-drafts.ts',import.meta.url));
 const inspectionSource=new URL('../src/energy/EvidenceInspection.tsx',import.meta.url);
 const inspectionCode=await transformWithOxc(fs.readFileSync(inspectionSource,'utf8'),inspectionSource.pathname,{jsx:{runtime:'automatic'}});
 const inspectionModule='data:text/javascript;base64,'+Buffer.from(inspectionCode.code.replace(/from (['"])react\/jsx-runtime\1/g,`from ${JSON.stringify(import.meta.resolve('react/jsx-runtime'))}`)).toString('base64');
@@ -59,7 +60,7 @@ const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/impo
     if(!defaultName.startsWith('{'))parts.push(`const ${defaultName}=globalThis.__energyComparisonHost.${defaultName};`);
     return parts.join('\n');
   }
-  return `import ${binding} from ${JSON.stringify(specifier==='./EvidenceInspection'?inspectionModule:specifier==='./thermal-presentation'?presentationModule:specifier==='./thermal-inspector-target'?inspectorModule:specifier==='../reference/reference-drafts'?referenceDraftModule:specifier==='../reference/selection'?referenceSelectionModule:specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
+  return `import ${binding} from ${JSON.stringify(specifier==='./EvidenceInspection'?inspectionModule:specifier==='./thermal-presentation'?presentationModule:specifier==='./thermal-inspector-target'?inspectorModule:specifier==='../reference/reference-drafts'?referenceDraftModule:specifier==='../reference/selection'?referenceSelectionModule:specifier==='../reference/scope-review-drafts'?scopeReviewDraftModule:specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
 });
 const {default:EnergyWorkspace}=await import(`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`);
 const nodes=t=>!t||typeof t!=='object'?[]:Array.isArray(t)?t.flatMap(nodes):[t,...nodes(t.props?.children)];

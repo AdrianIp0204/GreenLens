@@ -302,24 +302,36 @@ pub(crate) fn write_new_verified_evidence_bytes(
 }
 
 #[cfg(windows)]
-fn promote_new_file(file: &File, _source: &Path, target: &Path) -> Result<()> {
-    use std::os::windows::{ffi::OsStrExt, io::AsRawHandle};
-    use windows_sys::Win32::Storage::FileSystem::{
-        FileRenameInfo, SetFileInformationByHandle, FILE_RENAME_INFO,
-    };
+fn rename_info_buffer(target: &Path) -> Result<(Vec<u64>, u32)> {
+    use std::os::windows::ffi::OsStrExt;
+    use windows_sys::Win32::Storage::FileSystem::FILE_RENAME_INFO;
+    const _: () = assert!(std::mem::align_of::<u64>() >= std::mem::align_of::<FILE_RENAME_INFO>());
     let name: Vec<u16> = target.as_os_str().encode_wide().collect();
-    ensure!(!name.contains(&0), "Invalid copy destination");
-    let name_bytes = name.len() * std::mem::size_of::<u16>();
+    ensure!(
+        !name.is_empty() && !name.contains(&0),
+        "Invalid copy destination"
+    );
+    let name_bytes = name
+        .len()
+        .checked_mul(std::mem::size_of::<u16>())
+        .context("Copy filename too large")?;
     let offset = std::mem::offset_of!(FILE_RENAME_INFO, FileName);
-    let size = (offset + name_bytes).max(std::mem::size_of::<FILE_RENAME_INFO>());
-    let mut storage = vec![0u64; size.div_ceil(std::mem::size_of::<u64>())];
+    // FileNameLength excludes the terminator, but FILE_RENAME_INFO documents
+    // FileName as NUL-terminated. Reserve it inside the advertised buffer too:
+    // allocator/alignment padding is not a reliable string terminator.
+    // https://learn.microsoft.com/windows/win32/api/winbase/ns-winbase-file_rename_info
+    let size = offset
+        .checked_add(name_bytes)
+        .and_then(|size| size.checked_add(std::mem::size_of::<u16>()))
+        .context("Copy destination path too large")?
+        .max(std::mem::size_of::<FILE_RENAME_INFO>());
     let buffer_size: u32 = size.try_into().context("Copy destination path too large")?;
     let name_size: u32 = name_bytes.try_into().context("Copy filename too large")?;
+    let mut storage = vec![0u64; size.div_ceil(std::mem::size_of::<u64>())];
     // SAFETY: the zeroed buffer is aligned for FILE_RENAME_INFO and large enough
-    // for the variable-length UTF-16 filename. ReplaceIfExists remains false.
-    // The live handle is the exact file written and hashed above; no pathname
-    // lookup can substitute another source between verification and rename.
-    let success = unsafe {
+    // for the variable-length UTF-16 filename plus its reserved zero terminator.
+    // ReplaceIfExists remains false and RootDirectory remains null.
+    unsafe {
         let info = storage.as_mut_ptr().cast::<FILE_RENAME_INFO>();
         (*info).FileNameLength = name_size;
         std::ptr::copy_nonoverlapping(
@@ -327,10 +339,23 @@ fn promote_new_file(file: &File, _source: &Path, target: &Path) -> Result<()> {
             storage.as_mut_ptr().cast::<u8>().add(offset).cast::<u16>(),
             name.len(),
         );
+    }
+    Ok((storage, buffer_size))
+}
+
+#[cfg(windows)]
+fn promote_new_file(file: &File, _source: &Path, target: &Path) -> Result<()> {
+    use std::os::windows::io::AsRawHandle;
+    use windows_sys::Win32::Storage::FileSystem::{FileRenameInfo, SetFileInformationByHandle};
+    let (storage, buffer_size) = rename_info_buffer(target)?;
+    // SAFETY: rename_info_buffer owns the correctly sized/aligned structure
+    // through this call. The live handle is the exact file written and hashed
+    // above; no pathname lookup can substitute a different source.
+    let success = unsafe {
         SetFileInformationByHandle(
             file.as_raw_handle(),
             FileRenameInfo,
-            info.cast(),
+            storage.as_ptr().cast(),
             buffer_size,
         )
     };
@@ -1318,6 +1343,101 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[cfg(windows)]
+    #[test]
+    fn rename_buffer_has_explicit_utf16_terminator_for_every_alignment_residue() {
+        use std::os::windows::ffi::OsStrExt;
+        use windows_sys::Win32::Storage::FileSystem::FILE_RENAME_INFO;
+
+        let offset = std::mem::offset_of!(FILE_RENAME_INFO, FileName);
+        let mut residues = std::collections::BTreeSet::new();
+        for parent_padding in 0..8 {
+            for leaf in ["issued.pdf", "issued 空間.pdf", "issued 🧱.pdf"] {
+                let target = PathBuf::from(format!(
+                    "C:\\synthetic parent{}",
+                    "p".repeat(parent_padding)
+                ))
+                .join(leaf);
+                let expected: Vec<u16> = target.as_os_str().encode_wide().collect();
+                let name_bytes = expected.len() * std::mem::size_of::<u16>();
+                residues.insert((offset + name_bytes) % std::mem::size_of::<u64>());
+                let (storage, advertised_bytes) = rename_info_buffer(&target).unwrap();
+                assert_eq!(
+                    storage.as_ptr() as usize % std::mem::align_of::<FILE_RENAME_INFO>(),
+                    0
+                );
+                assert!(advertised_bytes as usize <= std::mem::size_of_val(storage.as_slice()));
+                assert!(advertised_bytes as usize >= std::mem::size_of::<FILE_RENAME_INFO>());
+                assert!(advertised_bytes as usize >= offset + name_bytes + 2);
+                // SAFETY: the builder's allocation and advertised bounds were
+                // checked above; the complete UTF-16 slice includes the NUL.
+                unsafe {
+                    let info = &*storage.as_ptr().cast::<FILE_RENAME_INFO>();
+                    assert_eq!(info.FileNameLength as usize, name_bytes);
+                    assert!(!info.Anonymous.ReplaceIfExists);
+                    assert!(info.RootDirectory.is_null());
+                    let actual = std::slice::from_raw_parts(
+                        storage.as_ptr().cast::<u8>().add(offset).cast::<u16>(),
+                        expected.len() + 1,
+                    );
+                    assert_eq!(&actual[..expected.len()], expected.as_slice());
+                    assert_eq!(actual[expected.len()], 0);
+                }
+            }
+        }
+        // Includes the exact-alignment case where the previous buffer had no
+        // terminator at all, and each possible UTF-16 alignment-padding case.
+        assert_eq!(residues, [0, 2, 4, 6].into_iter().collect());
+        assert!(rename_info_buffer(Path::new("")).is_err());
+        assert!(rename_info_buffer(Path::new("C:\\synthetic\\bad\0name.pdf")).is_err());
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn verified_copy_publishes_ascii_and_unicode_names_for_varied_parent_lengths() {
+        use std::os::windows::ffi::OsStrExt;
+        use windows_sys::Win32::Storage::FileSystem::FILE_RENAME_INFO;
+
+        let directory = tempfile::tempdir().unwrap();
+        let original = b"original synthetic immutable product";
+        let replacement = b"must not replace the first publication";
+        let mut residues = std::collections::BTreeSet::new();
+        for parent_padding in 0..8 {
+            let parent = directory
+                .path()
+                .join(format!("copies {} end", "p".repeat(parent_padding)));
+            fs::create_dir(&parent).unwrap();
+            for leaf in ["issued.pdf", "issued 空間.pdf", "issued 🧱.pdf"] {
+                let target = parent.join(leaf);
+                let name_bytes = target.as_os_str().encode_wide().count() * 2;
+                residues.insert(
+                    (std::mem::offset_of!(FILE_RENAME_INFO, FileName) + name_bytes)
+                        % std::mem::size_of::<u64>(),
+                );
+                write_new_verified_evidence_bytes(
+                    &parent,
+                    leaf,
+                    original,
+                    &bytes_hash(original),
+                    &mut |_| Ok(()),
+                )
+                .unwrap_or_else(|error| panic!("publication failed for {target:?}: {error:#}"));
+                assert_eq!(fs::read(&target).unwrap(), original);
+                assert!(write_new_verified_evidence_bytes(
+                    &parent,
+                    leaf,
+                    replacement,
+                    &bytes_hash(replacement),
+                    &mut |_| Ok(()),
+                )
+                .is_err());
+                assert_eq!(fs::read(&target).unwrap(), original);
+            }
+            assert_eq!(fs::read_dir(&parent).unwrap().count(), 3);
+        }
+        assert_eq!(residues, [0, 2, 4, 6].into_iter().collect());
+    }
 
     #[test]
     fn verified_new_copy_cancellation_during_write_or_hash_never_publishes_partial_bytes() {

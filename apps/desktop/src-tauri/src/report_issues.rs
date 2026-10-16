@@ -80,8 +80,128 @@ pub(crate) enum ProductAction {
 }
 
 #[cfg(windows)]
+#[link(name = "ole32")]
+unsafe extern "system" {
+    fn CoInitializeEx(reserved: *mut std::ffi::c_void, flags: u32) -> i32;
+    fn CoUninitialize();
+}
+
+#[cfg(windows)]
+fn check_shell_com_initialization(result: i32) -> anyhow::Result<()> {
+    const RPC_E_CHANGED_MODE: i32 = 0x80010106u32 as i32;
+    ensure!(result != RPC_E_CHANGED_MODE, "Windows report handoff requires an STA thread, but this worker already has an incompatible COM apartment (HRESULT 0x80010106). No handoff was requested. The verified copy remains available; use the in-app preview or Save Copy");
+    ensure!(result >= 0, "Windows report handoff could not initialize COM (HRESULT {:#010x}). No handoff was requested. The verified copy remains available", result as u32);
+    Ok(())
+}
+
+/// This guard cannot move to another thread: COM initialization and cleanup
+/// must balance on the blocking thread that performs the shell operation.
+#[cfg(windows)]
+struct ShellApartment(std::marker::PhantomData<std::rc::Rc<()>>);
+
+#[cfg(windows)]
+impl ShellApartment {
+    fn enter() -> anyhow::Result<Self> {
+        const COINIT_APARTMENTTHREADED: u32 = 0x2;
+        const COINIT_DISABLE_OLE1DDE: u32 = 0x4;
+        // SAFETY: the reserved pointer is null and the flags request an STA
+        // only on the current blocking thread; no global setting is changed.
+        let result = unsafe {
+            CoInitializeEx(
+                std::ptr::null_mut(),
+                COINIT_APARTMENTTHREADED | COINIT_DISABLE_OLE1DDE,
+            )
+        };
+        check_shell_com_initialization(result)?;
+        // Both S_OK and S_FALSE own one matching CoUninitialize call. Failed
+        // initialization (including changed mode) must not create this guard.
+        Ok(Self(std::marker::PhantomData))
+    }
+}
+
+#[cfg(windows)]
+impl Drop for ShellApartment {
+    fn drop(&mut self) {
+        // SAFETY: the non-Send guard exists only after successful initialization
+        // and is dropped on that same thread, including early error returns.
+        unsafe { CoUninitialize() };
+    }
+}
+
+#[cfg(windows)]
+fn shell_path_from_canonical(target: &Path) -> anyhow::Result<std::path::PathBuf> {
+    use std::{
+        ffi::OsStr,
+        os::windows::ffi::OsStrExt,
+        path::{Component, PathBuf, Prefix},
+    };
+    // Only recognized filesystem namespaces may lose an extended-path prefix.
+    // Preserve UTF-16 (including non-UTF-8 Windows names); never use lossy text.
+    fn component(value: &OsStr) -> anyhow::Result<()> {
+        let units = value.encode_wide().collect::<Vec<_>>();
+        ensure!(!units.is_empty() && !matches!(units.last(), Some(32 | 46))
+            && units.iter().all(|u| *u >= 32 && ![34, 42, 47, 58, 60, 62, 63, 92, 124].contains(u)),
+            "The physical report path cannot be represented safely for a Windows viewer; use the in-app preview or Save Copy");
+        Ok(())
+    }
+    let mut parts = target.components();
+    let Some(Component::Prefix(prefix)) = parts.next() else {
+        anyhow::bail!("Windows report handoff requires an absolute physical filesystem path");
+    };
+    let mut result = match prefix.kind() {
+        Prefix::VerbatimDisk(drive) | Prefix::Disk(drive) if drive.is_ascii_alphabetic() => {
+            PathBuf::from(format!("{}:\\", char::from(drive)))
+        }
+        Prefix::VerbatimUNC(server, share) | Prefix::UNC(server, share) => {
+            component(server)?;
+            component(share)?;
+            let mut value = std::ffi::OsString::from("\\\\");
+            value.push(server);
+            value.push("\\");
+            value.push(share);
+            value.push("\\");
+            PathBuf::from(value)
+        }
+        _ => anyhow::bail!("Unsupported physical path namespace for Windows report handoff; the verified copy is preserved"),
+    };
+    ensure!(
+        matches!(parts.next(), Some(Component::RootDir)),
+        "Windows report handoff requires a rooted filesystem path"
+    );
+    for part in parts {
+        let Component::Normal(name) = part else {
+            anyhow::bail!("Unresolved physical report path component; no viewer was requested");
+        };
+        component(name)?;
+        result.push(name);
+    }
+    ensure!(
+        result.as_os_str().encode_wide().count() < 32767,
+        "Physical report path exceeds the Windows UTF-16 bound; it was not truncated"
+    );
+    Ok(result)
+}
+
+#[cfg(windows)]
+fn physical_handoff_path(target: &Path) -> anyhow::Result<std::path::PathBuf> {
+    // Packaged launch environments may redirect a logical LOCALAPPDATA path.
+    // An external viewer does not necessarily inherit that redirection. Resolve
+    // the existing object, then give ShellExecute its physical DOS/UNC spelling.
+    let canonical = std::fs::canonicalize(target)
+        .context("Cannot resolve the existing verified report copy for Windows handoff")?;
+    let result = shell_path_from_canonical(&canonical)?;
+    ensure!(
+        std::fs::canonicalize(&result)? == canonical,
+        "Windows report path normalization changed its target; no viewer was requested"
+    );
+    Ok(result)
+}
+
+#[cfg(windows)]
 fn request_handoff(target: &Path) -> anyhow::Result<()> {
     use std::os::windows::ffi::OsStrExt;
+    let target = physical_handoff_path(target)?;
+    let _apartment = ShellApartment::enter()?;
     #[link(name = "shell32")]
     unsafe extern "system" {
         fn ShellExecuteW(
@@ -179,6 +299,107 @@ pub(crate) async fn report_issue_product(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[cfg(windows)]
+    #[test]
+    fn shell_paths_preserve_dos_unc_and_utf16_without_guessing_namespaces() {
+        use std::{
+            ffi::OsString,
+            os::windows::ffi::{OsStrExt, OsStringExt},
+        };
+        for (source, expected) in [
+            (r"\\?\C:\cache 空間\report.pdf", r"C:\cache 空間\report.pdf"),
+            (
+                r"\\?\UNC\server\share\cache 空間\report.pdf",
+                r"\\server\share\cache 空間\report.pdf",
+            ),
+            (r"C:\cache\report.pdf", r"C:\cache\report.pdf"),
+            (r"\\server\share\report.pdf", r"\\server\share\report.pdf"),
+        ] {
+            assert_eq!(
+                shell_path_from_canonical(Path::new(source)).unwrap(),
+                Path::new(expected)
+            );
+        }
+        let mut raw = r"\\?\C:\cache\".encode_utf16().collect::<Vec<_>>();
+        raw.push(0xd800); // Windows paths need not be valid Unicode scalar strings.
+        raw.extend(".pdf".encode_utf16());
+        let source = OsString::from_wide(&raw);
+        assert_eq!(
+            shell_path_from_canonical(Path::new(&source))
+                .unwrap()
+                .as_os_str()
+                .encode_wide()
+                .collect::<Vec<_>>(),
+            raw[4..]
+        );
+        for source in [
+            r"report.pdf",
+            r"C:report.pdf",
+            r"\\.\pipe\report",
+            r"\\?\GLOBALROOT\Device\HarddiskVolume1\report.pdf",
+            r"\\?\Volume{00000000-0000-0000-0000-000000000000}\report.pdf",
+            r"\\?\C:\cache\..\report.pdf",
+            r"\\?\C:\cache\report.pdf.",
+            r"\\?\C:\cache\report.pdf ",
+            r"\\?\C:\cache\report.pdf:stream",
+            r"\\?\UNC\server\",
+        ] {
+            assert!(
+                shell_path_from_canonical(Path::new(source)).is_err(),
+                "{source}"
+            );
+        }
+        assert!(shell_path_from_canonical(Path::new("\\\\?\\C:\\cache\\bad\0.pdf")).is_err());
+        assert!(
+            shell_path_from_canonical(Path::new(&format!("\\\\?\\C:\\{}", "a".repeat(32767))))
+                .is_err()
+        );
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn handoff_resolution_preserves_existing_copy_bytes_and_directory_identity() {
+        let base = greenlens_runner::local_root().unwrap().join("test-scratch");
+        std::fs::create_dir_all(&base).unwrap();
+        let nonce = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_nanos();
+        let root = base.join(format!("shell-path-{}-{nonce}", std::process::id()));
+        std::fs::create_dir(&root).unwrap();
+        let copy = root.join("issued 空間 copy.pdf");
+        let bytes = b"%PDF original synthetic identity fixture";
+        std::fs::write(&copy, bytes).unwrap();
+        for target in [&root, &copy] {
+            let handed = physical_handoff_path(target).unwrap();
+            assert_eq!(
+                std::fs::canonicalize(handed).unwrap(),
+                std::fs::canonicalize(target).unwrap()
+            );
+        }
+        assert_eq!(std::fs::read(&copy).unwrap(), bytes);
+        assert!(physical_handoff_path(&root.join("absent.pdf")).is_err());
+        std::fs::remove_file(copy).unwrap();
+        std::fs::remove_dir(root).unwrap();
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn shell_com_accepts_both_success_codes_and_rejects_changed_apartment() {
+        assert!(check_shell_com_initialization(0).is_ok()); // S_OK
+        assert!(check_shell_com_initialization(1).is_ok()); // S_FALSE; still balanced
+        let changed = check_shell_com_initialization(0x80010106u32 as i32)
+            .unwrap_err()
+            .to_string();
+        assert!(changed.contains("incompatible COM apartment"));
+        assert!(changed.contains("No handoff was requested"));
+        let failed = check_shell_com_initialization(0x8007000eu32 as i32)
+            .unwrap_err()
+            .to_string();
+        assert!(failed.contains("0x8007000e"));
+        assert!(failed.contains("verified copy remains available"));
+    }
+
     #[test]
     fn actions_are_bounded_and_unknown_execution_fields_are_rejected() {
         let mut create =

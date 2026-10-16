@@ -77,6 +77,7 @@ function carryPlan(project,parent,candidate){
     if(candidate?.title==='Reject this candidate')throw Error('Synthetic invalid candidate: title fixture rejected; no revision accepted');
     const candidate_scope=structuredClone(candidate??proposed_scope);
     rows[2].after=structuredClone(candidate_scope.assumptions[0]);
+    for(const figure of candidate_scope.report_views??[])if(!proposed_scope.report_views.some(previous=>previous.id===figure.id))rows.push({id:`figure-added-${figure.id}`,kind:'report_view',key:figure.id,change:'added',requires_review:true,before:null,after:structuredClone(figure),reason:'Review the exact captured frame for this candidate'});
     return{schema_version:'greenlens.scope-carry-forward.v2',parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash(candidate?'8':'7'),proposed_scope,candidate_scope,rows};
   }
   return{schema_version:'greenlens.scope-carry-forward.v1',parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash('7'),proposed_scope:structuredClone(revision.scope),rows};
@@ -770,6 +771,62 @@ const editableCandidate=()=>document.querySelector('[aria-label="Editable carry-
 function candidateInput(label){const container=editableCandidate(),field=[...container.querySelectorAll('label')].find(l=>l.firstChild?.textContent===label);assert.ok(field,`candidate field ${label}`);return field.querySelector('input,textarea,select');}
 async function startV2Review(){await scopeReviewSetup();revisionPlanMode='v2';await click('Review changes and carry forward');assert.ok(editableCandidate());}
 async function finishV2Review(){await reviewDecision('cop-changed','reviewed','The supported efficiency change keeps service unchanged.');await reviewDecision('assumption-changed','reviewed','Explicit corrected synthetic source declaration for this candidate.');}
+async function captureTopReportView(title){
+  // Exercise the real ThermalView capture handler and workspace callback. This
+  // DOM fixture supplies a display camera/frame, not rendered/native evidence.
+  await act(()=>doc.thermalPresentation.update(p=>({...p,active_view:'top',cameras:{...p.cameras,top:{position:[2,3,20],target:[2,3,0],up:[0,1,0],zoom:2}}})));
+  const pane=document.querySelector('[aria-label="Top thermal view"]');assert.ok(pane);
+  pane.getBoundingClientRect=()=>({x:0,y:0,left:0,top:0,right:400,bottom:300,width:400,height:300});
+  await type(input('View name'),title);assert.equal(button('Add active view to report draft').disabled,false);await click('Add active view to report draft');
+}
+
+test('v2 viewport capture updates only its exact candidate and requires refreshed Rust review before one accepted revision',async()=>{
+  await scopeReviewSetup();await click('Edit accepted scope');await type(input('Scope title'),'Preserved unrelated ordinary scope draft');
+  const ordinary=structuredClone(doc.referenceDrafts.draft),accepted=structuredClone(doc.project),past=doc.history.past.length;
+  revisionPlanMode='v2';await click('Review changes and carry forward');const plan=structuredClone(doc.scopeReviewDrafts.draft.plan);
+  await captureTopReportView('Candidate aligned plan');
+  const captured=doc.scopeReviewDrafts.draft.candidate.value.report_views[0];
+  assert.equal(captured.title,'Candidate aligned plan');assert.equal(captured.design_id,'A');assert.equal(captured.model_input_sha256,referenceHash('a'));
+  assert.deepEqual(captured.eye_m,[2,3,20]);assert.equal(captured.vertical_span_m,8);assert.equal(captured.aspect_ratio,4/3);
+  assert.deepEqual(doc.referenceDrafts.draft,ordinary);assert.deepEqual(doc.scopeReviewDrafts.draft.plan,plan);assert.deepEqual(doc.project,accepted);
+  assert.equal(button('Accept reviewed scope revision').disabled,true);assert.match(scopeHistoryPanel().textContent,/Candidate edits have not been reviewed in Rust/);
+  await click('reports');await click('reference');assert.deepEqual(doc.scopeReviewDrafts.draft.candidate.value.report_views,[captured]);
+  await type(candidateInput('Scope title'),'Reject this candidate');await click('Review edited candidate in Rust');
+  assert.match(scopeHistoryPanel().textContent,/Synthetic invalid candidate/);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);assert.deepEqual(doc.scopeReviewDrafts.draft.candidate.value.report_views,[captured]);
+  await type(candidateInput('Scope title'),'Candidate with aligned report frame');let finish;revisionPrepareGate=new Promise(resolve=>finish=resolve);
+  await click('Review edited candidate in Rust');await click('Cancel review request');await act(async()=>finish());
+  assert.deepEqual(doc.scopeReviewDrafts.draft.plan,plan);assert.deepEqual(doc.referenceDrafts.draft,ordinary);assert.equal(doc.history.past.length,past);
+  revisionPrepareGate=null;await click('Review edited candidate in Rust');await finishV2Review();
+  assert.equal(button('Accept reviewed scope revision').disabled,true,'the newly added figure needs an explicit review');
+  await reviewDecision('figure-added-view-1','reviewed','Exact source-bound top frame retained for this synthetic candidate.');
+  await click('Accept reviewed scope revision');assert.ok(dialog());await click('Cancel',dialog());
+  assert.deepEqual(doc.referenceDrafts.draft,ordinary);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);assert.equal(count('reference_revision_accept'),0);
+  await click('Accept reviewed scope revision');await click('Discard',dialog());
+  assert.equal(count('reference_revision_accept'),1);assert.equal(count('reference_scope_apply'),0);assert.equal(doc.history.past.length,past+1);
+  assert.deepEqual(doc.project.architecture.scope.report_views,[captured]);assert.deepEqual(doc.project.architecture.scope_history.revisions.slice(0,2),accepted.architecture.scope_history.revisions);
+  assert.deepEqual(doc.project.energy.designs,accepted.energy.designs);assert.equal(count('energy_start'),0);
+});
+
+test('v2 viewport capture remains design-local and a stale current review cannot redirect it into ordinary drafts',async()=>{
+  await startV2Review();const pendingA=structuredClone(doc.scopeReviewDrafts.draft);
+  await click('Proposed B');await click('reference');assert.equal(doc.scopeReviewDrafts.draft,null);
+  await captureTopReportView('Ordinary B plan');const ordinaryB=structuredClone(doc.referenceDrafts.draft);
+  assert.equal(ordinaryB.scope.value.report_views[0].design_id,'B');
+  await click('Baseline A');await click('reference');assert.deepEqual(doc.scopeReviewDrafts.draft,pendingA);assert.deepEqual(doc.referenceDrafts.draft,ordinaryB);
+  await click('model');await editName('Changed accepted model after scope preview');await click('Validate and apply');await click('reference');
+  const accepted=structuredClone(doc.project),past=doc.history.past.length;
+  await captureTopReportView('Must not enter either draft');
+  assert.match(doc.error,/pending scope review no longer matches/);assert.deepEqual(doc.scopeReviewDrafts.draft,pendingA);assert.deepEqual(doc.referenceDrafts.draft,ordinaryB);
+  assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);assert.equal(count('reference_revision_accept'),0);
+});
+
+test('historical noneditable review rejects viewport capture without overwriting ordinary or review drafts',async()=>{
+  await scopeReviewSetup();await click('Review changes and carry forward');
+  const review=structuredClone(doc.scopeReviewDrafts.draft),ordinary=structuredClone(doc.referenceDrafts.draft),accepted=structuredClone(doc.project),past=doc.history.past.length;
+  await captureTopReportView('Historical review cannot receive this frame');
+  assert.match(doc.error,/historical review has no editable candidate/);assert.deepEqual(doc.scopeReviewDrafts.draft,review);assert.deepEqual(doc.referenceDrafts.draft,ordinary);
+  assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);assert.equal(count('reference_revision_accept'),0);
+});
 
 test('v2 actual workspace edits corrected source candidate, reviews atomically, and retains immutable parent',async()=>{
   await startV2Review();const before=structuredClone(doc.project),history=doc.history.past.length,proposal=structuredClone(doc.scopeReviewDrafts.draft.plan.proposed_scope);

@@ -2,6 +2,8 @@
 
 ## Active bounded v0.8: reliable intake and report delivery
 
+Current dependent demonstration is blocked by the complete case's 16 MiB pretty-serialization manifest capacity before its next revision. Preserve all history and defer native issuance; a separately bounded storage/admission decision is required, not pruning, a smaller substitute or a raised limit.
+
 The active continuation repairs exact candidate provenance, explicit no-holidays declarations, unresolved-review report disclosures and accepted-frame restoration, followed by the separately bounded native second-issue/cold-copy demonstration. It does not expand physics or reset prior acceptance. Optional SKP remains behind independent fixture and containment gates.
 
 The `docs/v0.8-spec.md` extends the existing revision/report workbench with truthful PDF delivery, versioned field provenance, editable reviewed reconciliation, complete disclosures and capacity readiness. Optional direct SKP must pass pinned dependency, isolated native worker and independently known compatibility gates before exposure or one separately declared private probe. Existing GLB remains available if these gates fail. All earlier incomplete acceptance remains explicit; no scientific or geometry expansion follows from this phase.

@@ -1,0 +1,120 @@
+{
+  "schema_version": "greenlens.v08-manifest-capacity-evidence.v1",
+  "application_source": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+  "measurement": {
+    "schema_version": "greenlens.read-only-manifest-capacity-audit.v1",
+    "application_source": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+    "measurement_script_sha256": "c6cc69eac4669969a5b8c55c1ff2e3a8deb37c1130c4cf384784bc54f2f19803",
+    "input": {
+      "name": "project.json",
+      "sha256": "0c366cda4f2ef44d5d5a12b97f246f02fb2b9a374eef7540254c5f1426747772",
+      "bytes": 12751294,
+      "retained_revisions": 3,
+      "retained_issues": 1
+    },
+    "recorded_context": {
+      "active_revision_sha256": "62f739d054b8a1e57d9739247da53296958ed816c4920e30dbde3f19d1a68fb2",
+      "active_revision_schema": "greenlens.scope-revision.v2",
+      "reference_asset_id": "4a08ff6f-aa51-4393-8cea-6b537bb81afd",
+      "reference_manifest_sha256": "4e2d7870cfced6d0d1a9316338c7a3c0710ed96451f9b0e64794622c81b86d25",
+      "active_reference_matches": true,
+      "active_scope_projection_matches": true,
+      "designs": [
+        {
+          "design_id": "A",
+          "current_model_equals_snapshot": true,
+          "current_study_equals_snapshot": true,
+          "current_assigned_study_calendar_equals_snapshot": true,
+          "retained_model_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd"
+        },
+        {
+          "design_id": "B",
+          "current_model_equals_snapshot": true,
+          "current_study_equals_snapshot": true,
+          "current_assigned_study_calendar_equals_snapshot": true,
+          "retained_model_sha256": "b9f1b4e019696419c124c5a2751f475f19c7bba0c1df28d3934a123187227f97"
+        }
+      ],
+      "first_issue": [
+        {
+          "id": "8d51a892887273071c2236a85e2e49e7aba3c1855a33bd96c48beaa6fdc9d171",
+          "scope_revision_sha256": "8378c41db3d3957e047f0c4ff079e5f495560b18febfd2961475305c5a3d9981"
+        }
+      ]
+    },
+    "limits": {
+      "manifest_bytes": 16777216,
+      "remaining_manifest_bytes": 4025922,
+      "unchanged_shared_package_bytes": 268435456,
+      "unchanged_shared_entry_bytes": 67108864,
+      "unchanged_shared_entries": 5000
+    },
+    "raw_active_revision": {
+      "bytes_at_actual_nesting": 4176608,
+      "first_line_indent": 8,
+      "lines": 112262,
+      "same_size_append_with_separator_bytes": 4176618,
+      "comparable_projected_manifest_bytes": 16927912,
+      "comparable_overage_bytes": 150696,
+      "blocks": {
+        "reference": 109101,
+        "designs": 248359,
+        "scope": 79471,
+        "provenance": 3738760,
+        "review_decisions": 413
+      }
+    },
+    "conservative_lower_bound": {
+      "unchanged_reference_block_bytes": 109101,
+      "unchanged_model_and_study_blocks_without_calendar_bytes": 247625,
+      "retained_nondeclared_noncalendar_rows": 6535,
+      "row_raw_bytes_without_first_line_indentation": 3626799,
+      "mandatory_first_line_indentation_bytes": 91490,
+      "hypothetical_shortest_status_savings_bytes": 19605,
+      "excluded_calendar_rows": 8,
+      "excluded_calendar_row_bytes": 4312,
+      "excluded_source_declared_rows": 1,
+      "excluded_source_declared_row_bytes": 2248,
+      "excluded_further_content": [
+        "all new scope content",
+        "all review decisions",
+        "all v3 reviewed_rows",
+        "all calendar snapshots",
+        "provenance envelope and row separators",
+        "revision envelope and separators",
+        "new report issue summary",
+        "new captured views and no-holidays policy rows"
+      ],
+      "bytes_before_active_projection_allowance": 4055410,
+      "active_projection_thermal_declaration_allowance_rows": 2,
+      "active_projection_thermal_declaration_allowance_bytes": 1203,
+      "net_minimum_growth_bytes": 4054207,
+      "excess_over_manifest_headroom_bytes": 28285
+    },
+    "qualifications": [
+      "Conditional lower-bound measurement for the declared unchanged reference, A/B models, studies/calendar, retained mappings/reference assumptions and append-only history workflow.",
+      "No candidate was constructed, hashed, accepted or persisted. No semantic hash was recomputed. This is not a successful Rust admission or an evidence-integrity check.",
+      "No run/member traversal, application, CLI, renderer or simulation was executed. Only this project.json and this measurement script were read.",
+      "Exact Rust validation remains authoritative. No limits were raised and no data was pruned.",
+      "The issue-only estimate covers the largest prior issued product set; it does not budget a future revision."
+    ],
+    "source_locations": [
+      "crates/greenlens-runner/src/study_revisions.rs:45 bounded_manifest serializes pretty JSON with the trailing newline reserved under 16 MiB",
+      "crates/greenlens-runner/src/study_revisions.rs:340 append validates the cloned candidate manifest capacity before return",
+      "crates/greenlens-runner/src/study_revisions.rs:482 accept appends only after exact-context/candidate/plan validation",
+      "crates/greenlens-runner/src/capacity.rs:268 ReportIssue estimates largest prior issue, without a proposed revision",
+      "crates/greenlens-core/src/study_revision.rs:904 provenance_checklist_version preserves noncalendar rows across v2/v3; v3 adds the bounded calendar policy",
+      "crates/greenlens-runner/src/energy_workbench.rs:87 calendar_for selects assigned study.calendar first",
+      "crates/greenlens-runner/src/report_issues.rs:1426 final issue candidate validation precedes publication",
+      "crates/greenlens-runner/src/persistence.rs:651 atomic_project_cancellable preserves history and checks exact publication capacity"
+    ],
+    "conclusion": "The declared same-context append cannot fit the existing manifest limit, even under the stated conservative omissions. Do not spend a native issuance attempt to rediscover this boundary."
+  },
+  "external_original_script_sha256": "c6cc69eac4669969a5b8c55c1ff2e3a8deb37c1130c4cf384784bc54f2f19803",
+  "external_original_receipt_sha256": "5f1ef57a18a3e8d47091d606045fed2276a2e7e038dc7d86c181961d54858e20",
+  "independently_reproduced_by_root": true,
+  "original_manifest_unchanged": true,
+  "native_proposal_deferred_before_launch": true,
+  "formatting_remedy": "Not admissible under the current contract: capacity is counted using pretty serialization of the parsed project, independently of on-disk whitespace, and enforced at open/accept/save.",
+  "remaining_intervention": "Decide a separately bounded versioned storage/admission remedy with historical identity, complete history, Save As/export, integrity and resource compatibility. No change, pruning, alternate case or native attempt performed."
+}

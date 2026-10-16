@@ -1,0 +1,156 @@
+{
+  "schema": "greenlens.hosted-ci-checkpoint.v1",
+  "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+  "source_dirty": false,
+  "run_id": 38937518026,
+  "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38937518026",
+  "observed_status_file": "status-20261016T181448Z.json",
+  "run_status": "in_progress",
+  "run_conclusion": "",
+  "build": {
+    "job_id": 117096624613,
+    "conclusion": "success",
+    "started_utc": "2026-10-16T17:09:32Z",
+    "completed_utc": "2026-10-16T18:14:19Z",
+    "elapsed_seconds": 3887.0,
+    "declared_budget_minutes": 90,
+    "frontend": {
+      "passed": 429,
+      "failed": 0,
+      "skipped": 0,
+      "duration_ms": 39714.3946,
+      "typescript": "passed",
+      "production_assets": "passed"
+    },
+    "rust_reported_test_summaries": {
+      "passed": 481,
+      "failed": 0,
+      "ignored": 16,
+      "summary_count": 19,
+      "meaning": "Counts from build job test-result lines; ignored tests are not acceptance and later explicit jobs are tracked separately."
+    },
+    "ignored_tests": [
+      {
+        "test": "reviewed_real_hong_kong_pvgis_full_year",
+        "reason": "explicit real-source acceptance; set GREENLENS_ACCEPTANCE_EPW to the reviewed original PVGIS file"
+      },
+      {
+        "test": "tests::native_child_fixture",
+        "reason": "Invoked by native supervisor parent tests"
+      },
+      {
+        "test": "energy_report::tests::native_typst_all_three_documents_and_pages",
+        "reason": "Requires separately installed pinned native Typst; explicit missing-engine failure"
+      },
+      {
+        "test": "energy_verified_cache::tests::concurrent_genuine_record_inspection_deduplicates_numeric_work",
+        "reason": "Requires the predeclared nine genuine retained records, no engine execution"
+      },
+      {
+        "test": "energy_verified_cache::tests::retained_nine_record_history_access_stays_bounded_without_numeric_rederivation",
+        "reason": "Requires nine distinct retained genuine records: GREENLENS_TEST_NINE_ENERGY_PROJECT; no engine run"
+      },
+      {
+        "test": "energy_verified_cache::tests::retained_report_and_sensitivity_panel_requests_do_not_repeat_numeric_traversal",
+        "reason": "Requires retained real evidence: GREENLENS_TEST_RETAINED_ENERGY_PROJECT; no engine run"
+      },
+      {
+        "test": "report_issue_export::tests::genuine_complete_issued_project_roundtrip_preserves_every_member_without_engines",
+        "reason": "Requires a saved genuine issued project in GREENLENS_TEST_ISSUED_PROJECT; never fabricates or runs energy evidence"
+      },
+      {
+        "test": "native_energy_conflict_copy_cancel_and_staleness",
+        "reason": "Requires pinned native EnergyPlus; release CI invokes explicitly"
+      },
+      {
+        "test": "retained_energy_evidence_is_immutable_through_reference_import_and_cold_copy",
+        "reason": "Requires retained real energy evidence; invoke explicitly with GREENLENS_TEST_RETAINED_ENERGY_PROJECT"
+      },
+      {
+        "test": "annual_primary::native_tests::native_hammersley_primary_stream_bridge",
+        "reason": "explicit isolated native bridge; coordinate one engine slot and invoke with --ignored --exact; no skip counts as acceptance"
+      },
+      {
+        "test": "annual_stream::tests::child_fixture",
+        "reason": "synthetic subprocess entry, invoked by native stream supervisor tests"
+      },
+      {
+        "test": "process::resource_tests::deadline_child_fixture",
+        "reason": "synthetic deadline child entry point"
+      },
+      {
+        "test": "process::resource_tests::resource_child_fixture",
+        "reason": "synthetic child entry point invoked by required resource-cap test"
+      },
+      {
+        "test": "process::resource_tests::resource_grandchild_fixture",
+        "reason": "synthetic descendant entry point invoked by required resource-cap test"
+      },
+      {
+        "test": "process::tests::child_fixture",
+        "reason": "child process fixture, invoked by cancellation_terminates_process_tree"
+      },
+      {
+        "test": "process::tests::grandchild_fixture",
+        "reason": "grandchild process fixture, invoked by cancellation_terminates_process_tree"
+      }
+    ],
+    "format_and_strict_lint": "passed",
+    "unsigned_package": "passed",
+    "strict_dependency_and_installer_inventory": "passed",
+    "raw_log_sha256": "9bfe50e15de63c9ee95eaeccbd734c05602ba989bd34949b588c0d9409288db3"
+  },
+  "dependent_jobs": [
+    {
+      "name": "energy",
+      "job_id": 117124424749,
+      "status": "in_progress",
+      "conclusion": "",
+      "active_steps": [
+        "Frozen CLI and independently installed pinned runtimes"
+      ]
+    },
+    {
+      "name": "static_compatibility",
+      "job_id": 117124424937,
+      "status": "in_progress",
+      "conclusion": "",
+      "active_steps": [
+        "Frozen CLI identity and pinned static engine"
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12065566687,
+      "name": "energy-build-diagnostics-bb1edc92b3c5afe00b3efa965fc114904973c469",
+      "size_bytes": 1926082,
+      "archive_digest": "sha256:7eb1c9bd8dded4b113cda8ed7c4f38e99585713ef1ea6fabb1d67d6d9d5fb9f1",
+      "expired": false,
+      "expires_utc": "2026-10-30T18:14:12Z"
+    },
+    {
+      "id": 12065468077,
+      "name": "energy-unsigned-investigation-bb1edc92b3c5afe00b3efa965fc114904973c469",
+      "size_bytes": 20043842,
+      "archive_digest": "sha256:dc531b24c6bb9be314cded7e059d47fb988405c759db995b5cdb8e35d3d510a1",
+      "expired": false,
+      "expires_utc": "2026-10-30T18:14:09Z"
+    },
+    {
+      "id": 12064737706,
+      "name": "energy-cli-bb1edc92b3c5afe00b3efa965fc114904973c469",
+      "size_bytes": 12590633,
+      "archive_digest": "sha256:2a0437b9185c114d8244865b2521eb3502de7a2764e7e8e03f5504baa090babc",
+      "expired": false,
+      "expires_utc": "2026-10-30T18:14:06Z"
+    }
+  ],
+  "limitations": [
+    "Dependent energy and static jobs are unfinished in this checkpoint; no scientific pass is asserted.",
+    "Artifact digests identify hosted archives, not local installed payloads; no hosted executable was launched.",
+    "Installed desktop and new renderer-3 issuance/regeneration are unverified.",
+    "Build test ignores and historical scientific failures remain authoritative."
+  ],
+  "release_acceptance_asserted": false
+}

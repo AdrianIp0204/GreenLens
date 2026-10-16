@@ -1,0 +1,280 @@
+{
+  "schema_version": "greenlens.v08-continuation-delivery.v1",
+  "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+  "source_dirty_at_build": false,
+  "release_acceptance": "incomplete",
+  "checks": {
+    "schema_version": "greenlens.verification-checkpoint.v1",
+    "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+    "scope": "Frontend null-input union repair; no core identity or report renderer changes",
+    "frontend": {
+      "passed": 429,
+      "skipped": 0,
+      "failed": 0,
+      "duration_ms": 195495.3642
+    },
+    "focused": {
+      "skipped": 0,
+      "passed": 10,
+      "duration_ms": 33774.5851,
+      "failed": 0
+    },
+    "typescript": "passed",
+    "frontend_production_build": "passed",
+    "dependency_inventory": {
+      "packages": 415,
+      "notices": 231,
+      "gaps": 0
+    },
+    "docs": {
+      "bytes": 16769248,
+      "links": 804,
+      "files": 414
+    },
+    "native": "not observed; stopped separately",
+    "logs": [
+      {
+        "name": "typescript.txt",
+        "bytes": 155,
+        "sha256": "6f86fe01d16568481303df348746dc374e5c683bae8406bd1b981e3dee3e7993"
+      },
+      {
+        "name": "frontend.txt",
+        "bytes": 51949,
+        "sha256": "35e1edd0091939039749967031cbfaea96ae33ba241123c59e36d4299ec94070"
+      },
+      {
+        "name": "frontend-build.txt",
+        "bytes": 1361,
+        "sha256": "c579649eb452e69b46e7a39e641e96e5e727909a540ac8f850677babf2978cea"
+      },
+      {
+        "name": "license.txt",
+        "bytes": 147,
+        "sha256": "89cda6e5bb78270b7b30687fc5e2dbfb9b009698d795049a13ab7a38038918a6"
+      },
+      {
+        "name": "package-documents-final.txt",
+        "bytes": 212,
+        "sha256": "36546b5fa9ab73e0343705c0d3ecd8c226ac1247e59d5f56400e648ceb3788ae"
+      },
+      {
+        "sha256": "a9014609196f4af58eaa1add669013666dd716dd247c7b2fb48c5218962f44fc",
+        "bytes": 1649,
+        "name": "null-provenance-focused.txt"
+      }
+    ]
+  },
+  "build": {
+    "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+    "dirty": false,
+    "completed_utc": "2026-10-16T17:30:19.8010890Z",
+    "installed": false,
+    "native_observed": false,
+    "distribution": "distribution",
+    "snapshot_scope": "Build completion before subsequent installation; installed:false is the build-time state, not current installation status"
+  },
+  "artifacts": [
+    {
+      "file": "GreenLens_0.8.0_x64-setup.exe",
+      "sha256": "44ea81c708a4559806e30b2c062eefefee285b2adb3d9582af6cdff3e98eb6ec"
+    },
+    {
+      "file": "GreenLens-CLI-0.8.0-windows-x64.zip",
+      "sha256": "edb09a652e89a4b5891007aeb5a6e748a22608716ba3e34774e2f7088520b57c"
+    }
+  ],
+  "installation": {
+    "schema_version": "greenlens.local-package-installation.v1",
+    "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+    "started_utc": "2026-10-16T17:34:09.8430094Z",
+    "completed_utc": "2026-10-16T17:35:16.4860486Z",
+    "installer_sha256": "44ea81c708a4559806e30b2c062eefefee285b2adb3d9582af6cdff3e98eb6ec",
+    "installer_arguments": [
+      "/S"
+    ],
+    "installer_exit_code": 0,
+    "previous_installed_sha256": "540875f6403479e59d818e7c4de3d3659b3b826b7f02834eee315e104f23c9fd",
+    "installed_bytes": 31178752,
+    "installed_sha256": "533607a0867ee02988e4c364b4224288405c59f8e1b11ef569dfe69528a40c36",
+    "raw_installed_differences": [
+      {
+        "installed": 78,
+        "raw": 85,
+        "offset": 25504912
+      },
+      {
+        "installed": 83,
+        "raw": 78,
+        "offset": 25504913
+      },
+      {
+        "installed": 83,
+        "raw": 75,
+        "offset": 25504914
+      }
+    ],
+    "greenlens_running_before": false,
+    "greenlens_running_after": false,
+    "native_workflow_observed": false,
+    "clean_machine_claim": false
+  },
+  "renderer_pins": {
+    "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+    "renderer": "greenlens.energy-report-issue-renderer/3",
+    "typst_version": "0.15.1",
+    "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+    "fonts": [
+      {
+        "sha256": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+        "bytes": 17000768,
+        "name": "NotoSansCJKtc-Bold.otf"
+      },
+      {
+        "sha256": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4",
+        "bytes": 16435884,
+        "name": "NotoSansCJKtc-Regular.otf"
+      }
+    ],
+    "templates": [
+      {
+        "path": "reports/energy/issue.typ",
+        "sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697"
+      },
+      {
+        "path": "reports/energy/issue-v2.typ",
+        "sha256": "e447d9f8398b3706c00312bea091b9c97256fc287e852687a175e91d99e23cb5"
+      },
+      {
+        "path": "reports/energy/issue-v3.typ",
+        "sha256": "a7d67198d034efea426ffe606e0a1abcd1059a9d2ab03c6f79a1fa53adaa28af"
+      }
+    ],
+    "check": "Actual pinned file bytes only; no renderer launched or PDF generated"
+  },
+  "capacity": {
+    "schema_version": "greenlens.project-capacity.v1",
+    "project_content_sha256": "249b7525ca7af1dee926a761820211f9b9771503ffd8b8eca7a9e290c18807d7",
+    "retained_bytes": 224928962,
+    "retained_entries": 576,
+    "available_bytes": 43506494,
+    "available_entries": 4424,
+    "limits": [
+      {
+        "name": "complete retained bytes",
+        "used": 224928962,
+        "limit": 268435456
+      },
+      {
+        "name": "retained entries",
+        "used": 576,
+        "limit": 5000
+      },
+      {
+        "name": "largest retained entry",
+        "used": 12751294,
+        "limit": 67108864
+      },
+      {
+        "name": "candidate manifest bytes",
+        "used": 12751294,
+        "limit": 16777216
+      },
+      {
+        "name": "scope revision count",
+        "used": 3,
+        "limit": 64
+      },
+      {
+        "name": "issue count",
+        "used": 1,
+        "limit": 32
+      },
+      {
+        "name": "reference revision count",
+        "used": 2,
+        "limit": 8
+      },
+      {
+        "name": "largest retained reference geometry bytes",
+        "used": 6496,
+        "limit": 83886080
+      }
+    ],
+    "incremental_lower_bound_bytes": 0,
+    "incremental_lower_bound_entries": 4,
+    "estimated_incremental_bytes": 17500723,
+    "estimate_basis": "Estimate only: largest previously retained issue, when available. New scope, labels, figures or renderer can change size. Exact products and candidate manifest are admitted after rendering; failed publication preserves completed pending products.",
+    "can_start": true,
+    "warnings": [],
+    "inventory_scope": "Actual sizes of manifest-bound regular files plus the serialized candidate manifest. This is a resource inventory, not content-integrity verification. Unreferenced scratch and external proprietary sources are excluded; required history is included. ZIP envelope overhead is not yet included.",
+    "remedy": "Preserve the complete existing study and start a separately scoped document. No history or required assets will be silently pruned. Estimates are not publication guarantees."
+  },
+  "capacity_observation": {
+    "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+    "command": "capacity PROJECT --operation report-issue",
+    "wall_ms": 1589,
+    "exit_code": 0,
+    "manifest_unchanged": true,
+    "manifest_sha256": "0c366cda4f2ef44d5d5a12b97f246f02fb2b9a374eef7540254c5f1426747772",
+    "scientific_evidence_verified": false,
+    "engine_requested": false,
+    "renderer_requested": false
+  },
+  "historical_inspection": {
+    "products": 49,
+    "source_commit": "fb766bb24e63aa6cd61cc6a01792d9045faad731",
+    "original_members_unchanged": 576,
+    "new_renderer_three_products": 0,
+    "original_bytes_unchanged": 224928962,
+    "receipt": "fb766bb-build-inspection.json"
+  },
+  "native": {
+    "render_seconds": 600,
+    "final_source_observed": false,
+    "second_issue_started": false,
+    "remaining_issue_allowance": 1,
+    "remaining_regeneration_allowance": 1,
+    "energyplus_executions": 0,
+    "additional_observation_authorization": "pending",
+    "prior_failure": "Allocation failure under the stricter 1 GiB guard, before editing or rendering; stopped, not a 2 GiB ceiling failure",
+    "cold_regeneration_started": false,
+    "prior_failure_receipt": "native-278a22e-pre-render-failure.json",
+    "acceptance_memory_bytes": 2147483648,
+    "process_limit": 16,
+    "kernel_guard_bytes": 1073741824
+  },
+  "openskp": {
+    "containment": "failed strict raw-peak criterion / unqualified",
+    "independent_original_fixtures_authored": true,
+    "fixtures_parsed": false,
+    "worker_matrix_executed": false,
+    "private_probe_started": false,
+    "app_adopted": false
+  },
+  "ci": {
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38937518026",
+    "dependent_engine_jobs": "energy and static_compatibility running; no pass asserted",
+    "run_id": 38937518026,
+    "current_step": "dependent pinned-runtime setup",
+    "status": "in_progress",
+    "completed_steps": [
+      "frontend",
+      "native prerequisites",
+      "format, strict lint and unit/lifecycle",
+      "exact-source unsigned CLI/desktop packaging and strict inventory"
+    ],
+    "head_sha": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+    "build_conclusion": "success",
+    "checkpoint": "bb1edc9-ci-build.json",
+    "checkpoint_sha256": "fdc2092bbf1fd6965ab4f96b0531126aa2b8cbf3d3652f80b1811aa00e772848",
+    "external_checkpoint_sha256": "96980a1e35c70be3958004e202cdf612b6c17631beada418f107bdb078c8fb6c",
+    "checkpoint_encoding": "Public copy normalized to repository LF; external CRLF receipt retained unchanged"
+  },
+  "limitations": [
+    "No final-source native candidate capture, second issue, new PDF page review, Save As/cold regeneration or PDF handoff observation",
+    "Installation is on an existing workstation, not a clean-machine result",
+    "No scientific threshold or qualification changed",
+    "Inherited modifier selection, exact layout/DPI, reimport/document-change and live EnergyPlus cancellation gaps remain separate"
+  ]
+}

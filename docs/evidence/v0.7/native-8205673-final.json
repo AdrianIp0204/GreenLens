@@ -1,0 +1,273 @@
+{
+ "schema_version": "greenlens.v0.7-native-final-supplement.v1",
+ "recorded_date_utc": "2026-10-16",
+ "release_acceptance": "incomplete",
+ "scope": "Identified installed synthetic retained-study inspection, portability, regeneration, export and finite cancellation observations. Earlier candidate failures remain preserved. This is not the complete native A-J workflow or physical validation.",
+ "candidate": {
+  "cli_sha256": "b8ad687175b107ef254cd9de766180bee77cd8fe4ea7468e763f475732a107e0",
+  "source_dirty": false,
+  "installer_exit": 0,
+  "extracted_payload_sha256": "ff28b52f7bf5acf7a766e24f35432b43b936736125bd7c073b62b16a119b54ab",
+  "signed": false,
+  "installed_sha256": "ff28b52f7bf5acf7a766e24f35432b43b936736125bd7c073b62b16a119b54ab",
+  "clean_machine": false,
+  "installer_sha256": "df92f3fd423dcfc6f60c60ec6721e10238820011b518982bcbc303c9ae4543ee",
+  "frontend_assets_manifest_sha256": "12d9ae0faa57ab38c2899134930deaeb02ca79aa7f9f32450b3c2e2749c74504",
+  "installed_utc": "2026-10-16T06:37:22.0657366+00:00",
+  "source": "82056734c0c3e28934608efeac7925f5151abe70",
+  "installer_bytes": 6787835,
+  "cli_package_sha256": "ed9bddfc053efb983567f785732b09a38dbce1ae86aa82ad15019ac28563b290",
+  "cli_package_bytes": 12593132,
+  "embedded_production_assets": true,
+  "development_server": false
+ },
+ "license_check": {
+  "packages": 402,
+  "notice_texts": 230,
+  "review_gaps": [],
+  "partial": false,
+  "check": true,
+  "installer_cache_verified": true
+ },
+ "installed_inspection": {
+  "status": "verified",
+  "issues": [
+   {
+    "label": "R1",
+    "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+    "content_sha256": "cb2a9ed0948e01cc1a837f64256054ec70544ddae2962db8689f882e522ddcf5",
+    "scope_revision_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+    "baseline": {
+     "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+     "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+     "design_id": "A"
+    },
+    "proposed": {
+     "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+     "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+     "design_id": "B"
+    },
+    "products_sha256": "81aa3349326f42f1c4f038207b847ddf1d0d634b96429029c45d63f75aea35c8",
+    "sensitivity_session_id": null
+   },
+   {
+    "label": "R2",
+    "issue_id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+    "content_sha256": "ac557ba59d191545f0b908b3923bbde9ea019833e1ef1fe9c913776fd318a0be",
+    "scope_revision_sha256": "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1",
+    "baseline": {
+     "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+     "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+     "design_id": "A"
+    },
+    "proposed": {
+     "run_id": "5fb6b5ed-5b1e-4305-894c-f700292cf874",
+     "record_sha256": "e50bbbf7039682f85e64c645b02a63f3f78a375d98d77debd31c55efce6c65a0",
+     "design_id": "B"
+    },
+    "products_sha256": "e9888abf73620b76559126392934aa6876a34ddbb6ee46723160685b6dd84c78",
+    "sensitivity_session_id": null
+   }
+  ],
+  "observed": [
+   "Both historical issue selections display their own frozen scopes and A/B bindings.",
+   "R1 historical relationship, R2 Unassessed status and missing exact-pair sensitivity are visible.",
+   "Actual retained R2 aligned SVG and performance-page-001 PNG preview successfully."
+  ],
+  "does_not_establish": "New scope acceptance/issuance or the complete installed A-J workflow."
+ },
+ "external_pdf": {
+  "status": "failed_unresolved",
+  "product": "performance.pdf",
+  "viewer_error": "ERR_FILE_NOT_FOUND",
+  "verified_file_bytes": 242512,
+  "verified_file_sha256": "4aa3a7f52baf31d0e7761241cb782eaeeaccf2206c27506a14c8078ac5c33ae0",
+  "observations": "Browser handoff, exact-URL reload and native chooser fail; read-only inspection confirms the regular PDF remains intact. No lifetime defect or successful viewer display established.",
+  "smallest_intervention": "Diagnose viewer/file access or supply a working PDF viewer, then repeat only the handoff observation."
+ },
+ "save_as": {
+  "status": "verified",
+  "checked_utc": "2026-10-16T06:47:05.4963920Z",
+  "source_non_lock_members": 687,
+  "identical_members": 687,
+  "different_members": 0,
+  "destination_members": 688,
+  "additional_member": "Operational writer lock; no issued evidence changed."
+ },
+ "cold_portability": {
+  "status": "verified_for_recorded_scope",
+  "hidden_original_paths": 13,
+  "all_original_paths_unavailable": true,
+  "energyplus_path_unavailable": true,
+  "hidden_utc": "2026-10-16T06:48:16.7639456Z",
+  "restored_utc": "2026-10-16T06:58:53.6920188Z",
+  "restored_paths": 13,
+  "all_original_paths_restored": true,
+  "observed": "Fresh installed process opened the portable copy through native chooser and startup guard. Both issues inspected while original source, working, scratch and engine paths were unavailable.",
+  "opening_timing": "Admission/run/byte states observed; no new first-progress timing or OS-cache-eviction claim.",
+  "unchanged_evidence_members": 686,
+  "changed_evidence": []
+ },
+ "regenerated_issues": [
+  {
+   "label": "R1",
+   "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+   "status": "verified_exact_bytes",
+   "checked_utc": "2026-10-16T06:52:15.6974393Z",
+   "matched_members": 45,
+   "deterministic_products": 44,
+   "additional_member": "issue-products.json",
+   "different_members": 0,
+   "new_energyplus_calculations": 0,
+   "runtime_receipt_substituted": false,
+   "report_review": "Earlier page/figure review applies only to these byte-identical products."
+  },
+  {
+   "label": "R2",
+   "issue_id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+   "status": "verified_exact_bytes",
+   "checked_utc": "2026-10-16T06:54:39.5004788Z",
+   "matched_members": 45,
+   "deterministic_products": 44,
+   "additional_member": "issue-products.json",
+   "different_members": 0,
+   "new_energyplus_calculations": 0,
+   "runtime_receipt_substituted": false,
+   "report_review": "Earlier page/figure review applies only to these byte-identical products."
+  }
+ ],
+ "installed_export": {
+  "status": "verified",
+  "package_sha256": "470e3b13963ee6e2bd7b5ae7ecd30107bdda8180f718edc8c53a37b7cfc556aa",
+  "compressed_bytes": 40422784,
+  "entries": 690,
+  "uncompressed_bytes": 257381893,
+  "largest_entry_bytes": 8229005,
+  "unsafe_paths": [],
+  "limits": {
+   "entries": 5000,
+   "entry_bytes": 67108864,
+   "uncompressed_bytes": 268435456
+  },
+  "matches_retained_headless_export": true,
+  "inclusion": "Complete retained issued project with eight runs, two scopes, two issues and required normalized reference assets. Engines and external original architectural source are excluded explicitly."
+ },
+ "distributed_cli_inspection": {
+  "status": "completed",
+  "cli_sha256": "b8ad687175b107ef254cd9de766180bee77cd8fe4ea7468e763f475732a107e0",
+  "package_sha256": "470e3b13963ee6e2bd7b5ae7ecd30107bdda8180f718edc8c53a37b7cfc556aa",
+  "project_manifest_sha256": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+  "content_snapshot_sha256": "126c002545088318c888de99324795270bcb61fea39aa17557c3250adc124531",
+  "elapsed_ms": 6567,
+  "bytes_read": 856592939,
+  "files_verified": 687,
+  "energy_runs": 8,
+  "numeric_passes": [
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1,
+   1
+  ],
+  "simulations_started": 0,
+  "scope": "Actual-byte, dimensions and arithmetic verification by the packaged CLI; this is not a new engine replay or scientific qualification."
+ },
+ "evidence_inspection_cancellation": {
+  "status": "unverified",
+  "input_utc": "2026-10-16T06:39:45.797Z",
+  "completed_response_observed_utc": "2026-10-16T06:39:46.062Z",
+  "outcome": "Input missed the running inspection window; completed R2 was observed. Not a cancellation pass."
+ },
+ "native_engine_cancellation": {
+  "protocol": "Separately predeclared two-attempt engineering protocol; old three-attempt allowance remains exhausted.",
+  "maximum_attempts": 2,
+  "consumed_attempts": 2,
+  "further_unchanged_attempts": 0,
+  "attempts": [
+   {
+    "attempt": 1,
+    "run_input_utc": "2026-10-16T07:00:24.656Z",
+    "pid": 27840,
+    "first_process_observed_utc": "2026-10-16T07:00:26.842Z",
+    "last_process_observed_utc": "2026-10-16T07:00:34.148Z",
+    "cancel_input_sent": false,
+    "outcome": "Completed before cancellation observation; one genuine B run retained. Not a cancellation pass."
+   },
+   {
+    "attempt": 2,
+    "run_input_utc": "2026-10-16T07:06:48.145Z",
+    "pid": 24380,
+    "first_process_observed_utc": "2026-10-16T07:06:51.2388319+00:00",
+    "last_process_observed_utc": "2026-10-16T07:06:58.0094971+00:00",
+    "cancel_input_utc": "2026-10-16T07:06:59.429Z",
+    "live_process_samples": 104,
+    "outcome": "Cancelled during complete-output validation; no completed result published",
+    "observed_state": "Cancelled",
+    "last_stage": "Validating complete interval outputs and disjoint electricity meters",
+    "final_log": "Cancelled; no completed result published",
+    "retained_runs_before": 1,
+    "retained_runs_after": 1
+   }
+  ],
+  "finalization_cancellation": "verified during post-engine output validation",
+  "live_process_tree_termination": "unverified; engine had exited before attempt 2 Cancel input",
+  "precision": "Process timestamps are sampled first/last observations, not exact process exit times."
+ },
+ "remaining": {
+  "unverified": [
+   "Live engine process-tree cancellation and cooperative opening/evidence cancellation.",
+   "Historical mapping/live viewport selection and Escape across the full installed composition.",
+   "Physical held Shift-add/Ctrl-remove selection.",
+   "Exact inherited client-size and high-DPI layout matrix.",
+   "Full installed A-J scope/carry-forward/new-issue workflow and native draft/conflict coverage."
+  ],
+  "blocked": [
+   "Clean Windows installation: existing workstation is not a clean environment.",
+   "Anonymous private architectural source remains undecoded after stopped crash investigation; new recoverable same-case geometry or lawful local export is required."
+  ],
+  "failed": [
+   "PDF external-viewer access remains unresolved.",
+   "Subsequent installed scope-history inspection exposes collapsed narrow mapping-table columns; layout repair and identified installed recheck are pending."
+  ],
+  "scientific": "Stopped v0.3 and v0.5 qualification failures remain stopped; Unassessed status, exact-pair sensitivity absence and frozen thresholds are unchanged."
+ },
+ "evidence_receipts": [
+  {
+   "name": "installed-candidate.json",
+   "sha256": "743ba38b4c532ffba783daa059dbf353106863e25aaf944e309095ba81fa97ae"
+  },
+  {
+   "name": "native-observations.md",
+   "sha256": "3eeee444ef0c0882eb8ed0e6c477e6ab5c12027c4bb0edf0edc5e2d4513488d7"
+  },
+  {
+   "name": "cold-final-integrity.json",
+   "sha256": "e8f70a2bb44b2ceddb4f8edac28737b235eed39404b0fc7172ef8531cc08af0d"
+  },
+  {
+   "name": "distributed-cli-package-inspection.json",
+   "sha256": "1a89cae1a093f1ef7dbcef42eb68d81f292d88a0f9930af6434ae6b8629e4bbe"
+  },
+  {
+   "name": "R1-native-regeneration-integrity.json",
+   "sha256": "7e48273e3c63e12fa52d1c55cfb1c2091db06acd36034bc0d20ad651723b7a1f"
+  },
+  {
+   "name": "R2-native-regeneration-integrity.json",
+   "sha256": "4f3c170117940e177a5b016b515fa0330a71a962cfcbee1633faabfbf64ef475"
+  },
+  {
+   "name": "cancel-attempt-1-outcome.json",
+   "sha256": "b8e26c8b87d5c59c2dfebebc0a266787e80b3c40341ee76040cba393d546282b"
+  },
+  {
+   "name": "cancel-attempt-2-outcome.json",
+   "sha256": "288ffb6b5a30fdce7116873d45000d1f58f50b28d786bb3368c9d36a6336a590"
+  }
+ ],
+ "privacy": "Sanitized synthetic identities only; paths, screenshots, process logs, private architecture and full artifacts remain external.",
+ "repository": "https://github.com/AdrianIp0204/GreenLens"
+}

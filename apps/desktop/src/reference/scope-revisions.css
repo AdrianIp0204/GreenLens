@@ -1,1 +1,20 @@
 .scope-revisions{border-bottom:1px solid #62716d;padding-bottom:.8rem;margin-bottom:1rem}.scope-revisions h2{margin:.3rem 0}.scope-revisions pre{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.scope-revisions nav{display:flex;flex-wrap:wrap;align-items:center;gap:.4rem;margin:.4rem 0}.scope-revisions table{min-width:38rem}.scope-revisions td,.scope-revisions th{overflow-wrap:anywhere;vertical-align:top}.scope-revisions [aria-label="Historical mapping inspection"]{border-left:3px solid #698f83;padding-left:.6rem}
+
+/* Reserve readable columns instead of letting an opaque identifier in an
+   action button squeeze the headers. Narrow inspectors scroll this region,
+   not the entire workbench; keyboard focus makes that scroll discoverable. */
+.scope-revisions .scope-mapping-table { overflow: auto; max-width: 100%; min-width: 0; }
+.scope-revisions .scope-mapping-table table { table-layout: fixed; width: 100%; min-width: 32rem; }
+.scope-mapping-table .scope-mapping-source-column { width: 13rem; }
+.scope-mapping-table .scope-mapping-target-column { width: 13rem; }
+.scope-mapping-table .scope-mapping-action-column { width: 6rem; }
+.scope-revisions .scope-mapping-table caption { text-align: left; padding: .35rem 0; font-size: 10px; line-height: 1.4; }
+.scope-revisions .scope-mapping-table th,
+.scope-revisions .scope-mapping-table td { white-space: normal; line-height: 1.4; }
+.scope-revisions .scope-mapping-table thead { z-index: 1; background: #e6eded; }
+.scope-revisions .scope-mapping-table thead th { position: static; top: auto; overflow-wrap: normal; word-break: normal; }
+.scope-revisions .scope-mapping-table tbody th { background: transparent; font-weight: normal; }
+.scope-revisions .scope-mapping-table code { font-size: 10px; white-space: normal; overflow-wrap: anywhere; }
+.scope-revisions .scope-mapping-inspect { display: inline-block; width: auto; min-width: 0; max-width: 100%; margin: 0; padding: .3rem .45rem; white-space: nowrap; font-size: 11px; }
+.scope-revisions .scope-mapping-inspect[aria-pressed=true] { background: #d2e7d9; color: #154d34; outline: 1px solid #80af94; }
+.scope-mapping-scroll-hint { font-size: 10px; line-height: 1.4; }

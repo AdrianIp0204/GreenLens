@@ -1,5 +1,5 @@
 import EvidenceInspection from './EvidenceInspection';
-import {useState,type ComponentProps} from 'react';
+import {useMemo,useState,type ComponentProps} from 'react';
 import ReportIssues from './ReportIssues';
 import type {Project} from '../types';
 import {useEnergyRead} from './useEnergyRead';
@@ -47,7 +47,9 @@ export default function ReportWorkbench({issueControls,path,project,a,b,typstDir
   const check=useEnergyRead<AttachmentPreflight>('energy_report_preflight',readyArgs);
   const selectionCheck=useEnergyRead<SensitivityExportSelection>('energy_sensitivity_export_selection',project?.report_issues?.issues.length?null:readyArgs);
   const dependencies=useEnergyRead<Readiness>('energy_dependencies',{engineDir:null,typstDir:typstDir||null});
-  const key=reportRequestKey(path,project,a,b,typstDir,htmlOnly),output=completedOutput===undefined?finished:completedOutput;
+  // Progress, previews and profile tabs do not change the immutable request.
+  // Avoid reserializing all retained scope history on each such UI update.
+  const key=useMemo(()=>reportRequestKey(path,project,a,b,typstDir,htmlOnly),[path,project,a,b,typstDir,htmlOnly]),output=completedOutput===undefined?finished:completedOutput;
   const binding=validReportRequestBinding(output?.request_binding)?output.request_binding:null;
   const outputCurrent=Boolean(binding&&binding.request_key===key);
   const preflight=validPreflight(check.value)?check.value:null;

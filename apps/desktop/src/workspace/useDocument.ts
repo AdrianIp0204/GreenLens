@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Channel, invoke, isTauri } from '@tauri-apps/api/core';
 import { getCurrentWindow } from '@tauri-apps/api/window';
 import type { Model, RunRecord, ValidatedModel } from '../types';
@@ -103,14 +103,16 @@ export function useDocument() {
   const currentClimate=currentClimateState?.key===currentClimateKey?currentClimateState.result:null;
   const currentClimateLoading=Boolean(project&&path&&study&&study.calculation.mode!=='static_overcast'&&currentClimateState?.key!==currentClimateKey);
   const validationKey=JSON.stringify([documentId,alternative,model,study]);
-  const dirty=Boolean(project && documentSignature(project)!==savedSignature);
+  const acceptedSignature=useMemo(()=>documentSignature(project),[project]);
+  const dirty=Boolean(project && acceptedSignature!==savedSignature);
   const running=activeJob(job);
   const pending=hasPendingEvidence(job,results,climateResults,energyResults);
   const acceptProject = useCallback((value:ProjectView,directory:string,reset=false)=>{
-    setProject(value.project);setRevision(value.revision);setResults(value.results);setClimateResults(value.climate_results??[]);setPath(directory);setSavedSignature(documentSignature(value.project));
+    const signature=documentSignature(value.project);
+    setProject(value.project);setRevision(value.revision);setResults(value.results);setClimateResults(value.climate_results??[]);setPath(directory);setSavedSignature(signature);
     setEnergyResults(value.energy_results??[]);
     setSensitivitySnapshots(value.energy_sensitivity_sessions??{});setProjectVerification(value.project_verification??null);
-    state.current={...state.current,project:value.project,revision:value.revision,results:value.results,climateResults:value.climate_results??[],energyResults:value.energy_results??[],path:directory,savedSignature:documentSignature(value.project)};
+    state.current={...state.current,project:value.project,revision:value.revision,results:value.results,climateResults:value.climate_results??[],energyResults:value.energy_results??[],path:directory,savedSignature:signature};
     if(reset){setDisplay((value.project.display_state as ViewportDisplayState|null)??defaultDisplay());history.current.reset();setHistoryVersion(v=>v+1);setAlternative('A');setDocumentId(v=>v+1);setValidated(null);}
   },[]);
   const newDocument=useCallback(async()=>{

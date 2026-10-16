@@ -60,15 +60,17 @@ function Read-Json([string]$Path,[long]$Cap){
  # Share deletion so observing an old manifest handle cannot block the app's
  # atomic manifest replacement. Read the bounded bytes of this opened file.
  $stream=[IO.FileStream]::new($item.FullName,[IO.FileMode]::Open,[IO.FileAccess]::Read,([IO.FileShare]::ReadWrite -bor [IO.FileShare]::Delete))
- try{if($stream.Length -gt $Cap){throw 'JSON grew beyond its bound.'};$bytes=[byte[]]::new([int]$stream.Length);$stream.ReadExactly($bytes,0,$bytes.Length);if($stream.ReadByte() -ne -1){throw 'JSON changed during its bounded read.'};$text=[Text.UTF8Encoding]::new($false,$true).GetString($bytes).TrimStart([char]0xFEFF);$text|ConvertFrom-Json -AsHashtable -DateKind String -Depth 100}finally{$stream.Dispose()}
+ try{if($stream.Length -gt $Cap){throw 'JSON grew beyond its bound.'};$bytes=[byte[]]::new([int]$stream.Length);$stream.ReadExactly($bytes,0,$bytes.Length);if($stream.ReadByte() -ne -1){throw 'JSON changed during its bounded read.'};$text=[Text.UTF8Encoding]::new($false,$true).GetString($bytes).TrimStart([char]0xFEFF);$parsed=ConvertFrom-Json -InputObject $text -AsHashtable -DateKind String -Depth 100 -NoEnumerate;return ,$parsed}finally{$stream.Dispose()}
 }
 function Stable-Value($Value){
- if($null -eq $Value){return $null}
+ if($null -eq $Value){return ,$null}
  if($Value -is [Collections.IDictionary]){$r=[ordered]@{};$keys=[string[]]@($Value.Keys);[Array]::Sort($keys,[StringComparer]::Ordinal);foreach($k in $keys){$r[$k]=Stable-Value $Value[$k]};return $r}
- if($Value -is [Collections.IEnumerable] -and $Value -isnot [string]){$r=@(foreach($v in $Value){Stable-Value $v});return ,$r}
- return $Value
+ # Pipeline enumeration collapses empty/singleton arrays and can discard null
+ # children. Add each recursive result as one value, retaining its JSON shape.
+ if($Value -is [Collections.IEnumerable] -and $Value -isnot [string]){$r=[Collections.Generic.List[object]]::new();foreach($v in $Value){$child=Stable-Value -Value $v;$r.Add($child)};return ,$r.ToArray()}
+ return ,$Value
 }
-function Json-Identity($Value){$text=(Stable-Value $Value)|ConvertTo-Json -Compress -Depth 100;[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($text))).ToLowerInvariant()}
+function Json-Identity($Value){$text=ConvertTo-Json -InputObject (Stable-Value -Value $Value) -Compress -Depth 100;[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($text))).ToLowerInvariant()}
 function Member-Path([string]$Root,[string]$Relative){
  if(!$Relative -or $Relative.Contains('\') -or $Relative.Contains(':') -or $Relative.StartsWith('/') -or @($Relative.Split('/')|Where-Object {!$_ -or $_ -in @('.','..')}).Count){throw 'Invalid portable member path.'}
  $value=$Root

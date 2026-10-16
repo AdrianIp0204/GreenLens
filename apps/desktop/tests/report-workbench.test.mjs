@@ -85,4 +85,17 @@ test('real report attachment inspection exposes stage/bytes and Cancel without s
   }finally{globalThis.__reportWorkbenchIPC=original;delete globalThis.__inspectionProtocol;}
 });
 
+test('profile navigation retains one request serialization while changed accepted context recomputes it',async()=>{
+  const p=project();p.architecture=architecture();let serialized=0;
+  const stringify=JSON.stringify;
+  JSON.stringify=function(value,...args){if(Array.isArray(value)&&value[0]==='owned-test-project'&&value[1]?.architecture===p.architecture)serialized++;return stringify.call(JSON,value,...args);};
+  try{
+    await setup({project:p});const initial=serialized;assert.equal(initial,1);
+    await click('Technical profile');await click('Executive profile');
+    assert.equal(serialized,initial,'display changes must not serialize retained history again');
+    props={...props,a:'a5'};await act(async()=>root.render(React.createElement(Panel,props)));
+    assert.equal(serialized,initial+1,'a different selected run must recompute the exact request binding');
+  }finally{JSON.stringify=stringify;}
+});
+
 test.after(async()=>{if(root)await act(()=>root.unmount());});

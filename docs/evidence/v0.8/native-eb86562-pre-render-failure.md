@@ -1,0 +1,17 @@
+# Installed pre-render failure — eb86562
+
+**Acceptance remains incomplete.** The installed synthetic-project observation ended during startup/editing, before rendering was armed. It produced no new report issue or simulation evidence. The detailed source-bound record is [the companion JSON receipt](native-eb86562-pre-render-failure.json).
+
+The clean source was `eb86562024c6c076527914d52aa4ff729e2ea6ac`; the installed executable SHA-256 was `6db240e3eb259a5aba9bdc4c6f18630dc264714274d9ce3a5511b4c7771928fa`. Installer, built executable and distributed CLI identities are recorded separately. Installation succeeded on the existing workstation; this is not clean-machine acceptance.
+
+The observer stopped after 410.1910364 seconds when the application exited unexpectedly. Standard error reported a failed allocation of 1,622,912 bytes. Recorded raw peak was 1,083,158,528 bytes under the stricter 1,073,741,824-byte kernel guard. The unchanged report acceptance ceiling is 2,147,483,648 bytes; this observation did not exceed that ceiling. Raw peak is preserved without subtracting denied allocations. The receipt contains no process exit code.
+
+No Typst or simulation-engine process was observed, rendering was never armed, and the supervised tree was empty after cleanup. Neither the declared issuance nor cold-regeneration allowance was consumed. This does not authorize additional attempts or change any resource limit. Process polling alone cannot prove the absence of every short-lived child.
+
+An independent passive audit read and hashed all **576 original retained members (224,928,962 bytes)**. Every original size and SHA-256, including the project manifest, matched. The only extra file was the empty cooperative `.greenlens.lock`; it was disclosed and left untouched. The initial detailed receipt reports physical member-set equality false for that reason. Its zero changed/missing members and the clarifying supplement establish preservation of every original evidence member without rewriting the earlier receipt.
+
+The serialized project is 6,342,436 bytes in compact JavaScript JSON, of which scope history accounts for 6,238,130 bytes. The three retained revisions each contain 6,544 provenance rows. The old read hook constructed a 12,685,314-byte UTF-16 request key, reparsed it and sent the complete project through IPC; reports could request both preflight and historical inspection. The historical response repeated a 2,166,810-byte scope already in project history. These are actual payload measurements and source observations, **not measured heap allocations or proof of the failure's cause**. Subsequent repairs need independent verification.
+
+Two exact-source Rust regressions passed: accepted Input-review binding in standalone HTML/machine products (71.19 seconds), and frozen COP identity/deleted-target labels. They do not establish native or PDF acceptance. The retained [exact-source CI run](https://github.com/AdrianIp0204/GreenLens/actions/runs/38915839512) failed after the recorded 113 core and 241 runner passes because 13 optional-worker source tests lacked their pinned source checkout. Dependent energy/static jobs and hosted production packaging did not run. A tooling repair or later CI result must be reported separately.
+
+Renderer-3 native issuance, new PDF review and cold regeneration remain outstanding. This record adds no simulation, physical qualification, private-model conversion or clean-machine claim, and leaves all historical failures intact.

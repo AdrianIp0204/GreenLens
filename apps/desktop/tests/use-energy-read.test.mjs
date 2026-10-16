@@ -32,12 +32,12 @@ const{useEnergyRead}=await import(await load(path.join(src,'useEnergyRead.ts')))
 const{default:Inspection}=await import(await load(path.join(src,'EvidenceInspection.tsx')));
 const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return{promise,resolve,reject};};
 const progress=(patch={})=>({schema_version:'greenlens.project-open-progress.v1',stage:'energy_evidence',run_id:'run-a',runs_completed:0,runs_total:1,bytes_read:1048576,files_verified:2,numeric_passes:{},elapsed_ms:25,...patch});
-let root,command,args,read,calls,nextTicket,prepare,inspect,direct,cancelReply;
-function Harness(){read=useEnergyRead(command,args);return React.createElement(React.Fragment,null,React.createElement(Inspection,{label:'Reading selected evidence',read}),read.error&&React.createElement('p',{role:'alert'},read.error),read.value&&React.createElement('output',null,JSON.stringify(read.value)));}
+let root,command,args,read,calls,nextTicket,prepare,inspect,direct,cancelReply,sequence,freshEnvelope,renders;
+function Harness(){renders++;read=useEnergyRead(command,freshEnvelope&&args?{...args}:args,sequence);return React.createElement(React.Fragment,null,React.createElement(Inspection,{label:'Reading selected evidence',read}),read.error&&React.createElement('p',{role:'alert'},read.error),read.value&&React.createElement('output',null,JSON.stringify(read.value)));}
 async function draw(){await act(async()=>root.render(React.createElement(Harness)));}
 async function setup(){
   if(root)await act(()=>root.unmount());root=createRoot(document.getElementById('root'));
-  command='energy_report_preflight';args={path:'owned-project',project:{id:'original'},a:'a',b:'b'};calls=[];nextTicket=1;
+  command='energy_report_preflight';args={path:'owned-project',project:{id:'original'},a:'a',b:'b'};calls=[];nextTicket=1;sequence=0;freshEnvelope=false;renders=0;
   prepare=async()=>nextTicket++;inspect=()=>new Promise(()=>{});direct=async()=>({local:true});cancelReply=async()=>{};
   globalThis.__inspectionIPC=(c,a)=>{calls.push([c,a]);if(c==='prepare_evidence_inspection')return prepare();if(c==='inspect_energy_evidence')return inspect(a);if(c==='cancel_evidence_inspection')return cancelReply(a);return direct(c,a);};
 }
@@ -50,6 +50,47 @@ test('real hook reserves bounded inspection, displays actual stage/bytes and pas
   const query=requests()[0];assert.deepEqual(query.query,{command,arguments:args});assert.equal(query.ticket,1);
   await act(()=>query.onProgress.onmessage(progress()));assert.match(document.body.textContent,/energy evidence · 1.0 MiB read · 0\/1 runs/);assert.doesNotMatch(document.body.textContent,/%|verified|complete/);
   await act(async()=>answer.resolve({ready:true}));assert.equal(read.loading,false);assert.deepEqual(read.value,{ready:true});assert.equal(document.querySelector('button'),null);assert.deepEqual(cancellations(),[]);
+});
+
+test('large immutable project is not serialized or cloned by progress renders or fresh shallow envelopes',async()=>{
+  await setup();let serializations=0;const project={id:'original',architecture:{scope_history:{revisions:Array.from({length:3},(_,revision)=>({revision_sha256:String(revision),provenance:{rows:Array.from({length:6544},(_,id)=>({id:String(id),applied_value:[id,null],source_declarations:[]}))}}))}}};
+  Object.defineProperty(project,'toJSON',{value(){serializations++;return{id:'serialized-copy'};}});
+  args={...args,project};freshEnvelope=true;await draw();const query=requests()[0];assert.strictEqual(query.query.arguments.project,project);assert.notStrictEqual(query.query.arguments,args);const initialRenders=renders;
+  for(let i=0;i<20;i++)await act(()=>query.onProgress.onmessage(progress({bytes_read:i*1048576,elapsed_ms:i+1})));
+  assert.ok(renders>=initialRenders+20);assert.equal(serializations,0);assert.equal(requests().length,1);assert.strictEqual(requests()[0].query.arguments.project,project);assert.deepEqual(cancellations(),[]);
+  args={b:args.b,project,path:args.path,a:args.a};await draw();assert.equal(requests().length,1);assert.equal(serializations,0);
+});
+
+test('same-content replacement project reference starts a new exact request and rejects late prior responses',async()=>{
+  await setup();const old=deferred(),fresh=deferred();inspect=q=>q.ticket===1?old.promise:fresh.promise;await draw();const previous=requests()[0],oldProject=args.project;
+  args={...args,project:{...oldProject}};await draw();assert.equal(requests().length,2);assert.deepEqual(cancellations(),[1]);assert.strictEqual(previous.query.arguments.project,oldProject);assert.strictEqual(requests()[1].query.arguments.project,args.project);
+  await act(async()=>{previous.onProgress.onmessage(progress());old.resolve({from:'old-reference'});});assert.equal(read.value,null);assert.equal(read.progress,null);
+  await act(async()=>fresh.resolve({from:'new-reference'}));assert.deepEqual(read.value,{from:'new-reference'});
+});
+
+test('owned shallow arguments preserve the sent request and exact field presence matters',async()=>{
+  await setup();await draw();const sent=requests()[0].query.arguments;args.a='changed';assert.equal(sent.a,'a');await draw();assert.equal(requests().length,2);assert.equal(requests()[1].query.arguments.a,'changed');
+  args={...args,optional:undefined};await draw();assert.equal(requests().length,3);assert.ok(Object.hasOwn(requests()[2].query.arguments,'optional'));
+  const {optional,...without}=args;void optional;args=without;await draw();assert.equal(requests().length,4);assert.equal(Object.hasOwn(requests()[3].query.arguments,'optional'),false);assert.deepEqual(cancellations(),[1,2,3]);
+});
+
+test('explicit refresh and cleared/reactivated queries receive distinct lifecycle tokens',async()=>{
+  await setup();const first=deferred(),second=deferred(),third=deferred();inspect=q=>({1:first,2:second,3:third})[q.ticket].promise;await draw();const same=args;sequence=1;await draw();assert.equal(requests().length,2);assert.deepEqual(cancellations(),[1]);
+  args=null;await draw();assert.deepEqual(cancellations(),[1,2]);args=same;await draw();assert.equal(requests().length,3);
+  await act(async()=>{first.resolve({old:1});second.resolve({old:2});});assert.equal(read.value,null);await act(async()=>third.resolve({fresh:3}));assert.deepEqual(read.value,{fresh:3});
+});
+
+test('fresh nested capacity and calendar options do not restart exact reads on parent progress renders',async()=>{
+  await setup();command='project_capacity';const answer=deferred();direct=()=>answer.promise;const project=args.project;
+  args={path:args.path,project,operation:{kind:'report_issue'},calendar:{start_weekday:'monday',holidays:[],utc_offset_minutes:0},range:{days:[1,2],option:null}};await draw();const initialRenders=renders;
+  for(let i=0;i<20;i++){args={path:args.path,project,operation:{kind:'report_issue'},calendar:{utc_offset_minutes:0,holidays:[],start_weekday:'monday'},range:{option:null,days:[1,2]}};await draw();}
+  assert.ok(renders>=initialRenders+20);assert.equal(calls.length,1);assert.strictEqual(calls[0][1].project,project);
+  await act(async()=>answer.resolve({ready:true}));assert.deepEqual(read.value,{ready:true});
+  args={...args,operation:{kind:'inspect'}};await draw();assert.equal(calls.length,2);
+  args={...args,range:{option:null,days:[2,1]}};await draw();assert.equal(calls.length,3);
+  args={...args,range:{option:null,days:[]}};await draw();assert.equal(calls.length,4);
+  args={...args,range:{option:null,days:null}};await draw();assert.equal(calls.length,5);
+  args={...args,range:{days:null}};await draw();assert.equal(calls.length,6);
 });
 
 test('explicit cancellation sends the reserved ticket once and gates late progress and success',async()=>{

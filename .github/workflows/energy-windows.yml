@@ -63,6 +63,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./scripts/install-radiance.ps1
+      - name: Pinned text sources for required optional-worker patch tests
+        timeout-minutes: 6
+        run: |
+          ./scripts/test-openskp-patch-source.ps1
+          . ./scripts/prepare-openskp-patch-source.ps1
+          $source = Initialize-OpenSkpPatchSource
+          $source | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $env:ENERGY_BUILD_EVIDENCE 'openskp-patch-source.json') -Encoding utf8
+          "GREENLENS_OPEN_SKP_AUDIT_SOURCE=$($source.source_path)" >> $env:GITHUB_ENV
       - name: Format, strict lint and unit/lifecycle regression suite
         run: |
           . ./scripts/dev-env.ps1
@@ -82,6 +90,7 @@ jobs:
           ./scripts/test-study-issues-collector.ps1
           ./scripts/test-v08-report-collector.ps1
           ./scripts/test-regenerate-v08-review.ps1
+          ./scripts/test-supervise-v08-report-review.ps1
           ./scripts/test-installer-auth.ps1
           node --test scripts/test-license-supplement-binding.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }

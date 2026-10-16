@@ -1,0 +1,100 @@
+{
+  "schema_version": "greenlens.native-report-pre-render-failure.v1",
+  "status": "incomplete",
+  "source_commit": "eb86562024c6c076527914d52aa4ff729e2ea6ac",
+  "source_dirty_at_build": false,
+  "installed_utc": "2026-10-16T15:10:45.1248683Z",
+  "preservation_checked_utc": "2026-10-16T15:30:47.5595078Z",
+  "scope": "Installed synthetic-project observation and subsequent passive evidence audit; no newly issued report or native regeneration acceptance.",
+  "artifacts": {
+    "installer": { "bytes": 7368066, "sha256": "3d6ae2830ba9b4dabdf20d1a6a8a7d399f416dd26e17b314783264bca345c433" },
+    "installed_desktop": { "bytes": 31177728, "sha256": "6db240e3eb259a5aba9bdc4c6f18630dc264714274d9ce3a5511b4c7771928fa" },
+    "built_desktop": { "bytes": 31177728, "sha256": "eb9200e47f5af467950d3518bd7269348cd5629a4e6b61aeb5f8f8e40ce7c726" },
+    "distributed_cli": { "bytes": 16832000, "sha256": "a946e858d2cabae282855c41746f6213bc07cb2ec4e5244e246fdffef763c606" },
+    "build_receipt_sha256": "942f4b3d46892545eda4757141e905fcb28d179c1b57a914b8eef1423900ca2d",
+    "installation_receipt_sha256": "52556d1e230b6f7c0c45f0bb1c8fa6bc00c6909335026c5fbb67943a9949f84e",
+    "installation_claim": "Per-user workstation installation only; not clean-machine acceptance. Built and installed executable identities are recorded separately."
+  },
+  "native_observation": {
+    "completed": false,
+    "stage": "startup-and-editing",
+    "failure": "Installed application exited before an explicit stop/normal-close observation.",
+    "stderr": "memory allocation of 1622912 bytes failed",
+    "exit_code_recorded": null,
+    "elapsed_seconds": 410.1910364,
+    "raw_peak_bytes": 1083158528,
+    "sampled_private_peak_bytes": 1061523456,
+    "kernel_job_ceiling_bytes": 1073741824,
+    "unchanged_report_acceptance_ceiling_bytes": 2147483648,
+    "maximum_active_processes": 7,
+    "process_limit": 16,
+    "cleanup_job_empty": true,
+    "arm_marker_present": false,
+    "observed_typst_processes": 0,
+    "observed_engine_processes": 0,
+    "new_issued_or_simulation_evidence": 0,
+    "render_allowance_consumed": false,
+    "regeneration_allowance_consumed": false,
+    "allowance_basis": "The observer remained in startup-and-editing; rendering was never armed. This failure does not authorize an additional render or change the declared limits.",
+    "memory_interpretation": "The application failed under the stricter 1 GiB kernel guard. The raw high-water value is retained without subtraction; it is below the unchanged 2 GiB report acceptance ceiling. This is an operational failure, not a measured exceedance of that 2 GiB ceiling.",
+    "observer_receipt_sha256": "aa4e444a45c6495f1eb749a165b06d6bf6298d1ea87c7f42e38f8bf977bd021d",
+    "observer_protocol_sha256": "f4c25bb8fa5566691269e9729d0fc0bd4a523a490af09b4dd63b8c628af01cbf",
+    "stderr_sha256": "42e89a3f33cb9372d0b56b39c87b26c059d103fa8afe7f21b54e9d83854b4f30"
+  },
+  "preservation": {
+    "baseline_manifest_sha256": "0c366cda4f2ef44d5d5a12b97f246f02fb2b9a374eef7540254c5f1426747772",
+    "baseline_inventory_sha256": "59538a443d560e949a20bddb794027e5f367abad1972898bd0a13019672ec7f9",
+    "original_members": 576,
+    "original_bytes": 224928962,
+    "identical_original_members": 576,
+    "changed_original_members": 0,
+    "missing_original_members": 0,
+    "all_original_evidence_bytes_preserved": true,
+    "extra_ephemeral_member": { "path": ".greenlens.lock", "bytes": 0, "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855" },
+    "method": "Read-only SHA-256 and size verification of every original member, including project.json, with held-file identity/size/timestamp checks. The extra cooperative lock was retained and disclosed.",
+    "detailed_receipt_sha256": "ed8be8a0e1cbf6105e2b6ebb98ad2ed9224ecfbe654b688df0bd51aba6e146d2",
+    "clarifying_supplement_sha256": "47e71825c778df47484e939c08e20177875f10d391ef22fd83555e78120c3dd5",
+    "receipt_interpretation": "The detailed receipt reports complete physical member-set equality false because of the added empty lock. Its changed/missing arrays are empty and all 576 original members match. The supplement makes this distinction explicit without rewriting that receipt."
+  },
+  "payload_observations": {
+    "units": "Serialized bytes, not measured heap allocations",
+    "project_pretty_json_bytes": 12751294,
+    "project_js_compact_utf8_bytes": 6342436,
+    "scope_history_js_compact_utf8_bytes": 6238130,
+    "retained_scope_revisions": 3,
+    "provenance_rows_per_retained_revision": 6544,
+    "issue_read_hook_key_utf16_bytes": 12685314,
+    "preflight_read_hook_key_utf8_bytes": 6342694,
+    "historical_issue_inspection_js_compact_utf8_bytes": 2363500,
+    "selected_scope_duplicated_in_inspection_utf8_bytes": 2166810,
+    "inspection_receipt_sha256": "ac99a05aa55c6836e5d8859492dd43674ec30e59d427ec35632d1482397fef74",
+    "source_findings": [
+      "The source-bound useEnergyRead implementation serializes full Project arguments into a key, parses that key into another request, and then invokes IPC. Progress renders also reconstruct the key.",
+      "Reports mount can start both full-project preflight and selected historical-issue inspection. reportRequestKey separately serializes complete architectural history.",
+      "The historical inspection response repeats a complete selected ScopeRevision already retained in the project."
+    ],
+    "causal_status": "Measured duplication is a plausible contributor; this audit does not isolate or prove the allocation failure's cause. Subsequent source repairs require their own verification."
+  },
+  "source_bound_checks": [
+    { "test": "validated_carried_input_decision_is_bound_and_visible_in_standalone_report", "passed": 1, "failed": 0, "ignored": 0, "seconds": 71.19, "log_sha256": "6fae826549ef5b41fcefc5524d67e9222c9390b5cb3386c60ebd90f76b437674", "scope": "Rust renderer-3 HTML/machine-data regression; not Typst/PDF or native acceptance" },
+    { "test": "input_review_label_resolves_exact_frozen_cop_identity_and_discloses_deleted_targets", "passed": 1, "failed": 0, "ignored": 0, "seconds": 0.0, "log_sha256": "caaece60ad1901f8f16d0611757bfe5baaf452a9d28412508f6b57c74a00f5b2" }
+  ],
+  "retained_ci_diagnosis": {
+    "run": 38915839512,
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38915839512",
+    "status": "failed",
+    "diagnosis_sha256": "07861fa38a734378071bbd32d72ed97d5b353eda01ab41f4468072ec1d44073e",
+    "core_tests_passed_before_failure": 113,
+    "runner_tests_passed_before_failure": 241,
+    "runner_tests_ignored": 5,
+    "failure": "13 optional-worker source tests lacked the required pinned source checkout. This is not a green CI result.",
+    "not_executed_after_failure": ["Hosted production packaging", "Dependent real-energy job", "Dependent static-compatibility job"],
+    "scope": "Retained exact-source diagnosis; later repaired-source CI is separate. Passing source-patch checks do not qualify or execute the stopped optional converter."
+  },
+  "remaining": [
+    "Native renderer-3 issuance, PDF/page review and cold regeneration remain unverified by this observation.",
+    "No simulation, replay, new report rendering or new issue audit was performed by the passive preservation check.",
+    "No process-polling result is an absolute guarantee that a short-lived child never existed; zero observations are supported here by unchanged retained evidence and the absent render-arm marker.",
+    "Clean-machine installation, stopped scientific/conversion protocols and inherited native requirements are not resolved."
+  ]
+}

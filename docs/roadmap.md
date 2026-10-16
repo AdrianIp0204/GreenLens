@@ -6,6 +6,8 @@ The [v0.7 specification](v0.7-spec.md) authorizes reviewed immutable scope carry
 
 No thermal geometry/HVAC expansion, new scientific qualification, general CAD/IFC, cloud, CFD, optimization or regional certification follows from this phase. Later extensions retain their separate topology, rights, scientific and native-validation prerequisites. The private benchmark remains conditional on genuinely new recoverable geometry; stopped conversion/daylight/real-weather investigations are not restarted.
 
+The installed 9899dd9 candidate verifies the repaired historical-mapping control and preserves retained evidence. Earlier source-bound cold regeneration/replay remains applicable only to its recorded products and binaries. This phase stays incomplete pending the ledger's native, PDF-viewer, exact-layout, clean-machine and private-case requirements; the exhausted cancellation allowance does not authorize another unchanged attempt.
+
 ## Historical bounded v0.4: energy analysis and report products
 
 The user-requested [v0.4 energy specification](v0.4-energy-spec.md) and [gated implementation plan](v0.4-energy-implementation-plan.md) establish the implementation target activated on 13 October 2026. The bounded target is a real EnergyPlus annual baseline/proposed workflow for 1–8 thermal zones, with explicit DX/fan systems, annual/monthly/end-use energy, source-bound operational emissions, coincident interval demand, original PDF/HTML reports, input evidence and portable replay. The acceptance example has four zones and two storeys. It makes no regional compliance claim.

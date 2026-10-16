@@ -1,0 +1,195 @@
+{
+  "schema_version": "greenlens.v0.7-native-scope-table-supplement.v1",
+  "recorded_date_utc": "2026-10-16",
+  "release_acceptance": "incomplete",
+  "scope": "Bounded installed follow-up for narrow historical mapping tables, independent live/historical selection and Escape. Earlier receipt and failure claims retain their original candidate identities.",
+  "candidate": {
+    "source": "9899dd9cc268b616b5425e438fa9595c740a7a58",
+    "source_dirty": false,
+    "build_completed_utc": "2026-10-16T15:27:09.7747411+08:00",
+    "installed_utc": "2026-10-16T15:28:29.4057374+08:00",
+    "installer_exit": 0,
+    "installer_sha256": "80373756b68467d9b1890267c2a63f415b4a433f77b16709ab9083ab8fac550f",
+    "extracted_payload_sha256": "46d12b9c6d8b556cc3d3684c50d4495ef2fe4ae402594544304a52a8c8734fa3",
+    "installed_payload_sha256": "46d12b9c6d8b556cc3d3684c50d4495ef2fe4ae402594544304a52a8c8734fa3",
+    "cli_sha256": "c4f14ef4a965f7a247bbd75c5ba1ebb7264f04a8746a272aecb1c36fd80bc928",
+    "production_assets_manifest_sha256": "2b1e4369c217237ca6ab667e4f85aa65171ec6a6938809d0a6e3c08da0fd26e9",
+    "signed": false,
+    "clean_machine": false,
+    "embedded_production_assets": true,
+    "development_server": false,
+    "distribution": [
+      {
+        "sha256": "80373756b68467d9b1890267c2a63f415b4a433f77b16709ab9083ab8fac550f",
+        "file": "GreenLens_0.7.0_x64-setup.exe"
+      },
+      {
+        "sha256": "796ba65167f7956bc26a134f909ea8ece3d3b1c5bb436518a3665fb01ed184a0",
+        "file": "GreenLens-CLI-0.7.0-windows-x64.zip"
+      }
+    ]
+  },
+  "frontend_checks": {
+    "typescript": "passed",
+    "production_build": "passed",
+    "tests": 368,
+    "passed": 368,
+    "failed": 0,
+    "skipped": 0,
+    "duration_ms": 50321.6499,
+    "retained_failed_attempt": "Initial regression stylesheet injection was reversed; 367 pass and one failure preserved. Correct actual common-before-specific order; every assertion retained."
+  },
+  "license_inventory": {
+    "packages": 402,
+    "notice_texts": 230,
+    "review_gaps": [],
+    "partial": false,
+    "check": true,
+    "installer_cache_verified": true
+  },
+  "installed_observations": {
+    "status": "verified_for_declared_read_only_cases",
+    "completed_utc": "2026-10-16T15:35:06.1929783+08:00",
+    "panel_width_css_px": 320,
+    "cases": [
+      {
+        "id": "historical-mapping-table",
+        "outcome": "pass",
+        "observation": "Headers and long source identity readable; horizontal scrolling reaches the compact Inspect action."
+      },
+      {
+        "id": "independent-live-historical-selection",
+        "outcome": "pass",
+        "observation": "Live synthetic Lower-storey selection remains distinct while inspecting historical S1 West mapping; exact historical scope, source and rationale shown."
+      },
+      {
+        "id": "escape-remount",
+        "outcome": "pass",
+        "observation": "Escape clears historical details only. Panel remount and reopening mappings do not resurrect the cleared inspection."
+      }
+    ],
+    "layouts": [
+      {
+        "client_css_px": [
+          1440,
+          844
+        ],
+        "native_client_px": [
+          1800,
+          1055
+        ],
+        "device_pixel_ratio": 1.25,
+        "windows_scale_percent": 125
+      },
+      {
+        "client_css_px": [
+          900,
+          844
+        ],
+        "native_client_px": [
+          1125,
+          1055
+        ],
+        "device_pixel_ratio": 1.25,
+        "windows_scale_percent": 125
+      }
+    ],
+    "layout_scope": "These measured clients only; thermal four views and mapping table observed. The required 1440 by 900 client was not observed.",
+    "unchanged_members": {
+      "expected": 687,
+      "actual": 687,
+      "failures": []
+    },
+    "no_engine_execution": true,
+    "no_scientific_or_history_edit": true
+  },
+  "preserved_failures": [
+    {
+      "source": "82056734c0c3e28934608efeac7925f5151abe70",
+      "issue": "Narrow mapping-table usability",
+      "status": "repaired_and_observed_only_on_this_identified_follow_up",
+      "evidence": "Original native table failure remains in the retained reproduction receipt."
+    },
+    {
+      "source": "82056734c0c3e28934608efeac7925f5151abe70",
+      "issue": "External PDF viewer access",
+      "status": "failed_unresolved",
+      "evidence": "ERR_FILE_NOT_FOUND despite an intact verified PDF. SVG/PNG preview success and current table repair do not establish PDF viewer success."
+    }
+  ],
+  "incomplete_acceptance": {
+    "unverified": [
+      "Complete installed A-J revision/carry-forward/new-report issuance workflow.",
+      "Live-process-tree cancellation and cooperative opening/evidence cancellation; no new attempts occurred here.",
+      "Physical held Shift-add/Ctrl-remove selection.",
+      "Remaining exact client-size/DPI matrix, including 1440 by 900 client."
+    ],
+    "blocked": [
+      "Clean Windows installation requires a separate clean environment.",
+      "Anonymous private architectural case remains undecoded; new confirmed recoverable same-case geometry or lawful local export is required."
+    ],
+    "cancellation_allowance": "The prior three-attempt allowance and separate two-attempt engineering allowance remain exhausted. Current read-only follow-up consumes no new attempt.",
+    "scientific": "No simulation, scientific-input or history edit occurred. Stopped v0.3/v0.5 qualification branches and Unassessed user-model status remain unchanged."
+  },
+  "evidence_receipts": [
+    {
+      "id": "candidate-9899dd9/build-complete.json",
+      "sha256": "826cb7397dbe3fa408989c59326d7c0daa2fdf4626d91676976edc1c76f40a4e"
+    },
+    {
+      "id": "candidate-9899dd9/installed.json",
+      "sha256": "fec5845f2ce9f691d01e6398208d72975c4ed243778e08e67d0c515d9db45560"
+    },
+    {
+      "id": "candidate-9899dd9/distribution/checksums.json",
+      "sha256": "f15bb761042aeff9e6a8733a8754b3964efb3fb1b38b86805146f1c0a2001d1f"
+    },
+    {
+      "id": "candidate-9899dd9/license-check.txt",
+      "sha256": "9d9fb7418ae06a428c032500f061ecb5d92a5bb1249b72d700f158a85a576ba7"
+    },
+    {
+      "id": "scope-table-repair/checks.json",
+      "sha256": "f5bd341a0ede5b8ac8c06e698558f2305fa31527c4d70253d92792c6ba7901d3"
+    },
+    {
+      "id": "scope-table-repair/native-final.json",
+      "sha256": "316c94ae1cb1360dae8f8155e0aa9d3f7b75cbea1498fc0a92be946c780126b8"
+    },
+    {
+      "id": "scope-table-repair/installed-protocol.md",
+      "sha256": "12b5b4efd4bba5c21bb6ba97f44a4f2b9f4b8a34c20d20735a2633c485f837de"
+    },
+    {
+      "id": "scope-table-repair/native-reproduction.md",
+      "sha256": "c6edc213dca1a4177237e0e88e51d2f10e9d4804b7e2c1394b5bc812834bf3f3"
+    },
+    {
+      "id": "scope-table-repair/assets-manifest.json",
+      "sha256": "2b1e4369c217237ca6ab667e4f85aa65171ec6a6938809d0a6e3c08da0fd26e9"
+    }
+  ],
+  "earlier_public_receipt": "docs/evidence/v0.7/native-8205673-final.json",
+  "privacy": "Only sanitized original synthetic-case observations and artifact identities are public. Local paths, screenshots, private architecture and full retained project records remain external.",
+  "repository": "https://github.com/AdrianIp0204/GreenLens",
+  "distributed_cli_inspection": {
+    "status": "passed",
+    "wall_ms": 11001.2778,
+    "retained_energy_runs": 8,
+    "scope_revisions": 2,
+    "issues": 2,
+    "package_sha256": "470e3b13963ee6e2bd7b5ae7ecd30107bdda8180f718edc8c53a37b7cfc556aa",
+    "simulations_started": 0,
+    "output_sha256": "f8303b63c5dcebdd9c29712005f4ad72c5a064b5b0d8e204f6e99adcd41dc2b6",
+    "receipt_sha256": "8734ebde6a0c0ef3e135472bf618c410592052eeec678d433bb7afd3294bc7aa",
+    "meaning": "Actual-byte package integrity and arithmetic rederivation; no new replay or physical qualification claim."
+  },
+  "ci_checkpoint": {
+    "observed_utc": "2026-10-16T07:38:24Z",
+    "application_source_run": 38866458775,
+    "application_source_status": "in_progress",
+    "prior_source_8205673_run": 38861397692,
+    "prior_source_8205673_status": "completed_success",
+    "note": "Prior source success is not a final application-source CI pass."
+  }
+}

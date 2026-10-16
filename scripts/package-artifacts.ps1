@@ -20,6 +20,7 @@ function Get-PackageDocumentPaths {
         'docs/evidence/v0.7/numeric-transport-repair.json',
         'docs/evidence/v0.7/native-8e54f2f-inspection.json',
         'docs/evidence/v0.7/native-8205673-final.json',
+        'docs/evidence/v0.7/native-9899dd9-final.json',
         'scripts/prepare-energy-history-fixture.ps1','scripts/verify-study-issues.ps1','scripts/test-study-issues-collector.ps1',
         'docs/v0.6-spec.md','docs/v0.6-implementation-plan.md','docs/v0.6-acceptance.md',
         'docs/v0.6-reference-contracts.md','docs/v0.6-intake-licenses.md','docs/v0.6-delivery.md',

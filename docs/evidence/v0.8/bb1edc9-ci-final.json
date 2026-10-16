@@ -1,0 +1,305 @@
+{
+  "schema": "greenlens.hosted-ci-final.v1",
+  "source_commit": "bb1edc92b3c5afe00b3efa965fc114904973c469",
+  "source_dirty": false,
+  "run_id": 38937518026,
+  "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38937518026",
+  "observed_utc": "2026-10-16T18:44:51Z",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build",
+      "id": 117096624613,
+      "conclusion": "success",
+      "started_utc": "2026-10-16T17:09:32Z",
+      "completed_utc": "2026-10-16T18:14:19Z",
+      "elapsed_seconds": 3887,
+      "failed_steps": [],
+      "skipped_steps": []
+    },
+    {
+      "name": "energy",
+      "id": 117124424749,
+      "conclusion": "success",
+      "started_utc": "2026-10-16T18:14:21Z",
+      "completed_utc": "2026-10-16T18:36:59Z",
+      "elapsed_seconds": 1358,
+      "failed_steps": [],
+      "skipped_steps": []
+    },
+    {
+      "name": "static_compatibility",
+      "id": 117124424937,
+      "conclusion": "success",
+      "started_utc": "2026-10-16T18:14:21Z",
+      "completed_utc": "2026-10-16T18:44:01Z",
+      "elapsed_seconds": 1780,
+      "failed_steps": [],
+      "skipped_steps": []
+    }
+  ],
+  "build": {
+    "frontend_passed": 429,
+    "frontend_failed": 0,
+    "frontend_skipped": 0,
+    "frontend_duration_ms": 39714.3946,
+    "typescript_production_format_strict_lint_package_notices": "passed",
+    "rust_build_summary_passed": 481,
+    "rust_build_summary_failed": 0,
+    "rust_build_summary_ignored": 16,
+    "ignored_scope": "Default-pass ignores are not acceptance. Four required retained/native tests subsequently executed explicitly in energy; optional real EPW, nine-record/issued fixtures and the stopped annual bridge are not newly accepted. Synthetic child entry-point ignores are retained in raw logs."
+  },
+  "energy": {
+    "protocol": "Original synthetic revision-3 four-case protocol; not real-building validation or universal method qualification",
+    "method": "greenlens.energyplus.explicit-dx/1",
+    "engine_version": "26.2.0",
+    "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+    "weather_sha256": "f4b2b66e599a6c4951c5ef24ff39cf1e705c748f6fe7322ff791ff5249acd5ae",
+    "cases": [
+      {
+        "case": "A10",
+        "run_id": "df7da10d-b385-4c04-98f3-c074b3f5bba3",
+        "shape": [
+          52560,
+          34
+        ],
+        "facility_kwh": 16307.089802617933,
+        "aligned_facility_peak_kw": 5.516090229474726,
+        "maximum_unmet_percent": 0.0,
+        "elapsed_ms": 6422,
+        "sampled_peak_runner_plus_job_working_set_bytes": 415338496,
+        "peak_observed_scratch_bytes": 19753241
+      },
+      {
+        "case": "B10",
+        "run_id": "a44e6226-ec4c-4aca-a380-bf4d65bca6bb",
+        "shape": [
+          52560,
+          34
+        ],
+        "facility_kwh": 12617.357232381652,
+        "aligned_facility_peak_kw": 4.045870430025533,
+        "maximum_unmet_percent": 0.0,
+        "elapsed_ms": 6274,
+        "sampled_peak_runner_plus_job_working_set_bytes": 422379520,
+        "peak_observed_scratch_bytes": 21082235
+      },
+      {
+        "case": "A5",
+        "run_id": "f99a1c1f-7c7e-47a0-bf75-d56c02215411",
+        "shape": [
+          105120,
+          34
+        ],
+        "facility_kwh": 16305.190534702979,
+        "aligned_facility_peak_kw": 5.514467140552976,
+        "maximum_unmet_percent": 0.0,
+        "elapsed_ms": 11661,
+        "sampled_peak_runner_plus_job_working_set_bytes": 595816448,
+        "peak_observed_scratch_bytes": 37544158
+      },
+      {
+        "case": "B5",
+        "run_id": "82472101-3ea5-4f4f-a0b7-5558084a8af9",
+        "shape": [
+          105120,
+          34
+        ],
+        "facility_kwh": 12628.426687271483,
+        "aligned_facility_peak_kw": 4.0473828908715905,
+        "maximum_unmet_percent": 0.0,
+        "elapsed_ms": 12281,
+        "sampled_peak_runner_plus_job_working_set_bytes": 612253696,
+        "peak_observed_scratch_bytes": 40243055
+      }
+    ],
+    "frozen_checks_passed": true,
+    "timestep_comparisons": [
+      {
+        "alternative": "A",
+        "quantity": "annual_kwh",
+        "ten_minute": 16307.089802617933,
+        "five_minute_reference": 16305.190534702979,
+        "relative_difference": 0.00011648241159230206,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "A",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 5.516090229474726,
+        "five_minute_reference": 5.514467140552976,
+        "relative_difference": 0.00029433286669048686,
+        "limit": 0.03,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "annual_kwh",
+        "ten_minute": 12617.357232381652,
+        "five_minute_reference": 12628.426687271483,
+        "relative_difference": 0.0008765505920851582,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 4.045870430025533,
+        "five_minute_reference": 4.0473828908715905,
+        "relative_difference": 0.0003736885999761613,
+        "limit": 0.03,
+        "passed": true
+      }
+    ],
+    "native_csv_scalar_comparisons": 9460800,
+    "maximum_native_csv_scalar_difference": 0.0,
+    "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+    "severe_errors": 0,
+    "retained_warning": "One warning per case: explicitly synthetic latitude/longitude/timezone are zero.",
+    "explicit_step_seconds": {
+      "Explicit native lifecycle regression": 222,
+      "Explicit native report render regression": 112,
+      "Fixed four annual executions and complete immutable inspection": 114,
+      "Independent complete-series arithmetic and frozen scientific criteria": 40,
+      "Cold reports, export integrity and distributed replay despite numerical failure": 60,
+      "Retained real energy evidence through architectural intake and cold copy": 711
+    },
+    "full_energy_method_qualified": false
+  },
+  "portability": {
+    "cli_sha256": "66aeb766dba7ddbbf3c4c3117cf4fccf828af3ffcfd7e39a8a432f4279670174",
+    "original_project_unavailable": true,
+    "original_job_scratch_unavailable": true,
+    "engine_discovery_failed_during_cold_reporting": true,
+    "cold_report_schema": "greenlens.energy-report-artifacts.v0.5",
+    "cold_report_products": 38,
+    "report_wall_seconds": 8.1337264,
+    "package_bytes": 9168164,
+    "package_sha256": "5ce86f59020a18fe0d68389e58ed0dfe8f91ec65b31b25a25ada7f4c123f82b6",
+    "replay_wall_seconds": 26.2039134,
+    "replay_cases": [
+      {
+        "run_id": "df7da10d-b385-4c04-98f3-c074b3f5bba3",
+        "shape": [
+          52560,
+          34
+        ],
+        "checked_values": 1787040,
+        "maximum_absolute_difference": 0.0,
+        "maximum_allowance_ratio": 0.0
+      },
+      {
+        "run_id": "a44e6226-ec4c-4aca-a380-bf4d65bca6bb",
+        "shape": [
+          52560,
+          34
+        ],
+        "checked_values": 1787040,
+        "maximum_absolute_difference": 0.0,
+        "maximum_allowance_ratio": 0.0
+      }
+    ],
+    "replay_tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+  },
+  "static": {
+    "checks_passed": [
+      "B",
+      "C",
+      "D",
+      "E",
+      "scaling",
+      "symmetry",
+      "nonzero_exit",
+      "cancellation",
+      "A",
+      "F"
+    ],
+    "uniform_hemisphere_relative_error": 0.0013309638999280179,
+    "overcast_relative_error": 0.0016905080000000454,
+    "sealed_black_max_lux": 0.0,
+    "aperture_sensor_count": 5,
+    "aperture_max_quadrature_relative_change": 6.084266824324389E-06,
+    "direct_integration_sensors": 77,
+    "direct_integration_max_lux_error": 0.0,
+    "profile_mean_relative_difference": 0.007590611273328036,
+    "static_replay_sensors_each": [
+      77,
+      77
+    ],
+    "static_replay_max_lux_error": 0.0,
+    "legacy_replay_sensors_each": [
+      77,
+      77
+    ],
+    "legacy_replay_max_lux_error": 0.0,
+    "legacy_fixture_unchanged": true,
+    "annual_executables_present": false,
+    "legacy_replay_wall_seconds": 238.108124
+  },
+  "artifact_archives": [
+    {
+      "id": 12067134885,
+      "family": "energy-static-compatibility",
+      "bytes": 5885377,
+      "github_digest": "sha256:77571cce01ec776403e28762d6824652d986bd5251822ce50a7b381135602153",
+      "expires_utc": "2026-10-30T18:43:54Z"
+    },
+    {
+      "id": 12067093355,
+      "family": "energy-native-evidence",
+      "bytes": 95128866,
+      "github_digest": "sha256:56ad34b0b1e1f631b8bd42fd3f87ca90204869fee7edfb55a3b4d176ef0ca1cb",
+      "expires_utc": "2026-10-30T18:36:35Z"
+    },
+    {
+      "id": 12066833441,
+      "family": "energy-native-jobs",
+      "bytes": 53010575,
+      "github_digest": "sha256:8a89956ce836010598d66ca0df77ce41b8b2fd5b1040bc4f493f61d5c3050124",
+      "expires_utc": "2026-10-30T18:36:48Z"
+    },
+    {
+      "id": 12065566687,
+      "family": "energy-build-diagnostics",
+      "bytes": 1926082,
+      "github_digest": "sha256:7eb1c9bd8dded4b113cda8ed7c4f38e99585713ef1ea6fabb1d67d6d9d5fb9f1",
+      "expires_utc": "2026-10-30T18:14:12Z"
+    },
+    {
+      "id": 12065468077,
+      "family": "energy-unsigned-investigation",
+      "bytes": 20043842,
+      "github_digest": "sha256:dc531b24c6bb9be314cded7e059d47fb988405c759db995b5cdb8e35d3d510a1",
+      "expires_utc": "2026-10-30T18:14:09Z"
+    },
+    {
+      "id": 12064737706,
+      "family": "energy-cli",
+      "bytes": 12590633,
+      "github_digest": "sha256:2a0437b9185c114d8244865b2521eb3502de7a2764e7e8e03f5504baa090babc",
+      "expires_utc": "2026-10-30T18:14:06Z"
+    }
+  ],
+  "receipt_hashes": {
+    "energy-compact-01-production-audit.json": "dcd58dba74658d02068b9200f276ce34dba32bfb4719d7b25dd84b0b865f9c2e",
+    "energy-portability-compact-01-replay.json": "672dbbec67fc1a5b5c68b3b3f22de3b9fd11cc54330fb9eca67e829c228f8362",
+    "energy-portability-compact-02-cold-evidence.json": "d4f7b59049da191263eef1857dce689794ff13818a7351ff8fc3cb61a7176aeb",
+    "static-results-compact-01-science-report.json": "458b395a621bbacab251e57c8143a417634ec1f4b977f0e75f4d0e4db4323976",
+    "static-results-compact-03-summary.json": "42f0f53ad4891d22e2474b708a0253a8fa328bae8ed5ace16559bf8d74f5b054"
+  },
+  "acquisition": "Read-only completed-job logs and bounded HTTP ZIP ranges. Selected JSON CRC/SHA-256 checked; full archive digests are GitHub metadata, not locally rehashed. No local engine, app or renderer executed.",
+  "limitations": [
+    "Hosted execution/integrity/numerical evidence does not establish installed UI, physical validation or private-case acceptance.",
+    "Cold report regression uses the existing energy-report-artifacts.v0.5 family; this does not establish renderer/3 second issuance, cold regeneration or page-by-page native PDF review.",
+    "Stopped climate/real-weather protocols, installed allocation failures, unresolved physical interactions and full-case manifest capacity remain separate blockers."
+  ],
+  "installed_desktop_verified": false,
+  "release_acceptance_asserted": false,
+  "external_original_receipt_sha256": "73d3a840dc270dfbbacfd8e2b800cd7a0229239db77e89647ef4962438064946",
+  "completed_job_log_sha256": {
+    "build-job-rest.log": "9bfe50e15de63c9ee95eaeccbd734c05602ba989bd34949b588c0d9409288db3",
+    "energy-job-rest.log": "d73f35ba4f06e61f3befc3e99a303fb337aabd51027e40e7186a46dd7349652c",
+    "static-job-rest.log": "fa32590a037723fe7cf9ab5a475a15655496a442513aa9ef093c2a27e4c9387c"
+  }
+}

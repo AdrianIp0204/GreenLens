@@ -3,6 +3,7 @@ import type { CameraState, ViewId } from '../viewport/types';
 import type { ThermalInspectorTarget } from './thermal-inspector-target';
 import { validReferencePresentation, type ReferencePresentation } from './reference-presentation';
 import type { ReferenceOccurrenceSelection } from '../reference/selection';
+import type { ReferenceReportView } from '../reference/types';
 
 export const THERMAL_VIEWS:ViewId[]=['top','perspective','front','right'];
 export const THERMAL_LAYERS=['surface','window','overhang','shading'] as const;
@@ -44,12 +45,21 @@ export interface ThermalPresentation {
   reference?:ReferencePresentation;
   /** Optional additive local state; legacy v1 entries remain readable. */
   workspace?:ThermalWorkspacePresentation;
+  /** Local inspection only. The accepted definition and normal cameras are never edited. */
+  fixed_report_frame?:{viewport:Exclude<ViewId,'perspective'>;definition:ReferenceReportView}|null;
 }
 export function defaultThermalPresentation():ThermalPresentation{return{schema_version:'greenlens.thermal-presentation.v1',cameras:{},active_view:'perspective',maximized_view:null,selected:null,hidden:[],isolated:null,layers:{surface:true,window:true,overhang:true,shading:true},grid:true,tree_width:210,inspector_width:320};}
 const finite=(value:unknown)=>typeof value==='number'&&Number.isFinite(value)&&Math.abs(value)<=1e9;
 const point=(value:unknown):value is number[]=>Array.isArray(value)&&value.length===3&&value.every(finite);
 const ids=(value:unknown):value is string[]=>Array.isArray(value)&&value.length<=1024&&new Set(value).size===value.length&&value.every(id=>typeof id==='string'&&id.length<=256);
 const identifier=(value:unknown)=>typeof value==='string'&&value.length>0&&value.length<=256;
+function validFixedReportFrame(value:ThermalPresentation['fixed_report_frame']):boolean {
+  if(value==null)return true;
+  const v=value.definition,sha=(s:unknown)=>typeof s==='string'&&/^[a-f0-9]{64}$/.test(s);
+  if(!['top','front','right'].includes(value.viewport)||!v||v.schema_version!=='greenlens.reference-report-view.v1'||!identifier(v.id)||!identifier(v.design_id)||typeof v.title!=='string'||v.title.length>256||!sha(v.model_input_sha256)||!sha(v.reference_revision_sha256)||!sha(v.reference_geometry_sha256)||!point(v.eye_m)||!point(v.target_m)||!point(v.up)||!finite(v.vertical_span_m)||v.vertical_span_m<1e-6||!finite(v.aspect_ratio)||v.aspect_ratio<.25||v.aspect_ratio>4)return false;
+  const f=v.target_m.map((n,i)=>n-v.eye_m[i]),cross=[f[1]*v.up[2]-f[2]*v.up[1],f[2]*v.up[0]-f[0]*v.up[2],f[0]*v.up[1]-f[1]*v.up[0]];
+  return f.some(n=>n!==0)&&cross.some(n=>n!==0)&&(v.section===null||Boolean(v.section&&['x','y','z'].includes(v.section.axis)&&finite(v.section.offset_m)&&['above','below'].includes(v.section.keep)));
+}
 export function validThermalWorkspacePresentation(value:unknown):value is ThermalWorkspacePresentation {
   const p=value as ThermalWorkspacePresentation;if(!p||!ENERGY_PANELS.includes(p.panel))return false;
   if(p.energy_run_selection!==undefined){const picks=p.energy_run_selection;if(!picks||typeof picks!=='object'||Array.isArray(picks)||Object.keys(picks).length>2||Object.entries(picks).some(([key,value])=>!['A','B'].includes(key)||(value!==null&&value!==undefined&&!identifier(value))))return false;}
@@ -65,6 +75,7 @@ export function validThermalPresentation(value:unknown):value is ThermalPresenta
   if(!p.layers||!THERMAL_LAYERS.every(k=>typeof p.layers[k]==='boolean')||!Number.isFinite(p.tree_width)||p.tree_width<150||p.tree_width>420||!Number.isFinite(p.inspector_width)||p.inspector_width<260||p.inspector_width>520||!p.cameras||typeof p.cameras!=='object'||Array.isArray(p.cameras))return false;
   if(p.reference!==undefined&&!validReferencePresentation(p.reference))return false;
   if(p.workspace!==undefined&&!validThermalWorkspacePresentation(p.workspace))return false;
+  if(!validFixedReportFrame(p.fixed_report_frame))return false;
   return Object.entries(p.cameras).every(([id,c])=>THERMAL_VIEWS.includes(id as ViewId)&&c&&point(c.position)&&point(c.target)&&point(c.up)&&c.up.some(n=>n!==0)&&c.position.some((n,i)=>n!==c.target[i])&&finite(c.zoom)&&c.zoom>0&&c.zoom<=10000);
 }
 

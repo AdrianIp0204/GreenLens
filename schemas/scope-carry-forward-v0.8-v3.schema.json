@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:scope-carry-forward:v3",
+  "title": "GreenLens reviewed editable scope candidate v3",
+  "description": "V3 derived documentation binds exact candidate provenance and explicit calendar holiday-presence policy. Frozen v1/v2 algorithms and bytes remain unchanged. Rust verifies exact identities, snapshots, field existence, review coverage and bounded atomic acceptance; schema validation alone is insufficient.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "parent_revision_sha256",
+    "target_context_sha256",
+    "proposed_scope",
+    "candidate_scope",
+    "rows",
+    "plan_sha256",
+    "candidate_provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "greenlens.scope-carry-forward.v3"
+    },
+    "parent_revision_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "target_context_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "proposed_scope": {
+      "$ref": "architectural-scope-v0.8-v3.schema.json"
+    },
+    "candidate_scope": {
+      "$ref": "architectural-scope-v0.8-v3.schema.json"
+    },
+    "rows": {
+      "type": "array",
+      "maxItems": 65536,
+      "items": {
+        "$ref": "#/$defs/row"
+      }
+    },
+    "plan_sha256": {
+      "$ref": "#/$defs/hash"
+    },
+    "candidate_provenance": {
+      "$ref": "input-provenance-v0.8-v3.schema.json"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "key",
+        "change",
+        "requires_review",
+        "before",
+        "after",
+        "reason"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/hash"
+        },
+        "kind": {
+          "enum": [
+            "scope",
+            "reference",
+            "mapping",
+            "assumption",
+            "reconciliation",
+            "report_view",
+            "input"
+          ]
+        },
+        "key": {
+          "type": "string"
+        },
+        "change": {
+          "enum": [
+            "unchanged",
+            "changed",
+            "deleted",
+            "added",
+            "unresolved"
+          ]
+        },
+        "requires_review": {
+          "type": "boolean"
+        },
+        "before": {},
+        "after": {},
+        "reason": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

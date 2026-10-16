@@ -21,7 +21,7 @@ export function parseReferenceImportDraft(value: ReferenceImportDraft): Referenc
 }
 export function newScopeDraft(reference: ReferenceModel, context: ScopeContext): ReferenceScopeDraft {
   return { value: {
-    schema_version: 'greenlens.architectural-scope.v2', title: '', purpose: '', scope_kind: 'partial_building',
+    schema_version: 'greenlens.architectural-scope.v3', title: '', purpose: '', scope_kind: 'partial_building',
     reference_revision_sha256: reference.revision_sha256, reference_geometry_sha256: reference.geometry_sha256,
     reference_options_sha256: context.reference_options_sha256,
     design_model_sha256: Object.fromEntries(Object.entries(context.designs).map(([id, design]) => [id, design.model_input_sha256])),
@@ -79,7 +79,7 @@ export function isReferenceWorkbenchDraft(value: unknown, documentId: string): v
   if (!record(draft) || !record(draft.value) || !record(draft.numbers) || Object.keys(draft.numbers).length > 4100
     || Object.entries(draft.numbers).some(([key, number]) => key.length > 16500 || !text(number))) return false;
   const scope = draft.value;
-  if (!['greenlens.architectural-scope.v1','greenlens.architectural-scope.v2'].includes(String(scope.schema_version)) || !names(scope, ['title', 'purpose', 'boundary_consequences'])
+  if (!['greenlens.architectural-scope.v1','greenlens.architectural-scope.v2','greenlens.architectural-scope.v3'].includes(String(scope.schema_version)) || !names(scope, ['title', 'purpose', 'boundary_consequences'])
     || !oneOf(scope.scope_kind, ['partial_building', 'representative_study', 'whole_building'])
     || ![scope.reference_revision_sha256, scope.reference_geometry_sha256, scope.reference_options_sha256].every(hash)
     || !record(scope.design_model_sha256) || Object.keys(scope.design_model_sha256).length > 2
@@ -95,7 +95,7 @@ export function isReferenceWorkbenchDraft(value: unknown, documentId: string): v
       || !oneOf(item.status, ['documented', 'measured', 'assumed', 'synthetic', 'missing', 'not_applicable'])
       || !(item.value === null || text(item.value)) || !record(item.link)) return false;
     const link = item.link;
-    return link.kind === 'study' || (['study_field','calendar_field'].includes(String(link.kind)) && scope.schema_version==='greenlens.architectural-scope.v2' && text(link.design_id)) || (link.kind === 'reference_occurrence' && text(link.occurrence_id))
+    return link.kind === 'study' || (['study_field','calendar_field'].includes(String(link.kind)) && ['greenlens.architectural-scope.v2','greenlens.architectural-scope.v3'].includes(String(scope.schema_version)) && text(link.design_id)) || (link.kind==='calendar_no_holidays' && scope.schema_version==='greenlens.architectural-scope.v3' && text(link.design_id)) || (link.kind === 'reference_occurrence' && text(link.occurrence_id))
       || (link.kind === 'thermal_object' && names(link, ['design_id', 'object_id']));
   })) return false;
   if (!list(scope.reconciliations, 4096, item => record(item) && names(item, ['id', 'design_id', 'method'])

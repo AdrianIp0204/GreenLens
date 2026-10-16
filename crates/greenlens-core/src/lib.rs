@@ -4,6 +4,7 @@
 pub mod architectural_scope;
 pub mod energy;
 pub mod reference;
+pub mod report_review;
 pub mod study;
 pub mod study_revision;
 pub mod weather;

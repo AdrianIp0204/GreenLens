@@ -385,10 +385,10 @@ pub fn initialize_scope(
             return Ok(next);
         }
         scope.schema_version =
-            greenlens_core::architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
-        let plan = core::prepare_carry_forward_v2(previous, &reference, &designs, Some(&scope))?;
+            greenlens_core::architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA_V3.into();
+        let plan = core::prepare_carry_forward_v3(previous, &reference, &designs, Some(&scope))?;
         ensure!(!plan.rows.iter().any(|row| row.requires_review), "Scope documentation, source or analytical inputs changed. Use Review changes and carry forward to review the editable candidate before accepting a new scope revision");
-        core::accept_carry_forward_v2(
+        core::accept_carry_forward_v3(
             previous,
             reference,
             designs,
@@ -397,7 +397,7 @@ pub fn initialize_scope(
             vec![],
         )?
     } else {
-        core::initial_revision_v2(scope, reference, designs)?
+        core::initial_revision_v3(scope, reference, designs)?
     };
     checkpoint(cancel)?;
     let candidate = append(&next, revision)?;
@@ -415,7 +415,7 @@ pub fn prepare(
     crate::validate_project(project)?;
     let previous = selected(project, parent_revision_sha256)?;
     let (reference, designs) = current_context(root, project, cancel)?;
-    let plan = core::prepare_carry_forward_v2(previous, &reference, &designs, None)?;
+    let plan = core::prepare_carry_forward_v3(previous, &reference, &designs, None)?;
     checkpoint(cancel)?;
     Ok(plan)
 }
@@ -433,7 +433,14 @@ pub fn prepare_candidate(
     crate::validate_project(project)?;
     let previous = selected(project, parent_revision_sha256)?;
     let (reference, designs) = current_context(root, project, cancel)?;
-    let plan = core::prepare_carry_forward_v2(previous, &reference, &designs, Some(scope))?;
+    let prepare = if scope.schema_version
+        == greenlens_core::architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA_V3
+    {
+        core::prepare_carry_forward_v3
+    } else {
+        core::prepare_carry_forward_v2
+    };
+    let plan = prepare(previous, &reference, &designs, Some(scope))?;
     checkpoint(cancel)?;
     Ok(plan)
 }
@@ -453,6 +460,10 @@ pub fn accept(
     let previous = selected(project, parent_revision_sha256)?;
     let (reference, designs) = current_context(root, project, cancel)?;
     let accept = if scope.schema_version
+        == greenlens_core::architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA_V3
+    {
+        core::accept_carry_forward_v3
+    } else if scope.schema_version
         == greenlens_core::architectural_scope::ARCHITECTURAL_SCOPE_SCHEMA_V2
     {
         core::accept_carry_forward_v2
@@ -745,7 +756,7 @@ mod tests {
             initialize_scope(&root, &imported.project, legacy_scope.clone(), &cancel).unwrap();
         assert_eq!(
             revisions(&upgraded)[0].schema_version,
-            core::SCOPE_REVISION_SCHEMA_V2
+            core::SCOPE_REVISION_SCHEMA_V3
         );
         let legacy_bytes = serde_json::to_vec(&legacy_scope).unwrap();
         let adopted = initialize_scope(&root, &legacy_project, legacy_scope, &cancel).unwrap();

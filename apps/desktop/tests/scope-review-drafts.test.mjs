@@ -72,3 +72,14 @@ test('v1 review cannot silently carry the new editable candidate contract or typ
   mixed.plan.candidate_scope.schema_version='greenlens.architectural-scope.v2';mixed.plan.proposed_scope.schema_version='greenlens.architectural-scope.v1';assert.equal(validScopeCarryForwardPlan(mixed.plan),false);
   const v1=plan();v1.proposed_scope.schema_version='greenlens.architectural-scope.v2';assert.equal(validScopeCarryForwardPlan(v1),false);
 });
+
+
+test('v3 candidate provenance is bounded, versioned, and cannot silently enter old pending plans',()=>{
+  const d=draft();d.schema_version='greenlens.scope-review-draft.v3';d.plan.schema_version='greenlens.scope-carry-forward.v3';d.plan.proposed_scope.schema_version='greenlens.architectural-scope.v3';d.plan.candidate_scope=structuredClone(d.plan.proposed_scope);d.candidate={value:structuredClone(d.plan.candidate_scope),numbers:{}};
+  d.plan.candidate_provenance={schema_version:'greenlens.input-provenance-checklist.v3',rows:[{id:h,design_id:'A',object:{kind:'calendar',id:'calendar'},field_path:'/holidays/none',applied_value:true,units:'boolean',declared_source:null,status:'unreviewed',source_declarations:[]}],unreviewed_count:1,missing_count:0,conflicting_count:0,documentation_complete:false,disclosure:'Explicit bounded synthetic no-holidays policy'};
+  assert.equal(validScopeReviewDraft(d),true);
+  for(const change of [v=>delete v.plan.candidate_provenance,v=>v.plan.candidate_provenance.schema_version='greenlens.input-provenance-checklist.v2',v=>v.plan.candidate_provenance.rows.push({...v.plan.candidate_provenance.rows[0]}),v=>v.plan.candidate_provenance.rows[0].source_declarations=[{status:'invented'}],v=>v.plan.candidate_provenance.missing_count=-1,v=>v.plan.candidate_provenance.unreviewed_count=0,v=>v.plan.candidate_provenance.missing_count=1,v=>v.plan.candidate_provenance.conflicting_count=1,v=>v.plan.candidate_provenance.documentation_complete=true,v=>v.plan.candidate_provenance.rows=Array(65537).fill(v.plan.candidate_provenance.rows[0])]){const corrupt=structuredClone(d);change(corrupt);assert.equal(validScopeReviewDraft(corrupt),false);}
+  const old=draft();old.plan.candidate_provenance=d.plan.candidate_provenance;assert.equal(validScopeReviewDraft(old),false);
+  const store=new ScopeReviewDraftStore();store.set(d);const snapshot=JSON.stringify(d.plan);
+  d.candidate.value.title='Unreviewed candidate title';store.set(d);assert.equal(JSON.stringify(d.plan),snapshot);assert.throws(()=>reviewDecisions(d),/not been reviewed in Rust/);
+});

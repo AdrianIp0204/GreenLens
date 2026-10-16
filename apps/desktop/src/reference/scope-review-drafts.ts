@@ -21,7 +21,7 @@ export function sameReviewValue(left:unknown,right:unknown):boolean {
     for(const key of keys){if(!Object.hasOwn(y,key))return false;pending.push([x[key],y[key],depth+1]);}
   }return true;
 }
-export type ScopeReviewDraft={schema_version:'greenlens.scope-review-draft.v1'|'greenlens.scope-review-draft.v2';document_id:string;design_id:'A'|'B';context_key:string;plan:ScopeCarryForwardPlan;candidate?:ReferenceScopeDraft;decisions:Record<string,ScopeReviewDecision>};
+export type ScopeReviewDraft={schema_version:'greenlens.scope-review-draft.v1'|'greenlens.scope-review-draft.v2'|'greenlens.scope-review-draft.v3';document_id:string;design_id:'A'|'B';context_key:string;plan:ScopeCarryForwardPlan;candidate?:ReferenceScopeDraft;decisions:Record<string,ScopeReviewDecision>};
 
 /** UI request binding only. Rust independently validates the complete plan and
  * target context before acceptance; this does not define scientific identity. */
@@ -30,12 +30,23 @@ export function scopeReviewContextKey(path:string|null,project:Project|null,desi
   return JSON.stringify([path,project?.id,designId,project?.energy?.designs,project?.energy?.workbench?.calendars,active]);
 }
 export function validScopeCarryForwardPlan(value:unknown):value is ScopeCarryForwardPlan {
-  if(!record(value)||!['greenlens.scope-carry-forward.v1','greenlens.scope-carry-forward.v2'].includes(String(value.schema_version))||![value.parent_revision_sha256,value.target_context_sha256,value.plan_sha256].every(hash)||!Array.isArray(value.rows)||value.rows.length>65536)return false;
-  const scopeVersion=value.schema_version==='greenlens.scope-carry-forward.v2'?'greenlens.architectural-scope.v2':'greenlens.architectural-scope.v1';
+  if(!record(value)||!['greenlens.scope-carry-forward.v1','greenlens.scope-carry-forward.v2','greenlens.scope-carry-forward.v3'].includes(String(value.schema_version))||![value.parent_revision_sha256,value.target_context_sha256,value.plan_sha256].every(hash)||!Array.isArray(value.rows)||value.rows.length>65536)return false;
+  const scopeVersion=String(value.schema_version).replace('scope-carry-forward','architectural-scope');
   if(!record(value.proposed_scope)||value.proposed_scope.schema_version!==scopeVersion)return false;
   if(!isReferenceWorkbenchDraft({schema_version:'greenlens.reference-workbench-draft.v1',document_id:'plan',import:null,scope:{value:value.proposed_scope,numbers:{}}},'plan'))return false;
-  if(value.schema_version==='greenlens.scope-carry-forward.v2'&&(!record(value.candidate_scope)||value.candidate_scope.schema_version!==scopeVersion||!isReferenceWorkbenchDraft({schema_version:'greenlens.reference-workbench-draft.v1',document_id:'candidate',import:null,scope:{value:value.candidate_scope,numbers:{}}},'candidate')))return false;
+  if(value.schema_version!=='greenlens.scope-carry-forward.v1'&&(!record(value.candidate_scope)||value.candidate_scope.schema_version!==scopeVersion||!isReferenceWorkbenchDraft({schema_version:'greenlens.reference-workbench-draft.v1',document_id:'candidate',import:null,scope:{value:value.candidate_scope,numbers:{}}},'candidate')))return false;
   if(value.schema_version==='greenlens.scope-carry-forward.v1'&&value.candidate_scope!=null)return false;
+  if(value.schema_version==='greenlens.scope-carry-forward.v3'){
+    const p=value.candidate_provenance;
+    if(!record(p)||p.schema_version!=='greenlens.input-provenance-checklist.v3'||!Array.isArray(p.rows)||p.rows.length>65536||typeof p.documentation_complete!=='boolean'||!text(p.disclosure))return false;
+    const rowCount=p.rows.length;
+    if(![p.unreviewed_count,p.missing_count,p.conflicting_count].every(n=>Number.isInteger(n)&&Number(n)>=0&&Number(n)<=rowCount))return false;
+    const ids=new Set<string>();
+    if(!p.rows.every(row=>record(row)&&hash(row.id)&&!ids.has(row.id)&&Boolean(ids.add(row.id))&&text(row.design_id)&&record(row.object)&&text(row.object.kind)&&text(row.object.id)&&text(row.field_path)&&Object.hasOwn(row,'applied_value')&&(row.units===null||text(row.units))&&['unreviewed','documented','measured','assumed','synthetic','missing','not_applicable','conflicting'].includes(String(row.status))&&Array.isArray(row.source_declarations)&&row.source_declarations.length<=2048&&row.source_declarations.every(a=>record(a)&&['id','field','units','source','rationale','affected_scope'].every(k=>text(a[k]))&&['documented','measured','assumed','synthetic','missing','not_applicable'].includes(String(a.status))&&(a.value===null||text(a.value))&&record(a.link))))return false;
+    const provenanceRows=p.rows;
+    const count=(status:string)=>provenanceRows.filter(row=>record(row)&&row.status===status).length;
+    if(p.unreviewed_count!==count('unreviewed')||p.missing_count!==count('missing')||p.conflicting_count!==count('conflicting')||p.documentation_complete!==(p.unreviewed_count===0&&p.missing_count===0&&p.conflicting_count===0))return false;
+  }else if(value.candidate_provenance!=null)return false;
   const seen=new Set<string>();
   if(!value.rows.every(row=>record(row)&&text(row.id)&&Boolean(row.id)&&!seen.has(row.id)&&Boolean(seen.add(row.id))&&text(row.key)&&['scope','reference','mapping','assumption','reconciliation','report_view','input'].includes(String(row.kind))&&['unchanged','changed','deleted','added','unresolved'].includes(String(row.change))&&typeof row.requires_review==='boolean'&&text(row.reason)&&Object.hasOwn(row,'before')&&Object.hasOwn(row,'after')))return false;
   try{return bytes(value)<=16*1024*1024;}catch{return false;}
@@ -44,8 +55,8 @@ function validDecision(v:unknown,rowId:string):v is ScopeReviewDecision {
   return record(v)&&v.row_id===rowId&&['reviewed','unresolved'].includes(String(v.resolution))&&text(v.rationale,16384);
 }
 export function validScopeReviewDraft(value:unknown):value is ScopeReviewDraft {
-  if(!record(value)||!['greenlens.scope-review-draft.v1','greenlens.scope-review-draft.v2'].includes(String(value.schema_version))||!text(value.document_id,128)||!value.document_id||!['A','B'].includes(String(value.design_id))||!text(value.context_key,4*1024*1024)||!validScopeCarryForwardPlan(value.plan)||!record(value.decisions)||Object.keys(value.decisions).length>65536)return false;
-  if(value.schema_version==='greenlens.scope-review-draft.v2'&&(value.plan.schema_version!=='greenlens.scope-carry-forward.v2'||!isReferenceWorkbenchDraft({schema_version:'greenlens.reference-workbench-draft.v1',document_id:value.document_id,import:null,scope:value.candidate},value.document_id)))return false;
+  if(!record(value)||!['greenlens.scope-review-draft.v1','greenlens.scope-review-draft.v2','greenlens.scope-review-draft.v3'].includes(String(value.schema_version))||!text(value.document_id,128)||!value.document_id||!['A','B'].includes(String(value.design_id))||!text(value.context_key,4*1024*1024)||!validScopeCarryForwardPlan(value.plan)||!record(value.decisions)||Object.keys(value.decisions).length>65536)return false;
+  if(value.schema_version!=='greenlens.scope-review-draft.v1'&&(value.plan.schema_version!==String(value.schema_version).replace('scope-review-draft','scope-carry-forward')||!isReferenceWorkbenchDraft({schema_version:'greenlens.reference-workbench-draft.v1',document_id:value.document_id,import:null,scope:value.candidate},value.document_id)))return false;
   if(value.schema_version==='greenlens.scope-review-draft.v1'&&(value.plan.schema_version!=='greenlens.scope-carry-forward.v1'||value.candidate!==undefined))return false;
   const rows=new Set(value.plan.rows.map(row=>row.id));
   try{return Object.entries(value.decisions).every(([id,d])=>rows.has(id)&&validDecision(d,id))&&bytes(value)<=MAX_REVIEW_DRAFT_BYTES;}catch{return false;}

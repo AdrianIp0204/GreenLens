@@ -14,7 +14,15 @@ export interface ReportIssueSummary {
 }
 export interface ReportIssueIndex {schema_version:'greenlens.report-issue-index.v1';issues:ReportIssueSummary[]}
 export interface IssueProduct {path:string;bytes:number;sha256:string}
+export interface ReportReviewReadiness {
+  schema_version:'greenlens.report-review-readiness.v1';assessment_sha256:string;scope_revision_sha256:string;
+  documentation_complete:boolean;supported_input_rows:number;unreviewed_input_rows:number;missing_input_rows:number;conflicting_input_rows:number;
+  review_state:'initial_no_carry_forward'|'no_recorded_decisions'|'all_recorded_reviewed'|'unresolved_retained';
+  decision_count:number;reviewed_count:number;unresolved_count:number;category_metadata_unavailable_count:number;unresolved_row_ids:string[];
+  rows:{row_id:string;kind:string|null;key:string|null;resolution:'reviewed'|'unresolved';rationale:string}[];disclosure:string;
+}
 export interface ReportIssueInspection {
+  review_readiness:ReportReviewReadiness;
   summary:ReportIssueSummary;
   content:{schema_version:'greenlens.energy-report-issue-content.v1';content_sha256:string;
     workbench:{base:EnergyReportData;metadata:EnergyReportMetadata};

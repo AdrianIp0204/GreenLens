@@ -1,0 +1,50 @@
+{
+  "schema_version": "greenlens.optional-development-dependencies.v1",
+  "status": "source_recipe_only_not_adopted_or_distributed",
+  "application_runtime_dependency": false,
+  "components": [
+    {
+      "name": "OpenSKP C++ selected parser and instanced GLB sources",
+      "source": "https://github.com/iamahsanmehmood/openskp",
+      "commit": "dceb9fff0efc9668961530b535d5375c001343dc",
+      "license": "MIT",
+      "notice": "licenses/LICENSE.openskp",
+      "notice_sha256": "837fabd97124295917c7317d51290182760c4b36f008a0f2323cd3c4fc8dbbea",
+      "modifications": "Owned strictness patches in patches.mjs; only a new external prepared copy is modified. Original source checkout retained.",
+      "obligation": "Retain complete copyright and permission notice. No claim of complete SKP compatibility."
+    },
+    {
+      "name": "miniz",
+      "source": "https://github.com/richgel999/miniz",
+      "commit": "77d0dce8627735138c51770d1799a1ef48f2117d",
+      "license": "MIT",
+      "notice": "licenses/LICENSE.miniz",
+      "notice_sha256": "0115478d567121238cf6cc1c0c361926cf07a49d9e4c9e66da97fac6a01646b3",
+      "modifications": "None; generated static export macro only.",
+      "obligation": "Retain all listed authors/copyrights and permission notice."
+    },
+    {
+      "name": "TinyGLTF",
+      "source": "https://github.com/syoyo/tinygltf",
+      "commit": "488a70a3df62a4df1a736e9e56fb8836580c4888",
+      "license": "MIT",
+      "notice": "licenses/LICENSE.tinygltf",
+      "notice_sha256": "95d94609b88df9d8d162e01b3f985c226c8d612b003ef85de74c5f45a6f5327b",
+      "modifications": "None; upstream translation unit disables both STB image functions.",
+      "obligation": "Retain complete copyright and permission notice."
+    },
+    {
+      "name": "nlohmann JSON (TinyGLTF embedded header)",
+      "version": "3.10.4",
+      "source": "https://github.com/syoyo/tinygltf/blob/488a70a3df62a4df1a736e9e56fb8836580c4888/json.hpp",
+      "source_header_sha256": "8ad65a0a8a9d92b8a07b8fc9b0910f8506357c07a61c1bf403ec8956a59edcfd",
+      "license": "MIT",
+      "notice": "licenses/LICENSE.nlohmann-json",
+      "notice_sha256": "cd45b3542d1c4c36b4fc670236906ec1213d92430a0d3449c267fa4ab11f1e10",
+      "modifications": "None; notice extracted verbatim from header comment.",
+      "obligation": "Retain complete copyright and permission notice."
+    }
+  ],
+  "excluded_from_owned_target": ["FlatBuffers", "ThatOpen Fragments generated schema", "GoogleTest", "stb_image", "stb_image_write", "SketchUp SDK", "other exporters and OpenSKP writer/editor"],
+  "native_runtime_review": "MSVC/UCRT redistribution and actual linked closure remain a separate build-owner verification; no binaries are checked in or packaged."
+}

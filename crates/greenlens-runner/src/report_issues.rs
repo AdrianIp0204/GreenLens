@@ -153,6 +153,8 @@ pub struct ReportIssueInspection {
     pub receipt: IssueRuntimeReceipt,
     pub regeneration_available: bool,
     pub regeneration_message: String,
+    /// Recomputed interpretation, outside immutable historical product bytes.
+    pub review_readiness: greenlens_core::report_review::ReportReviewReadiness,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -768,6 +770,8 @@ fn inspect_directory(
         );
     }
     let supported = content.ensure_supported_regeneration();
+    let review_readiness =
+        greenlens_core::report_review::review_readiness(&content.scope_revision)?;
     let message=match &supported {Ok(())=>"Exact renderer/template/font recipe is supported; actual dependencies are checked before regeneration".into(),Err(e)=>e.to_string()};
     Ok(ReportIssueInspection {
         summary: s.clone(),
@@ -776,6 +780,7 @@ fn inspect_directory(
         receipt,
         regeneration_available: supported.is_ok(),
         regeneration_message: message,
+        review_readiness,
     })
 }
 

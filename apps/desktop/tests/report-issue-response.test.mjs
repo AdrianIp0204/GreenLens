@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assertEnergyResponse} from '../src/energy/response.mjs';
 import {validIssueSummary} from '../src/energy/report-issue-response.mjs';
-import {issueFixture} from './report-issue-fixture.mjs';
+import {issueFixture,reviewFixture} from './report-issue-fixture.mjs';
 // Small original IPC shape fixtures only; Rust tests establish evidence integrity.
 function fixture(){
-  const scope='c'.repeat(64),project={architecture:{scope_history:{revisions:[{revision_sha256:scope,scope:{title:'Original synthetic scope'},provenance:{documentation_complete:false},reference:{asset_id:'fixture',manifest_sha256:'d'.repeat(64)}}]}},energy:{runs:[{id:'report-a',record_sha256:'a'.repeat(64)},{id:'report-b',record_sha256:'b'.repeat(64)}],designs:{A:{model:{name:'A'},study:{}},B:{model:{name:'B'},study:{}}}}};
+  const scope='c'.repeat(64),project={architecture:{scope_history:{revisions:[{revision_sha256:scope,scope:{title:'Original synthetic scope'},review_decisions:[],provenance:{documentation_complete:false,rows:[],unreviewed_count:0,missing_count:0,conflicting_count:0},reference:{asset_id:'fixture',manifest_sha256:'d'.repeat(64)}}]}},energy:{runs:[{id:'report-a',record_sha256:'a'.repeat(64)},{id:'report-b',record_sha256:'b'.repeat(64)}],designs:{A:{model:{name:'A'},study:{}},B:{model:{name:'B'},study:{}}}}};
   const issue=issueFixture(project,scope);project.report_issues={schema_version:'greenlens.report-issue-index.v1',issues:[structuredClone(issue.summary)]};return{request:{project,id:issue.summary.id},issue};
 }
 test('issue response binds an independent issue ID and content hash without altering historical bytes',()=>{
@@ -59,4 +59,23 @@ test('unsupported exact regeneration remains an inspection limitation rather tha
 test('a bound failed sensitivity result remains failed and does not alter scientific status',()=>{
   const {request,issue}=fixture();issue.summary.sensitivity_session_id='exact-session';request.project.report_issues.issues[0].sensitivity_session_id='exact-session';issue.content.sensitivity={session_id:'exact-session',result:{assessment:{numerical_sensitivity_passed:false,criteria:[{id:'annual-electricity',passed:false,explanation:'Declared limit exceeded; outcome retained.'}],missing_slots:[]}}};
   const inspected=assertEnergyResponse('report_issue_inspect',request,issue);assert.equal(inspected.content.sensitivity.result.assessment.numerical_sensitivity_passed,false);assert.equal(inspected.content.workbench.base.baseline.assessment.scientific.status,'unassessed');
+});
+
+test('separate review readiness binds complete documentation and all retained decisions including late exceptions',()=>{
+  const {request,issue}=fixture(),scope=issue.content.scope_revision;
+  scope.provenance.documentation_complete=true;
+  scope.review_decisions=Array.from({length:101},(_,i)=>({row_id:i.toString(16).padStart(64,'0'),resolution:i>=99?'unresolved':'reviewed',rationale:'來源尚待覆核。'.repeat(30)}));
+  scope.reviewed_rows=scope.review_decisions.map((row,i)=>({row_id:row.row_id,kind:i===100?'reference':'input',key:`supported-field-${i}`}));
+  issue.review_readiness=reviewFixture(scope);const before=JSON.stringify(issue.content);
+  const result=assertEnergyResponse('report_issue_inspect',request,issue);assert.equal(result.review_readiness.documentation_complete,true);assert.equal(result.review_readiness.unresolved_count,2);assert.equal(result.review_readiness.rows[100].kind,'reference');assert.equal(JSON.stringify(issue.content),before);
+  for(const edit of [v=>delete v.review_readiness,v=>v.review_readiness.scope_revision_sha256='9'.repeat(64),v=>v.review_readiness.rows.pop(),v=>v.review_readiness.rows[100].rationale='Substituted rationale',v=>v.review_readiness.unresolved_row_ids.reverse(),v=>v.review_readiness.review_state='all_recorded_reviewed',v=>v.review_readiness.documentation_complete=false,v=>v.review_readiness.category_metadata_unavailable_count=1,v=>v.review_readiness.rows[100].kind='input',v=>v.review_readiness.rows[100].key='different-field',v=>v.review_readiness.supported_input_rows=1,v=>v.review_readiness.missing_input_rows=1]){
+    const next=structuredClone(issue);edit(next);assert.throws(()=>assertEnergyResponse('report_issue_inspect',request,next),/review readiness/);
+  }
+});
+
+test('review response limits are UTF-8 byte-aware and historical missing categories stay explicit',()=>{
+  const {request,issue}=fixture(),scope=issue.content.scope_revision;
+  scope.review_decisions=[{row_id:'b'.repeat(64),resolution:'unresolved',rationale:'界'.repeat(682)+'ab'}];
+  issue.review_readiness=reviewFixture(scope);assert.equal(assertEnergyResponse('report_issue_inspect',request,issue).review_readiness.category_metadata_unavailable_count,1);
+  scope.review_decisions[0].rationale+='c';issue.review_readiness=reviewFixture(scope);assert.throws(()=>assertEnergyResponse('report_issue_inspect',request,issue),/review readiness/);
 });

@@ -14,6 +14,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 pub const ARCHITECTURAL_SCOPE_SCHEMA: &str = "greenlens.architectural-scope.v1";
 pub const ARCHITECTURAL_SCOPE_SCHEMA_V2: &str = "greenlens.architectural-scope.v2";
+pub const ARCHITECTURAL_SCOPE_SCHEMA_V3: &str = "greenlens.architectural-scope.v3";
 pub const SCOPE_ASSESSMENT_SCHEMA: &str = "greenlens.architectural-scope-assessment.v1";
 pub const MAX_SCOPE_MAPPINGS: usize = 20_000;
 pub const MAX_SCOPE_ASSUMPTIONS: usize = 2048;
@@ -99,6 +100,10 @@ pub enum AssumptionLink {
         design_id: String,
     },
     CalendarField {
+        design_id: String,
+    },
+    /// V3-only bounded calendar policy, not an arbitrary aggregate pointer.
+    CalendarNoHolidays {
         design_id: String,
     },
     ReferenceOccurrence {
@@ -334,7 +339,7 @@ fn unique(values: &[String], field: &str) -> Result<()> {
 pub fn validate_declaration(scope: &ArchitecturalScope) -> Result<()> {
     if !matches!(
         scope.schema_version.as_str(),
-        ARCHITECTURAL_SCOPE_SCHEMA | ARCHITECTURAL_SCOPE_SCHEMA_V2
+        ARCHITECTURAL_SCOPE_SCHEMA | ARCHITECTURAL_SCOPE_SCHEMA_V2 | ARCHITECTURAL_SCOPE_SCHEMA_V3
     ) {
         return Err(invalid(
             "scope.schema_version",
@@ -562,7 +567,10 @@ pub fn validate_declaration(scope: &ArchitecturalScope) -> Result<()> {
         if let AssumptionLink::StudyField { design_id }
         | AssumptionLink::CalendarField { design_id } = &a.link
         {
-            if scope.schema_version != ARCHITECTURAL_SCOPE_SCHEMA_V2 {
+            if !matches!(
+                scope.schema_version.as_str(),
+                ARCHITECTURAL_SCOPE_SCHEMA_V2 | ARCHITECTURAL_SCOPE_SCHEMA_V3
+            ) {
                 return Err(invalid("assumption.link", "Typed study/calendar links require architectural-scope.v2; historical v1 semantics cannot be changed"));
             }
             if !scope.design_model_sha256.contains_key(design_id) {
@@ -573,6 +581,26 @@ pub fn validate_declaration(scope: &ArchitecturalScope) -> Result<()> {
                     "assumption.field",
                     "Select an exact JSON Pointer into the retained study or calendar",
                 ));
+            }
+        }
+        if let AssumptionLink::CalendarNoHolidays { design_id } = &a.link {
+            if scope.schema_version != ARCHITECTURAL_SCOPE_SCHEMA_V3 {
+                return Err(invalid(
+                    "assumption.link",
+                    "Explicit no-holidays documentation requires architectural-scope.v3",
+                ));
+            }
+            if !scope.design_model_sha256.contains_key(design_id) || a.field != "/holidays/none" {
+                return Err(invalid(
+                    "assumption.field",
+                    "Choose a bound design and the explicit /holidays/none calendar policy",
+                ));
+            }
+            if a.status == AssumptionStatus::NotApplicable
+                || (a.status != AssumptionStatus::Missing
+                    && !matches!(a.value.as_deref(), Some("true" | "false")))
+            {
+                return Err(invalid("assumption.value", "Calendar holiday presence is applicable: declare true for no holidays, false for listed holidays, or retain Missing with an explanation"));
             }
         }
     }

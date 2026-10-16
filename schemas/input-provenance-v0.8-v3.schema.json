@@ -1,0 +1,166 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:greenlens:input-provenance-checklist:v3",
+  "title": "GreenLens field-specific supported-input provenance v3",
+  "description": "V3 derived documentation binds exact candidate provenance and explicit calendar holiday-presence policy. Frozen v1/v2 algorithms and bytes remain unchanged. Rust verifies exact identities, snapshots, field existence, review coverage and bounded atomic acceptance; schema validation alone is insufficient.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "rows",
+    "unreviewed_count",
+    "missing_count",
+    "conflicting_count",
+    "documentation_complete",
+    "disclosure"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "greenlens.input-provenance-checklist.v3"
+    },
+    "rows": {
+      "type": "array",
+      "maxItems": 65536,
+      "items": {
+        "$ref": "#/$defs/row"
+      }
+    },
+    "unreviewed_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "missing_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "conflicting_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 65536
+    },
+    "documentation_complete": {
+      "type": "boolean"
+    },
+    "disclosure": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "id",
+        "zone_id"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "model",
+            "site",
+            "study",
+            "calendar",
+            "zone",
+            "surface",
+            "window",
+            "overhang",
+            "detached_shade",
+            "material",
+            "construction",
+            "glazing",
+            "schedule",
+            "curve",
+            "gains",
+            "cooling_system",
+            "supply_fan",
+            "balanced_ventilation"
+          ]
+        },
+        "id": {
+          "type": "string"
+        },
+        "zone_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "design_id",
+        "object",
+        "field_path",
+        "applied_value",
+        "units",
+        "declared_source",
+        "status",
+        "source_declarations"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/hash"
+        },
+        "design_id": {
+          "enum": [
+            "A",
+            "B"
+          ]
+        },
+        "object": {
+          "$ref": "#/$defs/object"
+        },
+        "field_path": {
+          "type": "string"
+        },
+        "applied_value": {},
+        "units": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "declared_source": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "thermal-model-v0.4.schema.json#/$defs/InputSource"
+            }
+          ]
+        },
+        "status": {
+          "enum": [
+            "unreviewed",
+            "documented",
+            "measured",
+            "assumed",
+            "synthetic",
+            "missing",
+            "not_applicable",
+            "conflicting"
+          ]
+        },
+        "source_declarations": {
+          "type": "array",
+          "maxItems": 2048,
+          "items": {
+            "$ref": "architectural-scope-v0.8-v3.schema.json#/$defs/assumption"
+          }
+        }
+      }
+    }
+  }
+}

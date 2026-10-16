@@ -1,0 +1,31 @@
+{
+  "schema_version": "greenlens.v08-engineering-memory-checkpoint.v1",
+  "scope": "Original synthetic supervisor fixtures; no engine, renderer or converter execution",
+  "receipt_sha256": "d8f219d1bffa5acc7f397abec2cac1b048f635ebb3d1f38102ab0044bf5e98b9",
+  "identities": {
+    "fixture": "5e4d3344cfca91d25e7a14cb1deb9f4028dc55f1dfca845f18794ea588fbb64d",
+    "native": "7cd7629a558d58af43af7b945279a37a910efaee9fb019771e81ef4044c86200",
+    "source": "9549c0c227933d6cd3508616022efdd35c2fff176820b06b47c7d9d3177357c4",
+    "diagnostic": "98a691f3a0b93af34832822db8065284a782edb257abe2f01f3c7b551ed68528"
+  },
+  "strict_384_mib_raw_peak_criterion": "failed",
+  "diagnostic_completed": true,
+  "containment_qualified": false,
+  "queried_limit_bytes": 402653184,
+  "successful_initial_commit_bytes": 268435456,
+  "single_rejected_request_bytes": 167772160,
+  "rejected_win32_error": 1455,
+  "rejected_region_state": "MEM_RESERVE",
+  "native_current_private_before_bytes": 269774848,
+  "native_current_private_after_bytes": 269774848,
+  "other_member_current_private_delta_bytes": 0,
+  "raw_peak_before_bytes": 271151104,
+  "raw_peak_after_bytes": 438923264,
+  "interpretation": "Rejected region remained reserved and native retained private commit did not increase while raw peak rose. Consistent with attempted/rolled-back accounting; not proof that no transient charge occurred. Inspect other-member delta separately.",
+  "live_member_count_before_kill": 2,
+  "owned_job_empty": true,
+  "kill_seconds": 0.0455645,
+  "optional_converter_adoption": "blocked_pending_containment",
+  "private_probe_executed": false,
+  "report_protocol": "Separate actual-report budget remains 2 GiB, 16 processes, 600 seconds. Use a stricter 1 GiB kernel limit, retain raw peak without subtraction, and stop on any 2 GiB raw peak/process/deadline exceedance. This does not reclassify the failed synthetic boundary checks."
+}

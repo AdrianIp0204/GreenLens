@@ -347,6 +347,11 @@ fn table_sections(content: &IssueContent, c: &PresentationCoverage) -> Result<Ve
                     AssumptionLink::CalendarField { design_id } => {
                         format!("{design_id} calendar field")
                     }
+                    // Only v3 source contracts can contain this new variant;
+                    // all historical v1/v2 inputs retain the exact old output.
+                    AssumptionLink::CalendarNoHolidays { design_id } => {
+                        format!("{design_id} explicit no-holidays calendar policy")
+                    }
                     AssumptionLink::ReferenceOccurrence { occurrence_id } => {
                         occurrence(content, occurrence_id)
                     }
@@ -665,7 +670,10 @@ mod tests {
             legacy.content.scope_revision.designs.clone(),
         )
         .unwrap();
-        prepare(legacy.content.workbench, revision, None, vec![], false).unwrap()
+        let mut issue = prepare(legacy.content.workbench, revision, None, vec![], false).unwrap();
+        issue.content.renderer = renderer_v2_identity().unwrap();
+        issue.content.content_sha256 = issue.content.identity().unwrap();
+        issue
     }
     #[test]
     fn late_unresolved_missing_and_conflicting_rows_are_disclosed_from_complete_input() {

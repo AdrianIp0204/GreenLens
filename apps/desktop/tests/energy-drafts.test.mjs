@@ -1,4 +1,4 @@
-import {issueFixture} from './report-issue-fixture.mjs';
+import {issueFixture,reviewFixture} from './report-issue-fixture.mjs';
 import {inspectionCore} from './inspection-ipc.mjs';
 // Actual ReactDOM, editor and hook effects; explicit IPC doubles are not native acceptance.
 import test from 'node:test';
@@ -47,7 +47,7 @@ const inputs=JSON.parse(fs.readFileSync(new URL('../../../examples/energy/revisi
 const daylight=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
 let doc,root,calls,rejectEdit=false,closeHandler,disk,fullWorkspace=false,appendEvidenceOnSave=false,metadataGate=null,sceneObjects=false,preflightIssues=[],referenceImportGate=null,referenceScopeGate=null,reportRuns=false,reportGate=null,reportError=null,saveDestination='test-project';
 let issueEvidence=new Map(),issueGate=null,issueInspectGate=null,issueProductGate=null,issueError=null,issuePending=false,pendingFixture=null;
-let referenceManifestGate=null,referenceRevision='2'.repeat(64),revisionOccurrenceId='synthetic-occurrence',withRevisions=false,revisionPrepareGate=null,revisionAcceptGate=null,revisionPlanMode='cop';
+let referenceManifestGate=null,referenceRevision='2'.repeat(64),revisionOccurrenceId='synthetic-occurrence',withRevisions=false,revisionPrepareGate=null,revisionAcceptGate=null,revisionPlanMode='cop',revisionReadinessCase=false;
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 // Real ThermalView follows its WebGL-unavailable branch; no viewport acceptance claim.
 dom.window.HTMLCanvasElement.prototype.getContext=()=>{throw Error('No WebGL context in DOM test');};
@@ -65,20 +65,42 @@ function revisionArchitecture(){
   const provenance={schema_version:'greenlens.input-provenance-checklist.v1',rows:Array.from({length:105},(_,i)=>({id:`field-${i}`,design_id:'B',object:{kind:'zone',id:inputs.cases.B.model.zones[0].id},field_path:`/synthetic-fixture-field/${i}`,applied_value:i?i:3.5,units:i?'m':'W/W',declared_source:null,status:i?'unreviewed':'assumed',source_declarations:i?[]:[scope.assumptions[0]]})),unreviewed_count:104,missing_count:0,conflicting_count:0,documentation_complete:false,disclosure:'Original synthetic checklist; incomplete provenance does not imply accepted physics.'};
   const first={schema_version:'greenlens.scope-revision.v1',revision_sha256:referenceHash('c'),parent_revision_sha256:null,reference:{asset_id:referenceAsset.id,manifest_sha256:referenceAsset.manifest_sha256,manifest:referenceManifest()},designs:Object.fromEntries(['A','B'].map(id=>[id,{model:inputs.cases[id].model,calendar:inputs.cases[id].study.calendar,study:inputs.cases[id].study}])),scope,carry_forward_plan_sha256:null,review_decisions:[],provenance};
   const second={...structuredClone(first),revision_sha256:referenceHash('d'),parent_revision_sha256:first.revision_sha256,scope:{...structuredClone(scope),title:'Retained scope S2',mappings:[{...structuredClone(scope.mappings[0]),rationale:'S2 live mapping rationale'}]}};
+  if(revisionReadinessCase){
+    // Original IPC shape fixture: complete declared input provenance does not
+    // make late Input/Reference carry-forward decisions resolved.
+    second.schema_version='greenlens.scope-revision.v3';second.scope.schema_version='greenlens.architectural-scope.v3';second.carry_forward_plan_sha256=referenceHash('8');
+    second.provenance={...second.provenance,schema_version:'greenlens.input-provenance-checklist.v3',rows:[second.provenance.rows[0]],unreviewed_count:0,documentation_complete:true};
+    second.review_decisions=Array.from({length:82},(_,index)=>({row_id:index.toString(16).padStart(64,'0'),resolution:index<80?'reviewed':'unresolved',rationale:index===80?'Late input applicability remains unresolved.':index===81?'Late reference correspondence remains unresolved.':'Explicit original synthetic review fixture.'}));
+    second.reviewed_rows=second.review_decisions.map((row,index)=>({row_id:row.row_id,kind:index===80?'input':index===81?'reference':'mapping',key:index===80?second.provenance.rows[0].id:index===81?'Exact retained reference correspondence':`Synthetic mapped target ${index}`}));
+  }
   return{schema_version:'greenlens.architectural-project.v1',assets:[referenceAsset],active_asset_id:referenceAsset.id,scope:second.scope,scope_history:{schema_version:'greenlens.scope-history.v1',revisions:[first,second],active_revision_sha256:second.revision_sha256}};
 }
 function carryPlan(project,parent,candidate){
   const revision=project.architecture.scope_history.revisions.find(r=>r.revision_sha256===parent);
   const rows=[{id:'mapping-unchanged',kind:'mapping',key:'synthetic-occurrence',change:'unchanged',requires_review:false,before:revision.scope.mappings[0],after:revision.scope.mappings[0],reason:'Exact geometry unchanged'},{id:'cop-changed',kind:'input',key:'zone cooling COP',change:'changed',requires_review:true,before:3.2,after:3.5,reason:'Efficiency input changed; service unchanged'},{id:'assumption-changed',kind:'assumption',key:'cop-source',change:'changed',requires_review:true,before:revision.scope.assumptions[0],after:revision.scope.assumptions[0],reason:'Review source declaration against the changed applied COP'}];
   if(revisionPlanMode==='geometry')rows.push({id:'deleted-target',kind:'mapping',key:'removed-zone',change:'deleted',requires_review:true,before:'removed-zone',after:null,reason:'No equivalent target inferred'},{id:'new-source',kind:'reference',key:'new-source-revision',change:'unresolved',requires_review:true,before:referenceHash('2'),after:referenceHash('9'),reason:'Reimport requires object reconciliation'});
-  if(revisionPlanMode==='v2'){
-    const proposed_scope={...structuredClone(revision.scope),schema_version:'greenlens.architectural-scope.v2'};
+  if(revisionPlanMode==='v2'||revisionPlanMode==='v3'){
+    const proposed_scope={...structuredClone(revision.scope),schema_version:`greenlens.architectural-scope.${revisionPlanMode}`};
     proposed_scope.assumptions[0].status='missing';proposed_scope.assumptions[0].value=null;
     if(candidate?.title==='Reject this candidate')throw Error('Synthetic invalid candidate: title fixture rejected; no revision accepted');
     const candidate_scope=structuredClone(candidate??proposed_scope);
-    rows[2].after=structuredClone(candidate_scope.assumptions[0]);
+    rows[2].after=structuredClone(candidate_scope.assumptions[0]??null);
     for(const figure of candidate_scope.report_views??[])if(!proposed_scope.report_views.some(previous=>previous.id===figure.id))rows.push({id:`figure-added-${figure.id}`,kind:'report_view',key:figure.id,change:'added',requires_review:true,before:null,after:structuredClone(figure),reason:'Review the exact captured frame for this candidate'});
-    return{schema_version:'greenlens.scope-carry-forward.v2',parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash(candidate?'8':'7'),proposed_scope,candidate_scope,rows};
+    let candidate_provenance;
+    if(revisionPlanMode==='v3'){
+      // Explicit IPC fixture only: Rust's separate tests establish the actual
+      // checklist algorithm; this tests the real editor/hook/render composition.
+      const cop=candidate_scope.assumptions.filter(a=>a.link.kind==='thermal_object');
+      const holiday=candidate_scope.assumptions.filter(a=>a.link.kind==='calendar_no_holidays');
+      const none=project.energy.designs.A.study.calendar.holidays.length===0;
+      if(holiday.some(a=>a.status!=='missing'&&a.value!==String(none)))throw Error('No-holidays declaration contradicts retained calendar; draft retained');
+      const status=items=>!items.length?'unreviewed':items.some(a=>a.status!==items[0].status||a.value!==items[0].value)?'conflicting':items[0].status;
+      const checklistRows=[{id:referenceHash('9'),design_id:'B',object:{kind:'cooling_system',id:'fixture-system'},field_path:'/gross_rated_cop',applied_value:3.8,units:'W/W',declared_source:null,status:status(cop),source_declarations:structuredClone(cop)},{id:referenceHash('0'),design_id:'A',object:{kind:'calendar',id:'calendar'},field_path:'/holidays/none',applied_value:none,units:'boolean',declared_source:null,status:status(holiday),source_declarations:structuredClone(holiday)}];
+      candidate_provenance={schema_version:'greenlens.input-provenance-checklist.v3',rows:checklistRows,unreviewed_count:checklistRows.filter(r=>r.status==='unreviewed').length,missing_count:checklistRows.filter(r=>r.status==='missing').length,conflicting_count:checklistRows.filter(r=>r.status==='conflicting').length,documentation_complete:checklistRows.every(r=>!['unreviewed','missing','conflicting'].includes(r.status)),disclosure:'Synthetic IPC fixture; no physics claim'};
+      rows[1].after=structuredClone(checklistRows[0]);
+      rows.push({id:'calendar-input',kind:'input',key:'calendar no-holidays policy',change:'changed',requires_review:true,before:null,after:structuredClone(checklistRows[1]),reason:'Review exact candidate calendar declaration'});
+    }
+    return{schema_version:`greenlens.scope-carry-forward.${revisionPlanMode}`,parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash(candidate?'8':'7'),proposed_scope,candidate_scope,...(candidate_provenance?{candidate_provenance}:{}),rows};
   }
   return{schema_version:'greenlens.scope-carry-forward.v1',parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash('7'),proposed_scope:structuredClone(revision.scope),rows};
 }
@@ -95,8 +117,8 @@ function Harness(){
     show&&!fullWorkspace&&draft&&React.createElement(Editor,{entry:draft,zoneId:draft.structured.model.zones[0].id,disabled:doc.busy||Boolean(doc.energyDrafts.guard),onChange:change=>doc.energyDrafts.update(doc.alternative,change),onApply:()=>doc.energyDrafts.apply(doc.alternative),onDiscard:()=>doc.energyDrafts.discard(doc.alternative)}),
     !doc.referenceDrafts.guard&&!doc.energyDrafts.guard&&React.createElement(ReviewGuard,{drafts:doc.scopeReviewDrafts}),React.createElement(Guard,{drafts:doc.energyDrafts}),React.createElement(ReferenceGuard,{drafts:doc.referenceDrafts}));
 }
-async function setup({retainCache=false,workspace=false,objects=false,reports=false,revisions=false,revisionOccurrence='synthetic-occurrence'}={}){
-  fullWorkspace=workspace;withRevisions=revisions;revisionOccurrenceId=revisionOccurrence;issueGate=null;issueInspectGate=null;issueProductGate=null;issueError=null;issuePending=false;if(!retainCache){issueEvidence=new Map();pendingFixture=null;}revisionPrepareGate=null;revisionAcceptGate=null;revisionPlanMode='cop';
+async function setup({retainCache=false,workspace=false,objects=false,reports=false,revisions=false,revisionOccurrence='synthetic-occurrence',readiness=false}={}){
+  fullWorkspace=workspace;withRevisions=revisions;revisionReadinessCase=readiness;revisionOccurrenceId=revisionOccurrence;issueGate=null;issueInspectGate=null;issueProductGate=null;issueError=null;issuePending=false;if(!retainCache){issueEvidence=new Map();pendingFixture=null;}revisionPrepareGate=null;revisionAcceptGate=null;revisionPlanMode='cop';
   if(root)await act(()=>root.unmount());if(!retainCache)window.localStorage.clear();
   calls=[];rejectEdit=false;appendEvidenceOnSave=false;metadataGate=null;reportRuns=reports;reportGate=null;reportError=null;saveDestination='test-project';disk=fixture();sceneObjects=objects;preflightIssues=[];referenceImportGate=null;referenceScopeGate=null;
   referenceManifestGate=null;referenceRevision=referenceHash('2');
@@ -166,7 +188,7 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
     if(command==='reference_scope_context')return referenceContext(args.project);
     if(command==='reference_scope_assess')return referenceAssessment();
     if(command==='reference_revision_prepare'){if(revisionPrepareGate)await revisionPrepareGate;return carryPlan(args.project,args.parentRevisionSha256,args.candidateScope);}
-    if(command==='reference_revision_accept'){if(revisionAcceptGate)await revisionAcceptGate;if(rejectEdit)throw Error('Synthetic revision context rejection');const plan=carryPlan(args.project,args.parentRevisionSha256,revisionPlanMode==='v2'?args.scope:undefined);assert.equal(args.expectedPlanSha256,plan.plan_sha256);assert.deepEqual(args.scope,plan.candidate_scope??plan.proposed_scope);assert.ok(plan.rows.filter(r=>r.requires_review).every(r=>args.decisions.some(d=>d.row_id===r.id&&d.rationale.trim())));const next=structuredClone(args.project),old=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.parentRevisionSha256),revision={...structuredClone(old),revision_sha256:referenceHash('e'),parent_revision_sha256:old.revision_sha256,scope:structuredClone(args.scope),carry_forward_plan_sha256:plan.plan_sha256,review_decisions:structuredClone(args.decisions)};next.architecture.scope_history.revisions.push(revision);next.architecture.scope_history.active_revision_sha256=revision.revision_sha256;next.architecture.scope=revision.scope;return next;}
+    if(command==='reference_revision_accept'){if(revisionAcceptGate)await revisionAcceptGate;if(rejectEdit)throw Error('Synthetic revision context rejection');const plan=carryPlan(args.project,args.parentRevisionSha256,['v2','v3'].includes(revisionPlanMode)?args.scope:undefined);assert.equal(args.expectedPlanSha256,plan.plan_sha256);assert.deepEqual(args.scope,plan.candidate_scope??plan.proposed_scope);assert.ok(plan.rows.filter(r=>r.requires_review).every(r=>args.decisions.some(d=>d.row_id===r.id&&d.rationale.trim())));const next=structuredClone(args.project),old=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.parentRevisionSha256),revision={...structuredClone(old),revision_sha256:referenceHash('e'),parent_revision_sha256:old.revision_sha256,scope:structuredClone(args.scope),carry_forward_plan_sha256:plan.plan_sha256,review_decisions:structuredClone(args.decisions),...(revisionPlanMode==='v3'?{schema_version:'greenlens.scope-revision.v3',provenance:structuredClone(plan.candidate_provenance),reviewed_rows:args.decisions.map(d=>({row_id:d.row_id,kind:plan.rows.find(r=>r.id===d.row_id).kind,key:plan.rows.find(r=>r.id===d.row_id).key}))}:{})};next.architecture.scope_history.revisions.push(revision);next.architecture.scope_history.active_revision_sha256=revision.revision_sha256;next.architecture.scope=revision.scope;return next;}
     if(command==='reference_revision_activate'){const next=structuredClone(args.project);next.architecture.scope_history.active_revision_sha256=args.revisionSha256;next.architecture.scope=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.revisionSha256)?.scope??null;return next;}
     if(command==='reference_scope_apply'){if(referenceScopeGate)await referenceScopeGate;const next=structuredClone(args.project);next.architecture.scope=args.scope;return next;}
     if(command==='open_project')return view({...fixture(),id:'other-project-id'});
@@ -675,6 +697,22 @@ test('late or cancelled preparation cannot stage a different revision or documen
 async function issueSetup(){await setup({workspace:true,revisions:true,reports:true});await click('Save');await click('reports');await type(input('Issue scope revision'),referenceHash('c'));}
 const issuePanel=()=>document.querySelector('[aria-label="Immutable report issues"]');
 
+test('actual issue workspace discloses late unresolved Input and Reference decisions despite complete input provenance',async()=>{
+  await setup({workspace:true,revisions:true,reports:true,readiness:true});await click('Save');await click('reports');await type(input('Issue scope revision'),referenceHash('d'));
+  const original=JSON.stringify(doc.project.architecture.scope_history);
+  assert.match(issuePanel().textContent,/Documentation: complete source declarations for supported fields/);
+  assert.match(issuePanel().textContent,/Retained unresolved review decisions: 2/);
+  await click('Issue exact selected report');
+  const status=document.querySelector('[aria-label="Retained documentation and review status"]');assert.ok(status);
+  assert.match(status.textContent,/Input documentation: complete source declarations for supported fields/);
+  assert.match(status.textContent,/Unresolved review decisions: 2 of 82/);assert.match(status.textContent,/Reviewed decisions: 80/);
+  assert.match(status.textContent,/input: B · zone .*\/synthetic-fixture-field\/0 \[W\/W\]/);assert.match(status.textContent,/Exact input identity: field-0/);assert.match(status.textContent,/reference: Exact retained reference correspondence/);
+  assert.match(status.textContent,/Late input applicability remains unresolved/);assert.match(status.textContent,/Late reference correspondence remains unresolved/);
+  assert.match(status.textContent,/Showing 2 of 2 unresolved decisions/);assert.equal(status.querySelectorAll('li').length,2);
+  const retained=issueEvidence.get(referenceHash('1'));assert.deepEqual(retained.review_readiness,reviewFixture(retained.content.scope_revision));
+  assert.equal(JSON.stringify(doc.project.architecture.scope_history),original);assert.equal(count('energy_start'),0);assert.equal(doc.history.past.length,0);
+});
+
 test('issued report composition freezes exact S1 pair and preserves R1 after active S2 and later metadata',async()=>{
   await issueSetup();assert.equal(button('Issue exact selected report').disabled,false);const before=JSON.stringify(doc.project.architecture.scope_history);await click('Issue exact selected report');
   const call=calls.find(([command])=>command==='report_issue_action')[1];assert.deepEqual(call.action,{kind:'create',a:'report-a',b:'report-b',scope_sha256:referenceHash('c'),html_only:false});assert.equal(call.expectedRevision,'test-revision');assert.equal(doc.project.report_issues.issues.length,1);assert.equal(doc.history.past.length,0);assert.equal(JSON.stringify(doc.project.architecture.scope_history),before);
@@ -780,10 +818,10 @@ async function captureTopReportView(title){
   await type(input('View name'),title);assert.equal(button('Add active view to report draft').disabled,false);await click('Add active view to report draft');
 }
 
-test('v2 viewport capture updates only its exact candidate and requires refreshed Rust review before one accepted revision',async()=>{
+for(const version of ['v2','v3'])test(`${version} viewport capture updates only its exact candidate and requires refreshed Rust review before one accepted revision`,async()=>{
   await scopeReviewSetup();await click('Edit accepted scope');await type(input('Scope title'),'Preserved unrelated ordinary scope draft');
   const ordinary=structuredClone(doc.referenceDrafts.draft),accepted=structuredClone(doc.project),past=doc.history.past.length;
-  revisionPlanMode='v2';await click('Review changes and carry forward');const plan=structuredClone(doc.scopeReviewDrafts.draft.plan);
+  revisionPlanMode=version;await click('Review changes and carry forward');const plan=structuredClone(doc.scopeReviewDrafts.draft.plan);
   await captureTopReportView('Candidate aligned plan');
   const captured=doc.scopeReviewDrafts.draft.candidate.value.report_views[0];
   assert.equal(captured.title,'Candidate aligned plan');assert.equal(captured.design_id,'A');assert.equal(captured.model_input_sha256,referenceHash('a'));
@@ -796,7 +834,7 @@ test('v2 viewport capture updates only its exact candidate and requires refreshe
   await type(candidateInput('Scope title'),'Candidate with aligned report frame');let finish;revisionPrepareGate=new Promise(resolve=>finish=resolve);
   await click('Review edited candidate in Rust');await click('Cancel review request');await act(async()=>finish());
   assert.deepEqual(doc.scopeReviewDrafts.draft.plan,plan);assert.deepEqual(doc.referenceDrafts.draft,ordinary);assert.equal(doc.history.past.length,past);
-  revisionPrepareGate=null;await click('Review edited candidate in Rust');await finishV2Review();
+  revisionPrepareGate=null;await click('Review edited candidate in Rust');await finishV2Review();if(version==='v3')await reviewDecision('calendar-input','unresolved','Calendar source remains missing in this candidate; disclose it.');
   assert.equal(button('Accept reviewed scope revision').disabled,true,'the newly added figure needs an explicit review');
   await reviewDecision('figure-added-view-1','reviewed','Exact source-bound top frame retained for this synthetic candidate.');
   await click('Accept reviewed scope revision');assert.ok(dialog());await click('Cancel',dialog());
@@ -807,8 +845,8 @@ test('v2 viewport capture updates only its exact candidate and requires refreshe
   assert.deepEqual(doc.project.energy.designs,accepted.energy.designs);assert.equal(count('energy_start'),0);
 });
 
-test('v2 viewport capture remains design-local and a stale current review cannot redirect it into ordinary drafts',async()=>{
-  await startV2Review();const pendingA=structuredClone(doc.scopeReviewDrafts.draft);
+for(const version of ['v2','v3'])test(`${version} viewport capture remains design-local and a stale current review cannot redirect it into ordinary drafts`,async()=>{
+  await scopeReviewSetup();revisionPlanMode=version;await click('Review changes and carry forward');const pendingA=structuredClone(doc.scopeReviewDrafts.draft);
   await click('Proposed B');await click('reference');assert.equal(doc.scopeReviewDrafts.draft,null);
   await captureTopReportView('Ordinary B plan');const ordinaryB=structuredClone(doc.referenceDrafts.draft);
   assert.equal(ordinaryB.scope.value.report_views[0].design_id,'B');
@@ -855,4 +893,46 @@ test('v2 invalid candidate and cancelled late review keep edits and history with
   assert.equal(button('Accept reviewed scope revision').disabled,true);assert.match(scopeHistoryPanel().textContent,/-3 UTF-8 bytes remaining/);
   await click('Save');await click('Apply',dialog());assert.ok(dialog());assert.match(dialog().textContent,/2048 UTF-8 bytes/);assert.equal(doc.scopeReviewDrafts.draft.decisions['cop-changed'].rationale,'é'.repeat(1024)+'界');assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);await click('Cancel',dialog());
   await type(document.querySelector('[aria-label="Review rationale cop-changed"]'),'é'.repeat(1024));assert.equal(button('Accept reviewed scope revision').disabled,false);
+});
+
+
+test('v3 actual workspace shows exact candidate provenance, invalidates stale values, and refreshes source decisions',async()=>{
+  await scopeReviewSetup();revisionPlanMode='v3';await click('Review changes and carry forward');
+  const accepted=structuredClone(doc.project),past=doc.history.past.length;
+  const preview=()=>document.querySelector('[aria-label="Reviewed candidate input provenance"]');
+  assert.match(preview().textContent,/missing 1/);
+  await type(candidateInput('Input status'),'assumed');await type(candidateInput('Declared value'),'3.8');await type(candidateInput('Source / citation'),'Candidate-only declared source');
+  assert.match(preview().textContent,/changed since the last Rust review/);assert.equal(preview().querySelector('table'),null);
+  assert.equal(button('Accept reviewed scope revision').disabled,true);
+  await click('Review edited candidate in Rust');
+  assert.match(preview().textContent,/Candidate-only declared source/);assert.match(preview().textContent,/missing 0/);
+  const candidateRow=doc.scopeReviewDrafts.draft.plan.candidate_provenance.rows[0];
+  assert.deepEqual(doc.scopeReviewDrafts.draft.plan.rows.find(r=>r.id==='cop-changed').after,candidateRow);
+  await finishV2Review();await reviewDecision('calendar-input','unresolved','No calendar source declaration yet; retain disclosure.');
+  await type(candidateInput('Source / citation'),'Revised candidate citation');await click('Review edited candidate in Rust');
+  assert.equal(doc.scopeReviewDrafts.draft.decisions['cop-changed'],undefined);
+  assert.equal(doc.scopeReviewDrafts.draft.decisions['assumption-changed'],undefined);
+  assert.equal(doc.scopeReviewDrafts.draft.decisions['calendar-input'].resolution,'unresolved');
+  await click('Remove cop-source');await click('Review edited candidate in Rust');
+  assert.equal(doc.scopeReviewDrafts.draft.plan.candidate_provenance.rows[0].status,'unreviewed');
+  assert.deepEqual(doc.scopeReviewDrafts.draft.plan.candidate_provenance.rows[0].source_declarations,[]);
+  assert.match(preview().textContent,/No reviewed source declaration/);
+  assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);assert.equal(count('reference_revision_accept'),0);
+});
+
+test('v3 explicit no-holidays form rejects contradicted calendar and accepts exact corrected declaration atomically',async()=>{
+  await scopeReviewSetup();revisionPlanMode='v3';await click('Review changes and carry forward');
+  const accepted=structuredClone(doc.project),past=doc.history.past.length;
+  await type(candidateInput('Linked scope'),'calendar_no_holidays');await type(candidateInput('Input status'),'assumed');await type(candidateInput('Declared value'),'true');
+  assert.equal(doc.scopeReviewDrafts.draft.candidate.value.assumptions[0].field,'/holidays/none');
+  assert.match(editableCandidate().textContent,/not a generic array pointer/);
+  await click('Review edited candidate in Rust');assert.match(scopeHistoryPanel().textContent,/contradicts retained calendar/);
+  assert.equal(candidateInput('Declared value').value,'true');assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);
+  await type(candidateInput('Declared value'),'false');await type(candidateInput('Source / citation'),'Original synthetic calendar lists one holiday');
+  await click('Review edited candidate in Rust');
+  const policy=doc.scopeReviewDrafts.draft.plan.candidate_provenance.rows[1];assert.equal(policy.applied_value,false);assert.equal(policy.status,'assumed');assert.equal(policy.source_declarations[0].value,'false');
+  await finishV2Review();await reviewDecision('calendar-input','reviewed','The listed holiday is explicitly retained; no absence is claimed.');
+  await click('Accept reviewed scope revision');assert.equal(doc.history.past.length,past+1);assert.equal(count('reference_revision_accept'),1);
+  assert.deepEqual(doc.project.architecture.scope_history.revisions.slice(0,2),accepted.architecture.scope_history.revisions);
+  assert.deepEqual(doc.project.energy.designs,accepted.energy.designs);assert.equal(doc.project.architecture.scope.schema_version,'greenlens.architectural-scope.v3');assert.equal(count('energy_start'),0);
 });

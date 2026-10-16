@@ -115,7 +115,8 @@ export default function EnergyWorkspace({doc}:{doc:Doc}){
       const review=doc.scopeReviewDrafts.draft;
       if(review){
         if(doc.scopeReviewDrafts.applying||review.document_id!==doc.project.id||review.design_id!==doc.alternative||review.context_key!==scopeReviewContextKey(doc.path,doc.project,doc.alternative))throw Error('The pending scope review no longer matches this document, design or accepted inputs. Resolve it and prepare a current review before capturing a report view. Existing drafts are unchanged.');
-        if(review.schema_version!=='greenlens.scope-review-draft.v2'||review.plan.schema_version!=='greenlens.scope-carry-forward.v2'||!review.candidate)throw Error('This historical review has no editable candidate. Resolve it and prepare an editable scope review before capturing a report view. Existing drafts are unchanged.');
+        const editableVersion=(review.schema_version==='greenlens.scope-review-draft.v2'&&review.plan.schema_version==='greenlens.scope-carry-forward.v2')||(review.schema_version==='greenlens.scope-review-draft.v3'&&review.plan.schema_version==='greenlens.scope-carry-forward.v3');
+        if(!editableVersion||!review.candidate)throw Error('This historical review has no editable candidate. Resolve it and prepare an editable scope review before capturing a report view. Existing drafts are unchanged.');
         // Candidate and ordinary authoring drafts are separate transactions.
         // Adding a view invalidates the candidate's last Rust review; acceptance
         // still requires a new exact plan and explicit review decisions.

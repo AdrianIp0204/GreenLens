@@ -31,6 +31,8 @@ const DEPENDENCY: &str = include_str!("../../../dependencies/typst.json");
 const MAX_PRESENTED_ROWS: usize = 80;
 #[path = "energy_report_issue_render_v2.rs"]
 mod v2;
+#[path = "energy_report_issue_render_v3.rs"]
+mod v3;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -84,6 +86,14 @@ pub fn current_renderer_identity() -> Result<IssueRendererIdentity> {
 /// rendering algorithm remain callable for exact historical regeneration.
 pub fn latest_renderer_identity() -> Result<IssueRendererIdentity> {
     let mut identity = current_renderer_identity()?;
+    identity.method = v3::METHOD.into();
+    identity.document_schema = v3::DOCUMENT_SCHEMA.into();
+    identity.html_method = v3::HTML_METHOD.into();
+    identity.template_sha256 = old::sha(v3::TEMPLATE.as_bytes());
+    Ok(identity)
+}
+fn renderer_v2_identity() -> Result<IssueRendererIdentity> {
+    let mut identity = current_renderer_identity()?;
     identity.method = v2::METHOD.into();
     identity.document_schema = v2::DOCUMENT_SCHEMA.into();
     identity.html_method = v2::HTML_METHOD.into();
@@ -93,7 +103,8 @@ pub fn latest_renderer_identity() -> Result<IssueRendererIdentity> {
 fn supported_renderer_identity(method: &str) -> Result<IssueRendererIdentity> {
     match method {
         ISSUE_RENDERER_METHOD => current_renderer_identity(),
-        v2::METHOD => latest_renderer_identity(),
+        v2::METHOD => renderer_v2_identity(),
+        v3::METHOD => latest_renderer_identity(),
         _ => anyhow::bail!("Unsupported issue renderer recipe"),
     }
 }
@@ -101,10 +112,10 @@ fn supported_renderer_identity(method: &str) -> Result<IssueRendererIdentity> {
 /// Full, deterministic supplementary products required only by the new recipe.
 /// Product admission recomputes these bytes from frozen issue content.
 pub fn required_supplement_products(content: &IssueContent) -> Result<Vec<(String, Vec<u8>)>> {
-    if content.renderer.method == v2::METHOD {
-        v2::products(content)
-    } else {
-        Ok(vec![])
+    match content.renderer.method.as_str() {
+        v2::METHOD => v2::products(content),
+        v3::METHOD => v3::products(content),
+        _ => Ok(vec![]),
     }
 }
 
@@ -355,14 +366,18 @@ pub fn render_issue(
 
 impl IssueReport {
     pub(super) fn template(&self) -> &'static str {
-        if self.content.renderer.method == v2::METHOD {
+        if self.content.renderer.method == v3::METHOD {
+            v3::TEMPLATE
+        } else if self.content.renderer.method == v2::METHOD {
             v2::TEMPLATE
         } else {
             TEMPLATE
         }
     }
     pub(super) fn artifact_schema(&self) -> &'static str {
-        if self.content.renderer.method == v2::METHOD {
+        if self.content.renderer.method == v3::METHOD {
+            "greenlens.energy-report-artifacts.v0.8-review"
+        } else if self.content.renderer.method == v2::METHOD {
             "greenlens.energy-report-artifacts.v0.8"
         } else {
             "greenlens.energy-report-artifacts.v0.7"
@@ -373,7 +388,9 @@ impl IssueReport {
         document: &Document,
         generated: &[(&str, Vec<u8>)],
     ) -> Result<String> {
-        if self.content.renderer.method == v2::METHOD {
+        if self.content.renderer.method == v3::METHOD {
+            v3::html(document, generated)
+        } else if self.content.renderer.method == v2::METHOD {
             v2::html(document, generated)
         } else {
             old::html(document, generated)
@@ -387,7 +404,9 @@ impl IssueReport {
         generated: &mut Vec<(String, Vec<u8>)>,
         cancel: &AtomicBool,
     ) -> Result<()> {
-        if self.content.renderer.method == v2::METHOD {
+        if self.content.renderer.method == v3::METHOD {
+            v3::augment(self, data, names, docs, generated, cancel)
+        } else if self.content.renderer.method == v2::METHOD {
             v2::augment(self, data, names, docs, generated, cancel)
         } else {
             self.augment_v1(data, names, docs, generated, cancel)

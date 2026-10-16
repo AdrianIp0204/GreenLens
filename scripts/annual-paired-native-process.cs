@@ -70,6 +70,19 @@ public sealed class NativeProcess : IDisposable {
 
     public static NativeProcess Start(string executable, string[] arguments,
                                       string workingDirectory, string rayPath) {
+        return StartInternal(executable,arguments,workingDirectory,rayPath,0,0);
+    }
+    // Opt-in engineering supervision; the historical Start behavior is unchanged.
+    // Kernel limits apply atomically at creation to the whole non-breakaway job,
+    // including descendants and nested jobs. Memory is committed memory, not RSS.
+    public static NativeProcess StartBounded(string executable, string[] arguments,
+        string workingDirectory, string rayPath, long jobCommittedBytes, uint activeProcesses) {
+        if(jobCommittedBytes<=0 || activeProcesses==0 || activeProcesses>16)
+            throw new ArgumentOutOfRangeException("Positive committed-memory and 1..16 process bounds required.");
+        return StartInternal(executable,arguments,workingDirectory,rayPath,jobCommittedBytes,activeProcesses);
+    }
+    static NativeProcess StartInternal(string executable, string[] arguments,
+        string workingDirectory, string rayPath, long jobCommittedBytes, uint activeProcesses) {
         if(!OperatingSystem.IsWindowsVersionAtLeast(10))
             throw new PlatformNotSupportedException("Atomic job launch requires Windows 10 or newer.");
         if(arguments==null) throw new ArgumentNullException(nameof(arguments));
@@ -93,6 +106,11 @@ public sealed class NativeProcess : IDisposable {
             job=CreateJobObjectW(IntPtr.Zero,null);
             RequireHandle(job,"CreateJobObject");
             var limits=new ExtendedLimits(); limits.Basic.LimitFlags=KILL_ON_JOB_CLOSE;
+            if(jobCommittedBytes>0) {
+                limits.Basic.LimitFlags|=0x00000200|0x00000008; // JOB_MEMORY | ACTIVE_PROCESS
+                limits.jobMemory=new UIntPtr(checked((ulong)jobCommittedBytes));
+                limits.Basic.activeProcessLimit=activeProcesses;
+            }
             if(!SetInformationJobObject(job,9,ref limits,(uint)Marshal.SizeOf<ExtendedLimits>())) Fail("SetInformationJobObject");
 
             Pipe(out inputRead,out inputWrite); Uninherit(inputWrite);
@@ -247,6 +265,37 @@ public sealed class NativeProcess : IDisposable {
     // Observed peak of the summed live job-member working sets; this is not a
     // claim to have sampled each process's lifetime maximum simultaneously.
     public long PeakWorkingSetBytes { get { long current=WorkingSetBytes; return Interlocked.Read(ref peakWorkingSet); } }
+    // Kernel-reported PeakJobMemoryUsed. Preserve this raw high-water reading;
+    // rejected commitment/accounting behavior is investigated separately. Never
+    // substitute working set or silently subtract a denied allocation from it.
+    public long PeakJobCommittedBytes {
+        get {
+            Check(); ExtendedLimits limits;
+            if(!QueryInformationJobObjectLimits(job,9,out limits,(uint)Marshal.SizeOf<ExtendedLimits>(),IntPtr.Zero)) Fail("Query committed job memory");
+            return checked((long)limits.peakJobMemory.ToUInt64());
+        }
+    }
+    public long[] CommittedMemoryLimitSnapshot {
+        get {
+            Check();
+            if(IntPtr.Size!=8 || Marshal.SizeOf<ExtendedLimits>()!=144 ||
+               Marshal.OffsetOf<ExtendedLimits>("jobMemory").ToInt64()!=120 ||
+               Marshal.OffsetOf<ExtendedLimits>("peakJobMemory").ToInt64()!=136)
+                throw new PlatformNotSupportedException("Audited x64 job-memory ABI required.");
+            ExtendedLimits limits;
+            if(!QueryInformationJobObjectLimits(job,9,out limits,(uint)Marshal.SizeOf<ExtendedLimits>(),IntPtr.Zero)) Fail("Query held job limits");
+            return new long[] { limits.Basic.LimitFlags, limits.Basic.activeProcessLimit,
+                checked((long)limits.jobMemory.ToUInt64()), checked((long)limits.peakJobMemory.ToUInt64()) };
+        }
+    }
+    public uint[] MemberIds { get { Check(); return ProcessIds(); } }
+    public uint ActiveProcesses {
+        get {
+            Check(); BasicAccounting accounting;
+            if(!QueryInformationJobObjectAccounting(job,1,out accounting,(uint)Marshal.SizeOf<BasicAccounting>(),IntPtr.Zero)) Fail("Query job accounting");
+            return accounting.activeProcesses;
+        }
+    }
     uint[] ProcessIds() {
         for(int capacity=16;capacity<=65536;capacity*=2) {
             int bytes=checked(8+capacity*IntPtr.Size); IntPtr buffer=Marshal.AllocHGlobal(bytes);
@@ -310,6 +359,7 @@ public sealed class NativeProcess : IDisposable {
     [DllImport("kernel32.dll",SetLastError=true)] static extern bool GetExitCodeProcess(SafeFileHandle process,out uint code);
     [DllImport("kernel32.dll",SetLastError=true)] static extern bool QueryInformationJobObject(SafeFileHandle job,int kind,IntPtr value,uint bytes,IntPtr returned);
     [DllImport("kernel32.dll",EntryPoint="QueryInformationJobObject",SetLastError=true)] static extern bool QueryInformationJobObjectAccounting(SafeFileHandle job,int kind,out BasicAccounting value,uint bytes,IntPtr returned);
+    [DllImport("kernel32.dll",EntryPoint="QueryInformationJobObject",SetLastError=true)] static extern bool QueryInformationJobObjectLimits(SafeFileHandle job,int kind,out ExtendedLimits value,uint bytes,IntPtr returned);
     [DllImport("kernel32.dll",SetLastError=true)] static extern bool TerminateJobObject(SafeFileHandle job,uint code);
     [DllImport("kernel32.dll",SetLastError=true)] static extern SafeFileHandle OpenProcess(uint access,bool inherit,uint processId);
     [DllImport("kernel32.dll",SetLastError=true)] static extern bool IsProcessInJob(SafeFileHandle process,SafeFileHandle job,out bool result);

@@ -14,6 +14,9 @@ pub const SCOPE_REVISION_SCHEMA: &str = "greenlens.scope-revision.v1";
 pub const SCOPE_REVISION_SCHEMA_V2: &str = "greenlens.scope-revision.v2";
 pub const CARRY_FORWARD_SCHEMA_V2: &str = "greenlens.scope-carry-forward.v2";
 pub const PROVENANCE_CHECKLIST_SCHEMA_V2: &str = "greenlens.input-provenance-checklist.v2";
+pub const SCOPE_REVISION_SCHEMA_V3: &str = "greenlens.scope-revision.v3";
+pub const CARRY_FORWARD_SCHEMA_V3: &str = "greenlens.scope-carry-forward.v3";
+pub const PROVENANCE_CHECKLIST_SCHEMA_V3: &str = "greenlens.input-provenance-checklist.v3";
 pub const MAX_REVIEW_RATIONALE_BYTES: usize = 2048;
 pub const CARRY_FORWARD_SCHEMA: &str = "greenlens.scope-carry-forward.v1";
 pub const PROVENANCE_CHECKLIST_SCHEMA: &str = "greenlens.input-provenance-checklist.v1";
@@ -139,6 +142,14 @@ pub struct ReviewDecision {
     pub rationale: String,
 }
 
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[serde(deny_unknown_fields)]
+pub struct ReviewedRowBinding {
+    pub row_id: String,
+    pub kind: RevisionRowKind,
+    pub key: String,
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct CarryForwardPlan {
@@ -149,6 +160,9 @@ pub struct CarryForwardPlan {
     /// Omitted in frozen v1 plans. V2 binds the editable candidate separately.
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub candidate_scope: Option<ArchitecturalScope>,
+    /// V3 preview only; omitted from frozen v1/v2 plans and accepted revisions.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub candidate_provenance: Option<ProvenanceChecklist>,
     pub rows: Vec<CarryForwardRow>,
     pub plan_sha256: String,
 }
@@ -164,6 +178,8 @@ pub struct ScopeRevision {
     pub scope: ArchitecturalScope,
     pub carry_forward_plan_sha256: Option<String>,
     pub review_decisions: Vec<ReviewDecision>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub reviewed_rows: Option<Vec<ReviewedRowBinding>>,
     pub provenance: ProvenanceChecklist,
 }
 
@@ -187,6 +203,8 @@ impl<'de> Deserialize<'de> for ScopeRevision {
             scope: ArchitecturalScope,
             carry_forward_plan_sha256: Option<String>,
             review_decisions: Vec<ReviewDecision>,
+            #[serde(default, skip_serializing_if = "Option::is_none")]
+            reviewed_rows: Option<Vec<ReviewedRowBinding>>,
             // These checklist/row/source types deny unknown fields and reject
             // duplicate metadata keys, preserving the original reader behavior.
             provenance: ProvenanceChecklist,
@@ -195,7 +213,7 @@ impl<'de> Deserialize<'de> for ScopeRevision {
         bound(&wire, MAX_REVISION_BYTES, "revision").map_err(D::Error::custom)?;
         if !matches!(
             wire.schema_version.as_str(),
-            SCOPE_REVISION_SCHEMA | SCOPE_REVISION_SCHEMA_V2
+            SCOPE_REVISION_SCHEMA | SCOPE_REVISION_SCHEMA_V2 | SCOPE_REVISION_SCHEMA_V3
         ) {
             return Err(D::Error::custom("Unsupported immutable scope revision"));
         }
@@ -243,6 +261,7 @@ impl<'de> Deserialize<'de> for ScopeRevision {
             scope: wire.scope,
             carry_forward_plan_sha256: wire.carry_forward_plan_sha256,
             review_decisions: wire.review_decisions,
+            reviewed_rows: wire.reviewed_rows,
             provenance,
         })
     }
@@ -368,7 +387,7 @@ pub fn validate_revision(revision: &ScopeRevision) -> Result<()> {
     bound(revision, MAX_REVISION_BYTES, "revision")?;
     if !matches!(
         revision.schema_version.as_str(),
-        SCOPE_REVISION_SCHEMA | SCOPE_REVISION_SCHEMA_V2
+        SCOPE_REVISION_SCHEMA | SCOPE_REVISION_SCHEMA_V2 | SCOPE_REVISION_SCHEMA_V3
     ) {
         return Err(invalid(
             "revision.schema_version",
@@ -391,6 +410,30 @@ pub fn validate_revision(revision: &ScopeRevision) -> Result<()> {
         return Err(invalid("revision.parent", "A carried revision requires an exact parent and review plan; self-parenting is invalid"));
     }
     validate_decisions(&revision.review_decisions)?;
+    if revision.schema_version == SCOPE_REVISION_SCHEMA_V3 {
+        let rows = revision.reviewed_rows.as_ref().ok_or_else(|| {
+            invalid(
+                "revision.reviewed_rows",
+                "V3 requires exact recorded decision categories",
+            )
+        })?;
+        if rows.len() != revision.review_decisions.len()
+            || rows
+                .iter()
+                .zip(&revision.review_decisions)
+                .any(|(row, decision)| row.row_id != decision.row_id || row.key.is_empty())
+        {
+            return Err(invalid(
+                "revision.reviewed_rows",
+                "Recorded row bindings must match every ordered review decision",
+            ));
+        }
+    } else if revision.reviewed_rows.is_some() {
+        return Err(invalid(
+            "revision.reviewed_rows",
+            "Historical revisions cannot gain v3 decision metadata",
+        ));
+    }
     if revision.parent_revision_sha256.is_none() && !revision.review_decisions.is_empty() {
         return Err(invalid(
             "revision.review",
@@ -422,7 +465,7 @@ pub fn initial_revision(
     reference: RevisionReferenceSnapshot,
     designs: BTreeMap<String, RevisionDesignSnapshot>,
 ) -> Result<ScopeRevision> {
-    initial_revision_version(scope, reference, designs, false)
+    initial_revision_version(scope, reference, designs, 1)
 }
 pub fn initial_revision_v2(
     mut scope: ArchitecturalScope,
@@ -433,19 +476,34 @@ pub fn initial_revision_v2(
     // authoring upgrade. Relabeling must not admit unknown schemas or v2 links
     // that were incorrectly supplied under historical v1 semantics.
     validate_declaration(&scope)?;
+    if scope.schema_version == ARCHITECTURAL_SCOPE_SCHEMA_V3 {
+        return Err(invalid(
+            "scope.schema_version",
+            "V3 documentation cannot be downgraded into frozen v2 semantics",
+        ));
+    }
     scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
-    initial_revision_version(scope, reference, designs, true)
+    initial_revision_version(scope, reference, designs, 2)
+}
+pub fn initial_revision_v3(
+    mut scope: ArchitecturalScope,
+    reference: RevisionReferenceSnapshot,
+    designs: BTreeMap<String, RevisionDesignSnapshot>,
+) -> Result<ScopeRevision> {
+    validate_declaration(&scope)?;
+    scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V3.into();
+    initial_revision_version(scope, reference, designs, 3)
 }
 fn initial_revision_version(
     scope: ArchitecturalScope,
     reference: RevisionReferenceSnapshot,
     designs: BTreeMap<String, RevisionDesignSnapshot>,
-    v2: bool,
+    version: u8,
 ) -> Result<ScopeRevision> {
-    let schema = if v2 {
-        SCOPE_REVISION_SCHEMA_V2
-    } else {
-        SCOPE_REVISION_SCHEMA
+    let schema = match version {
+        3 => SCOPE_REVISION_SCHEMA_V3,
+        2 => SCOPE_REVISION_SCHEMA_V2,
+        _ => SCOPE_REVISION_SCHEMA,
     };
     let models = validate_revision_context(&reference, &designs)?;
     validate_scope(&scope, &reference.manifest, &models)?;
@@ -459,6 +517,7 @@ fn initial_revision_version(
         scope,
         carry_forward_plan_sha256: None,
         review_decisions: vec![],
+        reviewed_rows: (version == 3).then(Vec::new),
         provenance,
     };
     bound(&revision, MAX_REVISION_BYTES, "revision")?;
@@ -812,13 +871,19 @@ pub fn provenance_checklist(
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
     scope: &ArchitecturalScope,
 ) -> Result<ProvenanceChecklist> {
-    provenance_checklist_version(designs, scope, false)
+    provenance_checklist_version(designs, scope, 1)
 }
 pub fn provenance_checklist_v2(
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
     scope: &ArchitecturalScope,
 ) -> Result<ProvenanceChecklist> {
-    provenance_checklist_version(designs, scope, true)
+    provenance_checklist_version(designs, scope, 2)
+}
+pub fn provenance_checklist_v3(
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    scope: &ArchitecturalScope,
+) -> Result<ProvenanceChecklist> {
+    provenance_checklist_version(designs, scope, 3)
 }
 fn checklist_for_revision(
     schema: &str,
@@ -828,6 +893,7 @@ fn checklist_for_revision(
     match schema {
         SCOPE_REVISION_SCHEMA => provenance_checklist(designs, scope),
         SCOPE_REVISION_SCHEMA_V2 => provenance_checklist_v2(designs, scope),
+        SCOPE_REVISION_SCHEMA_V3 => provenance_checklist_v3(designs, scope),
         _ => Err(invalid(
             "revision.schema_version",
             "Unsupported provenance semantics",
@@ -837,13 +903,14 @@ fn checklist_for_revision(
 fn provenance_checklist_version(
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
     scope: &ArchitecturalScope,
-    v2: bool,
+    version: u8,
 ) -> Result<ProvenanceChecklist> {
     validate_declaration(scope)?;
-    let expected_scope = if v2 {
-        ARCHITECTURAL_SCOPE_SCHEMA_V2
-    } else {
-        ARCHITECTURAL_SCOPE_SCHEMA
+    let v2 = version >= 2;
+    let expected_scope = match version {
+        3 => ARCHITECTURAL_SCOPE_SCHEMA_V3,
+        2 => ARCHITECTURAL_SCOPE_SCHEMA_V2,
+        _ => ARCHITECTURAL_SCOPE_SCHEMA,
     };
     if scope.schema_version != expected_scope {
         return Err(invalid("revision.scope.schema_version", "Scope and provenance versions must match; historical semantics are not upgraded implicitly"));
@@ -856,6 +923,15 @@ fn provenance_checklist_version(
         for object in input_objects(design)? {
             let mut fields = vec![];
             leaves(&object.value, "", &mut fields)?;
+            if version == 3 && object.object.kind == ThermalObjectKind::Calendar {
+                // Named bounded structural policy. This does not admit arbitrary
+                // arrays/objects as typed provenance and does not erase dates.
+                fields.retain(|(path, _)| path != "/holidays");
+                fields.push((
+                    "/holidays/none".into(),
+                    json!(design.calendar.holidays.is_empty()),
+                ));
+            }
             for (field_path, applied_value) in fields {
                 if rows.len() >= MAX_PROVENANCE_ROWS {
                     return Err(invalid(
@@ -892,6 +968,12 @@ fn provenance_checklist_version(
                                 && object.object.kind == ThermalObjectKind::Calendar
                                 && item.field == field_path
                         }
+                        AssumptionLink::CalendarNoHolidays { design_id: id } => {
+                            version == 3
+                                && id == design_id
+                                && object.object.kind == ThermalObjectKind::Calendar
+                                && field_path == "/holidays/none"
+                        }
                         AssumptionLink::ReferenceOccurrence { .. } => false,
                     })
                     .cloned()
@@ -906,7 +988,14 @@ fn provenance_checklist_version(
                     ))?,
                     design_id: design_id.clone(),
                     object: object.object.clone(),
-                    units: thermal_input_unit(&object.object, &field_path, &design.model),
+                    units: if version == 3
+                        && object.object.kind == ThermalObjectKind::Calendar
+                        && field_path == "/holidays/none"
+                    {
+                        Some("boolean".into())
+                    } else {
+                        thermal_input_unit(&object.object, &field_path, &design.model)
+                    },
                     field_path,
                     applied_value,
                     declared_source: object.source.clone(),
@@ -932,7 +1021,7 @@ fn provenance_checklist_version(
         .filter(|r| r.status == ProvenanceStatus::Conflicting)
         .count();
     let result = ProvenanceChecklist {
-        schema_version: if v2 { PROVENANCE_CHECKLIST_SCHEMA_V2 } else { PROVENANCE_CHECKLIST_SCHEMA }.into(), rows, unreviewed_count, missing_count, conflicting_count,
+        schema_version: match version { 3 => PROVENANCE_CHECKLIST_SCHEMA_V3, 2 => PROVENANCE_CHECKLIST_SCHEMA_V2, _ => PROVENANCE_CHECKLIST_SCHEMA }.into(), rows, unreviewed_count, missing_count, conflicting_count,
         documentation_complete: unreviewed_count == 0 && missing_count == 0 && conflicting_count == 0,
         disclosure: "Source declarations and applied analytical values are separate. A citation alone does not establish review, equivalence, calibration or scientific qualification. Undocumented valid inputs may execute as Unassessed; this checklist is not an execution prohibition. Geometry does not supply thermal properties, schedules or HVAC. Weather and carbon evidence require their own exact report bindings.".into(),
     };
@@ -972,6 +1061,12 @@ fn typed_assumption_value(
     assumption: &ScopeAssumption,
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
 ) -> Result<Option<Value>> {
+    if let AssumptionLink::CalendarNoHolidays { design_id } = &assumption.link {
+        return Ok(designs
+            .get(design_id)
+            .filter(|_| assumption.field == "/holidays/none")
+            .map(|design| json!(design.calendar.holidays.is_empty())));
+    }
     let (design_id, calendar) = match &assumption.link {
         AssumptionLink::StudyField { design_id } => (design_id, false),
         AssumptionLink::CalendarField { design_id } => (design_id, true),
@@ -1008,6 +1103,22 @@ fn validate_typed_assumptions(
 ) -> Result<()> {
     for assumption in &scope.assumptions {
         match &assumption.link {
+            AssumptionLink::CalendarNoHolidays { .. } => {
+                let actual = typed_assumption_value(assumption, designs)?.ok_or_else(|| {
+                    invalid(
+                        "assumption.field",
+                        "No-holidays policy must bind an existing retained design calendar",
+                    )
+                })?;
+                if assumption.status != AssumptionStatus::Missing
+                    && assumption.value.as_deref()
+                        != actual
+                            .as_bool()
+                            .map(|none| if none { "true" } else { "false" })
+                {
+                    return Err(invalid("assumption.value", format!("Assumption {} contradicts the retained calendar: /holidays/none is {}. Correct the declaration or retain Missing; no holidays were changed", assumption.id, actual)));
+                }
+            }
             AssumptionLink::StudyField { .. } | AssumptionLink::CalendarField { .. }
                 if typed_assumption_value(assumption, designs)?.is_none() =>
             {
@@ -1029,9 +1140,9 @@ fn assumption_value(
 ) -> Result<Option<Value>> {
     match &assumption.link {
         AssumptionLink::Study => Ok(Some(serde_json::to_value(designs)?)),
-        AssumptionLink::StudyField { .. } | AssumptionLink::CalendarField { .. } => {
-            typed_assumption_value(assumption, designs)
-        }
+        AssumptionLink::StudyField { .. }
+        | AssumptionLink::CalendarField { .. }
+        | AssumptionLink::CalendarNoHolidays { .. } => typed_assumption_value(assumption, designs),
         AssumptionLink::ReferenceOccurrence { occurrence_id } => Ok(reference
             .occurrences
             .iter()
@@ -1072,14 +1183,15 @@ pub fn prepare_carry_forward(
             "The frozen v1 review only accepts v1 parents",
         ));
     }
-    prepare_carry_forward_version(previous, reference, designs, false)
+    prepare_carry_forward_version(previous, reference, designs, 1)
 }
 fn prepare_carry_forward_version(
     previous: &ScopeRevision,
     reference: &RevisionReferenceSnapshot,
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
-    v2: bool,
+    version: u8,
 ) -> Result<CarryForwardPlan> {
+    let v2 = version >= 2;
     validate_revision(previous)?;
     let models = validate_revision_context(reference, designs)?;
     let context = revision_context_sha256(reference, designs)?;
@@ -1108,7 +1220,12 @@ fn prepare_carry_forward_version(
     };
     let mut scope = previous.scope.clone();
     if v2 {
-        scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V2.into();
+        scope.schema_version = if version == 3 {
+            ARCHITECTURAL_SCOPE_SCHEMA_V3
+        } else {
+            ARCHITECTURAL_SCOPE_SCHEMA_V2
+        }
+        .into();
     }
     scope.reference_revision_sha256 = reference.manifest.revision_sha256.clone();
     scope.reference_geometry_sha256 = reference.manifest.geometry_sha256.clone();
@@ -1296,7 +1413,7 @@ fn prepare_carry_forward_version(
             .into_iter()
             .map(|row| (row.id.clone(), row))
             .collect::<BTreeMap<_, _>>();
-    let after = provenance_checklist_version(designs, &scope, v2)?
+    let after = provenance_checklist_version(designs, &scope, version)?
         .rows
         .into_iter()
         .map(|row| (row.id.clone(), row))
@@ -1316,7 +1433,9 @@ fn prepare_carry_forward_version(
     }
     validate_declaration(&scope)?;
     let mut plan = CarryForwardPlan {
-        schema_version: if v2 {
+        schema_version: if version == 3 {
+            CARRY_FORWARD_SCHEMA_V3
+        } else if v2 {
             CARRY_FORWARD_SCHEMA_V2
         } else {
             CARRY_FORWARD_SCHEMA
@@ -1326,6 +1445,7 @@ fn prepare_carry_forward_version(
         target_context_sha256: context,
         proposed_scope: scope,
         candidate_scope: None,
+        candidate_provenance: None,
         rows,
         plan_sha256: String::new(),
     };
@@ -1342,12 +1462,40 @@ pub fn prepare_carry_forward_v2(
     designs: &BTreeMap<String, RevisionDesignSnapshot>,
     candidate: Option<&ArchitecturalScope>,
 ) -> Result<CarryForwardPlan> {
-    let mut plan = prepare_carry_forward_version(previous, reference, designs, true)?;
+    prepare_candidate_version(previous, reference, designs, candidate, 2)
+}
+pub fn prepare_carry_forward_v3(
+    previous: &ScopeRevision,
+    reference: &RevisionReferenceSnapshot,
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    candidate: Option<&ArchitecturalScope>,
+) -> Result<CarryForwardPlan> {
+    prepare_candidate_version(previous, reference, designs, candidate, 3)
+}
+fn prepare_candidate_version(
+    previous: &ScopeRevision,
+    reference: &RevisionReferenceSnapshot,
+    designs: &BTreeMap<String, RevisionDesignSnapshot>,
+    candidate: Option<&ArchitecturalScope>,
+    version: u8,
+) -> Result<CarryForwardPlan> {
+    if version == 2 && previous.schema_version == SCOPE_REVISION_SCHEMA_V3 {
+        return Err(invalid(
+            "revision.parent",
+            "V3 documentation requires a v3 review; frozen v2 semantics cannot downgrade it",
+        ));
+    }
+    let mut plan = prepare_carry_forward_version(previous, reference, designs, version)?;
     let scope = candidate.unwrap_or(&plan.proposed_scope);
-    if scope.schema_version != ARCHITECTURAL_SCOPE_SCHEMA_V2 {
+    let expected = if version == 3 {
+        ARCHITECTURAL_SCOPE_SCHEMA_V3
+    } else {
+        ARCHITECTURAL_SCOPE_SCHEMA_V2
+    };
+    if scope.schema_version != expected {
         return Err(invalid(
             "revision.candidate",
-            "The editable candidate requires architectural-scope.v2",
+            format!("The editable candidate requires {expected}"),
         ));
     }
     let models = validate_revision_context(reference, designs)?;
@@ -1443,6 +1591,33 @@ pub fn prepare_carry_forward_v2(
         review_row(&mut plan.rows, RevisionRowKind::Scope, "candidate-documentation".into(), RevisionChangeKind::Changed, Some(before), Some(after), "Scope, coverage or boundary documentation was edited in the candidate and requires explicit review.")?;
     }
     plan.candidate_scope = Some(scope.clone());
+    if version == 3 {
+        let candidate_provenance = provenance_checklist_v3(designs, scope)?;
+        let before = previous
+            .provenance
+            .rows
+            .iter()
+            .map(|row| (row.id.clone(), row))
+            .collect::<BTreeMap<_, _>>();
+        let after = candidate_provenance
+            .rows
+            .iter()
+            .map(|row| (row.id.clone(), row))
+            .collect::<BTreeMap<_, _>>();
+        plan.rows.retain(|row| row.kind != RevisionRowKind::Input);
+        for id in before.keys().chain(after.keys()).collect::<BTreeSet<_>>() {
+            let a = before.get(id).copied();
+            let b = after.get(id).copied();
+            if a == b {
+                continue;
+            }
+            review_row(&mut plan.rows, RevisionRowKind::Input, id.clone(),
+                if a.is_none() { RevisionChangeKind::Added } else if b.is_none() { RevisionChangeKind::Deleted } else if b.is_some_and(|row| matches!(row.status, ProvenanceStatus::Missing | ProvenanceStatus::Conflicting | ProvenanceStatus::Unreviewed)) { RevisionChangeKind::Unresolved } else { RevisionChangeKind::Changed },
+                a.map(serde_json::to_value).transpose()?, b.map(serde_json::to_value).transpose()?,
+                "Exact candidate provenance differs from the immutable parent: inspect applied value, declarations, status and source. This is documentation review, not physical validation.")?;
+        }
+        plan.candidate_provenance = Some(candidate_provenance);
+    }
     bound(&plan, MAX_CARRY_FORWARD_BYTES, "revision.plan")?;
     plan.plan_sha256 = plan.identity()?;
     Ok(plan)
@@ -1457,6 +1632,25 @@ pub fn accept_carry_forward_v2(
     decisions: Vec<ReviewDecision>,
 ) -> Result<ScopeRevision> {
     let plan = prepare_carry_forward_v2(previous, &reference, &designs, Some(&scope))?;
+    accept_reviewed_plan(
+        previous,
+        reference,
+        designs,
+        expected_plan_sha256,
+        scope,
+        decisions,
+        plan,
+    )
+}
+pub fn accept_carry_forward_v3(
+    previous: &ScopeRevision,
+    reference: RevisionReferenceSnapshot,
+    designs: BTreeMap<String, RevisionDesignSnapshot>,
+    expected_plan_sha256: &str,
+    scope: ArchitecturalScope,
+    decisions: Vec<ReviewDecision>,
+) -> Result<ScopeRevision> {
+    let plan = prepare_carry_forward_v3(previous, &reference, &designs, Some(&scope))?;
     accept_reviewed_plan(
         previous,
         reference,
@@ -1575,7 +1769,9 @@ fn accept_reviewed_plan(
     let models = validate_revision_context(&reference, &designs)?;
     validate_scope(&scope, &reference.manifest, &models)?;
     decisions.sort_by(|a, b| a.row_id.cmp(&b.row_id));
-    let schema = if plan.schema_version == CARRY_FORWARD_SCHEMA_V2 {
+    let schema = if plan.schema_version == CARRY_FORWARD_SCHEMA_V3 {
+        SCOPE_REVISION_SCHEMA_V3
+    } else if plan.schema_version == CARRY_FORWARD_SCHEMA_V2 {
         SCOPE_REVISION_SCHEMA_V2
     } else {
         SCOPE_REVISION_SCHEMA
@@ -1589,6 +1785,23 @@ fn accept_reviewed_plan(
         designs,
         scope,
         carry_forward_plan_sha256: Some(plan.plan_sha256),
+        reviewed_rows: (schema == SCOPE_REVISION_SCHEMA_V3).then(|| {
+            decisions
+                .iter()
+                .map(|decision| {
+                    let row = plan
+                        .rows
+                        .iter()
+                        .find(|row| row.id == decision.row_id)
+                        .expect("Validated decision membership");
+                    ReviewedRowBinding {
+                        row_id: row.id.clone(),
+                        kind: row.kind,
+                        key: row.key.clone(),
+                    }
+                })
+                .collect()
+        }),
         review_decisions: decisions,
         provenance,
     };
@@ -1608,7 +1821,9 @@ pub fn validate_revision_parent(previous: &ScopeRevision, revision: &ScopeRevisi
             "Retained parent identity differs",
         ));
     }
-    let accept = if revision.schema_version == SCOPE_REVISION_SCHEMA_V2 {
+    let accept = if revision.schema_version == SCOPE_REVISION_SCHEMA_V3 {
+        accept_carry_forward_v3
+    } else if revision.schema_version == SCOPE_REVISION_SCHEMA_V2 {
         accept_carry_forward_v2
     } else {
         accept_carry_forward
@@ -1841,6 +2056,307 @@ mod tests {
             });
         }
         initial_revision_v2(scope, old.reference, designs).unwrap()
+    }
+
+    fn fixture_v3() -> ScopeRevision {
+        let mut old = fixture_v2();
+        let parent = old.clone();
+        for snapshot in old.designs.values_mut() {
+            snapshot.calendar.holidays.clear();
+            for schedule in &mut snapshot.model.schedules {
+                schedule.holidays.clear();
+            }
+            snapshot.study.as_mut().unwrap().calendar = snapshot.calendar.clone();
+        }
+        // Rebind the original synthetic scope to the complete accepted calendar
+        // and schedule candidate; do not leave stale analytical model hashes.
+        let mut scope = prepare_carry_forward_v3(&parent, &old.reference, &old.designs, None)
+            .unwrap()
+            .candidate_scope
+            .unwrap();
+        scope.schema_version = ARCHITECTURAL_SCOPE_SCHEMA_V3.into();
+        scope.assumptions.push(ScopeAssumption {
+            id: "no-holidays".into(),
+            link: AssumptionLink::CalendarNoHolidays {
+                design_id: "B".into(),
+            },
+            field: "/holidays/none".into(),
+            value: Some("true".into()),
+            units: "boolean".into(),
+            ..scope.assumptions[0].clone()
+        });
+        initial_revision_v3(scope, old.reference, old.designs).unwrap()
+    }
+
+    #[test]
+    fn v3_input_review_rebuilds_exact_candidate_sources_removals_and_conflicts() {
+        let old = fixture_v3();
+        let before = serde_json::to_vec(&old).unwrap();
+        let mut designs = old.designs.clone();
+        let system = designs.get_mut("B").unwrap().model.zones[0]
+            .cooling_system
+            .as_mut()
+            .unwrap();
+        system.gross_rated_cop += 0.5;
+        let value = system.gross_rated_cop.to_string();
+        let proposal = prepare_carry_forward_v3(&old, &old.reference, &designs, None).unwrap();
+        let mut candidate = proposal.candidate_scope.clone().unwrap();
+        let source = candidate
+            .assumptions
+            .iter_mut()
+            .find(|a| a.id == "declared-cop")
+            .unwrap();
+        source.status = AssumptionStatus::Assumed;
+        source.value = Some(value);
+        source.source = "Explicit corrected candidate source".into();
+        let reviewed =
+            prepare_carry_forward_v3(&old, &old.reference, &designs, Some(&candidate)).unwrap();
+        let check = reviewed.candidate_provenance.as_ref().unwrap();
+        let input = check
+            .rows
+            .iter()
+            .find(|row| row.design_id == "B" && row.field_path == "/gross_rated_cop")
+            .unwrap();
+        assert_eq!(input.status, ProvenanceStatus::Assumed);
+        let row = reviewed
+            .rows
+            .iter()
+            .find(|row| row.kind == RevisionRowKind::Input && row.key == input.id)
+            .unwrap();
+        assert_eq!(row.after, Some(serde_json::to_value(input).unwrap()));
+        assert_eq!(row.change, RevisionChangeKind::Changed);
+        assert_ne!(proposal.plan_sha256, reviewed.plan_sha256);
+        assert!(accept_carry_forward_v3(
+            &old,
+            old.reference.clone(),
+            designs.clone(),
+            &proposal.plan_sha256,
+            candidate.clone(),
+            decisions(&proposal)
+        )
+        .is_err());
+        let accepted = accept_carry_forward_v3(
+            &old,
+            old.reference.clone(),
+            designs.clone(),
+            &reviewed.plan_sha256,
+            candidate.clone(),
+            decisions(&reviewed),
+        )
+        .unwrap();
+        assert_eq!(accepted.provenance, *check);
+        validate_revision_parent(&old, &accepted).unwrap();
+        assert!(accepted
+            .reviewed_rows
+            .as_ref()
+            .unwrap()
+            .iter()
+            .any(|r| r.kind == RevisionRowKind::Input && r.key == input.id));
+
+        let mut duplicate = candidate
+            .assumptions
+            .iter()
+            .find(|a| a.id == "declared-cop")
+            .unwrap()
+            .clone();
+        duplicate.id = "conflicting-source".into();
+        duplicate.value = Some("99".into());
+        candidate.assumptions.push(duplicate);
+        let conflict =
+            prepare_carry_forward_v3(&old, &old.reference, &designs, Some(&candidate)).unwrap();
+        let conflict_row = conflict
+            .candidate_provenance
+            .as_ref()
+            .unwrap()
+            .rows
+            .iter()
+            .find(|r| r.id == input.id)
+            .unwrap();
+        assert_eq!(conflict_row.status, ProvenanceStatus::Conflicting);
+        assert!(conflict
+            .rows
+            .iter()
+            .any(|r| r.kind == RevisionRowKind::Input
+                && r.key == input.id
+                && r.change == RevisionChangeKind::Unresolved
+                && r.after == Some(serde_json::to_value(conflict_row).unwrap())));
+
+        candidate
+            .assumptions
+            .retain(|a| a.id != "declared-cop" && a.id != "conflicting-source");
+        let removed =
+            prepare_carry_forward_v3(&old, &old.reference, &designs, Some(&candidate)).unwrap();
+        let missing = removed
+            .candidate_provenance
+            .as_ref()
+            .unwrap()
+            .rows
+            .iter()
+            .find(|r| r.id == input.id)
+            .unwrap();
+        assert_eq!(missing.status, ProvenanceStatus::Unreviewed);
+        assert!(missing.source_declarations.is_empty());
+        assert!(removed.rows.iter().any(|r| r.kind == RevisionRowKind::Input
+            && r.key == input.id
+            && r.after == Some(serde_json::to_value(missing).unwrap())));
+        assert_eq!(serde_json::to_vec(&old).unwrap(), before);
+    }
+
+    #[test]
+    fn v3_no_holidays_is_explicit_bounded_and_changes_with_retained_calendar() {
+        let old = fixture_v3();
+        let row = old
+            .provenance
+            .rows
+            .iter()
+            .find(|r| r.design_id == "B" && r.field_path == "/holidays/none")
+            .unwrap();
+        assert_eq!(row.applied_value, json!(true));
+        assert_eq!(row.units.as_deref(), Some("boolean"));
+        assert_eq!(row.status, ProvenanceStatus::Synthetic);
+        assert!(!old
+            .provenance
+            .rows
+            .iter()
+            .any(|r| r.object.kind == ThermalObjectKind::Calendar && r.field_path == "/holidays"));
+        let mut designs = old.designs.clone();
+        let b = designs.get_mut("B").unwrap();
+        b.calendar.holidays.push(MonthDay { month: 1, day: 1 });
+        for schedule in &mut b.model.schedules {
+            schedule
+                .holidays
+                .push(crate::energy::schedule::HolidayOverride {
+                    date: MonthDay { month: 1, day: 1 },
+                    // Explicit original fixture policy, not an implicit fallback.
+                    profile: schedule.sunday.clone(),
+                });
+        }
+        b.study.as_mut().unwrap().calendar = b.calendar.clone();
+        let proposal = prepare_carry_forward_v3(&old, &old.reference, &designs, None).unwrap();
+        let policy = proposal
+            .candidate_provenance
+            .as_ref()
+            .unwrap()
+            .rows
+            .iter()
+            .find(|r| r.id == row.id)
+            .unwrap();
+        assert_eq!(policy.applied_value, json!(false));
+        assert_eq!(policy.status, ProvenanceStatus::Missing);
+        assert!(proposal
+            .rows
+            .iter()
+            .any(|r| r.kind == RevisionRowKind::Assumption
+                && r.key == "no-holidays"
+                && r.change == RevisionChangeKind::Changed));
+        assert!(proposal
+            .candidate_provenance
+            .as_ref()
+            .unwrap()
+            .rows
+            .iter()
+            .any(|r| r.design_id == "B"
+                && r.field_path == "/holidays/0/day"
+                && r.applied_value == json!(1)));
+        let mut candidate = proposal.candidate_scope.clone().unwrap();
+        let source = candidate
+            .assumptions
+            .iter_mut()
+            .find(|a| a.id == "no-holidays")
+            .unwrap();
+        source.status = AssumptionStatus::Assumed;
+        source.value = Some("true".into());
+        assert!(
+            prepare_carry_forward_v3(&old, &old.reference, &designs, Some(&candidate))
+                .unwrap_err()
+                .to_string()
+                .contains("contradicts")
+        );
+        candidate
+            .assumptions
+            .iter_mut()
+            .find(|a| a.id == "no-holidays")
+            .unwrap()
+            .value = Some("false".into());
+        let reviewed =
+            prepare_carry_forward_v3(&old, &old.reference, &designs, Some(&candidate)).unwrap();
+        let next = accept_carry_forward_v3(
+            &old,
+            old.reference.clone(),
+            designs,
+            &reviewed.plan_sha256,
+            candidate,
+            decisions(&reviewed),
+        )
+        .unwrap();
+        validate_revision_parent(&old, &next).unwrap();
+        let back = prepare_carry_forward_v3(&next, &old.reference, &old.designs, None).unwrap();
+        assert!(back
+            .rows
+            .iter()
+            .any(|r| r.kind == RevisionRowKind::Input && r.change == RevisionChangeKind::Deleted));
+        assert_eq!(
+            back.candidate_provenance
+                .as_ref()
+                .unwrap()
+                .rows
+                .iter()
+                .find(|r| r.id == row.id)
+                .unwrap()
+                .applied_value,
+            json!(true)
+        );
+        for schema in [ARCHITECTURAL_SCOPE_SCHEMA, ARCHITECTURAL_SCOPE_SCHEMA_V2] {
+            let mut mislabeled = old.scope.clone();
+            mislabeled.schema_version = schema.into();
+            assert!(
+                initial_revision_v3(mislabeled, old.reference.clone(), old.designs.clone())
+                    .is_err()
+            );
+        }
+    }
+
+    #[test]
+    fn v3_fields_are_absent_from_frozen_v1_v2_serialization_and_reconstruction() {
+        for old in [fixture(), fixture_v2()] {
+            let bytes = serde_json::to_vec(&old).unwrap();
+            assert!(!String::from_utf8(bytes.clone())
+                .unwrap()
+                .contains("reviewed_rows"));
+            let plan = if old.schema_version == SCOPE_REVISION_SCHEMA {
+                prepare_carry_forward(&old, &old.reference, &old.designs).unwrap()
+            } else {
+                prepare_carry_forward_v2(&old, &old.reference, &old.designs, None).unwrap()
+            };
+            assert!(!serde_json::to_string(&plan)
+                .unwrap()
+                .contains("candidate_provenance"));
+            let scope = plan
+                .candidate_scope
+                .clone()
+                .unwrap_or_else(|| plan.proposed_scope.clone());
+            let accept = if old.schema_version == SCOPE_REVISION_SCHEMA {
+                accept_carry_forward
+            } else {
+                accept_carry_forward_v2
+            };
+            let next = accept(
+                &old,
+                old.reference.clone(),
+                old.designs.clone(),
+                &plan.plan_sha256,
+                scope,
+                decisions(&plan),
+            )
+            .unwrap();
+            validate_revision_parent(&old, &next).unwrap();
+            assert!(next.reviewed_rows.is_none());
+            assert_eq!(
+                serde_json::to_vec(&serde_json::from_slice::<ScopeRevision>(&bytes).unwrap())
+                    .unwrap(),
+                bytes
+            );
+        }
     }
 
     #[test]

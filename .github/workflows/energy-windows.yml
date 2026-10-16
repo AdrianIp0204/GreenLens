@@ -86,6 +86,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }
           node --test scripts/test-license-inventory-diff.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Bounded inventory diagnostic regressions failed' }
+          node --test tools/openskp-worker/patches.test.mjs tools/openskp-worker/matrix-oracle.test.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Optional worker source/oracle regressions failed (no converter execution)' }
           $cache = Join-Path $env:RUNNER_TEMP ('energy-pure-cache-' + [guid]::NewGuid().ToString('N'))
           if (Test-Path -LiteralPath $cache) { throw 'Expected absent Python cache' }
           python -B -X utf8 -X "pycache_prefix=$cache" scripts/test-energy-gate0-audit.py

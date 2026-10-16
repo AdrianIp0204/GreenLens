@@ -33,7 +33,7 @@ export type AnalyticalObjectKind = 'zone' | 'surface' | 'window' | 'overhang' | 
 export type AnalyticalTarget = { design_id: string; object_id: string; kind: AnalyticalObjectKind; model_input_sha256: string };
 export type ScopeMapping = { occurrence_id: string; status: MappingStatus; targets: AnalyticalTarget[]; rationale: string };
 export type AssumptionStatus = 'documented' | 'measured' | 'assumed' | 'synthetic' | 'missing' | 'not_applicable';
-export type AssumptionLink = { kind: 'study' } | { kind: 'study_field' | 'calendar_field'; design_id: string } | { kind: 'reference_occurrence'; occurrence_id: string } | { kind: 'thermal_object'; design_id: string; object_id: string };
+export type AssumptionLink = { kind: 'study' } | { kind: 'study_field' | 'calendar_field' | 'calendar_no_holidays'; design_id: string } | { kind: 'reference_occurrence'; occurrence_id: string } | { kind: 'thermal_object'; design_id: string; object_id: string };
 export type ScopeAssumption = { id: string; link: AssumptionLink; field: string; status: AssumptionStatus; value: string | null; units: string; source: string; rationale: string; affected_scope: string };
 export type ReconciliationMeasure = 'local_length_x' | 'local_length_y' | 'height' | 'floor_area' | 'volume' | 'exterior_envelope_gross_area' | 'opening_area' | 'north_rotation';
 export type ScopeUnit = 'metres' | 'square_metres' | 'cubic_metres' | 'degrees_clockwise';
@@ -50,7 +50,7 @@ export type ReferenceReportView = ReferenceReportViewCapture & {
   reference_revision_sha256:string; reference_geometry_sha256:string;
 };
 export type ArchitecturalScope = {
-  schema_version: 'greenlens.architectural-scope.v1' | 'greenlens.architectural-scope.v2'; title: string; purpose: string;
+  schema_version: 'greenlens.architectural-scope.v1' | 'greenlens.architectural-scope.v2' | 'greenlens.architectural-scope.v3'; title: string; purpose: string;
   scope_kind: 'partial_building' | 'representative_study' | 'whole_building';
   reference_revision_sha256: string; reference_geometry_sha256: string; reference_options_sha256: string;
   design_model_sha256: Record<string, string>; mappings: ScopeMapping[];
@@ -71,9 +71,10 @@ export type ScopeContext = {
 };
 export type ReferenceAsset = { id: string; path: string; revision_sha256: string; manifest_sha256: string; geometry_sha256: string };
 export type InputProvenanceRow={id:string;design_id:string;object:{kind:string;id:string};field_path:string;applied_value:unknown;units:string|null;declared_source:{citation:string;synthetic:boolean}|null;status:'unreviewed'|'documented'|'measured'|'assumed'|'synthetic'|'missing'|'not_applicable'|'conflicting';source_declarations:ScopeAssumption[]};
-export type ScopeRevision={schema_version:'greenlens.scope-revision.v1'|'greenlens.scope-revision.v2';revision_sha256:string;parent_revision_sha256:string|null;reference:{asset_id:string;manifest_sha256:string;manifest:ReferenceModel};designs:Record<string,{model:import('../energy/types').ThermalModel;calendar:import('../energy/types').EnergyCalendar;study:import('../energy/types').EnergyStudy|null}>;scope:ArchitecturalScope;carry_forward_plan_sha256:string|null;review_decisions:ScopeReviewDecision[];provenance:{schema_version:string;rows:InputProvenanceRow[];unreviewed_count:number;missing_count:number;conflicting_count:number;documentation_complete:boolean;disclosure:string}};
+export type ProvenanceChecklist={schema_version:string;rows:InputProvenanceRow[];unreviewed_count:number;missing_count:number;conflicting_count:number;documentation_complete:boolean;disclosure:string};
+export type ScopeRevision={schema_version:'greenlens.scope-revision.v1'|'greenlens.scope-revision.v2'|'greenlens.scope-revision.v3';revision_sha256:string;parent_revision_sha256:string|null;reference:{asset_id:string;manifest_sha256:string;manifest:ReferenceModel};designs:Record<string,{model:import('../energy/types').ThermalModel;calendar:import('../energy/types').EnergyCalendar;study:import('../energy/types').EnergyStudy|null}>;scope:ArchitecturalScope;carry_forward_plan_sha256:string|null;review_decisions:ScopeReviewDecision[];reviewed_rows?:{row_id:string;kind:string;key:string}[]|null;provenance:ProvenanceChecklist};
 export type ScopeReviewDecision={row_id:string;resolution:'reviewed'|'unresolved';rationale:string};
-export type ScopeCarryForwardPlan={schema_version:'greenlens.scope-carry-forward.v1'|'greenlens.scope-carry-forward.v2';parent_revision_sha256:string;target_context_sha256:string;plan_sha256:string;proposed_scope:ArchitecturalScope;candidate_scope?:ArchitecturalScope|null;rows:{id:string;kind:'scope'|'reference'|'mapping'|'assumption'|'reconciliation'|'report_view'|'input';key:string;change:'unchanged'|'changed'|'deleted'|'added'|'unresolved';requires_review:boolean;before:unknown;after:unknown;reason:string}[]};
+export type ScopeCarryForwardPlan={schema_version:'greenlens.scope-carry-forward.v1'|'greenlens.scope-carry-forward.v2'|'greenlens.scope-carry-forward.v3';parent_revision_sha256:string;target_context_sha256:string;plan_sha256:string;proposed_scope:ArchitecturalScope;candidate_scope?:ArchitecturalScope|null;candidate_provenance?:ProvenanceChecklist|null;rows:{id:string;kind:'scope'|'reference'|'mapping'|'assumption'|'reconciliation'|'report_view'|'input';key:string;change:'unchanged'|'changed'|'deleted'|'added'|'unresolved';requires_review:boolean;before:unknown;after:unknown;reason:string}[]};
 export type ArchitecturalProject = { schema_version: string; assets: ReferenceAsset[]; active_asset_id: string; scope: ArchitecturalScope | null;scope_history?:{schema_version:'greenlens.scope-history.v1';revisions:ScopeRevision[];active_revision_sha256:string|null}|null };
 
 /** Controlled document draft: numeric text survives invalid edits and navigation. */

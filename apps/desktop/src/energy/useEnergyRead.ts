@@ -3,6 +3,7 @@ import { Channel, invoke } from '@tauri-apps/api/core';
 import { errorText } from '../workspace/useDocument';
 import type { OpenProgress } from '../workspace/project-intake';
 import { assertEnergyResponse } from './response.mjs';
+import {largeReadQueue,type BoundedRead} from './bounded-read';
 
 const inspectedCommands=new Set(['energy_default_runs','energy_run_catalog','energy_result','energy_rows','energy_navigate','energy_navigate_pair','energy_compare','energy_report_preflight','energy_sensitivity_inspect','energy_sensitivity_export_selection','report_issue_inspect','report_issue_product']);
 const count=(v:unknown):v is number=>typeof v==='number'&&Number.isSafeInteger(v)&&v>=0;
@@ -44,6 +45,7 @@ export function useEnergyRead<T>(command:string,args:Record<string,unknown>|null
     const {args:request,command}=snapshot;
     if(!request)return;
     let live=true,finished=false,cancelled=false,cancelSent=false,ticket:number|null=null;
+    let scheduled:BoundedRead<void>|null=null;
     const inspected=inspectedCommands.has(command);
     setState({key,value:null,error:'',progress:null,pending:true});
     const cancelReserved=()=>{
@@ -55,12 +57,11 @@ export function useEnergyRead<T>(command:string,args:Record<string,unknown>|null
     };
     const current={key,cancel:()=>{
       if(cancelled||finished)return;
-      cancelled=true;cancelReserved();
+      cancelled=true;scheduled?.cancel();cancelReserved();
       if(live)setState(s=>({...s,key,value:null,error:'Evidence inspection cancelled. No unchecked results are shown.',pending:false}));
     }};
     operation.current=current;
-    void (async()=>{
-      try{
+    const execute=async()=>{
         let value:T;
         if(inspected){
           ticket=await invoke<number>('prepare_evidence_inspection');
@@ -81,10 +82,13 @@ export function useEnergyRead<T>(command:string,args:Record<string,unknown>|null
             :await invoke<T>('inspect_energy_evidence',{ticket,onProgress:channel,query:{command,arguments:request}});
         }else value=await invoke<T>(command,request);
         if(live&&!cancelled){const checked=assertEnergyResponse(command,request,value);setState(s=>({...s,key,value:checked,error:'',pending:false}));}
-      }catch(error){if(live&&!cancelled)setState(s=>({...s,key,value:null,error:errorText(error),pending:false}));}
-      finally{finished=true;if(operation.current===current)operation.current=null;}
-    })();
-    return()=>{live=false;cancelled=true;cancelReserved();if(operation.current===current)operation.current=null;};
+    };
+    // Reserve a native inspection only after obtaining the shared transport
+    // lane. Otherwise queued requests could expire or deserialize concurrently.
+    const promise=Object.hasOwn(request,'project')?(scheduled=largeReadQueue.enqueue(execute)).promise:execute();
+    void promise.catch(error=>{if(live&&!cancelled)setState(s=>({...s,key,value:null,error:errorText(error),pending:false}));})
+      .finally(()=>{finished=true;if(operation.current===current)operation.current=null;});
+    return()=>{live=false;cancelled=true;scheduled?.cancel();cancelReserved();if(operation.current===current)operation.current=null;};
   },[snapshot]);
   const current=Boolean(snapshot.args)&&state.key===key,loading=Boolean(snapshot.args&&(!current||state.pending));
   return {value:current?state.value:null,error:current?state.error:'',loading,progress:current?state.progress:null,cancel,cancellable:loading&&inspectedCommands.has(command)};

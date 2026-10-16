@@ -87,7 +87,9 @@ test('late identity replies cannot mark a changed accepted model current',async(
   inputIdentity='changed-inputs';
   doc.project={...doc.project,energy:{...doc.project.energy,model_revision:'new revision'}};
   await draw();
-  assert.match(document.body.textContent,/Current-input relationship: Historical — accepted inputs changed\./);
+  assert.equal(commandCalls('energy_sensitivity_input_identity').length,1,'new identity read waits for the cancelled active read to settle');
+  assert.match(document.body.textContent,/Current-input relationship: Checking current input identity\./);
+  assert.doesNotMatch(document.body.textContent,/Current-input relationship: Current\./);
   await act(async()=>oldIdentity.resolve('inputs'));
   assert.match(document.body.textContent,/Current-input relationship: Historical — accepted inputs changed\./);
   assert.equal(commandCalls('energy_sensitivity_input_identity').length,2);

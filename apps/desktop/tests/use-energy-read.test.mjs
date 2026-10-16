@@ -30,16 +30,28 @@ async function load(file){
 const src=fileURLToPath(new URL('../src/energy/',import.meta.url));
 const{useEnergyRead}=await import(await load(path.join(src,'useEnergyRead.ts')));
 const{default:Inspection}=await import(await load(path.join(src,'EvidenceInspection.tsx')));
+const{useReferenceModel}=await import(await load(path.resolve(src,'../reference/useReferenceModel.ts')));
 const deferred=()=>{let resolve,reject;const promise=new Promise((yes,no)=>{resolve=yes;reject=no;});return{promise,resolve,reject};};
 const progress=(patch={})=>({schema_version:'greenlens.project-open-progress.v1',stage:'energy_evidence',run_id:'run-a',runs_completed:0,runs_total:1,bytes_read:1048576,files_verified:2,numeric_passes:{},elapsed_ms:25,...patch});
-let root,command,args,read,calls,nextTicket,prepare,inspect,direct,cancelReply,sequence,freshEnvelope,renders;
+let root,command,args,read,calls,nextTicket,prepare,inspect,direct,cancelReply,sequence,freshEnvelope,renders,composed,referenceRead;
+const pendingCleanup=[];
 function Harness(){renders++;read=useEnergyRead(command,freshEnvelope&&args?{...args}:args,sequence);return React.createElement(React.Fragment,null,React.createElement(Inspection,{label:'Reading selected evidence',read}),read.error&&React.createElement('p',{role:'alert'},read.error),read.value&&React.createElement('output',null,JSON.stringify(read.value)));}
-async function draw(){await act(async()=>root.render(React.createElement(Harness)));}
+function ReferenceHarness(){referenceRead=useReferenceModel(args?.path??'',args?.project??null);return null;}
+function Composed(){return React.createElement(React.Fragment,null,React.createElement(ReferenceHarness),React.createElement(Harness));}
+async function draw(){await act(async()=>root.render(React.createElement(composed?Composed:Harness)));}
 async function setup(){
-  if(root)await act(()=>root.unmount());root=createRoot(document.getElementById('root'));
-  command='energy_report_preflight';args={path:'owned-project',project:{id:'original'},a:'a',b:'b'};calls=[];nextTicket=1;sequence=0;freshEnvelope=false;renders=0;
+  if(root)await act(()=>root.unmount());
+  // End deliberately unresolved IPC doubles between tests. Production queue
+  // slots are never reset while an actual native promise remains unsettled.
+  await act(async()=>{for(const stop of pendingCleanup.splice(0))stop();});
+  root=createRoot(document.getElementById('root'));
+  command='energy_report_preflight';args={path:'owned-project',project:{id:'original'},a:'a',b:'b'};calls=[];nextTicket=1;sequence=0;freshEnvelope=false;renders=0;composed=false;referenceRead=null;
   prepare=async()=>nextTicket++;inspect=()=>new Promise(()=>{});direct=async()=>({local:true});cancelReply=async()=>{};
-  globalThis.__inspectionIPC=(c,a)=>{calls.push([c,a]);if(c==='prepare_evidence_inspection')return prepare();if(c==='inspect_energy_evidence')return inspect(a);if(c==='cancel_evidence_inspection')return cancelReply(a);return direct(c,a);};
+  globalThis.__inspectionIPC=(c,a)=>{
+    calls.push([c,a]);const stop=deferred();pendingCleanup.push(()=>stop.resolve(undefined));
+    const result=c==='prepare_evidence_inspection'?prepare():c==='inspect_energy_evidence'?inspect(a):c==='cancel_evidence_inspection'?cancelReply(a):direct(c,a);
+    return Promise.race([Promise.resolve(result),stop.promise]);
+  };
 }
 const requests=()=>calls.filter(([c])=>c==='inspect_energy_evidence').map(([,a])=>a);
 const cancellations=()=>calls.filter(([c])=>c==='cancel_evidence_inspection').map(([,a])=>a.ticket);
@@ -63,21 +75,21 @@ test('large immutable project is not serialized or cloned by progress renders or
 
 test('same-content replacement project reference starts a new exact request and rejects late prior responses',async()=>{
   await setup();const old=deferred(),fresh=deferred();inspect=q=>q.ticket===1?old.promise:fresh.promise;await draw();const previous=requests()[0],oldProject=args.project;
-  args={...args,project:{...oldProject}};await draw();assert.equal(requests().length,2);assert.deepEqual(cancellations(),[1]);assert.strictEqual(previous.query.arguments.project,oldProject);assert.strictEqual(requests()[1].query.arguments.project,args.project);
-  await act(async()=>{previous.onProgress.onmessage(progress());old.resolve({from:'old-reference'});});assert.equal(read.value,null);assert.equal(read.progress,null);
+  args={...args,project:{...oldProject}};await draw();assert.equal(requests().length,1,'replacement waits for actual prior settlement');assert.deepEqual(cancellations(),[1]);assert.strictEqual(previous.query.arguments.project,oldProject);
+  await act(async()=>{previous.onProgress.onmessage(progress());old.resolve({from:'old-reference'});});assert.equal(read.value,null);assert.equal(read.progress,null);assert.equal(requests().length,2);assert.strictEqual(requests()[1].query.arguments.project,args.project);
   await act(async()=>fresh.resolve({from:'new-reference'}));assert.deepEqual(read.value,{from:'new-reference'});
 });
 
 test('owned shallow arguments preserve the sent request and exact field presence matters',async()=>{
-  await setup();await draw();const sent=requests()[0].query.arguments;args.a='changed';assert.equal(sent.a,'a');await draw();assert.equal(requests().length,2);assert.equal(requests()[1].query.arguments.a,'changed');
-  args={...args,optional:undefined};await draw();assert.equal(requests().length,3);assert.ok(Object.hasOwn(requests()[2].query.arguments,'optional'));
-  const {optional,...without}=args;void optional;args=without;await draw();assert.equal(requests().length,4);assert.equal(Object.hasOwn(requests()[3].query.arguments,'optional'),false);assert.deepEqual(cancellations(),[1,2,3]);
+  await setup();const gates=[];inspect=()=>{const gate=deferred();gates.push(gate);return gate.promise;};await draw();const sent=requests()[0].query.arguments;args.a='changed';assert.equal(sent.a,'a');await draw();assert.equal(requests().length,1);await act(()=>gates[0].resolve({old:true}));assert.equal(requests().length,2);assert.equal(requests()[1].query.arguments.a,'changed');
+  args={...args,optional:undefined};await draw();await act(()=>gates[1].resolve({old:true}));assert.equal(requests().length,3);assert.ok(Object.hasOwn(requests()[2].query.arguments,'optional'));
+  const {optional,...without}=args;void optional;args=without;await draw();await act(()=>gates[2].resolve({old:true}));assert.equal(requests().length,4);assert.equal(Object.hasOwn(requests()[3].query.arguments,'optional'),false);assert.deepEqual(cancellations(),[1,2,3]);await act(()=>gates[3].resolve({current:true}));
 });
 
 test('explicit refresh and cleared/reactivated queries receive distinct lifecycle tokens',async()=>{
-  await setup();const first=deferred(),second=deferred(),third=deferred();inspect=q=>({1:first,2:second,3:third})[q.ticket].promise;await draw();const same=args;sequence=1;await draw();assert.equal(requests().length,2);assert.deepEqual(cancellations(),[1]);
-  args=null;await draw();assert.deepEqual(cancellations(),[1,2]);args=same;await draw();assert.equal(requests().length,3);
-  await act(async()=>{first.resolve({old:1});second.resolve({old:2});});assert.equal(read.value,null);await act(async()=>third.resolve({fresh:3}));assert.deepEqual(read.value,{fresh:3});
+  await setup();const first=deferred(),fresh=deferred();inspect=q=>(q.ticket===1?first:fresh).promise;await draw();const same=args;sequence=1;await draw();assert.equal(requests().length,1);assert.deepEqual(cancellations(),[1]);
+  args=null;await draw();assert.deepEqual(cancellations(),[1]);args=same;await draw();assert.equal(requests().length,1,'cancelled queued refresh never reserves a ticket');
+  await act(async()=>first.resolve({old:1}));assert.equal(read.value,null);assert.equal(requests().length,2);await act(async()=>fresh.resolve({fresh:3}));assert.deepEqual(read.value,{fresh:3});
 });
 
 test('fresh nested capacity and calendar options do not restart exact reads on parent progress renders',async()=>{
@@ -108,7 +120,7 @@ test('unmount releases a reservation arriving later and never starts inspection'
 
 test('changing exact inputs cancels the old inspection and old responses cannot overwrite fresh state',async()=>{
   await setup();const old=deferred(),fresh=deferred();inspect=q=>q.ticket===1?old.promise:fresh.promise;await draw();const previous=requests()[0];args={...args,project:{...args.project,accepted_input_revision:'changed'}};await draw();assert.deepEqual(cancellations(),[1]);assert.equal(read.value,null);
-  await act(async()=>fresh.resolve({current:'fresh'}));assert.deepEqual(read.value,{current:'fresh'});await act(()=>{previous.onProgress.onmessage(progress());old.resolve({current:'old'});});assert.deepEqual(read.value,{current:'fresh'});assert.equal(read.progress,null);
+  assert.equal(requests().length,1);await act(()=>{previous.onProgress.onmessage(progress());old.resolve({current:'old'});});assert.equal(read.value,null);assert.equal(requests().length,2);await act(async()=>fresh.resolve({current:'fresh'}));assert.deepEqual(read.value,{current:'fresh'});await act(()=>previous.onProgress.onmessage(progress()));assert.deepEqual(read.value,{current:'fresh'});assert.equal(read.progress,null);
   args=null;await draw();assert.equal(read.value,null);assert.equal(read.loading,false);
 });
 
@@ -152,6 +164,36 @@ test('product transport uses the shared reservation and cancellation lifecycle w
 
 test('a late cancelled product reservation cannot launch product verification or a native viewer',async()=>{
   await setup();command='report_issue_product';args={path:'owned-project',project:{id:'original'},id:'1'.repeat(64),product:'executive.pdf',open:true};const reservation=deferred();prepare=()=>reservation.promise;await draw();await clickCancel();await act(()=>reservation.resolve(31));assert.deepEqual(cancellations(),[31]);assert.equal(calls.filter(([c])=>c==='report_issue_product').length,0);assert.equal(read.value,null);
+});
+
+const referenceProject=()=>({id:'original',energy:{designs:{},workbench:{calendars:{}}},architecture:{active_asset_id:'reference-1',assets:[{id:'reference-1',revision_sha256:'1'.repeat(64)}],scope:{mappings:[]}}});
+const manifest=()=>({revision_sha256:'1'.repeat(64),bounds:{min_m:[0,0,0],max_m:[1,1,1]},chunks:[{path:'chunk.json'}]});
+const assessment=()=>({schema_version:'greenlens.architectural-scope-assessment.v1',scope_sha256:'2'.repeat(64),report_binding_sha256:'3'.repeat(64),relationship:'current',stale_reasons:[]});
+
+test('actual reference and energy hooks share one lane for manifest, context, assessment, evidence and each chunk',async()=>{
+  await setup();composed=true;args={...args,project:referenceProject()};
+  const gates=Object.fromEntries(['reference_manifest','reference_scope_context','reference_scope_assess','energy','reference_chunk'].map(name=>[name,deferred()]));let active=0,peak=0;
+  const native=name=>{active++;peak=Math.max(peak,active);return gates[name].promise.finally(()=>active--);};direct=c=>native(c);inspect=()=>native('energy');
+  await draw();assert.deepEqual(calls.map(([c])=>c),['reference_manifest']);assert.equal(requests().length,0);
+  await act(()=>gates.reference_manifest.resolve(manifest()));assert.deepEqual(calls.map(([c])=>c),['reference_manifest','reference_scope_context']);
+  await act(()=>gates.reference_scope_context.resolve({designs:{}}));assert.equal(calls.at(-1)[0],'reference_scope_assess');
+  await act(()=>gates.reference_scope_assess.resolve(assessment()));assert.equal(requests().length,1);assert.equal(calls.at(-1)[0],'inspect_energy_evidence');
+  await act(()=>gates.energy.resolve({ready:true}));assert.equal(calls.at(-1)[0],'reference_chunk');
+  await act(()=>gates.reference_chunk.resolve([{occurrence_index:0,material_index:null,vertices_m:[[0,0,0],[1,0,0],[0,1,0]]}]));
+  assert.equal(peak,1);assert.equal(active,0);assert.equal(referenceRead.overlay.loading,false);assert.equal(referenceRead.overlay.chunks.length,1);assert.deepEqual(read.value,{ready:true});
+  for(const [c,a] of calls){if(c.startsWith('reference_'))assert.strictEqual(a.project,args.project);}
+});
+
+test('unmount while queued cancels energy before ticket reservation and reference before transport',async()=>{
+  await setup();composed=true;args={...args,project:referenceProject()};const manifestGate=deferred();direct=c=>{assert.equal(c,'reference_manifest');return manifestGate.promise;};
+  await draw();assert.deepEqual(calls.map(([c])=>c),['reference_manifest']);await act(()=>root.unmount());root=null;
+  await act(()=>manifestGate.resolve(manifest()));assert.deepEqual(calls.map(([c])=>c),['reference_manifest']);assert.equal(requests().length,0);assert.deepEqual(cancellations(),[]);
+});
+
+test('queued energy cancellation reserves no ticket while the reference request still owns the lane',async()=>{
+  await setup();composed=true;args={...args,project:referenceProject()};const manifestGate=deferred();direct=c=>c==='reference_manifest'?manifestGate.promise:Promise.resolve(c==='reference_scope_assess'?assessment():c==='reference_chunk'?[]:{designs:{}});
+  await draw();await clickCancel();assert.equal(calls.some(([c])=>c==='prepare_evidence_inspection'),false);assert.match(read.error,/cancelled/);
+  await act(()=>manifestGate.resolve(manifest()));assert.equal(requests().length,0);assert.equal(calls.some(([c])=>c==='prepare_evidence_inspection'),false);assert.equal(read.value,null);
 });
 
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});

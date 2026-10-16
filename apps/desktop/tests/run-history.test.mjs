@@ -34,7 +34,9 @@ test('bad record hashes, oversized rows and inflated full-integrity claims are r
   }
 });
 test('switching documents hides old rows and stale replies cannot select old evidence',async()=>{
-  await setup();let release;reply=args=>new Promise(resolve=>{release=()=>resolve(page(args));});await filter('B');assert.equal(document.querySelector('tbody'),null);assert.match(document.body.textContent,/previous rows are hidden/);const old=release;reply=async args=>page(args);const replacement=project();replacement.id='replacement';replacement.energy.runs=[];await rerender({path:'replacement-project',project:replacement});assert.match(document.body.textContent,/No retained snapshots/);await act(async()=>old());assert.match(document.body.textContent,/No retained snapshots/);assert.equal(document.querySelectorAll('tbody tr').length,0);assert.deepEqual(chosen,[]);
+  await setup();let release;reply=args=>new Promise(resolve=>{release=()=>resolve(page(args));});await filter('B');assert.equal(document.querySelector('tbody'),null);assert.match(document.body.textContent,/previous rows are hidden/);const old=release;reply=async args=>page(args);const replacement=project();replacement.id='replacement';replacement.energy.runs=[];await rerender({path:'replacement-project',project:replacement});
+  assert.equal(calls.length,2,'replacement catalog does not overlap cancelled but unsettled history IPC');assert.equal(document.querySelector('tbody'),null);assert.match(document.body.textContent,/previous rows are hidden/);
+  await act(async()=>old());assert.equal(calls.length,3);assert.equal(calls.at(-1)[1].project.id,'replacement');assert.match(document.body.textContent,/No retained snapshots/);assert.equal(document.querySelectorAll('tbody tr').length,0);assert.deepEqual(chosen,[]);
 });
 test('unsaved and disabled states never invoke an engine or silently select a run',async()=>{
   await setup({path:''});assert.equal(calls.length,0);assert.match(document.body.textContent,/Save the project/);await setup({disabled:true});assert.equal(button('Use for proposed B').disabled,true);assert.deepEqual(chosen,[]);assert.ok(calls.every(([c])=>c==='energy_run_catalog'));

@@ -3,6 +3,7 @@ import {invoke} from '@tauri-apps/api/core';
 import type {ClimateProjectDocument} from '../climate-types';
 import type {ReferenceModel,ReferenceTriangle,ScopeAssessment,ScopeContext} from './types';
 import {compactReferenceChunk,type ReferenceMappingRelationship,type ReferenceOverlayData} from '../energy/reference-presentation';
+import {largeReadQueue,type BoundedRead} from '../energy/bounded-read';
 
 function checkedAssessment(value:ScopeAssessment):ScopeAssessment {
   const hash=(s:unknown)=>typeof s==='string'&&/^[a-f0-9]{64}$/.test(s);
@@ -22,32 +23,40 @@ export function useReferenceModel(path:string,project:ClimateProjectDocument|nul
   const scopeKey=JSON.stringify([modelsKey,project?.architecture?.scope]);
   useEffect(()=>{
     let alive=true;if(!asset||!path||!project){setSnapshot({key,overlay:null,error:''});return;}
+    let pending:BoundedRead<unknown>|null=null;
+    const read=async<T,>(command:string,args:Record<string,unknown>):Promise<T>=>{
+      const task=largeReadQueue.enqueue(()=>invoke<T>(command,args));pending=task;
+      try{return await task.promise;}finally{if(pending===task)pending=null;}
+    };
     setSnapshot({key,overlay:null,error:''});
     void(async()=>{
-      const manifest=await invoke<ReferenceModel>('reference_manifest',{path,project,assetId:asset.id});
+      const manifest=await read<ReferenceModel>('reference_manifest',{path,project,assetId:asset.id});
       if(!alive)return;
       const chunks:ReferenceOverlayData['chunks']=[];
       const publish=(loading:boolean)=>setSnapshot({key,error:'',overlay:{assetId:asset.id,manifest,chunks:[...chunks],loading,status:loading?`Loading admitted geometry ${chunks.length}/${manifest.chunks.length}`:'Admitted geometry loaded; display-only overlay'}});
       publish(true);
       for(let index=0;index<manifest.chunks.length;index++){
-        const triangles=await invoke<ReferenceTriangle[]>('reference_chunk',{path,project,assetId:asset.id,index});
+        if(!alive)return;
+        const triangles=await read<ReferenceTriangle[]>('reference_chunk',{path,project,assetId:asset.id,index});
         if(!alive)return;
         chunks.push(compactReferenceChunk(index,triangles,manifest.bounds.min_m));publish(index+1<manifest.chunks.length);
         await new Promise(resolve=>setTimeout(resolve,0));
       }
     })().catch(e=>{if(alive)setSnapshot({key,overlay:null,error:String(e)});});
-    return()=>{alive=false;};
+    return()=>{alive=false;pending?.cancel();};
   },[key]);
   useEffect(()=>{
     let alive=true;if(!asset||!project||!path)return;
-    invoke<ScopeContext>('reference_scope_context',{path,project}).then(value=>{if(alive)setContext({key:modelsKey,value,error:''});}).catch(e=>{if(alive)setContext({key:modelsKey,value:null,error:String(e)});});
-    return()=>{alive=false;};
+    const task=largeReadQueue.enqueue(()=>invoke<ScopeContext>('reference_scope_context',{path,project}));
+    void task.promise.then(value=>{if(alive)setContext({key:modelsKey,value,error:''});}).catch(e=>{if(alive)setContext({key:modelsKey,value:null,error:String(e)});});
+    return()=>{alive=false;task.cancel();};
   },[modelsKey]);
   useEffect(()=>{
     let alive=true;const scope=project?.architecture?.scope;if(!scope||!asset||!path)return;
     setAssessment({key:scopeKey,value:null,error:''});
-    invoke<ScopeAssessment>('reference_scope_assess',{path,project,scope}).then(checkedAssessment).then(value=>{if(alive)setAssessment({key:scopeKey,value,error:''});}).catch(e=>{if(alive)setAssessment({key:scopeKey,value:null,error:String(e)});});
-    return()=>{alive=false;};
+    const task=largeReadQueue.enqueue(()=>invoke<ScopeAssessment>('reference_scope_assess',{path,project,scope}));
+    void task.promise.then(checkedAssessment).then(value=>{if(alive)setAssessment({key:scopeKey,value,error:''});}).catch(e=>{if(alive)setAssessment({key:scopeKey,value:null,error:String(e)});});
+    return()=>{alive=false;task.cancel();};
   },[scopeKey]);
   const overlay=snapshot.key===key?snapshot.overlay:null;
   const scope=project?.architecture?.scope;

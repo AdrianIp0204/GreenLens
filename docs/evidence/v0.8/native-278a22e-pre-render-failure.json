@@ -1,0 +1,66 @@
+{
+  "schema_version": "greenlens.native-report-pre-render-failure.v2",
+  "status": "failed",
+  "source_commit": "278a22ed9b87c1f422554fa32f2d76c91d57a176",
+  "source_dirty_at_build": false,
+  "installed_utc": "2026-10-16T16:00:37.8041465Z",
+  "artifacts": [
+    {
+      "kind": "GreenLens_0.8.0_x64-setup.exe",
+      "bytes": 7364920,
+      "sha256": "eb8e95dd6dd96bb12a1ea2ac8cb878f943135064ba3ac98473bed4d8b2944116",
+      "role": "unsigned_installer"
+    },
+    {
+      "kind": "greenlens-desktop.exe",
+      "bytes": 31178240,
+      "sha256": "540875f6403479e59d818e7c4de3d3659b3b826b7f02834eee315e104f23c9fd",
+      "role": "installed_desktop"
+    },
+    {
+      "kind": "greenlens-desktop.exe",
+      "bytes": 31178240,
+      "sha256": "c33d21e6b69a18204256953e086f7850019173700d6a5e11356e4e77919e2a5b",
+      "role": "built_desktop"
+    },
+    {
+      "kind": "greenlens.exe",
+      "bytes": 16832000,
+      "sha256": "3566c21e0e5d3fa5effbb2471e5efdce15b3bb4d0fc16844652c236c2ef61e22",
+      "role": "distributed_cli"
+    }
+  ],
+  "observation": {
+    "completed": false,
+    "failure": "Installed application exited before an explicit stop/normal-close observation.",
+    "stderr": "memory allocation of 1622912 bytes failed\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace",
+    "stage": "startup-and-editing",
+    "elapsed_seconds": 117.3942076,
+    "raw_peak_bytes": 1085661184,
+    "sampled_private_peak_bytes": 1072115712,
+    "maximum_active_processes": 7,
+    "kernel_guard_bytes": 1073741824,
+    "acceptance_ceiling_bytes": 2147483648,
+    "process_limit": 16,
+    "typst_observed": 0,
+    "energyplus_observed": false,
+    "cleanup_job_empty": true,
+    "render_armed": false,
+    "new_revision_accepted": false,
+    "second_issue_created": false
+  },
+  "preservation": {
+    "original_members": 576,
+    "original_bytes": 224928962,
+    "unchanged_members": 576,
+    "manifest_sha256": "0c366cda4f2ef44d5d5a12b97f246f02fb2b9a374eef7540254c5f1426747772",
+    "only_extra": "Existing zero-byte cooperative lock retained",
+    "receipt_sha256": "ecb1a2eb9a4c90590d0cb501139ffddd1f246b37ed1e83c8f210a6a90b5b1fcd"
+  },
+  "receipt_sha256": "88bec55b15ead89e9de733b0eee426730d49ed9264a810f6e4e030ee29d30105",
+  "protocol_sha256": "b91aacdf90fd8b5c3d64b1bbd749dbba84983cd2a5ac1c0a98936e25037548f7",
+  "scope": "Installed production-assets project open and attempted Energy workspace inspection. No native candidate editing, accepted-frame restoration, new issue, page review, Save As, cold regeneration or scientific qualification acceptance.",
+  "stop": "The single declared post-repair observation stopped on substantive failure. No further native attempt, rendering or regeneration was started. The two render operations remain unstarted, not authority for automatic resumption.",
+  "memory_interpretation": "Operational failure under the stricter 1 GiB kernel guard, below the unchanged 2 GiB acceptance ceiling. The prior serialization repair did not establish sufficient memory headroom.",
+  "source_diagnosis": "Reference manifest/context/assessment and run lookup still transport complete retained Project copies concurrently. A bounded read queue is an independent source remedy, requiring its own tests and future native observation; this receipt is not proof that any later remedy works."
+}

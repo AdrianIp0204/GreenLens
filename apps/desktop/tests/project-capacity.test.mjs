@@ -57,8 +57,10 @@ test('pending and failed inventory never leave an old capacity report visible; r
 test('document and operation changes hide late inventory from the previous exact request', async () => {
   await setup(); const previous = deferred(), current = deferred(); answer = args => args.operation.kind === 'report_issue' ? previous.promise : current.promise; await render();
   props = { ...props, path: 'another-owned-project', project: { id: 'second' }, operation: { kind: 'energy_run', alternative: 'B' } }; await render();
+  assert.equal(calls.length, 1, 'replacement inventory cannot overlap the cancelled unsettled read'); assert.match(document.body.textContent, /Reading bounded retained-file inventory/);
+  await act(async () => previous.resolve(report())); assert.equal(calls.length, 2); assert.doesNotMatch(document.body.textContent, /230,000,000 B/); assert.match(document.body.textContent, /Reading bounded retained-file inventory/);
   await act(async () => current.resolve(report({ retained_bytes: 123, project_content_sha256: 'b'.repeat(64), limits: [{ name: 'complete retained bytes', used: 123, limit: 268435456 }] }))); assert.match(document.body.textContent, /123 B/);
-  await act(async () => previous.resolve(report())); assert.doesNotMatch(document.body.textContent, /230,000,000 B/); assert.match(document.body.textContent, /Energy run · B/);
+  assert.doesNotMatch(document.body.textContent, /230,000,000 B/); assert.match(document.body.textContent, /Energy run · B/);
   props = { ...props, project: null }; await render(); assert.match(document.body.textContent, /Select a project/); assert.doesNotMatch(document.body.textContent, /123 B/); assert.equal(calls.length, 2);
 });
 

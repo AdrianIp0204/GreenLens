@@ -1,0 +1,293 @@
+{
+  "schema_version": "greenlens.sanitized-study-issues-checkpoint.v0.7",
+  "recorded_utc": "2026-10-16T04:58:12.8659099Z",
+  "source_commit": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+  "source_worktree_dirty": false,
+  "cli_sha256": "292f01de48d2b63c5b057fe147309fbb9f4a0c05daf12b8489fd793f57477084",
+  "collector_revision": "external pipeline-output repair; exact collector hash is bound in each raw command receipt",
+  "completed_phases_at_snapshot": [
+    "Prepare",
+    "Run",
+    "Reports"
+  ],
+  "pending": "Cold/replay/final issue-member comparison and report page review require their own completed receipts",
+  "declared_protocol_sha256": "aaaf8eeb71a277250b9daecc4e980ce4ebc4d1a5bb5fb1e6447bc47979e2ae4e",
+  "production_attempt_started": true,
+  "replay_attempt_started": false,
+  "declared_change": "Only four proposed zone gross rated cooling COP values 3.6 to 3.8; explicit synthetic assumptions, no geometry or service changes",
+  "accepted_scope_revision_ids": [
+    "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+    "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1"
+  ],
+  "decisions": [
+    {
+      "row_id": "c458816e40640ec55ef2ca7c39ceaaffb593e7e6aa3b15a1c9ee815995509f0b",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    },
+    {
+      "row_id": "f39a304470f0c8076c77a09ecc06ff649963a1d4434f62028a2a0dce06599d8d",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    },
+    {
+      "row_id": "5eeb933d135959c8de9ab4969111b12ea1de71d70dce7c7232f22e79b3e3b853",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    },
+    {
+      "row_id": "062a32ef716a6d25b612bb16d77cf3261676ba0a70b14eb790a1d37efaa672f1",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    }
+  ],
+  "run": {
+    "id": "5fb6b5ed-5b1e-4305-894c-f700292cf874",
+    "record_sha256": "e50bbbf7039682f85e64c645b02a63f3f78a375d98d77debd31c55efce6c65a0",
+    "interval_count": 52560,
+    "channel_count": 34,
+    "interval_minutes": 10,
+    "finite_complete_shape_verified": true,
+    "annual_facility_kwh": 12479.638641203668,
+    "coincident_peak": {
+      "end_use_contributions_kw": {
+        "cooling_system": 1.0628246179189256,
+        "exterior_lighting": 0.02,
+        "interior_lighting": 1.152,
+        "plug_equipment": 1.536,
+        "supply_fans": 0.2,
+        "ventilation_exhaust_fans": 0.016
+      },
+      "facility_kw": 3.9868246179189253,
+      "reconciliation_residual_kw": 0.0,
+      "timestamp": {
+        "day": 28,
+        "end_minute": 1050,
+        "interval_index": 52088,
+        "month": 12,
+        "start_minute": 1040
+      }
+    },
+    "building_comfort_union": {
+      "cooling_unmet_hours": 0.0,
+      "occupied_hours": 6136.0,
+      "unmet_percent": 0.0,
+      "zone_id": null
+    },
+    "severe_count": 0,
+    "warning_count": 1,
+    "diagnostics": [
+      "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+    ],
+    "assessment": {
+      "current_derived_results": "not_compared",
+      "current_physical_inputs": "current",
+      "current_processed_results": "current",
+      "evidence_integrity": "complete_retained_evidence_checked",
+      "execution": "completed",
+      "scientific": {
+        "applicable_physical_input_sha256": [],
+        "evidence_ids": [],
+        "method": {
+          "adapter_version": "1",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "engine_version": "26.2.0",
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+        "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+        "status": "unassessed",
+        "tested_scope": "No general building-accuracy, equipment-calibration or certification claim."
+      }
+    },
+    "native_process": {
+      "arguments": [
+        "--jobs",
+        "1",
+        "--weather",
+        "weather.epw",
+        "--output-directory",
+        ".",
+        "--output-prefix",
+        "eplus",
+        "../model.epJSON"
+      ],
+      "elapsed_ms": 13026,
+      "executable": "energyplus.exe",
+      "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "exit_code": 0,
+      "failure": null,
+      "finished_utc": "2026-10-16T04:45:04.207485700+00:00",
+      "peak_observed_scratch_bytes": 21082739,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 435261440,
+      "samples": 209,
+      "schema_version": "greenlens.native-process.v0.4",
+      "started_utc": "2026-10-16T04:44:51.182408800+00:00",
+      "state": "completed",
+      "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+      "stdout_sha256": "5809726f5f4ee659bc17f9f59295f3a8e70780f26633f1a14dfca0dd85c581da"
+    },
+    "command_exit_code": 0,
+    "command_wall_seconds": 126.8657526,
+    "sampled_command_tree_peak_bytes": 437993472,
+    "sampled_command_scratch_peak_bytes": 43631133,
+    "run_stdout_sha256": "cc41e6ad3e1a1a92f9e3285b4849ef4f5dc92d24e0eee735ec28655388aaacc0",
+    "inspection_stdout_sha256": "9b682344f83bcfe757b52423606839591e44ad009b1658448628ced39aba1381"
+  },
+  "issues": [
+    {
+      "summary": {
+        "baseline": {
+          "design_id": "A",
+          "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c"
+        },
+        "content_file_sha256": "3476093ca72b3bca4d4fd2b9946478f82192ace73358aa5f80a8587492a980df",
+        "content_sha256": "cb2a9ed0948e01cc1a837f64256054ec70544ddae2962db8689f882e522ddcf5",
+        "id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+        "include_pdf": true,
+        "path": "report-issues/318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+        "products_file_sha256": "51164bcb977510b6f5391e5acdccd0eafd6b184e0f101ed1bc1a8cd850cf7709",
+        "products_sha256": "81aa3349326f42f1c4f038207b847ddf1d0d634b96429029c45d63f75aea35c8",
+        "proposed": {
+          "design_id": "B",
+          "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+          "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d"
+        },
+        "receipt_file_sha256": "15c857b003109581bd52a4ee5a8d15d951784e18ed65e685cd2755dae5bca79c",
+        "reference_asset_id": "5d9b3f6f-1ed7-4e0b-8096-23fca2e5fc70",
+        "reference_manifest_sha256": "a7a41da2a7a6bf3d8bae7888eed4300c421e38dfa88311b592676e10841f1789",
+        "report_revision": "Draft",
+        "scope_revision_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+        "sensitivity_run_ids": [],
+        "sensitivity_session_id": null,
+        "title": "Synthetic four-zone energy building — energy assessment"
+      },
+      "product_count": 44,
+      "product_bytes": 15918865.0,
+      "renderer": {
+        "document_schema": "greenlens.energy-document.v0.7",
+        "figure_method": "greenlens.reference-analytical-orthographic/2",
+        "font_sha256": {
+          "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+          "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+        },
+        "html_method": "greenlens.owned-energy-html/1",
+        "method": "greenlens.energy-report-issue-renderer/1",
+        "pdf_creation_timestamp": 0,
+        "performance_png_ppi": 96,
+        "system_and_embedded_fonts_disabled": true,
+        "template_sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697",
+        "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+        "typst_version": "0.15.1"
+      },
+      "sensitivity": null,
+      "unresolved_mapping_count": 6,
+      "coverage_percent": null,
+      "stdout_sha256": "11f031863633b993bae39777ac592beaac060b9c436f6f4c936bf88bcdfe621f",
+      "command_exit_code": 0,
+      "command_wall_seconds": 82.39675
+    },
+    {
+      "summary": {
+        "baseline": {
+          "design_id": "A",
+          "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c"
+        },
+        "content_file_sha256": "bea15c7dc824950722297a8c6c9d89dbaa3eefeb02b1ed90c7ad144cd2fa626a",
+        "content_sha256": "ac557ba59d191545f0b908b3923bbde9ea019833e1ef1fe9c913776fd318a0be",
+        "id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+        "include_pdf": true,
+        "path": "report-issues/4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+        "products_file_sha256": "c799507782d261d3b8583d49a8e6be8c7ad2dcc6ac589422a95bc8b5e6c166f5",
+        "products_sha256": "e9888abf73620b76559126392934aa6876a34ddbb6ee46723160685b6dd84c78",
+        "proposed": {
+          "design_id": "B",
+          "record_sha256": "e50bbbf7039682f85e64c645b02a63f3f78a375d98d77debd31c55efce6c65a0",
+          "run_id": "5fb6b5ed-5b1e-4305-894c-f700292cf874"
+        },
+        "receipt_file_sha256": "998e608c01933118bc3b7b349974c7fe4ae702478c3522af261f857ceaf9d531",
+        "reference_asset_id": "5d9b3f6f-1ed7-4e0b-8096-23fca2e5fc70",
+        "reference_manifest_sha256": "a7a41da2a7a6bf3d8bae7888eed4300c421e38dfa88311b592676e10841f1789",
+        "report_revision": "Draft",
+        "scope_revision_sha256": "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1",
+        "sensitivity_run_ids": [],
+        "sensitivity_session_id": null,
+        "title": "Synthetic four-zone energy building — energy assessment"
+      },
+      "product_count": 44,
+      "product_bytes": 15823232.0,
+      "renderer": {
+        "document_schema": "greenlens.energy-document.v0.7",
+        "figure_method": "greenlens.reference-analytical-orthographic/2",
+        "font_sha256": {
+          "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+          "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+        },
+        "html_method": "greenlens.owned-energy-html/1",
+        "method": "greenlens.energy-report-issue-renderer/1",
+        "pdf_creation_timestamp": 0,
+        "performance_png_ppi": 96,
+        "system_and_embedded_fonts_disabled": true,
+        "template_sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697",
+        "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+        "typst_version": "0.15.1"
+      },
+      "sensitivity": null,
+      "unresolved_mapping_count": 6,
+      "coverage_percent": null,
+      "stdout_sha256": "cfe1959604e42b28d542a68975deee099d1217fa68fa48fe8e645f4a3696223b",
+      "command_exit_code": 0,
+      "command_wall_seconds": 113.9200583
+    }
+  ],
+  "historical_r1_after_r2": {
+    "exit_code": 0,
+    "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+    "scope_revision_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+    "baseline": {
+      "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+      "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+      "design_id": "A"
+    },
+    "proposed": {
+      "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+      "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+      "design_id": "B"
+    },
+    "stdout_sha256": "3a3c0fcf005deaacd6f2462636852f9d385ebfce37ae5e083a7e18cccba13f14"
+  },
+  "canonical_comparison": {
+    "facility_energy_savings": {
+      "absolute": 3827.451161414265,
+      "percent": 23.471086550340868
+    },
+    "facility_peak_savings": {
+      "absolute": 1.5292656115558003,
+      "percent": 27.72372365093502
+    },
+    "stdout_sha256": "499b3b976dab0ddcd54e0440a98972c6d4a78be7f803dd99f1fefba873f47b43"
+  },
+  "collector_failure": {
+    "stage": "After successful immutable R1 publication, before recording the returned issue in collector state",
+    "cause": ".NET stream-copy task completion emitted a VoidTaskResult into the PowerShell result pipeline",
+    "remedy": "Explicitly suppress only wait completion result, preserve propagated exceptions and JSON return",
+    "pure_regressions_passed": 22,
+    "failed_attempt_retained": true,
+    "published_r1_reused": true,
+    "engine_retry_added": false
+  },
+  "claim_boundaries": [
+    "Synthetic headless workflow, not private architectural case",
+    "No physical qualification or exact-pair numerical sensitivity claim",
+    "Process resource scopes differ and must not be summed",
+    "Final UI fixes/candidate/installed behavior/exact-source hosted CI remain separate",
+    "Report render success is not page-by-page visual review"
+  ]
+}

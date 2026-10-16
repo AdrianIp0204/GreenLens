@@ -1,0 +1,2240 @@
+{
+  "schema_version": "greenlens.report-visual-coverage.v0.7.1",
+  "recorded_utc": "2026-10-16T05:03:12.773405+00:00",
+  "case": "original synthetic four-zone, two-storey retained study; no private architectural model",
+  "application_source_commit": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+  "generating_cli_sha256": "292f01de48d2b63c5b057fe147309fbb9f4a0c05daf12b8489fd793f57477084",
+  "generating_cli_bytes": 16004608,
+  "review_tool": {
+    "name": "Poppler pdftoppm",
+    "version": "26.07.0",
+    "executable_sha256": "1ad6408dc3b02950d00ad407d79b6d52b1d6c3f3b85c96645455d58d390d8b20",
+    "resolution_dpi": 120,
+    "arguments": [
+      "-r",
+      "120",
+      "-png",
+      "<retained PDF>",
+      "<external review prefix>"
+    ],
+    "performance_png_original_resolution_px": [
+      794,
+      1123
+    ]
+  },
+  "coverage": {
+    "issues": 2,
+    "unique_pdf_pages": 146,
+    "standalone_performance_pngs": 16,
+    "method": "Every unique page image and actual performance PNG inspected individually. assessment.pdf was checked as an exact-byte alias of executive.pdf for each issue, not counted as four additional unique pages. Each PDF product was freshly reviewed; R1 review was not transferred to changed R2 pages."
+  },
+  "issues": [
+    {
+      "label": "R1",
+      "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+      "content_identity_sha256": "cb2a9ed0948e01cc1a837f64256054ec70544ddae2962db8689f882e522ddcf5",
+      "product_set_identity_sha256": "81aa3349326f42f1c4f038207b847ddf1d0d634b96429029c45d63f75aea35c8",
+      "issue_content_file_sha256": "3476093ca72b3bca4d4fd2b9946478f82192ace73358aa5f80a8587492a980df",
+      "issue_products_file_sha256": "51164bcb977510b6f5391e5acdccd0eafd6b184e0f101ed1bc1a8cd850cf7709",
+      "scope_revision_file_sha256": "cc4e745cd638b3e402c8ae63cdb0c6fb021035272991a9b1f9fbc47dceae92e8",
+      "report_data_file_sha256": "5e997f6e3160298fdbef5cc79a5f36ed0ff527d037df70ca434eced5c904ae0c",
+      "scope_revision_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+      "scope_parent_sha256": null,
+      "run_bindings": {
+        "baseline": {
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+          "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+          "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+          "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+          "processing_sha256": "a8cb978a0361686fa1bafa74f859b6b3ecdc8b1f586df663d45cd72ec4dbf570",
+          "gross_rated_cop_by_zone": {
+            "zone1": 3.0,
+            "zone2": 3.0,
+            "zone3": 3.0,
+            "zone4": 3.0
+          },
+          "interval_count": 52560,
+          "interval_seconds": 600,
+          "annual_facility_kwh": 16307.089802617933,
+          "own_facility_peak_kw": 5.516090229474726,
+          "own_facility_peak_timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          }
+        },
+        "proposed": {
+          "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+          "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+          "model_input_sha256": "b9f1b4e019696419c124c5a2751f475f19c7bba0c1df28d3934a123187227f97",
+          "physical_input_sha256": "9a7a6c44d973a333485f5aa33c1ecafc938965e0fdcd5183e87eb9bf1526f45a",
+          "processing_sha256": "826c5417b295cb1aafba5c9868203d73dc71ab394735745f3ed30ec06fc0f145",
+          "gross_rated_cop_by_zone": {
+            "zone1": 3.6,
+            "zone2": 3.6,
+            "zone3": 3.6,
+            "zone4": 3.6
+          },
+          "interval_count": 52560,
+          "interval_seconds": 600,
+          "annual_facility_kwh": 12617.357232381652,
+          "own_facility_peak_kw": 4.045870430025533,
+          "own_facility_peak_timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          }
+        }
+      },
+      "renderer_identity": {
+        "method": "greenlens.energy-report-issue-renderer/1",
+        "document_schema": "greenlens.energy-document.v0.7",
+        "html_method": "greenlens.owned-energy-html/1",
+        "figure_method": "greenlens.reference-analytical-orthographic/2",
+        "template_sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697",
+        "typst_version": "0.15.1",
+        "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+        "font_sha256": {
+          "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+          "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+        },
+        "pdf_creation_timestamp": 0,
+        "performance_png_ppi": 96,
+        "system_and_embedded_fonts_disabled": true
+      },
+      "source_local_review_receipt_sha256": "1b11b5b089a32a2fe3f6e2c02d1b2a56829f4634743cad38ec0b61dd44807fe5",
+      "pdfs": [
+        {
+          "name": "assessment.pdf",
+          "sha256": "4b4b60ce173d0e0c8e37a664f39fe7047141f53dec765a791b64393732f9c658",
+          "bytes": 71822,
+          "page_count": 4,
+          "exact_byte_alias_of": null
+        },
+        {
+          "name": "executive.pdf",
+          "sha256": "4b4b60ce173d0e0c8e37a664f39fe7047141f53dec765a791b64393732f9c658",
+          "bytes": 71822,
+          "page_count": 4,
+          "exact_byte_alias_of": "assessment.pdf"
+        },
+        {
+          "name": "input-appendix.pdf",
+          "sha256": "2f2d39447b5653a71168fd9c2675b80b59e37e8e80225edd56eeb6185f4eb433",
+          "bytes": 935624,
+          "page_count": 39,
+          "exact_byte_alias_of": null
+        },
+        {
+          "name": "performance.pdf",
+          "sha256": "4f2f12c74f71f9088d66dc5ca32e79b0d832bfbad3cc939c53c9bf1c903cc037",
+          "bytes": 247251,
+          "page_count": 8,
+          "exact_byte_alias_of": null
+        },
+        {
+          "name": "technical.pdf",
+          "sha256": "571af5dc498b7e570c9edb9d2baca66b08d64692f2f1648c95197a1de09f8d50",
+          "bytes": 475137,
+          "page_count": 22,
+          "exact_byte_alias_of": null
+        }
+      ],
+      "pdf_aliases": [
+        {
+          "name": "assessment.pdf",
+          "exact_byte_alias": "executive.pdf",
+          "sha256": "4b4b60ce173d0e0c8e37a664f39fe7047141f53dec765a791b64393732f9c658"
+        }
+      ],
+      "unique_pdf_pages_individually_reviewed": 73,
+      "page_visual_reviews": [
+        {
+          "family": "executive",
+          "page": 1,
+          "render_sha256": "359262ab8368e7b61bb31d83556052a014f327858fc8ac0f612fe95ad294d7a7",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Title, issue scope, readiness, missing sensitivity and annual figures readable."
+        },
+        {
+          "family": "executive",
+          "page": 2,
+          "render_sha256": "c27183d6dc804b78fbc83bfd6b081fae54cda8eedd4102f5f2f961d4de30656f",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Annual comparison chart readable; intentional whitespace below one chart."
+        },
+        {
+          "family": "executive",
+          "page": 3,
+          "render_sha256": "4245dc70363c2ec15e97bc5b286499f7101e1642a407e4eacd89ee8ce50af21b",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Scientific limits and typed comparison table readable."
+        },
+        {
+          "family": "executive",
+          "page": 4,
+          "render_sha256": "26a1367595ff42360b1c14dc9f701e277b1ae4b885320b7757e03af2754701a8",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Comfort, weather, carbon and metadata readable."
+        },
+        {
+          "family": "technical",
+          "page": 1,
+          "render_sha256": "49159d203f834bbb080c92058544195895033621794e5af1d5c5c98b856c0912",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Contents readable."
+        },
+        {
+          "family": "technical",
+          "page": 2,
+          "render_sha256": "ea3fe15fe5e722051675804b44dc07ec03fc1f51569f89dcd042428728a6dccf",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Sparse contents continuation; no empty page."
+        },
+        {
+          "family": "technical",
+          "page": 3,
+          "render_sha256": "4c212401a974944967ae06a924ad8c42d293c277899c1ff0b3b7970838730bb4",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Scope/readiness text clear; figure starts following page."
+        },
+        {
+          "family": "technical",
+          "page": 4,
+          "render_sha256": "299cb26c2c6d4bb3e72b32cba7aea45df24a010b9f13333a135271c845f02cc2",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Aligned reference/analytical view visible with labels, scale, section, exact IDs and unknown-north disclosure."
+        },
+        {
+          "family": "technical",
+          "page": 5,
+          "render_sha256": "be2de0082a0af9ccbf8ce7cda313601e77686f65c11df235628b46a4fc24ceff",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 6,
+          "render_sha256": "16e845e1c32ff37878bc4cc6634398d0bb26de92a5daab0dfeefcb4090164a7b",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 7,
+          "render_sha256": "cd54d9db1953774d65c47ff4e83f1602624e7624c2959a3b311db65416c73cbf",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 8,
+          "render_sha256": "9a46f0a25dce4b7adce569eb1090d769270e7b6ca4cd20f540d18004eefa8ddd",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 9,
+          "render_sha256": "f9f186fd4739266a16a08a92be7ac07832d84fc269aaa9c3694e01a3e08fe9a3",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 10,
+          "render_sha256": "25b9efd7c50c05ca9eb36f6cd323c0ce954b234e6ba0eb6fadcdf0bc039755cd",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 11,
+          "render_sha256": "6898edba6808f16a33a38ba0cca444aee6d80dd168987015952a17a58c7a347e",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Schedules office/evening readable; values table continues next page."
+        },
+        {
+          "family": "technical",
+          "page": 12,
+          "render_sha256": "1349c72f3cd98becde6b5a3bc2269e78f01d5e84c93b35554a5a6f7234c579b2",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 13,
+          "render_sha256": "84cca2c946ac635ae94e2b329f1387fc9e6f31b193402e946064e8ae58d480df",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 14,
+          "render_sha256": "a88664ae9c4558983766df4c4046c6538a3e9dd1936b220af4c2a6974cf0ed45",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 15,
+          "render_sha256": "7e488656cdd8d676eafb31aa50459669aa69e03cec70b551a87a6ba744ddce72",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 16,
+          "render_sha256": "55d1c1551bb54aa4146bf84efd76328778103c27ec742ad3a2a13e7be94fd3d9",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 17,
+          "render_sha256": "d5f524e92785acffe7892a4546ea270bdf3378190593d18a9982f48d33b2d306",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 18,
+          "render_sha256": "10949766ba07718f20ee86d8869a178dc6cd05e1f938d453998048a92e308890",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed schedules readable; values table continues next page."
+        },
+        {
+          "family": "technical",
+          "page": 19,
+          "render_sha256": "23970325e57f7ef836f94e891c09085cc10614ccd7d94b8a24ac5678905066c2",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 20,
+          "render_sha256": "f3619bbdd3a9efd2ae31ab0140c0c3b71b9160df7843ba8d7e09efe5413ed268",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 21,
+          "render_sha256": "8cfe1924fedd941575bc0887243e6f3c2e3321735dc6d5feeb212ab352f7c075",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "technical",
+          "page": 22,
+          "render_sha256": "d33e6e15a253d3af41492ce4c2a3547659c57328eb31b2899a93be5ae7485d97",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Annual and monthly charts readable with units, shared scale and values."
+        },
+        {
+          "family": "input-appendix",
+          "page": 1,
+          "render_sha256": "81cca4a3f62cf4055df245bb92ef769e78dca3ceda20f60f4bf6cb75be942949",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Contents readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 2,
+          "render_sha256": "34499225215486d4daf8850e74042f7261c6aff21e1dc40dc759d8ed3fabeda1",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Readiness and exact-pair sensitivity missing disclosure conspicuous."
+        },
+        {
+          "family": "input-appendix",
+          "page": 3,
+          "render_sha256": "895f9d74fb31c278805118571a52e532f335f0482420021ff60ef30b536cb994",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Aligned view and included/excluded scope readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 4,
+          "render_sha256": "74ce55302f1db2691b002bbb24482ab69764ae48e1e327e2929bdc1306d0d10f",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Immutable identities, one source mapping, first80 provenance-row limit explicitly disclosed."
+        },
+        {
+          "family": "input-appendix",
+          "page": 5,
+          "render_sha256": "98501b69cef2c0c5bc09a60afab2cb6da4fdf528aa0dd587363457c2d9e89dcb",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 6,
+          "render_sha256": "34208381bd92378e7adab49cf88edfca4e4cccd8c4b4c650693fd462e2d0a0d4",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 7,
+          "render_sha256": "6d2de1d4b3d412e11495577f70128dca2a6d6f2934c9433f0c4ea37ac48d4d7d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Missing reconciliation explicitly stated; retained assessment readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 8,
+          "render_sha256": "8ac4b7ba824b5e3aec5aeb4c4a9e9dc3b01eccf911b3a30d43d357f704b05620",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed assessment and frozen evidence IDs readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 9,
+          "render_sha256": "ed40797bda56165f7ffa078d1b847afb13fd12a2feb8b818b1c7fdfd2499b0df",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Baseline geometry dimensions/orientation and method readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 10,
+          "render_sha256": "a873df765c81fadb1467d6d43e0261c9fcfecc0ecdcf5126d3ef58ea8397c647",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 11,
+          "render_sha256": "61dbf71111c9dd1530456138630f91160550196fea6ff22b7e269d1d16bce7ac",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 12,
+          "render_sha256": "5bd8e95f7aa6363bf35658e48e2978710eb7b41519f433ad09846da090526419",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 13,
+          "render_sha256": "4de5e92de4df42cccd3e0e243abb2024eb8fff9ed092dfc4371c6917e68961d2",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 14,
+          "render_sha256": "f25e1d5736b15e68307bee2bceca3eeee20e7264f2a1e9e3db6183dc9202c47d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 15,
+          "render_sha256": "f3beb7711935f146925d0f6d96dcef990bf148236e1aa6a388a1a8eee93ad0e9",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 16,
+          "render_sha256": "65a567ac9b36e7421d078189c94c53d5a9f54040d83d63526ce95a0e368e71d2",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 17,
+          "render_sha256": "fb49d1f6582d8a6318b892330ef267972a4ee0395080f603630e37d7381d97b8",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 18,
+          "render_sha256": "8e601b1ffc84e517acbc04aee1602b3b52982edbd9b53de55cdbd8e39ab86e11",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 19,
+          "render_sha256": "0cbf4b9e999c0615cd3f6b4911812f6c546662131d8a0ce7743933831bca07f5",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 20,
+          "render_sha256": "aaff5f6d449097b4cedbc4e76f3aa9a3420419c91ce7eb80beea4a3493e44dee",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 21,
+          "render_sha256": "b34d60911960365d6d9ba00b56fd93c229bec6813cff3ee597a8e08081e33e66",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 22,
+          "render_sha256": "8b7857e5b88c2f2484024cdca1b937320df40dcef152f5f709ae623eb1b3da67",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 23,
+          "render_sha256": "c6520eb19326745f6e00669d5180980c0f557c380a6ab9b75f7a8e28b6e5eaed",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 24,
+          "render_sha256": "f8cafc71023cecd0d283395678c399761d10d092ead6082456f6f0149301a819",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed geometry/overhang dimensions readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 25,
+          "render_sha256": "0a0ba2e30a5e6b1fb384252f371511ca0336ddef034cc03b4c2c828957a4b845",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 26,
+          "render_sha256": "ad46637c1364e96f939cab9a9c7f242d057783efef41c7faf7d8b95cce6338e7",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 27,
+          "render_sha256": "0429ce0f5ad2e83317ca2239d3547579b4cda82209d5d5cf5b997de9d2cb14c1",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 28,
+          "render_sha256": "289d0832ec7c64194cb3365dee1f9ac45e99f2bf71f942d57d1a34b8a7fd542f",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 29,
+          "render_sha256": "b6648d0fe56df54b5bd915a31abca2c32c2f07824b51a24b57868426b55f2974",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 30,
+          "render_sha256": "64ebc8645e683024ba124094a496ae9b98e1de432a9759b358bdc9832fb8cb69",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 31,
+          "render_sha256": "fecf269a2b116b0f04a71147a1dcb39b494e7556091937313526d54fbef7ea25",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 32,
+          "render_sha256": "2c5a2860c6c9e8bba26c5d20d77c151c2a1ac413801b76a78f6c6a6d3fd05615",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 33,
+          "render_sha256": "67bb5131da8c51a792fb099c720458cc4bc605b19b9f1b410ee87de9df3c9dad",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 34,
+          "render_sha256": "03c7120c14a480c0c4a651b2f226cebd9b18d75ef5d0a500e16e6fcb054866d7",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 35,
+          "render_sha256": "abc42c662a5fde2709a7d98a364964ee13b0f59143e216a640fbe65b2aeb7601",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 36,
+          "render_sha256": "20525bdc3eef53874a36d6589fb2d7513dfe68a2661a2bd23aff3a45a7b2c4ea",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 37,
+          "render_sha256": "051f830c2ad8effd0a8888bf137baf9ee0c303fdf42c21d64baeba84388e4320",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 38,
+          "render_sha256": "ffcf0871f3c0b7ccae526d6c3c84e912897bca1abd6bea8061b0945dcb8d57a8",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Dense continuation tables inspected; wrapping, repeated headers, margins and footer remain legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 39,
+          "render_sha256": "0da0039c2a801749771184a2c308bdefd8fef1c463c38d6d2a883db235f29e2e",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Weather and absent optional attachments explicit."
+        },
+        {
+          "family": "performance",
+          "page": 1,
+          "render_sha256": "98abb40b4bc66472151240ab1202e96a434d531250e4ae1113d4a97ab8ea853c",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Title/contents readable."
+        },
+        {
+          "family": "performance",
+          "page": 2,
+          "render_sha256": "f22d4e170a27442d3de557b125fd620a4e9bc84321a256d5aa78562a4481ddbb",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Scope and baseline qualification disclosures readable."
+        },
+        {
+          "family": "performance",
+          "page": 3,
+          "render_sha256": "00965d4ac453b5b1d4fbf602ea2a521af33bacdaf0699180a989b5adffd6bb1a",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed qualification and method table readable."
+        },
+        {
+          "family": "performance",
+          "page": 4,
+          "render_sha256": "f3a34b99b1d4f108b1ba9ba279066b8f44853435b1eeeed8fed2355870f87ff5",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Annual comparison, peak timestamps and signed savings readable."
+        },
+        {
+          "family": "performance",
+          "page": 5,
+          "render_sha256": "a8954af02ba1e92cab29368c8b6622a357b4f9843b4ae61c0f98f33697b1ae0f",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "End-use chart/table and own-peak contribution boundary readable."
+        },
+        {
+          "family": "performance",
+          "page": 6,
+          "render_sha256": "4e96be284a26c79c2ff3e4e355b9772ac81fa15260468d8c9a8fb1c19abdbdb1",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Typed comparison/service warnings readable."
+        },
+        {
+          "family": "performance",
+          "page": 7,
+          "render_sha256": "a57fe8dbf1e94cf771033100c7e610fca38656de82b9958f0795211d96157409",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Baseline monthly and comfort tables readable."
+        },
+        {
+          "family": "performance",
+          "page": 8,
+          "render_sha256": "f2d9222338960f8839fad6f7ac87c021ec2078e05d1ced43c584da7f6aec1c9d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed monthly and comfort tables readable; signed floating point residual rounding retained."
+        }
+      ],
+      "performance_pngs": [
+        {
+          "name": "performance-page-001.png",
+          "sha256": "de36d6f6e1308344a790372f5810d9e7e6a9133a296a615d9b347e21acfbe3a7",
+          "bytes": 141954,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-002.png",
+          "sha256": "c07c1a3370a6a55ccc2153cd7069808b130f98e51c423d4db8f2e86e86f916d4",
+          "bytes": 358359,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-003.png",
+          "sha256": "3c759691bf4efb2966572fd58af30997376580ce43e6282fb8aa45da46ff4a53",
+          "bytes": 339800,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-004.png",
+          "sha256": "0b7e4188af1e35ef081b8f663e300075742b72e290f8b6c8950f9bc6e5fd7037",
+          "bytes": 188780,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-005.png",
+          "sha256": "65be9f0ef8578b70e2058449d10a28375c9b77e3ae0c722a0996ce3d30bb23f8",
+          "bytes": 226564,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-006.png",
+          "sha256": "fa9cc3bf2efbb78db85fdd0ea8c2f49a081d31c0a9cfc5a083bf6ad824a960e6",
+          "bytes": 245170,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-007.png",
+          "sha256": "17048ef1e58141448e3bafff5e7a1c0427505219130830fbe18f38632b16dda0",
+          "bytes": 250443,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-008.png",
+          "sha256": "cc97ff3b8ab43ba704c4324705506f8ca1ae4f91adb1bb1278d4b843991c4c11",
+          "bytes": 192816,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        }
+      ],
+      "aligned_figures": [
+        {
+          "schema_version": "greenlens.aligned-reference-figure.v2",
+          "method": "greenlens.reference-analytical-orthographic/2",
+          "source_triangle_count": 48,
+          "visible_triangle_count": 36,
+          "depicted_triangle_count": 36,
+          "omitted_visible_triangle_count": 0,
+          "protected_visible_triangle_count": 12,
+          "analytical_edge_count": 52,
+          "figure_labels": {
+            "W1": "zone1_window",
+            "W2": "zone2_window",
+            "Z1": "zone1",
+            "Z2": "zone2",
+            "Z3": "zone3",
+            "Z4": "zone4"
+          },
+          "scale_bar_m": 1.0,
+          "unavailable_reason": null,
+          "svg_sha256": "c489c5a0efad31254f1cbe7f7194e23d95bcab0822d606e7ab260be5c32e1cf8",
+          "definition_sha256": "7cfe53ff94fa59a0923f1fed78cd4c3c530e1908d1b8b11cd613d29b9176e85f",
+          "selected_snapshot": {
+            "scope_revision_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+            "scope_content_sha256": "055cfa2fa363befffca655de0b314523d62d4acc723c8c4c4b95bce6acdd9e06",
+            "selected_run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+            "selected_record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44"
+          },
+          "frame_and_clipping": {
+            "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+            "reference_revision_sha256": "8634cad1a9adc4eab30b7b4e1e9704c5fb0e4729e2d655a0b6144647cf7dd349",
+            "reference_geometry_sha256": "f605bf71ea682dee28d10bfccc087e0efef7b8e065f04a035ffadc51fb113f8e",
+            "eye_m": [
+              8.0,
+              3.0000000000000018,
+              33.78830946966722
+            ],
+            "target_m": [
+              8.0,
+              3.0,
+              3.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "vertical_span_m": 21.7329243315298,
+            "aspect_ratio": 1.933404940923738,
+            "section": {
+              "axis": "z",
+              "offset_m": 3.0,
+              "keep": "below"
+            }
+          },
+          "scope_limits": [
+            "Original edges are clipped; filled cut faces and hidden-line removal are not implemented.",
+            "Line drawing only: zone totals are not resolved spatial thermal fields.",
+            "Reference materials do not supply thermal properties. Coverage and approximations remain declared scope information.",
+            "Short drawing labels key to complete stable object IDs in the figure definition; names are not identity."
+          ]
+        }
+      ],
+      "canonical_arithmetic": {
+        "checks": "Annual component sums, sum of twelve monthly facility totals, monthly end-use sums, own-peak contributions, energy savings and percentages; both52560x600s dimensions; allzone/unioncomfort zero as disclosed. Uses retained canonical data, not a fresh engine run.",
+        "maximum_absolute_reconciliation": 1.8189894035458565e-12,
+        "tolerance": 1e-09,
+        "passed": true
+      },
+      "product_member_integrity": {
+        "count": 44,
+        "all_lengths_and_sha256_checked": true,
+        "members": [
+          {
+            "path": "aligned-figures.json",
+            "bytes": 4274,
+            "sha256": "eea3c8e93f2e36c53d4d07dd895301f96c408cf5c3616ab0c732464b1bb122a7"
+          },
+          {
+            "path": "aligned-view-001.svg",
+            "bytes": 21877,
+            "sha256": "c489c5a0efad31254f1cbe7f7194e23d95bcab0822d606e7ab260be5c32e1cf8"
+          },
+          {
+            "path": "annual.svg",
+            "bytes": 1880,
+            "sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86"
+          },
+          {
+            "path": "assessment.html",
+            "bytes": 15856,
+            "sha256": "bd9b146a00fa553efe3b15f6a8f116d2369785b72f3b449eb449020f88a4a80a"
+          },
+          {
+            "path": "assessment.pdf",
+            "bytes": 71822,
+            "sha256": "4b4b60ce173d0e0c8e37a664f39fe7047141f53dec765a791b64393732f9c658"
+          },
+          {
+            "path": "baseline-model.svg",
+            "bytes": 3723,
+            "sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec"
+          },
+          {
+            "path": "energy-report.json",
+            "bytes": 209829,
+            "sha256": "5e997f6e3160298fdbef5cc79a5f36ed0ff527d037df70ca434eced5c904ae0c"
+          },
+          {
+            "path": "executive.html",
+            "bytes": 15856,
+            "sha256": "bd9b146a00fa553efe3b15f6a8f116d2369785b72f3b449eb449020f88a4a80a"
+          },
+          {
+            "path": "executive.pdf",
+            "bytes": 71822,
+            "sha256": "4b4b60ce173d0e0c8e37a664f39fe7047141f53dec765a791b64393732f9c658"
+          },
+          {
+            "path": "input-appendix.html",
+            "bytes": 142422,
+            "sha256": "4c9b3cecde17fb105ff4876bcd90e072461b6c0398d0779eb902686485752ea0"
+          },
+          {
+            "path": "input-appendix.pdf",
+            "bytes": 935624,
+            "sha256": "2f2d39447b5653a71168fd9c2675b80b59e37e8e80225edd56eeb6185f4eb433"
+          },
+          {
+            "path": "input-provenance.csv",
+            "bytes": 1360911,
+            "sha256": "49790a81e827260a8c5b5f938407cc36b62cc522c989b449d014b827e0e212f7"
+          },
+          {
+            "path": "input-provenance.json",
+            "bytes": 2743134,
+            "sha256": "feeabbc51e6952d94e273e7bdd4324d4b1f3d1adb643d70dff27f099949c20d5"
+          },
+          {
+            "path": "inputs.csv",
+            "bytes": 69253,
+            "sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638"
+          },
+          {
+            "path": "issue-content.json",
+            "bytes": 3627983,
+            "sha256": "3476093ca72b3bca4d4fd2b9946478f82192ace73358aa5f80a8587492a980df"
+          },
+          {
+            "path": "monthly.svg",
+            "bytes": 3248,
+            "sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e"
+          },
+          {
+            "path": "performance-page-001.png",
+            "bytes": 141954,
+            "sha256": "de36d6f6e1308344a790372f5810d9e7e6a9133a296a615d9b347e21acfbe3a7"
+          },
+          {
+            "path": "performance-page-002.png",
+            "bytes": 358359,
+            "sha256": "c07c1a3370a6a55ccc2153cd7069808b130f98e51c423d4db8f2e86e86f916d4"
+          },
+          {
+            "path": "performance-page-003.png",
+            "bytes": 339800,
+            "sha256": "3c759691bf4efb2966572fd58af30997376580ce43e6282fb8aa45da46ff4a53"
+          },
+          {
+            "path": "performance-page-004.png",
+            "bytes": 188780,
+            "sha256": "0b7e4188af1e35ef081b8f663e300075742b72e290f8b6c8950f9bc6e5fd7037"
+          },
+          {
+            "path": "performance-page-005.png",
+            "bytes": 226564,
+            "sha256": "65be9f0ef8578b70e2058449d10a28375c9b77e3ae0c722a0996ce3d30bb23f8"
+          },
+          {
+            "path": "performance-page-006.png",
+            "bytes": 245170,
+            "sha256": "fa9cc3bf2efbb78db85fdd0ea8c2f49a081d31c0a9cfc5a083bf6ad824a960e6"
+          },
+          {
+            "path": "performance-page-007.png",
+            "bytes": 250443,
+            "sha256": "17048ef1e58141448e3bafff5e7a1c0427505219130830fbe18f38632b16dda0"
+          },
+          {
+            "path": "performance-page-008.png",
+            "bytes": 192816,
+            "sha256": "cc97ff3b8ab43ba704c4324705506f8ca1ae4f91adb1bb1278d4b843991c4c11"
+          },
+          {
+            "path": "performance.csv",
+            "bytes": 30203,
+            "sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be"
+          },
+          {
+            "path": "performance.html",
+            "bytes": 31539,
+            "sha256": "f68952aaf38a54531cc819b284c4911e690ebcea47ecd0b31bc01b802d42c6bb"
+          },
+          {
+            "path": "performance.json",
+            "bytes": 62585,
+            "sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80"
+          },
+          {
+            "path": "performance.pdf",
+            "bytes": 247251,
+            "sha256": "4f2f12c74f71f9088d66dc5ca32e79b0d832bfbad3cc939c53c9bf1c903cc037"
+          },
+          {
+            "path": "proposed-model.svg",
+            "bytes": 4393,
+            "sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644"
+          },
+          {
+            "path": "schedule-baseline-000.svg",
+            "bytes": 16448,
+            "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+          },
+          {
+            "path": "schedule-baseline-001.svg",
+            "bytes": 16473,
+            "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+          },
+          {
+            "path": "schedule-baseline-002.svg",
+            "bytes": 15704,
+            "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+          },
+          {
+            "path": "schedule-baseline-003.svg",
+            "bytes": 15715,
+            "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+          },
+          {
+            "path": "schedule-baseline-004.svg",
+            "bytes": 15710,
+            "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+          },
+          {
+            "path": "schedule-proposed-000.svg",
+            "bytes": 16448,
+            "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+          },
+          {
+            "path": "schedule-proposed-001.svg",
+            "bytes": 16473,
+            "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+          },
+          {
+            "path": "schedule-proposed-002.svg",
+            "bytes": 15704,
+            "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+          },
+          {
+            "path": "schedule-proposed-003.svg",
+            "bytes": 15715,
+            "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+          },
+          {
+            "path": "schedule-proposed-004.svg",
+            "bytes": 15710,
+            "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+          },
+          {
+            "path": "scope-revision.json",
+            "bytes": 3143109,
+            "sha256": "cc4e745cd638b3e402c8ae63cdb0c6fb021035272991a9b1f9fbc47dceae92e8"
+          },
+          {
+            "path": "technical.html",
+            "bytes": 259043,
+            "sha256": "01cf86c8a80192abe92a8e3e914aa78128c96ae9db0692b5f30885edc5380c60"
+          },
+          {
+            "path": "technical.pdf",
+            "bytes": 475137,
+            "sha256": "571af5dc498b7e570c9edb9d2baca66b08d64692f2f1648c95197a1de09f8d50"
+          },
+          {
+            "path": "typed-differences.json",
+            "bytes": 16650,
+            "sha256": "fc504fee7f9ba8462a24ee1d52707f94b2cae9bd0ea036ec97a08835aadabd08"
+          },
+          {
+            "path": "workbench-report.json",
+            "bytes": 245455,
+            "sha256": "2bfed5cfa8e0a2fe026d39e2c24d6168cda80996f7f26cd09db0a7328e641710"
+          }
+        ]
+      },
+      "blocking_visual_defects": [],
+      "nonblocking_layout_observations": [
+        "Technical contents continuation is sparse onpage2; not an empty continuation page.",
+        "Retained aligned figure frame is wide relative to small synthetic model; its labeled objects, scale and exact bindings remain visible.",
+        "Full field-path appendix is dense by design; separate technical report provides human-oriented sections.",
+        "Monthly machine-scale residual may print -0.000000 kWh; values are within canonical rounding tolerance and do not imply negative energy."
+      ]
+    },
+    {
+      "label": "R2",
+      "issue_id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+      "content_identity_sha256": "ac557ba59d191545f0b908b3923bbde9ea019833e1ef1fe9c913776fd318a0be",
+      "product_set_identity_sha256": "e9888abf73620b76559126392934aa6876a34ddbb6ee46723160685b6dd84c78",
+      "issue_content_file_sha256": "bea15c7dc824950722297a8c6c9d89dbaa3eefeb02b1ed90c7ad144cd2fa626a",
+      "issue_products_file_sha256": "c799507782d261d3b8583d49a8e6be8c7ad2dcc6ac589422a95bc8b5e6c166f5",
+      "scope_revision_file_sha256": "8124bd985e6b072f5bd794b69f677bae6c7ed0295e1ca8d3aebd3ec3849d1c04",
+      "report_data_file_sha256": "66635e12ed8fdb401cd8995330a47d1e5676193126a37285e920d2b21ae66b49",
+      "scope_revision_sha256": "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1",
+      "scope_parent_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+      "run_bindings": {
+        "baseline": {
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+          "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+          "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+          "physical_input_sha256": "e2a11a85fb61cb3d5d6b4882bb93e3821ee1efd06c838310528b1ffe2b452486",
+          "processing_sha256": "a8cb978a0361686fa1bafa74f859b6b3ecdc8b1f586df663d45cd72ec4dbf570",
+          "gross_rated_cop_by_zone": {
+            "zone1": 3.0,
+            "zone2": 3.0,
+            "zone3": 3.0,
+            "zone4": 3.0
+          },
+          "interval_count": 52560,
+          "interval_seconds": 600,
+          "annual_facility_kwh": 16307.089802617933,
+          "own_facility_peak_kw": 5.516090229474726,
+          "own_facility_peak_timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          }
+        },
+        "proposed": {
+          "run_id": "5fb6b5ed-5b1e-4305-894c-f700292cf874",
+          "record_sha256": "e50bbbf7039682f85e64c645b02a63f3f78a375d98d77debd31c55efce6c65a0",
+          "model_input_sha256": "b6631c5091e8603eb3bb80e69298f39ecf06692f9cd9a48b8cf613b58694a56d",
+          "physical_input_sha256": "4ef521851f1377052402f77e6398e1170715e03c15bf35c1c5630d53ace48781",
+          "processing_sha256": "885acec31fc7ce6139c2ff8688d24bf8182fa1effd4212afed04c285bc76db95",
+          "gross_rated_cop_by_zone": {
+            "zone1": 3.8,
+            "zone2": 3.8,
+            "zone3": 3.8,
+            "zone4": 3.8
+          },
+          "interval_count": 52560,
+          "interval_seconds": 600,
+          "annual_facility_kwh": 12479.638641203668,
+          "own_facility_peak_kw": 3.9868246179189253,
+          "own_facility_peak_timestamp": {
+            "interval_index": 52088,
+            "month": 12,
+            "day": 28,
+            "start_minute": 1040,
+            "end_minute": 1050
+          }
+        }
+      },
+      "renderer_identity": {
+        "method": "greenlens.energy-report-issue-renderer/1",
+        "document_schema": "greenlens.energy-document.v0.7",
+        "html_method": "greenlens.owned-energy-html/1",
+        "figure_method": "greenlens.reference-analytical-orthographic/2",
+        "template_sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697",
+        "typst_version": "0.15.1",
+        "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+        "font_sha256": {
+          "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+          "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+        },
+        "pdf_creation_timestamp": 0,
+        "performance_png_ppi": 96,
+        "system_and_embedded_fonts_disabled": true
+      },
+      "source_local_review_receipt_sha256": "23bfcf88d63bcbc39ad361a4a5af7d2fad43fad68c6a9a6bfdba88fc9bab158a",
+      "pdfs": [
+        {
+          "name": "assessment.pdf",
+          "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e",
+          "bytes": 71333,
+          "page_count": 4,
+          "exact_byte_alias_of": null
+        },
+        {
+          "name": "executive.pdf",
+          "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e",
+          "bytes": 71333,
+          "page_count": 4,
+          "exact_byte_alias_of": "assessment.pdf"
+        },
+        {
+          "name": "input-appendix.pdf",
+          "sha256": "81e791dd240808be756336e941d77f4907843764946a61043abac4d6f684ee81",
+          "bytes": 939421,
+          "page_count": 39,
+          "exact_byte_alias_of": null
+        },
+        {
+          "name": "performance.pdf",
+          "sha256": "4aa3a7f52baf31d0e7761241cb782eaeeaccf2206c27506a14c8078ac5c33ae0",
+          "bytes": 242512,
+          "page_count": 8,
+          "exact_byte_alias_of": null
+        },
+        {
+          "name": "technical.pdf",
+          "sha256": "2cab1926d36a141c7be82141c716c30b15790086036f9211edaf65fb7cc4dafe",
+          "bytes": 473037,
+          "page_count": 22,
+          "exact_byte_alias_of": null
+        }
+      ],
+      "pdf_aliases": [
+        {
+          "name": "assessment.pdf",
+          "exact_byte_alias": "executive.pdf",
+          "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e"
+        }
+      ],
+      "unique_pdf_pages_individually_reviewed": 73,
+      "page_visual_reviews": [
+        {
+          "family": "executive",
+          "page": 1,
+          "render_sha256": "af73dca3f7c20ad800f4c29928986fbc4797b260e7680ca916c5562eeb769987",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Title, exact scope, missing sensitivity and annual figures readable."
+        },
+        {
+          "family": "executive",
+          "page": 2,
+          "render_sha256": "ea9fec4387af01910a34e84025c1478bac2c22214c02edd44a15d3b2db6988c3",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Annual comparison chart readable with shared scale."
+        },
+        {
+          "family": "executive",
+          "page": 3,
+          "render_sha256": "44deff7ed258850191f34f7216a4a1aca748d1edd96ef2877a10c3524119d658",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed Unassessed status and limits conspicuous; typed changes readable."
+        },
+        {
+          "family": "executive",
+          "page": 4,
+          "render_sha256": "027573e3e1cc182b92070f45b912cc1f0f093d8d5afd650be9d138fc3b206416",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Comfort, weather, synthetic carbon and metadata readable."
+        },
+        {
+          "family": "technical",
+          "page": 1,
+          "render_sha256": "0056f62ab5a94c5d6fd8234b0eec79951a7cc0efe2f1b1db9a477768991b45c2",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Contents readable."
+        },
+        {
+          "family": "technical",
+          "page": 2,
+          "render_sha256": "38b6a692980316ff639d5afae007e53bfda08463489bfec5e682cb7cc336e847",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Sparse contents continuation; not empty."
+        },
+        {
+          "family": "technical",
+          "page": 3,
+          "render_sha256": "19ba19a01af208f7f3ac9a05821778ef080a1413251ce55e6f11bd4d2745f292",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Scope and readiness disclosures readable."
+        },
+        {
+          "family": "technical",
+          "page": 4,
+          "render_sha256": "b3c314a5457d0d099621df72f09890dce0b08088545fb15a083b29785a4e4fe3",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Aligned reference/analytical view retains Z1-Z4 and W1-W2, shared frame, section, scale, exact S2 and baseline model/run bindings; unknown north disclosed."
+        },
+        {
+          "family": "technical",
+          "page": 5,
+          "render_sha256": "e12d5e19342723bbaf9b634192b7e8bf0f998e6bb5e71b576ad4e5e1e2254301",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Changed proposed Unassessed assessment remains readable."
+        },
+        {
+          "family": "technical",
+          "page": 6,
+          "render_sha256": "3b971ac28bfc6bc2db0e733a6e680659a7dbf12ac4dfca5f7e20b46d79c5c315",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "COP and fan changes classified as equipment performance, not reduced ventilation service."
+        },
+        {
+          "family": "technical",
+          "page": 7,
+          "render_sha256": "782cce3d7294dd59e41d016bf08652341afead357716cef04a284feb8f74bf07",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 8,
+          "render_sha256": "c8a933eb7c375f4d6986656a8d4b30d962bbedd918ee4c114ec863b13cd9cfd9",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 9,
+          "render_sha256": "f9c159f4e3960d5e44bf32d37b9821491dc2d08e4f9af41b5ee23d67b79d03e6",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 10,
+          "render_sha256": "3ff22fc1ad3086ca8196fb58b54f743537bf4bd4c57ddcd66561c4bd074ebf0a",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 11,
+          "render_sha256": "cd0f74414ad04586e811b412b8a758932251955a7aba430ab7153082122775ee",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 12,
+          "render_sha256": "4cf521ba6eab7df6c7a29134f6e89a5367c7843b2a5eeb07f88aaac8a137774d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 13,
+          "render_sha256": "578d99751902dfd915a50de2a0e515f46e771472a569b22f5d8b64cf9fa5812b",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 14,
+          "render_sha256": "fde439e2a4ff1953483c87e63ce21f63f267896edd87fd77c79f97488efaf5a1",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Exact proposed retained geometry rendered."
+        },
+        {
+          "family": "technical",
+          "page": 15,
+          "render_sha256": "f219638f3d29376911f8334bff40868cef0be3514273fb32834ca7fe3c2609fd",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed envelope and COP3.8 system fields readable; source continuation continues next page."
+        },
+        {
+          "family": "technical",
+          "page": 16,
+          "render_sha256": "ae9bbe953f075b96be384ea301f607c296c0d511555bf62368b83650addb78cd",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 17,
+          "render_sha256": "45f7b9415c3433c785eba5164646c038f5778b5411446b5d7af6963be80e076f",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 18,
+          "render_sha256": "fe3044865927d44c607129db25915206d7da6245b478fae7af9ffeb014e4732a",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 19,
+          "render_sha256": "fbf5b6fcf5d3490f99d97a90268b3d83d6e8b883e5c0d2eb482731f69fa3dd6d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 20,
+          "render_sha256": "b77e474317bda4b1b1ea59cf04fcf8c5e648e0f8a93ab0d3ac9bf718e5194f97",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "technical",
+          "page": 21,
+          "render_sha256": "046751d76ad34a785a28e3c884e4d82fcef839610ae7328dadafe0418f88496c",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Annual end-use chart readable; common zero baseline and values."
+        },
+        {
+          "family": "technical",
+          "page": 22,
+          "render_sha256": "10791dbec6101c9b9618082cd2d4d9f6a5f88ac907125bc4c5f6947e95fe436c",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Monthly chart readable with units and legend."
+        },
+        {
+          "family": "input-appendix",
+          "page": 1,
+          "render_sha256": "062e46cbded022bb15f08c8df31f7932cb6939bd36e8c04edd0219371e2b96d6",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Contents readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 2,
+          "render_sha256": "fe2dc46f841a32dc55fb6fd227f9830292e77f1f83cfbbdbf5059f18b69e6d43",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Exact pair, incomplete provenance and missing sensitivity explicit."
+        },
+        {
+          "family": "input-appendix",
+          "page": 3,
+          "render_sha256": "3440cb677aa778d8e22240ea69b988b099a69a1e00393cf33b44df57894799f4",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Aligned view, scope inclusions/exclusions readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 4,
+          "render_sha256": "7bd80ccfd5ac68728297085d239bd0e769fc41e1eaadc8ebb796cb4af601fe34",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "S2 parent S1, seven mapping rows and first80 provenance display limit disclosed."
+        },
+        {
+          "family": "input-appendix",
+          "page": 5,
+          "render_sha256": "a97f063eb5f692fd2c321d2d044156672954d30a3bdd8947f2a8647960ece0a0",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 6,
+          "render_sha256": "e47359fd68202f289ec6957da3766090872d95e28f50dfccc7d691d4caec9342",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 7,
+          "render_sha256": "44cdcbfc3acf4379bcd502d0477731d102b61820b1157a2ad49fb4821ad71c73",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Absent reconciliation explicit; baseline assessment readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 8,
+          "render_sha256": "db4b64bb7cfa7acea071ddb317d0bc377be46847790cecf984a0963e917da776",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Baseline source IDs and proposed Unassessed assessment with exact B2 identities readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 9,
+          "render_sha256": "e8d049bfd7d5eaf5bba836b1286aed23098eaaaa38f6162f033e17078cad3747",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Baseline geometry, source model hash and method readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 10,
+          "render_sha256": "9fa8f111bdcfbc94d946f7807ab59ab9d41823b9f0b749c8f7776328b69e49a0",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 11,
+          "render_sha256": "5475b8a90494906681516746689dab18df96613fd5852f94f31f4ca37e2329a0",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 12,
+          "render_sha256": "586467c5eec63c1dfaaa77afdfdcf79ab754e6b29f16af3c0225e0b2132cef76",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 13,
+          "render_sha256": "4cf99ea8a5371258eeb27ae7a4e63f08f4c4b7d41674ce1692a8677c96d9a76e",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 14,
+          "render_sha256": "aaa003d01298abdebd730aea2eaabf5ce3eeea2f7bee70faa03b9ec99abd1a17",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 15,
+          "render_sha256": "a3e5e373b86a5181c260173ef5e22b47577018bae38b56717c7f29872ddcb329",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 16,
+          "render_sha256": "b50dcc9228fb67abde3ac505545734069c1b7f2e473a9ca11c85882039498d5d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 17,
+          "render_sha256": "3a2d55ee37e354962a9097bf3725652a5e0e45dc0f94d5d842129850e68870ff",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 18,
+          "render_sha256": "d71fdb5ee85e4381092b071658f43d0a21d1b866c904c5eaae56314a63d214b6",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 19,
+          "render_sha256": "ccec1e86d9cd1faf575de8d0bde52f8e2b8ab1f6dffab98d2556b4319400e439",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 20,
+          "render_sha256": "ebcd83e82eaa9e969fec56a1786cdfef73cee08a624824cf3356b4ae4cb31440",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 21,
+          "render_sha256": "7e8064827084a767403986c2f17cd4c3d914656425351613d7b6ae3059e367f3",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 22,
+          "render_sha256": "536c04df3d6a4ff6009a5c85dc27220b858e9e4a280d3eaaca92161c1fef198b",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 23,
+          "render_sha256": "28334a08c8e0bce2429c58d62c43aaba8b2b81b8611587873e67c9b9c25e39ac",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 24,
+          "render_sha256": "cb34b5cb6ce00cba6febe40fafd0a8e431daa7992d62481d4e212e8e11cf1a94",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "B2 retained geometry, source model hash and overhang dimensions readable."
+        },
+        {
+          "family": "input-appendix",
+          "page": 25,
+          "render_sha256": "188c1a7bcb9b68def4f91f2af5811e6759e4a999a615837fc8c36c2acd7fb948",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 26,
+          "render_sha256": "4da96a382247f7af6776ec8942406e401cd56cfb673d83750ee8debd7972bd42",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 27,
+          "render_sha256": "fc6a89c4af036fd9c36369711cc03feb0a5f3cb3a20b732ce609cab1cf05c85a",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 28,
+          "render_sha256": "30f1edac88e7c4e5d4365b2d2757c2ef1ecde668de6ec244a554790eb1277c34",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed gross rated COP3.8 preserved in inventory."
+        },
+        {
+          "family": "input-appendix",
+          "page": 29,
+          "render_sha256": "52994bdbc370f9c84bccb4c4ac6427cc724e837ec30be239970621200b69b057",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 30,
+          "render_sha256": "bb80a31bc4a0a8a1afc01fbfa179b5773b590dd5202fbfbbb5ac0d9e58230c30",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 31,
+          "render_sha256": "c95e68ee181f21ddd9eb169c3ab6c1c3cdc06c5b98aa835d3e69e15098ef6e08",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Zone2 COP3.8 and fan efficiency0.6 retained."
+        },
+        {
+          "family": "input-appendix",
+          "page": 32,
+          "render_sha256": "40c00407de9471191effa965158e3d693d0d504373dea71182987d77f637993d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 33,
+          "render_sha256": "c5aaee8f6afefcdb22614d5b196c0f08fa0c96e5d9aa906f40a03b45cd2dea09",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 34,
+          "render_sha256": "3719bfe8942e32c6ffbf0c3e1b522545721cb8285175c050e4b47d76f1929059",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Zone3 COP3.8 retained."
+        },
+        {
+          "family": "input-appendix",
+          "page": 35,
+          "render_sha256": "f07917d5d4761e0ee10307c82ae3cc53a83fd55235ea3777470befb133b759c6",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 36,
+          "render_sha256": "7889dd2e8aa97ca4c20c8322bdf73667fcbdca4c972b1e96a68789823ecc673f",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Zone4 COP3.8 retained."
+        },
+        {
+          "family": "input-appendix",
+          "page": 37,
+          "render_sha256": "2bd54eb870061cb12e2cfadf219e4cb670c8a7c57f75e2f5447b9433601d41e6",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 38,
+          "render_sha256": "1b5198b10d9974a5874c6d0ff2a8da881779863b6523c8b8f330b65b3acf177d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation tables inspected individually; wrapping, repeated headers, margins and footer are legible."
+        },
+        {
+          "family": "input-appendix",
+          "page": 39,
+          "render_sha256": "b0863751a901bef5b92ac8cb8d7cc127303fa585cc2f5cc9d9fd3821cab27078",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Complete retained weather provenance and absent attachments explicit."
+        },
+        {
+          "family": "performance",
+          "page": 1,
+          "render_sha256": "0dc36348989c81b4f47e5b03ba905c763999382bf06c50bb15089845c2abd43d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Title and contents readable."
+        },
+        {
+          "family": "performance",
+          "page": 2,
+          "render_sha256": "a028f3993870fe577c701a2a7fee6f778461744f6b80d052f3474e93f837e935",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "S2/readiness and baseline assessment readable."
+        },
+        {
+          "family": "performance",
+          "page": 3,
+          "render_sha256": "2eacef276b801f742a3cfcdf6edd4a13d532cf204537139c7284ddcd49ec773d",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Proposed Unassessed assessment and method identities readable."
+        },
+        {
+          "family": "performance",
+          "page": 4,
+          "render_sha256": "7599baf991bdb3d284e5bdb44486ba7dc03b63bd10937f0e6bd79658ff689e39",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Annual values, own facility peak times, signed savings, chart and first peak rows readable."
+        },
+        {
+          "family": "performance",
+          "page": 5,
+          "render_sha256": "166ca6700fd21bc92d588ecc0b02870bb50a3ed72f20e6bc8320d96e30673ede",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Own-peak boundary, service limitations and typed changes readable."
+        },
+        {
+          "family": "performance",
+          "page": 6,
+          "render_sha256": "7cedd5a0a18924f3fabea545980a56b6d554a54722b96caddd981ba4536215f1",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Continuation headers and baseline monthly table readable."
+        },
+        {
+          "family": "performance",
+          "page": 7,
+          "render_sha256": "5f115bbda94b7d90d92675f313b95262449313b53d9d7025e4f94f1a55c9843a",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Both monthly and comfort data readable; signed floating point residual displayed within rounding tolerance."
+        },
+        {
+          "family": "performance",
+          "page": 8,
+          "render_sha256": "0c4e6bbdb2236235f9d5676b53d07df4d3da18dc94e7d45aee23f3a68f266f75",
+          "status": "visually_inspected",
+          "result": "no_clipping_overlap_or_missing_content_observed",
+          "note": "Sparse comfort continuation with repeated header and correct interval-union explanation; not empty."
+        }
+      ],
+      "performance_pngs": [
+        {
+          "name": "performance-page-001.png",
+          "sha256": "f14169d59ee7c179d1ba5dbf2da718dd3538c586d4a117f01afd3fada8343628",
+          "bytes": 141613,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-002.png",
+          "sha256": "6da47229a2161df96f5978aacb09f034938be9f2b7a766da036a017de7dd46cf",
+          "bytes": 357982,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-003.png",
+          "sha256": "1872229a36364b252a7bdce6d69c92e1e1662f15fd1aa96cc0ccf1cfe90085f0",
+          "bytes": 321430,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-004.png",
+          "sha256": "4d357b85e23d29891bb41b7a4f80ba5c2d3ee708e541f00414fdd7a2ce128d9f",
+          "bytes": 196937,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-005.png",
+          "sha256": "9bf41b2076aceaa2f8b82c9ad09841db1ef2fb68c192b24461e1a2924c191f60",
+          "bytes": 281031,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-006.png",
+          "sha256": "b043b75e500919e5c0e9220505ae90a991b1950b7809d36bbb628fda4f65e0dc",
+          "bytes": 231079,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-007.png",
+          "sha256": "969374949c3539b7152906e15c0621e1ac2bf15bce62a94d82617e8266dd91c3",
+          "bytes": 264307,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        },
+        {
+          "name": "performance-page-008.png",
+          "sha256": "0aef2720c29bf62d252a3e0145e1d2b55b120d85ba01a011738ea765deb68c2b",
+          "bytes": 60206,
+          "dimensions_px": [
+            794,
+            1123
+          ],
+          "status": "individually_visually_inspected"
+        }
+      ],
+      "aligned_figures": [
+        {
+          "schema_version": "greenlens.aligned-reference-figure.v2",
+          "method": "greenlens.reference-analytical-orthographic/2",
+          "source_triangle_count": 48,
+          "visible_triangle_count": 36,
+          "depicted_triangle_count": 36,
+          "omitted_visible_triangle_count": 0,
+          "protected_visible_triangle_count": 12,
+          "analytical_edge_count": 52,
+          "figure_labels": {
+            "W1": "zone1_window",
+            "W2": "zone2_window",
+            "Z1": "zone1",
+            "Z2": "zone2",
+            "Z3": "zone3",
+            "Z4": "zone4"
+          },
+          "scale_bar_m": 1.0,
+          "unavailable_reason": null,
+          "svg_sha256": "31871b34f27f1d88b1a4bd0cb9c59f7c2adf92bae1d6b848953bfe00d9067816",
+          "definition_sha256": "e40cd04b6083997b30eaba840ba38ae978b5ff482051d59085ff0d8111ba7f3a",
+          "selected_snapshot": {
+            "scope_revision_sha256": "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1",
+            "scope_content_sha256": "9e8db5cb45b3e9cb02fe7efb28258b76f007bff5e83932daf1ca6000fe19cfe9",
+            "selected_run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+            "selected_record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44"
+          },
+          "frame_and_clipping": {
+            "model_input_sha256": "cefc5cd4c98d0ef50d1e1343a5df1583337ef0e37e8a7365565c154873b9f7fd",
+            "reference_revision_sha256": "8634cad1a9adc4eab30b7b4e1e9704c5fb0e4729e2d655a0b6144647cf7dd349",
+            "reference_geometry_sha256": "f605bf71ea682dee28d10bfccc087e0efef7b8e065f04a035ffadc51fb113f8e",
+            "eye_m": [
+              8.0,
+              3.0000000000000018,
+              33.78830946966722
+            ],
+            "target_m": [
+              8.0,
+              3.0,
+              3.0
+            ],
+            "up": [
+              0.0,
+              1.0,
+              0.0
+            ],
+            "vertical_span_m": 21.7329243315298,
+            "aspect_ratio": 1.933404940923738,
+            "section": {
+              "axis": "z",
+              "offset_m": 3.0,
+              "keep": "below"
+            }
+          },
+          "scope_limits": [
+            "Original edges are clipped; filled cut faces and hidden-line removal are not implemented.",
+            "Line drawing only: zone totals are not resolved spatial thermal fields.",
+            "Reference materials do not supply thermal properties. Coverage and approximations remain declared scope information.",
+            "Short drawing labels key to complete stable object IDs in the figure definition; names are not identity."
+          ]
+        }
+      ],
+      "canonical_arithmetic": {
+        "checks": "Annual end-use sums, twelve monthly facility totals, monthly end-use sums, own-peak contributions, facility energy/peak signed savings and percentages, each end-use energy savings; both52560x600s dimensions; all zone/union comfort zero. Retained canonical data only; not a fresh engine run.",
+        "maximum_absolute_reconciliation": 2.2737367544323206e-13,
+        "tolerance": 1e-09,
+        "passed": true
+      },
+      "product_member_integrity": {
+        "count": 44,
+        "all_lengths_and_sha256_checked": true,
+        "members": [
+          {
+            "path": "aligned-figures.json",
+            "bytes": 4274,
+            "sha256": "5e1c7a2e9b5eef155b7f93c19b4996e0a4556875185c96ce4a993b494df58fd6"
+          },
+          {
+            "path": "aligned-view-001.svg",
+            "bytes": 21877,
+            "sha256": "31871b34f27f1d88b1a4bd0cb9c59f7c2adf92bae1d6b848953bfe00d9067816"
+          },
+          {
+            "path": "annual.svg",
+            "bytes": 1880,
+            "sha256": "2b307a109fb7e7ecfdd72c6b256065ba67f178beeec62344bb1b677299adf734"
+          },
+          {
+            "path": "assessment.html",
+            "bytes": 15082,
+            "sha256": "d254da4ca6f41ec46f3884bb46b3cc64c7d977fba2aa27772b4b578b5c3098f6"
+          },
+          {
+            "path": "assessment.pdf",
+            "bytes": 71333,
+            "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e"
+          },
+          {
+            "path": "baseline-model.svg",
+            "bytes": 3723,
+            "sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec"
+          },
+          {
+            "path": "energy-report.json",
+            "bytes": 208279,
+            "sha256": "66635e12ed8fdb401cd8995330a47d1e5676193126a37285e920d2b21ae66b49"
+          },
+          {
+            "path": "executive.html",
+            "bytes": 15082,
+            "sha256": "d254da4ca6f41ec46f3884bb46b3cc64c7d977fba2aa27772b4b578b5c3098f6"
+          },
+          {
+            "path": "executive.pdf",
+            "bytes": 71333,
+            "sha256": "e1dcfb5c15c9b4de233a5341f0dfe96455da20ab3115cd172960de8becb5956e"
+          },
+          {
+            "path": "input-appendix.html",
+            "bytes": 142320,
+            "sha256": "8a9b2e3c78197849bc3a4be175017fa137dbc13d232b83047ba7826f128924db"
+          },
+          {
+            "path": "input-appendix.pdf",
+            "bytes": 939421,
+            "sha256": "81e791dd240808be756336e941d77f4907843764946a61043abac4d6f684ee81"
+          },
+          {
+            "path": "input-provenance.csv",
+            "bytes": 1360911,
+            "sha256": "4067a52ee0511f6942a767b8f157adfeb4018845c2c62a096668c3a1a5c8c2d1"
+          },
+          {
+            "path": "input-provenance.json",
+            "bytes": 2743134,
+            "sha256": "d113b55c4dcfd45256e22ad82cb5f6b76482f9aa614f0db9f0e8587d5b2a9f50"
+          },
+          {
+            "path": "inputs.csv",
+            "bytes": 69253,
+            "sha256": "1a56b683219da532010092a2c03a3937b211d6ba64447ab88468139c48f22241"
+          },
+          {
+            "path": "issue-content.json",
+            "bytes": 3629589,
+            "sha256": "bea15c7dc824950722297a8c6c9d89dbaa3eefeb02b1ed90c7ad144cd2fa626a"
+          },
+          {
+            "path": "monthly.svg",
+            "bytes": 3248,
+            "sha256": "8e7b305a56182a41e01c6e0a487ff04bbf4e07f8d2ae363c4ff8eeeeb72ad66a"
+          },
+          {
+            "path": "performance-page-001.png",
+            "bytes": 141613,
+            "sha256": "f14169d59ee7c179d1ba5dbf2da718dd3538c586d4a117f01afd3fada8343628"
+          },
+          {
+            "path": "performance-page-002.png",
+            "bytes": 357982,
+            "sha256": "6da47229a2161df96f5978aacb09f034938be9f2b7a766da036a017de7dd46cf"
+          },
+          {
+            "path": "performance-page-003.png",
+            "bytes": 321430,
+            "sha256": "1872229a36364b252a7bdce6d69c92e1e1662f15fd1aa96cc0ccf1cfe90085f0"
+          },
+          {
+            "path": "performance-page-004.png",
+            "bytes": 196937,
+            "sha256": "4d357b85e23d29891bb41b7a4f80ba5c2d3ee708e541f00414fdd7a2ce128d9f"
+          },
+          {
+            "path": "performance-page-005.png",
+            "bytes": 281031,
+            "sha256": "9bf41b2076aceaa2f8b82c9ad09841db1ef2fb68c192b24461e1a2924c191f60"
+          },
+          {
+            "path": "performance-page-006.png",
+            "bytes": 231079,
+            "sha256": "b043b75e500919e5c0e9220505ae90a991b1950b7809d36bbb628fda4f65e0dc"
+          },
+          {
+            "path": "performance-page-007.png",
+            "bytes": 264307,
+            "sha256": "969374949c3539b7152906e15c0621e1ac2bf15bce62a94d82617e8266dd91c3"
+          },
+          {
+            "path": "performance-page-008.png",
+            "bytes": 60206,
+            "sha256": "0aef2720c29bf62d252a3e0145e1d2b55b120d85ba01a011738ea765deb68c2b"
+          },
+          {
+            "path": "performance.csv",
+            "bytes": 30130,
+            "sha256": "cdfef7aa88e4680483e5a3e7e143e86cda87d1f5bf9e2d6a3fd300470c20704a"
+          },
+          {
+            "path": "performance.html",
+            "bytes": 30233,
+            "sha256": "9ef18dbba725c55b63b83e4ed34cd1673c995e2ab76b114ce63911a77810554a"
+          },
+          {
+            "path": "performance.json",
+            "bytes": 62512,
+            "sha256": "1364d024b83d66df99f8717343940bc35403fbf885635866386a9c4ee7d53808"
+          },
+          {
+            "path": "performance.pdf",
+            "bytes": 242512,
+            "sha256": "4aa3a7f52baf31d0e7761241cb782eaeeaccf2206c27506a14c8078ac5c33ae0"
+          },
+          {
+            "path": "proposed-model.svg",
+            "bytes": 4393,
+            "sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644"
+          },
+          {
+            "path": "schedule-baseline-000.svg",
+            "bytes": 16448,
+            "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+          },
+          {
+            "path": "schedule-baseline-001.svg",
+            "bytes": 16473,
+            "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+          },
+          {
+            "path": "schedule-baseline-002.svg",
+            "bytes": 15704,
+            "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+          },
+          {
+            "path": "schedule-baseline-003.svg",
+            "bytes": 15715,
+            "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+          },
+          {
+            "path": "schedule-baseline-004.svg",
+            "bytes": 15710,
+            "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+          },
+          {
+            "path": "schedule-proposed-000.svg",
+            "bytes": 16448,
+            "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+          },
+          {
+            "path": "schedule-proposed-001.svg",
+            "bytes": 16473,
+            "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+          },
+          {
+            "path": "schedule-proposed-002.svg",
+            "bytes": 15704,
+            "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+          },
+          {
+            "path": "schedule-proposed-003.svg",
+            "bytes": 15715,
+            "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+          },
+          {
+            "path": "schedule-proposed-004.svg",
+            "bytes": 15710,
+            "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+          },
+          {
+            "path": "scope-revision.json",
+            "bytes": 3146183,
+            "sha256": "8124bd985e6b072f5bd794b69f677bae6c7ed0295e1ca8d3aebd3ec3849d1c04"
+          },
+          {
+            "path": "technical.html",
+            "bytes": 258269,
+            "sha256": "da1d5f146d0e04158f4034a571bf3c2259589991bfccd255f077f84b148f63c1"
+          },
+          {
+            "path": "technical.pdf",
+            "bytes": 473037,
+            "sha256": "2cab1926d36a141c7be82141c716c30b15790086036f9211edaf65fb7cc4dafe"
+          },
+          {
+            "path": "typed-differences.json",
+            "bytes": 16650,
+            "sha256": "24470af74b29d158e72261ec5eb5f8b834e59220acf3aeffb69db491d4d4efa4"
+          },
+          {
+            "path": "workbench-report.json",
+            "bytes": 243889,
+            "sha256": "37493a75a699728128ee4719abaeeb068759189ac2415be53da440dae0578910"
+          }
+        ]
+      },
+      "blocking_visual_defects": [],
+      "nonblocking_layout_observations": [
+        "Technical contents continuation page2 and performance comfort continuation page8 are sparse but contain legible substantive content.",
+        "Retained aligned figure frame is wide relative to small synthetic model; labels, scale, section and exact bindings remain visible.",
+        "Full field-path appendix is dense; separate technical report provides human-oriented presentation.",
+        "Machine-scale monthly residuals can print -0.000000 kWh without implying negative energy."
+      ]
+    }
+  ],
+  "history_preservation": {
+    "check": "After R2 and portable copying, original R1 content/products/scope file hashes still match the pre-R2 review receipt; all44 R1 products retain matching manifest hashes. The47-file frozen R2 copy matches the portable project.",
+    "r1_original_baseline_snapshot_preserved": true,
+    "r1_original_proposed_cop": 3.6,
+    "r2_proposed_cop": 3.8,
+    "r2_scope_parent_is_s1": true,
+    "r1_products_unchanged": 44,
+    "r2_copy_files_identical": 47
+  },
+  "limitations": [
+    "This is visual-layout, retained-product integrity and canonical-arithmetic evidence, not independent physical validation.",
+    "Both issues retain incomplete documentation and explicitly missing exact-pair sensitivity. Successful rendering does not supply that evidence.",
+    "R2 proposed model remains Unassessed; R1 qualification is restricted to its retained exact tested synthetic scope.",
+    "Original synthetic input only. This does not complete the blocked private architectural benchmark.",
+    "The generating CLI identity is distinct from installed desktop candidate, installer and hosted CI identities. No native interaction or clean-machine claim is made here.",
+    "No simulations or Typst renders occurred during this audit; Poppler rendered already-frozen PDFs for inspection.",
+    "The receipt covers these exact frozen products. Subsequent application changes inherit no new visual or engine acceptance automatically. Exact byte reuse may refer back to these product hashes.",
+    "Deterministic regeneration and cold-operation evidence are recorded separately by the release collector; this receipt only verifies retained/copy byte equality."
+  ]
+}

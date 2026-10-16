@@ -40,6 +40,16 @@ Require-Rejection {Assert-IssueExecutionBudgets 1 900 1 1 1 3 2 1} 'undeclared t
 Require-Rejection {Assert-IssueExecutionBudgets 1 1200 1 1 1 0 0 0} 'silently enlarged deadline'
 if(!(Test-IssueJsonEqual @{nested=@(1,2);name='A'} @{name='A';nested=@(1.0,2)})){throw 'Order-independent model comparison failed'};$checks++
 if(Test-IssueJsonEqual @{name='A'} @{name='a'}){throw 'Case-sensitive stable ID comparison failed'};$checks++
+$stream=[IO.MemoryStream]::new([byte[]](1,2,3));$copy=[IO.MemoryStream]::new()
+try {
+ $task=$stream.CopyToAsync($copy)
+ $emitted=@(Wait-IssueStreamTask $task)
+ if($emitted.Count -ne 0 -or $copy.Length -ne 3){throw 'Asynchronous stream wait polluted the response or lost bytes'};$checks++
+ $fault=[Threading.Tasks.Task]::FromException([IO.IOException]::new('Original synthetic stream failure'))
+ Require-Rejection {Wait-IssueStreamTask $fault} 'stream-copy fault propagation'
+ $response=@(& { Wait-IssueStreamTask $task; @{issue=@{id='synthetic-result-only'}} })
+ if($response.Count -ne 1 -or $response[0].issue.id -cne 'synthetic-result-only'){throw 'CLI response is no longer exactly one JSON object'};$checks++
+} finally {$stream.Dispose();$copy.Dispose()}
 $errors=$null;$tokens=$null
 [Management.Automation.Language.Parser]::ParseFile((Join-Path $PSScriptRoot 'verify-study-issues.ps1'),[ref]$tokens,[ref]$errors)|Out-Null
 if($errors.Count){throw ($errors.Message -join '; ')};$checks++

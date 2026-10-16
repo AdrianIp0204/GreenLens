@@ -103,4 +103,14 @@ test('non-evidence commands retain direct invocation and never reserve inspectio
   await setup();command='energy_dependencies';args={engineDir:null,typstDir:null};await draw();assert.deepEqual(read.value,{local:true});assert.deepEqual(calls,[['energy_dependencies',args]]);assert.equal(read.cancellable,false);
 });
 
+
+
+test('product transport uses the shared reservation and cancellation lifecycle with original product identity',async()=>{
+  await setup();command='report_issue_product';args={path:'owned-project',project:{id:'original'},id:'1'.repeat(64),product:'executive.pdf',open:true};const answer=deferred();direct=(c,a)=>{assert.equal(c,command);assert.equal(a.ticket,1);assert.equal(a.product,'executive.pdf');return answer.promise;};await draw();const request=calls.find(([c])=>c==='report_issue_product')[1];assert.equal(requests().length,0);assert.equal(read.cancellable,true);await act(()=>request.onProgress.onmessage(progress()));assert.match(document.body.textContent,/1.0 MiB read/);await clickCancel();assert.deepEqual(cancellations(),[1]);await act(()=>answer.resolve({path:args.product,issue_id:args.id,sha256:'a'.repeat(64),opened:true}));assert.equal(read.value,null);
+});
+
+test('a late cancelled product reservation cannot launch product verification or a native viewer',async()=>{
+  await setup();command='report_issue_product';args={path:'owned-project',project:{id:'original'},id:'1'.repeat(64),product:'executive.pdf',open:true};const reservation=deferred();prepare=()=>reservation.promise;await draw();await clickCancel();await act(()=>reservation.resolve(31));assert.deepEqual(cancellations(),[31]);assert.equal(calls.filter(([c])=>c==='report_issue_product').length,0);assert.equal(read.value,null);
+});
+
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});

@@ -2,6 +2,7 @@ import {assertIssueInspection} from './report-issue-response.mjs';
 // Identity/IPC shape guards only. Rust computes and validates scientific values.
 export function assertEnergyResponse(command,request,value){
   if(command==='report_issue_inspect')return assertIssueInspection(request,value);
+  if(command==='report_issue_product'&&(!value||value.issue_id!==request.id||value.path!==request.product||typeof value.sha256!=='string'||!/^[a-f0-9]{64}$/.test(value.sha256)||(request.open?value.opened!==true:!['image/svg+xml','image/png'].includes(value.media_type))))throw Error('Product response differs from the selected immutable issue.');
   if(command==='energy_copy_design_preview'&&(!value||value.schema_version!=='greenlens.energy-design-copy-preview.v1'||value.source!==request.source||value.target!==request.target||value.source===value.target||!['A','B'].includes(value.source)||!['A','B'].includes(value.target)||typeof value.valid!=='boolean'||!/^[0-9a-f]{64}$/.test(value.preview_sha256)))throw new Error('Design copy preview does not bind the requested source, destination and reviewed identity.');
   if(command==='energy_sensitivity_inspect'){
     const reference=request.project?.energy?.workbench?.sensitivity?.find(r=>r.id===request.id);

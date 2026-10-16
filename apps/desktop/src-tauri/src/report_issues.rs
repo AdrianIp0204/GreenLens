@@ -73,6 +73,7 @@ pub(crate) async fn report_issue_action(
 /// and imported SVG markup are not executed. The frontend renders owned SVG as
 /// an image data URL and never inserts it through innerHTML/object/iframe.
 #[tauri::command]
+#[allow(clippy::too_many_arguments)] // Tauri transports the query and cancellable progress channel separately.
 pub(crate) async fn report_issue_product(
     app: tauri::AppHandle,
     path: String,
@@ -80,10 +81,15 @@ pub(crate) async fn report_issue_product(
     id: String,
     product: String,
     open: bool,
+    ticket: u64,
+    on_progress: tauri::ipc::Channel<greenlens_runner::project_open::OpenProgress>,
 ) -> CommandResult<Value> {
-    blocking(move|| {
-        let control=app.state::<ReportControl>();let _guard=control.begin()?;
-        let (media_type,bytes)=service::product_bytes(Path::new(&path),&project,&id,&product,!open,control.cancelled.clone())?;
+    let cancel = app
+        .state::<crate::evidence_inspection::EvidenceControl>()
+        .start(ticket)?;
+    let result=blocking(move|| {
+        let (media_type,bytes)=service::product_bytes_with_progress(Path::new(&path),&project,&id,&product,!open,cancel.clone(),move|progress|{let _=on_progress.send(progress);})?;
+        ensure!(!cancel.load(std::sync::atomic::Ordering::Relaxed),"Report product inspection cancelled; no product was opened");
         let sha256=greenlens_runner::persistence::bytes_hash(&bytes);
         if !open {
             ensure!(bytes.len()<=8*1024*1024,"Preview exceeds 8 MiB; open the preserved PDF instead");
@@ -99,6 +105,7 @@ pub(crate) async fn report_issue_product(
         let name=Path::new(&product).file_name().context("Product filename missing")?;
         let target=copy.join(name);let mut file=std::fs::OpenOptions::new().write(true).create_new(true).open(&target)?;
         file.write_all(&bytes)?;file.sync_all()?;drop(file);
+        ensure!(!cancel.load(std::sync::atomic::Ordering::Relaxed),"Report product inspection cancelled; no product was opened");
         #[cfg(windows)] {
             use std::os::windows::ffi::OsStrExt;
             #[link(name="shell32")] unsafe extern "system" {fn ShellExecuteW(window:*mut std::ffi::c_void,verb:*const u16,file:*const u16,parameters:*const u16,directory:*const u16,show:i32)->isize;}
@@ -108,7 +115,10 @@ pub(crate) async fn report_issue_product(
             Ok(json!({"path":product,"opened":true,"issue_id":id,"sha256":sha256}))
         }
         #[cfg(not(windows))] {let _=target;anyhow::bail!("Opening retained report products requires native Windows")}
-    }).await
+    }).await;
+    app.state::<crate::evidence_inspection::EvidenceControl>()
+        .finish(ticket)?;
+    result
 }
 
 #[cfg(test)]

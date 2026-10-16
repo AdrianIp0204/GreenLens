@@ -29,7 +29,7 @@ export interface ReportIssueInspection {
 }
 export type ReportIssueAction={kind:'create';a:string;b:string;scope_sha256:string;html_only:boolean}|{kind:'regenerate';id:string}|{kind:'recover';token:string}|{kind:'export'};
 export type ReportIssueActionResult={view?:ProjectView;issue?:ReportIssueInspection;destination?:string;issue_id?:string;artifacts?:unknown;[key:string]:unknown};
-export interface ReportIssueProduct {path:string;media_type:string;svg?:string;bytes?:number[];issue_id?:string;sha256?:string}
+export interface ReportIssueProduct {opened?:boolean;path:string;media_type:string;svg?:string;bytes?:number[];issue_id?:string;sha256?:string}
 
 export function productPurpose(path:string):string {
   if(/(?:executive|technical|assessment)\.(?:pdf|html)$/.test(path))return 'Assessment reports';

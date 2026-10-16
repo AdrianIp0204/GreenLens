@@ -37,7 +37,7 @@ impl EvidenceControl {
         );
         Ok(ticket)
     }
-    fn start(&self, ticket: u64) -> CommandResult<Arc<AtomicBool>> {
+    pub(crate) fn start(&self, ticket: u64) -> CommandResult<Arc<AtomicBool>> {
         let mut active = self.active.lock().map_err(error)?;
         let (cancel, started, reserved) = active
             .get_mut(&ticket)
@@ -62,7 +62,7 @@ impl EvidenceControl {
         }
         Ok(())
     }
-    fn finish(&self, ticket: u64) -> CommandResult<()> {
+    pub(crate) fn finish(&self, ticket: u64) -> CommandResult<()> {
         self.active.lock().map_err(error)?.remove(&ticket);
         Ok(())
     }

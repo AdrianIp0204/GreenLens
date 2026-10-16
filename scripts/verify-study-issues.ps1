@@ -17,6 +17,11 @@ param(
  [Parameter(Mandatory,ParameterSetName='Functions')][switch]$FunctionsOnly
 )
 
+function Wait-IssueStreamTask([Threading.Tasks.Task]$Task) {
+ # CopyToAsync may return Task<VoidTaskResult>; PowerShell otherwise emits its
+ # internal result object and changes the enclosing CLI response into an array.
+ $null=$Task.GetAwaiter().GetResult()
+}
 function Read-IssueJson([string]$Path) {
  return Get-Content -LiteralPath $Path -Raw -Encoding utf8 | ConvertFrom-Json -AsHashtable -Depth 100
 }
@@ -262,7 +267,7 @@ function Invoke-IssueCli([string]$Name,[string[]]$Arguments,[int]$Seconds=600,[i
    if($violation){throw $violation}
    if(!$process.HasExited){Start-Sleep -Milliseconds 400}
   }while(!$process.HasExited)
-  $process.WaitForExit();$outTask.GetAwaiter().GetResult();$errTask.GetAwaiter().GetResult();$exitCode=$process.ExitCode
+  $process.WaitForExit();Wait-IssueStreamTask $outTask;Wait-IssueStreamTask $errTask;$exitCode=$process.ExitCode
  }catch{
   if(!$violation){$violation=$_.Exception.Message}
   if($started -and !$process.HasExited){$process.Kill($true);$process.WaitForExit(10000)|Out-Null}

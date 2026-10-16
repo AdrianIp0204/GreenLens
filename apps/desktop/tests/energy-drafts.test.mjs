@@ -50,7 +50,7 @@ let referenceManifestGate=null,referenceRevision='2'.repeat(64),withRevisions=fa
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 // Real ThermalView follows its WebGL-unavailable branch; no viewport acceptance claim.
 dom.window.HTMLCanvasElement.prototype.getContext=()=>{throw Error('No WebGL context in DOM test');};
-function fixture(){return {...(withRevisions?{architecture:revisionArchitecture()}:{}),schema_version:'0.4.0',id:'draft-fixture',name:'Draft fixture',alternatives:['A','B'].map(id=>({id,model:structuredClone(daylight.model)})),runs:[],energy:{designs:Object.fromEntries(['A','B'].map(id=>[id,{model:structuredClone(inputs.cases[id].model),study:structuredClone(inputs.cases[id].study)}])),weather:[],runs:reportRuns?[{id:'report-a',alternative_id:'A',record_sha256:'a'.repeat(64)},{id:'report-b',alternative_id:'B',record_sha256:'b'.repeat(64)}]:[],carbon_factor:null,lighting_service_evidence:null}};}
+function fixture(){return {...(withRevisions?{architecture:revisionArchitecture()}:{}),schema_version:'0.4.0',id:'draft-fixture',name:'Draft fixture',alternatives:['A','B'].map(id=>({id,model:structuredClone(daylight.model)})),runs:[],energy:{designs:Object.fromEntries(['A','B'].map(id=>[id,{model:structuredClone(inputs.cases[id].model),study:structuredClone(inputs.cases[id].study)}])),weather:[],runs:reportRuns?[{id:'report-a',alternative_id:'A',record_sha256:'a'.repeat(64)},{id:'report-b',alternative_id:'B',record_sha256:'b'.repeat(64)},{id:'historical-a',alternative_id:'A',record_sha256:'c'.repeat(64)},{id:'historical-b',alternative_id:'B',record_sha256:'d'.repeat(64)}]:[],carbon_factor:null,lighting_service_evidence:null}};}
 function view(p){return{project:structuredClone(p),revision:'test-revision',results:[],climate_results:[],energy_results:[]};}
 const referenceHash=value=>value.repeat(64);
 const referenceAsset={id:'synthetic-reference',path:'references/synthetic/manifest.json',revision_sha256:referenceHash('2'),manifest_sha256:referenceHash('4'),geometry_sha256:referenceHash('3')};
@@ -98,6 +98,9 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
     if(command==='validate')return {...daylight,model:args.model};
     if(command==='energy_validate')return{model:args.model,surfaces:[],gross_floor_area_m2:1};
     if(command==='energy_default_runs')return reportRuns?{A:'report-a',B:'report-b'}:{};
+    if(command==='energy_run_catalog'){
+      const {offset,limit,alternative}=args.request,runs=args.project.energy.runs.filter(row=>!alternative||row.alternative_id===alternative),rows=runs.slice().reverse().slice(offset,offset+limit).map(row=>({...row,name:row.id,finished_utc:'2026-10-16T00:00:00Z',input_revision_sha256:referenceHash('1'),model_input_sha256:referenceHash('2'),method:{method_id:'explicit-ipc-fixture',engine_version:'fixture',recipe_sha256:referenceHash('3'),numerical_settings_sha256:referenceHash('4')},interval_minutes:10,current_method:true,assessment:{execution:'completed',evidence_integrity:'metadata_checked',current_physical_inputs:row.id.startsWith('historical')?'changed':'current',scientific:{status:'unassessed',reason:'IPC metadata fixture, no engine execution',tested_scope:'None'}}}));return{schema_version:'greenlens.energy-run-catalog.v1',project_sha256:referenceHash('5'),offset,limit,alternative,total:runs.length,next_offset:offset+rows.length<runs.length?offset+rows.length:null,ordering:'reverse_retention_order',integrity_scope:'Explicit synthetic IPC only',rows};
+    }
     if(command==='energy_result')return null;
     if(command==='energy_report_preflight')return{schema_version:'greenlens.energy-attachment-preflight.v1',ready:true,items:[]};
     if(command==='energy_sensitivity_export_selection')return{included_session_id:null,included_run_ids:['report-a','report-b'],excluded_session_ids:[],policy:'Original synthetic retained-run selection'};
@@ -676,6 +679,47 @@ test('completed issue conflict preserves recovery receipt across navigation and 
   await issueSetup();issuePending=true;await click('Issue exact selected report');assert.equal(doc.project.report_issues,undefined);assert.equal(doc.pendingReportIssues.items.length,1);assert.match(issuePanel().textContent,/reopen the saved project/);await click('Daylight');await click('Energy');assert.ok(button('Recover completed report'));assert.match(window.localStorage.getItem('greenlens.pending-report-issues.v1'),/synthetic-recovery-token/);
   const previousIPC=globalThis.__draftIPC;globalThis.__draftIPC=async(command,args)=>{if(command==='admit_project')return{schema_version:'greenlens.project-admission.v1',project_id:disk.id,project_name:disk.name,manifest_sha256:'f'.repeat(64),static_runs:0,climate_runs:0,energy_runs:2,evidence_checked:false};if(command==='verify_project')return view(disk);return previousIPC(command,args);};await click('Open');assert.equal(doc.project.id,'draft-fixture');await click('reports');assert.ok(button('Recover completed report'));globalThis.__draftIPC=previousIPC;
   const saves=count('save_project');issuePending=false;await click('Recover completed report');assert.equal(count('save_project'),saves);assert.equal(doc.pendingReportIssues.items.length,0);assert.equal(doc.project.report_issues.issues.length,1);assert.equal(calls.filter(([command])=>command==='report_issue_action').at(-1)[1].action.kind,'recover');
+});
+
+
+
+test('explicit historical pair survives actual workspace discipline design and panel remount without changing accepted inputs',async()=>{
+  await issueSetup();const inputsBefore=JSON.stringify(doc.project.energy.designs);await click('compare');await type(input('Baseline'),'historical-a');await type(input('Proposed'),'historical-b');await click('reports');await click('Issue exact selected report');
+  assert.deepEqual(calls.filter(([c])=>c==='report_issue_action').at(-1)[1].action,{kind:'create',a:'historical-a',b:'historical-b',scope_sha256:referenceHash('c'),html_only:false});
+  await click('Daylight');await click('Energy');assert.match(issuePanel().textContent,/Baseline snapshot: historical-a.*Proposed snapshot: historical-b/);assert.match(issuePanel().textContent,/selected pair and scope IDs match/);
+  await click('Switch design');await click('compare');assert.equal(input('Baseline').value,'__automatic__');assert.equal(input('Proposed').value,'__automatic__');await type(input('Proposed'),'historical-b');await click('Switch design');await click('compare');assert.equal(input('Baseline').value,'historical-a');assert.equal(input('Proposed').value,'historical-b');
+  await click('reports');await click('Save As');await click('Daylight');await click('Energy');assert.match(issuePanel().textContent,/Baseline snapshot: historical-a.*Proposed snapshot: historical-b/);assert.equal(JSON.stringify(doc.project.energy.designs),inputsBefore);assert.equal(doc.history.past.length,0);
+  await click('Open');await click('compare');assert.equal(input('Baseline').value,'__automatic__');assert.equal(input('Proposed').value,'__automatic__');assert.equal(doc.project.id,'other-project-id');
+});
+
+test('explicit no-run and unavailable cached run choices never fall back to automatic current snapshots',async()=>{
+  await issueSetup();await click('compare');await type(input('Baseline'),'');await click('reports');assert.match(issuePanel().textContent,/Baseline snapshot: Not selected/);assert.equal(button('Issue exact selected report').disabled,true);await click('Daylight');await click('Energy');assert.match(issuePanel().textContent,/Baseline snapshot: Not selected/);
+  await act(()=>doc.thermalPresentation.update(p=>({...p,workspace:{...p.workspace,energy_run_selection:{A:'unavailable-old-run',B:'historical-b'}}})));await click('compare');assert.equal(input('Baseline').value,'unavailable-old-run');assert.match(document.body.textContent,/No current run is substituted/);await click('reports');assert.match(issuePanel().textContent,/Baseline snapshot: Not selected/);assert.equal(button('Issue exact selected report').disabled,true);
+  await click('compare');await type(input('Baseline'),'__automatic__');await click('reports');assert.match(issuePanel().textContent,/Baseline snapshot: report-a/);assert.equal(button('Issue exact selected report').disabled,false);
+});
+
+test('bounded display storage validates and restores exact explicit pair choices without a scientific identity',()=>{
+  let text;const storage={getItem:()=>text,setItem:(_,value)=>text=value},key=JSON.stringify(['pair-display-fixture','A']),store=new ThermalPresentationStore(storage),original=store.get(key);
+  const withPicks={...original,workspace:{panel:'reports',inspector:null,reference_selection:null,energy_run_selection:{A:'historical-a',B:null}}};store.set(key,withPicks);assert.deepEqual(new ThermalPresentationStore(storage).get(key).workspace.energy_run_selection,{A:'historical-a',B:null});
+  for(const picks of [[],null,{C:'wrong-design'},{A:''},{A:'x'.repeat(257)},{A:123}])assert.equal(validThermalPresentation({...withPicks,workspace:{...withPicks.workspace,energy_run_selection:picks}}),false);
+});
+
+test('actual report product inspection shows ticketed progress cancels once and hides late success',async()=>{
+  await issueSetup();await click('Issue exact selected report');let finish,request;const cancellations=[];issueProductGate=new Promise(resolve=>finish=resolve);globalThis.__inspectionProtocol=(command,args)=>{if(command==='report_issue_product')request=args;if(command==='cancel_evidence_inspection')cancellations.push(args.ticket);};
+  await click('Preview figures/aligned-1.svg');assert.ok(Number.isSafeInteger(request.ticket));assert.equal(button('Open retained executive.pdf').disabled,true);assert.match(issuePanel().textContent,/Checking the requested retained report product/);await act(()=>request.onProgress.onmessage({schema_version:'greenlens.project-open-progress.v1',stage:'issue_product_bytes',run_id:null,runs_completed:0,runs_total:0,bytes_read:2097152,files_verified:1,elapsed_ms:12,numeric_passes:{}}));assert.match(issuePanel().textContent,/issue product bytes · 2.0 MiB read/);
+  await act(()=>document.querySelector('[aria-label="Cancel inspection: Checking the requested retained report product"]').click());assert.deepEqual(cancellations,[request.ticket]);await act(async()=>finish());assert.equal(document.querySelector('[aria-label="Rendered issue product preview"]'),null);assert.match(issuePanel().textContent,/inspection cancelled/);delete globalThis.__inspectionProtocol;
+});
+
+test('report product verification is cancelled on issue switch and actual discipline unmount',async()=>{
+  await issueSetup();await click('Issue exact selected report');await type(input('Issue scope revision'),referenceHash('d'));await click('Issue exact selected report');let finish,request;const cancelled=[];globalThis.__inspectionProtocol=(command,args)=>{if(command==='report_issue_product')request=args;if(command==='cancel_evidence_inspection')cancelled.push(args.ticket);};
+  issueProductGate=new Promise(resolve=>finish=resolve);await click('Preview figures/aligned-1.svg');const old=request.ticket;await type(input('Inspect issued report'),referenceHash('1'));assert.ok(cancelled.includes(old));await act(async()=>finish());assert.equal(document.querySelector('[aria-label="Rendered issue product preview"]'),null);
+  issueProductGate=new Promise(resolve=>finish=resolve);await click('Open retained executive.pdf');const closing=request.ticket;await click('Daylight');assert.ok(cancelled.includes(closing));await act(async()=>finish());await click('Energy');assert.equal(document.querySelector('[aria-label="Rendered issue product preview"]'),null);assert.doesNotMatch(issuePanel().textContent,/Opened retained executive.pdf/);delete globalThis.__inspectionProtocol;
+});
+
+
+
+test('choosing a historical other-design row opens that exact result and retains the target selection',async()=>{
+  await issueSetup();await click('history');const row=[...document.querySelectorAll('tbody tr')].find(row=>row.textContent.includes('historical-b'));assert.ok(row);await click('Use for proposed B',row);assert.equal(doc.alternative,'B');assert.equal(doc.thermalPresentation.value.workspace.panel,'results');assert.equal(doc.thermalPresentation.value.workspace.energy_run_selection.B,'historical-b');await click('Daylight');await click('Energy');await click('compare');assert.equal(input('Proposed').value,'historical-b');
 });
 
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});

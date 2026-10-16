@@ -1,0 +1,618 @@
+{
+  "schema_version": "greenlens.sanitized-study-issues-final.v0.7",
+  "recorded_utc": "2026-10-16T05:08:09.0192682Z",
+  "source_commit": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+  "source_worktree_dirty": false,
+  "cli_sha256": "292f01de48d2b63c5b057fe147309fbb9f4a0c05daf12b8489fd793f57477084",
+  "collector_revision": "external pipeline-output repair; exact collector hash is bound in each raw command receipt",
+  "completed_phases_at_snapshot": [
+    "Prepare",
+    "Run",
+    "Reports",
+    "Cold",
+    "Replay"
+  ],
+  "declared_protocol_sha256": "aaaf8eeb71a277250b9daecc4e980ce4ebc4d1a5bb5fb1e6447bc47979e2ae4e",
+  "production_attempt_started": true,
+  "replay_attempt_started": true,
+  "declared_change": "Only four proposed zone gross rated cooling COP values 3.6 to 3.8; explicit synthetic assumptions, no geometry or service changes",
+  "accepted_scope_revision_ids": [
+    "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+    "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1"
+  ],
+  "decisions": [
+    {
+      "row_id": "c458816e40640ec55ef2ca7c39ceaaffb593e7e6aa3b15a1c9ee815995509f0b",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    },
+    {
+      "row_id": "f39a304470f0c8076c77a09ecc06ff649963a1d4434f62028a2a0dce06599d8d",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    },
+    {
+      "row_id": "5eeb933d135959c8de9ab4969111b12ea1de71d70dce7c7232f22e79b3e3b853",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    },
+    {
+      "row_id": "062a32ef716a6d25b612bb16d77cf3261676ba0a70b14eb790a1d37efaa672f1",
+      "resolution": "reviewed",
+      "rationale": "Explicit protocol edit: proposed gross rated cooling COP 3.6 to 3.8 only. This is an illustrative synthetic efficiency assumption, not a sourced product or a claim of physical qualification."
+    }
+  ],
+  "run": {
+    "id": "5fb6b5ed-5b1e-4305-894c-f700292cf874",
+    "record_sha256": "e50bbbf7039682f85e64c645b02a63f3f78a375d98d77debd31c55efce6c65a0",
+    "interval_count": 52560,
+    "channel_count": 34,
+    "interval_minutes": 10,
+    "finite_complete_shape_verified": true,
+    "annual_facility_kwh": 12479.638641203668,
+    "coincident_peak": {
+      "end_use_contributions_kw": {
+        "cooling_system": 1.0628246179189256,
+        "exterior_lighting": 0.02,
+        "interior_lighting": 1.152,
+        "plug_equipment": 1.536,
+        "supply_fans": 0.2,
+        "ventilation_exhaust_fans": 0.016
+      },
+      "facility_kw": 3.9868246179189253,
+      "reconciliation_residual_kw": 0.0,
+      "timestamp": {
+        "day": 28,
+        "end_minute": 1050,
+        "interval_index": 52088,
+        "month": 12,
+        "start_minute": 1040
+      }
+    },
+    "building_comfort_union": {
+      "cooling_unmet_hours": 0.0,
+      "occupied_hours": 6136.0,
+      "unmet_percent": 0.0,
+      "zone_id": null
+    },
+    "severe_count": 0,
+    "warning_count": 1,
+    "diagnostics": [
+      "** Warning ** Did you realize that you have Latitude=0.0, Longitude=0.0 and TimeZone=0.0?  Your building site is in the middle of the Atlantic Ocean."
+    ],
+    "assessment": {
+      "current_derived_results": "not_compared",
+      "current_physical_inputs": "current",
+      "current_processed_results": "current",
+      "evidence_integrity": "complete_retained_evidence_checked",
+      "execution": "completed",
+      "scientific": {
+        "applicable_physical_input_sha256": [],
+        "evidence_ids": [],
+        "method": {
+          "adapter_version": "1",
+          "engine_executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+          "engine_package_sha256": "15ab698803f459444ec3e97ee52ab9f99db93a583819c7821b17dfcd7b4461e7",
+          "engine_schema_sha256": "28ba2e4267d79e69331c9988ec52f0211a86077629f0336c46b1cc9103e63c44",
+          "engine_version": "26.2.0",
+          "method_id": "greenlens.energyplus.explicit-dx/1",
+          "numerical_settings_sha256": "58a8dbf3bcf52df9c626b3e3ec608ebdbb5b824f125c0f11dced662c2ba2ec82",
+          "recipe_sha256": "b487b38659180648924b81d9348795cad204efdff5c26848ee3f332bbf68498c"
+        },
+        "reason": "This exact method, numerical profile and physical input scope has no complete passing assessment. The initial synthetic A/B scope failed its proposed-case timestep peak criterion. Only explicitly listed revised inputs have limited qualification; results from another scope do not establish qualification here.",
+        "registry_version": "greenlens.energy-qualification.2026-10-13.3",
+        "status": "unassessed",
+        "tested_scope": "No general building-accuracy, equipment-calibration or certification claim."
+      }
+    },
+    "native_process": {
+      "arguments": [
+        "--jobs",
+        "1",
+        "--weather",
+        "weather.epw",
+        "--output-directory",
+        ".",
+        "--output-prefix",
+        "eplus",
+        "../model.epJSON"
+      ],
+      "elapsed_ms": 13026,
+      "executable": "energyplus.exe",
+      "executable_sha256": "71278a62c9c3871922b3f7ee28a3c7c9f658caa995a934fccb92e8f8965a3977",
+      "exit_code": 0,
+      "failure": null,
+      "finished_utc": "2026-10-16T04:45:04.207485700+00:00",
+      "peak_observed_scratch_bytes": 21082739,
+      "process_tree_empty": true,
+      "sampled_peak_runner_plus_job_working_set_bytes": 435261440,
+      "samples": 209,
+      "schema_version": "greenlens.native-process.v0.4",
+      "started_utc": "2026-10-16T04:44:51.182408800+00:00",
+      "state": "completed",
+      "stderr_sha256": "ced59a5298a8d59e7b4f4f8603bde448c948253819bfbc3e645c2dcb038b1c6f",
+      "stdout_sha256": "5809726f5f4ee659bc17f9f59295f3a8e70780f26633f1a14dfca0dd85c581da"
+    },
+    "command_exit_code": 0,
+    "command_wall_seconds": 126.8657526,
+    "sampled_command_tree_peak_bytes": 437993472,
+    "sampled_command_scratch_peak_bytes": 43631133,
+    "run_stdout_sha256": "cc41e6ad3e1a1a92f9e3285b4849ef4f5dc92d24e0eee735ec28655388aaacc0",
+    "inspection_stdout_sha256": "9b682344f83bcfe757b52423606839591e44ad009b1658448628ced39aba1381"
+  },
+  "issues": [
+    {
+      "summary": {
+        "baseline": {
+          "design_id": "A",
+          "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c"
+        },
+        "content_file_sha256": "3476093ca72b3bca4d4fd2b9946478f82192ace73358aa5f80a8587492a980df",
+        "content_sha256": "cb2a9ed0948e01cc1a837f64256054ec70544ddae2962db8689f882e522ddcf5",
+        "id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+        "include_pdf": true,
+        "path": "report-issues/318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+        "products_file_sha256": "51164bcb977510b6f5391e5acdccd0eafd6b184e0f101ed1bc1a8cd850cf7709",
+        "products_sha256": "81aa3349326f42f1c4f038207b847ddf1d0d634b96429029c45d63f75aea35c8",
+        "proposed": {
+          "design_id": "B",
+          "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+          "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d"
+        },
+        "receipt_file_sha256": "15c857b003109581bd52a4ee5a8d15d951784e18ed65e685cd2755dae5bca79c",
+        "reference_asset_id": "5d9b3f6f-1ed7-4e0b-8096-23fca2e5fc70",
+        "reference_manifest_sha256": "a7a41da2a7a6bf3d8bae7888eed4300c421e38dfa88311b592676e10841f1789",
+        "report_revision": "Draft",
+        "scope_revision_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+        "sensitivity_run_ids": [],
+        "sensitivity_session_id": null,
+        "title": "Synthetic four-zone energy building — energy assessment"
+      },
+      "product_count": 44,
+      "product_bytes": 15918865.0,
+      "renderer": {
+        "document_schema": "greenlens.energy-document.v0.7",
+        "figure_method": "greenlens.reference-analytical-orthographic/2",
+        "font_sha256": {
+          "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+          "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+        },
+        "html_method": "greenlens.owned-energy-html/1",
+        "method": "greenlens.energy-report-issue-renderer/1",
+        "pdf_creation_timestamp": 0,
+        "performance_png_ppi": 96,
+        "system_and_embedded_fonts_disabled": true,
+        "template_sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697",
+        "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+        "typst_version": "0.15.1"
+      },
+      "sensitivity": null,
+      "unresolved_mapping_count": 6,
+      "coverage_percent": null,
+      "stdout_sha256": "11f031863633b993bae39777ac592beaac060b9c436f6f4c936bf88bcdfe621f",
+      "command_exit_code": 0,
+      "command_wall_seconds": 82.39675
+    },
+    {
+      "summary": {
+        "baseline": {
+          "design_id": "A",
+          "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c"
+        },
+        "content_file_sha256": "bea15c7dc824950722297a8c6c9d89dbaa3eefeb02b1ed90c7ad144cd2fa626a",
+        "content_sha256": "ac557ba59d191545f0b908b3923bbde9ea019833e1ef1fe9c913776fd318a0be",
+        "id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+        "include_pdf": true,
+        "path": "report-issues/4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+        "products_file_sha256": "c799507782d261d3b8583d49a8e6be8c7ad2dcc6ac589422a95bc8b5e6c166f5",
+        "products_sha256": "e9888abf73620b76559126392934aa6876a34ddbb6ee46723160685b6dd84c78",
+        "proposed": {
+          "design_id": "B",
+          "record_sha256": "e50bbbf7039682f85e64c645b02a63f3f78a375d98d77debd31c55efce6c65a0",
+          "run_id": "5fb6b5ed-5b1e-4305-894c-f700292cf874"
+        },
+        "receipt_file_sha256": "998e608c01933118bc3b7b349974c7fe4ae702478c3522af261f857ceaf9d531",
+        "reference_asset_id": "5d9b3f6f-1ed7-4e0b-8096-23fca2e5fc70",
+        "reference_manifest_sha256": "a7a41da2a7a6bf3d8bae7888eed4300c421e38dfa88311b592676e10841f1789",
+        "report_revision": "Draft",
+        "scope_revision_sha256": "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1",
+        "sensitivity_run_ids": [],
+        "sensitivity_session_id": null,
+        "title": "Synthetic four-zone energy building — energy assessment"
+      },
+      "product_count": 44,
+      "product_bytes": 15823232.0,
+      "renderer": {
+        "document_schema": "greenlens.energy-document.v0.7",
+        "figure_method": "greenlens.reference-analytical-orthographic/2",
+        "font_sha256": {
+          "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+          "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+        },
+        "html_method": "greenlens.owned-energy-html/1",
+        "method": "greenlens.energy-report-issue-renderer/1",
+        "pdf_creation_timestamp": 0,
+        "performance_png_ppi": 96,
+        "system_and_embedded_fonts_disabled": true,
+        "template_sha256": "1b077568e99d6f45c9428084260e8984071c474d7b8a51de472b8b0090442697",
+        "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+        "typst_version": "0.15.1"
+      },
+      "sensitivity": null,
+      "unresolved_mapping_count": 6,
+      "coverage_percent": null,
+      "stdout_sha256": "cfe1959604e42b28d542a68975deee099d1217fa68fa48fe8e645f4a3696223b",
+      "command_exit_code": 0,
+      "command_wall_seconds": 113.9200583
+    }
+  ],
+  "historical_r1_after_r2": {
+    "exit_code": 0,
+    "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+    "scope_revision_sha256": "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+    "baseline": {
+      "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+      "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+      "design_id": "A"
+    },
+    "proposed": {
+      "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+      "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+      "design_id": "B"
+    },
+    "stdout_sha256": "3a3c0fcf005deaacd6f2462636852f9d385ebfce37ae5e083a7e18cccba13f14"
+  },
+  "canonical_comparison": {
+    "facility_energy_savings": {
+      "absolute": 3827.451161414265,
+      "percent": 23.471086550340868
+    },
+    "facility_peak_savings": {
+      "absolute": 1.5292656115558003,
+      "percent": 27.72372365093502
+    },
+    "stdout_sha256": "499b3b976dab0ddcd54e0440a98972c6d4a78be7f803dd99f1fefba873f47b43"
+  },
+  "collector_failure": {
+    "stage": "After successful immutable R1 publication, before recording the returned issue in collector state",
+    "cause": ".NET stream-copy task completion emitted a VoidTaskResult into the PowerShell result pipeline",
+    "remedy": "Explicitly suppress only wait completion result, preserve propagated exceptions and JSON return",
+    "pure_regressions_passed": 22,
+    "failed_attempt_retained": true,
+    "published_r1_reused": true,
+    "engine_retry_added": false
+  },
+  "claim_boundaries": [
+    "Completed finite headless protocol only; not installed native acceptance or private architectural acceptance",
+    "All three declared native calculations: one missing proposed production case and exactly two selected-issue replay cases; no annual rerun added for a collector repair",
+    "Identical-recipe integration agreement is not physical qualification; B2 remains Unassessed and exact-pair sensitivity remains absent",
+    "Actual document/figure page review, production candidate, installed keyboard/layout/DPI/cancellation and clean-machine installation are separate",
+    "This exact 5654b9e result does not attest later UI source or final hosted CI",
+    "No source-conversion attempt, private geometry disclosure or stopped scientific protocol restart"
+  ],
+  "headless_protocol_result": "passed",
+  "overall_release_result": "incomplete; native/package/final-source CI and report visual review require separate evidence",
+  "cold": {
+    "engine_discovery_failed": true,
+    "missing_engine_exit_code": 1,
+    "original_source_and_working_project_paths_unavailable": true,
+    "known_run_scratch_directories_unavailable": 8,
+    "total_temporarily_hidden_paths": 10,
+    "all_controlled_paths_restored_after_phase": true,
+    "complete_retained_member_hashes_unchanged": true,
+    "regeneration_deterministic_products_equal": true,
+    "regenerated_products": 88,
+    "simulations_started": 0,
+    "path_coverage": "Only the declared source and working project roots plus eight known run job directories were hidden. No unrecorded historical machine path is inferred. Complete ZIP inspection and replay provide a separate package-closure check.",
+    "commands": [
+      {
+        "name": "save-as-cold",
+        "exit_code": 0,
+        "wall_seconds": 111.3454993,
+        "sampled_tree_peak_bytes": 84635648,
+        "sampled_new_scratch_peak_bytes": 0,
+        "observed_energyplus_process_count": 0,
+        "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+        "started_utc": "2026-10-16T04:52:06.7285288Z",
+        "finished_utc": "2026-10-16T04:53:58.3835999Z",
+        "stdout_sha256": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "receipt_sha256": "2a6e3017215be4a17b2a2e222ad5148820ee3385d1790f1b793d4a908d819e9d"
+      },
+      {
+        "name": "cold-missing-engine",
+        "exit_code": 1,
+        "wall_seconds": 0.492017,
+        "sampled_tree_peak_bytes": 0,
+        "sampled_new_scratch_peak_bytes": 0,
+        "observed_energyplus_process_count": 0,
+        "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+        "started_utc": "2026-10-16T04:54:11.8028297Z",
+        "finished_utc": "2026-10-16T04:54:12.4281508Z",
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "ecca796a63d2499998cf4792b41472fedc24a5299a14d53f07f8c47cacd89d4e",
+        "receipt_sha256": "847204dc4f604a603660627c7539a90b722f6412d1193aa51163d939bb5c1109"
+      },
+      {
+        "name": "cold-open",
+        "exit_code": 0,
+        "wall_seconds": 33.3451466,
+        "sampled_tree_peak_bytes": 64139264,
+        "sampled_new_scratch_peak_bytes": 0,
+        "observed_energyplus_process_count": 0,
+        "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+        "started_utc": "2026-10-16T04:54:12.5241874Z",
+        "finished_utc": "2026-10-16T04:54:46.024465Z",
+        "stdout_sha256": "d67976b40460d01248f36d308b6ba00a475ac701e3f852211963025aa0a76e92",
+        "stderr_sha256": "a2bbc53670eb2e2ddbea0be46478a432ce0b0cbf06487f4a837466ddee3a9b2b",
+        "receipt_sha256": "18868583296fef999efbbc8b337adc469162dc003f7db24c65d20a67f7711385"
+      },
+      {
+        "name": "cold-inspect-r1",
+        "exit_code": 0,
+        "wall_seconds": 39.922429,
+        "sampled_tree_peak_bytes": 64282624,
+        "sampled_new_scratch_peak_bytes": 0,
+        "observed_energyplus_process_count": 0,
+        "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+        "started_utc": "2026-10-16T04:54:46.147605Z",
+        "finished_utc": "2026-10-16T04:55:26.2181279Z",
+        "stdout_sha256": "3a3c0fcf005deaacd6f2462636852f9d385ebfce37ae5e083a7e18cccba13f14",
+        "stderr_sha256": "c6e5eefa36a25eb399ee748045a8b16d2d31404b5a90ad25874fbdfcdda8208d",
+        "receipt_sha256": "1172514a9d2500be226040e151e9cd0b5a20ef9ac5dd9237627212e35f6183e7"
+      },
+      {
+        "name": "cold-inspect-r2",
+        "exit_code": 0,
+        "wall_seconds": 38.344416,
+        "sampled_tree_peak_bytes": 62038016,
+        "sampled_new_scratch_peak_bytes": 0,
+        "observed_energyplus_process_count": 0,
+        "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+        "started_utc": "2026-10-16T04:56:27.2498711Z",
+        "finished_utc": "2026-10-16T04:57:05.7147017Z",
+        "stdout_sha256": "f2e187d0994f5e77386315171c358b7d205e5432f40f70202b6156b0ac7ac1a7",
+        "stderr_sha256": "ede692051eaca20fd11b265a8f779b622fa781866f00a01afcfc81d82df593ee",
+        "receipt_sha256": "d9a18a718cf9243516bd22a972b69d3fc2a75294b34a93e4136c83c62fbb3832"
+      }
+    ],
+    "regeneration": [
+      {
+        "name": "cold-regenerate-r1",
+        "exit_code": 0,
+        "wall_seconds": 59.9973051,
+        "sampled_tree_peak_bytes": 139288576,
+        "sampled_new_scratch_peak_bytes": 52294462,
+        "observed_energyplus_process_count": 0,
+        "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+        "started_utc": "2026-10-16T04:55:27.0422925Z",
+        "finished_utc": "2026-10-16T04:56:27.1310915Z",
+        "stdout_sha256": "ba8a54d1cffd4be0705f368b80f73aede65c37a3c4dc29fceefb66cbf6e00b5d",
+        "stderr_sha256": "649b343629c8acdc27bee056220fd37c913186204a8f4935f1e88de1e4745e4e",
+        "receipt_sha256": "fff31333833e6d59b4317aa113411b40e576dd16b61c640df6176f13b623055a",
+        "output": {
+          "issue_id": "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+          "identity": "cb2a9ed0948e01cc1a837f64256054ec70544ddae2962db8689f882e522ddcf5",
+          "product_count": 44,
+          "products_match_issued_hashes": true,
+          "verification": "Every regenerated deterministic product matched its issued hash; no EnergyPlus execution."
+        }
+      },
+      {
+        "name": "cold-regenerate-r2",
+        "exit_code": 0,
+        "wall_seconds": 62.3680102,
+        "sampled_tree_peak_bytes": 184090624,
+        "sampled_new_scratch_peak_bytes": 52190582,
+        "observed_energyplus_process_count": 0,
+        "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+        "started_utc": "2026-10-16T04:57:06.4107521Z",
+        "finished_utc": "2026-10-16T04:58:08.9321896Z",
+        "stdout_sha256": "c8c5360961d9a018268cb94346705560bfc20fe04fae9922439ffbff88e95438",
+        "stderr_sha256": "12ff02b8ae55a9ea276a2081bbad9f8febde248b0921c380a55c5ff647f13642",
+        "receipt_sha256": "66783bace17f3d95a5238d4e36002d339d41b9f77923af27db6a1cec81f0de10",
+        "output": {
+          "issue_id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+          "identity": "ac557ba59d191545f0b908b3923bbde9ea019833e1ef1fe9c913776fd318a0be",
+          "product_count": 44,
+          "products_match_issued_hashes": true,
+          "verification": "Every regenerated deterministic product matched its issued hash; no EnergyPlus execution."
+        }
+      }
+    ]
+  },
+  "complete_export": {
+    "name": "complete-export",
+    "exit_code": 0,
+    "wall_seconds": 118.9282156,
+    "sampled_tree_peak_bytes": 83116032,
+    "sampled_new_scratch_peak_bytes": 0,
+    "observed_energyplus_process_count": 0,
+    "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+    "started_utc": "2026-10-16T04:58:57.3755707Z",
+    "finished_utc": "2026-10-16T05:00:56.3865686Z",
+    "stdout_sha256": "5195447767ac57a0f3f46405264fed8408f42b7b317a64afbe5dbb984bff0fb9",
+    "stderr_sha256": "8e3bcaf90194b56aabe7fe37d2c3385b5911027d69e81f12adc22ba9814152e0",
+    "receipt_sha256": "449f21bd565f49cd5b2626d14064294b8b502c8873e8a2a414b873afe8c2c5a9",
+    "output": {
+      "entries": 690,
+      "inclusion_policy": "Complete retained project: every accepted scope revision, report issue and required normalized reference asset; all retained runs, weather, sensitivity records and explicitly included attachments. Original external architectural source files and engines are not included. No retained history was pruned.",
+      "issue_ids": [
+        "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+        "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337"
+      ],
+      "package_bytes": 40422784,
+      "package_content_sha256": "9816759efea18b690b45622ee2cfd3cdb7bbc0fad14cb92653ffb3bad438a17e",
+      "package_sha256": "470e3b13963ee6e2bd7b5ae7ecd30107bdda8180f718edc8c53a37b7cfc556aa",
+      "schema_version": "greenlens.issued-project-export.v0.7",
+      "scope_revision_ids": [
+        "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+        "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1"
+      ],
+      "state": "completed",
+      "uncompressed_bytes": 257381893
+    }
+  },
+  "package_inspection": {
+    "name": "complete-package-inspect",
+    "exit_code": 0,
+    "wall_seconds": 54.7997069,
+    "sampled_tree_peak_bytes": 60157952,
+    "sampled_new_scratch_peak_bytes": 257381893,
+    "observed_energyplus_process_count": 0,
+    "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+    "started_utc": "2026-10-16T05:00:56.5300265Z",
+    "finished_utc": "2026-10-16T05:01:51.4249306Z",
+    "stdout_sha256": "1a22a226a1c2ef6db9ce26a6ca654b96616480f739fa8d2efc9b4d40bef5d14b",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "receipt_sha256": "561a81a315e4580601031bc5c239c5ed55e113b0f9a66a4a8b27dff56f6ef0b2",
+    "output": {
+      "energy_runs": 8,
+      "inclusion_policy": "Complete retained project: every accepted scope revision, report issue and required normalized reference asset; all retained runs, weather, sensitivity records and explicitly included attachments. Original external architectural source files and engines are not included. No retained history was pruned.",
+      "issue_ids": [
+        "318555160def3943c4d93a985d6f9e504b56e119d9fc80854071052b79c893ad",
+        "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337"
+      ],
+      "package_sha256": "470e3b13963ee6e2bd7b5ae7ecd30107bdda8180f718edc8c53a37b7cfc556aa",
+      "project_id": "401dba02-fcc9-4b14-8cb3-bfe32c9946c7",
+      "project_revision": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+      "schema_version": "greenlens.issued-project-inspection.v0.7",
+      "scientific_disclosure": "Package integrity and arithmetic rederivation do not confer scientific qualification; retained method assessments remain separate.",
+      "scope_revision_ids": [
+        "419bcdeca6dcc3a2aa6f833ecbf368a33a2b4a8f590f2b28cdb6776f435f97f8",
+        "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1"
+      ],
+      "simulations_started": 0,
+      "state": "completed",
+      "verification": {
+        "content_snapshot_sha256": "126c002545088318c888de99324795270bcb61fea39aa17557c3250adc124531",
+        "finished_utc": "2026-10-16T05:01:50.936969100+00:00",
+        "manifest_sha256": "67ce71898779c218a7672444e204996e0b2a8170840cadade6f61257ced8df9c",
+        "progress": {
+          "bytes_read": 856592939,
+          "elapsed_ms": 39804,
+          "files_verified": 687,
+          "numeric_passes": {
+            "0a8f9f8d-7415-4011-8957-8bc85c708d8d": 1,
+            "393bbca1-29a2-4a96-bcd4-6d3f5f359500": 1,
+            "3bbdc86e-d78c-4fbc-b0a7-f7952d341e4a": 1,
+            "5fb6b5ed-5b1e-4305-894c-f700292cf874": 1,
+            "8733596c-4bb5-43ad-9945-6b17603fe5ea": 1,
+            "910f87da-3ba4-4edc-808a-0af2d5354a3e": 1,
+            "d7032960-4a14-4158-a276-af515bdf534a": 1,
+            "f523dbb1-b134-4a1e-88db-f7d24a732f8c": 1
+          },
+          "run_id": null,
+          "runs_completed": 8,
+          "runs_total": 8,
+          "schema_version": "greenlens.project-open-progress.v1",
+          "stage": "completed"
+        },
+        "schema_version": "greenlens.project-verification.v1",
+        "scope": "Actual retained bytes checked during this read-only open, with a final content-hash fence; each energy series decoded and arithmetic rederived once. Sensitivity uses only those exact verified records. This is an as-of-open snapshot, not a filesystem monitor, future integrity promise or scientific qualification. Later opens verify bytes again.",
+        "started_utc": "2026-10-16T05:01:11.132839800+00:00"
+      }
+    }
+  },
+  "selected_issue_replay": {
+    "name": "replay-R2-only",
+    "exit_code": 0,
+    "wall_seconds": 90.0976267,
+    "sampled_tree_peak_bytes": 451571712,
+    "sampled_new_scratch_peak_bytes": 343311427,
+    "observed_energyplus_process_count": 2,
+    "collector_sha256": "08626164f28953b836b3761b48303b9a385e5f8d78dd6336e9b362e173568c76",
+    "started_utc": "2026-10-16T05:01:51.5738981Z",
+    "finished_utc": "2026-10-16T05:03:21.8743081Z",
+    "stdout_sha256": "435e25b172206e2d7f44c2273ba02cd4279828b882ea356e6ead71fa84c5a01d",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "receipt_sha256": "755f5e189173e853d55fb5378518971e74f4bd27d1c9d2c600875acce4c44cb6",
+    "output": {
+      "execution_policy": "Only the explicitly selected issue's baseline/proposed were replayed through recognized compiled EnergyPlus methods. Other retained evidence was inspected, not rerun.",
+      "issue_id": "4d53b3f7c0740d0804991115300d37bd21d9d0321fba3306379ab72ce0ac6337",
+      "package_sha256": "470e3b13963ee6e2bd7b5ae7ecd30107bdda8180f718edc8c53a37b7cfc556aa",
+      "qualification": "Identical-recipe integration agreement only; no scientific qualification is inferred.",
+      "runs": [
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "31352f6900bf52386ce9862eb0d09938f9730a42ccc9bfe0364f1409b48ee5ce",
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+          "source_record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44"
+        },
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "ef7dd593aef5ca1b9fd242a299d552d501c1d652b55e58c4aa9a07010c5150b9",
+          "run_id": "5fb6b5ed-5b1e-4305-894c-f700292cf874",
+          "source_record_sha256": "e50bbbf7039682f85e64c645b02a63f3f78a375d98d77debd31c55efce6c65a0"
+        }
+      ],
+      "schema_version": "greenlens.issued-project-replay.v0.7",
+      "scope_revision_sha256": "6d75b263a7b62beab007b9deff1d4d1e3233659c8a4d4fa4afe8c570a3056dd1",
+      "state": "completed"
+    },
+    "total_checked_values": 3574080.0,
+    "frozen_tolerance": "max(1e-6 in each channel unit, 0.1% of reference), exact dimensions/labels/timestamps"
+  },
+  "post_completion_independent_audit": {
+    "source_matching_members": 521,
+    "working_matching_members": 687,
+    "cold_matching_members": 686,
+    "package_entries": 690,
+    "package_uncompressed_bytes": 257381893,
+    "package_max_entry_bytes": 8229005,
+    "package_matching_issued_members": 687,
+    "package_member_paths_safe": true,
+    "package_members_decompressed_and_hashed": 690,
+    "package_bytes": 40422784,
+    "package_sha256": "470e3b13963ee6e2bd7b5ae7ecd30107bdda8180f718edc8c53a37b7cfc556aa",
+    "reference_entry_count": 3,
+    "reference_bytes": 12363,
+    "checked_utc": "2026-10-16T05:07:11.930368Z",
+    "scope": "Independent read-only byte/path audit after collector completion; no engine, report rendering or native input"
+  },
+  "raw_receipts": [
+    {
+      "name": "collector-state.json",
+      "bytes": 9450,
+      "sha256": "47bca912213371f443fcb93f911b63d29340fab01ce00ee78be01042e8e88ce4"
+    },
+    {
+      "name": "cold-verification.json",
+      "bytes": 3528,
+      "sha256": "cd4a816af68abfd3be29fd79da6ce02e205f9d54ef3050c69342c3516761e3a9"
+    },
+    {
+      "name": "delivery-inventory.json",
+      "bytes": 1078,
+      "sha256": "3fc73c13fbd7cfb2fba2df283f44bef11011f6f3cc201c91160df9101ad737b5"
+    },
+    {
+      "name": "original-member-hashes.json",
+      "bytes": 71371,
+      "sha256": "e47ac15b876a3df1be09f61bea820cef73d19f4622905774ffcef41b4d003b86"
+    },
+    {
+      "name": "issued-study-members.json",
+      "bytes": 97553,
+      "sha256": "ded2c13374fdb970511484d61de86a413d56c523aa0ec8a1b4f71df3330e1e86"
+    }
+  ]
+}

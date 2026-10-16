@@ -1035,133 +1035,139 @@ pub fn product_bytes(
     preview: bool,
     cancel: Arc<AtomicBool>,
 ) -> Result<(String, Vec<u8>)> {
-    crate::project_open::inspect_evidence(
-        root,
-        cancel.clone(),
-        |_| {},
-        || {
-            let inspected = inspect_in_operation(root, project, id, &cancel)?;
-            let expected = inspected
-                .products
-                .products
-                .iter()
-                .find(|p| p.path == product)
-                .context("Product is not in this immutable issue")?;
-            relative_path(product)?;
-            let lower = product.to_ascii_lowercase();
-            if lower.ends_with(".svg") {
-                ensure!(
-                    preview,
-                    "SVG is available only as an inert image preview, not an executable document"
-                );
-                inspected.content.ensure_supported_regeneration()?;
-                let data = &inspected.content.workbench;
-                let owned = if product == "baseline-model.svg" {
-                    crate::energy_report::model_svg(&data.base.baseline).into_bytes()
-                } else if product == "proposed-model.svg" {
-                    crate::energy_report::model_svg(&data.base.proposed).into_bytes()
-                } else if product == "annual.svg" || product == "monthly.svg" {
-                    crate::energy_report::chart(
-                        &data.base.presentation()?,
-                        product == "monthly.svg",
-                    )
+    product_bytes_with_progress(root, project, id, product, preview, cancel, |_| {})
+}
+
+/// Cancellable observed product verification; never trust an earlier panel read.
+#[allow(clippy::too_many_arguments)]
+pub fn product_bytes_with_progress(
+    root: &Path,
+    project: &Project,
+    id: &str,
+    product: &str,
+    preview: bool,
+    cancel: Arc<AtomicBool>,
+    progress: impl Fn(crate::project_open::OpenProgress) + Send + Sync + 'static,
+) -> Result<(String, Vec<u8>)> {
+    crate::project_open::inspect_evidence(root, cancel.clone(), progress, || {
+        let inspected = inspect_in_operation(root, project, id, &cancel)?;
+        let expected = inspected
+            .products
+            .products
+            .iter()
+            .find(|p| p.path == product)
+            .context("Product is not in this immutable issue")?;
+        relative_path(product)?;
+        let lower = product.to_ascii_lowercase();
+        if lower.ends_with(".svg") {
+            ensure!(
+                preview,
+                "SVG is available only as an inert image preview, not an executable document"
+            );
+            inspected.content.ensure_supported_regeneration()?;
+            let data = &inspected.content.workbench;
+            let owned = if product == "baseline-model.svg" {
+                crate::energy_report::model_svg(&data.base.baseline).into_bytes()
+            } else if product == "proposed-model.svg" {
+                crate::energy_report::model_svg(&data.base.proposed).into_bytes()
+            } else if product == "annual.svg" || product == "monthly.svg" {
+                crate::energy_report::chart(&data.base.presentation()?, product == "monthly.svg")
                     .into_bytes()
-                } else if let Some(suffix) = product
-                    .strip_prefix("aligned-view-")
-                    .and_then(|s| s.strip_suffix(".svg"))
-                {
-                    let index = suffix
-                        .parse::<usize>()?
-                        .checked_sub(1)
-                        .context("Invalid aligned view number")?;
-                    ensure!(
-                        format!("aligned-view-{:03}.svg", index + 1) == product,
-                        "Noncanonical figure path"
-                    );
-                    let rendered = figures(
-                        root,
-                        project,
-                        &inspected.content.scope_revision,
-                        data,
-                        Some(&inspected.content.figures),
-                        &cancel,
-                    )?;
-                    rendered
-                        .into_iter()
-                        .nth(index)
-                        .context("Issued aligned view unavailable")?
-                        .svg
-                } else {
-                    let found = [
-                        ("baseline", &data.base.baseline),
-                        ("proposed", &data.base.proposed),
-                    ]
+            } else if let Some(suffix) = product
+                .strip_prefix("aligned-view-")
+                .and_then(|s| s.strip_suffix(".svg"))
+            {
+                let index = suffix
+                    .parse::<usize>()?
+                    .checked_sub(1)
+                    .context("Invalid aligned view number")?;
+                ensure!(
+                    format!("aligned-view-{:03}.svg", index + 1) == product,
+                    "Noncanonical figure path"
+                );
+                let rendered = figures(
+                    root,
+                    project,
+                    &inspected.content.scope_revision,
+                    data,
+                    Some(&inspected.content.figures),
+                    &cancel,
+                )?;
+                rendered
                     .into_iter()
-                    .find_map(|(side, case)| {
-                        case.model
-                            .schedules
-                            .iter()
-                            .enumerate()
-                            .find(|(i, _)| format!("schedule-{side}-{i:03}.svg") == product)
-                            .map(|(_, s)| s)
-                    });
-                    crate::energy_report_workbench::schedule_svg(
-                        found.context("Unsupported owned SVG preview product")?,
-                    )
-                    .into_bytes()
-                };
-                ensure!(owned.len()<=8*1024*1024 && owned.len() as u64==expected.bytes && bytes_hash(&owned)==expected.sha256,"Owned preview differs from the preserved issued figure; inspect the original PDF instead");
-                return Ok(("image/svg+xml".into(), owned));
-            }
-            ensure!(lower.ends_with(".png") || (!preview && lower.ends_with(".pdf")),"Open supports retained PDF/PNG products; preview supports owned SVG and bounded PNG images");
-            let limit = if preview {
-                8 * 1024 * 1024
+                    .nth(index)
+                    .context("Issued aligned view unavailable")?
+                    .svg
             } else {
-                MAX_EVIDENCE_FILE_BYTES
+                let found = [
+                    ("baseline", &data.base.baseline),
+                    ("proposed", &data.base.proposed),
+                ]
+                .into_iter()
+                .find_map(|(side, case)| {
+                    case.model
+                        .schedules
+                        .iter()
+                        .enumerate()
+                        .find(|(i, _)| format!("schedule-{side}-{i:03}.svg") == product)
+                        .map(|(_, s)| s)
+                });
+                crate::energy_report_workbench::schedule_svg(
+                    found.context("Unsupported owned SVG preview product")?,
+                )
+                .into_bytes()
             };
+            ensure!(owned.len()<=8*1024*1024 && owned.len() as u64==expected.bytes && bytes_hash(&owned)==expected.sha256,"Owned preview differs from the preserved issued figure; inspect the original PDF instead");
+            return Ok(("image/svg+xml".into(), owned));
+        }
+        ensure!(lower.ends_with(".png") || (!preview && lower.ends_with(".pdf")),"Open supports retained PDF/PNG products; preview supports owned SVG and bounded PNG images");
+        let limit = if preview {
+            8 * 1024 * 1024
+        } else {
+            MAX_EVIDENCE_FILE_BYTES
+        };
+        ensure!(
+            expected.bytes <= limit,
+            "Product exceeds the bounded preview/open limit"
+        );
+        let bytes = read_evidence_bytes_checked(
+            &regular_child(root, &format!("{}/{product}", inspected.summary.path))?,
+            expected.bytes,
+            &mut |n| {
+                checkpoint(&cancel)?;
+                crate::project_open::checkpoint(n)
+            },
+        )?;
+        ensure!(
+            bytes_hash(&bytes) == expected.sha256,
+            "Product changed during inspection"
+        );
+        if lower.ends_with(".png") {
             ensure!(
-                expected.bytes <= limit,
-                "Product exceeds the bounded preview/open limit"
+                bytes.len() >= 33
+                    && &bytes[..8] == b"\x89PNG\r\n\x1a\n"
+                    && &bytes[12..16] == b"IHDR",
+                "Invalid PNG product"
             );
-            let bytes = read_evidence_bytes_checked(
-                &regular_child(root, &format!("{}/{product}", inspected.summary.path))?,
-                expected.bytes,
-                &mut |n| {
-                    checkpoint(&cancel)?;
-                    crate::project_open::checkpoint(n)
-                },
-            )?;
+            let width = u32::from_be_bytes(bytes[16..20].try_into()?);
+            let height = u32::from_be_bytes(bytes[20..24].try_into()?);
             ensure!(
-                bytes_hash(&bytes) == expected.sha256,
-                "Product changed during inspection"
+                width > 0
+                    && height > 0
+                    && width <= 8192
+                    && height <= 8192
+                    && u64::from(width) * u64::from(height) <= 16_777_216,
+                "PNG preview dimensions exceed the 16-megapixel bound"
             );
-            if lower.ends_with(".png") {
-                ensure!(
-                    bytes.len() >= 33
-                        && &bytes[..8] == b"\x89PNG\r\n\x1a\n"
-                        && &bytes[12..16] == b"IHDR",
-                    "Invalid PNG product"
-                );
-                let width = u32::from_be_bytes(bytes[16..20].try_into()?);
-                let height = u32::from_be_bytes(bytes[20..24].try_into()?);
-                ensure!(
-                    width > 0
-                        && height > 0
-                        && width <= 8192
-                        && height <= 8192
-                        && u64::from(width) * u64::from(height) <= 16_777_216,
-                    "PNG preview dimensions exceed the 16-megapixel bound"
-                );
-                Ok(("image/png".into(), bytes))
-            } else {
-                ensure!(
-                    bytes.starts_with(b"%PDF-"),
-                    "Invalid retained PDF signature"
-                );
-                Ok(("application/pdf".into(), bytes))
-            }
-        },
-    )
+            Ok(("image/png".into(), bytes))
+        } else {
+            ensure!(
+                bytes.starts_with(b"%PDF-"),
+                "Invalid retained PDF signature"
+            );
+            Ok(("application/pdf".into(), bytes))
+        }
+    })
 }
 
 fn manifest_from_artifacts(

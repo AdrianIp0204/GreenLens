@@ -1,0 +1,334 @@
+{
+  "schema_version": "greenlens.sanitized-test-supplement.v0.7",
+  "source_commit": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+  "binding": "Coordinator identifies these checks with the application source committed as 5654b9e; raw log digests are retained independently of executable/install identities.",
+  "commands": [
+    "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
+    "cargo test --workspace --exclude greenlens-radiance --locked --offline",
+    "cargo test -p greenlens-radiance --lib --locked --offline",
+    "npm run check",
+    "npm test",
+    "npm run build -- --outDir <external verification directory>"
+  ],
+  "native_toolchain_setup": "scripts/dev-env.ps1",
+  "rust": {
+    "passed": 430,
+    "failed": 0,
+    "ignored": 16,
+    "suites": [
+      {
+        "suite": "unittests src\\main.rs [greenlens-838bdf28ccddeab8]",
+        "status": "ok",
+        "passed": 1,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "unittests src\\lib.rs [greenlens_core-d1d3bee7d3c50025]",
+        "status": "ok",
+        "passed": 95,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 15.65
+      },
+      {
+        "suite": "tests\\study.rs [study-66747bc39546136a]",
+        "status": "ok",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.07
+      },
+      {
+        "suite": "tests\\weather.rs [weather-202790ef391caff7]",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 0.97
+      },
+      {
+        "suite": "unittests src\\lib.rs [greenlens_desktop_lib-6a54bfdcd93ce1d8]",
+        "status": "ok",
+        "passed": 3,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "unittests src\\main.rs [greenlens_desktop-701a9427c6f92a85]",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "unittests src\\lib.rs [greenlens_energyplus-4c67ec8d87583d16]",
+        "status": "ok",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 3.51
+      },
+      {
+        "suite": "unittests src\\lib.rs [greenlens_process-c9beba6c18a57e4b]",
+        "status": "ok",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 2.06
+      },
+      {
+        "suite": "unittests src\\lib.rs [greenlens_runner-07372713f0b6c64e]",
+        "status": "ok",
+        "passed": 212,
+        "failed": 0,
+        "ignored": 5,
+        "seconds": 222.99
+      },
+      {
+        "suite": "tests\\energy_lifecycle.rs [energy_lifecycle-93cb053673544e09]",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 0.0
+      },
+      {
+        "suite": "tests\\jobs.rs [jobs-6e37d090a3130de6]",
+        "status": "ok",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.37
+      },
+      {
+        "suite": "tests\\persistence.rs [persistence-e940588142e998a1]",
+        "status": "ok",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 1.7
+      },
+      {
+        "suite": "tests\\reference_intake.rs [reference_intake-44ec2761b9cff22f]",
+        "status": "ok",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 1.46
+      },
+      {
+        "suite": "doc greenlens_core",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "doc greenlens_desktop_lib",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "doc greenlens_energyplus",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "doc greenlens_process",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "doc greenlens_runner",
+        "status": "ok",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "suite": "unittests src\\lib.rs [greenlens_radiance-175aa416b23a7c4c]",
+        "status": "ok",
+        "passed": 47,
+        "failed": 0,
+        "ignored": 7,
+        "seconds": 18.35
+      }
+    ],
+    "ignored_tests": [
+      {
+        "test": "reviewed_real_hong_kong_pvgis_full_year",
+        "reason": "explicit real-source acceptance; set GREENLENS_ACCEPTANCE_EPW to the reviewed original PVGIS file",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "tests::native_child_fixture",
+        "reason": "Invoked by native supervisor parent tests",
+        "category": "subprocess_entry_invoked_by_parent_test"
+      },
+      {
+        "test": "energy_report::tests::native_typst_all_three_documents_and_pages",
+        "reason": "Requires separately installed pinned native Typst; explicit missing-engine failure",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "energy_verified_cache::tests::concurrent_genuine_record_inspection_deduplicates_numeric_work",
+        "reason": "Requires the predeclared nine genuine retained records, no engine execution",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "energy_verified_cache::tests::retained_nine_record_history_access_stays_bounded_without_numeric_rederivation",
+        "reason": "Requires nine distinct retained genuine records: GREENLENS_TEST_NINE_ENERGY_PROJECT; no engine run",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "energy_verified_cache::tests::retained_report_and_sensitivity_panel_requests_do_not_repeat_numeric_traversal",
+        "reason": "Requires retained real evidence: GREENLENS_TEST_RETAINED_ENERGY_PROJECT; no engine run",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "report_issue_export::tests::genuine_complete_issued_project_roundtrip_preserves_every_member_without_engines",
+        "reason": "Requires a saved genuine issued project in GREENLENS_TEST_ISSUED_PROJECT; never fabricates or runs energy evidence",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "native_energy_conflict_copy_cancel_and_staleness",
+        "reason": "Requires pinned native EnergyPlus; release CI invokes explicitly",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "retained_energy_evidence_is_immutable_through_reference_import_and_cold_copy",
+        "reason": "Requires retained real energy evidence; invoke explicitly with GREENLENS_TEST_RETAINED_ENERGY_PROJECT",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "annual_primary::native_tests::native_hammersley_primary_stream_bridge",
+        "reason": "explicit isolated native bridge; coordinate one engine slot and invoke with --ignored --exact; no skip counts as acceptance",
+        "category": "explicit_acceptance_not_executed_in_this_generic_run"
+      },
+      {
+        "test": "annual_stream::tests::child_fixture",
+        "reason": "synthetic subprocess entry, invoked by native stream supervisor tests",
+        "category": "subprocess_entry_invoked_by_parent_test"
+      },
+      {
+        "test": "process::resource_tests::deadline_child_fixture",
+        "reason": "synthetic deadline child entry point",
+        "category": "subprocess_entry_invoked_by_parent_test"
+      },
+      {
+        "test": "process::resource_tests::resource_child_fixture",
+        "reason": "synthetic child entry point invoked by required resource-cap test",
+        "category": "subprocess_entry_invoked_by_parent_test"
+      },
+      {
+        "test": "process::resource_tests::resource_grandchild_fixture",
+        "reason": "synthetic descendant entry point invoked by required resource-cap test",
+        "category": "subprocess_entry_invoked_by_parent_test"
+      },
+      {
+        "test": "process::tests::child_fixture",
+        "reason": "child process fixture, invoked by cancellation_terminates_process_tree",
+        "category": "subprocess_entry_invoked_by_parent_test"
+      },
+      {
+        "test": "process::tests::grandchild_fixture",
+        "reason": "grandchild process fixture, invoked by cancellation_terminates_process_tree",
+        "category": "subprocess_entry_invoked_by_parent_test"
+      }
+    ],
+    "ignored_fixture_entries": 7,
+    "explicit_acceptance_not_executed": 9
+  },
+  "frontend": {
+    "typecheck": "passed",
+    "tests": 356,
+    "passed": 356,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "todo": 0,
+    "duration_ms": 37216.2623,
+    "production_build": "passed",
+    "vite_version": "8.3.4",
+    "modules_transformed": 112,
+    "production_build_ms": 471,
+    "dom_no_webgl_messages": 70,
+    "limits": "DOM/component tests have no WebGL context; these are not installed-desktop, physical modifier or graphical frame observations.",
+    "production_assets": [
+      {
+        "path": "assets/index-D-_8N4SQ.js",
+        "bytes": 1262492,
+        "sha256": "b637675b8a005e5e065703dbe2868c79d806431d7ad58fa75628f2c5451dea67"
+      },
+      {
+        "path": "assets/index-FvACTnIK.css",
+        "bytes": 46866,
+        "sha256": "d89738ea55bc0e8268d2e848bd03da9fa77130c442f9dc2226673c08bc742099"
+      },
+      {
+        "path": "assets/SceneView-BRr4Xl5I.js",
+        "bytes": 30339,
+        "sha256": "95391f04d3647e64eb74546cc2fce77bf34dc9ea69b6ab4b3b7c7f0b70613d2e"
+      },
+      {
+        "path": "assets/SceneView-CRQpAJph.css",
+        "bytes": 3278,
+        "sha256": "660d0cd86ecb5ef1412ee12f05567894c578cdeb9fefcc1bb1eddfa9db947415"
+      },
+      {
+        "path": "index.html",
+        "bytes": 444,
+        "sha256": "717277cb4bce03ab194294795d6d5df85ef0c9988efd4c9793c43727b8168bc4"
+      }
+    ],
+    "warning": "The main minified JavaScript chunk is 1262492 bytes and exceeds the configured 700 kB warning threshold."
+  },
+  "logs": [
+    {
+      "name": "v0.7-rust-checks-final.txt",
+      "bytes": 51890,
+      "sha256": "7c607d9a15f670f9ca728552a7f0e6d0195a01151855e0580c9e49f2f44a3806"
+    },
+    {
+      "name": "v0.7-frontend-full-check.log",
+      "bytes": 155,
+      "sha256": "0f64988f78a966e2262e11cac9fdaef2f4fe38ec6b0d48e85895c2be752d21b1"
+    },
+    {
+      "name": "v0.7-frontend-full-test.log",
+      "bytes": 42883,
+      "sha256": "bae66b1a24c749283ed43bafedb18a5ff2c707db116b10c9e7fc4df4b9803e87"
+    },
+    {
+      "name": "v0.7-frontend-full-build.log",
+      "bytes": 1943,
+      "sha256": "c720f1e3fd85ac292ab8775e46ca53ea5a666b39bdce6178b3dfebed018c8538"
+    }
+  ],
+  "claims_not_established": [
+    "installed native workflow",
+    "physical modifier selection",
+    "complete annual energy or report-issuance protocol",
+    "frozen daylight physical qualification",
+    "clean-machine installation",
+    "exact-source hosted CI",
+    "cooperative native cancellation",
+    "report page visual review"
+  ],
+  "historical_failures": "Stopped v0.3 daylight and v0.5 real-weather qualification failures remain unchanged. Ignored explicit checks are not passed acceptance."
+}

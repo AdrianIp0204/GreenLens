@@ -1,0 +1,182 @@
+{
+  "schema_version": "greenlens.sanitized-opening-receipt.v0.7",
+  "source_commit": "5654b9e117d9575cf60e2c797c8511a079d8d75d",
+  "source_status": "Clean application source identified by build owner; observations apply only to this CLI artifact",
+  "cli_sha256": "292f01de48d2b63c5b057fe147309fbb9f4a0c05daf12b8489fd793f57477084",
+  "collector_sha256": "126bda5b9d639ae6714fbbf6fc8198addc3a5b7571f4cc239cd87f9d820bcaf6",
+  "collector": "scripts/profile-project-opening.ps1",
+  "raw_declaration": {
+    "name": "declaration.json",
+    "bytes": 3162,
+    "sha256": "527249e9c91913c4b5ba3e177c96d48dad32a198537113a4b7a992492f26b0e8"
+  },
+  "raw_summary": {
+    "name": "summary.json",
+    "bytes": 187339,
+    "sha256": "c197ce77075cef1ffb90e93adb3b1894ea62f4be2a45d6da57cf91dc6ecad893"
+  },
+  "expected_energy_runs": 4,
+  "limits": {
+    "planned_open_processes": 3,
+    "first_progress_ms": 250,
+    "first_copy_open_ms": 30000,
+    "warm_open_ms": 20000,
+    "hard_process_ms": 120000,
+    "termination_join_ms": 5000,
+    "sample_interval_ms": 20,
+    "declared_cooperative_cancel_ms": 1000,
+    "adapter_metadata_limit_bytes": 536870912,
+    "collector_process_working_set_guard_bytes": 2147483648,
+    "max_stream_bytes": 16777216,
+    "max_progress_line_chars": 1048576,
+    "max_progress_events": 4096,
+    "max_project_files": 5000,
+    "max_project_directories": 5000,
+    "max_project_file_bytes": 67108864,
+    "max_project_bytes": 268435456,
+    "copy_deadline_ms": 120000,
+    "max_collector_output_bytes": 536870912
+  },
+  "first_progress_definition": "Elapsed collector stopwatch time, started immediately before native Process.Start, to receipt and parsing of the first complete progress JSON line on stderr. This is CLI arrival, not a rendered desktop frame.",
+  "measurements": [
+    {
+      "ordinal": 1,
+      "context": "Fresh process, newly copied and hash-checked project; copying/hashing can warm OS cache. No cache eviction.",
+      "started_utc": "2026-10-16T04:32:34.0125776Z",
+      "finished_utc": "2026-10-16T04:32:43.1127173Z",
+      "wall_ms": 9017.0948,
+      "receipt_verification_ms": 8817,
+      "first_progress_arrival_ms": 144.2451,
+      "working_set_samples": 201,
+      "sampled_peak_working_set_bytes": 47833088,
+      "observed_os_peak_working_set_bytes": 49643520,
+      "exit_code": 0,
+      "completed": true,
+      "failure_reasons": [],
+      "checks": {
+        "completed_receipt_and_exact_numeric_passes": true,
+        "wall_target_ms": 30000,
+        "wall_target_pass": true,
+        "first_progress_target_ms": 250,
+        "first_progress_target_pass": true
+      },
+      "stdout": {
+        "name": "open-01.stdout.json",
+        "bytes": 1196,
+        "sha256": "bf8c5f37f33ed35700075530815aed23cadbe2a111744b7ac21353402411998c"
+      },
+      "stderr": {
+        "name": "open-01.stderr.jsonl",
+        "bytes": 29802,
+        "sha256": "f86fe77ab2d364ba6d959952977f269cea23552cfb32cb2e99c8edbc2a98fed1"
+      },
+      "verified_files": 302,
+      "bytes_read_including_rechecks": 399446341,
+      "energy_numeric_passes": {
+        "393bbca1-29a2-4a96-bcd4-6d3f5f359500": 1,
+        "8733596c-4bb5-43ad-9945-6b17603fe5ea": 1,
+        "910f87da-3ba4-4edc-808a-0af2d5354a3e": 1,
+        "d7032960-4a14-4158-a276-af515bdf534a": 1
+      },
+      "manifest_sha256": "a0747de58a58fe38dcd49216b9aba41b6ea8eb09c7aea7d8671610197816eb8f",
+      "content_snapshot_sha256": "9546cf62a0100c863e0c63f5fabc7342fc3e81f11aa6359562e9fc6bab5c8a70"
+    },
+    {
+      "ordinal": 2,
+      "context": "Fresh process, same project copy; warmed filesystem cache expected. No in-process snapshot reuse across opens.",
+      "started_utc": "2026-10-16T04:32:43.2593224Z",
+      "finished_utc": "2026-10-16T04:32:51.1034883Z",
+      "wall_ms": 7832.4812,
+      "receipt_verification_ms": 7672,
+      "first_progress_arrival_ms": 117.1619,
+      "working_set_samples": 172,
+      "sampled_peak_working_set_bytes": 47230976,
+      "observed_os_peak_working_set_bytes": 49487872,
+      "exit_code": 0,
+      "completed": true,
+      "failure_reasons": [],
+      "checks": {
+        "completed_receipt_and_exact_numeric_passes": true,
+        "wall_target_ms": 20000,
+        "wall_target_pass": true,
+        "first_progress_target_ms": 250,
+        "first_progress_target_pass": true
+      },
+      "stdout": {
+        "name": "open-02.stdout.json",
+        "bytes": 1196,
+        "sha256": "0e0922bc3abf5bac3e955f816dbdd85daeb59b32a2d423f0bc8aca973dfcca7e"
+      },
+      "stderr": {
+        "name": "open-02.stderr.jsonl",
+        "bytes": 27490,
+        "sha256": "8756d3e8344533b67d0384a7c3fbcbf52cb1655ab0208ec3140d7fbcefaba068"
+      },
+      "verified_files": 302,
+      "bytes_read_including_rechecks": 399446341,
+      "energy_numeric_passes": {
+        "393bbca1-29a2-4a96-bcd4-6d3f5f359500": 1,
+        "8733596c-4bb5-43ad-9945-6b17603fe5ea": 1,
+        "910f87da-3ba4-4edc-808a-0af2d5354a3e": 1,
+        "d7032960-4a14-4158-a276-af515bdf534a": 1
+      },
+      "manifest_sha256": "a0747de58a58fe38dcd49216b9aba41b6ea8eb09c7aea7d8671610197816eb8f",
+      "content_snapshot_sha256": "9546cf62a0100c863e0c63f5fabc7342fc3e81f11aa6359562e9fc6bab5c8a70"
+    },
+    {
+      "ordinal": 3,
+      "context": "Fresh process, same project copy; warmed filesystem cache expected. No in-process snapshot reuse across opens.",
+      "started_utc": "2026-10-16T04:32:51.2084256Z",
+      "finished_utc": "2026-10-16T04:33:03.4250836Z",
+      "wall_ms": 12210.867,
+      "receipt_verification_ms": 12024,
+      "first_progress_arrival_ms": 141.9081,
+      "working_set_samples": 268,
+      "sampled_peak_working_set_bytes": 48799744,
+      "observed_os_peak_working_set_bytes": 49442816,
+      "exit_code": 0,
+      "completed": true,
+      "failure_reasons": [],
+      "checks": {
+        "completed_receipt_and_exact_numeric_passes": true,
+        "wall_target_ms": 20000,
+        "wall_target_pass": true,
+        "first_progress_target_ms": 250,
+        "first_progress_target_pass": true
+      },
+      "stdout": {
+        "name": "open-03.stdout.json",
+        "bytes": 1194,
+        "sha256": "1235a3c798a63db97aefce7f06b62ff2a938f9c120fa45c3c439ffd3f1a42440"
+      },
+      "stderr": {
+        "name": "open-03.stderr.jsonl",
+        "bytes": 38806,
+        "sha256": "19253baf4e703e5bfd5bc091fe459499b92871865d27c0691d14e20fb2cb96db"
+      },
+      "verified_files": 302,
+      "bytes_read_including_rechecks": 399446341,
+      "energy_numeric_passes": {
+        "393bbca1-29a2-4a96-bcd4-6d3f5f359500": 1,
+        "8733596c-4bb5-43ad-9945-6b17603fe5ea": 1,
+        "910f87da-3ba4-4edc-808a-0af2d5354a3e": 1,
+        "d7032960-4a14-4158-a276-af515bdf534a": 1
+      },
+      "manifest_sha256": "a0747de58a58fe38dcd49216b9aba41b6ea8eb09c7aea7d8671610197816eb8f",
+      "content_snapshot_sha256": "9546cf62a0100c863e0c63f5fabc7342fc3e81f11aa6359562e9fc6bab5c8a70"
+    }
+  ],
+  "opening_timing_targets_pass": true,
+  "completed_open_processes": 3,
+  "complete_opening_acceptance": false,
+  "cooperative_cancellation": {
+    "status": "supported_by_current_cli_not_exercised_here",
+    "attempted": false,
+    "reason": "The current open command installs a standard Ctrl-C handler. This collector does not inject console-control events into redirected child processes. Collector deadline tree-kill is containment, not cooperative cancellation evidence.",
+    "remaining": "Observe controlled CLI or actual desktop cooperative cancellation, and separately preserve the previous desktop document/pending evidence; budget 1000 ms."
+  },
+  "cache_disclosure": "No OS cache eviction. Copy/hash work touches source and destination bytes before the first measured process; first-copy is not a hardware-cold cache claim.",
+  "metadata_disclosure": "The service enforces 512 MiB metadata; its receipt does not expose allocated metadata bytes. Process working set cannot establish that separate quantity.",
+  "limits_of_evidence": "CLI progress arrival is not visible desktop progress. Cancellation and metadata-allocation observations are unavailable here. No engine, GPU, installed workflow, physical accuracy, cache eviction or publication is established.",
+  "previous_failures": "Historical first-progress failures remain unchanged; this is a new exact-source supplemental observation, not a replacement of earlier evidence."
+}

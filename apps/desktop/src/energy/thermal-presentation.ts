@@ -23,6 +23,8 @@ export interface ThermalWorkspacePresentation {
   /** Report choices remain separate from live scope and model editing. */
   report_scope_revision_sha256?:string|null;
   report_issue_id?:string|null;
+  /** Undefined selects Rust currentness; null explicitly selects no run. */
+  energy_run_selection?:Partial<Record<'A'|'B',string|null>>;
 }
 export function defaultThermalWorkspacePresentation():ThermalWorkspacePresentation{return{panel:'model',inspector:null,reference_selection:null};}
 export interface ThermalSceneObject {id:string;label:string;kind:'zone'|ThermalLayer;zone_id:string|null;storey:number|null;polygons_m:[number,number,number][][]}
@@ -50,6 +52,7 @@ const ids=(value:unknown):value is string[]=>Array.isArray(value)&&value.length<
 const identifier=(value:unknown)=>typeof value==='string'&&value.length>0&&value.length<=256;
 export function validThermalWorkspacePresentation(value:unknown):value is ThermalWorkspacePresentation {
   const p=value as ThermalWorkspacePresentation;if(!p||!ENERGY_PANELS.includes(p.panel))return false;
+  if(p.energy_run_selection!==undefined){const picks=p.energy_run_selection;if(!picks||typeof picks!=='object'||Array.isArray(picks)||Object.keys(picks).length>2||Object.entries(picks).some(([key,value])=>!['A','B'].includes(key)||(value!==null&&value!==undefined&&!identifier(value))))return false;}
   if(p.report_contents_profile!==undefined&&!['executive','technical'].includes(p.report_contents_profile))return false;
   if(p.scope_revision_sha256!==undefined&&p.scope_revision_sha256!==null&&(typeof p.scope_revision_sha256!=='string'||!/^[a-f0-9]{64}$/.test(p.scope_revision_sha256)))return false;
   for(const value of [p.report_scope_revision_sha256,p.report_issue_id])if(value!==undefined&&value!==null&&(typeof value!=='string'||!/^[a-f0-9]{64}$/.test(value)))return false;
@@ -76,5 +79,6 @@ export function useThermalPresentation(projectId:string|undefined,alternative:st
   const [store]=useState(()=>{try{return new ThermalPresentationStore(window.localStorage);}catch{return new ThermalPresentationStore();}}),[,refresh]=useState(0);
   const key=JSON.stringify([projectId??'unopened',alternative]);const current=useRef(key);current.current=key;
   const update=(change:(value:ThermalPresentation)=>ThermalPresentation)=>{store.set(key,change(store.get(key)));if(current.current===key)refresh(n=>n+1);};
-  return{key,value:store.get(key),update,warning:store.warning,resetLayout:()=>update(p=>({...p,active_view:'perspective',maximized_view:null,tree_width:210,inspector_width:320}))};
+  const updateDesign=(design:'A'|'B',change:(value:ThermalPresentation)=>ThermalPresentation)=>{const target=JSON.stringify([projectId??'unopened',design]);store.set(target,change(store.get(target)));if(current.current===target)refresh(n=>n+1);};
+  return{key,value:store.get(key),update,updateDesign,warning:store.warning,resetLayout:()=>update(p=>({...p,active_view:'perspective',maximized_view:null,tree_width:210,inspector_width:320}))};
 }

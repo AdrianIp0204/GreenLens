@@ -1,3 +1,5 @@
+import {issueFixture} from './report-issue-fixture.mjs';
+import {inspectionCore} from './inspection-ipc.mjs';
 // Actual ReactDOM, editor and hook effects; explicit IPC doubles are not native acceptance.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -19,7 +21,7 @@ async function load(filename){
     let linked=code.replace(/import\s+['"][^'"]+\.css['"];?/g,'');
     for(const m of [...code.matchAll(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g)]){
       const spec=m[3];let target;
-      if(spec==='@tauri-apps/api/core')target='data:text/javascript,'+encodeURIComponent('export const invoke=(...a)=>globalThis.__draftIPC(...a);export const isTauri=()=>true;export class Channel { onmessage=()=>{}; }');
+      if(spec==='@tauri-apps/api/core')target=inspectionCore('__draftIPC','export const isTauri=()=>true;');
       else if(spec==='@tauri-apps/api/window')target='data:text/javascript,'+encodeURIComponent('export const getCurrentWindow=()=>globalThis.__draftWindow;');
       else if(spec.startsWith('.')){
         let resolved=path.resolve(path.dirname(filename),spec);
@@ -34,6 +36,7 @@ async function load(filename){
 const src=fileURLToPath(new URL('../src/',import.meta.url));
 const {default:Editor}=await import(await load(path.join(src,'energy/ThermalEditor.tsx')));
 const {default:Guard}=await import(await load(path.join(src,'energy/EnergyDraftGuard.tsx')));
+const {default:ReviewGuard}=await import(await load(path.join(src,'reference/ScopeReviewDraftGuard.tsx')));
 const {default:ReferenceGuard}=await import(await load(path.join(src,'reference/ReferenceDraftGuard.tsx')));
 const {useDocument}=await import(await load(path.join(src,'workspace/useDocument.ts')));
 const {default:Workspace}=await import(await load(path.join(src,'energy/EnergyWorkspace.tsx')));
@@ -42,17 +45,33 @@ const {ThermalPresentationStore,defaultThermalPresentation,validThermalPresentat
 const inputs=JSON.parse(fs.readFileSync(new URL('../../../examples/energy/revision1-inputs.json',import.meta.url)));
 const daylight=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
 let doc,root,calls,rejectEdit=false,closeHandler,disk,fullWorkspace=false,appendEvidenceOnSave=false,metadataGate=null,sceneObjects=false,preflightIssues=[],referenceImportGate=null,referenceScopeGate=null,reportRuns=false,reportGate=null,reportError=null,saveDestination='test-project';
-let referenceManifestGate=null,referenceRevision='2'.repeat(64);
+let issueEvidence=new Map(),issueGate=null,issueInspectGate=null,issueProductGate=null,issueError=null,issuePending=false,pendingFixture=null;
+let referenceManifestGate=null,referenceRevision='2'.repeat(64),withRevisions=false,revisionPrepareGate=null,revisionAcceptGate=null,revisionPlanMode='cop';
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 // Real ThermalView follows its WebGL-unavailable branch; no viewport acceptance claim.
 dom.window.HTMLCanvasElement.prototype.getContext=()=>{throw Error('No WebGL context in DOM test');};
-function fixture(){return {schema_version:'0.4.0',id:'draft-fixture',name:'Draft fixture',alternatives:['A','B'].map(id=>({id,model:structuredClone(daylight.model)})),runs:[],energy:{designs:Object.fromEntries(['A','B'].map(id=>[id,{model:structuredClone(inputs.cases[id].model),study:structuredClone(inputs.cases[id].study)}])),weather:[],runs:reportRuns?[{id:'report-a',alternative_id:'A'},{id:'report-b',alternative_id:'B'}]:[],carbon_factor:null,lighting_service_evidence:null}};}
+function fixture(){return {...(withRevisions?{architecture:revisionArchitecture()}:{}),schema_version:'0.4.0',id:'draft-fixture',name:'Draft fixture',alternatives:['A','B'].map(id=>({id,model:structuredClone(daylight.model)})),runs:[],energy:{designs:Object.fromEntries(['A','B'].map(id=>[id,{model:structuredClone(inputs.cases[id].model),study:structuredClone(inputs.cases[id].study)}])),weather:[],runs:reportRuns?[{id:'report-a',alternative_id:'A',record_sha256:'a'.repeat(64)},{id:'report-b',alternative_id:'B',record_sha256:'b'.repeat(64)}]:[],carbon_factor:null,lighting_service_evidence:null}};}
 function view(p){return{project:structuredClone(p),revision:'test-revision',results:[],climate_results:[],energy_results:[]};}
 const referenceHash=value=>value.repeat(64);
 const referenceAsset={id:'synthetic-reference',path:'references/synthetic/manifest.json',revision_sha256:referenceHash('2'),manifest_sha256:referenceHash('4'),geometry_sha256:referenceHash('3')};
 function referenceManifest(){return{schema_version:'greenlens.reference-model.v1',importer_id:'greenlens.glb-static-triangles/1',source_sha256:referenceHash('1'),revision_sha256:referenceHash('2'),geometry_sha256:referenceHash('3'),options:{scene_index:null,metres_per_source_unit:1,clockwise_rotation_deg:0,translation_m:[0,0,0],declared_north_clockwise_deg:null,conversion:null},source_units:'metres',coordinate_convention:'Right-handed X/Y/Z-up',selected_scene:0,source_node_count:1,source_mesh_count:1,source_material_count:0,source_texture_count:0,occurrences:[{id:'synthetic-occurrence',node_index:0,parent_id:null,label:'Original fixture',node_path:[0],source_mesh_index:0,world_from_mesh:[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],mirrored:false,bounds:{min_m:[0,0,0],max_m:[1,1,0]},triangle_count:1,triangle_area_m2:.5}],materials:[],chunks:[{path:'geometry/00000.bin',sha256:referenceHash('5'),byte_length:88,triangle_count:1}],bounds:{min_m:[0,0,0],max_m:[1,1,0]},triangle_count:1,triangle_area_m2:.5,warnings:[],exclusions:[],storage_policy:'Original synthetic IPC fixture only',resources:{elapsed_ms:1,source_bytes:100,normalized_bytes:88,json_bytes:100,decoded_allocation_estimate_bytes:200}};}
 function referenceContext(project){return{reference_options_sha256:referenceHash('6'),designs:Object.fromEntries(Object.entries(project.energy.designs).map(([id,design])=>[id,{model_input_sha256:referenceHash(id==='A'?'a':'b'),targets:design.model.zones.map(z=>({object_id:z.id,kind:'zone',label:z.name}))}]))};}
 function referenceAssessment(){return{schema_version:'greenlens.architectural-scope-assessment.v1',scope_sha256:referenceHash('7'),report_binding_sha256:referenceHash('8'),relationship:'current',stale_reasons:[],coverage_percent:null,reconciliations:[],unresolved_mapping_count:1,missing_assumption_count:0,disclosure:'Synthetic IPC fixture only'};}
+// Original synthetic revision-contract replies. These exercise actual form,
+// document and history integration, not native Rust or source equivalence.
+function revisionArchitecture(){
+  const scope={schema_version:'greenlens.architectural-scope.v1',title:'Retained scope S1',purpose:'Original revision interaction fixture',scope_kind:'partial_building',reference_revision_sha256:referenceHash('2'),reference_geometry_sha256:referenceHash('3'),reference_options_sha256:referenceHash('6'),design_model_sha256:{A:referenceHash('a'),B:referenceHash('b')},mappings:[{occurrence_id:'synthetic-occurrence',status:'mapped',targets:[{design_id:'A',object_id:inputs.cases.A.model.zones[0].id,kind:'zone',model_input_sha256:referenceHash('a')}],rationale:'S1 historical mapping rationale'}],included_scope:['Original wing'],excluded_scope:['Unmodeled annex'],boundary_consequences:'Declared adiabatic interface',assumptions:[{id:'cop-source',link:{kind:'thermal_object',design_id:'B',object_id:inputs.cases.B.model.zones[0].id},field:'/system/rated_gross_cop',status:'assumed',value:'3.2',units:'W/W',source:'Original synthetic concept assumption',rationale:'Declared source value, not the applied value',affected_scope:'Cooling system'}],reconciliations:[],coverage:{status:'unknown',reason:'No whole-building denominator'},whole_building_review:null,report_views:[]};
+  const provenance={schema_version:'greenlens.input-provenance-checklist.v1',rows:Array.from({length:105},(_,i)=>({id:`field-${i}`,design_id:'B',object:{kind:'zone',id:inputs.cases.B.model.zones[0].id},field_path:`/synthetic-fixture-field/${i}`,applied_value:i?i:3.5,units:i?'m':'W/W',declared_source:null,status:i?'unreviewed':'assumed',source_declarations:i?[]:[scope.assumptions[0]]})),unreviewed_count:104,missing_count:0,conflicting_count:0,documentation_complete:false,disclosure:'Original synthetic checklist; incomplete provenance does not imply accepted physics.'};
+  const first={schema_version:'greenlens.scope-revision.v1',revision_sha256:referenceHash('c'),parent_revision_sha256:null,reference:{asset_id:referenceAsset.id,manifest_sha256:referenceAsset.manifest_sha256,manifest:referenceManifest()},designs:Object.fromEntries(['A','B'].map(id=>[id,{model:inputs.cases[id].model,calendar:inputs.cases[id].study.calendar,study:inputs.cases[id].study}])),scope,carry_forward_plan_sha256:null,review_decisions:[],provenance};
+  const second={...structuredClone(first),revision_sha256:referenceHash('d'),parent_revision_sha256:first.revision_sha256,scope:{...structuredClone(scope),title:'Retained scope S2',mappings:[{...structuredClone(scope.mappings[0]),rationale:'S2 live mapping rationale'}]}};
+  return{schema_version:'greenlens.architectural-project.v1',assets:[referenceAsset],active_asset_id:referenceAsset.id,scope:second.scope,scope_history:{schema_version:'greenlens.scope-history.v1',revisions:[first,second],active_revision_sha256:second.revision_sha256}};
+}
+function carryPlan(project,parent){
+  const revision=project.architecture.scope_history.revisions.find(r=>r.revision_sha256===parent);
+  const rows=[{id:'mapping-unchanged',kind:'mapping',key:'synthetic-occurrence',change:'unchanged',requires_review:false,before:revision.scope.mappings[0],after:revision.scope.mappings[0],reason:'Exact geometry unchanged'},{id:'cop-changed',kind:'input',key:'zone cooling COP',change:'changed',requires_review:true,before:3.2,after:3.5,reason:'Efficiency input changed; service unchanged'},{id:'assumption-changed',kind:'assumption',key:'cop-source',change:'changed',requires_review:true,before:revision.scope.assumptions[0],after:revision.scope.assumptions[0],reason:'Review source declaration against the changed applied COP'}];
+  if(revisionPlanMode==='geometry')rows.push({id:'deleted-target',kind:'mapping',key:'removed-zone',change:'deleted',requires_review:true,before:'removed-zone',after:null,reason:'No equivalent target inferred'},{id:'new-source',kind:'reference',key:'new-source-revision',change:'unresolved',requires_review:true,before:referenceHash('2'),after:referenceHash('9'),reason:'Reimport requires object reconciliation'});
+  return{schema_version:'greenlens.scope-carry-forward.v1',parent_revision_sha256:parent,target_context_sha256:referenceHash('f'),plan_sha256:referenceHash('7'),proposed_scope:structuredClone(revision.scope),rows};
+}
 function Harness(){
   doc=useDocument();const [show,setShow]=React.useState(true),draft=doc.energyDrafts.get(doc.alternative);
   return React.createElement(React.Fragment,null,
@@ -64,10 +83,10 @@ function Harness(){
     ...['Save','Save As','Run','Open','Close','Undo'].map(label=>React.createElement('button',{key:label,onClick:()=>void ({Save:doc.save,'Save As':doc.saveAs,Run:()=>doc.startEnergy(''),Open:()=>doc.replace('Open'),Close:()=>doc.replace('Close'),Undo:()=>doc.traverse('undo')})[label]()},label)),
     show&&fullWorkspace&&React.createElement(Workspace,{doc}),
     show&&!fullWorkspace&&draft&&React.createElement(Editor,{entry:draft,zoneId:draft.structured.model.zones[0].id,disabled:doc.busy||Boolean(doc.energyDrafts.guard),onChange:change=>doc.energyDrafts.update(doc.alternative,change),onApply:()=>doc.energyDrafts.apply(doc.alternative),onDiscard:()=>doc.energyDrafts.discard(doc.alternative)}),
-    React.createElement(Guard,{drafts:doc.energyDrafts}),React.createElement(ReferenceGuard,{drafts:doc.referenceDrafts}));
+    !doc.referenceDrafts.guard&&!doc.energyDrafts.guard&&React.createElement(ReviewGuard,{drafts:doc.scopeReviewDrafts}),React.createElement(Guard,{drafts:doc.energyDrafts}),React.createElement(ReferenceGuard,{drafts:doc.referenceDrafts}));
 }
-async function setup({retainCache=false,workspace=false,objects=false,reports=false}={}){
-  fullWorkspace=workspace;
+async function setup({retainCache=false,workspace=false,objects=false,reports=false,revisions=false}={}){
+  fullWorkspace=workspace;withRevisions=revisions;issueGate=null;issueInspectGate=null;issueProductGate=null;issueError=null;issuePending=false;if(!retainCache){issueEvidence=new Map();pendingFixture=null;}revisionPrepareGate=null;revisionAcceptGate=null;revisionPlanMode='cop';
   if(root)await act(()=>root.unmount());if(!retainCache)window.localStorage.clear();
   calls=[];rejectEdit=false;appendEvidenceOnSave=false;metadataGate=null;reportRuns=reports;reportGate=null;reportError=null;saveDestination='test-project';disk=fixture();sceneObjects=objects;preflightIssues=[];referenceImportGate=null;referenceScopeGate=null;
   referenceManifestGate=null;referenceRevision=referenceHash('2');
@@ -85,6 +104,18 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
     if(command==='dialog_energy_report')return 'synthetic-report-output';
     if(command==='energy_report'){if(reportGate)await reportGate;if(reportError)throw reportError;return{artifacts:[{path:'executive.html'}],renderer_status:'Synthetic IPC completion only',dataset_sha256:'d'.repeat(64)};}
     if(command==='energy_open_report')return;
+    if(command==='report_issue_action'){
+      if(issueGate)await issueGate;if(issueError)throw issueError;
+      if(args.action.kind==='create'||args.action.kind==='recover'){
+        const issue=args.action.kind==='recover'?structuredClone(pendingFixture):issueFixture(args.project,args.action.scope_sha256,{id:referenceHash(issueEvidence.size?'f':'1'),title:`Original issue R${issueEvidence.size+1}`,revision:`R${issueEvidence.size+1}`,a:args.action.a,b:args.action.b,pdf:!args.action.html_only});
+        if(issuePending&&args.action.kind==='create'){pendingFixture=issue;return{status:'pending',recovery_token:'synthetic-recovery-token',message:'External save conflict; products retained for same-document recovery.'};}
+        issueEvidence.set(issue.summary.id,structuredClone(issue));const next=structuredClone(args.project);next.report_issues??={schema_version:'greenlens.report-issue-index.v1',issues:[]};next.report_issues.issues.push(issue.summary);disk=structuredClone(next);return{status:'issued',view:view(next),issue};
+      }
+      return{destination:args.action.destination,issue_id:args.action.id,verification:'Synthetic IPC only'};
+    }
+    if(command==='report_issue_inspect'){if(issueInspectGate)await issueInspectGate;return structuredClone(issueEvidence.get(args.id));}
+    if(command==='report_issue_product'){if(issueProductGate)await issueProductGate;const issue=issueEvidence.get(args.id),product=issue.products.products.find(row=>row.path===args.product);return{issue_id:args.id,path:args.product,sha256:product.sha256,media_type:args.product.endsWith('.svg')?'image/svg+xml':'image/png',svg:'<svg xmlns="http://www.w3.org/2000/svg"><text>Original retained analytical figure</text></svg>',bytes:[137,80,78,71],opened:args.open};}
+
     if(command==='energy_scene')return{schema_version:'greenlens.thermal-scene.v1',model_sha256:'synthetic',coordinates:'world ENU',objects:sceneObjects?args.model.zones.flatMap(z=>[{id:z.id,label:z.name,kind:'zone',zone_id:z.id,storey:z.storey,polygons_m:[]},...z.surfaces.map(s=>({id:s.id,label:s.id,kind:'surface',zone_id:z.id,storey:z.storey,polygons_m:[]})),...z.windows.flatMap(w=>[{id:w.id,label:w.id,kind:'window',zone_id:z.id,storey:z.storey,polygons_m:[]},...(w.overhang?[{id:`overhang:${w.id}`,label:`Overhang ${w.id}`,kind:'overhang',zone_id:z.id,storey:z.storey,polygons_m:[]}]:[])])]):[]};
     if(command==='energy_preflight')return{schema_version:'greenlens.thermal-preflight.v1',can_prepare:false,coverage:'Synthetic issue-routing fixture; no native validation claim.',issues:preflightIssues};
     if(command==='energy_dependencies')return{schema_version:'greenlens.energy-dependencies.v1',energyplus_ready:true,typst_and_fonts_ready:true,issues:[]};
@@ -121,6 +152,9 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
     if(command==='reference_chunk')return[{occurrence_index:0,material_index:null,vertices_m:[[0,0,0],[1,0,0],[0,1,0]]}];
     if(command==='reference_scope_context')return referenceContext(args.project);
     if(command==='reference_scope_assess')return referenceAssessment();
+    if(command==='reference_revision_prepare'){if(revisionPrepareGate)await revisionPrepareGate;return carryPlan(args.project,args.parentRevisionSha256);}
+    if(command==='reference_revision_accept'){if(revisionAcceptGate)await revisionAcceptGate;if(rejectEdit)throw Error('Synthetic revision context rejection');const plan=carryPlan(args.project,args.parentRevisionSha256);assert.equal(args.expectedPlanSha256,plan.plan_sha256);assert.deepEqual(args.scope,plan.proposed_scope);assert.ok(plan.rows.filter(r=>r.requires_review).every(r=>args.decisions.some(d=>d.row_id===r.id&&d.rationale.trim())));const next=structuredClone(args.project),old=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.parentRevisionSha256),revision={...structuredClone(old),revision_sha256:referenceHash('e'),parent_revision_sha256:old.revision_sha256,scope:structuredClone(args.scope),carry_forward_plan_sha256:plan.plan_sha256,review_decisions:structuredClone(args.decisions)};next.architecture.scope_history.revisions.push(revision);next.architecture.scope_history.active_revision_sha256=revision.revision_sha256;next.architecture.scope=revision.scope;return next;}
+    if(command==='reference_revision_activate'){const next=structuredClone(args.project);next.architecture.scope_history.active_revision_sha256=args.revisionSha256;next.architecture.scope=next.architecture.scope_history.revisions.find(r=>r.revision_sha256===args.revisionSha256)?.scope??null;return next;}
     if(command==='reference_scope_apply'){if(referenceScopeGate)await referenceScopeGate;const next=structuredClone(args.project);next.architecture.scope=args.scope;return next;}
     if(command==='open_project')return view({...fixture(),id:'other-project-id'});
     if(command==='energy_start')return{id:'running-test',state:'queued',log:[]};
@@ -405,6 +439,20 @@ test('actual report guard completion survives tab and discipline remounts with i
   await click('Open');assert.notEqual(doc.documentId,originalDocumentId);assert.equal(doc.project.id,'other-project-id');assert.equal(doc.latestReport,null);assert.equal(document.querySelector('[aria-label="Completed report output"]'),null);
 });
 
+test('actual report contents selection persists per document and design without changing outputs or accepted inputs',async()=>{
+  await setup({workspace:true,reports:true});const accepted=structuredClone(doc.project),past=doc.history.past.length;
+  const selected=profile=>button(`${profile} profile`).getAttribute('aria-pressed')==='true';
+  await click('reports');assert.ok(selected('Executive'));await click('Technical profile');assert.ok(selected('Technical'));
+  await click('results');await click('reports');assert.ok(selected('Technical'));
+  await click('Daylight');await click('Energy');assert.ok(selected('Technical'));
+  await click('Proposed B');await click('reports');assert.ok(selected('Executive'));
+  await click('Technical profile');await click('Executive profile');await click('Baseline A');assert.ok(selected('Technical'));
+  assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,past);assert.equal(count('energy_report'),0);assert.equal(count('energy_edit'),0);assert.equal(count('energy_start'),0);
+  await click('Save');saveDestination='copied-profile-project';await click('Save As');assert.ok(selected('Technical'));
+  await setup({retainCache:true,workspace:true,reports:true});assert.ok(selected('Technical'));await click('Proposed B');assert.ok(selected('Executive'));
+  await click('Save');await click('Open');await click('reports');assert.ok(selected('Executive'));assert.equal(doc.project.id,'other-project-id');
+});
+
 test('actual Energy workspace restores panel and exact inspector across discipline remounts and isolates designs without accepting drafts',async()=>{
   await setup({workspace:true,objects:true});const accepted=structuredClone(doc.project),zone=accepted.energy.designs.A.model.zones[2],window=zone.windows[0];
   await act(()=>[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith(`${window.id} · window`)).click());
@@ -435,6 +483,55 @@ test('actual reference selection waits for admitted geometry after discipline re
   assert.equal(count('energy_edit'),0);assert.equal(count('energy_start'),0);assert.equal(doc.history.past.length,0);
 });
 
+test('actual workspace inspects a historical mapping independently of a live reference selection',async()=>{
+  await setup({workspace:true,objects:true});await prepareReferenceImport();await click('Choose local GLB and import');await click('Start scope for current revision');
+  const historicalId='old-revision-occurrence';
+  await act(()=>doc.referenceDrafts.update({...doc.referenceDrafts.draft,scope:{...doc.referenceDrafts.draft.scope,value:{...doc.referenceDrafts.draft.scope.value,reference_revision_sha256:referenceHash('9'),mappings:[{occurrence_id:historicalId,status:'excluded',targets:[],rationale:'Only this historical mapping may be inspected'}]}}}));
+  await click('Reference');await act(()=>[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith('synthetic-occurrence ')).click());
+  const live=structuredClone(doc.thermalPresentation.value.workspace.reference_selection),before=JSON.stringify(doc.referenceDrafts.draft);
+  await act(()=>document.querySelector(`.reference-occurrence-button[title="${historicalId}"]`).click());
+  assert.equal(input('Mapping rationale').value,'Only this historical mapping may be inspected');
+  assert.deepEqual(doc.thermalPresentation.value.workspace.reference_selection,live);assert.equal(JSON.stringify(doc.referenceDrafts.draft),before);
+  assert.deepEqual(doc.thermalPresentation.value.workspace.reference_inspection,{revision_sha256:referenceHash('9'),occurrence_id:historicalId});
+  await type(input('Mapping rationale'),'A reviewed historical rationale');
+  assert.deepEqual(doc.referenceDrafts.draft.scope.value.mappings.map(row=>[row.occurrence_id,row.rationale]),[[historicalId,'A reviewed historical rationale']]);
+  const drafts=JSON.stringify(doc.referenceDrafts.draft),past=doc.history.past.length;
+  await act(()=>input('Mapping rationale').dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true})));
+  assert.equal(doc.thermalPresentation.value.workspace.reference_inspection,null);assert.deepEqual(doc.thermalPresentation.value.workspace.reference_selection,live);
+  assert.equal(document.querySelector('.reference-mapping'),null);assert.equal(JSON.stringify(doc.referenceDrafts.draft),drafts);assert.equal(doc.history.past.length,past);
+  await click('results');await click('reference');assert.equal(document.querySelector('.reference-mapping'),null);
+  await click('Daylight');await click('Energy');assert.equal(document.querySelector('.reference-mapping'),null);
+  // Explicitly picking the active occurrence is a distinct inspection. The old
+  // draft cannot receive that live row merely because it has been selected.
+  await click('Reference');await act(()=>[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith('synthetic-occurrence ')).click());
+  assert.match(document.querySelector('.reference-mapping').textContent,/another reference revision/);assert.equal(input('Mapping rationale').closest('fieldset').disabled,true);
+  assert.equal(button('Add measurement for selected occurrence').disabled,true);assert.equal(JSON.stringify(doc.referenceDrafts.draft),drafts);
+});
+
+test('historical inspection survives reimport and delayed loading but is isolated by document and design',async()=>{
+  await setup({workspace:true,objects:true});await prepareReferenceImport();await click('Choose local GLB and import');await click('Start scope for current revision');
+  await type(input('Scope title'),'Original accepted scope');await type(input('Study purpose'),'Test historical inspection identity');await type(input('Included scope (one item per line)'),'Original synthetic occurrence');await type(input('Boundary-condition consequences'),'No physical interpretation in this fixture');
+  await type(input('Source occurrence'),'synthetic-occurrence');await type(input('Mapping state'),'excluded');await type(input('Mapping rationale'),'Revision two exact row');await click('Review scope in Rust');await click('Save accepted scope');
+  const accepted=JSON.stringify(doc.project.architecture.scope),oldInspection=structuredClone(doc.thermalPresentation.value.workspace.reference_inspection);
+  referenceRevision=referenceHash('9');await act(async()=>doc.importReference(referenceManifest().options));
+  assert.equal(doc.thermalPresentation.value.workspace.reference_selection,null);assert.deepEqual(doc.thermalPresentation.value.workspace.reference_inspection,oldInspection);
+  await click('Edit accepted scope');assert.equal(input('Mapping rationale').value,'Revision two exact row');assert.match(document.querySelector('.reference-mapping').textContent,/absent from active revision/);
+  await click('Reference');await act(()=>[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith('synthetic-occurrence ')).click());
+  assert.equal(input('Mapping rationale').closest('fieldset').disabled,true);
+  await act(()=>document.querySelector('.reference-occurrence-button[title="synthetic-occurrence"]').click());
+  assert.equal(input('Mapping rationale').value,'Revision two exact row');assert.equal(doc.thermalPresentation.value.workspace.reference_selection.revision_sha256,referenceHash('9'));assert.deepEqual(doc.thermalPresentation.value.workspace.reference_inspection,oldInspection);
+  await click('Daylight');let resume;referenceManifestGate=new Promise(resolve=>resume=resolve);await click('Energy');
+  assert.equal(input('Mapping rationale').value,'Revision two exact row');assert.equal(document.querySelector('[role="treeitem"][aria-selected="true"]'),null);
+  await act(async()=>{referenceManifestGate=null;resume();});assert.equal(input('Mapping rationale').value,'Revision two exact row');
+  await click('Proposed B');assert.equal(doc.thermalPresentation.value.workspace?.reference_inspection??null,null);await click('reference');assert.equal(document.querySelector('.reference-mapping'),null);
+  await click('Baseline A');assert.equal(input('Mapping rationale').value,'Revision two exact row');assert.equal(JSON.stringify(doc.project.architecture.scope),accepted);
+  await click('Clear mapping inspection');assert.equal(document.querySelector('.reference-mapping'),null);
+  // Remove the inspection-only draft before replacement; no accepted scope or
+  // original evidence has changed during this entire sequence.
+  await click('Discard scope draft…');await click('Discard scope draft');await click('Open');
+  assert.equal(doc.project.id,'other-project-id');assert.equal(doc.thermalPresentation.value.workspace?.reference_inspection??null,null);
+});
+
 test('retained absent inspector is cleared on discipline entry after its explicit field-link warning',async()=>{
   await setup({workspace:true,objects:true});const accepted=structuredClone(doc.project),zone=accepted.energy.designs.A.model.zones[0];
   preflightIssues=[{code:'test.absent-retained-target',kind:'invalid_input',severity:'error',object:{kind:'window',id:'removed-window',zone_id:zone.id},field_path:'/width_m',message:'Synthetic absent target',remedy:'Inspect the exact object.'}];
@@ -449,6 +546,136 @@ test('additive bounded workspace presentation preserves legacy entries and rejec
   store.set(key,{...old,workspace});const restored=new ThermalPresentationStore({getItem:()=>text,setItem(){}});assert.deepEqual(restored.get(key).workspace,workspace);assert.equal(restored.get('["display-fixture","B"]').workspace,undefined);assert.equal(restored.get('["other","A"]').workspace,undefined);
   const legacy=new ThermalPresentationStore({getItem:()=>JSON.stringify([[key,old]]),setItem(){}});assert.equal(legacy.warning,'');assert.deepEqual(legacy.get(key),old);
   for(const invalid of [{...workspace,panel:'execute-shell'},{...workspace,inspector:{...workspace.inspector,field_path:'x'.repeat(1025)}},{...workspace,inspector:{object:{kind:'window',id:[],zone_id:null},field_path:''}},{...workspace,reference_selection:{...workspace.reference_selection,revision_sha256:'not-a-hash'}},{...workspace,reference_selection:{...workspace.reference_selection,occurrence_id:'x'.repeat(257)}}])assert.equal(validThermalPresentation({...old,workspace:invalid}),false);
+  const distinct={...workspace,reference_inspection:{revision_sha256:referenceHash('9'),occurrence_id:'old-revision-occurrence'}};
+  store.set(key,{...old,workspace:distinct});assert.deepEqual(new ThermalPresentationStore({getItem:()=>text,setItem(){}}).get(key).workspace,distinct);
+  for(const inspection of [{revision_sha256:'invalid',occurrence_id:'old'},{revision_sha256:referenceHash('9'),occurrence_id:''},{revision_sha256:referenceHash('9'),occurrence_id:'x'.repeat(257)},[]])assert.equal(validThermalPresentation({...old,workspace:{...workspace,reference_inspection:inspection}}),false);
+  for(const profile of ['executive','technical']){store.set(key,{...old,workspace:{...workspace,report_contents_profile:profile}});assert.equal(new ThermalPresentationStore({getItem:()=>text,setItem(){}}).get(key).workspace.report_contents_profile,profile);}
+  for(const profile of ['certified','',null,{},['executive']])assert.equal(validThermalPresentation({...old,workspace:{...workspace,report_contents_profile:profile}}),false);
+  for(const hash of [null,referenceHash('c')])assert.equal(validThermalPresentation({...old,workspace:{...workspace,scope_revision_sha256:hash}}),true);
+  for(const hash of ['',123,'not-a-hash',{}])assert.equal(validThermalPresentation({...old,workspace:{...workspace,scope_revision_sha256:hash}}),false);
+});
+
+const scopeHistoryPanel=()=>document.querySelector('[aria-label="Study scope revisions"]');
+async function scopeReviewSetup(){await setup({workspace:true,objects:true,revisions:true});await click('Save');await click('reference');}
+async function reviewDecision(id,resolution,rationale){await type(document.querySelector(`[aria-label="Review decision ${id}"]`),resolution);await type(document.querySelector(`[aria-label="Review rationale ${id}"]`),rationale);}
+async function finishReview(){await reviewDecision('cop-changed','reviewed','The efficiency change is intentional; airflow and schedule remain unchanged.');await reviewDecision('assumption-changed','unresolved','Original source COP is retained as a source declaration; product evidence remains missing.');}
+
+test('actual workspace history inspection is independent of live selection, exact revision and current scope drafts',async()=>{
+  await scopeReviewSetup();const before=structuredClone(doc.project),past=doc.history.past.length;
+  await click('Reference');await act(()=>[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith('synthetic-occurrence ')).click());const live=structuredClone(doc.thermalPresentation.value.workspace.reference_selection);
+  await type(input('Inspect scope revision'),referenceHash('c'));await click('Inspect historical mapping synthetic-occurrence',scopeHistoryPanel());
+  assert.match(document.querySelector('[aria-label="Historical mapping inspection"]').textContent,/S1 historical mapping rationale/);assert.deepEqual(doc.thermalPresentation.value.workspace.reference_selection,live);assert.equal(doc.referenceDrafts.draft.scope,null);
+  await act(()=>scopeHistoryPanel().dispatchEvent(new dom.window.KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true})));assert.equal(document.querySelector('[aria-label="Historical mapping inspection"]'),null);assert.deepEqual(doc.thermalPresentation.value.workspace.reference_selection,live);
+  await click('results');await click('reference');assert.equal(input('Inspect scope revision').value,referenceHash('c'));assert.equal(document.querySelector('[aria-label="Historical mapping inspection"]'),null);
+  await click('Proposed B');await click('reference');assert.equal(input('Inspect scope revision').value,referenceHash('d'));await click('Baseline A');assert.equal(input('Inspect scope revision').value,referenceHash('c'));
+  await click('Daylight');await click('Energy');assert.equal(input('Inspect scope revision').value,referenceHash('c'));assert.deepEqual(doc.project,before);assert.equal(doc.history.past.length,past);
+});
+
+test('retained actual-field provenance is bounded to 100 rows with source and applied values explicitly separate',async()=>{
+  await scopeReviewSetup();const panel=scopeHistoryPanel(),table=[...panel.querySelectorAll('table')].find(t=>t.caption?.textContent.includes('Actual supported fields'));
+  assert.equal(table.querySelectorAll('tbody tr').length,100);assert.match(table.textContent,/3.5/);assert.match(table.textContent,/Source value: 3.2 W\/W/);assert.match(panel.textContent,/Documentation: Incomplete/);assert.match(panel.textContent,/No reviewed source declaration/);
+  await click('Next provenance',panel);assert.equal(table.querySelectorAll('tbody tr').length,5);assert.match(table.textContent,/fixture-field\/104/);await click('Previous provenance',panel);assert.equal(table.querySelectorAll('tbody tr').length,100);
+});
+
+test('review decisions survive panel, discipline, design and local recovery without becoming accepted inputs',async()=>{
+  await scopeReviewSetup();await type(input('Inspect scope revision'),referenceHash('c'));const original=structuredClone(doc.project);await click('Review changes and carry forward',scopeHistoryPanel());
+  assert.match(scopeHistoryPanel().textContent,/unchanged: 1 · changed: 2 · deleted: 0 · added: 0 · unresolved: 0/);assert.equal(button('Accept reviewed scope revision').disabled,true);await reviewDecision('cop-changed','reviewed','Retained exact review rationale');
+  await click('reports');await click('reference');assert.equal(document.querySelector('[aria-label="Review rationale cop-changed"]').value,'Retained exact review rationale');await click('Daylight');await click('Energy');assert.ok(document.querySelector('[aria-label="Pending scope carry-forward review"]'));
+  await click('Proposed B');await click('reference');assert.equal(document.querySelector('[aria-label="Pending scope carry-forward review"]'),null);await click('Baseline A');assert.ok(doc.scopeReviewDrafts.draft);assert.deepEqual(doc.project,original);assert.equal(count('reference_revision_accept'),0);
+  await setup({retainCache:true,workspace:true,objects:true,revisions:true});assert.equal(doc.scopeReviewDrafts.draft.decisions['cop-changed'].rationale,'Retained exact review rationale');assert.match(scopeHistoryPanel().textContent,/review is stale/);assert.equal(button('Accept reviewed scope revision').disabled,true);
+  await click('Discard review');assert.equal(doc.scopeReviewDrafts.draft,null);assert.equal(doc.history.past.length,0);
+});
+
+test('Save review Apply creates one immutable revision and Undo switches active history without deleting revisions',async()=>{
+  await scopeReviewSetup();const old=structuredClone(doc.project.architecture.scope_history);await type(input('Inspect scope revision'),referenceHash('c'));await click('Review changes and carry forward');await finishReview();const proposal=structuredClone(doc.scopeReviewDrafts.draft.plan.proposed_scope);
+  await click('Save');assert.match(dialog().textContent,/Resolve scope review drafts/);await click('Cancel',dialog());assert.equal(count('reference_revision_accept'),0);assert.ok(doc.scopeReviewDrafts.draft);
+  await click('Save');await click('Apply',dialog());assert.equal(dialog(),null);assert.equal(count('reference_revision_accept'),1);assert.equal(doc.scopeReviewDrafts.draft,null);assert.equal(doc.history.past.length,1);assert.deepEqual(doc.project.architecture.scope_history.revisions.slice(0,2),old.revisions);assert.deepEqual(doc.project.architecture.scope,proposal);assert.equal(doc.project.architecture.scope_history.revisions[2].review_decisions[1].resolution,'unresolved');
+  await click('Undo');assert.equal(doc.project.architecture.scope_history.active_revision_sha256,old.active_revision_sha256);assert.deepEqual(doc.project.architecture.scope_history.revisions.slice(0,2),old.revisions);assert.equal(doc.project.architecture.scope_history.revisions.length,3);assert.deepEqual(doc.project.architecture.scope,old.revisions[1].scope);
+});
+
+test('review guards cover save, Save As, run, open and close commands; cancel preserves every draft',async()=>{
+  for(const action of ['Save','Save As','Run','Open','Close']){
+    await scopeReviewSetup();await click('Review changes and carry forward');await finishReview();const original=structuredClone(doc.project),draft=structuredClone(doc.scopeReviewDrafts.draft),history=doc.history.past.length;calls=[];
+    await click(action);assert.match(dialog().textContent,/Resolve scope review drafts/);await click('Cancel',dialog());assert.deepEqual(doc.project,original);assert.deepEqual(doc.scopeReviewDrafts.draft,draft);assert.equal(doc.history.past.length,history);assert.equal(count('reference_revision_accept'),0);assert.equal(count('save_project'),0);assert.equal(count('save_project_as'),0);assert.equal(count('energy_start'),0);assert.equal(count('destroy'),0);
+  }
+});
+
+test('native-close callback retains pending reviews and multiple design reviews never partially Apply',async()=>{
+  await scopeReviewSetup();await click('Review changes and carry forward');await finishReview();let prevented=false;
+  await act(async()=>closeHandler({preventDefault(){prevented=true;}}));assert.equal(prevented,true);assert.match(dialog().textContent,/scope review drafts/);await click('Cancel',dialog());assert.equal(count('destroy'),0);
+  await click('Proposed B');await click('reference');await click('Review changes and carry forward');await finishReview();const accepted=structuredClone(doc.project);assert.deepEqual(doc.scopeReviewDrafts.pending,['A','B']);
+  await click('Save');await click('Apply',dialog());assert.match(dialog().textContent,/Resolve each design review separately/);assert.equal(count('reference_revision_accept'),0);assert.deepEqual(doc.project,accepted);await click('Cancel',dialog());
+  await click('Discard review');assert.deepEqual(doc.scopeReviewDrafts.pending,['A']);await click('Baseline A');assert.ok(doc.scopeReviewDrafts.draft);
+});
+
+test('invalid revision acceptance and unresolved required rows preserve the review and accepted history',async()=>{
+  await scopeReviewSetup();revisionPlanMode='geometry';await click('Review changes and carry forward');await finishReview();assert.match(scopeHistoryPanel().textContent,/deleted: 1 · added: 0 · unresolved: 1/);assert.equal(button('Accept reviewed scope revision').disabled,true);
+  await reviewDecision('deleted-target','unresolved','Deleted analytical target cannot be assumed equivalent.');await reviewDecision('new-source','unresolved','Reimport correspondence is not established.');const original=structuredClone(doc.project),draft=structuredClone(doc.scopeReviewDrafts.draft);rejectEdit=true;
+  await click('Accept reviewed scope revision');assert.equal(count('reference_revision_accept'),1);assert.deepEqual(doc.project,original);assert.deepEqual(doc.scopeReviewDrafts.draft,draft);assert.equal(doc.history.past.length,0);assert.match(doc.error,/Synthetic revision context rejection/);
+  await click('Save');await click('Apply',dialog());assert.ok(dialog());assert.deepEqual(doc.scopeReviewDrafts.draft,draft);await click('Discard',dialog());assert.equal(doc.scopeReviewDrafts.draft,null);assert.deepEqual(doc.project,original);
+});
+
+test('accepted input changes mark review stale and applying a separate thermal draft cannot silently rebind it',async()=>{
+  await scopeReviewSetup();await click('Review changes and carry forward');await finishReview();const retained=structuredClone(doc.scopeReviewDrafts.draft);await click('model');await editName('Accepted changed context');await click('Validate and apply');await click('reference');
+  assert.match(scopeHistoryPanel().textContent,/review is stale/);assert.equal(button('Accept reviewed scope revision').disabled,true);assert.deepEqual(doc.scopeReviewDrafts.draft,retained);await click('Save');await click('Apply',dialog());assert.ok(dialog());assert.equal(count('reference_revision_accept'),0);assert.match(doc.error,/review remains intact but is stale/);await click('Cancel',dialog());
+  await click('Discard review');await click('Review changes and carry forward');await finishReview();await click('model');await editName('Still a raw thermal draft');await click('reference');await click('Accept reviewed scope revision');assert.match(dialog().textContent,/thermal/);await click('Apply',dialog());assert.equal(count('reference_revision_accept'),0);assert.ok(doc.scopeReviewDrafts.draft);assert.match(doc.error,/review remains intact but is stale/);
+});
+
+test('late or cancelled preparation cannot stage a different revision or document review',async()=>{
+  await scopeReviewSetup();let finish;revisionPrepareGate=new Promise(resolve=>finish=resolve);await click('Review changes and carry forward');await click('Cancel review request');await act(async()=>finish());assert.equal(doc.scopeReviewDrafts.draft,null);assert.equal(count('reference_revision_accept'),0);
+  revisionPrepareGate=new Promise(resolve=>finish=resolve);await click('Review changes and carry forward');await type(input('Inspect scope revision'),referenceHash('c'));await act(async()=>finish());assert.equal(doc.scopeReviewDrafts.draft,null);
+  revisionPrepareGate=new Promise(resolve=>finish=resolve);await click('Review changes and carry forward');await click('Daylight');await act(async()=>finish());await click('Energy');assert.equal(doc.scopeReviewDrafts.draft,null);
+  revisionPrepareGate=new Promise(resolve=>finish=resolve);await click('Review changes and carry forward');await click('Open');await act(async()=>finish());assert.equal(doc.project.id,'other-project-id');assert.equal(doc.scopeReviewDrafts.draft,null);
+});
+
+
+async function issueSetup(){await setup({workspace:true,revisions:true,reports:true});await click('Save');await click('reports');await type(input('Issue scope revision'),referenceHash('c'));}
+const issuePanel=()=>document.querySelector('[aria-label="Immutable report issues"]');
+
+test('issued report composition freezes exact S1 pair and preserves R1 after active S2 and later metadata',async()=>{
+  await issueSetup();assert.equal(button('Issue exact selected report').disabled,false);const before=JSON.stringify(doc.project.architecture.scope_history);await click('Issue exact selected report');
+  const call=calls.find(([command])=>command==='report_issue_action')[1];assert.deepEqual(call.action,{kind:'create',a:'report-a',b:'report-b',scope_sha256:referenceHash('c'),html_only:false});assert.equal(call.expectedRevision,'test-revision');assert.equal(doc.project.report_issues.issues.length,1);assert.equal(doc.history.past.length,0);assert.equal(JSON.stringify(doc.project.architecture.scope_history),before);
+  const r1=JSON.stringify(issueEvidence.get(referenceHash('1')));assert.match(issuePanel().textContent,/Retained scope: Retained scope S1/);assert.match(issuePanel().textContent,/Missing for these exact runs/);assert.match(issuePanel().textContent,/unassessed/);assert.match(issuePanel().textContent,/recorded at issuance/);assert.equal(document.querySelector('[aria-label="Portable ZIP assessment selection"]'),null);assert.equal(button('Export portable evidence ZIP…').disabled,true);
+  await type(input('Issue scope revision'),referenceHash('d'));assert.match(issuePanel().textContent,/Historical issue/);assert.match(issuePanel().textContent,/Retained scope: Retained scope S1/);
+  await act(()=>doc.commitEnergyMetadata({kind:'report_issue',metadata:{title:'Later active metadata',revision:'R9',issue_date:null,author:null,preparer:null,revision_history:[]}},'Later report metadata'));assert.match(document.querySelector('[aria-label="Inspected immutable issue"]').textContent,/Original issue R1 · R1/);assert.doesNotMatch(document.querySelector('[aria-label="Inspected immutable issue"]').textContent,/Later active metadata/);assert.equal(JSON.stringify(issueEvidence.get(referenceHash('1'))),r1);
+  await click('Issue exact selected report');assert.equal(doc.project.report_issues.issues.length,2);assert.equal(doc.history.past.length,1);await type(input('Inspect issued report'),referenceHash('1'));assert.match(issuePanel().textContent,/Retained scope: Retained scope S1/);assert.equal(JSON.stringify(issueEvidence.get(referenceHash('1'))),r1);await click('Undo');assert.equal(doc.project.report_issues.issues.length,2);assert.equal(count('energy_start'),0);
+});
+
+test('issue creation respects real Apply Discard Cancel guard and failed Save without issuing old inputs',async()=>{
+  await issueSetup();await click('model');await editName('Unapplied issue draft');await click('reports');await click('Issue exact selected report');assert.ok(dialog());assert.equal(count('report_issue_action'),0);await click('Cancel',dialog());assert.equal(count('report_issue_action'),0);assert.ok(doc.energyDrafts.get('A').dirty);
+  await click('Issue exact selected report');await click('Discard',dialog());assert.equal(count('report_issue_action'),1);assert.equal(doc.energyDrafts.get('A').dirty,false);
+  const original=globalThis.__draftIPC;globalThis.__draftIPC=async(command,args)=>{if(command==='save_project')throw Error('Synthetic save conflict');return original(command,args);};await click('Issue exact selected report');assert.equal(count('report_issue_action'),1);assert.match(doc.error,/Synthetic save conflict/);globalThis.__draftIPC=original;
+});
+
+test('issue draft Apply remains validated and binds accepted metadata without erasing edit history',async()=>{
+  await issueSetup();await click('evidence');await act(()=>doc.energyDrafts.updateIssue(d=>({...d,enabled:true,title:'Reviewed issue title',revision:'R3',issue_date:'2026-',dirty:true})));await click('reports');await click('Issue exact selected report');await click('Apply',dialog());assert.ok(dialog());assert.equal(count('report_issue_action'),0);assert.equal(doc.history.past.length,0);assert.equal(doc.energyDrafts.issue().issue_date,'2026-');await click('Cancel',dialog());
+  await click('evidence');await type(input('Issue date'),'2026-10-16');await click('reports');await click('Issue exact selected report');await click('Apply',dialog());assert.equal(count('report_issue_action'),1);assert.equal(doc.history.past.length,1);assert.equal(doc.energyDrafts.issue().dirty,false);const submitted=calls.find(([command])=>command==='report_issue_action')[1];assert.equal(submitted.project.energy.workbench.report_metadata.title,'Reviewed issue title');assert.equal(submitted.project.energy.workbench.report_metadata.issue_date,'2026-10-16');assert.equal(doc.project.report_issues.issues.length,1);
+});
+
+test('issued product preview opens only enumerated exact bytes and late image response cannot replace another issue',async()=>{
+  await issueSetup();await click('Issue exact selected report');await click('Preview figures/aligned-1.svg');let image=document.querySelector('[aria-label="Rendered issue product preview"] img');assert.ok(image.src.startsWith('data:image/svg+xml;'));assert.match(decodeURIComponent(image.src),/Original retained analytical figure/);assert.equal(document.querySelector('svg text'),null);assert.equal(document.querySelector('object,iframe'),null);
+  await click('Open retained executive.pdf');let request=calls.filter(([command])=>command==='report_issue_product').at(-1)[1];assert.equal(request.open,true);assert.equal(request.id,referenceHash('1'));assert.equal(request.product,'executive.pdf');
+  await type(input('Issue scope revision'),referenceHash('d'));await click('Issue exact selected report');let finish;issueProductGate=new Promise(resolve=>finish=resolve);await click('Preview figures/aligned-1.svg');await type(input('Inspect issued report'),referenceHash('1'));await act(async()=>finish());assert.equal(document.querySelector('[aria-label="Rendered issue product preview"]'),null);
+  const original=globalThis.__draftIPC;globalThis.__draftIPC=async(command,args)=>command==='report_issue_product'?{issue_id:referenceHash('f'),path:args.product,sha256:referenceHash('a'),media_type:'image/svg+xml',svg:'<svg/>'}:original(command,args);await click('Preview figures/aligned-1.svg');assert.match(issuePanel().textContent,/Product response differs/);assert.equal(document.querySelector('[aria-label="Rendered issue product preview"]'),null);globalThis.__draftIPC=original;
+});
+
+test('issued history inspection is cancellable and rejects changed scope or inventory bindings',async()=>{
+  await issueSetup();await click('Issue exact selected report');await type(input('Inspect issued report'),'');let finish,request;issueInspectGate=new Promise(resolve=>finish=resolve);globalThis.__inspectionProtocol=(command,args)=>{if(command==='inspect_energy_evidence'&&args.query.command==='report_issue_inspect')request=args;};
+  await type(input('Inspect issued report'),referenceHash('1'));await act(()=>request.onProgress.onmessage({schema_version:'greenlens.project-open-progress.v1',stage:'issue_products',run_id:null,runs_completed:0,runs_total:2,bytes_read:1048576,files_verified:2,elapsed_ms:3,numeric_passes:{}}));assert.match(issuePanel().textContent,/issue products · 1.0 MiB read/);
+  await act(()=>document.querySelector('[aria-label="Cancel inspection: Checking the selected immutable report issue and its retained evidence"]').click());await act(async()=>finish());assert.equal(document.querySelector('[aria-label="Inspected immutable issue"]'),null);assert.match(issuePanel().textContent,/inspection cancelled/);delete globalThis.__inspectionProtocol;
+  issueInspectGate=null;issueEvidence.get(referenceHash('1')).content.scope_revision.revision_sha256=referenceHash('d');await type(input('Inspect issued report'),'');await type(input('Inspect issued report'),referenceHash('1'));assert.match(issuePanel().textContent,/content differs/);assert.equal(document.querySelector('[aria-label="Inspected immutable issue"]'),null);
+});
+
+test('complete issue export and regeneration use explicit native destinations without running an engine',async()=>{
+  await issueSetup();await click('Issue exact selected report');const history=JSON.stringify(doc.project.report_issues),before=count('energy_start');await click('Regenerate exact issue into folder…');let action=calls.filter(([command])=>command==='report_issue_action').at(-1)[1].action;assert.deepEqual(action,{kind:'regenerate',id:referenceHash('1'),destination:'synthetic-report-output'});assert.match(issuePanel().textContent,/Exact issue products regenerated/);
+  await click('Export complete issued project ZIP…');action=calls.filter(([command])=>command==='report_issue_action').at(-1)[1].action;assert.deepEqual(action,{kind:'export',destination:'synthetic-report-output'});assert.equal(calls.filter(([command])=>command==='dialog_energy_report').at(-1)[1].portableZip,true);assert.equal(JSON.stringify(doc.project.report_issues),history);assert.equal(count('energy_start'),before);
+  await click('Save As');assert.equal(JSON.stringify(doc.project.report_issues),history);await click('Daylight');await click('Energy');assert.equal(input('Inspect issued report').value,referenceHash('1'));assert.match(issuePanel().textContent,/Retained scope: Retained scope S1/);
+});
+
+test('completed issue conflict preserves recovery receipt across navigation and reload without stale Save',async()=>{
+  await issueSetup();issuePending=true;await click('Issue exact selected report');assert.equal(doc.project.report_issues,undefined);assert.equal(doc.pendingReportIssues.items.length,1);assert.match(issuePanel().textContent,/reopen the saved project/);await click('Daylight');await click('Energy');assert.ok(button('Recover completed report'));assert.match(window.localStorage.getItem('greenlens.pending-report-issues.v1'),/synthetic-recovery-token/);
+  const previousIPC=globalThis.__draftIPC;globalThis.__draftIPC=async(command,args)=>{if(command==='admit_project')return{schema_version:'greenlens.project-admission.v1',project_id:disk.id,project_name:disk.name,manifest_sha256:'f'.repeat(64),static_runs:0,climate_runs:0,energy_runs:2,evidence_checked:false};if(command==='verify_project')return view(disk);return previousIPC(command,args);};await click('Open');assert.equal(doc.project.id,'draft-fixture');await click('reports');assert.ok(button('Recover completed report'));globalThis.__draftIPC=previousIPC;
+  const saves=count('save_project');issuePending=false;await click('Recover completed report');assert.equal(count('save_project'),saves);assert.equal(doc.pendingReportIssues.items.length,0);assert.equal(doc.project.report_issues.issues.length,1);assert.equal(calls.filter(([command])=>command==='report_issue_action').at(-1)[1].action.kind,'recover');
 });
 
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});

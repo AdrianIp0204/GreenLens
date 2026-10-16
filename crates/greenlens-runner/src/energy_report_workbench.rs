@@ -1,4 +1,6 @@
 //! Additive report profiles from validated retained snapshots. No simulation.
+#[path = "energy_report_issue_render.rs"]
+pub mod issuance;
 use crate::{
     energy_attachments::{self, EnergyAttachment},
     energy_report::{self as old, Document, EnergyReportArtifacts, Section, TypstConfig},
@@ -832,7 +834,7 @@ fn schedule_unit(k: ScheduleKind) -> &'static str {
         ScheduleKind::TemperatureCelsius => "temperature (C)",
     }
 }
-fn schedule_svg(s: &Schedule) -> String {
+pub(crate) fn schedule_svg(s: &Schedule) -> String {
     let max = s
         .weekday
         .values
@@ -894,6 +896,16 @@ pub fn render_with_architecture(
     typst: Option<&TypstConfig>,
     cancel: &AtomicBool,
     architecture: Option<&old::architectural::ArchitecturalReport>,
+) -> Result<EnergyReportArtifacts> {
+    render_internal(data, destination, typst, cancel, architecture, None)
+}
+fn render_internal(
+    data: &EnergyReportWorkbenchData,
+    destination: &Path,
+    typst: Option<&TypstConfig>,
+    cancel: &AtomicBool,
+    architecture: Option<&old::architectural::ArchitecturalReport>,
+    issue: Option<&issuance::IssueReport>,
 ) -> Result<EnergyReportArtifacts> {
     data.validate()?;
     ensure!(
@@ -1007,6 +1019,13 @@ pub fn render_with_architecture(
             doc.dataset_sha256 = scope.data.report_sha256.clone();
         }
     }
+    if let Some(issue) = issue {
+        ensure!(
+            architecture.is_none(),
+            "An issued scope cannot be replaced by the active architectural supplement"
+        );
+        issue.augment(data, &names, &mut docs, &mut generated, cancel)?;
+    }
     let file_names = generated
         .iter()
         .map(|(n, _)| n.clone())
@@ -1018,22 +1037,29 @@ pub fn render_with_architecture(
         .collect::<Vec<_>>();
     old::create_fresh(destination)?;
     let mut result = EnergyReportArtifacts {
-        schema_version: if architecture.is_some() {
+        schema_version: if issue.is_some() {
+            "greenlens.energy-report-artifacts.v0.7"
+        } else if architecture.is_some() {
             "greenlens.energy-report-artifacts.v0.6"
         } else {
             "greenlens.energy-report-artifacts.v0.5"
         }
         .into(),
-        dataset_sha256: architecture
-            .map(|a| a.data.report_sha256.clone())
+        dataset_sha256: issue
+            .map(|i| i.content.content_sha256.clone())
+            .or_else(|| architecture.map(|a| a.data.report_sha256.clone()))
             .unwrap_or_else(|| data.derived_sha256.clone()),
         renderer_status: "not_requested".into(),
         renderer_message: "Validated workbench HTML/CSV/JSON/SVG written; PDF/PNG not requested."
             .into(),
         typst_executable_sha256: None,
-        template_sha256: architectural_template
-            .as_ref()
-            .map(|t| old::sha(t.as_bytes()))
+        template_sha256: issue
+            .map(|i| i.content.renderer.template_sha256.clone())
+            .or_else(|| {
+                architectural_template
+                    .as_ref()
+                    .map(|t| old::sha(t.as_bytes()))
+            })
             .unwrap_or_else(template_sha256),
         renderer_work_id: None,
         renderer_inputs: BTreeMap::new(),
@@ -1070,7 +1096,11 @@ pub fn render_with_architecture(
             old::NativeDocuments {
                 docs: &docs,
                 generated: &refs,
-                template: architectural_template.as_deref().unwrap_or(TEMPLATE),
+                template: if issue.is_some() {
+                    issuance::TEMPLATE
+                } else {
+                    architectural_template.as_deref().unwrap_or(TEMPLATE)
+                },
                 stages: &stages,
             },
             destination,
@@ -1112,7 +1142,7 @@ pub fn render_with_architecture(
 #[cfg(test)]
 mod tests {
     use super::*;
-    fn fixture() -> EnergyReportWorkbenchData {
+    pub(super) fn fixture() -> EnergyReportWorkbenchData {
         let base = synthetic_energy_report().unwrap();
         let items = base
             .evidence

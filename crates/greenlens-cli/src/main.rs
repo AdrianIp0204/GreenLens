@@ -1,4 +1,5 @@
 mod energy;
+mod report_issue;
 use anyhow::{ensure, Context, Result};
 use clap::{Parser, Subcommand};
 use greenlens_core::{validate_model, Model};
@@ -17,6 +18,11 @@ struct Cli {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Immutable scope/evidence-bound report issuance and portable regeneration.
+    ReportIssue {
+        #[command(subcommand)]
+        command: report_issue::ReportIssueCommand,
+    },
     /// Read-only evidence admission and one cancellable verified snapshot.
     Open {
         project: PathBuf,
@@ -124,6 +130,38 @@ enum ReferenceCommand {
     ScopeApply {
         project: PathBuf,
         scope: PathBuf,
+    },
+    /// List immutable scope revisions, or inspect one complete exact snapshot.
+    Revisions {
+        project: PathBuf,
+        #[arg(long)]
+        revision: Option<String>,
+    },
+    /// Prepare a carry-forward review against current exact reference/design inputs.
+    ScopeReview {
+        project: PathBuf,
+        #[arg(long)]
+        parent: String,
+    },
+    /// Accept a recomputed review and complete scope; no implicit input rebinding.
+    ScopeAccept {
+        project: PathBuf,
+        #[arg(long)]
+        parent: String,
+        #[arg(long)]
+        plan: String,
+        /// Complete candidate ArchitecturalScope JSON from the reviewed proposal.
+        #[arg(long)]
+        scope: PathBuf,
+        /// Array of explicit row_id/resolution/rationale review decisions.
+        #[arg(long)]
+        decisions: PathBuf,
+    },
+    /// Activate an exact retained revision without deleting or rewriting history.
+    ScopeActivate {
+        project: PathBuf,
+        #[arg(long)]
+        revision: String,
     },
 }
 
@@ -235,10 +273,21 @@ impl From<ClimateField> for greenlens_runner::studies::ResultField {
 }
 fn execute() -> Result<()> {
     match Cli::parse().command {
+        Command::ReportIssue { command } => report_issue::execute(command)?,
         Command::Open {
             project,
             admission_only,
         } => {
+            if !admission_only {
+                // Honest operation start, before admission does bounded schema
+                // and model validation. No evidence has been checked yet.
+                eprintln!(
+                    "{}",
+                    serde_json::to_string(
+                        &greenlens_runner::project_open::admission_started_progress()
+                    )?
+                );
+            }
             let admitted = greenlens_runner::project_open::admit_project(&project)?;
             if admission_only {
                 println!("{}", serde_json::to_string_pretty(&admitted)?);
@@ -260,103 +309,233 @@ fn execute() -> Result<()> {
                 );
             }
         }
-        Command::Reference { command } => match command {
-            ReferenceCommand::Import {
-                project,
-                file,
-                options,
-            } => {
-                let cancel = intake_cancellation()?;
-                let admitted = greenlens_runner::project_open::admit_project(&project)?;
-                let view = greenlens_runner::project_open::verify_admitted_project(
-                    &project,
-                    &admitted,
-                    cancel.clone(),
-                    |p| {
-                        if let Ok(s) = serde_json::to_string(&p) {
-                            eprintln!("{s}");
-                        }
-                    },
-                )?;
-                let options = options
-                    .map(|p| read_json(&p))
-                    .transpose()?
-                    .unwrap_or_default();
-                let next = greenlens_runner::reference::import_project(
-                    &project,
-                    &view.project,
-                    Some(&view.revision),
-                    &file,
-                    &options,
-                    &cancel,
-                    |p| {
-                        if let Ok(s) = serde_json::to_string(p) {
-                            eprintln!("{s}");
-                        }
-                        true
-                    },
-                )?;
-                println!(
+        Command::Reference { command } => {
+            fn verified_scope_project(
+                project: &std::path::Path,
+                cancel: Arc<std::sync::atomic::AtomicBool>,
+            ) -> Result<greenlens_runner::ProjectView> {
+                eprintln!(
                     "{}",
-                    serde_json::to_string_pretty(&next.project.architecture)?
-                );
-            }
-            ReferenceCommand::Inspect { project } => {
-                let view = greenlens_runner::open_project(&project)?;
-                let ext = view
-                    .project
-                    .architecture
-                    .context("Import a local GLB first")?;
-                let asset = ext
-                    .assets
-                    .iter()
-                    .find(|a| a.id == ext.active_asset_id)
-                    .context("Active reference missing")?;
-                println!(
-                    "{}",
-                    serde_json::to_string_pretty(&greenlens_runner::reference::read_manifest(
-                        &project, asset
-                    )?)?
-                );
-            }
-            ReferenceCommand::ScopeContext { project } => {
-                let view = greenlens_runner::open_project(&project)?;
-                println!(
-                    "{}",
-                    serde_json::to_string_pretty(&greenlens_runner::reference::scope_context(
-                        &project,
-                        &view.project
-                    )?)?
-                );
-            }
-            ReferenceCommand::ScopeAssess { project, scope } => {
-                let view = greenlens_runner::open_project(&project)?;
-                println!(
-                    "{}",
-                    serde_json::to_string_pretty(&greenlens_runner::reference::assess_scope(
-                        &project,
-                        &view.project,
-                        &read_json(&scope)?
-                    )?)?
-                );
-            }
-            ReferenceCommand::ScopeApply { project, scope } => {
-                let view = greenlens_runner::open_project(&project)?;
-                let next = greenlens_runner::reference::set_scope(
-                    &project,
-                    &view.project,
-                    Some(read_json(&scope)?),
-                    false,
-                )?;
-                let saved = greenlens_runner::save_project(&project, &next, Some(&view.revision))?;
-                println!(
-                    "{}",
-                    serde_json::to_string_pretty(
-                        &saved.project.architecture.and_then(|a| a.scope)
+                    serde_json::to_string(
+                        &greenlens_runner::project_open::admission_started_progress()
                     )?
                 );
+                let admitted = greenlens_runner::project_open::admit_project(project)?;
+                greenlens_runner::project_open::verify_admitted_project(
+                    project,
+                    &admitted,
+                    cancel,
+                    |progress| {
+                        if let Ok(value) = serde_json::to_string(&progress) {
+                            eprintln!("{value}");
+                        }
+                    },
+                )
             }
-        },
+            fn check_scope_cancel(cancel: &std::sync::atomic::AtomicBool) -> Result<()> {
+                ensure!(
+                    !cancel.load(std::sync::atomic::Ordering::Relaxed),
+                    "Scope operation cancelled; no document save was started"
+                );
+                Ok(())
+            }
+            match command {
+                ReferenceCommand::Import {
+                    project,
+                    file,
+                    options,
+                } => {
+                    let cancel = intake_cancellation()?;
+                    let admitted = greenlens_runner::project_open::admit_project(&project)?;
+                    let view = greenlens_runner::project_open::verify_admitted_project(
+                        &project,
+                        &admitted,
+                        cancel.clone(),
+                        |p| {
+                            if let Ok(s) = serde_json::to_string(&p) {
+                                eprintln!("{s}");
+                            }
+                        },
+                    )?;
+                    let options = options
+                        .map(|p| read_json(&p))
+                        .transpose()?
+                        .unwrap_or_default();
+                    let next = greenlens_runner::reference::import_project(
+                        &project,
+                        &view.project,
+                        Some(&view.revision),
+                        &file,
+                        &options,
+                        &cancel,
+                        |p| {
+                            if let Ok(s) = serde_json::to_string(p) {
+                                eprintln!("{s}");
+                            }
+                            true
+                        },
+                    )?;
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&next.project.architecture)?
+                    );
+                }
+                ReferenceCommand::Inspect { project } => {
+                    let view = greenlens_runner::open_project(&project)?;
+                    let ext = view
+                        .project
+                        .architecture
+                        .context("Import a local GLB first")?;
+                    let asset = ext
+                        .assets
+                        .iter()
+                        .find(|a| a.id == ext.active_asset_id)
+                        .context("Active reference missing")?;
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&greenlens_runner::reference::read_manifest(
+                            &project, asset
+                        )?)?
+                    );
+                }
+                ReferenceCommand::ScopeContext { project } => {
+                    let view = greenlens_runner::open_project(&project)?;
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&greenlens_runner::reference::scope_context(
+                            &project,
+                            &view.project
+                        )?)?
+                    );
+                }
+                ReferenceCommand::ScopeAssess { project, scope } => {
+                    let view = greenlens_runner::open_project(&project)?;
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&greenlens_runner::reference::assess_scope(
+                            &project,
+                            &view.project,
+                            &read_json(&scope)?
+                        )?)?
+                    );
+                }
+                ReferenceCommand::ScopeApply { project, scope } => {
+                    let cancel = intake_cancellation()?;
+                    let view = verified_scope_project(&project, cancel.clone())?;
+                    let next = greenlens_runner::study_revisions::initialize_scope(
+                        &project,
+                        &view.project,
+                        read_json(&scope)?,
+                        &cancel,
+                    )?;
+                    check_scope_cancel(&cancel)?;
+                    let saved =
+                        greenlens_runner::save_project(&project, &next, Some(&view.revision))?;
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(
+                            &saved.project.architecture.and_then(|a| a.scope)
+                        )?
+                    );
+                }
+                ReferenceCommand::Revisions { project, revision } => {
+                    let cancel = intake_cancellation()?;
+                    let view = verified_scope_project(&project, cancel.clone())?;
+                    check_scope_cancel(&cancel)?;
+                    if let Some(id) = revision {
+                        println!(
+                            "{}",
+                            serde_json::to_string_pretty(
+                                greenlens_runner::study_revisions::selected(&view.project, &id)?
+                            )?
+                        );
+                    } else {
+                        let active = view
+                            .project
+                            .architecture
+                            .as_ref()
+                            .and_then(|a| a.scope_history.as_ref())
+                            .and_then(|h| h.active_revision_sha256.as_ref());
+                        let records: Vec<_> = greenlens_runner::study_revisions::revisions(&view.project).iter().map(|revision| serde_json::json!({
+                        "revision_sha256": revision.revision_sha256, "parent_revision_sha256": revision.parent_revision_sha256,
+                        "active": active == Some(&revision.revision_sha256), "title": revision.scope.title,
+                        "reference_revision_sha256": revision.reference.manifest.revision_sha256,
+                        "design_model_sha256": revision.scope.design_model_sha256,
+                        "documentation_complete": revision.provenance.documentation_complete,
+                        "unreviewed_fields": revision.provenance.unreviewed_count,
+                        "missing_fields": revision.provenance.missing_count,
+                        "conflicting_fields": revision.provenance.conflicting_count
+                    })).collect();
+                        println!(
+                            "{}",
+                            serde_json::to_string_pretty(&serde_json::json!({
+                                "schema_version": greenlens_runner::study_revisions::SCOPE_HISTORY_SCHEMA,
+                                "active_revision_sha256": active, "revisions": records,
+                                "legacy_scope_without_history": view.project.architecture.as_ref().is_some_and(|a| a.scope.is_some() && a.scope_history.is_none()),
+                                "disclosure": "Retained documentation revisions are separate from execution permission and scientific qualification. Legacy scope is adopted only on an explicit accepted action."
+                            }))?
+                        );
+                    }
+                }
+                ReferenceCommand::ScopeReview { project, parent } => {
+                    let cancel = intake_cancellation()?;
+                    let view = verified_scope_project(&project, cancel.clone())?;
+                    let plan = greenlens_runner::study_revisions::prepare(
+                        &project,
+                        &view.project,
+                        &parent,
+                        &cancel,
+                    )?;
+                    println!("{}", serde_json::to_string_pretty(&plan)?);
+                }
+                ReferenceCommand::ScopeAccept {
+                    project,
+                    parent,
+                    plan,
+                    scope,
+                    decisions,
+                } => {
+                    let cancel = intake_cancellation()?;
+                    let view = verified_scope_project(&project, cancel.clone())?;
+                    let next = greenlens_runner::study_revisions::accept(
+                        &project,
+                        &view.project,
+                        &parent,
+                        &plan,
+                        read_json(&scope)?,
+                        read_json(&decisions)?,
+                        &cancel,
+                    )?;
+                    check_scope_cancel(&cancel)?;
+                    let saved =
+                        greenlens_runner::save_project(&project, &next, Some(&view.revision))?;
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(
+                            &saved.project.architecture.and_then(|a| a.scope_history)
+                        )?
+                    );
+                }
+                ReferenceCommand::ScopeActivate { project, revision } => {
+                    let cancel = intake_cancellation()?;
+                    let view = verified_scope_project(&project, cancel.clone())?;
+                    let next = greenlens_runner::study_revisions::activate(
+                        &view.project,
+                        Some(&revision),
+                    )?;
+                    check_scope_cancel(&cancel)?;
+                    let saved =
+                        greenlens_runner::save_project(&project, &next, Some(&view.revision))?;
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&serde_json::json!({
+                            "active_revision_sha256": revision, "project_revision": saved.revision,
+                            "retained_revision_count": greenlens_runner::study_revisions::revisions(&saved.project).len()
+                        }))?
+                    );
+                }
+            }
+        }
         Command::Energy { command } => energy::execute(command)?,
         Command::Study { command } => match command {
             StudyCommand::Inspect { project, run } => {

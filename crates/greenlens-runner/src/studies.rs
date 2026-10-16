@@ -356,7 +356,7 @@ pub fn import_weather_asset(
         climate::verify_project_evidence(root, extension)?;
     }
     check_revision(root, expected)?;
-    atomic_json(root, &project)?;
+    atomic_project(root, &project)?;
     crate::open_project(root)
 }
 

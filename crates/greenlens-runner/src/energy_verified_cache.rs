@@ -7,13 +7,43 @@ use crate::{
 };
 use anyhow::{Context, Result};
 use std::{
-    collections::VecDeque,
+    collections::{hash_map::DefaultHasher, VecDeque},
+    hash::{Hash, Hasher},
     path::{Path, PathBuf},
-    sync::{atomic::AtomicBool, Arc, Mutex, OnceLock},
+    sync::{atomic::AtomicBool, Arc, Mutex, MutexGuard, OnceLock, TryLockError},
+    time::{Duration, Instant},
 };
 
-const MAX_ENTRIES: usize = 8;
+// Nine genuine retained records demonstrated eviction/rederivation at eight.
+// Keep a finite metadata-only working set: both record and byte limits apply.
+pub(crate) const MAX_ENTRIES: usize = 64;
 const MAX_METADATA_BYTES: usize = 64 * 1024 * 1024;
+const INSPECTION_LANES: usize = 32;
+
+fn inspection_lane(key: &Key) -> Result<MutexGuard<'static, ()>> {
+    static LANES: OnceLock<[Mutex<()>; INSPECTION_LANES]> = OnceLock::new();
+    let lanes = LANES.get_or_init(|| std::array::from_fn(|_| Mutex::new(())));
+    let mut hash = DefaultHasher::new();
+    key.root.hash(&mut hash);
+    key.summary.id.hash(&mut hash);
+    let lane = &lanes[hash.finish() as usize % INSPECTION_LANES];
+    let started = Instant::now();
+    // Fixed striped gates bound synchronization memory. Re-check the cache
+    // after acquiring a lane: concurrent readers never duplicate cold numeric
+    // work for the same run. Each reader still rechecks actual evidence bytes.
+    loop {
+        project_open::checkpoint(0)?;
+        anyhow::ensure!(
+            started.elapsed() < Duration::from_secs(project_open::VERIFICATION_DEADLINE_SECONDS),
+            "Evidence inspection queue exceeded the 120-second budget"
+        );
+        match lane.try_lock() {
+            Ok(guard) => return Ok(guard),
+            Err(TryLockError::Poisoned(_)) => anyhow::bail!("Evidence inspection lane unavailable"),
+            Err(TryLockError::WouldBlock) => std::thread::sleep(Duration::from_millis(5)),
+        }
+    }
+}
 
 #[derive(Clone, PartialEq)]
 struct Key {
@@ -114,6 +144,7 @@ fn read_verified(root: &Path, summary: &EnergyRunSummary) -> Result<Arc<Verified
         root: root.clone(),
         summary: summary.clone(),
     };
+    let _lane = inspection_lane(&key)?;
     let cached = cache().lock().ok().and_then(|mut cache| cache.get(&key));
     if let Some(verified) = cached {
         // Release the mutex before any filesystem access or record clone.
@@ -164,6 +195,89 @@ mod tests {
     use super::*;
     use crate::persistence;
     use std::{collections::BTreeMap, sync::atomic::Ordering};
+
+    #[test]
+    fn waiting_inspection_honors_parent_cancellation_without_entering_lane() {
+        let root = tempfile::tempdir().unwrap();
+        let path = root.path().to_path_buf();
+        let selected = key(path.to_str().unwrap(), "waiting");
+        let held = inspection_lane(&selected).unwrap();
+        let cancel = Arc::new(AtomicBool::new(false));
+        std::thread::scope(|scope| {
+            let token = cancel.clone();
+            let query = selected.clone();
+            let waiting = scope.spawn(move || {
+                project_open::inspect_evidence(
+                    &path,
+                    token,
+                    |_| {},
+                    || {
+                        let _guard = inspection_lane(&query)?;
+                        Ok(())
+                    },
+                )
+            });
+            std::thread::sleep(Duration::from_millis(20));
+            cancel.store(true, Ordering::Relaxed);
+            let start = Instant::now();
+            assert!(waiting
+                .join()
+                .unwrap()
+                .unwrap_err()
+                .to_string()
+                .contains("cancelled"));
+            assert!(start.elapsed() < Duration::from_secs(1));
+        });
+        drop(held);
+    }
+
+    #[test]
+    #[ignore = "Requires the predeclared nine genuine retained records, no engine execution"]
+    fn concurrent_genuine_record_inspection_deduplicates_numeric_work() {
+        let root = PathBuf::from(
+            std::env::var_os("GREENLENS_TEST_NINE_ENERGY_PROJECT")
+                .expect("Provide admitted nine-record fixture"),
+        );
+        let project: crate::Project = persistence::read_json(&root.join("project.json")).unwrap();
+        let summary = project.energy.as_ref().unwrap().runs[0].clone();
+        let canonical = std::fs::canonicalize(&root).unwrap();
+        {
+            let mut cache = cache().lock().unwrap();
+            cache.entries.retain(|entry| entry.key.root != canonical);
+            cache.bytes = cache.entries.iter().map(|e| e.bytes).sum();
+        }
+        let barrier = Arc::new(std::sync::Barrier::new(3));
+        let results = std::thread::scope(|scope| {
+            let mut handles = vec![];
+            for _ in 0..2 {
+                let root = &root;
+                let summary = &summary;
+                let barrier = barrier.clone();
+                handles.push(scope.spawn(move || {
+                    barrier.wait();
+                    let before = project_open::test_numeric_passes();
+                    let result = project_open::inspect_evidence(
+                        root,
+                        Arc::new(AtomicBool::new(false)),
+                        |_| {},
+                        || read_run(root, summary),
+                    )
+                    .unwrap();
+                    (
+                        project_open::test_numeric_passes() - before,
+                        greenlens_core::canonical_hash(&result).unwrap(),
+                    )
+                }));
+            }
+            barrier.wait();
+            handles
+                .into_iter()
+                .map(|h| h.join().unwrap())
+                .collect::<Vec<_>>()
+        });
+        assert_eq!(results.iter().map(|(count, _)| count).sum::<usize>(), 1);
+        assert_eq!(results[0].1, results[1].1);
+    }
 
     fn key(root: &str, revision: &str) -> Key {
         Key {
@@ -301,6 +415,80 @@ mod tests {
         let mut cache = cache.lock().unwrap();
         assert!(Arc::ptr_eq(&cache.get(&k).unwrap(), &replacement));
         assert_eq!((cache.entries.len(), cache.bytes), (1, 2));
+    }
+
+    #[test]
+    #[ignore = "Requires nine distinct retained genuine records: GREENLENS_TEST_NINE_ENERGY_PROJECT; no engine run"]
+    fn retained_nine_record_history_access_stays_bounded_without_numeric_rederivation() {
+        let root = PathBuf::from(
+            std::env::var("GREENLENS_TEST_NINE_ENERGY_PROJECT")
+                .expect("Provide the declared nine-record genuine evidence fixture"),
+        );
+        let canonical_root = std::fs::canonicalize(&root).unwrap();
+        {
+            let mut cache = cache().lock().unwrap();
+            cache
+                .entries
+                .retain(|entry| entry.key.root != canonical_root);
+            cache.bytes = cache.entries.iter().map(|entry| entry.bytes).sum();
+        }
+        let started = std::time::Instant::now();
+        let before = project_open::test_numeric_passes();
+        let view = crate::open_project(&root).unwrap();
+        let runs = &view.project.energy.as_ref().unwrap().runs;
+        assert_eq!(
+            runs.len(),
+            9,
+            "Fixed nine-record protocol; no favorable subset"
+        );
+        let ids = runs
+            .iter()
+            .map(|r| &r.id)
+            .collect::<std::collections::BTreeSet<_>>();
+        assert_eq!(
+            ids.len(),
+            9,
+            "Duplicated IDs do not establish nine-record coverage"
+        );
+        assert_eq!(project_open::test_numeric_passes() - before, 9);
+        let open_ms = started.elapsed().as_millis();
+        let mut observations = Vec::new();
+        for pass in 0..2 {
+            let clock = std::time::Instant::now();
+            let before = project_open::test_numeric_passes();
+            for run in runs {
+                let inspected =
+                    crate::energy_services::selected_run(&root, &view.project, &run.id).unwrap();
+                assert_eq!(inspected.id, run.id);
+                assert_eq!(
+                    inspected.provenance.physical_input_hash,
+                    run.physical_input_hash
+                );
+            }
+            let elapsed_ms = clock.elapsed().as_millis();
+            observations.push(serde_json::json!({"pass":pass + 1,
+                "numeric_rederivations":project_open::test_numeric_passes() - before,
+                "elapsed_ms":elapsed_ms}));
+            assert!(
+                elapsed_ms < 120_000,
+                "History access exceeds fixed 120s bound"
+            );
+        }
+        let cache = cache().lock().unwrap();
+        println!(
+            "NINE_RECORD_OBSERVATION {}",
+            serde_json::json!({
+            "open_ms":open_ms,"initial_numeric_passes":9,"repeats":observations,
+            "cached_records":cache.entries.len(),"cached_metadata_bytes":cache.bytes,
+            "metadata_bound_bytes":MAX_METADATA_BYTES,"native_simulations":0})
+        );
+        assert!(cache.bytes <= MAX_METADATA_BYTES);
+        assert!(open_ms < 120_000);
+        assert_eq!(
+            project_open::test_numeric_passes() - before,
+            9,
+            "Repeated history access must not rederive already checked unchanged records"
+        );
     }
 
     #[test]

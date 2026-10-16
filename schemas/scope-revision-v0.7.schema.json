@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greenlens.dev/schemas/scope-revision-v0.7.schema.json",
+  "title": "GreenLens immutable scope revision v1",
+  "description": "Additive documentation wire shape. Rust recomputes canonical identity, parent/carry-forward decisions, exact analytical/reference bindings and supported-input provenance. A valid JSON shape is neither byte integrity nor scientific qualification. Legacy scope/model/study contracts remain unchanged.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "revision_sha256", "parent_revision_sha256", "reference", "designs", "scope", "carry_forward_plan_sha256", "review_decisions", "provenance"],
+  "properties": {
+    "schema_version": {"const": "greenlens.scope-revision.v1"},
+    "revision_sha256": {"$ref": "#/$defs/hash"},
+    "parent_revision_sha256": {"$ref": "#/$defs/optionalHash"},
+    "reference": {"$ref": "#/$defs/reference"},
+    "designs": {"type": "object", "minProperties": 1, "maxProperties": 2, "propertyNames": {"enum": ["A", "B"]}, "additionalProperties": {"$ref": "#/$defs/design"}},
+    "scope": {"$ref": "architectural-scope-v0.6.schema.json"},
+    "carry_forward_plan_sha256": {"$ref": "#/$defs/optionalHash"},
+    "review_decisions": {"type": "array", "maxItems": 65536, "items": {"$ref": "#/$defs/decision"}},
+    "provenance": {"$ref": "#/$defs/provenance"}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "optionalHash": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/hash"}]},
+    "reference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["asset_id", "manifest_sha256", "manifest"],
+      "properties": {
+        "asset_id": {"type": "string", "minLength": 1, "maxLength": 128},
+        "manifest_sha256": {"$ref": "#/$defs/hash"},
+        "manifest": {"$ref": "reference-model-v0.6.schema.json"}
+      }
+    },
+    "design": {
+      "type": "object", "additionalProperties": false,
+      "required": ["model", "calendar", "study"],
+      "properties": {
+        "model": {"$ref": "thermal-model-v0.4.schema.json"},
+        "calendar": {"$ref": "energy-study-v0.4.schema.json#/$defs/EnergyCalendar"},
+        "study": {"oneOf": [{"type": "null"}, {"$ref": "energy-study-v0.4.schema.json"}]}
+      }
+    },
+    "decision": {
+      "type": "object", "additionalProperties": false,
+      "required": ["row_id", "resolution", "rationale"],
+      "properties": {
+        "row_id": {"$ref": "#/$defs/hash"},
+        "resolution": {"enum": ["reviewed", "unresolved"]},
+        "rationale": {"type": "string", "minLength": 1, "maxLength": 2048}
+      }
+    },
+    "object": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "id", "zone_id"],
+      "properties": {
+        "kind": {"enum": ["model", "site", "study", "calendar", "zone", "surface", "window", "overhang", "detached_shade", "material", "construction", "glazing", "schedule", "curve", "gains", "cooling_system", "supply_fan", "balanced_ventilation"]},
+        "id": {"type": "string"},
+        "zone_id": {"type": ["string", "null"]}
+      }
+    },
+    "row": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "design_id", "object", "field_path", "applied_value", "units", "declared_source", "status", "source_declarations"],
+      "properties": {
+        "id": {"$ref": "#/$defs/hash"},
+        "design_id": {"enum": ["A", "B"]},
+        "object": {"$ref": "#/$defs/object"},
+        "field_path": {"type": "string"},
+        "applied_value": {},
+        "units": {"type": ["string", "null"]},
+        "declared_source": {"oneOf": [{"type": "null"}, {"$ref": "thermal-model-v0.4.schema.json#/$defs/InputSource"}]},
+        "status": {"enum": ["unreviewed", "documented", "measured", "assumed", "synthetic", "missing", "not_applicable", "conflicting"]},
+        "source_declarations": {"type": "array", "maxItems": 2048, "items": {"$ref": "architectural-scope-v0.6.schema.json#/$defs/assumption"}}
+      }
+    },
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["schema_version", "rows", "unreviewed_count", "missing_count", "conflicting_count", "documentation_complete", "disclosure"],
+      "properties": {
+        "schema_version": {"const": "greenlens.input-provenance-checklist.v1"},
+        "rows": {"type": "array", "maxItems": 65536, "items": {"$ref": "#/$defs/row"}},
+        "unreviewed_count": {"type": "integer", "minimum": 0, "maximum": 65536},
+        "missing_count": {"type": "integer", "minimum": 0, "maximum": 65536},
+        "conflicting_count": {"type": "integer", "minimum": 0, "maximum": 65536},
+        "documentation_complete": {"type": "boolean"},
+        "disclosure": {"type": "string"}
+      }
+    }
+  }
+}

@@ -2,16 +2,27 @@ import { useRef, useState } from 'react';
 import type { CameraState, ViewId } from '../viewport/types';
 import type { ThermalInspectorTarget } from './thermal-inspector-target';
 import { validReferencePresentation, type ReferencePresentation } from './reference-presentation';
+import type { ReferenceOccurrenceSelection } from '../reference/selection';
 
 export const THERMAL_VIEWS:ViewId[]=['top','perspective','front','right'];
 export const THERMAL_LAYERS=['surface','window','overhang','shading'] as const;
 export type ThermalLayer=typeof THERMAL_LAYERS[number];
 export const ENERGY_PANELS=['model','reference','results','series','history','designs','compare','weather','preflight','sensitivity','reports','evidence'] as const;
 export type EnergyPanel=typeof ENERGY_PANELS[number];
+export type ReportContentsProfile='executive'|'technical';
 export interface ThermalWorkspacePresentation {
   panel:EnergyPanel;
   inspector:ThermalInspectorTarget|null;
-  reference_selection:{revision_sha256:string;occurrence_id:string}|null;
+  reference_selection:ReferenceOccurrenceSelection|null;
+  /** Additive v0.7 local state; never substituted for an active viewport pick. */
+  reference_inspection?:ReferenceOccurrenceSelection|null;
+  /** Which generated family's contents are being inspected; not an export filter. */
+  report_contents_profile?:ReportContentsProfile;
+  /** Read-only scope history choice; distinct from active scope and viewport. */
+  scope_revision_sha256?:string|null;
+  /** Report choices remain separate from live scope and model editing. */
+  report_scope_revision_sha256?:string|null;
+  report_issue_id?:string|null;
 }
 export function defaultThermalWorkspacePresentation():ThermalWorkspacePresentation{return{panel:'model',inspector:null,reference_selection:null};}
 export interface ThermalSceneObject {id:string;label:string;kind:'zone'|ThermalLayer;zone_id:string|null;storey:number|null;polygons_m:[number,number,number][][]}
@@ -39,8 +50,12 @@ const ids=(value:unknown):value is string[]=>Array.isArray(value)&&value.length<
 const identifier=(value:unknown)=>typeof value==='string'&&value.length>0&&value.length<=256;
 export function validThermalWorkspacePresentation(value:unknown):value is ThermalWorkspacePresentation {
   const p=value as ThermalWorkspacePresentation;if(!p||!ENERGY_PANELS.includes(p.panel))return false;
+  if(p.report_contents_profile!==undefined&&!['executive','technical'].includes(p.report_contents_profile))return false;
+  if(p.scope_revision_sha256!==undefined&&p.scope_revision_sha256!==null&&(typeof p.scope_revision_sha256!=='string'||!/^[a-f0-9]{64}$/.test(p.scope_revision_sha256)))return false;
+  for(const value of [p.report_scope_revision_sha256,p.report_issue_id])if(value!==undefined&&value!==null&&(typeof value!=='string'||!/^[a-f0-9]{64}$/.test(value)))return false;
   if(p.inspector!==null){const target=p.inspector;if(!target?.object||!identifier(target.object.kind)||!identifier(target.object.id)||target.object.zone_id!==null&&!identifier(target.object.zone_id)||typeof target.field_path!=='string'||target.field_path.length>1024)return false;}
-  return p.reference_selection===null||Boolean(p.reference_selection&&typeof p.reference_selection.revision_sha256==='string'&&/^[a-f0-9]{64}$/.test(p.reference_selection.revision_sha256)&&identifier(p.reference_selection.occurrence_id));
+  const validReference=(selection:ReferenceOccurrenceSelection|null|undefined)=>selection===null||Boolean(selection&&typeof selection.revision_sha256==='string'&&/^[a-f0-9]{64}$/.test(selection.revision_sha256)&&identifier(selection.occurrence_id));
+  return validReference(p.reference_selection)&&(p.reference_inspection===undefined||validReference(p.reference_inspection));
 }
 export function validThermalPresentation(value:unknown):value is ThermalPresentation {
   const p=value as ThermalPresentation;if(!p||p.schema_version!=='greenlens.thermal-presentation.v1'||!THERMAL_VIEWS.includes(p.active_view)||p.maximized_view!==null&&!THERMAL_VIEWS.includes(p.maximized_view)||p.selected!==null&&(typeof p.selected!=='string'||p.selected.length>256)||!ids(p.hidden)||p.isolated!==null&&!ids(p.isolated)||typeof p.grid!=='boolean')return false;

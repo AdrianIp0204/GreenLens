@@ -5,7 +5,7 @@ use greenlens_runner::{energy_report::TypstConfig, energy_services as service};
 use serde::Deserialize;
 use std::sync::{
     atomic::{AtomicBool, Ordering},
-    Condvar, Mutex,
+    Arc, Condvar, Mutex,
 };
 #[tauri::command]
 pub(crate) async fn energy_copy_design_preview(
@@ -257,10 +257,10 @@ pub(crate) fn dialog_energy_attachment(
 pub(crate) struct ReportControl {
     active: Mutex<bool>,
     changed: Condvar,
-    cancelled: AtomicBool,
+    pub(crate) cancelled: Arc<AtomicBool>,
     closing: AtomicBool,
 }
-struct ReportGuard<'a>(&'a ReportControl);
+pub(crate) struct ReportGuard<'a>(&'a ReportControl);
 impl Drop for ReportGuard<'_> {
     fn drop(&mut self) {
         if let Ok(mut active) = self.0.active.lock() {
@@ -270,7 +270,7 @@ impl Drop for ReportGuard<'_> {
     }
 }
 impl ReportControl {
-    fn begin(&self) -> anyhow::Result<ReportGuard<'_>> {
+    pub(crate) fn begin(&self) -> anyhow::Result<ReportGuard<'_>> {
         let mut active = self
             .active
             .lock()
@@ -639,24 +639,26 @@ pub(crate) async fn energy_report(
             let config = config.context(
                 "Portable evidence includes PDF/PNG and requires the pinned Typst renderer",
             )?;
-            greenlens_runner::energy_export::export_workbench_pair(
+            greenlens_runner::energy_export::export_workbench_pair_cancellable(
                 Path::new(&path),
                 &a,
                 &b,
                 Path::new(&destination),
                 &config,
-                &control.cancelled,
+                control.cancelled.clone(),
             )
         } else {
-            Ok(serde_json::to_value(service::render_workbench_reports(
-                Path::new(&path),
-                &project,
-                &a,
-                &b,
-                Path::new(&destination),
-                config.as_ref(),
-                &control.cancelled,
-            )?)?)
+            Ok(serde_json::to_value(
+                service::render_workbench_reports_cancellable(
+                    Path::new(&path),
+                    &project,
+                    &a,
+                    &b,
+                    Path::new(&destination),
+                    config.as_ref(),
+                    control.cancelled.clone(),
+                )?,
+            )?)
         }
     })
     .await

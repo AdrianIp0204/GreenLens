@@ -70,7 +70,11 @@ export type ScopeContext = {
   designs: Record<string, { model_input_sha256: string; targets: { object_id: string; kind: AnalyticalObjectKind; label: string }[] }>;
 };
 export type ReferenceAsset = { id: string; path: string; revision_sha256: string; manifest_sha256: string; geometry_sha256: string };
-export type ArchitecturalProject = { schema_version: string; assets: ReferenceAsset[]; active_asset_id: string; scope: ArchitecturalScope | null };
+export type InputProvenanceRow={id:string;design_id:string;object:{kind:string;id:string};field_path:string;applied_value:unknown;units:string|null;declared_source:{citation:string;synthetic:boolean}|null;status:'unreviewed'|'documented'|'measured'|'assumed'|'synthetic'|'missing'|'not_applicable'|'conflicting';source_declarations:ScopeAssumption[]};
+export type ScopeRevision={schema_version:'greenlens.scope-revision.v1';revision_sha256:string;parent_revision_sha256:string|null;reference:{asset_id:string;manifest_sha256:string;manifest:ReferenceModel};designs:Record<string,{model:import('../energy/types').ThermalModel;calendar:import('../energy/types').EnergyCalendar;study:import('../energy/types').EnergyStudy|null}>;scope:ArchitecturalScope;carry_forward_plan_sha256:string|null;review_decisions:ScopeReviewDecision[];provenance:{schema_version:string;rows:InputProvenanceRow[];unreviewed_count:number;missing_count:number;conflicting_count:number;documentation_complete:boolean;disclosure:string}};
+export type ScopeReviewDecision={row_id:string;resolution:'reviewed'|'unresolved';rationale:string};
+export type ScopeCarryForwardPlan={schema_version:'greenlens.scope-carry-forward.v1';parent_revision_sha256:string;target_context_sha256:string;plan_sha256:string;proposed_scope:ArchitecturalScope;rows:{id:string;kind:'scope'|'reference'|'mapping'|'assumption'|'reconciliation'|'report_view'|'input';key:string;change:'unchanged'|'changed'|'deleted'|'added'|'unresolved';requires_review:boolean;before:unknown;after:unknown;reason:string}[]};
+export type ArchitecturalProject = { schema_version: string; assets: ReferenceAsset[]; active_asset_id: string; scope: ArchitecturalScope | null;scope_history?:{schema_version:'greenlens.scope-history.v1';revisions:ScopeRevision[];active_revision_sha256:string|null}|null };
 
 /** Controlled document draft: numeric text survives invalid edits and navigation. */
 export type ReferenceImportDraft = {

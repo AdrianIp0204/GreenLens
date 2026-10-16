@@ -3,6 +3,18 @@ import assert from 'node:assert/strict';
 import {DocumentHistory,documentSignature,hasPendingEvidence,completedJobResult,protectReplacement} from '../src/workspace/document.mjs';
 const project=()=>({schema_version:'0.4.0',id:'test',name:'Test',alternatives:[{id:'A',model:{daylight:'unchanged'}}],runs:[{id:'old-static'}],climate:{runs:[{id:'old-climate'}]},energy:{designs:{A:{model:{value:1},study:{weather:'retained'}}},runs:[{id:'energy-before'}],weather:[{id:'weather-before'}]},display_state:{camera:'unchanged'}});
 const validate=async model=>({model});
+test('revision undo restores exact active identity without pruning later issues or equal-scope revisions',async()=>{
+ const history=new DocumentHistory(),p=project(),scope={title:'Same description'};
+ p.architecture={scope,scope_history:{revisions:[{revision_sha256:'s1',scope}],active_revision_sha256:'s1'}};
+ const accept=async p=>{p.architecture.scope_history.revisions.push({revision_sha256:'s2',scope});p.architecture.scope_history.active_revision_sha256='s2';return p;};
+ const edited=await history.acceptScopeRevision(p,'A','Reviewed change',accept);assert.equal(history.past.length,1);
+ const live=structuredClone(edited.project);live.report_issues={issues:[{id:'r1'},{id:'r2'}]};
+ const restore=async(p,_scope,_restoring,id)=>{p.architecture.scope_history.active_revision_sha256=id;p.architecture.scope=p.architecture.scope_history.revisions.find(r=>r.revision_sha256===id).scope;return p;};
+ const undone=await history.traverse(live,'undo',validate,undefined,undefined,undefined,undefined,undefined,undefined,restore);
+ assert.equal(undone.project.architecture.scope_history.active_revision_sha256,'s1');assert.equal(undone.project.architecture.scope_history.revisions.length,2);assert.deepEqual(undone.project.report_issues,live.report_issues);
+ const redone=await history.traverse(undone.project,'redo',validate,undefined,undefined,undefined,undefined,undefined,undefined,restore);assert.deepEqual(redone.project,live);
+ const before=structuredClone(history.past);await assert.rejects(history.acceptScopeRevision(live,'A','Cancelled',accept,()=>false),/No revision was accepted/);assert.deepEqual(history.past,before);assert.equal(live.architecture.scope_history.revisions.length,2);
+});
 const configure=async(p,id,design)=>{if(design.model.value<0)throw Error('Rust validation rejected');return {...p,energy:{...p.energy,designs:{...p.energy.designs,[id]:design}}};};
 test('energy edits are dirty, validated and one undo entry; undo keeps newly retained evidence',async()=>{
   const history=new DocumentHistory(),p=project(),signature=documentSignature(p);

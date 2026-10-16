@@ -56,6 +56,18 @@ pub fn export_workbench_pair(
 ) -> Result<Value> {
     export_pair_impl(root, a, b, destination, typst, cancel, true)
 }
+pub fn export_workbench_pair_cancellable(
+    root: &Path,
+    a: &str,
+    b: &str,
+    destination: &Path,
+    typst: &TypstConfig,
+    cancel: std::sync::Arc<AtomicBool>,
+) -> Result<Value> {
+    crate::project_open::with_cancellation(cancel.clone(), || {
+        export_pair_impl(root, a, b, destination, typst, &cancel, true)
+    })
+}
 fn export_pair_impl(
     root: &Path,
     a: &str,
@@ -71,6 +83,8 @@ fn export_pair_impl(
     );
     let _lock = WriterLock::acquire(root)?;
     let view = crate::open_project(root)?;
+    ensure!(view.project.report_issues.as_ref().is_none_or(|index| index.issues.is_empty()),
+        "This project retains immutable report issues. Use complete issued-project export to retain all issue dependencies; selected-pair export would remove required history");
     let supplement = if workbench {
         Some(energy_services::workbench_report_data(
             root,
@@ -511,6 +525,7 @@ mod tests {
             assets: vec![],
             active_asset_id: String::new(),
             scope: None,
+            scope_history: None,
         });
         assert!(validate_architectural_supplement(
             Path::new("."),

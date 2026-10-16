@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://greenlens.dev/schemas/report-issue-index-v0.7.schema.json",
+  "title": "GreenLens immutable report issue index v1",
+  "description": "Optional Project.report_issues wire shape. Rust enforces the 256 KiB index limit, canonical product-bound issue ID/path, append-only summaries, exact retained scope/reference/run dependencies, complete products, actual-byte integrity and shared archive limits. This index alone is not evidence verification or author authenticity.",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "issues"],
+  "properties": {
+    "schema_version": {"const": "greenlens.report-issue-index.v1"},
+    "issues": {"type": "array", "minItems": 1, "maxItems": 32, "items": {"$ref": "#/$defs/issue"}}
+  },
+  "$defs": {
+    "hash": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "uuid": {"type": "string", "pattern": "^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$"},
+    "run": {
+      "type": "object", "additionalProperties": false,
+      "required": ["run_id", "record_sha256", "design_id"],
+      "properties": {
+        "run_id": {"$ref": "#/$defs/uuid"},
+        "record_sha256": {"$ref": "#/$defs/hash"},
+        "design_id": {"enum": ["A", "B"]}
+      }
+    },
+    "issue": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "path", "content_sha256", "content_file_sha256", "products_sha256", "products_file_sha256", "receipt_file_sha256", "scope_revision_sha256", "reference_asset_id", "reference_manifest_sha256", "baseline", "proposed", "sensitivity_session_id", "sensitivity_run_ids", "title", "report_revision", "include_pdf"],
+      "properties": {
+        "id": {"$ref": "#/$defs/hash", "description": "Canonical hash of (INDEX_SCHEMA, content_sha256, products_sha256); excludes runtime receipt."},
+        "path": {"type": "string", "pattern": "^report-issues/[a-f0-9]{64}$"},
+        "content_sha256": {"$ref": "#/$defs/hash"},
+        "content_file_sha256": {"$ref": "#/$defs/hash"},
+        "products_sha256": {"$ref": "#/$defs/hash"},
+        "products_file_sha256": {"$ref": "#/$defs/hash"},
+        "receipt_file_sha256": {"$ref": "#/$defs/hash"},
+        "scope_revision_sha256": {"$ref": "#/$defs/hash"},
+        "reference_asset_id": {"$ref": "#/$defs/uuid"},
+        "reference_manifest_sha256": {"$ref": "#/$defs/hash"},
+        "baseline": {"$ref": "#/$defs/run"},
+        "proposed": {"$ref": "#/$defs/run"},
+        "sensitivity_session_id": {"oneOf": [{"type": "null"}, {"$ref": "#/$defs/uuid"}]},
+        "sensitivity_run_ids": {"type": "array", "maxItems": 4, "uniqueItems": true, "items": {"$ref": "#/$defs/uuid"}},
+        "title": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "report_revision": {"type": "string", "maxLength": 256},
+        "include_pdf": {"type": "boolean"}
+      },
+      "allOf": [{"if": {"properties": {"sensitivity_session_id": {"type": "null"}}}, "then": {"properties": {"sensitivity_run_ids": {"maxItems": 0}}}}]
+    }
+  }
+}

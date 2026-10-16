@@ -110,7 +110,7 @@ pub fn attach_weather(
     verify_project_evidence(root, extension)?;
     crate::validate_project(&next)?;
     check_revision(root, expected)?;
-    atomic_json(root, &next)?;
+    atomic_project(root, &next)?;
     crate::open_project(root)
 }
 
@@ -408,7 +408,7 @@ pub fn render_reports(
     typst: Option<&crate::energy_report::TypstConfig>,
     cancel: &std::sync::atomic::AtomicBool,
 ) -> Result<crate::energy_report::EnergyReportArtifacts> {
-    render_reports_impl(root, project, a, b, destination, typst, cancel, false)
+    render_reports_impl(root, project, a, b, destination, typst, cancel, false, None)
 }
 /// New report profiles are a supplementary presentation, not a new run codec.
 pub fn render_workbench_reports(
@@ -420,7 +420,29 @@ pub fn render_workbench_reports(
     typst: Option<&crate::energy_report::TypstConfig>,
     cancel: &std::sync::atomic::AtomicBool,
 ) -> Result<crate::energy_report::EnergyReportArtifacts> {
-    render_reports_impl(root, project, a, b, destination, typst, cancel, true)
+    render_reports_impl(root, project, a, b, destination, typst, cancel, true, None)
+}
+#[allow(clippy::too_many_arguments)]
+pub fn render_workbench_reports_cancellable(
+    root: &Path,
+    project: &Project,
+    a: &str,
+    b: &str,
+    destination: &Path,
+    typst: Option<&crate::energy_report::TypstConfig>,
+    cancel: std::sync::Arc<std::sync::atomic::AtomicBool>,
+) -> Result<crate::energy_report::EnergyReportArtifacts> {
+    render_reports_impl(
+        root,
+        project,
+        a,
+        b,
+        destination,
+        typst,
+        &cancel,
+        true,
+        Some(cancel.clone()),
+    )
 }
 pub fn report_attachment_preflight(
     root: &Path,
@@ -480,6 +502,7 @@ fn render_reports_impl(
     typst: Option<&crate::energy_report::TypstConfig>,
     cancel: &std::sync::atomic::AtomicBool,
     workbench: bool,
+    read_cancel: Option<std::sync::Arc<std::sync::atomic::AtomicBool>>,
 ) -> Result<crate::energy_report::EnergyReportArtifacts> {
     use std::sync::atomic::Ordering;
     ensure!(
@@ -487,23 +510,31 @@ fn render_reports_impl(
         "Report destination must be a new directory"
     );
     let _lock = WriterLock::acquire(root)?;
-    let mut data = report_data(root, project, a, b)?;
-    data.evidence.retain(|e| e.included);
     let stage = crate::local_root()?
         .join("energy-report-deliveries")
         .join(Uuid::new_v4().to_string());
-    let workbench_data = if workbench {
-        Some(workbench_report_data(root, project, a, b)?)
-    } else {
-        None
+    let prepare = || -> Result<_> {
+        let mut data = report_data(root, project, a, b)?;
+        data.evidence.retain(|e| e.included);
+        let workbench_data = if workbench {
+            Some(workbench_report_data(root, project, a, b)?)
+        } else {
+            None
+        };
+        let architecture = crate::energy_report::architectural::prepare_project(
+            root,
+            project,
+            workbench_data.as_ref().map(|d| &d.base).unwrap_or(&data),
+            workbench_data.as_ref().map(|d| d.derived_sha256.as_str()),
+            cancel,
+        )?;
+        Ok((data, workbench_data, architecture))
     };
-    let architecture = crate::energy_report::architectural::prepare_project(
-        root,
-        project,
-        workbench_data.as_ref().map(|d| &d.base).unwrap_or(&data),
-        workbench_data.as_ref().map(|d| d.derived_sha256.as_str()),
-        cancel,
-    )?;
+    let (data, workbench_data, architecture) = if let Some(token) = read_cancel {
+        crate::project_open::inspect_evidence(root, token, |_| {}, prepare)?
+    } else {
+        prepare()?
+    };
     let mut products = if let Some(workbench_data) = &workbench_data {
         crate::energy_report_workbench::render_with_architecture(
             workbench_data,

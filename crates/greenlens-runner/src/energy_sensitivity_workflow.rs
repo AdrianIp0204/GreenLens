@@ -555,7 +555,7 @@ fn persist_event(
         .sensitivity;
     *refs.iter_mut().find(|r| r.id == id).unwrap() = next_ref;
     crate::validate_project(&next)?;
-    persistence::atomic_json(root, &next)?;
+    persistence::atomic_project(root, &next)?;
     crate::open_project(root)
 }
 
@@ -611,7 +611,7 @@ pub fn retain_plan(
         .sensitivity
         .push(r);
     crate::validate_project(&next)?;
-    persistence::atomic_json(root, &next)?;
+    persistence::atomic_project(root, &next)?;
     crate::open_project(root)
 }
 fn no_active_or_pending(app: &Application) -> Result<()> {
@@ -870,7 +870,7 @@ pub fn recover_metadata(
         .unwrap() = recovered;
     inspect(root, &next, id)?;
     crate::validate_project(&next)?;
-    persistence::atomic_json(root, &next)?;
+    persistence::atomic_project(root, &next)?;
     crate::open_project(root)
 }
 pub fn finalize(

@@ -1,6 +1,6 @@
 # Installation and launch
 
-The active **0.6.0 architectural intake continuation** is described in the [delivery guide](v0.6-delivery.md) and [acceptance ledger](v0.6-acceptance.md). It is not yet an accepted release; use the guide's identified artifact status rather than assuming a historical installer contains the new work. Reference assets are separate from thermal inputs, and a lawful local GLB export is required for architectural intake.
+The active **0.7.0 study revisions and report issuance continuation** is described in the [delivery guide](v0.7-delivery.md) and [acceptance ledger](v0.7-acceptance.md). It is not yet an accepted release; use the guide's identified artifact status rather than assuming a historical installer contains new work. The [v0.6 delivery guide](v0.6-delivery.md) preserves its candidate and outstanding requirements. Reference assets are separate from thermal inputs, and a lawful local GLB export is required for architectural intake.
 
 For the historical **0.4.0 energy candidate**, retain its [delivery directory, installer/CLI commands and reviewed example outputs](v0.4-delivery.md) and [energy status](v0.4-energy-status.md). EnergyPlus and Typst/fonts are acquired separately with `scripts/install-energyplus.ps1` and `scripts/install-typst.ps1`; neither engine is bundled. Saved energy inspection needs no simulator, and PDF generation needs only the report renderer. Historical installation outcomes below describe their named versions; the v0.5 and v0.6 ledgers distinguish later observations.
 

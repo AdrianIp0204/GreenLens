@@ -10,6 +10,7 @@ export function studySnapshot(project:Project,alternativeId:string):StudyHistory
 export function completedJobResult(job:ClimateJobStatus|null):RunRecord|ClimateRunRecord|EnergyRunRecord|null;
 export function hasPendingEvidence(job:ClimateJobStatus|null,results?:RunRecord[],climateResults?:ClimateRunRecord[],energyResults?:EnergyRunRecord[]):boolean;
 export type HistoryEntry =
+ | {kind:'scope_revision';alternativeId:string;before:{kind:'revision';id:string|null}|{kind:'legacy_scope';scope:ArchitecturalScope|null};after:{kind:'revision';id:string|null};label:string}
  | {kind:'architectural_scope';alternativeId:string;before:ArchitecturalScope|null;after:ArchitecturalScope|null;label:string}
  | { kind:'geometry'; alternativeId:string; before:Model; after:Model; label:string }
  | { kind:'study'; alternativeId:string; before:StudyHistorySnapshot; after:StudyHistorySnapshot; label:string }
@@ -25,7 +26,7 @@ export type ConfigureEnergy = (project:Project,alternativeId:string,snapshot:Ene
 export type ConfigureEnergyMetadata = (project:Project,change:EnergyMetadataChange)=>Promise<Project>;
 export type RestoreEnergyGroup = (project:Project,designs:Record<string,EnergyDesign>)=>Promise<Project>;
 export type RestoreEnergyBatch = (project:Project,batch:EnergyDraftBatch)=>Promise<Project>;
-export type ConfigureScope=(project:Project,scope:ArchitecturalScope|null,restoring:boolean)=>Promise<Project>;
+export type ConfigureScope=(project:Project,scope:ArchitecturalScope|null,restoring:boolean,revisionSha256?:string|null)=>Promise<Project>;
 export class DocumentHistory {
  past:HistoryEntry[]; future:HistoryEntry[]; busy:boolean;
  reset():void;
@@ -36,6 +37,7 @@ export class DocumentHistory {
  editEnergyGroup(project:Project,alternativeId:string,targets:string[],label:string,configure:(project:Project)=>Promise<Project>):Promise<{project:Project;changed:boolean}>;
  editEnergyBatch(project:Project,alternativeId:string,batch:EnergyDraftBatch,label:string,configure:RestoreEnergyBatch,canCommit?:()=>boolean):Promise<{project:Project;changed:boolean}>;
  editScope(project:Project,alternativeId:string,candidate:ArchitecturalScope|null,label:string,configure:ConfigureScope):Promise<{project:Project;changed:boolean}>;
+ acceptScopeRevision(project:Project,alternativeId:string,label:string,configure:(project:Project)=>Promise<Project>,canCommit?:()=>boolean):Promise<{project:Project;changed:boolean}>;
  traverse(project:Project,direction:'undo'|'redo',validate:ValidateModel,checkEdit?:CheckEdit,restoreStudy?:RestoreStudy,restoreEnergy?:ConfigureEnergy,restoreEnergyMetadata?:ConfigureEnergyMetadata,restoreEnergyGroup?:RestoreEnergyGroup,restoreEnergyBatch?:RestoreEnergyBatch,restoreScope?:ConfigureScope):Promise<{project:Project;validated:ValidatedModel;alternativeId:string;label:string}>;
 }
 export function protectReplacement(options:{needsGuard:boolean;decide:()=>Promise<'save'|'discard'|'cancel'>;save:()=>Promise<boolean>;discard:()=>Promise<void>;proceed:()=>Promise<void>}):Promise<boolean>;

@@ -25,6 +25,8 @@ pub const REPORT_SCHEMA: &str = "greenlens.architectural-energy-report.v1";
 pub const FIGURE_METHOD: &str = "greenlens.reference-orthographic-projection.v1";
 pub const MAX_FIGURE_TRIANGLES: usize = 8000;
 const MAX_PRESENTED_ROWS: usize = 80;
+#[path = "energy_report_aligned_views.rs"]
+pub mod aligned_views;
 #[path = "energy_report_reference_views.rs"]
 mod views;
 pub const STORAGE_DISCLOSURE: &str = "All admitted normalized reference revisions and geometry chunks are included in the portable project package. Original proprietary architectural sources and conversion GLB files remain external and are excluded by the declared storage policy. This is a normalized-reference analysis evidence package, not a complete original architectural-source archive. Standalone reports contain figures and complete scope inventories; use the portable package for retained geometry.";
@@ -1042,6 +1044,7 @@ mod tests {
             }],
             active_asset_id: id,
             scope: Some(scope),
+            scope_history: None,
         };
         (base, extension, admitted)
     }

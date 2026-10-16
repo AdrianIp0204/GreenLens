@@ -126,7 +126,27 @@ export class DocumentHistory {
     try{
       const before=clone(project.architecture?.scope??null),next=await configure(clone(project),clone(candidate),false),after=clone(next.architecture?.scope??null);
       if(JSON.stringify(before)===JSON.stringify(after))return {project,changed:false};
-      this.past.push({kind:'architectural_scope',alternativeId,before,after,label});this.future=[];return {project:next,changed:true};
+      if(next.architecture?.scope_history){
+        const prior=project.architecture?.scope_history?{kind:'revision',id:project.architecture.scope_history.active_revision_sha256}:{kind:'legacy_scope',scope:before};
+        const accepted={kind:'revision',id:next.architecture.scope_history.active_revision_sha256};
+        this.past.push({kind:'scope_revision',alternativeId,before:prior,after:accepted,label});
+      }else this.past.push({kind:'architectural_scope',alternativeId,before,after,label});
+      this.future=[];return {project:next,changed:true};
+    }finally{this.busy=false;}
+  }
+  async acceptScopeRevision(project,alternativeId,label,configure,canCommit=()=>true){
+    if(this.busy)throw new Error('Wait for the current document edit to finish.');
+    this.busy=true;
+    try{
+      const history=project.architecture?.scope_history;
+      const before=history?{kind:'revision',id:history.active_revision_sha256}:{kind:'legacy_scope',scope:clone(project.architecture?.scope??null)};
+      const next=await configure(clone(project));
+      if(!canCommit())throw new Error('The revision review changed while acceptance was pending. No revision was accepted.');
+      const accepted=next.architecture?.scope_history;
+      if(!accepted)throw new Error('Rust did not return a complete scope revision.');
+      const after={kind:'revision',id:accepted.active_revision_sha256};
+      if(before.kind==='revision'&&before.id===after.id)return{project,changed:false};
+      this.past.push({kind:'scope_revision',alternativeId,before,after,label});this.future=[];return{project:next,changed:true};
     }finally{this.busy=false;}
   }
   async traverse(project, direction, validate, checkEdit = () => {}, restoreStudy, restoreEnergy, restoreEnergyMetadata,restoreEnergyGroup,restoreEnergyBatch,restoreScope) {
@@ -141,7 +161,11 @@ export class DocumentHistory {
       if (!current) throw new Error('The design alternative no longer exists.');
       const candidate = clone(direction === 'undo' ? entry.before : entry.after);
       let next, validated;
-      if(entry.kind==='architectural_scope') {
+      if(entry.kind==='scope_revision') {
+        if(!restoreScope)throw new Error('Scope revision restoration is unavailable.');
+        next=candidate.kind==='revision'?await restoreScope(clone(project),null,true,candidate.id):await restoreScope(clone(project),candidate.scope,true);
+        validated=await validate(clone(current.model),entry.alternativeId,next);
+      }else if(entry.kind==='architectural_scope') {
         if(!restoreScope)throw new Error('Architectural scope restoration is unavailable.');
         next=await restoreScope(clone(project),candidate,true);validated=await validate(clone(current.model),entry.alternativeId,next);
       }else if(entry.kind==='energy_batch') {

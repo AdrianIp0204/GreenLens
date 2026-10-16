@@ -1,11 +1,11 @@
 {
   "schema_version": "greenlens.dependencies.v0.1",
-  "generated_utc": "2026-10-15T15:41:43.179Z",
+  "generated_utc": "2026-10-16T04:16:16.302Z",
   "scope": "Resolved native Windows Rust graph and locked npm graph",
   "target": "x86_64-pc-windows-msvc",
   "lockfiles": {
-    "Cargo.lock": "88bfde398a19113a253f6f2b21bd2b848f61ccf8cc3cf75310d00cb9001752a1",
-    "apps/desktop/package-lock.json": "caa5def41a7c43f644aa72087732dca72ea9d68c1368a50d9bad169d54574ced"
+    "Cargo.lock": "87edaec0465f542641c5d3f0953aeba31142954e35d95aa42d00e8e05a95c890",
+    "apps/desktop/package-lock.json": "220e65d91b99181990bb6511542a8ad3f0f869f7bf5ce480694eb34a2d7f1850"
   },
   "scientific_engine_manifest": "dependencies/radiance.json",
   "supplemental_notice_manifest": "dependencies/license-supplements.json",

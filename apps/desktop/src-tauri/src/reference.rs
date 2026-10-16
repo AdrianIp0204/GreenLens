@@ -9,6 +9,55 @@ use std::path::Path;
 use tauri::{ipc::Channel, Manager};
 
 #[tauri::command]
+pub async fn reference_revision_prepare(
+    path: String,
+    project: Project,
+    parent_revision_sha256: String,
+) -> CommandResult<greenlens_core::study_revision::CarryForwardPlan> {
+    blocking(move || {
+        greenlens_runner::study_revisions::prepare(
+            Path::new(&path),
+            &project,
+            &parent_revision_sha256,
+            &std::sync::atomic::AtomicBool::new(false),
+        )
+    })
+    .await
+}
+#[tauri::command]
+pub async fn reference_revision_accept(
+    path: String,
+    project: Project,
+    parent_revision_sha256: String,
+    expected_plan_sha256: String,
+    scope: ArchitecturalScope,
+    decisions: Vec<greenlens_core::study_revision::ReviewDecision>,
+) -> CommandResult<Project> {
+    blocking(move || {
+        greenlens_runner::study_revisions::accept(
+            Path::new(&path),
+            &project,
+            &parent_revision_sha256,
+            &expected_plan_sha256,
+            scope,
+            decisions,
+            &std::sync::atomic::AtomicBool::new(false),
+        )
+    })
+    .await
+}
+#[tauri::command]
+pub async fn reference_revision_activate(
+    project: Project,
+    revision_sha256: Option<String>,
+) -> CommandResult<Project> {
+    blocking(move || {
+        greenlens_runner::study_revisions::activate(&project, revision_sha256.as_deref())
+    })
+    .await
+}
+
+#[tauri::command]
 pub fn dialog_open_reference_glb(
     window: tauri::WebviewWindow,
     initial_path: Option<String>,

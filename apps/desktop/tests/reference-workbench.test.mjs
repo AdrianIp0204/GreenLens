@@ -38,10 +38,11 @@ async function setup({accepted=false}={}){
   if(root)await act(async()=>root.unmount());document.body.innerHTML='<div id="root"></div>';root=createRoot(document.getElementById('root'));
   calls=[];reply=assessment();saveOkay=true;importOkay=true;const {reference,context}=fixture();
   const scope=newScopeDraft(reference,context).value;Object.assign(scope,{title:'Accepted original fixture',purpose:'Test form transactions only',included_scope:['Original selected source portion'],excluded_scope:['Whole-building equivalence not claimed'],boundary_consequences:'Declared analytical boundaries remain authoritative'});
-  props={documentId:'original-document',reference,context,scope:accepted?scope:null,assessment:accepted?assessment():null,draft:null,selectedOccurrenceId:null,disabled:false,
+  props={documentId:'original-document',reference,context,scope:accepted?scope:null,assessment:accepted?assessment():null,draft:null,inspectedOccurrence:null,activeOccurrenceId:null,disabled:false,
     onDraftChange:value=>{props={...props,draft:value};root.render(React.createElement(Panel,props));},
     onConsumeDraft:(kind,consumed,owner)=>{if(props.documentId!==owner||props.draft?.document_id!==owner||JSON.stringify(props.draft[kind])!==consumed)return false;props.onDraftChange({...props.draft,[kind]:null});return true;},
-    onSelectOccurrence:id=>{calls.push(['select',id]);props={...props,selectedOccurrenceId:id};root.render(React.createElement(Panel,props));},
+    onSelectOccurrence:id=>{calls.push(['select',id]);props={...props,activeOccurrenceId:id,inspectedOccurrence:id?{revision_sha256:props.reference.revision_sha256,occurrence_id:id}:null};root.render(React.createElement(Panel,props));},
+    onInspectOccurrence:selection=>{calls.push(['inspect',selection]);props={...props,inspectedOccurrence:selection};root.render(React.createElement(Panel,props));},
     onImport:async value=>{calls.push(['import',structuredClone(value)]);return importOkay;},
     onAssess:async value=>{calls.push(['assess',structuredClone(value)]);if(reply instanceof Error)throw reply;return reply;},
     onSaveScope:async value=>{calls.push(['save',structuredClone(value)]);return saveOkay;},
@@ -107,7 +108,7 @@ test('retained mapping controls page and search every historical ID without rebi
   assert.deepEqual(visited,props.scope.mappings.map(m=>m.occurrence_id));assert.equal(new Set(visited).size,206);
   const lastHistorical=historical[204].occurrence_id;const selectButton=[...rows()].find(row=>row.querySelector('button').title===lastHistorical).querySelector('button');
   await act(async()=>selectButton.dispatchEvent(new MouseEvent('click',{bubbles:true})));
-  assert.equal(props.selectedOccurrenceId,lastHistorical);assert.equal(field('Mapping rationale').value,'Retained rationale 204');assert.equal(field('Mapping state').value,'mapped');assert.match(document.querySelector('.reference-mapping').textContent,/absent from active revision/);assert.match(document.body.textContent,/A: retained-old-zone/);
+  assert.equal(props.inspectedOccurrence.occurrence_id,lastHistorical);assert.equal(field('Mapping rationale').value,'Retained rationale 204');assert.equal(field('Mapping state').value,'mapped');assert.match(document.querySelector('.reference-mapping').textContent,/absent from active revision/);assert.match(document.body.textContent,/A: retained-old-zone/);
   await type('Search retained mappings',lastHistorical);assert.equal(rows().length,1);assert.deepEqual(shownIds(),[lastHistorical]);assert.equal(rows()[0].querySelector('code').textContent,lastHistorical);assert.equal(button('Previous mappings').disabled,true);assert.equal(button('Next mappings').disabled,true);
   await type('Search retained mappings','retained-old-zone');assert.deepEqual(shownIds(),[lastHistorical]);
   await type('Search retained mappings','deliberately long readable');assert.deepEqual(shownIds(),['original-occurrence-0']);assert.match(rows()[0].textContent,/Original repeated label/);
@@ -141,9 +142,9 @@ test('narrow mapping controls wrap full IDs, retain real selection and show only
     assert.match(rows[0].querySelector('td:last-child').textContent,/A: Original lower floor perimeter zone/);assert.equal(rows[0].querySelector('td:last-child code').textContent,zoneId);
     assert.equal(rows[1].querySelector('td:last-child').textContent,'B: zone-1');assert.doesNotMatch(rows[1].textContent,/Zone one proposed/);
     selectButton.focus();assert.equal(document.activeElement,selectButton);await act(async()=>selectButton.dispatchEvent(new MouseEvent('click',{bubbles:true})));
-    assert.equal(props.selectedOccurrenceId,occurrenceId);assert.equal(selectButton.getAttribute('aria-pressed'),'true');assert.equal(field('Mapping rationale').value,'Reviewed original fixture mapping');
+    assert.equal(props.inspectedOccurrence.occurrence_id,occurrenceId);assert.equal(selectButton.getAttribute('aria-pressed'),'true');assert.equal(field('Mapping rationale').value,'Reviewed original fixture mapping');
     const historicalButton=rows[1].querySelector('button');await act(async()=>historicalButton.dispatchEvent(new MouseEvent('click',{bubbles:true})));
-    assert.equal(props.selectedOccurrenceId,historicalId);assert.equal(field('Mapping rationale').value,'Historical binding stays inspectable');assert.match(document.querySelector('.reference-mapping').textContent,/absent from active revision/);
+    assert.equal(props.inspectedOccurrence.occurrence_id,historicalId);assert.equal(field('Mapping rationale').value,'Historical binding stays inspectable');assert.match(document.querySelector('.reference-mapping').textContent,/absent from active revision/);
     assert.equal(JSON.stringify(props.draft.scope),draftBefore);assert.equal(JSON.stringify(props.scope),acceptedBefore);assert.equal(count('assess'),0);assert.equal(count('save'),0);
   } finally { style.remove(); }
 });

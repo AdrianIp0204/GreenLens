@@ -1,3 +1,4 @@
+import {inspectionCore} from './inspection-ipc.mjs';
 // Actual React effects and table interactions; synthetic IPC, no native claim.
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -11,7 +12,7 @@ for(const name of ['window','document','HTMLElement','HTMLInputElement','HTMLSel
 globalThis.IS_REACT_ACT_ENVIRONMENT=true;
 const React=await import('react'),{act}=React,{createRoot}=await import('react-dom/client');
 const cache=new Map();
-async function load(filename){if(cache.has(filename))return cache.get(filename);const task=(async()=>{const {code}=await transformWithOxc(fs.readFileSync(filename,'utf8'),filename,{jsx:{runtime:'automatic'}});let linked=code.replace(/import\s+['"][^'"]+\.css['"];?/g,'');for(const m of [...code.matchAll(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g)]){const spec=m[3];let target;if(spec==='@tauri-apps/api/core')target='data:text/javascript,'+encodeURIComponent('export const invoke=(...a)=>globalThis.__catalogIPC(...a)');else if(spec.endsWith('workspace/useDocument'))target='data:text/javascript,'+encodeURIComponent('export const errorText=e=>String(e)');else if(spec.startsWith('.')){let resolved=path.resolve(path.dirname(filename),spec);if(!path.extname(resolved))resolved=['.ts','.tsx','.mjs'].map(e=>resolved+e).find(fs.existsSync);target=resolved.endsWith('.mjs')?pathToFileURL(resolved).href:await load(resolved);}else target=import.meta.resolve(spec);linked=linked.replace(m[0],`import ${m[1]} from ${JSON.stringify(target)};`);}return`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`;})();cache.set(filename,task);return task;}
+async function load(filename){if(cache.has(filename))return cache.get(filename);const task=(async()=>{const {code}=await transformWithOxc(fs.readFileSync(filename,'utf8'),filename,{jsx:{runtime:'automatic'}});let linked=code.replace(/import\s+['"][^'"]+\.css['"];?/g,'');for(const m of [...code.matchAll(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g)]){const spec=m[3];let target;if(spec==='@tauri-apps/api/core')target=inspectionCore('__catalogIPC');else if(spec.endsWith('workspace/useDocument'))target='data:text/javascript,'+encodeURIComponent('export const errorText=e=>String(e)');else if(spec.startsWith('.')){let resolved=path.resolve(path.dirname(filename),spec);if(!path.extname(resolved))resolved=['.ts','.tsx','.mjs'].map(e=>resolved+e).find(fs.existsSync);target=resolved.endsWith('.mjs')?pathToFileURL(resolved).href:await load(resolved);}else target=import.meta.resolve(spec);linked=linked.replace(m[0],`import ${m[1]} from ${JSON.stringify(target)};`);}return`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`;})();cache.set(filename,task);return task;}
 const {default:Panel}=await import(await load(fileURLToPath(new URL('../src/energy/RunHistory.tsx',import.meta.url))));
 const sha='a'.repeat(64),method={method_id:'synthetic-method-only',adapter_version:'1',engine_version:'26.2.0',engine_package_sha256:sha,engine_executable_sha256:sha,engine_schema_sha256:sha,recipe_sha256:sha,numerical_settings_sha256:sha};
 const project=()=>({id:'fixture-project',energy:{runs:Array.from({length:36},(_,i)=>({id:`run-${i}`,alternative_id:i%2?'B':'A',record_sha256:sha,physical_input_hash:sha,path:`runs/run-${i}`}))}});
@@ -37,5 +38,17 @@ test('switching documents hides old rows and stale replies cannot select old evi
 });
 test('unsaved and disabled states never invoke an engine or silently select a run',async()=>{
   await setup({path:''});assert.equal(calls.length,0);assert.match(document.body.textContent,/Save the project/);await setup({disabled:true});assert.equal(button('Use for proposed B').disabled,true);assert.deepEqual(chosen,[]);assert.ok(calls.every(([c])=>c==='energy_run_catalog'));
+});
+
+test('real history controls show measured inspection progress and cancellation suppresses late rows',async()=>{
+  await setup();let finish,request;const protocol=[];
+  globalThis.__inspectionProtocol=(command,args)=>{protocol.push([command,args]);if(command==='inspect_energy_evidence')request=args;};
+  try{
+    reply=args=>new Promise(resolve=>{finish=()=>resolve(page(args));});await filter('B');assert.ok(request);
+    await act(()=>request.onProgress.onmessage({schema_version:'greenlens.project-open-progress.v1',stage:'energy_inspection',run_id:null,runs_completed:0,runs_total:1,bytes_read:2097152,files_verified:4,numeric_passes:{},elapsed_ms:10}));
+    assert.match(document.querySelector('[role="status"]').textContent,/energy inspection · 2.0 MiB read/);
+    await click('Cancel inspection');assert.ok(protocol.some(([command,args])=>command==='cancel_evidence_inspection'&&args.ticket===request.ticket));assert.match(document.querySelector('[role="alert"]').textContent,/inspection cancelled/);
+    await act(async()=>finish());assert.equal(document.querySelector('tbody'),null);assert.deepEqual(chosen,[]);
+  }finally{delete globalThis.__inspectionProtocol;}
 });
 test.after(async()=>{if(root)await act(()=>root.unmount());dom.window.close();});

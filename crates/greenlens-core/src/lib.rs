@@ -5,6 +5,7 @@ pub mod architectural_scope;
 pub mod energy;
 pub mod reference;
 pub mod study;
+pub mod study_revision;
 pub mod weather;
 
 use serde::{Deserialize, Serialize};

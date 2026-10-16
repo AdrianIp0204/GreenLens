@@ -20,7 +20,7 @@ const host={
   },
   Assessment:()=>null,Cell:()=>null,ThermalEditor:()=>null,GeometryAuthoring:()=>null,NewEnergyProject:()=>null,EvidenceSettings:()=>null,ThermalView:()=>null,EnergyInvestigation:()=>null,ThermalDifferences:()=>null,EnergyPreflight:()=>null,ReportWorkbench:()=>null,ThermalInspectorResizer:()=>null,EnergySensitivity:()=>null,EnergyCommandBar:()=>null,RunHistory:()=>null,EnergyDependencySettings:()=>null,
   DesignCopy:()=>null,useEnergyDependencyPaths:()=>({paths:{engineDir:'',typstDir:''},warning:'',setPath(){},reset(){}}),
-  ReferenceWorkbench:()=>null,useReferenceModel:()=>({overlay:null,context:null,assessment:null,error:''}),
+  ScopeRevisions:()=>null,ReferenceWorkbench:()=>null,useReferenceModel:()=>({overlay:null,context:null,assessment:null,error:''}),
   readable:s=>s.charAt(0).toUpperCase()+s.slice(1).replaceAll('_',' '),
 };
 globalThis.__energyComparisonHost=host;
@@ -43,10 +43,14 @@ async function displayModule(url){
   return `data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`;
 }
 const presentationModule=await displayModule(new URL('../src/energy/thermal-presentation.ts',import.meta.url));
+const referenceSelectionModule=await displayModule(new URL('../src/reference/selection.ts',import.meta.url));
+const inspectionSource=new URL('../src/energy/EvidenceInspection.tsx',import.meta.url);
+const inspectionCode=await transformWithOxc(fs.readFileSync(inspectionSource,'utf8'),inspectionSource.pathname,{jsx:{runtime:'automatic'}});
+const inspectionModule='data:text/javascript;base64,'+Buffer.from(inspectionCode.code.replace(/from (['"])react\/jsx-runtime\1/g,`from ${JSON.stringify(import.meta.resolve('react/jsx-runtime'))}`)).toString('base64');
 const {ThermalPresentationStore}=await import(presentationModule);
 // This older read-only comparison projection test excludes unrelated panels.
 // Real editing, metadata, reference and viewport interactions have dedicated DOM suites.
-const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./GeometryAuthoring','./NewEnergyProject','./EvidenceSettings','./ThermalView','./EnergyInvestigation','./ThermalDifferences','./EnergyPreflight','./ReportWorkbench','./ThermalInspectorResizer','./EnergySensitivity','./EnergyCommandBar','./RunHistory','./EnergyDependencySettings','./energy-dependency-settings','./DesignCopy','../reference/ReferenceWorkbench','../reference/useReferenceModel']);
+const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./GeometryAuthoring','./NewEnergyProject','./EvidenceSettings','./ThermalView','./EnergyInvestigation','./ThermalDifferences','./EnergyPreflight','./ReportWorkbench','./ThermalInspectorResizer','./EnergySensitivity','./EnergyCommandBar','./RunHistory','./EnergyDependencySettings','./energy-dependency-settings','./DesignCopy','../reference/ScopeRevisions','../reference/ReferenceWorkbench','../reference/useReferenceModel']);
 const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_q,specifier)=>{
   if(mocked.has(specifier)){
     const parts=[],named=binding.match(/\{([^}]+)\}/)?.[1];
@@ -55,7 +59,7 @@ const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/impo
     if(!defaultName.startsWith('{'))parts.push(`const ${defaultName}=globalThis.__energyComparisonHost.${defaultName};`);
     return parts.join('\n');
   }
-  return `import ${binding} from ${JSON.stringify(specifier==='./thermal-presentation'?presentationModule:specifier==='./thermal-inspector-target'?inspectorModule:specifier==='../reference/reference-drafts'?referenceDraftModule:specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
+  return `import ${binding} from ${JSON.stringify(specifier==='./EvidenceInspection'?inspectionModule:specifier==='./thermal-presentation'?presentationModule:specifier==='./thermal-inspector-target'?inspectorModule:specifier==='../reference/reference-drafts'?referenceDraftModule:specifier==='../reference/selection'?referenceSelectionModule:specifier.startsWith('.')?new URL(specifier,sourceUrl).href:import.meta.resolve(specifier))};`;
 });
 const {default:EnergyWorkspace}=await import(`data:text/javascript;base64,${Buffer.from(linked).toString('base64')}`);
 const nodes=t=>!t||typeof t!=='object'?[]:Array.isArray(t)?t.flatMap(nodes):[t,...nodes(t.props?.children)];
@@ -63,7 +67,7 @@ const draw=()=>{cursor=0;return EnergyWorkspace({doc});};
 function setup(differences){
   states.length=0;mutations=0;
   const design={model:{name:'Original synthetic zone',zones:[{id:'zone-1',name:'Zone 1',storey:0}]},study:null};
-  doc={documentId:1,alternative:'A',path:'synthetic-project',project:{energy:{designs:{A:design,B:structuredClone(design)},runs:[{id:'retained-A',alternative_id:'A'},{id:'retained-B',alternative_id:'B'}]}},history:{past:[],future:[]},busy:false,running:false,pending:false,energyLocked:false,job:null,commitEnergy(){mutations++;},setAlternative(){mutations++;},setEnergyLocked(){mutations++;}};
+  doc={documentId:1,alternative:'A',path:'synthetic-project',project:{energy:{designs:{A:design,B:structuredClone(design)},runs:[{id:'retained-A',alternative_id:'A'},{id:'retained-B',alternative_id:'B'}]}},referenceDrafts:{draft:null},history:{past:[],future:[]},busy:false,running:false,pending:false,energyLocked:false,job:null,commitEnergy(){mutations++;},setAlternative(){mutations++;},setEnergyLocked(){mutations++;}};
   const presentationStore=new ThermalPresentationStore({getItem:()=>null,setItem(){}}),presentationKey='["synthetic-project","A"]';
   doc.thermalPresentation={key:presentationKey,get value(){return presentationStore.get(presentationKey);},update(change){presentationStore.set(presentationKey,change(presentationStore.get(presentationKey)));},resetLayout(){throw Error('No reset-layout action expected');}};
   initialProject=structuredClone(doc.project);

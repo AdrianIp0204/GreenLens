@@ -463,6 +463,18 @@ pub fn check_revision(root: &Path, expected: Option<&str>) -> Result<()> {
     );
     Ok(())
 }
+/// Publish an accepted project without allowing an older client/undo snapshot
+/// to remove immutable revisions or issued reports. Callers retain WriterLock.
+pub fn atomic_project(root: &Path, project: &crate::Project) -> Result<String> {
+    crate::validate_project(project)?;
+    if revision(root)?.is_some() {
+        let previous: crate::Project = read_json(&regular_child(root, "project.json")?)?;
+        crate::study_revisions::validate_preserved(&previous, project)?;
+        crate::report_issues::validate_preserved(&previous, project)?;
+    }
+    atomic_json(root, project)
+}
+
 pub fn atomic_json(root: &Path, value: &impl Serialize) -> Result<String> {
     let temporary = root.join(format!(".project-{}.tmp", Uuid::new_v4()));
     let mut data = serde_json::to_vec_pretty(value)?;
@@ -665,6 +677,108 @@ pub(crate) fn promote_reference_bound(
         checkpoint(0)?;
     }
     verify_bound_reference_seal(&temporary, members, checkpoint)?;
+    checkpoint(0)?;
+    fs::rename(temporary, target)?;
+    Ok(())
+}
+
+/// Immutable report products use content-addressed directories. The bound
+/// manifest is independently checked by report_issues before calling this
+/// helper; imported seals never choose additional files to read or copy.
+pub(crate) fn promote_issue_bound(
+    source: &Path,
+    project: &Path,
+    id: &str,
+    members: &BoundReferenceMembers,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<()> {
+    ensure!(
+        id.len() == 64
+            && id
+                .bytes()
+                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b)),
+        "Invalid report issue identity"
+    );
+    ensure!(
+        !members.is_empty() && members.len() <= 256,
+        "Report issue exceeds 256 retained members"
+    );
+    let verify = |root: &Path, checkpoint: &mut dyn FnMut(u64) -> Result<()>| -> Result<()> {
+        let mut budget = PackageBudget::default();
+        let expected: BTreeMap<_, _> = members
+            .iter()
+            .map(|(name, (digest, _))| (name.clone(), digest.clone()))
+            .collect();
+        let seal: Checksums = serde_json::from_slice(&read_evidence_bytes_checked(
+            &regular_child(root, "checksums.json")?,
+            64 * 1024,
+            &mut |n| checkpoint(n),
+        )?)?;
+        ensure!(
+            seal.schema_version == "0.1.0" && seal.sha256 == expected,
+            "Issue seal differs from immutable product manifest"
+        );
+        for (name, (digest, limit)) in members {
+            budget.add(name, *limit)?;
+            let path = regular_child(root, name)?;
+            let mut file = open_limited_file(&path, *limit, "Issue product exceeds bound size")?;
+            ensure!(
+                file.metadata()?.len() == *limit,
+                "Issue product size differs: {name}"
+            );
+            let actual = hash_limited(
+                &mut CheckpointReader {
+                    source: &mut file,
+                    checkpoint: &mut |n| checkpoint(n),
+                },
+                *limit,
+            )?;
+            crate::project_open::observed_file(&path, &actual)?;
+            ensure!(actual == *digest, "Issue product integrity failure: {name}");
+        }
+        Ok(())
+    };
+    verify(source, checkpoint)?;
+    let (issues, _guards) = create_checked_directories(project, Path::new("report-issues"))?;
+    let target = issues.join(id);
+    if fs::symlink_metadata(&target).is_ok() {
+        let _guard = DirectoryGuard::open(&target)?;
+        verify(&target, checkpoint)?;
+        return Ok(());
+    }
+    let temporary = issues.join(format!(".pending-{}", Uuid::new_v4()));
+    fs::create_dir(&temporary)?;
+    for (name, limit) in members
+        .iter()
+        .map(|(n, (_, s))| (n.as_str(), *s))
+        .chain(std::iter::once(("checksums.json", 64 * 1024)))
+    {
+        checkpoint(0)?;
+        let relative = relative_path(name)?;
+        let (_parent, _guards) = create_checked_directories(
+            &temporary,
+            relative.parent().unwrap_or_else(|| Path::new("")),
+        )?;
+        let source = open_limited_file(
+            &regular_child(source, name)?,
+            limit,
+            "Issue source grew during copy",
+        )?;
+        let mut output = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(temporary.join(relative))?;
+        copy_bounded(
+            &mut CheckpointReader {
+                source,
+                checkpoint: &mut *checkpoint,
+            },
+            &mut output,
+            limit,
+        )?;
+        output.sync_all()?;
+    }
+    verify(&temporary, checkpoint)?;
     checkpoint(0)?;
     fs::rename(temporary, target)?;
     Ok(())

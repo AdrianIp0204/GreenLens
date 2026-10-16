@@ -14,8 +14,13 @@ import type { OpenOperation, OpenProgress, ProjectAdmission, ProjectVerification
 import type { Session } from '../energy/EnergySensitivity';
 import type {ArchitecturalScope,ReferenceImportOptions,ReferenceProgress} from '../reference/types';
 import {useReferenceDrafts} from '../reference/useReferenceDrafts';
+import {useScopeReviewDrafts} from '../reference/useScopeReviewDrafts';
+import {scopeReviewContextKey,reviewDecisions} from '../reference/scope-review-drafts';
 import {parseReferenceImportDraft,parseReferenceScopeDraft} from '../reference/reference-drafts';
 import {reportRequestBinding,type ReportOutput} from '../energy/report-request';
+import {usePendingReportIssues} from '../energy/usePendingReportIssues';
+import type {ReportIssueAction,ReportIssueActionResult} from '../energy/report-issues';
+import {assertIssueInspection} from '../energy/report-issue-response.mjs';
 
 export const errorText = (e: unknown) => typeof e === 'string' ? e : e instanceof Error ? e.message : JSON.stringify(e);
 const validate = (model:Model) => invoke<ValidatedModel>('validate', { model });
@@ -39,6 +44,7 @@ const restoreEnergyBatch=async(project:Project,batch:EnergyDraftBatch)=>{
 type GuardChoice = 'save'|'discard'|'cancel';
 export function useDocument() {
   const [project,setProject] = useState<Project|null>(null);
+  const pendingReportIssues=usePendingReportIssues(project?.id);
   const [alternative,setAlternative] = useState('A');
   const [validated,setValidated] = useState<ValidatedModel|null>(null);
   const [results,setResults] = useState<RunRecord[]>([]);
@@ -154,6 +160,7 @@ export function useDocument() {
       if(!authoringLifecycle.current){setError('Finish, Discard or Cancel the geometry operation before another document action.');return;}
       authoringRequestPending.current=true;try{if(!await authoringLifecycle.current(reason))return;}finally{authoringRequestPending.current=false;}
     }
+    if(!skipDrafts&&!await scopeReviewDrafts.beforeAction(reason))return;
     if(!skipReference&&!skipDrafts&&!await referenceDrafts.beforeAction(reason))return;
     if(!skipDrafts&&!await energyDrafts.beforeAction(reason))return;
     if(actionBusy.current||collecting.current){setError('Wait for the current document operation to finish.');return;}
@@ -223,13 +230,23 @@ export function useDocument() {
     finally{actionBusy.current=false;setBusy(false);}
   };
   const energyDrafts=useEnergyDrafts(project,commitEnergy,()=>lastEnergyError.current,value=>commitEnergyMetadata({kind:'report_settings',...value},'Report settings draft',true),metadata=>commitEnergyMetadata({kind:'report_issue',metadata},'Report issue draft',true),commitEnergyBatch);
-  const configureScope=(project:Project,scope:ArchitecturalScope|null,restoring:boolean)=>invoke<Project>('reference_scope_apply',{path:state.current.path,project,scope,restoring});
+  const configureScope=(project:Project,scope:ArchitecturalScope|null,restoring:boolean,revisionSha256?:string|null)=>revisionSha256!==undefined?invoke<Project>('reference_revision_activate',{project,revisionSha256}):invoke<Project>('reference_scope_apply',{path:state.current.path,project,scope,restoring});
   const commitReferenceScope=async(scope:ArchitecturalScope|null)=>{
     const s=state.current;if(!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active operation before editing architectural scope.');return false;}
     actionBusy.current=true;setBusy(true);setError('');
     try{const next=await history.current.editScope(s.project,s.alternative,scope,scope?'Architectural scope':'Clear architectural scope',configureScope);setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage('Scope accepted by Rust as one derived-document transaction. Physical simulation inputs are unchanged.');return true;}
     catch(e){setError(`Scope rejected; draft and history retained. ${errorText(e)}`);return false;}
     finally{actionBusy.current=false;setBusy(false);}
+  };
+  const acceptScopeRevision=async(plan:import('../reference/types').ScopeCarryForwardPlan,scope:ArchitecturalScope,decisions:import('../reference/types').ScopeReviewDecision[],reviewContext?:{key:string;design:string})=>{
+    // Resolve ordinary drafts first; a changed accepted context is rejected by
+    // Rust's exact plan binding, never silently carried forward by the UI.
+    if(!await referenceDrafts.beforeAction('accepting a scope revision')||!await energyDrafts.beforeAction('accepting a scope revision'))return false;
+    const s=state.current;if(!s.project||!s.path||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active operation before accepting a scope revision.');return false;}
+    if(reviewContext&&scopeReviewContextKey(s.path,s.project,reviewContext.design)!==reviewContext.key){setError('Accepted inputs changed while resolving drafts. The scope review remains intact but is stale; prepare a new review explicitly.');return false;}
+    actionBusy.current=true;setBusy(true);setError('');
+    try{const next=await history.current.acceptScopeRevision(s.project,s.alternative,'Reviewed scope revision',p=>invoke<Project>('reference_revision_accept',{path:s.path,project:p,parentRevisionSha256:plan.parent_revision_sha256,expectedPlanSha256:plan.plan_sha256,scope,decisions}));setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage('Reviewed scope revision accepted. Earlier revisions and issued evidence are retained.');return true;}
+    catch(e){setError(`Revision rejected; review and accepted history retained. ${errorText(e)}`);return false;}finally{actionBusy.current=false;setBusy(false);}
   };
   const importReference=async(options:ReferenceImportOptions)=>{
     let imported=false;
@@ -254,6 +271,7 @@ export function useDocument() {
     if(draft.scope)return commitReferenceScope(parseReferenceScopeDraft(draft.scope));
     return true;
   });
+  const scopeReviewDrafts=useScopeReviewDrafts(project?.id,alternative,draft=>acceptScopeRevision(draft.plan,draft.plan.proposed_scope,reviewDecisions(draft),{key:draft.context_key,design:draft.design_id}));
   const cancelReferenceImport=async()=>{if(referenceTicket.current!==null)await invoke('cancel_project_verification',{ticket:referenceTicket.current});};
   const setEnergyObjectLocks=async(ids:string[])=>runAction(async()=>{const s=state.current;if(!s.project||activeJob(s.job))throw Error('Finish the calculation before changing edit locks.');const next=await invoke<Project>('energy_set_locks',{project:s.project,alternativeId:s.alternative,ids});setProject(next);state.current.project=next;setMessage('Thermal edit locks updated. Simulation inclusion is unchanged.');},'changing thermal edit locks');
   const commitEnergyTransaction=async(requests:Record<string,unknown>,expectedPreviewSha256:string,label:string):Promise<boolean>=>{
@@ -413,6 +431,40 @@ export function useDocument() {
     if(mounted.current)setReportCompletion({documentId:requestDocumentId,projectId:request.project.id,output});
     setMessage(portableZip?'Portable A/B energy evidence and reports exported.':htmlOnly?'HTML, CSV, JSON and SVG reports written; PDF/PNG explicitly not requested.':'Offline HTML, PDF, PNG, CSV, JSON and SVG reports written.');
   });return output;};
-  return {latestReport,referenceDrafts,referenceProgress,importReference,commitReferenceScope,cancelReferenceImport,opening,cancelOpening,projectVerification,sensitivitySnapshots,thermalPresentation,copyEnergyDesign,setEnergyObjectLocks,energyDrafts,registerEnergyAuthoringLifecycle,energyAuthoringOpen,setEnergyAuthoringOpen,energyNewOpen,setEnergyNewOpen,commitEnergyTransaction,newEnergy,project,alternative,setAlternative,model,validated,results,climateResults,energyResults,energyLocked,setEnergyLocked,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
+  const reportIssue=async(action:ReportIssueAction,typstDir:string):Promise<ReportIssueActionResult|undefined>=>{
+    let result:ReportIssueActionResult|undefined;
+    await runAction(async()=>{
+      const initial=state.current;
+      if(!initial.project?.energy||activeJob(initial.job)||hasPendingEvidence(initial.job,initial.results,initial.climateResults,initial.energyResults))throw Error('Finish, cancel or collect the current calculation before report issuance.');
+      if(action.kind==='create'&&!pendingReportIssues.capacityAvailable)throw Error(pendingReportIssues.warning||'Recover existing pending report products before creating another issue; the bounded local recovery inventory is full.');
+      if(action.kind!=='recover'&&!await save())return;
+      const current=state.current;
+      if(!current.path||!current.project)throw Error('Save or reopen the complete project before handling an issued report.');
+      let submitted:Record<string,unknown>=action;
+      if(action.kind==='regenerate'||action.kind==='export'){
+        const destination=await invoke<string|null>('dialog_energy_report',{portableZip:action.kind==='export'});if(!destination)return;
+        submitted={...action,destination};
+      }
+      const requestDocumentId=currentDocumentId.current;
+      const reply=await invoke<ReportIssueActionResult>('report_issue_action',{path:current.path,project:current.project,expectedRevision:current.revision,action:submitted,typstDir:typstDir.trim()||null});
+      if(reply.status==='pending'){
+        if(typeof reply.recovery_token!=='string'||typeof reply.message!=='string')throw Error('Report publication returned an invalid recovery receipt.');
+        pendingReportIssues.add(current.project.id,reply.recovery_token,reply.message);
+        if(state.current.project?.id!==current.project.id||state.current.path!==current.path||currentDocumentId.current!==requestDocumentId)return;
+        result=reply;setMessage('Report products are retained outside the project. Publication did not complete; recover this exact issue after resolving the save conflict.');return;
+      }
+      if(state.current.project?.id!==current.project.id||state.current.path!==current.path||currentDocumentId.current!==requestDocumentId)return;
+      if(reply.view){
+        if(reply.view.project.id!==current.project.id||!reply.issue)throw Error('Report issuance returned another document or omitted its immutable issue.');
+        assertIssueInspection({project:reply.view.project,id:reply.issue.summary.id},reply.issue);
+        acceptProject(reply.view as ProjectView,current.path);
+        if(action.kind==='recover')pendingReportIssues.remove(action.token);
+      }
+      result=action.kind==='export'?{...reply,destination:submitted.destination as string}:reply;
+      setMessage(action.kind==='export'?'Complete issued project exported with all retained history and required assets.':action.kind==='regenerate'?'Issued report products regenerated from their exact retained inputs; no simulation was requested.':'Immutable report issue retained. Earlier issues and document edit history remain available.');
+    },action.kind==='create'?'issuing this exact report':action.kind==='recover'?'recovering completed report products':'handling retained report evidence');
+    return result;
+  };
+  return {reportIssue,pendingReportIssues,scopeReviewDrafts,acceptScopeRevision,latestReport,referenceDrafts,referenceProgress,importReference,commitReferenceScope,cancelReferenceImport,opening,cancelOpening,projectVerification,sensitivitySnapshots,thermalPresentation,copyEnergyDesign,setEnergyObjectLocks,energyDrafts,registerEnergyAuthoringLifecycle,energyAuthoringOpen,setEnergyAuthoringOpen,energyNewOpen,setEnergyNewOpen,commitEnergyTransaction,newEnergy,project,alternative,setAlternative,model,validated,results,climateResults,energyResults,energyLocked,setEnergyLocked,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
     commit,commitStudy,commitEnergy,commitEnergyMetadata,attachEnergyEvidence,attachWeather,importWeather,importEnergyWeather,startEnergy,energySensitivity,energyReport,traverse,replace,save:()=>runAction(async()=>{await save();},'Save'),saveAs:()=>runAction(async()=>{await save(true);},'Save As'),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');},'Cancel calculation',true),exportEvidence,runAction};
 }

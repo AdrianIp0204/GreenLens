@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ArchitecturalScope, AssumptionStatus, MappingStatus, ReferenceImportDraft, ReferenceImportOptions, ReferenceModel, ReferenceProgress, ReferenceScopeDraft, ReferenceWorkbenchDraft, ReconciliationMeasure, ScopeAssessment, ScopeAssumption, ScopeContext, ScopeMapping, ScopeReconciliation, ScopeUnit } from './types';
 import { newImportDraft, newReferenceDraft, newScopeDraft, parseReferenceImportDraft, parseReferenceScopeDraft } from './reference-drafts';
+import type { ReferenceOccurrenceSelection } from './selection';
 import './reference-workbench.css';
 
 export type ReferenceWorkbenchProps = {
@@ -8,7 +9,10 @@ export type ReferenceWorkbenchProps = {
   assessment: ScopeAssessment | null; context: ScopeContext | null;
   draft: ReferenceWorkbenchDraft | null; onDraftChange: (draft: ReferenceWorkbenchDraft | null) => void;
   onConsumeDraft: (kind: 'import' | 'scope', consumed: string, documentId: string) => boolean;
-  selectedOccurrenceId?: string | null; onSelectOccurrence: (id: string) => void;
+  inspectedOccurrence: ReferenceOccurrenceSelection | null;
+  onInspectOccurrence: (selection: ReferenceOccurrenceSelection | null) => void;
+  activeOccurrenceId: string | null;
+  onSelectOccurrence: (id: string | null) => void;
   onImport: (options: ReferenceImportOptions) => Promise<boolean>;
   onAssess: (scope: ArchitecturalScope) => Promise<ScopeAssessment>;
   onSaveScope: (scope: ArchitecturalScope) => Promise<boolean>; onClearScope: () => Promise<boolean>;
@@ -32,7 +36,7 @@ const mappingPageSize = 100;
 export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
   const { reference, scope, context, assessment, documentId } = props;
   const [error, setError] = useState(''), [busy, setBusy] = useState(false), [query, setQuery] = useState('');
-  const [chosen, setChosen] = useState(''), [preview, setPreview] = useState<ScopeAssessment | null>(null);
+  const [preview, setPreview] = useState<ScopeAssessment | null>(null);
   const [mappingQuery, setMappingQuery] = useState(''), [mappingPage, setMappingPage] = useState(0);
   const [confirm, setConfirm] = useState<'discard' | 'clear' | 'restart' | null>(null);
   const confirmation = useRef<HTMLDivElement>(null), cancelButton = useRef<HTMLButtonElement>(null);
@@ -43,7 +47,7 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
   const latest = useRef(signature); latest.current = signature;
   const previewSignature = useRef('');
   useEffect(() => { setPreview(null); setError(''); }, [signature]);
-  useEffect(() => { setChosen(''); setQuery(''); setMappingQuery(''); setMappingPage(0); setConfirm(null); confirmationTrigger.current = null; restoreTrigger.current = null; }, [documentId]);
+  useEffect(() => { setQuery(''); setMappingQuery(''); setMappingPage(0); setConfirm(null); confirmationTrigger.current = null; restoreTrigger.current = null; }, [documentId]);
   useEffect(() => {
     if (confirm) {
       if (confirmationTrigger.current?.documentId !== documentId) return;
@@ -66,7 +70,7 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
   };
   const updateScope = (change: (value: ArchitecturalScope, draft: ReferenceScopeDraft) => void) => edit(d => { if (d.scope) change(d.scope.value, d.scope); });
   const candidate = controlled?.scope?.value ?? null;
-  const occurrenceById = useMemo(() => new Map(reference?.occurrences.map(o => [o.id, o]) ?? []), [reference]);
+  const occurrenceById = useMemo(() => new Map(candidate?.reference_revision_sha256 === reference?.revision_sha256 ? reference?.occurrences.map(o => [o.id, o]) : []), [reference, candidate?.reference_revision_sha256]);
   const filteredMappings = useMemo(() => {
     const needle = mappingQuery.trim().toLowerCase();
     return candidate?.mappings.filter(m => [m.occurrence_id, occurrenceById.get(m.occurrence_id)?.label ?? '', m.status, mappingLabels[m.status], ...m.targets.map(t => `${t.design_id}: ${t.object_id}`)].join(' ').toLowerCase().includes(needle)) ?? [];
@@ -82,13 +86,16 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
     if (lock) return;
     restoreTrigger.current = confirmationTrigger.current; setConfirm(null);
   };
-  const selected = props.selectedOccurrenceId ?? chosen;
-  const occurrence = reference?.occurrences.find(o => o.id === selected);
-  const mapping = candidate?.mappings.find(m => m.occurrence_id === selected);
+  const selected = props.inspectedOccurrence?.occurrence_id ?? '';
+  const inspectionRevision = props.inspectedOccurrence?.revision_sha256;
+  const inspectionMatchesCandidate = Boolean(candidate && candidate.reference_revision_sha256 === inspectionRevision);
+  const selectedForScope = inspectionMatchesCandidate ? selected : '';
+  const occurrence = reference && reference.revision_sha256 === inspectionRevision ? reference.occurrences.find(o => o.id === selected) : undefined;
+  const mapping = inspectionMatchesCandidate ? candidate?.mappings.find(m => m.occurrence_id === selected) : undefined;
   const filtered = reference?.occurrences.filter(o => `${o.label} ${o.id}`.toLowerCase().includes(query.toLowerCase())) ?? [];
-  const select = (id: string) => { setChosen(id); props.onSelectOccurrence(id); };
+  const select = (id: string) => { props.onSelectOccurrence(id || null); if (!id) props.onInspectOccurrence(null); };
   const changeMapping = (change: (value: ScopeMapping) => void) => updateScope(value => {
-    if (!selected) return;
+    if (!selected || !inspectionMatchesCandidate) return;
     let row = value.mappings.find(m => m.occurrence_id === selected);
     if (!row) { row = { occurrence_id: selected, status: 'unresolved', targets: [], rationale: '' }; value.mappings.push(row); }
     change(row);
@@ -138,7 +145,11 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
   const targetLabels = new Map(allTargets.map(t => [JSON.stringify([t.design_id, t.object_id, t.kind, t.model_input_sha256]), t.label]));
   const staleBinding = candidate && (candidate.reference_revision_sha256 !== reference?.revision_sha256 || boundDesigns.some(id => candidate.design_model_sha256[id] !== context?.designs[id]?.model_input_sha256));
 
-  return <section className="reference-workbench" aria-label="Architectural reference and study scope">
+  return <section className="reference-workbench" aria-label="Architectural reference and study scope" onKeyDown={event => {
+    if (event.key === 'Escape' && !event.nativeEvent.isComposing && !confirm && props.inspectedOccurrence) {
+      event.preventDefault(); event.stopPropagation(); props.onInspectOccurrence(null);
+    }
+  }}>
     <header><h2>Architectural reference</h2><p>Read-only reference geometry. Thermal inputs, analysis inclusion and scientific qualification remain separate.</p></header>
     {props.disabled && <p role="status">{props.disabledReason ?? 'Resolve the active document operation before changing reference inputs.'}</p>}
     {controlled && (controlled.import || controlled.scope) && <p className="reference-draft-note">Unapplied reference draft — accepted geometry and scope are unchanged.</p>}
@@ -192,17 +203,17 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
       <details open={Boolean(candidate.report_views?.length)}><summary>Portable report figure draft ({candidate.report_views?.length??0}/8)</summary><p>In an orthographic viewport, enter a view name and choose Add active view to report draft. Review and save the whole scope before exporting. Figures include reference and analytical geometry in the retained frame/section; transient hiding and selection are not copied.</p>{candidate.report_views?.map(view=><fieldset key={view.id}><legend>{view.id} · {view.design_id}</legend>{input('Report figure title',view.title,title=>updateScope(v=>{const item=v.report_views?.find(item=>item.id===view.id);if(item)item.title=title;}))}<p>Eye: {view.eye_m.join(', ')} m; target: {view.target_m.join(', ')} m. Vertical span {view.vertical_span_m} m, frame ratio {view.aspect_ratio}. {view.section?`Section ${view.section.axis}=${view.section.offset_m} m, keep ${view.section.keep}.`:'No section.'}</p><p>Reference <code>{short(view.reference_revision_sha256)}</code>; analytical model <code>{short(view.model_input_sha256)}</code>.</p><button onClick={()=>updateScope(v=>{v.report_views=v.report_views?.filter(item=>item.id!==view.id);})}>Remove report view {view.id}</button></fieldset>)}</details>
       <details open><summary>Revision-scoped object mappings</summary>
         {input('Search source occurrences', query, setQuery)}
-        <label>Source occurrence<select value={selected} onChange={e => select(e.target.value)}><option value="">Choose an occurrence…</option>{selected && !filtered.slice(0, 100).some(o => o.id === selected) && <option value={selected}>{occurrence?.label ?? 'Missing historical occurrence'} · {short(selected)}</option>}{filtered.slice(0, 100).map(o => <option key={o.id} value={o.id}>{o.label || '(unnamed)'} · node {o.node_index} · {short(o.id)}</option>)}</select></label>
+        <label>Source occurrence<select value={props.activeOccurrenceId ?? ''} onChange={e => select(e.target.value)}><option value="">Choose an active occurrence…</option>{props.activeOccurrenceId && !filtered.slice(0, 100).some(o => o.id === props.activeOccurrenceId) && <option value={props.activeOccurrenceId}>{reference?.occurrences.find(o=>o.id===props.activeOccurrenceId)?.label ?? 'Selected active occurrence'} · {short(props.activeOccurrenceId)}</option>}{filtered.slice(0, 100).map(o => <option key={o.id} value={o.id}>{o.label || '(unnamed)'} · node {o.node_index} · {short(o.id)}</option>)}</select></label>
         <p>Showing at most 100 of {filtered.length.toLocaleString()} matching occurrences. Search narrows the list; occurrence IDs distinguish repeated names.</p>
-        {selected && <div className="reference-mapping"><p>Selected <code>{selected}</code>{occurrence?.mirrored ? ' · mirrored occurrence' : ''}{!occurrence ? ' · absent from active revision' : ''}.</p><label>Mapping state<select value={mapping?.status ?? 'unresolved'} onChange={e => changeMapping(m => { m.status = e.target.value as MappingStatus; if (m.status === 'excluded' || m.status === 'unresolved') m.targets = []; if (m.status === 'context_only') m.targets = m.targets.filter(t => t.kind === 'detached_shading'); })}>{Object.entries(mappingLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
+        {selected && <div className="reference-mapping"><p>Inspecting <code>{selected}</code> · revision <code>{short(inspectionRevision ?? '')}</code>{occurrence?.mirrored ? ' · mirrored occurrence' : ''}{!occurrence ? ' · absent from active revision' : ''}.</p>{!inspectionMatchesCandidate && <p role="status">This occurrence belongs to another reference revision than the scope draft. Choose a retained mapping to inspect that exact row; no mapping is edited by this live selection.</p>}<button onClick={() => props.onInspectOccurrence(null)}>Clear mapping inspection</button><fieldset disabled={!inspectionMatchesCandidate}><legend>Exact revision mapping</legend><label>Mapping state<select value={mapping?.status ?? 'unresolved'} onChange={e => changeMapping(m => { m.status = e.target.value as MappingStatus; if (m.status === 'excluded' || m.status === 'unresolved') m.targets = []; if (m.status === 'context_only') m.targets = m.targets.filter(t => t.kind === 'detached_shading'); })}>{Object.entries(mappingLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label>
           {area('Mapping rationale', mapping?.rationale ?? '', text => changeMapping(m => { m.rationale = text; }))}
           {(mapping?.status === 'mapped' || mapping?.status === 'context_only') && <fieldset><legend>Explicit analytical targets</legend>{allTargets.filter(t => boundDesigns.includes(t.design_id) && (mapping.status !== 'context_only' || t.kind === 'detached_shading')).map(t => <label key={`${t.design_id}/${t.object_id}`}><input type="checkbox" checked={mapping.targets.some(x => x.design_id === t.design_id && x.object_id === t.object_id)} onChange={e => changeMapping(m => { m.targets = m.targets.filter(x => x.design_id !== t.design_id || x.object_id !== t.object_id); if (e.target.checked) { const { label: _label, ...target } = t; m.targets.push(target); } })} />{t.design_id} · {t.label} · {t.kind.replaceAll('_', ' ')} · {t.object_id}</label>)}</fieldset>}
           {mapping && <button onClick={() => updateScope(v => { v.mappings = v.mappings.filter(m => m.occurrence_id !== selected); })}>Remove explicit classification</button>}
-        </div>}
+        </fieldset></div>}
         {input('Search retained mappings', mappingQuery, text => { setMappingQuery(text); setMappingPage(0); })}
         <p aria-live="polite">Showing {filteredMappings.length ? mappingStart + 1 : 0}–{mappingStart + visibleMappings.length} of {filteredMappings.length.toLocaleString()} matching retained mappings ({candidate.mappings.length.toLocaleString()} total). Search includes historical occurrence IDs, labels, states and analytical targets.</p>
         <div className="reference-actions"><button disabled={shownMappingPage === 0} onClick={() => setMappingPage(shownMappingPage - 1)}>Previous mappings</button><button disabled={mappingStart + visibleMappings.length >= filteredMappings.length} onClick={() => setMappingPage(shownMappingPage + 1)}>Next mappings</button></div>
-        <div className="reference-table reference-mapping-table"><table><caption>Explicit source classifications — omitted occurrences remain unresolved</caption><colgroup><col className="reference-occurrence-column" /><col className="reference-state-column" /><col className="reference-target-column" /></colgroup><thead><tr><th scope="col">Occurrence</th><th scope="col">State</th><th scope="col">Targets</th></tr></thead><tbody>{visibleMappings.map(m => <tr key={m.occurrence_id}><th scope="row"><button className="reference-occurrence-button" title={m.occurrence_id} aria-pressed={selected === m.occurrence_id} onClick={() => select(m.occurrence_id)}><span>{occurrenceById.get(m.occurrence_id)?.label || 'Historical occurrence'}</span><code>{m.occurrence_id}</code></button></th><td>{mappingLabels[m.status]}</td><td>{m.targets.length ? <ul className="reference-target-list">{m.targets.map(t => {
+        <div className="reference-table reference-mapping-table"><table><caption>Explicit source classifications — omitted occurrences remain unresolved</caption><colgroup><col className="reference-occurrence-column" /><col className="reference-state-column" /><col className="reference-target-column" /></colgroup><thead><tr><th scope="col">Occurrence</th><th scope="col">State</th><th scope="col">Targets</th></tr></thead><tbody>{visibleMappings.map(m => <tr key={m.occurrence_id}><th scope="row"><button className="reference-occurrence-button" title={m.occurrence_id} aria-pressed={inspectionMatchesCandidate && selected === m.occurrence_id} onClick={() => props.onInspectOccurrence({ revision_sha256: candidate.reference_revision_sha256, occurrence_id: m.occurrence_id })}><span>{occurrenceById.get(m.occurrence_id)?.label || 'Historical occurrence'}</span><code>{m.occurrence_id}</code></button></th><td>{mappingLabels[m.status]}</td><td>{m.targets.length ? <ul className="reference-target-list">{m.targets.map(t => {
           const label = targetLabels.get(JSON.stringify([t.design_id, t.object_id, t.kind, t.model_input_sha256]));
           return <li key={`${t.design_id}/${t.object_id}`}><span>{t.design_id}: {label || t.object_id}</span>{label && <code>{t.object_id}</code>}</li>;
         })}</ul> : 'No analytical target'}</td></tr>)}</tbody></table></div>
@@ -211,8 +222,8 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
       <details><summary>Assumption and readiness register ({candidate.assumptions.length})</summary>
         <p>Geometry cannot establish thermal constructions, occupancy, schedules or equipment. Declare sources and affected scope; missing and not applicable remain distinct.</p>
         <button onClick={() => updateScope(v => { v.assumptions.push({ id: nextId('assumption', v.assumptions.map(a => a.id)), link: { kind: 'study' }, field: '', status: 'missing', value: null, units: '', source: '', rationale: '', affected_scope: '' }); })}>Add assumption</button>
-        {candidate.assumptions.map(a => <fieldset key={a.id}><legend>{a.id}</legend><div className="reference-form-grid"><label>Input status<select value={a.status} onChange={e => changeAssumption(a.id, row => { row.status = e.target.value as AssumptionStatus; row.value = row.status === 'missing' || row.status === 'not_applicable' ? null : row.value ?? ''; })}>{Object.entries(assumptionLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label>Linked scope<select value={a.link.kind} onChange={e => changeAssumption(a.id, row => { row.link = e.target.value === 'study' ? { kind: 'study' } : e.target.value === 'reference_occurrence' ? { kind: 'reference_occurrence', occurrence_id: selected } : { kind: 'thermal_object', design_id: boundDesigns[0] ?? '', object_id: 'model:building' }; })}><option value="study">Study</option><option value="reference_occurrence">Selected reference occurrence</option><option value="thermal_object">Thermal object / field</option></select></label></div>
-          {a.link.kind === 'reference_occurrence' && <p>Occurrence <code>{a.link.occurrence_id || 'Choose a reference occurrence first'}</code><button disabled={!selected} onClick={() => changeAssumption(a.id, row => { row.link = { kind: 'reference_occurrence', occurrence_id: selected }; })}>Use selected occurrence</button></p>}
+        {candidate.assumptions.map(a => <fieldset key={a.id}><legend>{a.id}</legend><div className="reference-form-grid"><label>Input status<select value={a.status} onChange={e => changeAssumption(a.id, row => { row.status = e.target.value as AssumptionStatus; row.value = row.status === 'missing' || row.status === 'not_applicable' ? null : row.value ?? ''; })}>{Object.entries(assumptionLabels).map(([id, label]) => <option key={id} value={id}>{label}</option>)}</select></label><label>Linked scope<select value={a.link.kind} onChange={e => changeAssumption(a.id, row => { row.link = e.target.value === 'study' ? { kind: 'study' } : e.target.value === 'reference_occurrence' ? { kind: 'reference_occurrence', occurrence_id: selectedForScope } : { kind: 'thermal_object', design_id: boundDesigns[0] ?? '', object_id: 'model:building' }; })}><option value="study">Study</option><option value="reference_occurrence">Selected reference occurrence</option><option value="thermal_object">Thermal object / field</option></select></label></div>
+          {a.link.kind === 'reference_occurrence' && <p>Occurrence <code>{a.link.occurrence_id || 'Choose a reference occurrence first'}</code><button disabled={!selectedForScope} onClick={() => changeAssumption(a.id, row => { row.link = { kind: 'reference_occurrence', occurrence_id: selectedForScope }; })}>Use selected occurrence</button></p>}
           {a.link.kind === 'thermal_object' && <label>Thermal input object<select value={`${a.link.design_id}/${a.link.object_id}`} onChange={e => { const [design_id, ...object] = e.target.value.split('/'); changeAssumption(a.id, row => { row.link = { kind: 'thermal_object', design_id, object_id: object.join('/') }; }); }}>{boundDesigns.map(id => <option key={`${id}/model:building`} value={`${id}/model:building`}>{id} · Building / site</option>)}{allTargets.filter(t => boundDesigns.includes(t.design_id)).map(t => <option key={`${t.design_id}/${t.object_id}`} value={`${t.design_id}/${t.object_id}`}>{t.design_id} · {t.label} · {t.object_id}</option>)}</select></label>}
           <div className="reference-form-grid">{input(a.link.kind === 'thermal_object' ? 'Input field pointer (for example /site)' : 'Input field', a.field, text => changeAssumption(a.id, row => { row.field = text; }))}{input('Units', a.units, text => changeAssumption(a.id, row => { row.units = text; }))}{a.value !== null && input('Declared value', a.value, text => changeAssumption(a.id, row => { row.value = text; }))}{input('Source / citation', a.source, text => changeAssumption(a.id, row => { row.source = text; }))}</div>{area('Assumption rationale', a.rationale, text => changeAssumption(a.id, row => { row.rationale = text; }))}{input('Affected analysis scope', a.affected_scope, text => changeAssumption(a.id, row => { row.affected_scope = text; }))}<button onClick={() => updateScope(v => { v.assumptions = v.assumptions.filter(row => row.id !== a.id); })}>Remove {a.id}</button>
         </fieldset>)}
@@ -220,9 +231,9 @@ export default function ReferenceWorkbench(props: ReferenceWorkbenchProps) {
 
       <details><summary>Source measurements and approximation reconciliation ({candidate.reconciliations.length})</summary>
         <p>Enter independently measured or documented source values. Rust derives the analytical values. A bounding box is not a source floor-area denominator.</p>
-        <button disabled={!selected || !boundDesigns.length} onClick={() => updateScope(v => { v.reconciliations.push({ id: nextId('measure', v.reconciliations.map(r => r.id)), design_id: boundDesigns[0], occurrence_ids: [selected], analytical_object_ids: [], measure: 'floor_area', source_measurement: null, method: '' }); })}>Add measurement for selected occurrence</button>
+        <button disabled={!selectedForScope || !boundDesigns.length} onClick={() => updateScope(v => { v.reconciliations.push({ id: nextId('measure', v.reconciliations.map(r => r.id)), design_id: boundDesigns[0], occurrence_ids: [selectedForScope], analytical_object_ids: [], measure: 'floor_area', source_measurement: null, method: '' }); })}>Add measurement for selected occurrence</button>
         {candidate.reconciliations.map(r => <fieldset key={r.id}><legend>{r.id}</legend><div className="reference-form-grid"><label>Design<select value={r.design_id} onChange={e => changeReconciliation(r.id, row => { row.design_id = e.target.value; row.analytical_object_ids = row.measure === 'north_rotation' ? ['model:building'] : []; })}>{boundDesigns.map(id => <option key={id}>{id}</option>)}</select></label><label>Measurement<select value={r.measure} onChange={e => changeReconciliation(r.id, (row, d) => { row.measure = e.target.value as ReconciliationMeasure; row.analytical_object_ids = row.measure === 'north_rotation' ? ['model:building'] : []; if (row.source_measurement) row.source_measurement.unit = measures[row.measure][1]; delete d.numbers[`measure.${row.id}`]; })}>{Object.entries(measures).map(([id, [label, , unit]]) => <option key={id} value={id}>{label} ({unit})</option>)}</select></label></div>
-          <p>Source occurrence IDs: {r.occurrence_ids.map(short).join(', ')} <button disabled={!selected || r.occurrence_ids.includes(selected)} onClick={() => changeReconciliation(r.id, row => { row.occurrence_ids.push(selected); })}>Add selected occurrence to measurement</button></p>
+          <p>Source occurrence IDs: {r.occurrence_ids.map(short).join(', ')} <button disabled={!selectedForScope || r.occurrence_ids.includes(selectedForScope)} onClick={() => changeReconciliation(r.id, row => { row.occurrence_ids.push(selectedForScope); })}>Add selected occurrence to measurement</button></p>
           {r.measure !== 'north_rotation' && <fieldset><legend>Analytical zones</legend>{context?.designs[r.design_id]?.targets.filter(t => t.kind === 'zone').map(t => <label key={t.object_id}><input type="checkbox" checked={r.analytical_object_ids.includes(t.object_id)} onChange={e => changeReconciliation(r.id, row => { row.analytical_object_ids = row.analytical_object_ids.filter(id => id !== t.object_id); if (e.target.checked) row.analytical_object_ids.push(t.object_id); })} />{t.label} · {t.object_id}</label>)}</fieldset>}
           <label><input type="checkbox" checked={r.source_measurement !== null} onChange={e => changeReconciliation(r.id, (row, d) => { row.source_measurement = e.target.checked ? { value: 0, unit: measures[row.measure][1], source: '', method: '' } : null; if (e.target.checked) d.numbers[`measure.${row.id}`] = ''; else delete d.numbers[`measure.${row.id}`]; })} /> A source measurement is available</label>
           {r.source_measurement && <div className="reference-form-grid">{input(`Source value (${measures[r.measure][2]})`, controlled.scope?.numbers[`measure.${r.id}`] ?? String(r.source_measurement.value), text => changeReconciliation(r.id, (_row, d) => { d.numbers[`measure.${r.id}`] = text; }), true)}{input('Measurement source', r.source_measurement.source, text => changeReconciliation(r.id, row => { if (row.source_measurement) row.source_measurement.source = text; }))}{input('Source measurement method', r.source_measurement.method, text => changeReconciliation(r.id, row => { if (row.source_measurement) row.source_measurement.method = text; }))}</div>}

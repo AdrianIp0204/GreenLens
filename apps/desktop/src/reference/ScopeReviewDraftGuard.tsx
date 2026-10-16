@@ -1,0 +1,5 @@
+import type {useScopeReviewDrafts} from './useScopeReviewDrafts';
+export default function ScopeReviewDraftGuard({drafts}:{drafts:ReturnType<typeof useScopeReviewDrafts>}){
+  const guard=drafts.guard;if(!guard)return null;
+  return <div className="modal-backdrop"><section className="modal" role="dialog" aria-modal="true" aria-labelledby="scope-review-draft-title"><h2 id="scope-review-draft-title">Resolve scope review drafts before {guard.reason}</h2><p>Designs {guard.designs.join(', ')} have pending review decisions. These are not accepted scope revisions. Apply validates the exact plan in Rust. Discard removes only pending reviews; existing revisions remain. Cancel returns to the document.</p>{guard.error&&<p role="alert">{guard.error}</p>}<div className="button-row"><button disabled={guard.applying} onClick={()=>void drafts.resolve('apply')}>Apply</button><button disabled={guard.applying} onClick={()=>void drafts.resolve('discard')}>Discard</button><button autoFocus disabled={guard.applying} onClick={()=>void drafts.resolve('cancel')}>Cancel</button></div></section></div>;
+}

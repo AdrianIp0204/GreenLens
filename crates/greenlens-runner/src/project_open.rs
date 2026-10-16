@@ -83,6 +83,41 @@ fn inspection_scope<T>(
     cancel: Arc<AtomicBool>,
     action: impl FnOnce(&Arc<Control>) -> Result<T>,
 ) -> Result<T> {
+    if let Some(parent) = ACTIVE.with(|active| active.borrow().clone()) {
+        ensure!(
+            std::fs::canonicalize(root)? == std::fs::canonicalize(&parent.root)?,
+            "Nested evidence inspection cannot change its project root"
+        );
+        parent.checkpoint(0, false)?;
+        let result = action(&parent)?;
+        parent.checkpoint(0, false)?;
+        return Ok(result);
+    }
+    evidence_scope(root, cancel, |_| {}, action)
+}
+
+/// One cancellable bounded read operation for history, sensitivity and report
+/// inspection. Nested readers retain this operation's cancellation/deadline.
+/// Byte hashes are observed afresh; metadata reuse never establishes integrity.
+pub fn inspect_evidence<T>(
+    root: &Path,
+    cancel: Arc<AtomicBool>,
+    progress: impl Fn(OpenProgress) + Send + Sync + 'static,
+    action: impl FnOnce() -> Result<T>,
+) -> Result<T> {
+    ensure!(
+        ACTIVE.with(|active| active.borrow().is_none()),
+        "An evidence operation is already active on this worker"
+    );
+    evidence_scope(root, cancel, progress, |_| action())
+}
+
+fn evidence_scope<T>(
+    root: &Path,
+    cancel: Arc<AtomicBool>,
+    progress: impl Fn(OpenProgress) + Send + Sync + 'static,
+    action: impl FnOnce(&Arc<Control>) -> Result<T>,
+) -> Result<T> {
     let control = Arc::new(Control {
         root: root.into(),
         started: Instant::now(),
@@ -92,7 +127,8 @@ fn inspection_scope<T>(
             stage: "energy_inspection".into(),
             run_id: None,
             runs_completed: 0,
-            runs_total: 1,
+            // General inspection has no declared full-project run count.
+            runs_total: 0,
             bytes_read: 0,
             files_verified: 0,
             numeric_passes: BTreeMap::new(),
@@ -100,18 +136,12 @@ fn inspection_scope<T>(
         }),
         observed: Mutex::new(BTreeMap::new()),
         last_emitted: Mutex::new(Instant::now()),
-        emit: Box::new(|_| {}),
+        emit: Box::new(progress),
     });
-    // These readers are independent service calls. Refuse accidental nested
-    // instrumentation rather than hide a parent operation's cancellation.
-    ensure!(
-        ACTIVE.with(|active| active.borrow().is_none()),
-        "Nested energy inspection must use the verified snapshot provider"
-    );
     let _guard = ActiveGuard(ACTIVE.with(|active| active.replace(Some(control.clone()))));
-    control.checkpoint(0, false)?;
+    control.checkpoint(0, true)?;
     let result = action(&control)?;
-    control.checkpoint(0, false)?;
+    control.stage("evidence_inspection_completed", None)?;
     Ok(result)
 }
 
@@ -121,7 +151,15 @@ pub(crate) fn verify_energy_for_inspection(
 ) -> Result<VerifiedEnergyRun> {
     inspection_scope(root, Arc::new(AtomicBool::new(false)), |control| {
         let record = energy::read_run(root, summary)?;
-        let observed = control.observed.lock().unwrap().clone();
+        let prefix = format!("{}/", summary.path);
+        let observed = control
+            .observed
+            .lock()
+            .unwrap()
+            .iter()
+            .filter(|(name, _)| name.starts_with(&prefix))
+            .map(|(name, digest)| (name.clone(), digest.clone()))
+            .collect();
         verify_member_bytes(root, &observed)?;
         VerifiedEnergyRun::from_fenced(root, summary, record, &observed)
     })
@@ -193,6 +231,20 @@ pub struct OpenProgress {
     pub elapsed_ms: u64,
 }
 
+pub fn admission_started_progress() -> OpenProgress {
+    OpenProgress {
+        schema_version: "greenlens.project-open-progress.v1".into(),
+        stage: "admission_started".into(),
+        run_id: None,
+        runs_completed: 0,
+        runs_total: 0,
+        bytes_read: 0,
+        files_verified: 0,
+        numeric_passes: BTreeMap::new(),
+        elapsed_ms: 0,
+    }
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProjectVerificationReceipt {
     pub schema_version: String,
@@ -215,11 +267,44 @@ struct Control {
 }
 
 thread_local! {
+    // Cancellation can span source verification, rendering and destination
+    // verification without falsely assigning destination bytes to a source
+    // snapshot. This is local to one blocking operation, never a trust token.
+    static CANCELLATION: RefCell<Vec<Arc<AtomicBool>>> = const { RefCell::new(Vec::new()) };
     // Read instrumentation is deliberately scoped to the single blocking intake
     // operation; ordinary readers and scientific outputs are unaffected.
     static ACTIVE: RefCell<Option<Arc<Control>>> = const { RefCell::new(None) };
     #[cfg(test)]
     static TEST_NUMERIC_PASSES: std::cell::Cell<usize> = const { std::cell::Cell::new(0) };
+}
+struct CancellationGuard;
+impl Drop for CancellationGuard {
+    fn drop(&mut self) {
+        CANCELLATION.with(|tokens| {
+            tokens.borrow_mut().pop();
+        });
+    }
+}
+pub fn with_cancellation<T>(
+    cancel: Arc<AtomicBool>,
+    action: impl FnOnce() -> Result<T>,
+) -> Result<T> {
+    CANCELLATION.with(|tokens| tokens.borrow_mut().push(cancel));
+    let _guard = CancellationGuard;
+    cancellation_checkpoint()?;
+    let result = action()?;
+    cancellation_checkpoint()?;
+    Ok(result)
+}
+fn cancellation_checkpoint() -> Result<()> {
+    ensure!(
+        CANCELLATION.with(|tokens| tokens
+            .borrow()
+            .iter()
+            .all(|token| !token.load(Ordering::Relaxed))),
+        "Evidence operation cancelled; no incomplete result was accepted"
+    );
+    Ok(())
 }
 #[cfg(test)]
 pub(crate) fn test_numeric_passes() -> usize {
@@ -233,6 +318,7 @@ impl Drop for ActiveGuard {
 }
 impl Control {
     fn checkpoint(&self, bytes: u64, force: bool) -> Result<()> {
+        cancellation_checkpoint()?;
         ensure!(
             !self.cancel.load(Ordering::Relaxed),
             "Project verification cancelled; the previous document is unchanged"
@@ -287,6 +373,7 @@ impl Control {
 }
 
 pub(crate) fn checkpoint(bytes: u64) -> Result<()> {
+    cancellation_checkpoint()?;
     ACTIVE.with(|active| {
         active
             .borrow()
@@ -300,9 +387,16 @@ pub(crate) fn observed_file(path: &Path, digest: &str) -> Result<()> {
         let Some(c) = active.as_ref() else {
             return Ok(());
         };
-        let relative = path
-            .strip_prefix(&c.root)
-            .context("Evidence read escaped the admitted project")?;
+        let relative = if let Ok(relative) = path.strip_prefix(&c.root) {
+            relative.to_path_buf()
+        } else {
+            // Windows canonical paths may use the extended-length prefix.
+            // Resolve both sides before comparison; never drop path components.
+            std::fs::canonicalize(path)?
+                .strip_prefix(std::fs::canonicalize(&c.root)?)
+                .context("Evidence read escaped the admitted project")?
+                .to_path_buf()
+        };
         let relative = relative.to_string_lossy().replace('\\', "/");
         let mut observed = c.observed.lock().unwrap();
         if let Some(previous) = observed.get(&relative) {
@@ -366,7 +460,7 @@ pub fn verify_admitted_project(
     cancel: Arc<AtomicBool>,
     progress: impl Fn(OpenProgress) + Send + Sync + 'static,
 ) -> Result<ProjectView> {
-    verify_snapshot(path, admitted, None, cancel, progress)
+    verify_snapshot(path, admitted, None, false, cancel, progress)
 }
 
 /// Verifies all candidate evidence before a writer publishes its manifest. The
@@ -387,13 +481,42 @@ pub(crate) fn verify_import_candidate(
         "Project changed before reference verification; the previous document is unchanged"
     );
     crate::validate_project(candidate)?;
-    verify_snapshot(path, &admitted, Some(candidate.clone()), cancel, progress)
+    verify_snapshot(
+        path,
+        &admitted,
+        Some(candidate.clone()),
+        false,
+        cancel,
+        progress,
+    )
+}
+
+/// Verify a complete Save As candidate before any destination manifest exists.
+/// The writer must retain its destination lock and perform one last absence and
+/// cancellation check before publishing the returned candidate.
+pub(crate) fn verify_new_candidate(
+    path: &Path,
+    candidate: &Project,
+    cancel: Arc<AtomicBool>,
+    progress: impl Fn(OpenProgress) + Send + Sync + 'static,
+) -> Result<ProjectView> {
+    crate::validate_project(candidate)?;
+    let admitted = admission(candidate, String::new());
+    verify_snapshot(
+        path,
+        &admitted,
+        Some(candidate.clone()),
+        true,
+        cancel,
+        progress,
+    )
 }
 
 fn verify_snapshot(
     path: &Path,
     admitted: &ProjectAdmission,
     candidate: Option<Project>,
+    new_destination: bool,
     cancel: Arc<AtomicBool>,
     progress: impl Fn(OpenProgress) + Send + Sync + 'static,
 ) -> Result<ProjectView> {
@@ -426,7 +549,20 @@ fn verify_snapshot(
     });
     let _guard = ActiveGuard(ACTIVE.with(|active| active.replace(Some(control.clone()))));
     control.checkpoint(0, true)?;
-    let (stored_project, revision) = manifest(path)?;
+    let (stored_project, revision) = if new_destination {
+        ensure!(
+            !path.join("project.json").exists(),
+            "Save As destination acquired a manifest; it was preserved"
+        );
+        (
+            candidate
+                .clone()
+                .context("New destination requires a candidate")?,
+            String::new(),
+        )
+    } else {
+        manifest(path)?
+    };
     ensure!(
         &admission(&stored_project, revision.clone()) == admitted,
         "Project changed since admission; choose it again. The previous document is unchanged"
@@ -488,6 +624,13 @@ fn verify_snapshot(
     };
     let energy_sensitivity_sessions =
         energy_sensitivity_workflow::inspect_all_with_runs(path, &project, &mut provider)?;
+    control.stage("issued_report_evidence", None)?;
+    crate::report_issues::verify_project_with_provider(path, &project, &control.cancel, |id| {
+        energy_results
+            .iter()
+            .find(|run| run.id == id)
+            .context("Issued report references a run outside the verified snapshot")
+    })?;
     let energy_assessments = crate::energy_services::assessments(&project, &energy_results)?;
     let climate_assessments =
         crate::qualification::assessments_for_verified_view(&project, &climate_results)?;
@@ -502,7 +645,14 @@ fn verify_snapshot(
             "Evidence changed before snapshot acceptance: {name}"
         );
     }
-    persistence::check_revision(path, Some(&revision))?;
+    if new_destination {
+        ensure!(
+            !path.join("project.json").exists(),
+            "Save As destination acquired a manifest; it was preserved"
+        );
+    } else {
+        persistence::check_revision(path, Some(&revision))?;
+    }
     control.stage("completed", None)?;
     let receipt = ProjectVerificationReceipt {
         schema_version: "greenlens.project-verification.v1".into(), started_utc,
@@ -542,7 +692,7 @@ fn verify_snapshot(
                 .iter()
                 .zip(&view.energy_results)
                 .rev()
-                .take(8)
+                .take(crate::energy_verified_cache::MAX_ENTRIES)
                 .map(|(summary, record)| {
                     control.checkpoint(0, false)?;
                     VerifiedEnergyRun::from_fenced(path, summary, record.clone(), &observed)
@@ -561,6 +711,94 @@ fn verify_snapshot(
 #[cfg(test)]
 mod tests {
     use super::*;
+    #[test]
+    fn cancellation_crosses_separate_source_destination_scopes_and_cleans_up() {
+        let source = tempfile::tempdir().unwrap();
+        let destination = tempfile::tempdir().unwrap();
+        let cancel = Arc::new(AtomicBool::new(false));
+        let result = with_cancellation(cancel.clone(), || {
+            inspect_evidence(
+                source.path(),
+                Arc::new(AtomicBool::new(false)),
+                |_| {},
+                || checkpoint(0),
+            )?;
+            inspect_evidence(
+                destination.path(),
+                Arc::new(AtomicBool::new(false)),
+                |_| {},
+                || {
+                    cancel.store(true, Ordering::Relaxed);
+                    persistence::read_evidence_bytes_checked(
+                        &source.path().join("unused"),
+                        1,
+                        &mut |_| checkpoint(0),
+                    )
+                },
+            )
+        });
+        assert!(result.unwrap_err().to_string().contains("cancelled"));
+        assert!(
+            checkpoint(0).is_ok(),
+            "Worker cancellation must not leak to its next operation"
+        );
+    }
+    #[test]
+    fn new_candidate_final_verification_never_publishes_a_manifest() {
+        let root = tempfile::tempdir().unwrap();
+        let cancel = Arc::new(AtomicBool::new(false));
+        let signal = cancel.clone();
+        let result = verify_new_candidate(root.path(), &crate::example(), cancel, move |event| {
+            if event.stage == "finalizing_snapshot" {
+                signal.store(true, Ordering::Relaxed);
+            }
+        });
+        assert!(result.unwrap_err().to_string().contains("cancelled"));
+        assert!(!root.path().join("project.json").exists());
+        let original = crate::example();
+        persistence::atomic_json(root.path(), &original).unwrap();
+        let bytes = std::fs::read(root.path().join("project.json")).unwrap();
+        assert!(verify_new_candidate(
+            root.path(),
+            &original,
+            Arc::new(AtomicBool::new(false)),
+            |_| {}
+        )
+        .is_err());
+        assert_eq!(
+            bytes,
+            std::fs::read(root.path().join("project.json")).unwrap()
+        );
+    }
+    #[test]
+    fn follow_on_inspection_inherits_cancellation_and_rejects_a_root_change() {
+        let root = tempfile::tempdir().unwrap();
+        let other = tempfile::tempdir().unwrap();
+        let cancel = Arc::new(AtomicBool::new(false));
+        let seen = Arc::new(Mutex::new(Vec::new()));
+        let events = seen.clone();
+        let result = inspect_evidence(
+            root.path(),
+            cancel.clone(),
+            move |event| events.lock().unwrap().push(event.stage),
+            || {
+                assert!(
+                    inspection_scope(other.path(), Arc::new(AtomicBool::new(false)), |_| Ok(()))
+                        .is_err()
+                );
+                inspection_scope(root.path(), Arc::new(AtomicBool::new(false)), |_| {
+                    cancel.store(true, Ordering::Relaxed);
+                    checkpoint(0)
+                })
+            },
+        );
+        assert!(result.unwrap_err().to_string().contains("cancelled"));
+        assert_eq!(*seen.lock().unwrap(), vec!["energy_inspection"]);
+        assert!(
+            checkpoint(0).is_ok(),
+            "Cancelled context must leave worker reusable"
+        );
+    }
     fn scoped_control(root: &Path, cancel: Arc<AtomicBool>) -> (Arc<Control>, ActiveGuard) {
         let control = Arc::new(Control {
             root: root.into(),

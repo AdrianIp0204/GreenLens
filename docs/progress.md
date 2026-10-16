@@ -1,5 +1,33 @@
 # Progress and acceptance evidence
 
+## v0.7 integrated working-source checks — 2026-10-16
+
+The replacement cache passes the declared nine-record experiment: initial open 6,823 ms with nine numerical checks, then 280 / 276 ms visits with zero numerical rederivations. Actual retained bytes remain checked. Nine cached metadata records use 825,757 bytes within the unchanged 64 MiB cap. The concurrent cold-reader regression also passes. No engine was launched. The [repair receipt](evidence/v0.7/cache-repair-checkpoint.json) identifies the optimized test binary and log; these are process-local engineering checks, not installed timing or scientific qualification.
+
+Implemented shared immutable scope/review/provenance services, separate historical inspection, cancellable follow-on queries, aligned figure v2, complete issued-project export and report issue history. Six issue-store tests pass, including coherently resealed omission/figure substitution rejection and preservation of old issues through undo. Seven figure tests and four renderer-contract tests pass at their working-source checkpoints. Strict admission exposed invalid original synthetic test fixtures, which were repaired without changing admission or tolerances. Full-suite, actual Typst, native and portability observations remain separately required.
+
+Both prior-source hosted checks are now complete: [0f24c6e CI38842449036](https://github.com/AdrianIp0204/GreenLens/actions/runs/38842449036) and [cad171d CI38838051867](https://github.com/AdrianIp0204/GreenLens/actions/runs/38838051867) passed build, energy and static compatibility. They do not establish acceptance of the new working source. Version 0.7.0 is an incomplete candidate. The resolved dependency audit still covers 402 packages and 230 notice texts with zero gaps and no added runtime dependencies.
+
+The [finite synthetic issue protocol](v0.7-issue-protocol.md) declares S1/R1, a COP-only S2/R2 change, one missing production run and two explicit replay cases before execution. Historical run bytes and failed scientific protocols remain unchanged. Private conversion stays blocked; no new recovery evidence or repeated crash attempt exists.
+
+## v0.7 implementation checkpoint — 2026-10-16
+
+Implemented controlled live-reference versus historical mapping inspection, with no fallback resurrection on Escape. Actual workspace regressions cover delayed reference loading, reimport, design/document transitions and exact-row editing. Cancellable evidence-query reservations and bounded Rust inspection context are being integrated; component checks are supplementary to pending installed observations.
+
+Nine distinct retained native energy records were copied without changing their bytes or launching an engine. The existing distributed CLI admits the assembled 684-file, 258,193,536-byte fixture. The original eight-record cache then fails the predeclared repeat-access regression: initial 9 numerical passes, followed by 2 and 9 unnecessary rederivations. [Failure receipt](evidence/v0.7/cache-eight-baseline.json). A bounded 64-record/64 MiB repair and fixed concurrent inspection lanes are implemented but not yet verified. This is engineering evidence, not physical validation.
+
+Six new scope-revision core tests pass after an initial assumption-value failure and repair of the proposed missing-value representation. Immutable scope history, provenance checklist, reviewed carry-forward, aligned figures and report issues are under integration. The first aligned-figure tests fail because their original synthetic GLB omitted required accessor bounds; admission remains strict and the fixture is being corrected. No release/native/report acceptance is claimed.
+
+Fresh prior-source CI query: cad171d CI38838051867 completed successfully; 0f24c6e CI38842449036 is still running at this checkpoint. Neither establishes v0.7 source acceptance. Private architectural intake remains blocked without new recoverable same-case geometry. Historical scientific failures remain stopped.
+
+## 2026-10-16 — v0.7 activated: inspected baseline and bounded implementation
+
+- Inspected: clean checkout `0f24c6ebb02fb0db8ef20b78691d91147b3de34d`, correct existing remote/account, no active Cargo/engine/renderer/GreenLens process. Native process-local Rust/MSVC resolves Cargo/rustc1.99.0. New work branch `codex/v0.7-study-revisions` preserves prior history. An unrelated blocked v0.2 goal is untouched; persisted [spec](v0.7-spec.md), [plan](v0.7-implementation-plan.md) and [ledger](v0.7-acceptance.md) govern this work.
+- Fresh CI observation: 0f24c6e run38842449036 and cad171d run38838051867 still running; no newer success inferred from aa7. Exact installed/annual/report/replay identities remain in their original receipts.
+- Reproduced: actual workspace composition fails live-to-historical mapping selection because parent live selection wins over local fallback. Separately controlled revision-scoped inspection repair and composition regressions are in progress; this is not native acceptance.
+- Design work: additive immutable scope/history/provenance contracts, snapshot-bound aligned figure v2, and measured nine-record/cancellable evidence reuse are assigned separate ownership. Root alone builds/runs native tools. No new simulation, source conversion, report issue or accepted revision yet.
+- Preserved failed/unverified/blocked: original250ms progress failure, native cooperative/process cancellation, physical modifiers, exact layouts/DPI, clean machine and private geometry. No private geometry decoded; no repeated crash attempts, qualification restart or synthetic substitution.
+
 ## 2026-10-16 — cad171d installed confirmation, cold reports and aa7 replay audit
 
 - Implemented/verified repair: commit `5940677` adds safe scope-confirmation focus, reveal, local Escape and same-document trigger restoration. Clean application source `cad171d174f6f28c2bf28c0d728360020255ac92` passes TypeScript, 314 frontend tests and production assets. The [identified local installed candidate](evidence/v0.6/native-cad171d.json) now passes those keyboard/pointer behaviors without a development server. Normal close is observed; this is not clean-machine acceptance.

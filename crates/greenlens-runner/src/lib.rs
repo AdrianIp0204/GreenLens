@@ -12,6 +12,7 @@ pub mod energy_attachments;
 pub mod energy_catalog;
 pub mod energy_design_copy;
 pub mod energy_export;
+pub mod energy_inspection;
 mod energy_job;
 pub mod energy_navigation;
 pub mod energy_preflight;
@@ -32,9 +33,12 @@ pub mod project_open;
 pub mod qualification;
 pub mod reference;
 mod report;
+pub mod report_issue_export;
+pub mod report_issues;
 pub mod studies;
 #[cfg(test)]
 mod studies_tests;
+pub mod study_revisions;
 pub mod timeseries;
 pub mod weather;
 
@@ -82,6 +86,8 @@ pub struct Project {
     pub energy: Option<energy::EnergyProject>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub architecture: Option<reference::ArchitecturalProject>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub report_issues: Option<report_issues::ReportIssueIndex>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -153,9 +159,12 @@ pub fn example() -> Project {
         climate: None,
         energy: None,
         architecture: None,
+        report_issues: None,
     }
 }
 pub fn validate_project(project: &Project) -> Result<()> {
+    study_revisions::validate_project_capacity(project)?;
+    report_issues::validate_index(project)?;
     ensure!(
         (project.schema_version == SCHEMA_VERSION
             && project.climate.is_none()
@@ -407,8 +416,9 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
     if let Some(extension) = &project.architecture {
         reference::verify_project(path, extension, &AtomicBool::new(false))?;
     }
+    report_issues::verify_project(path, project, &AtomicBool::new(false))?;
     check_revision(path, expected)?;
-    atomic_json(path, project)?;
+    atomic_project(path, project)?;
     open_project(path)
 }
 /// Save a complete portable copy, publishing its manifest only after all
@@ -436,6 +446,8 @@ fn copy_project(
             saved.id == project.id,
             "Save As source belongs to another project"
         );
+        study_revisions::validate_preserved(&saved, project)?;
+        report_issues::validate_preserved(&saved, project)?;
         if destination.exists() {
             ensure!(
                 source.canonicalize()? != destination.canonicalize()?,
@@ -445,6 +457,7 @@ fn copy_project(
     } else {
         ensure!(
             project.architecture.is_none()
+                && project.report_issues.is_none()
                 && project.runs.is_empty()
                 && project
                     .climate
@@ -484,14 +497,26 @@ fn copy_project(
         if let Some(extension) = &project.architecture {
             reference::copy_evidence(source, destination, extension)?;
         }
+        report_issues::copy_evidence(source, destination, project, &AtomicBool::new(false))?;
     }
     let mut project = project.clone();
     if let Some((scratch, run)) = pending {
         run.promote(scratch, destination, &mut project)?;
     }
     validate_project(&project)?;
-    atomic_json(destination, &project)?;
-    open_project(destination)
+    let mut view = project_open::verify_new_candidate(
+        destination,
+        &project,
+        Arc::new(AtomicBool::new(false)),
+        |_| {},
+    )?;
+    project_open::checkpoint(0)?;
+    ensure!(
+        !destination.join("project.json").exists(),
+        "Save As destination acquired a manifest; it was preserved"
+    );
+    view.revision = atomic_project(destination, &project)?;
+    Ok(view)
 }
 fn append_run(project: &mut Project, run: &RunRecord) -> Result<()> {
     let summary = RunSummary {
@@ -1021,7 +1046,7 @@ impl Application {
         run.promote(&job.scratch, path, &mut project)?;
         check_revision(path, expected)?;
         validate_project(&project)?;
-        atomic_json(path, &project)?;
+        atomic_project(path, &project)?;
         let view = open_project(path)?;
         status.pending_evidence = false;
         Ok(view)

@@ -21,6 +21,7 @@ import { CLIMATE_FIELDS } from './workspace/climate-presentation.mjs';
 import EnergyWorkspace from './energy/EnergyWorkspace';
 import EnergyDraftGuard from './energy/EnergyDraftGuard';
 import ReferenceDraftGuard from './reference/ReferenceDraftGuard';
+import ScopeReviewDraftGuard from './reference/ScopeReviewDraftGuard';
 import {energyShortcut} from './energy/actions.mjs';
 
 const SceneView=lazy(()=>import('./SceneView'));
@@ -153,6 +154,7 @@ export default function App(){
     </main></div>{discipline==='energy'&&<><EnergyWorkspace doc={doc}/>{doc.error&&<div className="error-strip" role="alert"><span>{doc.error}</span>{doc.pending&&<button onClick={()=>void doc.saveAs()}>Save complete copy</button>}<button onClick={()=>doc.setError('')}>Dismiss</button></div>}</>}
     <footer className="statusbar">{discipline==='daylight'?<><span className="coordinates">{pointer.world?pointer.world.map(v=>fmt(v,3)).join(', '):'X —   Y —   Z —'} m</span><span className="snap-status">{pointer.snap??pointer.message??'World ENU'}</span>{(['Grid','Snap','Ortho','Osnap','Gumball'] as const).map(name=>{const key={Cutaway:'cutaway',Grid:'grid_visible',Snap:'grid_snap',Ortho:'ortho',Osnap:'object_snap',Gumball:'gumball'}[name] as 'grid_visible'|'grid_snap'|'ortho'|'object_snap'|'gumball'|'cutaway';return <button key={name} aria-pressed={doc.display[key]} onClick={()=>void dispatch(name)}>{name}</button>;})}</>:<span>Energy · fixed local standard time · Rust input validation</span>}<span className="status-message" title={doc.message}>{preview||doc.message}</span><span className="job-status">{doc.busy?'Working…':doc.job?.state??'Ready'}</span></footer>
     {exportOpen&&<ExportRunDialog records={records} climateRecords={doc.climateResults} initial={[climate.a?.id,climate.b?.id].filter((id):id is string=>Boolean(id))} onClose={()=>setExportOpen(false)} onExport={ids=>{setExportOpen(false);void doc.exportEvidence(ids);}}/>}
+    {doc.scopeReviewDrafts&&!doc.referenceDrafts?.guard&&!doc.energyDrafts?.guard&&<ScopeReviewDraftGuard drafts={doc.scopeReviewDrafts}/>}
     {doc.referenceDrafts&&<ReferenceDraftGuard drafts={doc.referenceDrafts}/>}
     {doc.energyDrafts&&<EnergyDraftGuard drafts={doc.energyDrafts}/>}
     {doc.opening&&<section className="opening-progress" role="status" aria-live="polite"><strong>Opening {doc.opening.name}</strong><span>{doc.opening.progress?.stage.replaceAll('_',' ')??'Starting evidence verification'} · {doc.opening.progress?.runs_completed??0}/{doc.opening.progress?.runs_total??0} runs · {((doc.opening.progress?.bytes_read??0)/1048576).toFixed(1)} MiB read</span><span>Your current document remains open until this candidate is fully checked.</span><button disabled={doc.opening.cancelled} onClick={()=>void doc.cancelOpening()}>{doc.opening.cancelled?'Cancelling…':'Cancel opening'}</button></section>}

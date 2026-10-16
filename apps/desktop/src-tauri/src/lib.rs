@@ -17,8 +17,10 @@ use std::{
 };
 use tauri::Manager;
 mod energy;
+mod evidence_inspection;
 mod project_intake;
 mod reference;
+mod report_issues;
 
 type CommandResult<T> = Result<T, String>;
 fn error(e: impl std::fmt::Display) -> String {
@@ -117,6 +119,8 @@ async fn prepare_close(app: tauri::AppHandle, discard_pending: bool) -> CommandR
     blocking(move || {
         app.state::<Application>().prepare_close(discard_pending)?;
         app.state::<energy::ReportControl>().shutdown();
+        app.state::<evidence_inspection::EvidenceControl>()
+            .cancel_all();
         Ok(())
     })
     .await
@@ -635,6 +639,7 @@ pub fn run() {
         .manage(Application::default())
         .manage(energy::ReportControl::default())
         .manage(project_intake::IntakeControl::default())
+        .manage(evidence_inspection::EvidenceControl::default())
         .invoke_handler(tauri::generate_handler![
             reference::dialog_open_reference_glb,
             reference::reference_manifest,
@@ -648,6 +653,12 @@ pub fn run() {
             project_intake::prepare_project_verification,
             project_intake::verify_project,
             project_intake::cancel_project_verification,
+            reference::reference_revision_prepare,
+            reference::reference_revision_accept,
+            reference::reference_revision_activate,
+            evidence_inspection::prepare_evidence_inspection,
+            evidence_inspection::cancel_evidence_inspection,
+            evidence_inspection::inspect_energy_evidence,
             example,
             validate,
             doctor,
@@ -727,6 +738,8 @@ pub fn run() {
             energy::energy_open_report,
             energy::energy_report,
             energy::energy_cancel_report,
+            report_issues::report_issue_action,
+            report_issues::report_issue_product,
             energy::dialog_energy_report
         ])
         .build(tauri::generate_context!())
@@ -738,6 +751,8 @@ pub fn run() {
             ) {
                 app.state::<Application>().shutdown();
                 app.state::<energy::ReportControl>().shutdown();
+                app.state::<evidence_inspection::EvidenceControl>()
+                    .cancel_all();
             }
         });
 }

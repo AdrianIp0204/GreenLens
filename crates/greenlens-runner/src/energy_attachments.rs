@@ -183,7 +183,7 @@ pub fn add(
     next.energy.as_mut().unwrap().attachments.push(item);
     crate::validate_project(&next)?;
     check_revision(root, revision)?;
-    atomic_json(root, &next)?;
+    atomic_project(root, &next)?;
     crate::open_project(root)
 }
 pub fn set_inclusion(project: &Project, id: &str, included: bool) -> Result<Project> {

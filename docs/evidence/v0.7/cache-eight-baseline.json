@@ -1,0 +1,32 @@
+{
+  "schema": "greenlens.v07.cache-baseline.v1",
+  "source_basis_commit": "0f24c6ebb02fb0db8ef20b78691d91147b3de34d",
+  "source_state": "uncommitted regression added to original eight-entry cache; no replacement cache policy in tested binary",
+  "profile": "release",
+  "test": "energy_verified_cache::tests::retained_nine_record_history_access_stays_bounded_without_numeric_rederivation",
+  "binary_sha256": "283c78843626a1bca1137c1d2f8afe8d9a774202924a875607f266f7390a9567",
+  "log_sha256": "c236ec52b448ceffd4dec0f3c2c29dc40df3ebe59c02168eb91ce0839e81e838",
+  "fixture_records": 9,
+  "fixture_files": 684,
+  "fixture_bytes": 258193536,
+  "native_simulations": 0,
+  "original_run_bytes_unchanged": true,
+  "initial_numeric_passes": 9,
+  "initial_open_ms": 7209,
+  "repeat_passes": [
+    {
+      "elapsed_ms": 1350,
+      "numeric_rederivations": 2
+    },
+    {
+      "elapsed_ms": 4918,
+      "numeric_rederivations": 9
+    }
+  ],
+  "cached_records": 8,
+  "cached_metadata_bytes": 734011,
+  "metadata_limit_bytes": 67108864,
+  "result": "failed",
+  "failure": "20 total numeric passes instead of 9. Repeated visits rederived 11 unchanged records.",
+  "scope": "Process-local reuse regression, not native UI, physical validation or new engine execution"
+}

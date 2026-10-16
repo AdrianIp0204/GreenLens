@@ -48,6 +48,10 @@ pub struct ArchitecturalProject {
     pub assets: Vec<ReferenceAsset>,
     pub active_asset_id: String,
     pub scope: Option<ArchitecturalScope>,
+    /// Additive immutable documentation. Old projects retain their original
+    /// representation until an explicit accepted revision action.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub scope_history: Option<crate::study_revisions::ScopeHistory>,
 }
 pub fn validate_extension(value: &ArchitecturalProject) -> Result<()> {
     ensure!(
@@ -87,6 +91,7 @@ pub fn validate_extension(value: &ArchitecturalProject) -> Result<()> {
     if let Some(scope) = &value.scope {
         greenlens_core::architectural_scope::validate_declaration(scope)?;
     }
+    crate::study_revisions::validate_history(value)?;
     Ok(())
 }
 
@@ -200,9 +205,11 @@ pub fn verify_project(
     cancel: &AtomicBool,
 ) -> Result<()> {
     validate_extension(extension)?;
+    let mut manifests = BTreeMap::new();
     for asset in &extension.assets {
-        verify_asset(root, asset, cancel)?;
+        manifests.insert(asset.id.clone(), verify_asset(root, asset, cancel)?);
     }
+    crate::study_revisions::verify_history_manifests(extension, &manifests, cancel)?;
     Ok(())
 }
 pub fn evidence_members(root: &Path, extension: &ArchitecturalProject) -> Result<Vec<String>> {
@@ -338,23 +345,14 @@ pub fn set_scope(
     scope: Option<ArchitecturalScope>,
     restoring: bool,
 ) -> Result<Project> {
-    crate::validate_project(project)?;
-    if let Some(scope) = &scope {
-        let reference = read_manifest(root, asset(project, None)?)?;
-        let models = scope_models(project)?;
-        if restoring {
-            greenlens_core::architectural_scope::assess_scope(scope, &reference, &models)?;
-        } else {
-            greenlens_core::architectural_scope::validate_scope(scope, &reference, &models)?;
-        }
+    let cancel = AtomicBool::new(false);
+    if restoring {
+        crate::study_revisions::restore_scope(root, project, scope, &cancel)
+    } else if let Some(scope) = scope {
+        crate::study_revisions::initialize_scope(root, project, scope, &cancel)
+    } else {
+        crate::study_revisions::restore_scope(root, project, None, &cancel)
     }
-    let mut next = project.clone();
-    next.architecture
-        .as_mut()
-        .context("Import a reference model first")?
-        .scope = scope;
-    crate::validate_project(&next)?;
-    Ok(next)
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
@@ -476,6 +474,7 @@ pub fn import_project(
             assets: vec![],
             active_asset_id: id.clone(),
             scope: None,
+            scope_history: None,
         });
     ext.assets.push(asset);
     ext.active_asset_id = id.clone();
@@ -558,7 +557,7 @@ pub fn import_project(
         "Reference import cancelled; the previous document is unchanged"
     );
     check_revision(root, expected_revision)?;
-    view.revision = atomic_json(root, &candidate)?;
+    view.revision = atomic_project(root, &candidate)?;
     Ok(view)
 }
 

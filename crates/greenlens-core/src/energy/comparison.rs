@@ -640,6 +640,16 @@ fn unit(o: &ThermalObjectRef, p: &str, a: &ThermalModel, b: &ThermalModel) -> Op
     Some(value.into())
 }
 
+/// Units for a supported input field, shared by the derived provenance inventory.
+/// This does not alter the versioned comparison policy or scientific identities.
+pub fn thermal_input_unit(
+    object: &ThermalObjectRef,
+    field_path: &str,
+    model: &ThermalModel,
+) -> Option<String> {
+    unit(object, field_path, model, model)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

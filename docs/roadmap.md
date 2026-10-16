@@ -1,6 +1,12 @@
 # GreenLens roadmap
 
-## Active bounded v0.4: energy analysis and report products
+## Active bounded v0.7: study revisions and report issuance
+
+The [v0.7 specification](v0.7-spec.md) authorizes reviewed immutable scope carry-forward, actual-input provenance, selected-snapshot aligned report figures and durable exact-bound report issues, with responsive verification and professional report workspace integration. It extends existing v0.6 intake/workbench/report services and does not accept v0.6's remaining failed/unverified/private-case requirements. Completion and finite execution are governed by the [plan](v0.7-implementation-plan.md) and [ledger](v0.7-acceptance.md).
+
+No thermal geometry/HVAC expansion, new scientific qualification, general CAD/IFC, cloud, CFD, optimization or regional certification follows from this phase. Later extensions retain their separate topology, rights, scientific and native-validation prerequisites. The private benchmark remains conditional on genuinely new recoverable geometry; stopped conversion/daylight/real-weather investigations are not restarted.
+
+## Historical bounded v0.4: energy analysis and report products
 
 The user-requested [v0.4 energy specification](v0.4-energy-spec.md) and [gated implementation plan](v0.4-energy-implementation-plan.md) establish the implementation target activated on 13 October 2026. The bounded target is a real EnergyPlus annual baseline/proposed workflow for 1–8 thermal zones, with explicit DX/fan systems, annual/monthly/end-use energy, source-bound operational emissions, coincident interval demand, original PDF/HTML reports, input evidence and portable replay. The acceptance example has four zones and two storeys. It makes no regional compliance claim.
 

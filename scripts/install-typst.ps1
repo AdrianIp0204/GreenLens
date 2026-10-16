@@ -17,6 +17,14 @@ function Assert-Seal([string]$Path,$Seal) {
  Assert-Regular $Path
  if ((Get-Item -LiteralPath $Path).Length -ne $Seal.bytes -or (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() -ne $Seal.sha256) { throw "Pinned renderer resource differs: $([IO.Path]::GetFileName($Path))" }
 }
+function Get-TypstRelease([string]$ReleaseApi) {
+ # Keep optional CI credentials on this exact metadata endpoint only. Asset
+ # downloads remain unauthenticated; never print or persist request headers.
+ if ($ReleaseApi -cne 'https://api.github.com/repos/typst/typst/releases/tags/v0.15.1') { throw 'Unexpected Typst release API endpoint' }
+ $releaseHeaders = @{ Accept = 'application/vnd.github+json' }
+ if (![string]::IsNullOrWhiteSpace($env:GITHUB_TOKEN)) { $releaseHeaders.Authorization = "Bearer $env:GITHUB_TOKEN" }
+ return Invoke-RestMethod -Uri $ReleaseApi -Headers $releaseHeaders -MaximumRedirection 0
+}
 $ancestor=$root
 while($ancestor) {
  if((Test-Path -LiteralPath $ancestor) -and ((Get-Item -LiteralPath $ancestor -Force).Attributes -band [IO.FileAttributes]::ReparsePoint)){throw 'Installation may not traverse a reparse point.'}
@@ -25,7 +33,7 @@ while($ancestor) {
 New-Item -ItemType Directory -Path $root -Force | Out-Null
 if (!$ArchivePath) {
  # Network is installation-only. Report generation never invokes this script.
- $release = Invoke-RestMethod -Uri $manifest.release_api
+ $release = Get-TypstRelease $manifest.release_api
  $asset = @($release.assets | Where-Object name -eq $manifest.asset)
  if ($asset.Count -ne 1 -or $asset[0].digest -ne "sha256:$($manifest.sha256)" -or $asset[0].size -ne $manifest.bytes -or $asset[0].browser_download_url -ne $manifest.download_url) { throw 'Official release asset differs from reviewed pin.' }
  $ArchivePath = Join-Path $root $manifest.asset

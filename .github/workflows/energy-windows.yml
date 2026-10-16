@@ -81,6 +81,7 @@ jobs:
           ./scripts/test-energy-input-preflight.ps1
           ./scripts/test-study-issues-collector.ps1
           ./scripts/test-v08-report-collector.ps1
+          ./scripts/test-installer-auth.ps1
           node --test scripts/test-license-supplement-binding.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }
           node --test scripts/test-license-inventory-diff.mjs

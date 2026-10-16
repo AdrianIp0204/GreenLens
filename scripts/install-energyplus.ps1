@@ -16,6 +16,14 @@ function Assert-File([string]$Path, [long]$Bytes, [string]$Hash) {
     Assert-NoReparse $Path
     if (!(Test-Path -LiteralPath $Path -PathType Leaf) -or (Get-Item -LiteralPath $Path).Length -ne $Bytes -or (Get-FileHash -LiteralPath $Path -Algorithm SHA256).Hash.ToLowerInvariant() -cne $Hash) { throw "Pinned file mismatch: $Path" }
 }
+function Get-EnergyPlusRelease([string]$ReleaseApi) {
+    # Keep optional CI credentials on this exact metadata endpoint only. Asset
+    # downloads remain unauthenticated; never print or persist request headers.
+    if ($ReleaseApi -cne 'https://api.github.com/repos/NatLabRockies/EnergyPlus/releases/tags/v26.2.0') { throw 'Unexpected EnergyPlus release API endpoint' }
+    $releaseHeaders = @{ Accept = 'application/vnd.github+json' }
+    if (![string]::IsNullOrWhiteSpace($env:GITHUB_TOKEN)) { $releaseHeaders.Authorization = "Bearer $env:GITHUB_TOKEN" }
+    return Invoke-RestMethod -Uri $ReleaseApi -Headers $releaseHeaders -MaximumRedirection 0
+}
 Assert-NoReparse $InstallRoot
 $archive = Join-Path $InstallRoot $manifest.asset
 $packageParent = Join-Path $InstallRoot 'package'
@@ -23,7 +31,7 @@ $engineRoot = Join-Path $packageParent $manifest.package_directory
 if (!$VerifyOnly) {
     New-Item -ItemType Directory -Path $InstallRoot -Force | Out-Null
     if (!(Test-Path -LiteralPath $archive)) {
-        $release = Invoke-RestMethod -Uri $manifest.release_api
+        $release = Get-EnergyPlusRelease $manifest.release_api
         $asset = @($release.assets | Where-Object { $_.id -eq $manifest.asset_id })
         if ($release.tag_name -cne $manifest.tag -or $asset.Count -ne 1 -or $asset[0].name -cne $manifest.asset -or $asset[0].size -ne $manifest.bytes -or $asset[0].digest -cne ('sha256:' + $manifest.sha256) -or $asset[0].browser_download_url -cne $manifest.download_url) { throw 'Official release metadata differs from the pinned dependency' }
         $partial = Join-Path $InstallRoot ('download-' + [guid]::NewGuid().ToString('N') + '.partial')

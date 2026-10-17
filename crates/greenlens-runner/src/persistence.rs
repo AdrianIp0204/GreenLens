@@ -696,43 +696,90 @@ fn atomic_bytes_cancellable(
         data.len() as u64 <= MAX_EVIDENCE_FILE_BYTES,
         "Project manifest exceeds the 64 MiB readable limit. The existing project was retained; save a project with fewer historical runs"
     );
-    let mut file = OpenOptions::new()
-        .create_new(true)
-        .write(true)
-        .open(&temporary)?;
+    let _directory = DirectoryGuard::open(root)?;
+    let target = fs::canonicalize(root)?.join("project.json");
+    let mut options = OpenOptions::new();
+    options.create_new(true).write(true);
+    #[cfg(windows)]
+    {
+        use std::os::windows::fs::OpenOptionsExt;
+        use windows_sys::Win32::Storage::FileSystem::{
+            DELETE, FILE_GENERIC_WRITE, FILE_SHARE_READ,
+        };
+        // Keep the exact written temporary alive through the rename; deny
+        // other writers and deletion/renaming of this unpublished candidate.
+        options
+            .access_mode(FILE_GENERIC_WRITE | DELETE)
+            .share_mode(FILE_SHARE_READ);
+    }
+    let mut file = options.open(&temporary)?;
     file.write_all(data)?;
     file.sync_all()?;
-    drop(file);
     if cancel.load(std::sync::atomic::Ordering::Relaxed) {
+        #[cfg(windows)]
+        discard_owned_temporary(&file);
+        drop(file);
+        #[cfg(not(windows))]
         let _ = fs::remove_file(&temporary);
         bail!("Project publication cancelled; the previous manifest is unchanged");
     }
     if let Some(expected) = expected {
         if let Err(error) = check_revision(root, expected) {
+            #[cfg(windows)]
+            discard_owned_temporary(&file);
+            drop(file);
+            #[cfg(not(windows))]
             let _ = fs::remove_file(&temporary);
             return Err(error);
         }
     }
     if cancel.load(std::sync::atomic::Ordering::Relaxed) {
+        #[cfg(windows)]
+        discard_owned_temporary(&file);
+        drop(file);
+        #[cfg(not(windows))]
         let _ = fs::remove_file(&temporary);
         bail!("Project publication cancelled; the previous manifest is unchanged");
     }
-    atomic_replace(&temporary, &root.join("project.json"))?;
+    atomic_replace(&file, &temporary, &target).with_context(|| {
+        format!(
+            "Atomic replacement of project.json failed. The complete candidate was written to {} before publication. GreenLens has not retried or removed staged files. Check the current manifest and retained candidate before saving again; folder permissions or another application holding the manifest may block replacement",
+            temporary.file_name().unwrap_or_default().to_string_lossy()
+        )
+    })?;
     Ok(bytes_hash(data))
 }
 #[cfg(windows)]
-fn atomic_replace(source: &Path, target: &Path) -> Result<()> {
-    use std::os::windows::ffi::OsStrExt;
+fn atomic_replace(file: &File, _source: &Path, target: &Path) -> Result<()> {
+    use std::os::windows::io::AsRawHandle;
     use windows_sys::Win32::Storage::FileSystem::{
-        MoveFileExW, MOVEFILE_REPLACE_EXISTING, MOVEFILE_WRITE_THROUGH,
+        FileRenameInfoEx, SetFileInformationByHandle, FILE_RENAME_INFO,
     };
-    let source: Vec<u16> = source.as_os_str().encode_wide().chain(Some(0)).collect();
-    let target: Vec<u16> = target.as_os_str().encode_wide().chain(Some(0)).collect();
+    // Windows SDK FILE_RENAME_FLAG_REPLACE_IF_EXISTS | POSIX_SEMANTICS.
+    // Existing readers retain their original snapshot; new opens see the
+    // replacement. Legacy MoveFileExW can reject even delete-sharing readers.
+    // No ignore-readonly, copy/delete fallback, retry or filesystem weakening.
+    // https://learn.microsoft.com/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_rename_information
+    const REPLACE_WITH_OPEN_READERS: u32 = 0x1 | 0x2;
+    // Use the canonical absolute destination beneath the retained directory
+    // guard. Win32 resolves relative names against CWD; a nonnull RootDirectory
+    // is rejected by the tested FileRenameInfoEx implementation.
+    ensure!(
+        target.is_absolute(),
+        "Manifest destination must be absolute"
+    );
+    let (mut storage, buffer_size) = rename_info_buffer(target)?;
+    // SAFETY: the aligned buffer owns a complete FILE_RENAME_INFO plus its
+    // UTF-16 name. The live DELETE-access handle is the file just synced.
     let success = unsafe {
-        MoveFileExW(
-            source.as_ptr(),
-            target.as_ptr(),
-            MOVEFILE_REPLACE_EXISTING | MOVEFILE_WRITE_THROUGH,
+        (*storage.as_mut_ptr().cast::<FILE_RENAME_INFO>())
+            .Anonymous
+            .Flags = REPLACE_WITH_OPEN_READERS;
+        SetFileInformationByHandle(
+            file.as_raw_handle(),
+            FileRenameInfoEx,
+            storage.as_ptr().cast(),
+            buffer_size,
         )
     };
     if success == 0 {
@@ -741,7 +788,7 @@ fn atomic_replace(source: &Path, target: &Path) -> Result<()> {
     Ok(())
 }
 #[cfg(not(windows))]
-fn atomic_replace(source: &Path, target: &Path) -> Result<()> {
+fn atomic_replace(_file: &File, source: &Path, target: &Path) -> Result<()> {
     fs::rename(source, target)?;
     Ok(())
 }
@@ -1920,6 +1967,128 @@ mod tests {
         .is_err());
         assert_eq!(fs::read(root.path().join("project.json")).unwrap(), before);
         assert_eq!(fs::read_dir(root.path()).unwrap().count(), 1);
+    }
+    #[cfg(windows)]
+    #[test]
+    fn manifest_reader_without_delete_sharing_rejects_publication_without_losing_candidate() {
+        use std::os::windows::fs::OpenOptionsExt;
+        use windows_sys::Win32::Storage::FileSystem::{FILE_SHARE_READ, FILE_SHARE_WRITE};
+        let root = tempfile::tempdir().unwrap();
+        let manifest = root.path().join("project.json");
+        let old = b"[1]\n";
+        let candidate = b"[2]\n";
+        fs::write(&manifest, old).unwrap();
+        let reader = OpenOptions::new()
+            .read(true)
+            .share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE)
+            .open(&manifest)
+            .unwrap();
+        let error = atomic_bytes_cancellable(
+            root.path(),
+            candidate,
+            &std::sync::atomic::AtomicBool::new(false),
+            Some(Some(&bytes_hash(old))),
+        )
+        .unwrap_err();
+        let raw = error
+            .downcast_ref::<std::io::Error>()
+            .unwrap()
+            .raw_os_error();
+        eprintln!("Synthetic denied-delete reader: Windows error {raw:?}");
+        // Windows may report access denied or a sharing violation for a
+        // replacement whose destination is held without delete sharing.
+        assert!(matches!(raw, Some(5 | 32)), "{error:#}");
+        assert!(error
+            .to_string()
+            .contains("Atomic replacement of project.json failed"));
+        assert!(error.to_string().contains("has not retried or removed"));
+        assert_eq!(fs::read(&manifest).unwrap(), old);
+        let retained: Vec<_> = fs::read_dir(root.path())
+            .unwrap()
+            .map(|entry| entry.unwrap().path())
+            .filter(|path| path.extension().is_some_and(|ext| ext == "tmp"))
+            .collect();
+        assert_eq!(retained.len(), 1);
+        assert_eq!(fs::read(&retained[0]).unwrap(), candidate);
+        drop(reader);
+        // A separate explicit caller attempt is possible after the blocker is
+        // gone. The old failed candidate is not deleted or silently promoted.
+        atomic_bytes_cancellable(
+            root.path(),
+            candidate,
+            &std::sync::atomic::AtomicBool::new(false),
+            Some(Some(&bytes_hash(old))),
+        )
+        .unwrap();
+        assert_eq!(fs::read(&manifest).unwrap(), candidate);
+        assert_eq!(fs::read(&retained[0]).unwrap(), candidate);
+    }
+    #[cfg(windows)]
+    #[test]
+    fn delete_sharing_observer_does_not_block_manifest_replacement() {
+        use std::os::windows::fs::OpenOptionsExt;
+        use windows_sys::Win32::Storage::FileSystem::{
+            FILE_SHARE_DELETE, FILE_SHARE_READ, FILE_SHARE_WRITE,
+        };
+        let parent = tempfile::tempdir().unwrap();
+        let root = parent.path().join("project with spaces 空間");
+        fs::create_dir(&root).unwrap();
+        let manifest = root.join("project.json");
+        fs::write(&manifest, b"[1]\n").unwrap();
+        let mut reader = OpenOptions::new()
+            .read(true)
+            .share_mode(FILE_SHARE_READ | FILE_SHARE_WRITE | FILE_SHARE_DELETE)
+            .open(&manifest)
+            .unwrap();
+        atomic_bytes_cancellable(
+            &root,
+            b"[2]\n",
+            &std::sync::atomic::AtomicBool::new(false),
+            Some(Some(&bytes_hash(b"[1]\n"))),
+        )
+        .unwrap();
+        let mut opened_bytes = Vec::new();
+        reader.read_to_end(&mut opened_bytes).unwrap();
+        assert_eq!(opened_bytes, b"[1]\n");
+        assert_eq!(fs::read(&manifest).unwrap(), b"[2]\n");
+        assert_eq!(fs::read_dir(&root).unwrap().count(), 1);
+        assert_eq!(fs::read_dir(parent.path()).unwrap().count(), 1);
+    }
+    #[cfg(windows)]
+    #[test]
+    fn readonly_manifest_rejects_replacement_and_preserves_complete_candidate() {
+        let root = tempfile::tempdir().unwrap();
+        let manifest = root.path().join("project.json");
+        fs::write(&manifest, b"[1]\n").unwrap();
+        let original_permissions = fs::metadata(&manifest).unwrap().permissions();
+        let mut readonly = original_permissions.clone();
+        readonly.set_readonly(true);
+        fs::set_permissions(&manifest, readonly).unwrap();
+        let result = atomic_bytes_cancellable(
+            root.path(),
+            b"[2]\n",
+            &std::sync::atomic::AtomicBool::new(false),
+            Some(Some(&bytes_hash(b"[1]\n"))),
+        );
+        // Restore only this synthetic fixture's original permissions for cleanup.
+        fs::set_permissions(&manifest, original_permissions).unwrap();
+        let error = result.unwrap_err();
+        assert_eq!(
+            error
+                .downcast_ref::<std::io::Error>()
+                .unwrap()
+                .raw_os_error(),
+            Some(5)
+        );
+        assert!(error.to_string().contains("has not retried or removed"));
+        assert_eq!(fs::read(&manifest).unwrap(), b"[1]\n");
+        let retained: Vec<_> = fs::read_dir(root.path())
+            .unwrap()
+            .map(|entry| entry.unwrap().path())
+            .filter(|path| path.extension().is_some_and(|ext| ext == "tmp"))
+            .collect();
+        assert_eq!(retained.len(), 1);
+        assert_eq!(fs::read(&retained[0]).unwrap(), b"[2]\n");
     }
     #[test]
     fn integrity_rejects_tampering() {

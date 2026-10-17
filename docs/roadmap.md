@@ -1,8 +1,10 @@
 # GreenLens roadmap
 
+2026-10-17: bounded history storage is implemented. Native c3281d9 stopped at failed save after candidate acceptance; its observation is consumed. Finish diagnosis/checks, preserve staged history, and retain incomplete issuance/regeneration. No scope expansion or automatic retry.
+
 ## Active bounded v0.8: reliable intake and report delivery
 
-Bounded immutable history-file storage is now authorized to resolve the measured 16 MiB manifest blocker. Preserve all history and limits; verify the successor before the same unspent native observation. No pruning or smaller substitute is permitted.
+At storage authorization, the same unspent native observation applied to the successor resolving the 16 MiB manifest blocker. That observation is now consumed as recorded above. Preserve all history and limits; no pruning, smaller substitute or automatic retry is permitted.
 
 The active continuation repairs exact candidate provenance, explicit no-holidays declarations, unresolved-review report disclosures and accepted-frame restoration, followed by the separately bounded native second-issue/cold-copy demonstration. It does not expand physics or reset prior acceptance. Optional SKP remains behind independent fixture and containment gates.
 

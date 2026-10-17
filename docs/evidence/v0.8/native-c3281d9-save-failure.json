@@ -1,0 +1,116 @@
+{
+  "schema_version": "greenlens.native-history-observation.v1",
+  "date_utc": "2026-10-17",
+  "source_commit": "c3281d9ab6b5f264018f9d44139249582e64d088",
+  "status": "stopped_substantive_save_failure",
+  "allowance": "The one explicitly authorized candidate observation is consumed. No automatic retry; second issuance and cold regeneration were never started.",
+  "artifacts": {
+    "desktop_raw_sha256": "86ae8a86e35b18ceb42f4894aea53c3c6453b2872297acf3c338ec28688e120f",
+    "desktop_installed_sha256": "e184e8b57dc8bb7484b1d5c8a228781976355eaf946eeac489847c485d626ad6",
+    "desktop_bytes": 31498240,
+    "installed_raw_difference": "Only three NSIS bundle-marker bytes UNK to NSS at offsets 25765312 through 25765314",
+    "unsigned_nsis_sha256": "edef19f720ab5fe8083cd41f8fe976e7299cc9e282817c4b0c2d5f18a5b67a10",
+    "unsigned_nsis_bytes": 7415995,
+    "cli_sha256": "d88082695c4e9403a9dd816b66bcbc86fc4d55cfbe279159563621a2f90a8df2",
+    "cli_bytes": 17140224,
+    "cli_zip_sha256": "321549b786f38f82c3812fbb4e404add4fd53e060f3cb5305e450294e667f8e0",
+    "cli_zip_bytes": 12866528,
+    "installation": "Existing Windows workstation; silent NSIS exit 0 without launch switch; not a clean-machine test"
+  },
+  "protocol": {
+    "sha256": "fb0b918db66c7d8b6c6f6f1d7010ef0da51e0a797501a58e5aa3b528fba8fde1",
+    "kernel_job_limit_bytes": 1073741824,
+    "acceptance_peak_limit_bytes": 2147483648,
+    "process_limit": 16,
+    "render_limit_seconds": 600,
+    "elapsed_seconds": 1325.709273,
+    "raw_kernel_peak_bytes": 992837632,
+    "sampled_private_peak_bytes": 866222080,
+    "maximum_process_count": 7,
+    "observed_typst_processes": 0,
+    "observed_energyplus_processes": 0,
+    "owned_job_empty_after_stop": true,
+    "normal_close": false,
+    "stop": "Explicit failure marker terminated the owned job; the staged complete candidate had already been identified and retained."
+  },
+  "observed": [
+    "Installed embedded application opened and verified the complete genuine retained study, with run/byte progress.",
+    "Historical R1 exact run/scope/product bindings and limitations were inspected.",
+    "Candidate COP source and rationale edited through the structured form; Rust review displayed the exact B/zone1_cooling applied value and declarations.",
+    "Native Top and sectioned Front report views captured into the same candidate.",
+    "Save/Apply rejected incomplete review and retained the editable draft.",
+    "Six review decisions supplied; two calendar documentation rows explicitly unresolved.",
+    "Rust accepted one in-memory revision. Save returned Access is denied. (os error 5). No retry or issuance followed."
+  ],
+  "preservation": {
+    "original_members": 576,
+    "original_bytes": 224928962,
+    "changed_original_members": 0,
+    "original_manifest_sha256": "0c366cda4f2ef44d5d5a12b97f246f02fb2b9a374eef7540254c5f1426747772",
+    "saved_revision_count": 3,
+    "saved_issue_count": 1,
+    "unadvertised_candidate_manifest_bytes": 286702,
+    "unadvertised_candidate_manifest_sha256": "4d9d3a0ca509175079482f3833140c20984edb924f4daef97417b2d052252b32",
+    "staged_history_count": 4,
+    "staged_history_bytes": 13086585,
+    "all_sidecar_hashes_match_candidate_descriptors": true,
+    "old_revision_values_and_types_unchanged": true,
+    "retained_r1_products": 49,
+    "retained_r1_product_bytes": 17487475,
+    "retained_r1_product_hashes_unchanged": true,
+    "complete_candidate_backup_retained": true,
+    "manual_promotion_attempted": false
+  },
+  "unpublished_revision": {
+    "sha256": "8531fd4550cace5657ad5c2c010566cd11d8c0e03828e8e5021965baf83d7b34",
+    "parent_sha256": "62f739d054b8a1e57d9739247da53296958ed816c4920e30dbde3f19d1a68fb2",
+    "plan_sha256": "87f943eabdb3afd50b0ae7755d2ed799cb9e451145abde7fcd103038487feada",
+    "reviewed_decisions": 4,
+    "unresolved_decisions": 2,
+    "input_rows": 6546,
+    "unreviewed_input_rows": 6545,
+    "conflicting_input_rows": 0,
+    "documentation_complete": false,
+    "mapping_rows": 81,
+    "assumption_rows": 83,
+    "physical_inputs_and_run_inventories_unchanged": true,
+    "views": {
+      "count": 2,
+      "aspect_ratio": 1.6267719502972715,
+      "vertical_span_m": 21.981956236877554,
+      "horizontal_span_m": 35.75962981881457,
+      "top": "Z=1.5 m; retain below; up +Y",
+      "front": "Y=1.5 m; retain below; up +Z",
+      "exact_resize_restoration_observed": false
+    },
+    "audit_scope": "Read-only descriptor hashes, strict recursive JSON comparison and retained products; no promotion, fresh Rust reconstruction or rendering."
+  },
+  "diagnosis": {
+    "known": "Complete candidate temporary and all four sidecars exist; original manifest remains unchanged. Final atomic replacement is strongly indicated as the failing stage, not conclusively identified by the original uncontextualized error.",
+    "possible_interference": "An ad-hoc concurrent PowerShell Get-Content read used no delete sharing while save was working. PowerShell 7.6.5 source confirms its content reader uses ReadWrite sharing. The supervisor's own readers share Delete.",
+    "causality": "Not proven: no handle-ownership trace at the failure. No evidence proves corruption, capacity failure or a retained internal reader.",
+    "source": "https://raw.githubusercontent.com/PowerShell/PowerShell/v7.6.5/src/System.Management.Automation/namespaces/FileSystemProvider.cs",
+    "initial_remedy": "Use deletion-sharing diagnostic readers; preserve failed candidates; add explicit atomic-publication error context and synthetic held-reader regressions. A new native observation needs separate authorization.",
+    "subsequent_synthetic_evidence": "Legacy MoveFileExW replacement also failed with a Delete-sharing observer: 23 persistence tests passed, one failed. Sharing mode alone cannot be assigned as the native cause or remedy. The first handle-rename prototype incorrectly used a basename with null parent, resolving against process CWD: 18 passed, six failed. That synthetic output was backed up and removed; no genuine project was used.",
+    "second_prototype": "A nonnull RootDirectory was rejected with Windows error 87: 18 persistence tests passed, six failed. This prototype did not publish the candidate. The final implementation uses the canonical absolute destination beneath a retained directory guard, preserving the held source file.",
+    "bounded_remedy_under_test": "Retain the exact synced temporary and checked parent handles; use FileRenameInfoEx with the canonical absolute destination and REPLACE_IF_EXISTS/POSIX semantics. Retain candidates on publication errors, never ignore ReadOnly, delete-first or retry automatically. Cancellation/conflict cleanup targets the owned temporary handle. Final tests and future installed observations have separate identities.",
+    "api_references": [
+      "https://learn.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-file_rename_info",
+      "https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/ntifs/ns-ntifs-_file_rename_information"
+    ]
+  },
+  "unverified": [
+    "Persistent acceptance of this new revision and second report issuance",
+    "Exact accepted-frame restoration after resizing",
+    "New changed-product page review and arithmetic reconciliation",
+    "New issue complete Save As, cold inspection and deterministic regeneration",
+    "Inherited physical modifiers, exact client/DPI, clean installation and live EnergyPlus cancellation",
+    "Optional SKP worker/compatibility/private probe; stopped scientific protocols unchanged"
+  ],
+  "hosted": {
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38994877042",
+    "status_at_native_stop": "in_progress",
+    "scope": "Exact c3281d9 source; hosted artifacts do not establish this installed workflow. Later diagnostics are a separate source."
+  },
+  "privacy": "Synthetic case only. Raw native captures, process paths, working project and preservation backups remain external and are not published."
+}

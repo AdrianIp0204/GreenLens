@@ -1,0 +1,123 @@
+{
+  "schema_version": "greenlens.manifest-publication-repair.v1",
+  "date_utc": "2026-10-17T03:25:44.7825372Z",
+  "base_commit": "c3281d9ab6b5f264018f9d44139249582e64d088",
+  "source_binding": "Working source subsequently committed with this receipt; installed observation and future exact-source hosted/package checks are separate",
+  "implementation_file": "crates/greenlens-runner/src/persistence.rs",
+  "implementation_sha256": "ec879f30fdecf3168e685d7b95f1ef3f90a2a6d24c8122e14970be259a22e9a6",
+  "environment": {
+    "platform": "Windows 11 build 26200 x64",
+    "other_filesystems_verified": false,
+    "toolchain": "Rust/MSVC pinned workspace toolchain",
+    "filesystem": "NTFS"
+  },
+  "focused": {
+    "denied_delete_reader_error": 32,
+    "unicode_space_parent_passed": true,
+    "passed": 25,
+    "seconds": 0.41,
+    "readonly_target_error": 5,
+    "delete_sharing_reader_retains_original_snapshot": true,
+    "failed": 0,
+    "ignored": 0
+  },
+  "runner": {
+    "seconds": 91.46,
+    "failed": 0,
+    "passed": 252,
+    "ignored_checks_not_native_acceptance": true,
+    "ignored": 6
+  },
+  "strict_workspace_clippy": "passed",
+  "portability": {
+    "all_prior_nonmanifest_members_unchanged": true,
+    "cold_extract_seconds": 15.4548258,
+    "cold_retained_bytes": 222264131,
+    "cold_retained_members": 579,
+    "completed": true,
+    "copied_retained_bytes": 222264131,
+    "copied_retained_members": 579,
+    "copy_seconds": 25.0031336,
+    "engine_or_renderer_execution_requested": false,
+    "export_members": 582,
+    "export_seconds": 20.0122227,
+    "export_uncompressed_bytes": 222457438,
+    "export_zip_bytes": 34100992,
+    "history_sidecar_bytes": 9802207,
+    "history_sidecar_count": 3,
+    "new_manifest_bytes": 284256,
+    "old_manifest_bytes": 12751294,
+    "original_retained_bytes": 224928962,
+    "original_retained_members": 576,
+    "schema_version": "greenlens.external-history-portability-check.v1",
+    "scope": "Storage portability and actual-byte preservation only; no native UI or scientific qualification claim. Retained-member totals exclude package envelope files.",
+    "source_manifest_unchanged": true,
+    "source_verification_seconds": 14.4754066,
+    "wall_seconds": 80.9457962
+  },
+  "documentation": {
+    "files": 414,
+    "bytes": 16775950,
+    "passed": true,
+    "later_document_edits_require_final_prepackage_check": false,
+    "links": 804
+  },
+  "failures_retained": [
+    "Legacy replacement plus held-reader suite: 23 pass, 1 fail",
+    "Relative target prototype: 18 pass, 6 fail; backed-up synthetic output only",
+    "Nonnull parent prototype: 18 pass, 6 fail with Windows error 87"
+  ],
+  "behavior": [
+    "Exact synced source handle retained through one atomic publication",
+    "Canonical absolute target beneath retained checked directory guard",
+    "Final revision/cancellation fence preserved; cleanup uses owned handle",
+    "Publication errors retain complete candidate and explain recovery; no retry/delete-first/ReadOnly bypass",
+    "Existing one-writer policy is not a filesystem compare-and-swap or demonstrated power-loss guarantee"
+  ],
+  "native": "No new installed observation, render, regeneration or simulation. The one c328 observation is consumed/stopped; second issuance remains incomplete.",
+  "dependencies": "No new package, binary or font dependency",
+  "logs": [
+    {
+      "file": "publication-checks.log",
+      "bytes": 3674,
+      "sha256": "a0db4bb73c99d44a9b91922a93679e134a67d70426ee2fdfa9dc5fe2e5f9099b"
+    },
+    {
+      "file": "handle-publication-checks.log",
+      "bytes": 5049,
+      "sha256": "69009d14f680015e0e3656bfba4d21fb7048c536178709b3f5abd46c2e7b0097"
+    },
+    {
+      "file": "parent-bound-publication-checks.log",
+      "bytes": 7202,
+      "sha256": "ae0b94a6190057d3e952ff1bd4fe9263ecb7f02e20f7b91db9c3d7b230aeaef3"
+    },
+    {
+      "file": "absolute-publication-checks.log",
+      "bytes": 2885,
+      "sha256": "2afdfd4d4b6b52286dd147d886876ccdfe24ee19ee9320c2b6860d86e7a0b207"
+    },
+    {
+      "file": "publication-full-runner.log",
+      "bytes": 28726,
+      "sha256": "4b9d2d72157370e3f907035a18e27b7fdb03508e15e27f2b8ce0a45331e23da6"
+    },
+    {
+      "file": "publication-genuine-portability.log",
+      "bytes": 1637,
+      "sha256": "d5b3e407d77612e2ca76b993f849da0f93012ef95c1f7a5d64eae67c6aa34d6e"
+    },
+    {
+      "file": "publication-clippy.log",
+      "bytes": 389,
+      "sha256": "850878ebb0d8953e5d52a8b139af1bd32921ef310c1c92728bf29f9178c86286"
+    }
+  ],
+  "license_inventory": {
+    "notice_texts": 231,
+    "review_gaps": 0,
+    "packages": 415,
+    "installer_cache_verified": true
+  },
+  "document_receipt_sha256": "fd72603fc2045bf642760468eda75c6310010dbce5730d19ea3d70eb30f69327"
+}

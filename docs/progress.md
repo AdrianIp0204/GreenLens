@@ -1,5 +1,11 @@
 # Progress and acceptance evidence
 
+Publication repair: 25 persistence / 252 runner checks pass (six explicit ignores), strict Clippy passes, and genuine history copy/export/cold extraction preserves all prior evidence in 80.946 s. Complete archive: 582 entries / 222,457,438 bytes. No engine/renderer or native retry. Source-only receipt: `docs/evidence/v0.8/publication-repair-development.json`; new package/CI and installed E/F remain separate.
+
+Publication diagnosis supplement: legacy replacement fails with a Delete-sharing reader (23 pass / one fail). Relative-target and explicit-parent prototypes each failed six tests; diagnostics remain. The canonical absolute target beneath a checked directory guard and exact held source now passes 25/25 Windows persistence tests. No native retry, report or simulation; observed native causality remains unproven.
+
+2026-10-17: c3281d9 installed observation consumed. Candidate correction, two view captures, incomplete-review rejection and one in-memory revision acceptance observed; Save failed (Windows error 5). No issue/render/engine ran. All 576 original members unchanged; candidate manifest and four history sidecars retained. Possible interfering diagnostic reader remains an unproven cause. Native work stops; synthetic publication diagnosis continues. E/F incomplete; see source-only `docs/evidence/v0.8/native-c3281d9-save-failure.json`.
+
 2026-10-17: history format 2 passes genuine full-study copy/export/cold extraction: manifest 284,256 bytes, all prior evidence unchanged, complete ZIP contents 222,457,438 bytes. 249 runner, 132 core/CLI, 431 frontend passes; explicit ignored tests are not acceptance. Package/CI/native E/F pending; the single observation is unspent. Source-checkout receipt: `docs/evidence/v0.8/history-storage-development.json`.
 
 2026-10-17: bounded immutable history-file storage is authorized; implementation/testing underway. Preserve all records and limits. The same unspent native observation applies to the tested successor candidate. No native/render/engine operation has started; earlier capacity/failure evidence remains.

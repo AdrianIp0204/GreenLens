@@ -1,0 +1,385 @@
+{
+  "schema_version": "greenlens.hosted-ci-receipt.v1",
+  "source_commit": "c3281d9ab6b5f264018f9d44139249582e64d088",
+  "source_dirty": false,
+  "workflow_run_id": 38994877042,
+  "workflow_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38994877042",
+  "workflow_event": "push",
+  "branch": "codex/v0.8-reliable-intake",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build",
+      "job_id": 117285121571,
+      "conclusion": "success",
+      "started_utc": "2026-10-17T02:25:45Z",
+      "completed_utc": "2026-10-17T03:07:25Z",
+      "failed_steps": [],
+      "skipped_steps": []
+    },
+    {
+      "name": "static_compatibility",
+      "job_id": 117293361939,
+      "conclusion": "success",
+      "started_utc": "2026-10-17T03:07:27Z",
+      "completed_utc": "2026-10-17T03:27:09Z",
+      "failed_steps": [],
+      "skipped_steps": []
+    },
+    {
+      "name": "energy",
+      "job_id": 117293361945,
+      "conclusion": "success",
+      "started_utc": "2026-10-17T03:07:27Z",
+      "completed_utc": "2026-10-17T03:29:02Z",
+      "failed_steps": [],
+      "skipped_steps": []
+    }
+  ],
+  "checks": {
+    "frontend_tests_passed": 431,
+    "frontend_tests_failed": 0,
+    "typescript_and_production_frontend": "passed",
+    "format_and_strict_clippy": "passed",
+    "build_rust_summary_count": 19,
+    "build_rust_passed": 489,
+    "build_rust_failed": 0,
+    "build_rust_default_ignored": 17,
+    "default_ignore_disclosure": "Required native lifecycle, native Typst, retained energy reference intake and panel reuse tests were separately invoked in the energy job. Genuine issued-project external-history portability and nine-record evidence checks were not invoked by this hosted workflow; local evidence is separate.",
+    "history_observer_source_checks_passed": 42,
+    "history_observer_source_checks_failure": null,
+    "history_observer_helper_sha256": "ad38b01028e225891af6fa4ce5d9f18e9e8a73d6222b0560e06ca87a52150e7f",
+    "history_observer_test_sha256": "1f808a565729d1c7df89626dbac24e063ff1ed7ad8029d0d50b5945c05749e47",
+    "supervisor_source_checks_passed": 111,
+    "explicit_native_lifecycle": "passed",
+    "explicit_native_typst": "passed",
+    "retained_reference_cold_copy": "passed",
+    "retained_report_sensitivity_numeric_reuse": "passed",
+    "exact_source_unsigned_packaging_and_notices": "passed"
+  },
+  "energy": {
+    "production_audit_sha256": "0a7cbd63da510c5e03b9ed36e82ef20b01dc00e77e7683708ae8a87f157ef459",
+    "all_frozen_checks_passed": true,
+    "direct_csv_retention_and_arithmetic_passed": true,
+    "cases": [
+      {
+        "case": "A10",
+        "run_id": "5ce89381-8dd0-46af-a744-bf10008bf07e",
+        "minutes": 10,
+        "rows": 52560,
+        "channels": 34,
+        "annual_facility_kwh": 16307.089802617933,
+        "aligned_peak_kw": 5.516090229474726,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 1576800,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      },
+      {
+        "case": "B10",
+        "run_id": "649ec592-8086-4a08-84f0-bd325aa79c82",
+        "minutes": 10,
+        "rows": 52560,
+        "channels": 34,
+        "annual_facility_kwh": 12617.357232381652,
+        "aligned_peak_kw": 4.045870430025533,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 1576800,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      },
+      {
+        "case": "A5",
+        "run_id": "1bec9470-2ee0-47ec-af9c-dee9b5216f72",
+        "minutes": 5,
+        "rows": 105120,
+        "channels": 34,
+        "annual_facility_kwh": 16305.190534702979,
+        "aligned_peak_kw": 5.514467140552976,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 3153600,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      },
+      {
+        "case": "B5",
+        "run_id": "8c6242ed-1111-401f-84bf-58b1084a59b5",
+        "minutes": 5,
+        "rows": 105120,
+        "channels": 34,
+        "annual_facility_kwh": 12628.426687271483,
+        "aligned_peak_kw": 4.0473828908715905,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 3153600,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      }
+    ],
+    "timestep_comparisons": [
+      {
+        "alternative": "A",
+        "quantity": "annual_kwh",
+        "ten_minute": 16307.089802617933,
+        "five_minute_reference": 16305.190534702979,
+        "relative_difference": 0.00011648241159230206,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "A",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 5.516090229474726,
+        "five_minute_reference": 5.514467140552976,
+        "relative_difference": 0.00029433286669048686,
+        "limit": 0.03,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "annual_kwh",
+        "ten_minute": 12617.357232381652,
+        "five_minute_reference": 12628.426687271483,
+        "relative_difference": 0.0008765505920851582,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 4.045870430025533,
+        "five_minute_reference": 4.0473828908715905,
+        "relative_difference": 0.0003736885999761613,
+        "limit": 0.03,
+        "passed": true
+      }
+    ],
+    "warning_disclosure": "Each synthetic annual run retained one warning for its explicitly synthetic zero latitude/longitude/timezone; no severe errors. This is not real-location weather evidence.",
+    "distributed_replay": {
+      "package_sha256": "d8572ac8f9f10e7f21b8523fb809c5dad9d756e90929c656663d8942ce409bf6",
+      "runs": [
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "b5bb5e275770fe893812b323b862bac1fd743635f5798a57e2c42d369b715be0",
+          "run_id": "5ce89381-8dd0-46af-a744-bf10008bf07e",
+          "source_record_sha256": "091e29432806d4429742f81d279875e97703a7bade92cbcdd13bfad0c5ae04c9"
+        },
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "502bfd13a1667f1f6156e0922c9873c0b3c38648bbdfefd7aa1046dea6ffbde9",
+          "run_id": "649ec592-8086-4a08-84f0-bd325aa79c82",
+          "source_record_sha256": "a2f8153cebc18bfc786de9d7f0cebc00e67429fd77777917ca1f90064687ea55"
+        }
+      ],
+      "schema_version": "greenlens.energy-replay.v0.4",
+      "state": "completed"
+    },
+    "scientific_scope": "Frozen synthetic fixture arithmetic, numerical sensitivity and identical-recipe integration only. No general user-model physical validation, installed UI acceptance, new daylight qualification or stopped-protocol acceptance."
+  },
+  "static_compatibility": {
+    "report_sha256": "68cd0e9596fb4e1387aa94b10b5a0f79d2075271aefa6460ec06a0988cafb4d2",
+    "all_executed_checks_passed": true,
+    "checks": [
+      {
+        "id": "B",
+        "name": "Uniform hemisphere E=pi*L",
+        "passed": true
+      },
+      {
+        "id": "C",
+        "name": "Prescribed overcast exterior normalization",
+        "passed": true
+      },
+      {
+        "id": "D",
+        "name": "Sealed black enclosure",
+        "passed": true
+      },
+      {
+        "id": "E",
+        "name": "Independent black room aperture integration",
+        "passed": true
+      },
+      {
+        "id": "scaling",
+        "name": "Sky intensity scaling x2",
+        "passed": true
+      },
+      {
+        "id": "symmetry",
+        "name": "Black aperture mirror sensors",
+        "passed": true
+      },
+      {
+        "id": "nonzero_exit",
+        "name": "Malformed scene fails and retains native exit record",
+        "passed": true
+      },
+      {
+        "id": "cancellation",
+        "name": "Actual rtrace cancelled without finalized evidence",
+        "passed": true
+      },
+      {
+        "id": "A",
+        "name": "Adapter vs direct pinned-engine invocation (integration verification)",
+        "passed": true
+      },
+      {
+        "id": "F",
+        "name": "Shipping vs higher-quality profile convergence",
+        "passed": true
+      }
+    ],
+    "uniform_hemisphere_relative_error": 0.0013309638999280179,
+    "overcast_exterior_relative_error": 0.0016905080000000454,
+    "profile_mean_difference_ratio": 0.007590611273328036,
+    "distributed_replay": {
+      "checks": [
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "4214c7d8-a4c5-4df9-bbfd-0f22d41da322",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "6e5c6ae0-8053-4045-92fc-641232ddca6c",
+          "sensors": 77
+        }
+      ],
+      "climate_assessments": {},
+      "passed": true,
+      "verification": "same-engine integration, not independent physical validation"
+    },
+    "legacy_v01_replay": {
+      "checks": [
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+          "sensors": 77
+        }
+      ],
+      "climate_assessments": {},
+      "passed": true,
+      "verification": "same-engine integration, not independent physical validation"
+    },
+    "scope": "Retained static analytical and integration criteria only; no annual daylight qualification transfer."
+  },
+  "hosted_products": {
+    "application_version": "0.8.0",
+    "cli_sha256": "f5593aa1b2e05b63e40b160c35c6fe73a52f2c1d9aeed210dbd7cc48419199fa",
+    "signed": false,
+    "package_members": [
+      {
+        "file": "GreenLens_0.8.0_x64-setup.exe",
+        "sha256": "f8cadd05667c6b151014c515057b0f64a97a0d6b0400232b5ddc4041ba832ddb"
+      },
+      {
+        "file": "GreenLens-CLI-0.8.0-windows-x64.zip",
+        "sha256": "0b88f605bac790beb609b73f44eef68e8ac544385cc9917f84e35578b6e3db0a"
+      }
+    ],
+    "downloaded_member_hashes_checked": true,
+    "installed_or_launched_locally": false
+  },
+  "artifacts": [
+    {
+      "id": 12088451362,
+      "name": "energy-static-compatibility-c3281d9ab6b5f264018f9d44139249582e64d088",
+      "size_in_bytes": 5968535,
+      "digest": "sha256:d8af16c9da90b10de845f433245d9822bf6275d932e580a76fe5166174270af9",
+      "expired": false,
+      "created_at": "2026-10-17T03:27:05Z"
+    },
+    {
+      "id": 12088268021,
+      "name": "energy-native-jobs-c3281d9ab6b5f264018f9d44139249582e64d088",
+      "size_in_bytes": 52999361,
+      "digest": "sha256:e5ef87e224041eaa1cce9442f04202cd7d290b2c81b9be18b718c1838125e8fa",
+      "expired": false,
+      "created_at": "2026-10-17T03:28:58Z"
+    },
+    {
+      "id": 12088217083,
+      "name": "energy-native-evidence-c3281d9ab6b5f264018f9d44139249582e64d088",
+      "size_in_bytes": 95383136,
+      "digest": "sha256:9775f976d555da05cec85da33d4c1661e0e2e12f8f3a216b94da1de6fa11b694",
+      "expired": false,
+      "created_at": "2026-10-17T03:28:51Z"
+    },
+    {
+      "id": 12087707841,
+      "name": "energy-cli-c3281d9ab6b5f264018f9d44139249582e64d088",
+      "size_in_bytes": 12677433,
+      "digest": "sha256:fccd8e7a26966a66e708ab8b8ebc92f67506bd4df46eb05cdbc779e5cdf93190",
+      "expired": false,
+      "created_at": "2026-10-17T03:07:18Z"
+    },
+    {
+      "id": 12087378867,
+      "name": "energy-unsigned-investigation-c3281d9ab6b5f264018f9d44139249582e64d088",
+      "size_in_bytes": 20177103,
+      "digest": "sha256:1afb5c196d1dc3d0b6ce7c0ae2da9e9ef719294ad8f928986e0f8cbb0e832b66",
+      "expired": false,
+      "created_at": "2026-10-17T03:07:19Z"
+    },
+    {
+      "id": 12087184304,
+      "name": "energy-build-diagnostics-c3281d9ab6b5f264018f9d44139249582e64d088",
+      "size_in_bytes": 1951360,
+      "digest": "sha256:8cea190fc0043a0858aba746e701c119db872be5671f9a377c89e5fa25079725",
+      "expired": false,
+      "created_at": "2026-10-17T03:07:21Z"
+    }
+  ],
+  "raw_log": {
+    "file": "run-38994877042.log",
+    "bytes": 667265,
+    "sha256": "6d4d860d67c468156ed02639cf15e6ff52ef59409cdcb90ab41650bfec150ccf",
+    "retention": "Original raw log and selected downloaded artifacts retained outside source. Machine-specific hosted paths are excluded from this receipt."
+  },
+  "boundaries": {
+    "installed_desktop_verified_by_ci": false,
+    "release_acceptance_complete": false,
+    "private_model_probed": false,
+    "later_source_covered": false,
+    "native_c328_save_failure_superseded": false,
+    "note": "This successful hosted run applies only to c3281d9. It does not supersede the separately retained installed Save/publication failure or verify the later publication repair."
+  }
+}

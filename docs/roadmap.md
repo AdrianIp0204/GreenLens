@@ -1,5 +1,7 @@
 # GreenLens roadmap
 
+Latest source 1d27233 is built and locally checked, uninstalled. Its CI remains separate; c328 CI passed without closing native Save failure. Second issuance/regeneration need separately authorized observation, not another automatic attempt.
+
 2026-10-17: bounded history storage is implemented. Native c3281d9 stopped at failed save after candidate acceptance; its observation is consumed. Finish diagnosis/checks, preserve staged history, and retain incomplete issuance/regeneration. No scope expansion or automatic retry.
 
 ## Active bounded v0.8: reliable intake and report delivery

@@ -1,5 +1,7 @@
 # Progress and acceptance evidence
 
+2026-10-17 delivery: clean 1d27233 CLI/desktop/unsigned NSIS and strict notices pass; not installed or observed. c328 CI38994877042 passed all jobs; 1d CI38998788896 remains running. No native retry, new issue or regeneration. Receipt: `docs/evidence/v0.8/1d27233-delivery.json`. E/F remain incomplete after consumed failed Save; separately authorized post-repair observation needed.
+
 Publication repair: 25 persistence / 252 runner checks pass (six explicit ignores), strict Clippy passes, and genuine history copy/export/cold extraction preserves all prior evidence in 80.946 s. Complete archive: 582 entries / 222,457,438 bytes. No engine/renderer or native retry. Source-only receipt: `docs/evidence/v0.8/publication-repair-development.json`; new package/CI and installed E/F remain separate.
 
 Publication diagnosis supplement: legacy replacement fails with a Delete-sharing reader (23 pass / one fail). Relative-target and explicit-parent prototypes each failed six tests; diagnostics remain. The canonical absolute target beneath a checked directory guard and exact held source now passes 25/25 Windows persistence tests. No native retry, report or simulation; observed native causality remains unproven.

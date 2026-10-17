@@ -1,0 +1,84 @@
+{
+  "schema_version": "greenlens.publication-repair-delivery.v1",
+  "source_commit": "1d272333b2ca3a7d4f132a435214a783734b8fa1",
+  "source_dirty": false,
+  "build_completed_utc": "2026-10-17T03:36:20.9290372Z",
+  "artifacts": [
+    {
+      "kind": "raw_desktop_not_installed",
+      "file": "greenlens-desktop.exe",
+      "bytes": 31501312,
+      "sha256": "d8218eaa3f3d7ad5e677cf511d2e1ae7fd1ed3ecbde78f0ddb320601c592490d"
+    },
+    {
+      "kind": "distributed_cli",
+      "file": "greenlens.exe",
+      "bytes": 17144320,
+      "sha256": "31bb88327fd3d30ba2ad570cd2d695dd8cf961f51c7e8e8714643f6740afbbac"
+    },
+    {
+      "kind": "unsigned_nsis",
+      "file": "GreenLens_0.8.0_x64-setup.exe",
+      "bytes": 7420039,
+      "sha256": "8cd3b1ab351eeebb27cfc5a1b876e00c7bf1a59b8359c11474dc3a574241c672"
+    },
+    {
+      "kind": "cli_zip",
+      "file": "GreenLens-CLI-0.8.0-windows-x64.zip",
+      "bytes": 12870319,
+      "sha256": "6de93c94637ae4aa0c4c5c1590e0f8fa7938c9a41e22224f918d437abb20fe7c"
+    }
+  ],
+  "logs": [
+    {
+      "file": "cli-build.log",
+      "bytes": 272,
+      "sha256": "d8ae7b8eea32ff30255a1fc1764e13431e8ac7ba055829c31e0c4614f94ee6aa"
+    },
+    {
+      "file": "desktop-build.log",
+      "bytes": 2534,
+      "sha256": "47ae9c5a62babbe046031128cf777ded8b2fd5fe868510725ed506887fd96622"
+    },
+    {
+      "file": "license-check.log",
+      "bytes": 147,
+      "sha256": "89cda6e5bb78270b7b30687fc5e2dbfb9b009698d795049a13ab7a38038918a6"
+    }
+  ],
+  "checks": {
+    "notice_texts": 231,
+    "report_issuance": "Not performed",
+    "installation": "Not installed; installed c3281d9 remains distinct",
+    "installer_cache_verified": true,
+    "typescript_and_production_frontend": "passed",
+    "new_native_observation": "not performed; previous single observation consumed",
+    "persistence_tests": 25,
+    "runner_tests_passed": 252,
+    "runner_tests_ignored": 6,
+    "desktop_embedded_assets_nsis": "passed",
+    "genuine_portability": "passed, prior bytes preserved, zero engine/render execution",
+    "license_packages": 415,
+    "review_gaps": 0,
+    "cli_build": "passed",
+    "private_probe": "Not performed",
+    "strict_clippy": "passed"
+  },
+  "hosted": {
+    "previous_source_conclusion": "success; does not verify this source or erase failed installed save",
+    "previous_source_ci": 38994877042,
+    "status_at_build_completion": "in_progress",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38998788896",
+    "run_id": 38998788896
+  },
+  "limits": "History/archive/process/render bounds unchanged. No native allowance reset.",
+  "privacy": "Only synthetic public metadata; raw logs, binaries and candidate backup stay external.",
+  "post_build_documentation_check": {
+    "passed": true,
+    "total_limit_bytes": 16777216,
+    "local_links": 804,
+    "scope": "Source-only delivery supplement checked after build; already identified binaries/packages are unchanged and were not rebuilt.",
+    "bytes": 16776580,
+    "files": 414
+  }
+}

@@ -1,0 +1,246 @@
+{
+  "schema_version": "greenlens.observer-ci-receipt.v1",
+  "source_commit": "e1947aae92a8baf60ddb456ffc903926e2f1adcb",
+  "application_source_unchanged": "1d272333b2ca3a7d4f132a435214a783734b8fa1",
+  "workflow": {
+    "completed_utc": "2026-10-17T11:08:14Z",
+    "id": 39027495103,
+    "log_sha256": "dbb895a979e949bc1936b1111858697d9a40e9e6006beb9d405306d571c243f4",
+    "scope": "Windows observer/source/helper tests only; no application packaging, Typst, EnergyPlus or installed observation",
+    "started_utc": "2026-10-17T11:07:34Z",
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/39027495103",
+    "status": "completed",
+    "conclusion": "success",
+    "job_id": 117381257891
+  },
+  "artifact": {
+    "download": "gh run download; extracted member hashes verified locally; API archive digest is reported separately",
+    "github_reported_archive_bytes": 11465,
+    "name": "observer-checks-e1947aae92a8baf60ddb456ffc903926e2f1adcb",
+    "id": 12099151706,
+    "members": [
+      {
+        "sha256": "f4ae5d87d4b0db178cd3d46e7bafe73225ec11e45a1c9fee6a0ee9216d07d922",
+        "path": "regeneration-checks.json",
+        "bytes": 100
+      },
+      {
+        "sha256": "8a2b573ddba54ddde5f2c15a07fb96c905cc1f05ddb6f5123653eb0c96b7b649",
+        "path": "source.json",
+        "bytes": 203
+      },
+      {
+        "sha256": "b8831b2435f686ccd62790b847b9851636ae51e9abedc8b2edf0eb2e3144dd83",
+        "path": "process-helper/fixture.ps1",
+        "bytes": 1914
+      },
+      {
+        "sha256": "dcb0462096f82b09351d41382db2e66146d7d53a8f8b515684c7389db0037518",
+        "path": "process-helper/summary.json",
+        "bytes": 2109
+      },
+      {
+        "sha256": "c35d82473b36fd7bf87f25c2ffb4dcce04feded2ef5e511598d0ca3f03b84e8e",
+        "path": "process-helper/binary echo/binary-observation.json",
+        "bytes": 282
+      },
+      {
+        "sha256": "3495efc2814835f5e7056afaecda901ce4e166aefe7274392ceb3e97d1d43520",
+        "path": "process-helper/dispose-after-parent-exit/child.json",
+        "bytes": 58
+      },
+      {
+        "sha256": "51e2eb495642b9f81adc50377f107bf5e6d0ba935553211c7e37ff5acf05c518",
+        "path": "process-helper/dispose-after-parent-exit/parent.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "accb740ee77dde38bc7fe4797e2cfe02f79a8e40ce7b6c115885b70f6d1557b4",
+        "path": "process-helper/explicit handle list/child.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "62ea3e2c885c5d809dce71dd33a27a4b2157a909e61c13c60118726e8a083317",
+        "path": "process-helper/explicit handle list/parent.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "path": "process-helper/explicit handle list/unrelated-exclusive.dat",
+        "bytes": 0
+      },
+      {
+        "sha256": "ead72abad46a72095e2f79dba222f6c9ff99ea6b410ce62ee14b966ada3c1a2c",
+        "path": "process-helper/kill-after-parent-exit/child.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "b091d7215375d15e99aae1fd77d78c9d0ed7c78a6d3954e655b53a408b357eb3",
+        "path": "process-helper/kill-after-parent-exit/parent.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "8dc7d9ca82209b399f9baab65b5f99baeacbf589a1251680cf8dfae6ba43a094",
+        "path": "process-helper/kill-live-parent-and-child/child.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "ba6a4c419ad106146a6372e532825676b41705ba4953f8cb41d3262e21925767",
+        "path": "process-helper/kill-live-parent-and-child/parent.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "0d97ff5e7b05d20beb57fbb2a0d24705fbcec1fc77a89ad495f1f262cfb57be5",
+        "path": "process-helper/pending-stdin-after-parent-exit/child.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "ffb9d691b07a2efbdc5e60226cbc7401896db37b51306e8f74eaaf8656c7e892",
+        "path": "process-helper/pending-stdin-after-parent-exit/parent.json",
+        "bytes": 57
+      },
+      {
+        "sha256": "c424ea3833a13ae08ceb9c15584003f08b9e01be6e9ca7b5cb939d0ad1ece985",
+        "path": "process-image/checks.json",
+        "bytes": 3016
+      },
+      {
+        "sha256": "6660f97e2cd2edb0514871b4d36eb68376bbed9f9c99b7bf61d117e890e8fc22",
+        "path": "supervisor/checks.json",
+        "bytes": 13197
+      },
+      {
+        "sha256": "b4c18acbf12cd1f186372b4b217960bfb58a9113632981a47b5e52ec93d7f626",
+        "path": "supervisor/original-fixture.json",
+        "bytes": 39
+      },
+      {
+        "sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "path": "supervisor/shape-1.json",
+        "bytes": 4
+      },
+      {
+        "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+        "path": "supervisor/shape-10.json",
+        "bytes": 2
+      },
+      {
+        "sha256": "50e8660084976a10f0b3b9b3a6352d5881cbd219b5587a26224971a60ff2cc55",
+        "path": "supervisor/shape-11.json",
+        "bytes": 8
+      },
+      {
+        "sha256": "4c3e960bd589fe175259b516b493fcf7762c14ffe0fb4eed27d2ee0595795de7",
+        "path": "supervisor/shape-12.json",
+        "bytes": 46
+      },
+      {
+        "sha256": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+        "path": "supervisor/shape-13.json",
+        "bytes": 5
+      },
+      {
+        "sha256": "5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9",
+        "path": "supervisor/shape-14.json",
+        "bytes": 1
+      },
+      {
+        "sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+        "path": "supervisor/shape-15.json",
+        "bytes": 1
+      },
+      {
+        "sha256": "391552c099c101b131feaf24c5795a6a15bc8ec82015424e0d2b4274a369a0bf",
+        "path": "supervisor/shape-16.json",
+        "bytes": 3
+      },
+      {
+        "sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "path": "supervisor/shape-17.json",
+        "bytes": 2
+      },
+      {
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "path": "supervisor/shape-2.json",
+        "bytes": 2
+      },
+      {
+        "sha256": "1d8fc6ceb1f94c6326d6d5483d258fcb2e179e9869325b245d105c2219bf69fd",
+        "path": "supervisor/shape-3.json",
+        "bytes": 6
+      },
+      {
+        "sha256": "cf1cbb66a638b4860a516671fb74850e6ccf787fe6c4c8d29e9c04efe880bd05",
+        "path": "supervisor/shape-4.json",
+        "bytes": 4
+      },
+      {
+        "sha256": "0b99263f4bec935e7fb92342d0093bd0cd780cb3f12d3f6ce42c1d448e810e0e",
+        "path": "supervisor/shape-5.json",
+        "bytes": 8
+      },
+      {
+        "sha256": "080a9ed428559ef602668b4c00f114f1a11c3f6b02a435f0bdc154578e4d7f22",
+        "path": "supervisor/shape-6.json",
+        "bytes": 3
+      },
+      {
+        "sha256": "043f347c2cdc0d8ce70c38775d24e556c0290acf6d0c87a3a52aa85471cb8d02",
+        "path": "supervisor/shape-7.json",
+        "bytes": 5
+      },
+      {
+        "sha256": "49a64717d5d4cb19952e6eac2946415cf6879adacf9908e7d872332d32c6e684",
+        "path": "supervisor/shape-8.json",
+        "bytes": 5
+      },
+      {
+        "sha256": "37993d7fb5e88d3bff0db4e40549e7c4c7932642a623b525c33472ad7c630869",
+        "path": "supervisor/shape-9.json",
+        "bytes": 15
+      }
+    ],
+    "github_reported_archive_digest": "sha256:415bc9dbfc2f44b78377cb586d9ebc572599e2096ab49902dbda547d9030cb57"
+  },
+  "checks": [
+    {
+      "kind": "held_process_image_and_job",
+      "passed": 18,
+      "failed": 0,
+      "synthetic_children": 2
+    },
+    {
+      "kind": "shared_native_process",
+      "passed": 12,
+      "failed": 0
+    },
+    {
+      "kind": "supervisor_source",
+      "passed": 125,
+      "failed": 0
+    },
+    {
+      "kind": "cold_collector_source",
+      "passed": 26,
+      "failed": 0,
+      "native_renderer_executions": 0,
+      "parser_errors": 0
+    },
+    {
+      "limit_bytes": 16777216,
+      "bytes": 16763843,
+      "links": 804,
+      "byte_difference": "Git checkout line-ending normalization; local source check separately measured 16777198 bytes",
+      "evidence": "Successful step and retained job log; Write-Host output was not in the Tee-Object artifact stream",
+      "kind": "package_documents",
+      "passed": true,
+      "files": 414
+    }
+  ],
+  "claim_limits": [
+    "This green result does not relabel the installed application or failed native observation.",
+    "The 1d27233 application build/energy/static CI remains a separate passed record.",
+    "No second issue or cold regeneration was run; authorization remains consumed.",
+    "No dependency, scientific threshold, engine recipe or historical product changed."
+  ]
+}

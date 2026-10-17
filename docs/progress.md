@@ -1,6 +1,6 @@
 # Progress and acceptance evidence
 
-2026-10-17: 1d CI passed; native Save/frames passed. Observer identity failed at issuance; 580 members unchanged. No retry/EnergyPlus; R2/cold incomplete. Receipt: `docs/evidence/v0.8/native-1d27233-observer-failure.json`.
+2026-10-17: 1d CI/Save/frames passed; observer failed. 580 members intact. e1947aa helper CI passed; R2/cold incomplete. No retry/EnergyPlus. Receipt: `docs/evidence/v0.8/native-1d27233-observer-failure.json`.
 
 2026-10-17 delivery: clean 1d27233 CLI/desktop/unsigned NSIS and strict notices pass; not installed or observed. c328 CI38994877042 passed all jobs; 1d CI38998788896 remains running. No native retry, new issue or regeneration. Receipt: `docs/evidence/v0.8/1d27233-delivery.json`. E/F remain incomplete after consumed failed Save; separately authorized post-repair observation needed.
 

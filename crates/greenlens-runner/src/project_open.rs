@@ -431,7 +431,7 @@ pub(crate) fn numeric_pass(run_id: &str) -> Result<()> {
 
 fn manifest(path: &Path) -> Result<(Project, String)> {
     let bytes = persistence::read_json_bytes(&persistence::regular_child(path, "project.json")?)?;
-    let project = serde_json::from_slice(&bytes)?;
+    let project = crate::history_storage::decode_project(path, &bytes, &AtomicBool::new(false))?;
     crate::validate_project(&project)?;
     Ok((project, persistence::bytes_hash(&bytes)))
 }
@@ -450,8 +450,18 @@ fn admission(project: &Project, revision: String) -> ProjectAdmission {
 /// Cheap admission never opens run chunks, weather, attachments or assessments.
 /// It is not permission to display evidence as verified.
 pub fn admit_project(path: &Path) -> Result<ProjectAdmission> {
-    let (project, revision) = manifest(path)?;
-    Ok(admission(&project, revision))
+    let bytes = persistence::read_json_bytes(&persistence::regular_child(path, "project.json")?)?;
+    let metadata = crate::history_storage::metadata(&bytes, &AtomicBool::new(false))?;
+    Ok(ProjectAdmission {
+        schema_version: "greenlens.project-admission.v1".into(),
+        project_id: metadata.project_id,
+        project_name: metadata.project_name,
+        manifest_sha256: persistence::bytes_hash(&bytes),
+        static_runs: metadata.static_runs,
+        climate_runs: metadata.climate_runs,
+        energy_runs: metadata.energy_runs,
+        evidence_checked: false,
+    })
 }
 
 pub fn verify_admitted_project(

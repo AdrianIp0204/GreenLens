@@ -136,10 +136,12 @@ fn export_pair_impl(
     );
     let mut files = vec!["project.json".into()];
     let mut budget = PackageBudget::default();
-    budget.add(
-        "project.json",
-        serde_json::to_vec_pretty(&project)?.len() as u64 + 1,
-    )?;
+    let manifest_bytes = crate::history_storage::manifest_bytes(&project)?;
+    budget.add("project.json", manifest_bytes.len() as u64)?;
+    for entry in crate::history_storage::entries(&project)? {
+        budget.add(&entry.path, entry.bytes)?;
+        files.push(entry.path);
+    }
     let extension = project.energy.as_ref().unwrap();
     for weather in &extension.weather {
         members(root, &weather.path, &mut files, &mut budget)?;
@@ -177,7 +179,8 @@ fn export_pair_impl(
     if let Some(reference) = &project.architecture {
         crate::reference::copy_evidence(root, &stage, reference)?;
     }
-    write_json(&stage.join("project.json"), &project)?;
+    crate::history_storage::stage(&stage, &project, cancel)?;
+    fs::write(stage.join("project.json"), manifest_bytes)?;
     let reports = if let Some(data) = &supplement {
         crate::energy_report_workbench::render_with_architecture(
             data,

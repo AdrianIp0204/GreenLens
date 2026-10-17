@@ -249,7 +249,11 @@ fn sensitivity_command(action: SensitivityCommand) -> Result<()> {
             let bytes = greenlens_runner::persistence::read_json_bytes(
                 &greenlens_runner::persistence::regular_child(&project, "project.json")?,
             )?;
-            let model: greenlens_runner::Project = serde_json::from_slice(&bytes)?;
+            let model = greenlens_runner::history_storage::decode_project(
+                &project,
+                &bytes,
+                &std::sync::atomic::AtomicBool::new(false),
+            )?;
             greenlens_runner::validate_project(&model)?;
             let revision = greenlens_runner::persistence::bytes_hash(&bytes);
             let view = if mark_interrupted {

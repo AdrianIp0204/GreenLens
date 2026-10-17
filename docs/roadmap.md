@@ -2,7 +2,7 @@
 
 ## Active bounded v0.8: reliable intake and report delivery
 
-Current dependent demonstration is blocked by the complete case's 16 MiB pretty-serialization manifest capacity before its next revision. Preserve all history and defer native issuance; a separately bounded storage/admission decision is required, not pruning, a smaller substitute or a raised limit.
+Bounded immutable history-file storage is now authorized to resolve the measured 16 MiB manifest blocker. Preserve all history and limits; verify the successor before the same unspent native observation. No pruning or smaller substitute is permitted.
 
 The active continuation repairs exact candidate provenance, explicit no-holidays declarations, unresolved-review report disclosures and accepted-frame restoration, followed by the separately bounded native second-issue/cold-copy demonstration. It does not expand physics or reset prior acceptance. Optional SKP remains behind independent fixture and containment gates.
 

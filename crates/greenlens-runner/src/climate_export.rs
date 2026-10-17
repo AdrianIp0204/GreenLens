@@ -26,6 +26,8 @@ use uuid::Uuid;
 
 fn reduced_project(mut project: Project, selected: &[String]) -> Result<Project> {
     crate::validate_project(&project)?;
+    ensure!(project.architecture.is_none() && project.report_issues.is_none(),
+        "Use complete issued-project export for architectural history; selected daylight export cannot omit its required assets");
     ensure!(
         !selected.is_empty(),
         "Select at least one completed run to export"
@@ -90,7 +92,10 @@ fn collect_members(
 /// models/studies and retained project weather stay in the portable document.
 pub fn export_selected(path: &Path, destination: &Path, ids: &[String]) -> Result<()> {
     let _lock = WriterLock::acquire(path)?;
-    let project = reduced_project(read_json(&regular_child(path, "project.json")?)?, ids)?;
+    let project = reduced_project(
+        crate::history_storage::read_project(path, &AtomicBool::new(false))?,
+        ids,
+    )?;
     let mut budget = PackageBudget::default();
     budget.add(
         "project.json",

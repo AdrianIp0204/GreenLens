@@ -1488,8 +1488,12 @@ fn preflight_project(
     let mut budget = PackageBudget::default();
     budget.add(
         "project.json",
-        serde_json::to_vec_pretty(project)?.len() as u64 + 1,
+        crate::history_storage::manifest_bytes(project)?.len() as u64,
     )?;
+    for entry in crate::history_storage::entries(project)? {
+        checkpoint(cancel)?;
+        budget.add(&entry.path, entry.bytes)?;
+    }
     let mut prefixes = BTreeSet::new();
     for r in &project.runs {
         prefixes.insert(r.path.clone());

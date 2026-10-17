@@ -29,6 +29,7 @@ pub mod energy_services;
 mod energy_verified_cache;
 pub mod energy_weather;
 pub mod energy_workbench;
+pub mod history_storage;
 pub mod persistence;
 pub mod project_open;
 pub mod qualification;
@@ -442,7 +443,7 @@ fn copy_project(
     validate_project(project)?;
     let _source_lock = source.map(WriterLock::acquire).transpose()?;
     if let Some(source) = source {
-        let saved: Project = read_json(&regular_child(source, "project.json")?)?;
+        let saved = history_storage::read_project(source, &AtomicBool::new(false))?;
         validate_project(&saved)?;
         ensure!(
             saved.id == project.id,
@@ -506,6 +507,7 @@ fn copy_project(
         run.promote(scratch, destination, &mut project)?;
     }
     validate_project(&project)?;
+    history_storage::stage(destination, &project, &AtomicBool::new(false))?;
     let mut view = project_open::verify_new_candidate(
         destination,
         &project,
@@ -1138,10 +1140,12 @@ pub fn export_project(path: &Path, destination: &Path) -> Result<()> {
     let _lock = WriterLock::acquire(path)?;
     // Bound the immutable source footprint before loading all result arrays or
     // generating reports. Final generated files share the same writer budget.
-    let project: Project = read_json(&regular_child(path, "project.json")?)?;
+    let project = history_storage::read_project(path, &AtomicBool::new(false))?;
     validate_project(&project)?;
     ensure!(project.energy.is_none(), "Choose an explicit energy baseline/proposed pair with energy export, or daylight run IDs with export --run");
     ensure!(project.climate.is_none(), "Choose explicit run IDs when exporting a climate project; use export --run <id> for each selected snapshot");
+    ensure!(project.architecture.is_none() && project.report_issues.is_none(),
+        "Use complete issued-project export for architectural history; daylight export cannot omit its required assets");
     let mut source_budget = PackageBudget::default();
     source_budget.add(
         "project.json",

@@ -75,7 +75,10 @@ export type ProvenanceChecklist={schema_version:string;rows:InputProvenanceRow[]
 export type ScopeRevision={schema_version:'greenlens.scope-revision.v1'|'greenlens.scope-revision.v2'|'greenlens.scope-revision.v3';revision_sha256:string;parent_revision_sha256:string|null;reference:{asset_id:string;manifest_sha256:string;manifest:ReferenceModel};designs:Record<string,{model:import('../energy/types').ThermalModel;calendar:import('../energy/types').EnergyCalendar;study:import('../energy/types').EnergyStudy|null}>;scope:ArchitecturalScope;carry_forward_plan_sha256:string|null;review_decisions:ScopeReviewDecision[];reviewed_rows?:{row_id:string;kind:string;key:string}[]|null;provenance:ProvenanceChecklist};
 export type ScopeReviewDecision={row_id:string;resolution:'reviewed'|'unresolved';rationale:string};
 export type ScopeCarryForwardPlan={schema_version:'greenlens.scope-carry-forward.v1'|'greenlens.scope-carry-forward.v2'|'greenlens.scope-carry-forward.v3';parent_revision_sha256:string;target_context_sha256:string;plan_sha256:string;proposed_scope:ArchitecturalScope;candidate_scope?:ArchitecturalScope|null;candidate_provenance?:ProvenanceChecklist|null;rows:{id:string;kind:'scope'|'reference'|'mapping'|'assumption'|'reconciliation'|'report_view'|'input';key:string;change:'unchanged'|'changed'|'deleted'|'added'|'unresolved';requires_review:boolean;before:unknown;after:unknown;reason:string}[]};
-export type ArchitecturalProject = { schema_version: string; assets: ReferenceAsset[]; active_asset_id: string; scope: ArchitecturalScope | null;scope_history?:{schema_version:'greenlens.scope-history.v1';revisions:ScopeRevision[];active_revision_sha256:string|null}|null };
+/** IPC always carries resolved revisions. Only Rust reads/writes the bounded
+ * v2 immutable-file storage envelope; a storage change never rewrites a revision. */
+export type ScopeHistory = {schema_version:'greenlens.scope-history.v1'|'greenlens.scope-history.v2';revisions:ScopeRevision[];active_revision_sha256:string|null};
+export type ArchitecturalProject = { schema_version: string; assets: ReferenceAsset[]; active_asset_id: string; scope: ArchitecturalScope | null;scope_history?:ScopeHistory|null };
 
 /** Controlled document draft: numeric text survives invalid edits and navigation. */
 export type ReferenceImportDraft = {

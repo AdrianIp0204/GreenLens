@@ -1,9 +1,7 @@
 //! CLI access to the same immutable issue services used by the desktop.
 use anyhow::{ensure, Result};
 use clap::Subcommand;
-use greenlens_runner::{
-    energy_report::TypstConfig, report_issues as service, Project, ProjectView,
-};
+use greenlens_runner::{energy_report::TypstConfig, report_issues as service, ProjectView};
 use std::{
     path::{Path, PathBuf},
     sync::{
@@ -122,9 +120,7 @@ pub fn execute(command: ReportIssueCommand) -> Result<()> {
             )
         }
         ReportIssueCommand::List { project } => {
-            let value: Project = greenlens_runner::persistence::read_json(
-                &greenlens_runner::persistence::regular_child(&project, "project.json")?,
-            )?;
+            let value = greenlens_runner::history_storage::read_project(&project, &cancel)?;
             greenlens_runner::validate_project(&value)?;
             print(
                 &serde_json::json!({"issues":value.report_issues,"integrity_scope":"Index/schema/reference admission only. Use inspect to verify actual issued product bytes and retained case evidence."}),

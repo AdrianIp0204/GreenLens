@@ -290,7 +290,10 @@ fn execute() -> Result<()> {
             alternative,
         } => {
             use greenlens_runner::capacity::{self, Operation};
-            let document = read_json(&project.join("project.json"))?;
+            let document = greenlens_runner::history_storage::read_project(
+                &project,
+                &std::sync::atomic::AtomicBool::new(false),
+            )?;
             let operation = match operation.as_str() {
                 "import-reference" => Operation::ImportReference,
                 "report-issue" => Operation::ReportIssue,
@@ -603,7 +606,11 @@ fn execute() -> Result<()> {
                 field,
                 interval,
             } => {
-                let manifest: greenlens_runner::Project = read_json(&project.join("project.json"))?;
+                let manifest: greenlens_runner::Project =
+                    greenlens_runner::history_storage::read_project(
+                        &project,
+                        &std::sync::atomic::AtomicBool::new(false),
+                    )?;
                 let runs = &manifest
                     .climate
                     .as_ref()
@@ -685,7 +692,11 @@ fn execute() -> Result<()> {
                 run,
                 settings,
             } => {
-                let manifest: greenlens_runner::Project = read_json(&project.join("project.json"))?;
+                let manifest: greenlens_runner::Project =
+                    greenlens_runner::history_storage::read_project(
+                        &project,
+                        &std::sync::atomic::AtomicBool::new(false),
+                    )?;
                 let summary = manifest
                     .climate
                     .as_ref()
@@ -710,7 +721,11 @@ fn execute() -> Result<()> {
             hour,
             sensor,
         } => {
-            let manifest: greenlens_runner::Project = read_json(&project.join("project.json"))?;
+            let manifest: greenlens_runner::Project =
+                greenlens_runner::history_storage::read_project(
+                    &project,
+                    &std::sync::atomic::AtomicBool::new(false),
+                )?;
             let summary = manifest
                 .climate
                 .as_ref()

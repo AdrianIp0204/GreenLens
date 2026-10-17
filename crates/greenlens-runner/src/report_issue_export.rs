@@ -193,6 +193,16 @@ fn names(root: &Path, project: &Project, cancel: &AtomicBool) -> Result<BTreeSet
         }
     }
     let mut result = BTreeSet::from(["project.json".into()]);
+    // External history remains a required part of the complete project. The
+    // full reader has already checked both these bytes and revision semantics;
+    // inventory the exact files again rather than regenerating their contents.
+    for entry in crate::history_storage::entries(project)? {
+        checkpoint(cancel)?;
+        ensure!(
+            result.insert(entry.path),
+            "Scope history overlaps retained evidence"
+        );
+    }
     for prefix in prefixes {
         checkpoint(cancel)?;
         relative_path(&prefix)?;
@@ -448,7 +458,7 @@ pub fn export(
         "Export destination exists; choose a new filename"
     );
     let _lock = WriterLock::acquire(root)?;
-    let stored: Project = read_json(&regular_child(root, "project.json")?)?;
+    let stored = crate::history_storage::read_project(root, &cancel)?;
     ensure!(canonical_hash(&stored)? == canonical_hash(project)?,
         "Save the accepted document before exporting its complete history; the saved project differs from the supplied document");
     let admission = crate::project_open::admit_project(root)?;
@@ -631,7 +641,7 @@ fn validate_extracted(
         bytes_hash(&project_bytes) == package.project_file_sha256,
         "Project bytes differ from the package binding"
     );
-    let project: Project = serde_json::from_slice(&project_bytes)?;
+    let project = crate::history_storage::decode_project(root, &project_bytes, cancel)?;
     crate::validate_project(&project)?;
     declared_privacy(&project)?;
     ensure!(
@@ -1000,6 +1010,173 @@ mod tests {
         );
         assert!(!rejected.join("project.json").exists());
         assert!(publication_stage.exists());
+    }
+    #[test]
+    #[ignore = "Requires a genuine issued project in GREENLENS_TEST_ISSUED_PROJECT; no engine or report rendering is performed"]
+    fn genuine_external_history_copy_export_and_cold_extract_preserve_all_evidence() {
+        let started = Instant::now();
+        let source = PathBuf::from(
+            std::env::var("GREENLENS_TEST_ISSUED_PROJECT")
+                .expect("Provide the declared genuine retained issued project"),
+        );
+        let active = AtomicBool::new(false);
+        let original = crate::open_project(&source).unwrap();
+        let original_manifest = fs::read(source.join("project.json")).unwrap();
+        let original_members: BTreeMap<_, _> = names(&source, &original.project, &active)
+            .unwrap()
+            .into_iter()
+            .map(|name| {
+                let hash = evidence_file_hash(&regular_child(&source, &name).unwrap()).unwrap();
+                (name, hash)
+            })
+            .collect();
+        let original_bytes: u64 = original_members
+            .keys()
+            .map(|name| {
+                fs::metadata(regular_child(&source, name).unwrap())
+                    .unwrap()
+                    .len()
+            })
+            .sum();
+        let source_verification_seconds = started.elapsed().as_secs_f64();
+        let mut candidate = original.project.clone();
+        let history = candidate
+            .architecture
+            .as_mut()
+            .and_then(|a| a.scope_history.as_mut())
+            .expect("The genuine fixture must contain retained scope history");
+        assert!(!history.revisions.is_empty());
+        history.schema_version = crate::history_storage::EXTERNAL_HISTORY_SCHEMA.into();
+        let expected_revisions: Vec<_> = history
+            .revisions
+            .iter()
+            .map(|revision| revision.revision_sha256.clone())
+            .collect();
+        let parent = crate::local_root()
+            .unwrap()
+            .join("verification/external-history-portability");
+        fs::create_dir_all(&parent).unwrap();
+        let temporary = tempfile::Builder::new()
+            .prefix("issued history ")
+            .tempdir_in(parent)
+            .unwrap();
+        let migrated_root = temporary.path().join("complete migrated copy 空間");
+        let copy_started = Instant::now();
+        let migrated = crate::save_project_as(
+            Some(&source),
+            &migrated_root,
+            &candidate,
+            Some(&original.revision),
+        )
+        .unwrap();
+        let copy_seconds = copy_started.elapsed().as_secs_f64();
+        assert_eq!(
+            canonical_hash(&migrated.project).unwrap(),
+            canonical_hash(&candidate).unwrap()
+        );
+        assert!(
+            fs::metadata(migrated_root.join("project.json"))
+                .unwrap()
+                .len()
+                <= crate::study_revisions::MAX_REVISION_PROJECT_BYTES as u64
+        );
+        let history_entries = crate::history_storage::entries(&migrated.project).unwrap();
+        assert_eq!(history_entries.len(), expected_revisions.len());
+        for (entry, revision) in history_entries.iter().zip(expected_revisions) {
+            assert_eq!(entry.revision_sha256, revision);
+            assert_eq!(
+                evidence_file_hash(&regular_child(&migrated_root, &entry.path).unwrap()).unwrap(),
+                entry.sha256
+            );
+        }
+        for (name, hash) in &original_members {
+            assert_eq!(
+                evidence_file_hash(&regular_child(&source, name).unwrap()).unwrap(),
+                *hash,
+                "The source must remain unchanged: {name}"
+            );
+            if name != "project.json" {
+                assert_eq!(
+                    evidence_file_hash(&regular_child(&migrated_root, name).unwrap()).unwrap(),
+                    *hash,
+                    "Migration must retain the exact original evidence bytes: {name}"
+                );
+            }
+        }
+        assert_eq!(
+            fs::read(source.join("project.json")).unwrap(),
+            original_manifest
+        );
+        let archive = temporary.path().join("complete history.zip");
+        let export_started = Instant::now();
+        let exported = export(
+            &migrated_root,
+            &migrated.project,
+            &archive,
+            Arc::new(AtomicBool::new(false)),
+        )
+        .unwrap();
+        let export_seconds = export_started.elapsed().as_secs_f64();
+        let cold_root = temporary.path().join("cold retained project 空間");
+        let cold_started = Instant::now();
+        let cold = extract(&archive, &cold_root, Arc::new(AtomicBool::new(false))).unwrap();
+        let cold_extract_seconds = cold_started.elapsed().as_secs_f64();
+        assert_eq!(
+            canonical_hash(&cold.project).unwrap(),
+            canonical_hash(&migrated.project).unwrap()
+        );
+        let copied_members = names(&migrated_root, &migrated.project, &active).unwrap();
+        let mut copied_bytes = 0u64;
+        let mut cold_retained_bytes = 0u64;
+        for name in &copied_members {
+            copied_bytes += fs::metadata(regular_child(&migrated_root, name).unwrap())
+                .unwrap()
+                .len();
+            cold_retained_bytes += fs::metadata(regular_child(&cold_root, name).unwrap())
+                .unwrap()
+                .len();
+            assert_eq!(
+                evidence_file_hash(&regular_child(&migrated_root, name).unwrap()).unwrap(),
+                evidence_file_hash(&regular_child(&cold_root, name).unwrap()).unwrap(),
+                "Complete export/extraction must preserve every exact member: {name}"
+            );
+        }
+        assert_eq!(
+            cold.project.report_issues.as_ref().unwrap().issues,
+            original.project.report_issues.as_ref().unwrap().issues
+        );
+        let measurement = json!({
+            "schema_version":"greenlens.external-history-portability-check.v1",
+            "completed":true,
+            "wall_seconds":started.elapsed().as_secs_f64(),
+            "source_verification_seconds":source_verification_seconds,
+            "copy_seconds":copy_seconds,
+            "export_seconds":export_seconds,
+            "cold_extract_seconds":cold_extract_seconds,
+            "old_manifest_bytes":original_manifest.len(),
+            "new_manifest_bytes":fs::metadata(migrated_root.join("project.json")).unwrap().len(),
+            "history_sidecar_count":history_entries.len(),
+            "history_sidecar_bytes":history_entries.iter().map(|entry|entry.bytes).sum::<u64>(),
+            "original_retained_members":original_members.len(),
+            "original_retained_bytes":original_bytes,
+            "copied_retained_members":copied_members.len(),
+            "copied_retained_bytes":copied_bytes,
+            "cold_retained_members":copied_members.len(),
+            "cold_retained_bytes":cold_retained_bytes,
+            "export_members":exported["entries"],
+            "export_uncompressed_bytes":exported["uncompressed_bytes"],
+            "export_zip_bytes":exported["package_bytes"],
+            "all_prior_nonmanifest_members_unchanged":true,
+            "source_manifest_unchanged":true,
+            "engine_or_renderer_execution_requested":false,
+            "scope":"Storage portability and actual-byte preservation only; no native UI or scientific qualification claim. Retained-member totals exclude package envelope files."
+        });
+        let measurement = serde_json::to_string(&measurement).unwrap();
+        assert!(
+            measurement.len() <= 4096,
+            "Measurement receipt must remain bounded"
+        );
+        println!("{measurement}");
     }
     #[test]
     #[ignore = "Requires a saved genuine issued project in GREENLENS_TEST_ISSUED_PROJECT; never fabricates or runs energy evidence"]

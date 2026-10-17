@@ -17,7 +17,8 @@ pub fn project_weather(
     root: &Path,
     weather_id: &str,
 ) -> Result<(weather::WeatherAsset, ParsedWeather)> {
-    let project: Project = read_json(&regular_child(root, "project.json")?)?;
+    let project =
+        crate::history_storage::read_project(root, &std::sync::atomic::AtomicBool::new(false))?;
     crate::validate_project(&project)?;
     let reference = project
         .climate

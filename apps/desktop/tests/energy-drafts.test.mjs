@@ -47,7 +47,7 @@ const inputs=JSON.parse(fs.readFileSync(new URL('../../../examples/energy/revisi
 const daylight=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',import.meta.url)));
 let doc,root,calls,rejectEdit=false,closeHandler,disk,fullWorkspace=false,appendEvidenceOnSave=false,metadataGate=null,sceneObjects=false,preflightIssues=[],referenceImportGate=null,referenceScopeGate=null,reportRuns=false,reportGate=null,reportError=null,saveDestination='test-project';
 let issueEvidence=new Map(),issueGate=null,issueInspectGate=null,issueProductGate=null,issueError=null,issuePending=false,pendingFixture=null;
-let referenceManifestGate=null,referenceRevision='2'.repeat(64),revisionOccurrenceId='synthetic-occurrence',withRevisions=false,revisionPrepareGate=null,revisionAcceptGate=null,revisionPlanMode='cop',revisionReadinessCase=false;
+let referenceManifestGate=null,referenceRevision='2'.repeat(64),revisionOccurrenceId='synthetic-occurrence',withRevisions=false,revisionPrepareGate=null,revisionAcceptGate=null,revisionPlanMode='cop',revisionReadinessCase=false,historySchema='greenlens.scope-history.v1';
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 // Real ThermalView follows its WebGL-unavailable branch; no viewport acceptance claim.
 dom.window.HTMLCanvasElement.prototype.getContext=()=>{throw Error('No WebGL context in DOM test');};
@@ -73,7 +73,7 @@ function revisionArchitecture(){
     second.review_decisions=Array.from({length:82},(_,index)=>({row_id:index.toString(16).padStart(64,'0'),resolution:index<80?'reviewed':'unresolved',rationale:index===80?'Late input applicability remains unresolved.':index===81?'Late reference correspondence remains unresolved.':'Explicit original synthetic review fixture.'}));
     second.reviewed_rows=second.review_decisions.map((row,index)=>({row_id:row.row_id,kind:index===80?'input':index===81?'reference':'mapping',key:index===80?second.provenance.rows[0].id:index===81?'Exact retained reference correspondence':`Synthetic mapped target ${index}`}));
   }
-  return{schema_version:'greenlens.architectural-project.v1',assets:[referenceAsset],active_asset_id:referenceAsset.id,scope:second.scope,scope_history:{schema_version:'greenlens.scope-history.v1',revisions:[first,second],active_revision_sha256:second.revision_sha256}};
+  return{schema_version:'greenlens.architectural-project.v1',assets:[referenceAsset],active_asset_id:referenceAsset.id,scope:second.scope,scope_history:{schema_version:historySchema,revisions:[first,second],active_revision_sha256:second.revision_sha256}};
 }
 function carryPlan(project,parent,candidate){
   const revision=project.architecture.scope_history.revisions.find(r=>r.revision_sha256===parent);
@@ -118,8 +118,8 @@ function Harness(){
     show&&!fullWorkspace&&draft&&React.createElement(Editor,{entry:draft,zoneId:draft.structured.model.zones[0].id,disabled:doc.busy||Boolean(doc.energyDrafts.guard),onChange:change=>doc.energyDrafts.update(doc.alternative,change),onApply:()=>doc.energyDrafts.apply(doc.alternative),onDiscard:()=>doc.energyDrafts.discard(doc.alternative)}),
     !doc.referenceDrafts.guard&&!doc.energyDrafts.guard&&React.createElement(ReviewGuard,{drafts:doc.scopeReviewDrafts}),React.createElement(Guard,{drafts:doc.energyDrafts}),React.createElement(ReferenceGuard,{drafts:doc.referenceDrafts}));
 }
-async function setup({retainCache=false,workspace=false,objects=false,reports=false,revisions=false,revisionOccurrence='synthetic-occurrence',readiness=false}={}){
-  fullWorkspace=workspace;withRevisions=revisions;revisionReadinessCase=readiness;revisionOccurrenceId=revisionOccurrence;issueGate=null;issueInspectGate=null;issueProductGate=null;issueError=null;issuePending=false;if(!retainCache){issueEvidence=new Map();pendingFixture=null;}revisionPrepareGate=null;revisionAcceptGate=null;revisionPlanMode='cop';
+async function setup({retainCache=false,workspace=false,objects=false,reports=false,revisions=false,revisionOccurrence='synthetic-occurrence',readiness=false,storageSchema='greenlens.scope-history.v1'}={}){
+  fullWorkspace=workspace;withRevisions=revisions;revisionReadinessCase=readiness;revisionOccurrenceId=revisionOccurrence;historySchema=storageSchema;issueGate=null;issueInspectGate=null;issueProductGate=null;issueError=null;issuePending=false;if(!retainCache){issueEvidence=new Map();pendingFixture=null;}revisionPrepareGate=null;revisionAcceptGate=null;revisionPlanMode='cop';
   if(root)await act(()=>root.unmount());if(!retainCache)window.localStorage.clear();
   calls=[];rejectEdit=false;appendEvidenceOnSave=false;metadataGate=null;reportRuns=reports;reportGate=null;reportError=null;saveDestination='test-project';disk=fixture();sceneObjects=objects;preflightIssues=[];referenceImportGate=null;referenceScopeGate=null;
   referenceManifestGate=null;referenceRevision=referenceHash('2');
@@ -605,6 +605,31 @@ test('actual workspace history inspection is independent of live selection, exac
   await click('results');await click('reference');assert.equal(input('Inspect scope revision').value,referenceHash('c'));assert.equal(document.querySelector('[aria-label="Historical mapping inspection"]'),null);
   await click('Proposed B');await click('reference');assert.equal(input('Inspect scope revision').value,referenceHash('d'));await click('Baseline A');assert.equal(input('Inspect scope revision').value,referenceHash('c'));
   await click('Daylight');await click('Energy');assert.equal(input('Inspect scope revision').value,referenceHash('c'));assert.deepEqual(doc.project,before);assert.equal(doc.history.past.length,past);
+});
+
+for(const storageSchema of ['greenlens.scope-history.v1','greenlens.scope-history.v2'])test(`real workspace retains hydrated ${storageSchema} history through review, undo, redo and complete Save As dispatch`,async()=>{
+  // Rust storage/hash verification is tested separately. These explicit IPC
+  // fixtures exercise the actual workspace, hook, history and Save As payload.
+  await setup({workspace:true,objects:true,reports:true,revisions:true,storageSchema});await click('Save');await click('reference');
+  const original=structuredClone(doc.project.architecture.scope_history),originalBytes=JSON.stringify(original.revisions);
+  assert.equal(scopeHistoryPanel().textContent.includes('Older GreenLens builds cannot open this storage format.'),storageSchema.endsWith('.v2'));
+  await type(input('Inspect scope revision'),referenceHash('c'));
+  await act(()=>scopeHistoryPanel().querySelector('[aria-label="Inspect historical mapping synthetic-occurrence"]').click());
+  assert.match(document.querySelector('[aria-label="Historical mapping inspection"]').textContent,/S1 historical mapping rationale/);
+  await click('reports');await type(input('Issue scope revision'),referenceHash('c'));await click('Issue exact selected report');
+  const issued=structuredClone(doc.project.report_issues),issueBytes=JSON.stringify(issueEvidence.get(referenceHash('1')));
+  await click('reference');await click('Review changes and carry forward');await finishReview();await click('Accept reviewed scope revision');
+  const accepted=structuredClone(doc.project.architecture.scope_history);
+  assert.equal(accepted.schema_version,storageSchema);assert.equal(accepted.revisions.length,3);assert.equal(JSON.stringify(accepted.revisions.slice(0,2)),originalBytes);
+  assert.equal(accepted.active_revision_sha256,referenceHash('e'));assert.equal(doc.history.past.length,1);
+  await click('Undo');assert.equal(doc.project.architecture.scope_history.active_revision_sha256,original.active_revision_sha256);assert.deepEqual(doc.project.architecture.scope_history.revisions,accepted.revisions);
+  await act(async()=>doc.traverse('redo'));assert.deepEqual(doc.project.architecture.scope_history,accepted);assert.deepEqual(doc.project.report_issues,issued);
+  saveDestination='complete-hydrated-history-copy';await click('Save As');
+  const copy=calls.filter(([command])=>command==='save_project_as').at(-1)[1];
+  assert.equal(copy.destination,saveDestination);assert.equal(copy.includePending,true);assert.deepEqual(copy.project.architecture.scope_history,accepted);assert.deepEqual(copy.project.report_issues,issued);
+  assert.deepEqual(disk.architecture.scope_history,accepted);assert.equal(JSON.stringify(issueEvidence.get(referenceHash('1'))),issueBytes);
+  await click('reports');await type(input('Inspect issued report'),referenceHash('1'));
+  assert.match(issuePanel().textContent,/Retained scope: Retained scope S1/);assert.equal(count('energy_start'),0);
 });
 
 test('actual retained-scope mapping table keeps bounded columns and a compact exact-identity inspection action in narrow panels',async()=>{

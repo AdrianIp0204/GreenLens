@@ -1,4 +1,4 @@
-//! Append-only scope documentation in the portable manifest. Accepted actions
+//! Append-only scope documentation in the portable project. Accepted actions
 //! return complete candidates; the document service retains its ordinary one-
 //! writer/conflict/cancellation gate before publishing. No run bytes are edited.
 use crate::{reference, Project};
@@ -70,7 +70,16 @@ pub fn validate_project_capacity(project: &Project) -> Result<()> {
         .as_ref()
         .is_some_and(|a| a.scope_history.is_some())
     {
-        bounded_manifest(project)?;
+        if project
+            .architecture
+            .as_ref()
+            .and_then(|a| a.scope_history.as_ref())
+            .is_some_and(|h| h.schema_version == crate::history_storage::EXTERNAL_HISTORY_SCHEMA)
+        {
+            crate::history_storage::manifest_bytes(project)?;
+        } else {
+            bounded_manifest(project)?;
+        }
     }
     Ok(())
 }
@@ -82,6 +91,23 @@ pub fn validate_preserved(previous: &Project, candidate: &Project) -> Result<()>
         previous.id == candidate.id,
         "Scope history belongs to another document"
     );
+    if previous
+        .architecture
+        .as_ref()
+        .and_then(|a| a.scope_history.as_ref())
+        .is_some_and(|h| h.schema_version == crate::history_storage::EXTERNAL_HISTORY_SCHEMA)
+    {
+        ensure!(
+            candidate
+                .architecture
+                .as_ref()
+                .and_then(|a| a.scope_history.as_ref())
+                .is_some_and(
+                    |h| h.schema_version == crate::history_storage::EXTERNAL_HISTORY_SCHEMA
+                ),
+            "External immutable history cannot be downgraded by an older client or undo snapshot"
+        );
+    }
     for old in revisions(previous) {
         ensure!(revisions(candidate).iter().any(|new| new == old),
             "Accepted scope revision {} cannot be removed or changed by this save; preserve history and change only its active selection", old.revision_sha256);
@@ -103,11 +129,16 @@ pub fn validate_history(extension: &reference::ArchitecturalProject) -> Result<(
     let Some(history) = &extension.scope_history else {
         return Ok(());
     };
-    bounded_manifest(history)?;
     ensure!(
-        history.schema_version == SCOPE_HISTORY_SCHEMA,
+        history.schema_version == SCOPE_HISTORY_SCHEMA
+            || history.schema_version == crate::history_storage::EXTERNAL_HISTORY_SCHEMA,
         "Unsupported scope history schema"
     );
+    if history.schema_version == SCOPE_HISTORY_SCHEMA {
+        bounded_manifest(history)?;
+    } else {
+        crate::history_storage::entries_for_history(history)?;
+    }
     ensure!(
         !history.revisions.is_empty() && history.revisions.len() <= MAX_SCOPE_REVISIONS,
         "Retain one to 64 immutable scope revisions; history cannot be silently pruned"
@@ -315,10 +346,13 @@ fn append(project: &Project, revision: ScopeRevision) -> Result<Project> {
         .as_mut()
         .context("Import a reference first")?;
     let history = extension.scope_history.get_or_insert_with(|| ScopeHistory {
-        schema_version: SCOPE_HISTORY_SCHEMA.into(),
+        schema_version: crate::history_storage::EXTERNAL_HISTORY_SCHEMA.into(),
         revisions: vec![],
         active_revision_sha256: None,
     });
+    // An explicit accepted revision adopts external storage. Read-only open or
+    // an ordinary save never migrates an existing inline history.
+    history.schema_version = crate::history_storage::EXTERNAL_HISTORY_SCHEMA.into();
     if let Some(existing) = history
         .revisions
         .iter()
@@ -571,7 +605,7 @@ pub fn history_dependency_ids(extension: &reference::ArchitecturalProject) -> BT
 }
 
 #[cfg(test)]
-mod tests {
+pub(crate) mod tests {
     use super::*;
     use greenlens_core::{
         architectural_scope::{
@@ -617,7 +651,7 @@ mod tests {
         bytes
     }
 
-    fn fixture() -> (
+    pub(crate) fn fixture() -> (
         tempfile::TempDir,
         PathBuf,
         crate::ProjectView,

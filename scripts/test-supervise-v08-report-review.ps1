@@ -18,6 +18,7 @@ try{
  $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseFile($source,[ref]$tokens,[ref]$errors)
  Check 'Supervisor PowerShell AST has zero errors' ($errors.Count -eq 0)
  foreach($f in $ast.FindAll({param($a) $a -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
+ . (Join-Path $PSScriptRoot 'observed-scope-history.ps1')
  $embedded=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.CommandAst] -and $a.GetCommandName() -eq 'Add-Type' -and $a.Extent.Text.Contains('namespace GreenLensReportObservation')},$true))
  if($embedded.Count -ne 1){throw 'Expected one bounded-output helper.'}
  Add-Type -TypeDefinition $embedded[0].CommandElements[-1].Value

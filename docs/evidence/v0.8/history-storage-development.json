@@ -1,0 +1,116 @@
+{
+  "schema_version": "greenlens.history-storage-development.v1",
+  "date_utc": "2026-10-17T02:24:56.6275964Z",
+  "base_commit": "9aafdeabf73be343976fd5a4acfbf67c6513b7e3",
+  "source_state": "Working implementation subsequently committed with this receipt; fresh package/hosted/native checks remain separate",
+  "runner": {
+    "passed": 249,
+    "failed": 0,
+    "ignored": 6,
+    "seconds": 327.45
+  },
+  "core_cli": {
+    "passed": 132,
+    "failed": 0,
+    "ignored": 1
+  },
+  "frontend": {
+    "passed": 431,
+    "failed": 0,
+    "skipped": 0,
+    "types_and_production_build": "passed"
+  },
+  "strict_lint": "passed",
+  "dependencies": {
+    "packages": 415,
+    "notices": 231,
+    "review_gaps": 0,
+    "new_dependencies": 0,
+    "installer_cache_verified": true
+  },
+  "source_observer_checks": {
+    "history": 42,
+    "supervisor": 111,
+    "regeneration": 16
+  },
+  "portability": {
+    "all_prior_nonmanifest_members_unchanged": true,
+    "cold_extract_seconds": 13.5466005,
+    "cold_retained_bytes": 222264131,
+    "cold_retained_members": 579,
+    "completed": true,
+    "copied_retained_bytes": 222264131,
+    "copied_retained_members": 579,
+    "copy_seconds": 21.3504221,
+    "engine_or_renderer_execution_requested": false,
+    "export_members": 582,
+    "export_seconds": 20.9260434,
+    "export_uncompressed_bytes": 222457438,
+    "export_zip_bytes": 34100992,
+    "history_sidecar_bytes": 9802207,
+    "history_sidecar_count": 3,
+    "new_manifest_bytes": 284256,
+    "old_manifest_bytes": 12751294,
+    "original_retained_bytes": 224928962,
+    "original_retained_members": 576,
+    "schema_version": "greenlens.external-history-portability-check.v1",
+    "scope": "Storage portability and actual-byte preservation only; no native UI or scientific qualification claim. Retained-member totals exclude package envelope files.",
+    "source_manifest_unchanged": true,
+    "source_verification_seconds": 14.7347855,
+    "wall_seconds": 75.2070058
+  },
+  "not_executed": [
+    "Installed candidate observation",
+    "New issue rendering",
+    "Cold new-issue regeneration",
+    "EnergyPlus",
+    "Private model intake"
+  ],
+  "setup_failure": "First portability command rejected --exact=false before any test execution; corrected invocation passed. Original failure log retained.",
+  "logs": [
+    {
+      "sha256": "a8db9b661d006f27b2b89c050950705054864e79a763c208d652c17e01974bb1",
+      "file": "runner-tests.log",
+      "bytes": 30671
+    },
+    {
+      "sha256": "326b98f19171957193af76b28b0c996dbc6891961a571cad2f319854d917ead4",
+      "file": "core-cli-tests.log",
+      "bytes": 14349
+    },
+    {
+      "sha256": "b7d125bb42d21234aeb150c2f52be94337a414e61a3a1165382a5ab4d3b6ddbd",
+      "file": "clippy-final.log",
+      "bytes": 388
+    },
+    {
+      "sha256": "f4b990a7ab42ebc87ec9c65c26bde495b3f1702453e6c239848abb518e1308fd",
+      "file": "frontend-tests.log",
+      "bytes": 52420
+    },
+    {
+      "sha256": "22ab94a9e4fec97ea37fa8248dcdca77c82c4390026e7208e05a1492fab6db85",
+      "file": "frontend-build.log",
+      "bytes": 1361
+    },
+    {
+      "sha256": "de68c254fe92e1a07e7b4d628a04375c0a609fb2ca88d039f5124c471a91a8c2",
+      "file": "genuine-storage-portability.log",
+      "bytes": 871
+    },
+    {
+      "sha256": "2112b6fa4e28119b1203b89fde5306370a3c371f5c28130ce3dffc32d5f5e1d5",
+      "file": "genuine-storage-portability-executed.log",
+      "bytes": 1637
+    }
+  ],
+  "commands": [
+    "cargo clippy --workspace --all-targets --locked --offline -- -D warnings",
+    "cargo test -p greenlens-runner --lib --locked --offline",
+    "cargo test -p greenlens-core -p greenlens-cli --locked --offline",
+    "cargo test -p greenlens-runner --lib --release --locked --offline genuine_external_history_copy_export_and_cold_extract_preserve_all_evidence -- --ignored --nocapture",
+    "npm test",
+    "npm run build",
+    "node scripts/license-inventory.mjs --strict --check --installer-cache <reviewed local cache>"
+  ]
+}

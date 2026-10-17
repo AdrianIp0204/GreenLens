@@ -17,6 +17,8 @@ param(
  [Parameter(Mandatory,ParameterSetName='Helpers')][switch]$FunctionsOnly
 )
 $ErrorActionPreference='Stop'
+$scopeHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-scope-history.ps1')).Path
+. $scopeHelper
 
 function Read-BoundedJson([string]$Path,[long]$Cap){
  $item=Get-Item -LiteralPath $Path -Force
@@ -109,15 +111,17 @@ $projectJson=Read-BoundedJson (Join-Path $root 'project.json') 16MB
 $issues=@($projectJson.report_issues.issues|Where-Object {$_.id -ceq $IssueId})
 if($issues.Count -ne 1){throw 'Exactly one retained issue must match the declaration.'};$issue=$issues[0]
 if($issue.path -cne ('report-issues/'+$IssueId) -or !$issue.include_pdf -or $issue.content_sha256 -cne $ExpectedContentSha256 -or $issue.products_sha256 -cne $ExpectedProductsSha256){throw 'Retained issue does not bind the declared content/products/PDF selection.'}
+$scopeObservation=Get-ObservedScopeSelection $root $projectJson $issue.scope_revision_sha256
 $issueDir=Portable-Child $root $issue.path
 foreach($pair in @(@('issue-content.json','content_file_sha256'),@('issue-products.json','products_file_sha256'),@('issue-runtime.json','receipt_file_sha256'))){if((File-Hash (Portable-Child $issueDir $pair[0])) -cne $issue[$pair[1]]){throw 'Retained issue metadata hash differs from the project binding.'}}
 $content=Read-BoundedJson (Portable-Child $issueDir 'issue-content.json') 48MB
 if($content.renderer.method -cne 'greenlens.energy-report-issue-renderer/3'){throw 'This single continuation is declared for the new renderer/3 issue only.'}
+if($content.scope_revision.revision_sha256 -cne $scopeObservation.revision.revision_sha256){throw 'The retained issue scope differs from its history selection.'}
 $products=Read-BoundedJson (Portable-Child $issueDir 'issue-products.json') 256KB
 if($products.content_sha256 -cne $ExpectedContentSha256 -or $products.products_sha256 -cne $ExpectedProductsSha256){throw 'Issued product manifest does not match the declared bindings.'}
 $productCheck=Assert-Products $issueDir $products
 $arguments=@('report-issue','regenerate',$root,$IssueId,$destination,'--typst-dir',(Split-Path -Parent $typst))
-$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared source/build receipt and exact CLI SHA256; source is not inferred from executable bytes';cli_sha256=$CliSha256.ToLowerInvariant();typst_sha256=$typstHash;typst_dependency_sha256=(File-Hash $typstPinPath);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);conhost_sha256=$conhostHash}
+$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared source/build receipt and exact CLI SHA256; source is not inferred from executable bytes';cli_sha256=$CliSha256.ToLowerInvariant();typst_sha256=$typstHash;typst_dependency_sha256=(File-Hash $typstPinPath);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);conhost_sha256=$conhostHash}
 New-Item -ItemType Directory -Path $output|Out-Null
 $coldRuntime=Join-Path $output 'cold-runtime';$coldRoaming=Join-Path $output 'cold-roaming';$coldTemp=Join-Path $output 'cold-temp'
 foreach($path in @($coldRuntime,$coldRoaming,$coldTemp)){New-Item -ItemType Directory -Path $path|Out-Null}
@@ -125,6 +129,7 @@ $childEnvironment=[ordered]@{LOCALAPPDATA=$coldRuntime;APPDATA=$coldRoaming;TEMP
 $parentEnvironment=@{};foreach($key in $childEnvironment.Keys){$parentEnvironment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 Write-Receipt (Join-Path $output 'before-members.json') $before
 $protocol=[ordered]@{schema_version='greenlens.report-review-cold-regeneration.v1';declared_utc=[DateTime]::UtcNow.ToString('o');identities=$identities;project_id=$projectJson.id;manifest_sha256=$ExpectedManifestSha256.ToLowerInvariant();issue=$issue;arguments=$arguments;cold_unavailable_paths=$ColdUnavailablePaths;child_environment=$childEnvironment;cold_runtime_initial_entries=@(Get-ChildItem -LiteralPath $coldRuntime -Force).Count;attempt_limit=1;deadline_seconds=600;kernel_job_commit_limit_bytes=1GB;acceptance_raw_peak_limit_bytes=2GB;active_process_limit=16;sample_milliseconds=200;maximum_samples=3002;stdout_cap_bytes=1MB;stderr_cap_bytes=1MB;scope='One CLI regeneration only; fresh owned LOCALAPPDATA/APPDATA/TEMP, explicitly absent engine paths, OS-only PATH and explicit pinned Typst. No source hiding, input edit, new issue, simulation, retry, or historical mutation';process_observation='Only pinned CLI/Typst and canonical System32 conhost may be observed. Exited-before-inspection races remain disclosed. Kernel job peak includes all members; no peak normalization or denied-allocation subtraction.';failure_policy='Any substantive failure ends this attempt. Preserve logs, partial outputs and normal CLI scratch; never relaunch automatically.';claim_limit='Exact deterministic output agreement and retained-byte preservation are reproducibility checks, not scientific qualification.'}
+$protocol.scope_selection=[ordered]@{revision_sha256=$scopeObservation.revision.revision_sha256;storage_schema=$scopeObservation.storage_schema;member_path=$scopeObservation.member_path;member_bytes=$scopeObservation.member_bytes;member_sha256=$scopeObservation.member_sha256;verification_scope=$scopeObservation.verification_scope}
 Write-Receipt (Join-Path $output 'protocol.json') $protocol
 $protocolHash=File-Hash (Join-Path $output 'protocol.json')
 
@@ -201,7 +206,7 @@ finally{
  [IO.File]::WriteAllBytes((Join-Path $output 'stdout.bin'),$stdout.Bytes);[IO.File]::WriteAllBytes((Join-Path $output 'stderr.bin'),$stderr.Bytes)
  $record.stdout_total_bytes=$stdout.Total;$record.stderr_total_bytes=$stderr.Total;$record.stdout_overflow=$stdout.Overflow;$record.stderr_overflow=$stderr.Overflow
  try{$after=Snapshot-Members $root;Write-Receipt (Join-Path $output 'after-members.json') $after;Assert-SameMembers $before $after;$record.original_members_preserved=$true;$record.original_member_count=$after.member_count;$record.original_member_bytes=$after.total_bytes}catch{$record.preservation_errors+=@($_.Exception.Message)}
- try{foreach($path in @($ColdUnavailablePaths)+@($childEnvironment.GREENLENS_ENERGYPLUS_DIR,$childEnvironment.GREENLENS_RADIANCE)){if(Test-Path -LiteralPath $path){throw 'A declared unavailable path became available.'}};if((File-Hash $cliPath) -cne $identities.cli_sha256 -or (File-Hash $typst) -cne $typstHash -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $typstPinPath) -cne $identities.typst_dependency_sha256){throw 'Declared tooling changed during the operation.'}}catch{$record.preservation_errors+=@($_.Exception.Message)}
+ try{foreach($path in @($ColdUnavailablePaths)+@($childEnvironment.GREENLENS_ENERGYPLUS_DIR,$childEnvironment.GREENLENS_RADIANCE)){if(Test-Path -LiteralPath $path){throw 'A declared unavailable path became available.'}};if((File-Hash $cliPath) -cne $identities.cli_sha256 -or (File-Hash $typst) -cne $typstHash -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $typstPinPath) -cne $identities.typst_dependency_sha256){throw 'Declared tooling changed during the operation.'}}catch{$record.preservation_errors+=@($_.Exception.Message)}
  $record.samples=$samples.ToArray();$record.members=@($seen.Values|Sort-Object first_observed_utc);$record.observed_typst_processes=$typstCount
 }
 # Publication is deliberately after cleanup and all preservation checks. A

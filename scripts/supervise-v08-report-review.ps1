@@ -11,6 +11,8 @@ param(
  [Parameter(Mandatory)][string]$TypstDir
 )
 $ErrorActionPreference='Stop'
+$scopeHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-scope-history.ps1')).Path
+. $scopeHelper
 $cache=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'GreenLens'))
 $output=[IO.Path]::GetFullPath($OutputDirectory)
 $projectRoot=(Resolve-Path -LiteralPath $Project).Path.TrimEnd('\','/')
@@ -27,7 +29,7 @@ function File-Hash([string]$Path){
 if((File-Hash $exe) -ne $InstalledSha256.ToLowerInvariant()){throw 'Installed executable differs from the declared artifact.'}
 $existing=@([Diagnostics.Process]::GetProcessesByName([IO.Path]::GetFileNameWithoutExtension($exe)))
 try{if($existing.Count){throw 'An installed app instance is already running; preserve and close its document explicitly before supervision.'}}finally{foreach($p in $existing){$p.Dispose()}}
-$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared build receipt plus exact executable SHA256; source commit is not inferred from binary bytes';installed_executable_sha256=(File-Hash $exe);typst_executable_sha256=(File-Hash $typst);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native)}
+$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared build receipt plus exact executable SHA256; source commit is not inferred from binary bytes';installed_executable_sha256=(File-Hash $exe);typst_executable_sha256=(File-Hash $typst);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper)}
 Add-Type -LiteralPath $native
 # Fixed capture buffers continuously drain output. Overflow is counted/discarded
 # until the observation loop kills the owned job; no unbounded MemoryStream.
@@ -104,11 +106,10 @@ function Assert-ArmSelection($Candidate,$Manifest,[string]$ExpectedProjectId){
  $proposed=@($Manifest.energy.runs|Where-Object {$_.id -ceq $Candidate.proposed_run_id})
  if($baseline.Count -ne 1 -or $proposed.Count -ne 1){throw 'Each armed run must occur exactly once in the saved energy run inventory.'}
  foreach($run in @($baseline[0],$proposed[0])){if(!$run.alternative_id -or $run.record_sha256 -cnotmatch '^[a-f0-9]{64}$'){throw 'An armed run lacks its saved design or record binding.'}}
- $scope=@($Manifest.architecture.scope_history.revisions|Where-Object {$_.revision_sha256 -ceq $Candidate.scope_revision_sha256})
- if($scope.Count -ne 1){throw 'The armed scope must occur exactly once in the saved scope revision history.'}
+ $scope=Get-ObservedScopeSelection $projectRoot $Manifest $Candidate.scope_revision_sha256
  # A historical scope is permitted. Do not substitute the active scope or
  # current designs; the later immutable issue must bind these retained runs.
- return [ordered]@{baseline=[ordered]@{run_id=$baseline[0].id;record_sha256=$baseline[0].record_sha256;design_id=$baseline[0].alternative_id};proposed=[ordered]@{run_id=$proposed[0].id;record_sha256=$proposed[0].record_sha256;design_id=$proposed[0].alternative_id};scope_revision_sha256=$scope[0].revision_sha256;scope_schema_version=$scope[0].schema_version}
+ return [ordered]@{baseline=[ordered]@{run_id=$baseline[0].id;record_sha256=$baseline[0].record_sha256;design_id=$baseline[0].alternative_id};proposed=[ordered]@{run_id=$proposed[0].id;record_sha256=$proposed[0].record_sha256;design_id=$proposed[0].alternative_id};scope_revision_sha256=$scope.revision.revision_sha256;scope_schema_version=$scope.revision.schema_version;scope_storage_schema=$scope.storage_schema;scope_member_path=$scope.member_path;scope_member_bytes=$scope.member_bytes;scope_member_sha256=$scope.member_sha256;scope_observation=$scope.verification_scope}
 }
 function Assert-IssueProducts($Issue){
  if($Issue.id -cnotmatch '^[a-f0-9]{64}$' -or $Issue.path -cne ('report-issues/'+$Issue.id) -or !$Issue.include_pdf){throw 'Unexpected published issue identity/path/profile.'}
@@ -224,7 +225,7 @@ try{
  $finalMembers=Snapshot-Project;Assert-Preserved $before $finalMembers;Assert-Preserved $armedBefore $finalMembers;Assert-Preserved $publishedMembers $finalMembers
  $lastManifestHash=$finalMembers.files['project.json'].sha256
  $finalMembers|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'final-members.json') -Encoding utf8NoBOM
- if((File-Hash $exe) -cne $identities.installed_executable_sha256 -or (File-Hash $typst) -cne $identities.typst_executable_sha256 -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256){throw 'Declared tooling changed during observation.'}
+ if((File-Hash $exe) -cne $identities.installed_executable_sha256 -or (File-Hash $typst) -cne $identities.typst_executable_sha256 -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256){throw 'Declared tooling changed during observation.'}
  $record.completed=$true
 }catch{$record.failure=$_.Exception.Message}
 finally{

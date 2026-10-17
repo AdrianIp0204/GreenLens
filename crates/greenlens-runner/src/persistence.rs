@@ -653,14 +653,23 @@ pub fn atomic_project_cancellable(
     project: &crate::Project,
     cancel: &std::sync::atomic::AtomicBool,
 ) -> Result<String> {
+    ensure!(
+        !cancel.load(std::sync::atomic::Ordering::Relaxed),
+        "Project publication cancelled; the previous manifest is unchanged"
+    );
+    // Bind the publication fence before potentially lengthy history validation.
+    // An external edit during that work must not become the new baseline.
+    let expected = revision(root)?;
     crate::validate_project(project)?;
-    if revision(root)?.is_some() {
-        let previous: crate::Project = read_json(&regular_child(root, "project.json")?)?;
+    if expected.is_some() {
+        let previous = crate::history_storage::read_project(root, cancel)?;
         crate::study_revisions::validate_preserved(&previous, project)?;
         crate::report_issues::validate_preserved(&previous, project)?;
     }
     crate::capacity::require_publication(root, project, &[], cancel)?;
-    atomic_json_cancellable(root, project, cancel)
+    let data = crate::history_storage::manifest_bytes(project)?;
+    crate::history_storage::stage(root, project, cancel)?;
+    atomic_bytes_cancellable(root, &data, cancel, Some(expected.as_deref()))
 }
 
 pub fn atomic_json(root: &Path, value: &impl Serialize) -> Result<String> {
@@ -671,9 +680,18 @@ fn atomic_json_cancellable(
     value: &impl Serialize,
     cancel: &std::sync::atomic::AtomicBool,
 ) -> Result<String> {
-    let temporary = root.join(format!(".project-{}.tmp", Uuid::new_v4()));
     let mut data = serde_json::to_vec_pretty(value)?;
     data.push(b'\n');
+    atomic_bytes_cancellable(root, &data, cancel, None)
+}
+
+fn atomic_bytes_cancellable(
+    root: &Path,
+    data: &[u8],
+    cancel: &std::sync::atomic::AtomicBool,
+    expected: Option<Option<&str>>,
+) -> Result<String> {
+    let temporary = root.join(format!(".project-{}.tmp", Uuid::new_v4()));
     ensure!(
         data.len() as u64 <= MAX_EVIDENCE_FILE_BYTES,
         "Project manifest exceeds the 64 MiB readable limit. The existing project was retained; save a project with fewer historical runs"
@@ -682,15 +700,25 @@ fn atomic_json_cancellable(
         .create_new(true)
         .write(true)
         .open(&temporary)?;
-    file.write_all(&data)?;
+    file.write_all(data)?;
     file.sync_all()?;
     drop(file);
     if cancel.load(std::sync::atomic::Ordering::Relaxed) {
         let _ = fs::remove_file(&temporary);
         bail!("Project publication cancelled; the previous manifest is unchanged");
     }
+    if let Some(expected) = expected {
+        if let Err(error) = check_revision(root, expected) {
+            let _ = fs::remove_file(&temporary);
+            return Err(error);
+        }
+    }
+    if cancel.load(std::sync::atomic::Ordering::Relaxed) {
+        let _ = fs::remove_file(&temporary);
+        bail!("Project publication cancelled; the previous manifest is unchanged");
+    }
     atomic_replace(&temporary, &root.join("project.json"))?;
-    Ok(bytes_hash(&data))
+    Ok(bytes_hash(data))
 }
 #[cfg(windows)]
 fn atomic_replace(source: &Path, target: &Path) -> Result<()> {
@@ -1864,6 +1892,34 @@ mod tests {
         let rev = atomic_json(d.path(), &vec![1]).unwrap();
         assert!(check_revision(d.path(), Some(&rev)).is_ok());
         assert!(check_revision(d.path(), None).is_err());
+    }
+    #[test]
+    fn final_publication_fence_preserves_external_change_and_cleans_temporary() {
+        let root = tempfile::tempdir().unwrap();
+        let expected = atomic_json(root.path(), &vec![1]).unwrap();
+        atomic_json(root.path(), &vec![2]).unwrap();
+        let before = fs::read(root.path().join("project.json")).unwrap();
+        let result = atomic_bytes_cancellable(
+            root.path(),
+            b"[3]\n",
+            &std::sync::atomic::AtomicBool::new(false),
+            Some(Some(&expected)),
+        );
+        assert!(result
+            .unwrap_err()
+            .to_string()
+            .contains("changed externally"));
+        assert_eq!(fs::read(root.path().join("project.json")).unwrap(), before);
+        assert_eq!(fs::read_dir(root.path()).unwrap().count(), 1);
+        assert!(atomic_bytes_cancellable(
+            root.path(),
+            b"[3]\n",
+            &std::sync::atomic::AtomicBool::new(true),
+            Some(Some(&expected))
+        )
+        .is_err());
+        assert_eq!(fs::read(root.path().join("project.json")).unwrap(), before);
+        assert_eq!(fs::read_dir(root.path()).unwrap().count(), 1);
     }
     #[test]
     fn integrity_rejects_tampering() {

@@ -99,12 +99,40 @@ pub(crate) fn inspect_staged(
     crate::validate_project(project)?;
     let start = Instant::now();
     check(cancel, start)?;
-    let manifest_bytes = serde_json::to_vec_pretty(project)?.len() as u64 + 1;
+    let manifest_bytes = crate::history_storage::manifest_bytes(project)?.len() as u64;
     let (mut retained_bytes, mut entries) = (manifest_bytes, 1usize);
     let mut names = BTreeSet::from(["project.json".to_owned()]);
     let mut largest_entry = manifest_bytes;
     let mut largest_issue = 0u64;
     let mut largest_reference_geometry = 0u64;
+    // Pending accepted revisions may not have sidecars yet. Their exact
+    // deterministic bytes are accounted before publication; stage verifies any
+    // existing member rather than trusting its length or replacing it.
+    let history_entries = crate::history_storage::entries(project)?;
+    let history_bytes: u64 = history_entries.iter().map(|entry| entry.bytes).sum();
+    let mut history_size_mismatch = false;
+    for entry in history_entries {
+        check(cancel, start)?;
+        ensure!(
+            names.insert(entry.path.to_ascii_lowercase()),
+            "Overlapping history member"
+        );
+        let actual_bytes = if let Some(root) = root {
+            match fs::symlink_metadata(root.join(&entry.path)) {
+                Ok(_) => fs::metadata(regular_child(root, &entry.path)?)?.len(),
+                Err(error) if error.kind() == std::io::ErrorKind::NotFound => entry.bytes,
+                Err(error) => return Err(error.into()),
+            }
+        } else {
+            entry.bytes
+        };
+        history_size_mismatch |= actual_bytes != entry.bytes;
+        retained_bytes = retained_bytes
+            .checked_add(actual_bytes)
+            .context("Capacity byte overflow")?;
+        entries += 1;
+        largest_entry = largest_entry.max(actual_bytes);
+    }
     for prefix in prefixes(project) {
         check(cancel, start)?;
         relative_path(&prefix)?;
@@ -231,6 +259,11 @@ pub(crate) fn inspect_staged(
         ),
         ("reference revision count", references as u64, 8),
         (
+            "external scope history bytes",
+            history_bytes,
+            crate::history_storage::MAX_HISTORY_BYTES,
+        ),
+        (
             "largest retained reference geometry bytes",
             largest_reference_geometry,
             greenlens_core::reference::MAX_NORMALIZED_BYTES as u64,
@@ -281,6 +314,10 @@ pub(crate) fn inspect_staged(
         report
             .warnings
             .push("A known retained or incremental lower bound exceeds capacity.".into());
+    }
+    if history_size_mismatch {
+        report.can_start = false;
+        report.warnings.push("An existing immutable history file differs in size from its bound record. Restore the exact original member before continuing; it will not be overwritten.".into());
     }
     if report.available_bytes < 16 * 1024 * 1024 {
         report.warnings.push("Less than 16 MiB remains before archive overhead. A new run, reference or issue may not fit.".into());

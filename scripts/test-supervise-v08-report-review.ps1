@@ -15,6 +15,7 @@ function Must-Reject([scriptblock]$Action,[string]$Label){$rejected=$false;try{&
 function Parse-Original([string]$Json){$parsed=ConvertFrom-Json -InputObject $Json -AsHashtable -DateKind String -Depth 100 -NoEnumerate;return ,$parsed}
 function Clone-Original($Value){return ,(Parse-Original (ConvertTo-Json -InputObject $Value -Depth 100 -Compress))}
 try{
+ $sourceText=[IO.File]::ReadAllText($source)
  $tokens=$null;$errors=$null;$ast=[Management.Automation.Language.Parser]::ParseFile($source,[ref]$tokens,[ref]$errors)
  Check 'Supervisor PowerShell AST has zero errors' ($errors.Count -eq 0)
  foreach($f in $ast.FindAll({param($a) $a -is [Management.Automation.Language.FunctionDefinitionAst]},$true)){. ([scriptblock]::Create($f.Extent.Text))}
@@ -23,7 +24,13 @@ try{
  if($embedded.Count -ne 1){throw 'Expected one bounded-output helper.'}
  Add-Type -TypeDefinition $embedded[0].CommandElements[-1].Value
  Add-Type -LiteralPath (Join-Path $PSScriptRoot 'annual-paired-native-process.cs')
+ Add-Type -LiteralPath (Join-Path $PSScriptRoot 'observed-process-image.cs')
  Check 'Embedded/helper C# compiles; held-limit API exists (not invoked)' ($null -ne [GreenLensPairedProcess.NativeProcess].GetProperty('CommittedMemoryLimitSnapshot'))
+ Check 'Held-image API compiles (not invoked)' ($null -ne [GreenLensObservation.HeldProcessImage].GetMethod('Read'))
+ $fresh=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.CommandAst] -and $a.GetCommandName() -ceq 'Assert-FreshObserverHost'},$true))
+ Check 'Fresh-host guard exists before input admission' ($fresh.Count -eq 1 -and $fresh[0].Extent.StartOffset -lt $sourceText.IndexOf('$scopeHelper='))
+ $message=$null;try{. ([scriptblock]::Create($fresh[0].Extent.Text))}catch{$message=$_.Exception.Message}
+ Check 'Actual run guard rejects already loaded helper assembly before launch' ($message -like 'A fresh PowerShell process is required;*')
  foreach($length in @(0,100,1MB,(1MB+1),3MB)){
   $data=[byte[]]::new($length);[Array]::Fill[byte]($data,65);$stream=[IO.MemoryStream]::new($data,$false);$capture=[GreenLensReportObservation.Capture]::new()
   try{$null=$capture.Drain($stream).GetAwaiter().GetResult()}finally{$stream.Dispose()}
@@ -47,12 +54,25 @@ try{
  $fixture=Join-Path $output 'original-fixture.json';[IO.File]::WriteAllText($fixture,'{"at":"2026-10-16T00:00:00Z","value":1}',[Text.UTF8Encoding]::new($false))
  Check 'Bounded reader preserves timestamps as strings' ((Read-Json $fixture 1KB).at -is [string])
  Must-Reject {Read-Json $fixture 4} 'Bounded reader rejects oversized input'
+ foreach($emptyPath in @($null,'',' ')){
+  $message=$null;try{File-Hash $emptyPath|Out-Null}catch{$message=$_.Exception.Message};Check 'Empty observed path fails before FileStream construction' ($message -ceq 'Cannot verify bytes without an observed nonempty file path.')
+  $message=$null;try{Assert-MemberPolicy @{name='typst';image_path=$emptyPath;has_exited=$true} ('0'*64)|Out-Null}catch{$message=$_.Exception.Message};Check 'Missing renderer identity is explicit even after exit' ($message -ceq 'Observed renderer executable identity is unavailable; no renderer verification is accepted.')
+ }
  foreach($memberName in @('energyplus','EnergyPlus','expandobjects','readvarseso')){Must-Reject {Assert-MemberPolicy @{name=$memberName;has_exited=$true} ('0'*64)} ('Forbidden member remains rejected after exit: '+$memberName)}
  Must-Reject {Assert-MemberPolicy @{name='typst';image_path=$fixture;has_exited=$true} ('0'*64)} 'Mismatched renderer bytes remain rejected after exit'
  Check 'Exact fixture bytes accepted only as identity check; ordinary process not renderer' ((Assert-MemberPolicy @{name='typst';image_path=$fixture} (File-Hash $fixture)) -and !(Assert-MemberPolicy @{name='greenlens';image_path=$fixture} (File-Hash $fixture)))
  $policy=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.CommandAst] -and $a.GetCommandName() -eq 'Assert-MemberPolicy'},$true));$ancestor=$policy[0].Parent
  while($ancestor -and $ancestor -isnot [Management.Automation.Language.TryStatementAst]){$ancestor=$ancestor.Parent}
  Check 'Policy assertion remains outside member-inspection race catch' ($ancestor -and $ancestor.Extent.Text.Contains('::StartBounded('))
+ $sourceText=[IO.File]::ReadAllText($source)
+ Check 'No nullable module enumeration or expected-path substitution' (!$sourceText.Contains('.MainModule') -and $sourceText.Contains('[GreenLensObservation.HeldProcessImage]::Read($held,[int]$member,$started.Ticks)'))
+ $unknown=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.AssignmentStatementAst] -and $a.Left.Extent.Text -ceq '$record.process_identity_failure'},$true))
+ Check 'Unknown membership is recorded and fails instead of silently skipped' ($unknown.Count -eq 1 -and $unknown[0].Parent.Extent.Text.Contains('unidentified membership cannot pass'))
+ Check 'Unknown-member record retains original exception category and stack' ($unknown[0].Extent.Text.Contains('exception_type=') -and $unknown[0].Extent.Text.Contains('category=') -and $unknown[0].Extent.Text.Contains('script_stack_trace='))
+ $boundImage=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.InvokeMemberExpressionAst] -and $a.Member.Value -ceq 'ValidateBinding'},$true))
+ Check 'Cache lookup follows held PID/creation-time check' ($boundImage.Count -eq 1 -and $sourceText.IndexOf('if($seen.ContainsKey($key))') -gt $boundImage[0].Extent.EndOffset)
+ $membership=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.InvokeMemberExpressionAst] -and $a.Member.Value -ceq 'RequireMember'},$true))
+ Check 'Exact held Job membership precedes identity and cache lookup' ($membership.Count -eq 1 -and $membership[0].Extent.EndOffset -lt $boundImage[0].Extent.StartOffset)
  $scope1='c'*64;$scope2='d'*64
  $manifest=@{id='original-synthetic-project';runs=@();climate=$null;energy=@{runs=@(@{id='original-baseline';alternative_id='A';record_sha256=('a'*64);path='energy-runs/original-baseline'},@{id='original-proposed';alternative_id='B';record_sha256=('b'*64);path='energy-runs/original-proposed'})};architecture=@{scope_history=@{schema_version='greenlens.scope-history.v1';active_revision_sha256=$scope2;revisions=@(@{schema_version='greenlens.scope-revision.v3';revision_sha256=$scope1},@{schema_version='greenlens.scope-revision.v3';revision_sha256=$scope2})}};report_issues=@{issues=@(@{id=('e'*64);products_sha256=('f'*64);products_file_sha256=('1'*64);baseline=@{run_id='original-baseline';record_sha256=('a'*64);design_id='A'};proposed=@{run_id='original-proposed';record_sha256=('b'*64);design_id='B'}})}}
  $manifestBefore=Json-Identity $manifest;$copy=Clone-Original $manifest

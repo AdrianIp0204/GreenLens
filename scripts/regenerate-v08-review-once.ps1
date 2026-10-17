@@ -27,6 +27,7 @@ function Read-BoundedJson([string]$Path,[long]$Cap){
  try{if($stream.Length -gt $Cap){throw 'JSON grew beyond its bound.'};$bytes=[byte[]]::new([int]$stream.Length);$stream.ReadExactly($bytes,0,$bytes.Length);if($stream.ReadByte() -ne -1){throw 'JSON changed during its read.'};[Text.UTF8Encoding]::new($false,$true).GetString($bytes).TrimStart([char]0xFEFF)|ConvertFrom-Json -AsHashtable -DateKind String -Depth 100}finally{$stream.Dispose()}
 }
 function File-Hash([string]$Path){
+ if([string]::IsNullOrWhiteSpace($Path)){throw 'Cannot verify bytes without an observed nonempty file path.'}
  $stream=[IO.FileStream]::new($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::Read)
  try{[Convert]::ToHexString([Security.Cryptography.SHA256]::HashData($stream)).ToLowerInvariant()}finally{$stream.Dispose()}
 }
@@ -88,7 +89,12 @@ function Write-Receipt([string]$Path,$Value){$Value|ConvertTo-Json -Depth 24|Set
 function Assert-RegenerationDeadline([double]$ElapsedSeconds){
  if(![double]::IsFinite($ElapsedSeconds) -or $ElapsedSeconds -lt 0 -or $ElapsedSeconds -gt 600){throw 'The completed regeneration exceeded its fixed600-second deadline.'}
 }
+function Assert-FreshObserverHost {
+ $loaded=@('GreenLensPairedProcess.NativeProcess','GreenLensObservation.HeldProcessImage','GreenLensColdRegeneration.Capture')|Where-Object {$_ -as [type]}
+ if($loaded){throw ('A fresh PowerShell process is required; loaded helper identities cannot be bound to current source bytes: '+($loaded -join ', '))}
+}
 if($FunctionsOnly){return}
+Assert-FreshObserverHost
 
 $cache=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'GreenLens')).TrimEnd('\','/')
 $root=(Resolve-Path -LiteralPath $Project).Path.TrimEnd('\','/');$output=[IO.Path]::GetFullPath($OutputDirectory).TrimEnd('\','/')
@@ -98,6 +104,7 @@ if(Test-Path -LiteralPath $output){throw 'Output directory already exists; no ov
 $destination=Join-Path $output 'regenerated'
 $cliPath=(Resolve-Path -LiteralPath $Cli).Path;$typst=(Resolve-Path -LiteralPath (Join-Path $TypstDir 'typst.exe')).Path
 $native=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'annual-paired-native-process.cs')).Path
+$imageHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-process-image.cs')).Path
 $typstPinPath=Join-Path $PSScriptRoot '../dependencies/typst.json';$typstPin=Read-BoundedJson $typstPinPath 64KB
 $typstPinEntry=$typstPin.members['typst.exe']
 if(!$typstPinEntry -or $typstPinEntry.sha256 -cnotmatch '^[a-f0-9]{64}$'){throw 'Pinned Typst dependency identity is unavailable.'}
@@ -121,20 +128,21 @@ $products=Read-BoundedJson (Portable-Child $issueDir 'issue-products.json') 256K
 if($products.content_sha256 -cne $ExpectedContentSha256 -or $products.products_sha256 -cne $ExpectedProductsSha256){throw 'Issued product manifest does not match the declared bindings.'}
 $productCheck=Assert-Products $issueDir $products
 $arguments=@('report-issue','regenerate',$root,$IssueId,$destination,'--typst-dir',(Split-Path -Parent $typst))
-$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared source/build receipt and exact CLI SHA256; source is not inferred from executable bytes';cli_sha256=$CliSha256.ToLowerInvariant();typst_sha256=$typstHash;typst_dependency_sha256=(File-Hash $typstPinPath);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);conhost_sha256=$conhostHash}
+$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared source/build receipt and exact CLI SHA256; source is not inferred from executable bytes';cli_sha256=$CliSha256.ToLowerInvariant();typst_sha256=$typstHash;typst_dependency_sha256=(File-Hash $typstPinPath);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);process_image_helper_sha256=(File-Hash $imageHelper);conhost_sha256=$conhostHash}
 New-Item -ItemType Directory -Path $output|Out-Null
 $coldRuntime=Join-Path $output 'cold-runtime';$coldRoaming=Join-Path $output 'cold-roaming';$coldTemp=Join-Path $output 'cold-temp'
 foreach($path in @($coldRuntime,$coldRoaming,$coldTemp)){New-Item -ItemType Directory -Path $path|Out-Null}
 $childEnvironment=[ordered]@{LOCALAPPDATA=$coldRuntime;APPDATA=$coldRoaming;TEMP=$coldTemp;TMP=$coldTemp;GREENLENS_ENERGYPLUS_DIR=(Join-Path $output 'unavailable-energyplus');GREENLENS_RADIANCE=(Join-Path $output 'unavailable-radiance');GREENLENS_TYPST_DIR=(Split-Path -Parent $typst);PATH=([Environment]::GetFolderPath('System')+';'+[Environment]::GetFolderPath('Windows'))}
 $parentEnvironment=@{};foreach($key in $childEnvironment.Keys){$parentEnvironment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 Write-Receipt (Join-Path $output 'before-members.json') $before
-$protocol=[ordered]@{schema_version='greenlens.report-review-cold-regeneration.v1';declared_utc=[DateTime]::UtcNow.ToString('o');identities=$identities;project_id=$projectJson.id;manifest_sha256=$ExpectedManifestSha256.ToLowerInvariant();issue=$issue;arguments=$arguments;cold_unavailable_paths=$ColdUnavailablePaths;child_environment=$childEnvironment;cold_runtime_initial_entries=@(Get-ChildItem -LiteralPath $coldRuntime -Force).Count;attempt_limit=1;deadline_seconds=600;kernel_job_commit_limit_bytes=1GB;acceptance_raw_peak_limit_bytes=2GB;active_process_limit=16;sample_milliseconds=200;maximum_samples=3002;stdout_cap_bytes=1MB;stderr_cap_bytes=1MB;scope='One CLI regeneration only; fresh owned LOCALAPPDATA/APPDATA/TEMP, explicitly absent engine paths, OS-only PATH and explicit pinned Typst. No source hiding, input edit, new issue, simulation, retry, or historical mutation';process_observation='Only pinned CLI/Typst and canonical System32 conhost may be observed. Exited-before-inspection races remain disclosed. Kernel job peak includes all members; no peak normalization or denied-allocation subtraction.';failure_policy='Any substantive failure ends this attempt. Preserve logs, partial outputs and normal CLI scratch; never relaunch automatically.';claim_limit='Exact deterministic output agreement and retained-byte preservation are reproducibility checks, not scientific qualification.'}
+$protocol=[ordered]@{schema_version='greenlens.report-review-cold-regeneration.v1';declared_utc=[DateTime]::UtcNow.ToString('o');identities=$identities;project_id=$projectJson.id;manifest_sha256=$ExpectedManifestSha256.ToLowerInvariant();issue=$issue;arguments=$arguments;cold_unavailable_paths=$ColdUnavailablePaths;child_environment=$childEnvironment;cold_runtime_initial_entries=@(Get-ChildItem -LiteralPath $coldRuntime -Force).Count;attempt_limit=1;deadline_seconds=600;kernel_job_commit_limit_bytes=1GB;acceptance_raw_peak_limit_bytes=2GB;active_process_limit=16;sample_milliseconds=200;maximum_samples=3002;stdout_cap_bytes=1MB;stderr_cap_bytes=1MB;scope='One CLI regeneration only; fresh owned LOCALAPPDATA/APPDATA/TEMP, explicitly absent engine paths, OS-only PATH and explicit pinned Typst. No source hiding, input edit, new issue, simulation, retry, or historical mutation';process_observation='Only pinned CLI/Typst and canonical System32 conhost may be observed. Every enumerated member requires a held PID/creation-bound executable identity; unknown membership fails explicitly. Polling can miss lifetimes entirely. Kernel job peak includes all members; no peak normalization or denied-allocation subtraction.';failure_policy='Any substantive failure ends this attempt. Preserve logs, partial outputs and normal CLI scratch; never relaunch automatically.';claim_limit='Exact deterministic output agreement and retained-byte preservation are reproducibility checks, not scientific qualification.'}
 $protocol.scope_selection=[ordered]@{revision_sha256=$scopeObservation.revision.revision_sha256;storage_schema=$scopeObservation.storage_schema;member_path=$scopeObservation.member_path;member_bytes=$scopeObservation.member_bytes;member_sha256=$scopeObservation.member_sha256;verification_scope=$scopeObservation.verification_scope}
 Write-Receipt (Join-Path $output 'protocol.json') $protocol
 $protocolHash=File-Hash (Join-Path $output 'protocol.json')
 
-if(!('GreenLensPairedProcess.NativeProcess' -as [type])){Add-Type -LiteralPath $native}
-if(!('GreenLensColdRegeneration.Capture' -as [type])){Add-Type -TypeDefinition @'
+Add-Type -LiteralPath $native
+Add-Type -LiteralPath $imageHelper
+Add-Type -TypeDefinition @'
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -155,7 +163,7 @@ namespace GreenLensColdRegeneration {
   }
  }
 }
-'@}
+'@
 $proc=$null;$stdout=[GreenLensColdRegeneration.Capture]::new();$stderr=[GreenLensColdRegeneration.Capture]::new();$outTask=$null;$errTask=$null
 $seen=@{};$samples=[Collections.Generic.List[object]]::new();$timer=[Diagnostics.Stopwatch]::new();$commandPassed=$false;$typstCount=0
 $record=[ordered]@{schema_version=$protocol.schema_version;protocol_sha256=$protocolHash;identities=$identities;attempt=1;completed=$false;failure=$null;cleanup_errors=@();preservation_errors=@();raw_peak_max_bytes=0;sampled_private_max_bytes=0;member_count_max=0;energyplus_observed=$false;cleanup_job_empty=$false;original_members_preserved=$false;products_identical=$false}
@@ -177,9 +185,11 @@ try{
   if($active -gt 16 -or $members.Count -gt 16){throw 'Job process count exceeded16.'}
   foreach($member in $members){
    $p=$null;$row=$null
-   try{$p=[Diagnostics.Process]::GetProcessById([int]$member);$p.Refresh();$started=$p.StartTime.ToUniversalTime();$key=[string]$member+':'+$started.Ticks;$name=$p.ProcessName;$image=$p.MainModule.FileName;$privateBytes=[long]$p.PrivateMemorySize64;$private+=$privateBytes;$observed.Add(@{pid=$member;name=$name;private_bytes=$privateBytes})
-    if(!$seen.ContainsKey($key)){if(!$image){throw 'Live process image identity is unavailable.'};$row=[ordered]@{pid=$member;name=$name;image_path=$image;started_utc=$started.ToString('o');first_observed_utc=[DateTime]::UtcNow.ToString('o');image_sha256=$null;policy=$null};$seen[$key]=$row}
-   }catch [ArgumentException]{$observed.Add(@{pid=$member;identity_unavailable='Exited between Job membership and process inspection'})}catch{if($p -and $p.HasExited){$observed.Add(@{pid=$member;identity_unavailable='Exited during process inspection';inspection_error=$_.Exception.Message})}else{throw}}finally{if($p){$p.Dispose()}}
+   try{$p=[Diagnostics.Process]::GetProcessById([int]$member);$held=$p.SafeHandle;$proc.RequireMember($held);$p.Refresh();$started=$p.StartTime.ToUniversalTime();[GreenLensObservation.HeldProcessImage]::ValidateBinding($held,[int]$member,$started.Ticks);$key=[string]$member+':'+$started.Ticks
+    if($seen.ContainsKey($key)){$name=$seen[$key].name;$image=$seen[$key].image_path}else{$identity=[GreenLensObservation.HeldProcessImage]::Read($held,[int]$member,$started.Ticks);$name=$identity.Name;$image=$identity.ImagePath}
+    $privateBytes=[long]$p.PrivateMemorySize64;$private+=$privateBytes;$observed.Add(@{pid=$member;name=$name;private_bytes=$privateBytes})
+    if(!$seen.ContainsKey($key)){$row=[ordered]@{pid=$member;name=$name;image_path=$image;started_utc=$started.ToString('o');first_observed_utc=[DateTime]::UtcNow.ToString('o');image_identity_method='held-handle-query-full-process-image-name.v1';image_sha256=$null;policy=$null};$seen[$key]=$row}
+   }catch{$record.process_identity_failure=@{pid=$member;identity_unavailable=$true;inspection_error=$_.Exception.Message;exception_type=$_.Exception.GetType().FullName;category=$_.CategoryInfo.Category.ToString();script_stack_trace=$_.ScriptStackTrace;position=$_.InvocationInfo.PositionMessage};throw ('Observed process identity/resource inspection failed; unidentified membership cannot pass: '+$_.Exception.Message)}finally{if($p){$p.Dispose()}}
    # Never catch policy failures as an exited-process race. File hashes admit
    # package-redirected aliases of the exact pinned bytes, including DOS/NT names.
    if($row){if($row.name -imatch '^(energyplus|expandobjects|readvarseso)$'){$record.energyplus_observed=$true};$row.image_sha256=File-Hash $row.image_path;$row.policy=Assert-ImageIdentity $row.name $row.image_sha256 $row.image_path ([IO.Path]::GetFileNameWithoutExtension($cliPath)) $identities.cli_sha256 $typstHash $conhost $conhostHash;if($row.policy -ceq 'pinned_typst'){$typstCount++}}
@@ -194,7 +204,7 @@ try{
  $record.command_seconds=$timer.Elapsed.TotalSeconds
  Assert-RegenerationDeadline $record.command_seconds
  $commandPassed=$true
-}catch{$record.failure=$_.Exception.Message}
+}catch{$record.failure=$_.Exception.Message;$record.failure_detail=@{exception_type=$_.Exception.GetType().FullName;category=$_.CategoryInfo.Category.ToString();script_stack_trace=$_.ScriptStackTrace;position=$_.InvocationInfo.PositionMessage}}
 finally{
  # The child inherited its isolated environment at process creation. Restore
  # every parent value even if process startup or verification failed.
@@ -206,7 +216,7 @@ finally{
  [IO.File]::WriteAllBytes((Join-Path $output 'stdout.bin'),$stdout.Bytes);[IO.File]::WriteAllBytes((Join-Path $output 'stderr.bin'),$stderr.Bytes)
  $record.stdout_total_bytes=$stdout.Total;$record.stderr_total_bytes=$stderr.Total;$record.stdout_overflow=$stdout.Overflow;$record.stderr_overflow=$stderr.Overflow
  try{$after=Snapshot-Members $root;Write-Receipt (Join-Path $output 'after-members.json') $after;Assert-SameMembers $before $after;$record.original_members_preserved=$true;$record.original_member_count=$after.member_count;$record.original_member_bytes=$after.total_bytes}catch{$record.preservation_errors+=@($_.Exception.Message)}
- try{foreach($path in @($ColdUnavailablePaths)+@($childEnvironment.GREENLENS_ENERGYPLUS_DIR,$childEnvironment.GREENLENS_RADIANCE)){if(Test-Path -LiteralPath $path){throw 'A declared unavailable path became available.'}};if((File-Hash $cliPath) -cne $identities.cli_sha256 -or (File-Hash $typst) -cne $typstHash -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $typstPinPath) -cne $identities.typst_dependency_sha256){throw 'Declared tooling changed during the operation.'}}catch{$record.preservation_errors+=@($_.Exception.Message)}
+ try{foreach($path in @($ColdUnavailablePaths)+@($childEnvironment.GREENLENS_ENERGYPLUS_DIR,$childEnvironment.GREENLENS_RADIANCE)){if(Test-Path -LiteralPath $path){throw 'A declared unavailable path became available.'}};if((File-Hash $cliPath) -cne $identities.cli_sha256 -or (File-Hash $typst) -cne $typstHash -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $imageHelper) -cne $identities.process_image_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $typstPinPath) -cne $identities.typst_dependency_sha256){throw 'Declared tooling changed during the operation.'}}catch{$record.preservation_errors+=@($_.Exception.Message)}
  $record.samples=$samples.ToArray();$record.members=@($seen.Values|Sort-Object first_observed_utc);$record.observed_typst_processes=$typstCount
 }
 # Publication is deliberately after cleanup and all preservation checks. A

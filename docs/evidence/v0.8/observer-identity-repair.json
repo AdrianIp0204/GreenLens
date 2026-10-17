@@ -1,0 +1,1735 @@
+{
+  "schema_version": "greenlens.observer-repair-development.v1",
+  "parent_application_source": "1d272333b2ca3a7d4f132a435214a783734b8fa1",
+  "source_binding": "Exact working-file hashes; application payload unchanged. Commit identity is recorded by Git and hosted check separately.",
+  "source_files": {
+    "scripts/observed-process-image.cs": {
+      "bytes": 4233,
+      "sha256": "8445b3070f4efd5300e22f8da35e95fea54e2d13b364a3d6e7b6100bba8f4bda"
+    },
+    "scripts/annual-paired-native-process.cs": {
+      "bytes": 25214,
+      "sha256": "735476064274788e036c8d8d06f9b2a41fb2b29743f54370ea6d34bce61a9142"
+    },
+    "scripts/supervise-v08-report-review.ps1": {
+      "bytes": 30402,
+      "sha256": "6b5f0aec80c063523c3449fe40d134f44b29c6657e89321ce429f9f91fba8769"
+    },
+    "scripts/regenerate-v08-review-once.ps1": {
+      "bytes": 27309,
+      "sha256": "c56d88296653d21872f8ee188378e952923aa8b0f4d6f6e5630d5046f29371c0"
+    },
+    "scripts/test-observed-process-image.ps1": {
+      "bytes": 8601,
+      "sha256": "3b2b1dfbc7b8d23ab3a3127e97f70440f7be2d23bbf5204c6d29f7250111583d"
+    },
+    "scripts/test-annual-paired-native-process.ps1": {
+      "bytes": 13533,
+      "sha256": "77e44fafd9cfbc1ca313e8dc7c7c0149f5959a4a273e6a376b1c2df93af2196b"
+    },
+    "scripts/test-supervise-v08-report-review.ps1": {
+      "bytes": 15164,
+      "sha256": "c651f19959212d17062c802ab81dc3319264e26467ed2aa3941c4709f9b9c107"
+    },
+    "scripts/test-regenerate-v08-review.ps1": {
+      "bytes": 7536,
+      "sha256": "4a3ccc7d1f5f3100ad50b3be696ccc25db030b0d68472c12924e8985367e35b0"
+    },
+    ".github/workflows/observer-windows.yml": {
+      "bytes": 2036,
+      "sha256": "5e22c2f36902d0997f7b04d536e27b56cfe906a236be7212723b1cc4efd85269"
+    }
+  },
+  "tests": [
+    {
+      "kind": "supervisor_source",
+      "receipt_sha256": "a8e27c8f8e0164304f7ce290bb851ec5d9e0635ed629857d220acdb56323d1ac",
+      "scope": "Helper/source checks and harmless synthetic children only; no GreenLens, Typst or EnergyPlus",
+      "result": {
+        "schema_version": "greenlens.supervisor-source-checks.v2",
+        "source_sha256": "6b5f0aec80c063523c3449fe40d134f44b29c6657e89321ce429f9f91fba8769",
+        "test_source_sha256": "c651f19959212d17062c802ab81dc3319264e26467ed2aa3941c4709f9b9c107",
+        "powershell": "7.6.5",
+        "supervisor_executed": false,
+        "app_or_renderer_launched": false,
+        "native_api_calls": 0,
+        "completed_utc": "2026-10-17T11:04:01.558245Z",
+        "passed_count": 125,
+        "failure": null,
+        "checks": [
+          {
+            "passed": true,
+            "name": "Supervisor PowerShell AST has zero errors"
+          },
+          {
+            "passed": true,
+            "name": "Embedded/helper C# compiles; held-limit API exists (not invoked)"
+          },
+          {
+            "passed": true,
+            "name": "Held-image API compiles (not invoked)"
+          },
+          {
+            "passed": true,
+            "name": "Fresh-host guard exists before input admission"
+          },
+          {
+            "passed": true,
+            "name": "Actual run guard rejects already loaded helper assembly before launch"
+          },
+          {
+            "passed": true,
+            "name": "Bounded original in-memory stream 0"
+          },
+          {
+            "passed": true,
+            "name": "Bounded original in-memory stream 100"
+          },
+          {
+            "passed": true,
+            "name": "Bounded original in-memory stream 1048576"
+          },
+          {
+            "passed": true,
+            "name": "Bounded original in-memory stream 1048577"
+          },
+          {
+            "passed": true,
+            "name": "Bounded original in-memory stream 3145728"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape null"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape null"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON null"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape null"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape []"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape []"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON []"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape []"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape [null]"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape [null]"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON [null]"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape [null]"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape [[]]"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape [[]]"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON [[]]"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape [[]]"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape [[null]]"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape [[null]]"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON [[null]]"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape [[null]]"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape [1]"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape [1]"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON [1]"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape [1]"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape [[1]]"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape [[1]]"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON [[1]]"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape [[1]]"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape [1,2]"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape [1,2]"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON [1,2]"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape [1,2]"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape [[1,2],[],null]"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape [[1,2],[],null]"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON [[1,2],[],null]"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape [[1,2],[],null]"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape {}"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape {}"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON {}"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape {}"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape {\"a\":[]}"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape {\"a\":[]}"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON {\"a\":[]}"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape {\"a\":[]}"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape false"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape false"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON false"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape false"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape 0"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape 0"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON 0"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape 0"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape 1"
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape 1"
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON 1"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape 1"
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape \"1\""
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape \"1\""
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON \"1\""
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape \"1\""
+          },
+          {
+            "passed": true,
+            "name": "Canonical JSON preserves exact shape \"\""
+          },
+          {
+            "passed": true,
+            "name": "Distinct identity for shape \"\""
+          },
+          {
+            "passed": true,
+            "name": "Identity hashes actual canonical JSON \"\""
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves root shape \"\""
+          },
+          {
+            "passed": true,
+            "name": "Dictionary ordering is deterministic inside nested arrays"
+          },
+          {
+            "passed": true,
+            "name": "Array order remains significant"
+          },
+          {
+            "passed": true,
+            "name": "Null child position remains significant"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader preserves timestamps as strings"
+          },
+          {
+            "passed": true,
+            "name": "Bounded reader rejects oversized input"
+          },
+          {
+            "passed": true,
+            "name": "Empty observed path fails before FileStream construction"
+          },
+          {
+            "passed": true,
+            "name": "Missing renderer identity is explicit even after exit"
+          },
+          {
+            "passed": true,
+            "name": "Empty observed path fails before FileStream construction"
+          },
+          {
+            "passed": true,
+            "name": "Missing renderer identity is explicit even after exit"
+          },
+          {
+            "passed": true,
+            "name": "Empty observed path fails before FileStream construction"
+          },
+          {
+            "passed": true,
+            "name": "Missing renderer identity is explicit even after exit"
+          },
+          {
+            "passed": true,
+            "name": "Forbidden member remains rejected after exit: energyplus"
+          },
+          {
+            "passed": true,
+            "name": "Forbidden member remains rejected after exit: EnergyPlus"
+          },
+          {
+            "passed": true,
+            "name": "Forbidden member remains rejected after exit: expandobjects"
+          },
+          {
+            "passed": true,
+            "name": "Forbidden member remains rejected after exit: readvarseso"
+          },
+          {
+            "passed": true,
+            "name": "Mismatched renderer bytes remain rejected after exit"
+          },
+          {
+            "passed": true,
+            "name": "Exact fixture bytes accepted only as identity check; ordinary process not renderer"
+          },
+          {
+            "passed": true,
+            "name": "Policy assertion remains outside member-inspection race catch"
+          },
+          {
+            "passed": true,
+            "name": "No nullable module enumeration or expected-path substitution"
+          },
+          {
+            "passed": true,
+            "name": "Unknown membership is recorded and fails instead of silently skipped"
+          },
+          {
+            "passed": true,
+            "name": "Unknown-member record retains original exception category and stack"
+          },
+          {
+            "passed": true,
+            "name": "Cache lookup follows held PID/creation-time check"
+          },
+          {
+            "passed": true,
+            "name": "Exact held Job membership precedes identity and cache lookup"
+          },
+          {
+            "passed": true,
+            "name": "Empty legacy/static runs and null climate survive startup inventory check"
+          },
+          {
+            "passed": true,
+            "name": "Singleton energy inventory retains array shape"
+          },
+          {
+            "passed": true,
+            "name": "Empty energy inventory compares successfully"
+          },
+          {
+            "passed": true,
+            "name": "Null legacy inventory compares successfully without becoming empty"
+          },
+          {
+            "passed": true,
+            "name": "Null versus empty legacy run inventory rejected"
+          },
+          {
+            "passed": true,
+            "name": "Singleton array versus scalar run inventory rejected"
+          },
+          {
+            "passed": true,
+            "name": "Reordered retained run inventory rejected"
+          },
+          {
+            "passed": true,
+            "name": "Resealed changed record under same run ID rejected"
+          },
+          {
+            "passed": true,
+            "name": "Additional retained run rejected"
+          },
+          {
+            "passed": true,
+            "name": "Deleted retained run rejected"
+          },
+          {
+            "passed": true,
+            "name": "One retained issue remains inspectable"
+          },
+          {
+            "passed": true,
+            "name": "Resealed product summary under same issue ID rejected"
+          },
+          {
+            "passed": true,
+            "name": "Changed historical pair record rejected"
+          },
+          {
+            "passed": true,
+            "name": "Historical scope and exact retained pair accepted"
+          },
+          {
+            "passed": true,
+            "name": "Missing saved arm binding rejected: baseline_run_id"
+          },
+          {
+            "passed": true,
+            "name": "Missing saved arm binding rejected: proposed_run_id"
+          },
+          {
+            "passed": true,
+            "name": "Missing saved arm binding rejected: scope_revision_sha256"
+          },
+          {
+            "passed": true,
+            "name": "Duplicate armed run rejected"
+          },
+          {
+            "passed": true,
+            "name": "Duplicate armed scope rejected"
+          },
+          {
+            "passed": true,
+            "name": "Wrong saved project rejected"
+          },
+          {
+            "passed": true,
+            "name": "Wrong arm project rejected"
+          },
+          {
+            "passed": true,
+            "name": "Inspection helpers do not mutate the original synthetic manifest"
+          },
+          {
+            "passed": true,
+            "name": "Final manifest identity comes from final member snapshot"
+          },
+          {
+            "passed": true,
+            "name": "Saved arm binding check precedes armed stage"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "held_image_owned_job",
+      "receipt_sha256": "8668d81d33e8f54755b4871675b6df645093c091263f8a1123353a6b5b1c49e2",
+      "scope": "Helper/source checks and harmless synthetic children only; no GreenLens, Typst or EnergyPlus",
+      "result": {
+        "schema_version": "greenlens.observed-process-image-test.v1",
+        "helper_sha256": "8445b3070f4efd5300e22f8da35e95fea54e2d13b364a3d6e7b6100bba8f4bda",
+        "native_helper_sha256": "735476064274788e036c8d8d06f9b2a41fb2b29743f54370ea6d34bce61a9142",
+        "test_sha256": "3b2b1dfbc7b8d23ab3a3127e97f70440f7be2d23bbf5204c6d29f7250111583d",
+        "powershell": "7.6.5",
+        "owned_synthetic_child_launches": 2,
+        "app_renderer_engine_launches": 0,
+        "identity": {
+          "image_query": "QueryFullProcessImageNameW through held handle",
+          "started_utc": "2026-10-17T11:04:32.0863972Z",
+          "executable_sha256": "362a356ce7f0940ec74f73a8fc2c990a2cc24a38a11c90bbd8eca947110ad139",
+          "executable_name": "pwsh",
+          "pid": 18056
+        },
+        "after_exit_image_query": {
+          "verified": false,
+          "error": "Exception calling \"Read\" with \"3\" argument(s): \"Observed executable image query failed; identity remains unverified.\""
+        },
+        "passed_count": 18,
+        "failure": null,
+        "checks": [
+          {
+            "name": "Invalid handle fails explicitly before native lookup",
+            "passed": true
+          },
+          {
+            "name": "Null handle cannot inherit supplied identity",
+            "passed": true
+          },
+          {
+            "name": "Owned synthetic child reaches bounded ready state",
+            "passed": true
+          },
+          {
+            "name": "Kernel image binds exact PID and process creation time",
+            "passed": true
+          },
+          {
+            "name": "Kernel-derived path/name match independently selected child executable",
+            "passed": true
+          },
+          {
+            "name": "Observed actual executable bytes match selected synthetic executable",
+            "passed": true
+          },
+          {
+            "name": "Different expected PID cannot reuse held identity",
+            "passed": true
+          },
+          {
+            "name": "Reused-PID creation-time mismatch fails closed",
+            "passed": true
+          },
+          {
+            "name": "Owned child exits normally within fixed deadline",
+            "passed": true
+          },
+          {
+            "name": "Held PID/creation binding remains exact after exit; only already observed identity may be reused",
+            "passed": true
+          },
+          {
+            "name": "Unavailable post-exit image remains explicit and unverified",
+            "passed": true
+          },
+          {
+            "name": "Closed handle cannot query a newly reused PID",
+            "passed": true
+          },
+          {
+            "name": "Bounded owned Job child reaches ready state",
+            "passed": true
+          },
+          {
+            "name": "Exact held owned process passes Job membership",
+            "passed": true
+          },
+          {
+            "name": "Foreign live process has a valid PID/time/image identity",
+            "passed": true
+          },
+          {
+            "name": "Valid foreign PID/time cannot enter owned identity cache",
+            "passed": true
+          },
+          {
+            "name": "Owned Job child exits normally within fixed deadline",
+            "passed": true
+          },
+          {
+            "name": "Owned test Job becomes empty",
+            "passed": true
+          }
+        ],
+        "completed_utc": "2026-10-17T11:04:33.8232896Z"
+      }
+    },
+    {
+      "kind": "cold_collector_source",
+      "receipt_sha256": "f4ae5d87d4b0db178cd3d46e7bafe73225ec11e45a1c9fee6a0ee9216d07d922",
+      "scope": "Helper/source checks and harmless synthetic children only; no GreenLens, Typst or EnergyPlus",
+      "result": {
+        "passed": 26,
+        "failed": 0,
+        "parser_errors": 0,
+        "native_or_renderer_executions": 0
+      }
+    },
+    {
+      "kind": "shared_native_process",
+      "receipt_sha256": "4ae845fdbd2c562efd429d8d74c93896399d587b3b704913bd2bc595cf702bb7",
+      "scope": "Helper/source checks and harmless synthetic children only; no GreenLens, Typst or EnergyPlus",
+      "result": {
+        "test_sha256": "77e44fafd9cfbc1ca313e8dc7c7c0149f5959a4a273e6a376b1c2df93af2196b",
+        "source_sha256": "735476064274788e036c8d8d06f9b2a41fb2b29743f54370ea6d34bce61a9142",
+        "passed": true,
+        "scope": "Actual Windows Job Object, argument and binary pipe behavior using original synthetic processes; no Radiance numerical acceptance",
+        "checks": [
+          {
+            "argument_count": 7,
+            "passed": true,
+            "name": "argument-array-quoting-Unicode-child-environment"
+          },
+          {
+            "bytes": 2097152,
+            "sha256": "3576fb4c340cd1fd272a79a7fc8357065a717bb84a5a00298a943090bd4d9167",
+            "passed": true,
+            "name": "binary-2MiB-round-trip"
+          },
+          {
+            "exit_code": 7,
+            "passed": true,
+            "name": "nonzero-exit-and-stderr"
+          },
+          {
+            "termination_seconds": 0.1308051,
+            "live_job_working_set_bytes": 108572672,
+            "passed": true,
+            "name": "kill-after-parent-exit",
+            "child_exited": true
+          },
+          {
+            "termination_seconds": 0.202572,
+            "live_job_working_set_bytes": 108650496,
+            "passed": true,
+            "name": "dispose-after-parent-exit",
+            "child_exited": true
+          },
+          {
+            "termination_seconds": 0.143404,
+            "live_job_working_set_bytes": 107720704,
+            "passed": true,
+            "name": "pending-stdin-after-parent-exit",
+            "child_exited": true
+          },
+          {
+            "termination_seconds": 0.1911261,
+            "live_job_working_set_bytes": 240271360,
+            "passed": true,
+            "name": "kill-live-parent-and-child",
+            "child_exited": true
+          },
+          {
+            "name": "only-explicit-standard-handles-inherited",
+            "passed": true
+          },
+          {
+            "name": "missing-executable",
+            "passed": true
+          },
+          {
+            "name": "missing-directory",
+            "passed": true
+          },
+          {
+            "name": "NUL-argument",
+            "passed": true
+          },
+          {
+            "name": "negative-wait",
+            "passed": true
+          }
+        ],
+        "completed_utc": "2026-10-17T11:05:10.0427792Z",
+        "schema_version": "greenlens.paired-native-process-regression.v1",
+        "check_count": 12
+      }
+    }
+  ],
+  "package_documents": {
+    "retained_failed_check": {
+      "outcome": "Rejected over-limit documentation, no package published",
+      "remedy": "Shortened only current roadmap summaries; no historical evidence removed and no limit increased",
+      "bytes": 16777392,
+      "over_bytes": 176
+    },
+    "limit_bytes": 16777216,
+    "files": 414,
+    "local_links": 804,
+    "bytes": 16777198,
+    "passed": true
+  },
+  "limits_unchanged": true,
+  "new_dependencies": [],
+  "license": "Apache-2.0 original helper, Windows system APIs",
+  "references": [
+    "https://learn.microsoft.com/windows/win32/api/winbase/nf-winbase-queryfullprocessimagenamew",
+    "https://learn.microsoft.com/windows/win32/api/processthreadsapi/nf-processthreadsapi-getprocesstimes"
+  ],
+  "claims": [
+    "Kernel image query uses an actual held process handle plus exact PID/creation-time binding.",
+    "The same held handle must belong to the exact owned Windows Job before cached identity reuse.",
+    "A foreign process with valid PID/time/image is rejected; null/unavailable identity cannot inherit an expected path.",
+    "Fresh PowerShell hosts are required before executing either collector, preventing stale compiled helper/source-hash claims.",
+    "Two harmless children in the image/Job test; shared helper regression uses separately bounded synthetic cases. No app/renderer/engine or real-project write.",
+    "An after-exit fresh image query can be unavailable and remains explicitly unverified.",
+    "Polling can miss entire short lifetimes; kernel bounds are unchanged and no complete execution-audit claim is made.",
+    "Previous native failure and all stopped allowances remain; no installed retry."
+  ],
+  "hosted_scope": "Focused observer Windows workflow on the observer branch. Existing application/scientific CI unchanged; no duplicate annual execution for observer-only changes.",
+  "intermediate_tests": [
+    {
+      "sha256": "f4233ffab76ea7c42b6296f8c3546d81407cc2463b40a74aac3f700f13b6907e",
+      "passed": 122,
+      "failure": null,
+      "scope": "Synthetic/helper testing only; no app/Typst/EnergyPlus",
+      "checks": [
+        {
+          "passed": true,
+          "name": "Supervisor PowerShell AST has zero errors"
+        },
+        {
+          "passed": true,
+          "name": "Embedded/helper C# compiles; held-limit API exists (not invoked)"
+        },
+        {
+          "passed": true,
+          "name": "Held-image API compiles (not invoked)"
+        },
+        {
+          "passed": true,
+          "name": "Bounded original in-memory stream 0"
+        },
+        {
+          "passed": true,
+          "name": "Bounded original in-memory stream 100"
+        },
+        {
+          "passed": true,
+          "name": "Bounded original in-memory stream 1048576"
+        },
+        {
+          "passed": true,
+          "name": "Bounded original in-memory stream 1048577"
+        },
+        {
+          "passed": true,
+          "name": "Bounded original in-memory stream 3145728"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape null"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape null"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON null"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape null"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape []"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape []"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON []"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape []"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape [null]"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape [null]"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON [null]"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape [null]"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape [[]]"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape [[]]"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON [[]]"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape [[]]"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape [[null]]"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape [[null]]"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON [[null]]"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape [[null]]"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape [1]"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape [1]"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON [1]"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape [1]"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape [[1]]"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape [[1]]"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON [[1]]"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape [[1]]"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape [1,2]"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape [1,2]"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON [1,2]"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape [1,2]"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape [[1,2],[],null]"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape [[1,2],[],null]"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON [[1,2],[],null]"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape [[1,2],[],null]"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape {}"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape {}"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON {}"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape {}"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape {\"a\":[]}"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape {\"a\":[]}"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON {\"a\":[]}"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape {\"a\":[]}"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape false"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape false"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON false"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape false"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape 0"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape 0"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON 0"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape 0"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape 1"
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape 1"
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON 1"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape 1"
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape \"1\""
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape \"1\""
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON \"1\""
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape \"1\""
+        },
+        {
+          "passed": true,
+          "name": "Canonical JSON preserves exact shape \"\""
+        },
+        {
+          "passed": true,
+          "name": "Distinct identity for shape \"\""
+        },
+        {
+          "passed": true,
+          "name": "Identity hashes actual canonical JSON \"\""
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves root shape \"\""
+        },
+        {
+          "passed": true,
+          "name": "Dictionary ordering is deterministic inside nested arrays"
+        },
+        {
+          "passed": true,
+          "name": "Array order remains significant"
+        },
+        {
+          "passed": true,
+          "name": "Null child position remains significant"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader preserves timestamps as strings"
+        },
+        {
+          "passed": true,
+          "name": "Bounded reader rejects oversized input"
+        },
+        {
+          "passed": true,
+          "name": "Empty observed path fails before FileStream construction"
+        },
+        {
+          "passed": true,
+          "name": "Missing renderer identity is explicit even after exit"
+        },
+        {
+          "passed": true,
+          "name": "Empty observed path fails before FileStream construction"
+        },
+        {
+          "passed": true,
+          "name": "Missing renderer identity is explicit even after exit"
+        },
+        {
+          "passed": true,
+          "name": "Empty observed path fails before FileStream construction"
+        },
+        {
+          "passed": true,
+          "name": "Missing renderer identity is explicit even after exit"
+        },
+        {
+          "passed": true,
+          "name": "Forbidden member remains rejected after exit: energyplus"
+        },
+        {
+          "passed": true,
+          "name": "Forbidden member remains rejected after exit: EnergyPlus"
+        },
+        {
+          "passed": true,
+          "name": "Forbidden member remains rejected after exit: expandobjects"
+        },
+        {
+          "passed": true,
+          "name": "Forbidden member remains rejected after exit: readvarseso"
+        },
+        {
+          "passed": true,
+          "name": "Mismatched renderer bytes remain rejected after exit"
+        },
+        {
+          "passed": true,
+          "name": "Exact fixture bytes accepted only as identity check; ordinary process not renderer"
+        },
+        {
+          "passed": true,
+          "name": "Policy assertion remains outside member-inspection race catch"
+        },
+        {
+          "passed": true,
+          "name": "No nullable module enumeration or expected-path substitution"
+        },
+        {
+          "passed": true,
+          "name": "Unknown membership is recorded and fails instead of silently skipped"
+        },
+        {
+          "passed": true,
+          "name": "Unknown-member record retains original exception category and stack"
+        },
+        {
+          "passed": true,
+          "name": "Cache lookup follows held PID/creation-time check"
+        },
+        {
+          "passed": true,
+          "name": "Empty legacy/static runs and null climate survive startup inventory check"
+        },
+        {
+          "passed": true,
+          "name": "Singleton energy inventory retains array shape"
+        },
+        {
+          "passed": true,
+          "name": "Empty energy inventory compares successfully"
+        },
+        {
+          "passed": true,
+          "name": "Null legacy inventory compares successfully without becoming empty"
+        },
+        {
+          "passed": true,
+          "name": "Null versus empty legacy run inventory rejected"
+        },
+        {
+          "passed": true,
+          "name": "Singleton array versus scalar run inventory rejected"
+        },
+        {
+          "passed": true,
+          "name": "Reordered retained run inventory rejected"
+        },
+        {
+          "passed": true,
+          "name": "Resealed changed record under same run ID rejected"
+        },
+        {
+          "passed": true,
+          "name": "Additional retained run rejected"
+        },
+        {
+          "passed": true,
+          "name": "Deleted retained run rejected"
+        },
+        {
+          "passed": true,
+          "name": "One retained issue remains inspectable"
+        },
+        {
+          "passed": true,
+          "name": "Resealed product summary under same issue ID rejected"
+        },
+        {
+          "passed": true,
+          "name": "Changed historical pair record rejected"
+        },
+        {
+          "passed": true,
+          "name": "Historical scope and exact retained pair accepted"
+        },
+        {
+          "passed": true,
+          "name": "Missing saved arm binding rejected: baseline_run_id"
+        },
+        {
+          "passed": true,
+          "name": "Missing saved arm binding rejected: proposed_run_id"
+        },
+        {
+          "passed": true,
+          "name": "Missing saved arm binding rejected: scope_revision_sha256"
+        },
+        {
+          "passed": true,
+          "name": "Duplicate armed run rejected"
+        },
+        {
+          "passed": true,
+          "name": "Duplicate armed scope rejected"
+        },
+        {
+          "passed": true,
+          "name": "Wrong saved project rejected"
+        },
+        {
+          "passed": true,
+          "name": "Wrong arm project rejected"
+        },
+        {
+          "passed": true,
+          "name": "Inspection helpers do not mutate the original synthetic manifest"
+        },
+        {
+          "passed": true,
+          "name": "Final manifest identity comes from final member snapshot"
+        },
+        {
+          "passed": true,
+          "name": "Saved arm binding check precedes armed stage"
+        }
+      ],
+      "kind": "native_observer_source"
+    },
+    {
+      "sha256": "3aeb421efd0aa698d919990e6568295548f923e801f096c042c13c18f0b9ed9b",
+      "passed": 12,
+      "failure": null,
+      "scope": "Synthetic/helper testing only; no app/Typst/EnergyPlus",
+      "checks": [
+        {
+          "name": "Invalid handle fails explicitly before native lookup",
+          "passed": true
+        },
+        {
+          "name": "Null handle cannot inherit supplied identity",
+          "passed": true
+        },
+        {
+          "name": "Owned synthetic child reaches bounded ready state",
+          "passed": true
+        },
+        {
+          "name": "Kernel image binds exact PID and process creation time",
+          "passed": true
+        },
+        {
+          "name": "Kernel-derived path/name match independently selected child executable",
+          "passed": true
+        },
+        {
+          "name": "Observed actual executable bytes match selected synthetic executable",
+          "passed": true
+        },
+        {
+          "name": "Different expected PID cannot reuse held identity",
+          "passed": true
+        },
+        {
+          "name": "Reused-PID creation-time mismatch fails closed",
+          "passed": true
+        },
+        {
+          "name": "Owned child exits normally within fixed deadline",
+          "passed": true
+        },
+        {
+          "name": "Held PID/creation binding remains exact after exit; only already observed identity may be reused",
+          "passed": true
+        },
+        {
+          "name": "Unavailable post-exit image remains explicit and unverified",
+          "passed": true
+        },
+        {
+          "name": "Closed handle cannot query a newly reused PID",
+          "passed": true
+        }
+      ],
+      "kind": "held_process_identity"
+    },
+    {
+      "sha256": "ce28e442367d03c879e02910d5ff789c29ccce2299a12f01e30742d9f5d82985",
+      "passed": 23,
+      "failure": null,
+      "scope": "Synthetic/helper testing only; no app/Typst/EnergyPlus",
+      "checks": null,
+      "kind": "cold_collector_source"
+    },
+    {
+      "sha256": "20ebbc01e08e798f717db6679c5873709f7e4d647cc9ed345d29b385b4b27e0f",
+      "passed": null,
+      "failure": "Cannot process argument transformation on parameter 'Condition'. Cannot convert value \"System.String\" to type \"System.Boolean\". Boolean parameters accept only Boolean values and numbers, such as $True, $False, 1 or 0.",
+      "scope": "Synthetic/helper testing only; no app/Typst/EnergyPlus",
+      "checks": [
+        {
+          "name": "Supervisor PowerShell AST has zero errors",
+          "passed": true
+        },
+        {
+          "name": "Embedded/helper C# compiles; held-limit API exists (not invoked)",
+          "passed": true
+        },
+        {
+          "name": "Held-image API compiles (not invoked)",
+          "passed": true
+        },
+        {
+          "name": "Bounded original in-memory stream 0",
+          "passed": true
+        },
+        {
+          "name": "Bounded original in-memory stream 100",
+          "passed": true
+        },
+        {
+          "name": "Bounded original in-memory stream 1048576",
+          "passed": true
+        },
+        {
+          "name": "Bounded original in-memory stream 1048577",
+          "passed": true
+        },
+        {
+          "name": "Bounded original in-memory stream 3145728",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape null",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape null",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON null",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape null",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape []",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape []",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON []",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape []",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape [null]",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape [null]",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON [null]",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape [null]",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape [[]]",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape [[]]",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON [[]]",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape [[]]",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape [[null]]",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape [[null]]",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON [[null]]",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape [[null]]",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape [1]",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape [1]",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON [1]",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape [1]",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape [[1]]",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape [[1]]",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON [[1]]",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape [[1]]",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape [1,2]",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape [1,2]",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON [1,2]",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape [1,2]",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape [[1,2],[],null]",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape [[1,2],[],null]",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON [[1,2],[],null]",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape [[1,2],[],null]",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape {}",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape {}",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON {}",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape {}",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape {\"a\":[]}",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape {\"a\":[]}",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON {\"a\":[]}",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape {\"a\":[]}",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape {\"a\":[null,[],[1],{\"b\":[],\"c\":null}],\"z\":null}",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape false",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape false",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON false",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape false",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape 0",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape 0",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON 0",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape 0",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape 1",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape 1",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON 1",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape 1",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape \"1\"",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape \"1\"",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON \"1\"",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape \"1\"",
+          "passed": true
+        },
+        {
+          "name": "Canonical JSON preserves exact shape \"\"",
+          "passed": true
+        },
+        {
+          "name": "Distinct identity for shape \"\"",
+          "passed": true
+        },
+        {
+          "name": "Identity hashes actual canonical JSON \"\"",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves root shape \"\"",
+          "passed": true
+        },
+        {
+          "name": "Dictionary ordering is deterministic inside nested arrays",
+          "passed": true
+        },
+        {
+          "name": "Array order remains significant",
+          "passed": true
+        },
+        {
+          "name": "Null child position remains significant",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader preserves timestamps as strings",
+          "passed": true
+        },
+        {
+          "name": "Bounded reader rejects oversized input",
+          "passed": true
+        }
+      ],
+      "kind": "development_test_argument_failure"
+    },
+    {
+      "sha256": "ab8bf735373438cbd605c28ddd448fc7ddb5662ae84755798481a6a0871b01ca",
+      "passed": 9,
+      "failure": "Exception calling \"Read\" with \"3\" argument(s): \"Observed executable image query failed; identity remains unverified.\"",
+      "scope": "Synthetic/helper testing only; no app/Typst/EnergyPlus",
+      "checks": [
+        {
+          "name": "Invalid handle fails explicitly before native lookup",
+          "passed": true
+        },
+        {
+          "name": "Null handle cannot inherit supplied identity",
+          "passed": true
+        },
+        {
+          "name": "Owned synthetic child reaches bounded ready state",
+          "passed": true
+        },
+        {
+          "name": "Kernel image binds exact PID and process creation time",
+          "passed": true
+        },
+        {
+          "name": "Kernel-derived path/name match independently selected child executable",
+          "passed": true
+        },
+        {
+          "name": "Observed actual executable bytes match selected synthetic executable",
+          "passed": true
+        },
+        {
+          "name": "Different expected PID cannot reuse held identity",
+          "passed": true
+        },
+        {
+          "name": "Reused-PID creation-time mismatch fails closed",
+          "passed": true
+        },
+        {
+          "name": "Owned child exits normally within fixed deadline",
+          "passed": true
+        }
+      ],
+      "kind": "post_exit_image_assumption_failure"
+    }
+  ],
+  "review": {
+    "outcome": "Read-only independent review found no remaining actionable code issue",
+    "scope": "Held Job membership, fresh-host guard, unchanged launch/resource limits",
+    "native_executions": 0
+  }
+}

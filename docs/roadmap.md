@@ -1,12 +1,14 @@
 # GreenLens roadmap
 
-Latest source 1d27233 is built and locally checked, uninstalled. Its CI remains separate; c328 CI passed without closing native Save failure. Second issuance/regeneration need separately authorized observation, not another automatic attempt.
+Current: 1d CI/Save/frames passed; observer failed at issuance. R1/revision intact; E/F incomplete, no retry.
 
-2026-10-17: bounded history storage is implemented. Native c3281d9 stopped at failed save after candidate acceptance; its observation is consumed. Finish diagnosis/checks, preserve staged history, and retain incomplete issuance/regeneration. No scope expansion or automatic retry.
+Earlier 1d build/CI and c328 Save checkpoints remain in the progress record.
+
+2026-10-17: history storage implemented. c3281d9 stopped at failed Save; preserve staged history and consumed allowance. Issuance/regeneration incomplete; no retry/expansion.
 
 ## Active bounded v0.8: reliable intake and report delivery
 
-At storage authorization, the same unspent native observation applied to the successor resolving the 16 MiB manifest blocker. That observation is now consumed as recorded above. Preserve all history and limits; no pruning, smaller substitute or automatic retry is permitted.
+Storage authorization kept the observation for the manifest repair; it is now consumed. Preserve history/limits; no pruning, substitute or retry.
 
 The active continuation repairs exact candidate provenance, explicit no-holidays declarations, unresolved-review report disclosures and accepted-frame restoration, followed by the separately bounded native second-issue/cold-copy demonstration. It does not expand physics or reset prior acceptance. Optional SKP remains behind independent fixture and containment gates.
 

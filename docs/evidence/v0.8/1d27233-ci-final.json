@@ -1,0 +1,391 @@
+{
+  "schema_version": "greenlens.hosted-ci-receipt.v1",
+  "source_commit": "1d272333b2ca3a7d4f132a435214a783734b8fa1",
+  "source_dirty": false,
+  "workflow_run_id": 38998788896,
+  "workflow_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38998788896",
+  "workflow_event": "push",
+  "branch": "codex/v0.8-reliable-intake",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build",
+      "job_id": 117297104389,
+      "conclusion": "success",
+      "started_utc": "2026-10-17T03:26:34Z",
+      "completed_utc": "2026-10-17T04:29:21Z",
+      "failed_steps": [],
+      "skipped_steps": []
+    },
+    {
+      "name": "energy",
+      "job_id": 117308928673,
+      "conclusion": "success",
+      "started_utc": "2026-10-17T04:29:23Z",
+      "completed_utc": "2026-10-17T04:47:56Z",
+      "failed_steps": [],
+      "skipped_steps": []
+    },
+    {
+      "name": "static_compatibility",
+      "job_id": 117308928676,
+      "conclusion": "success",
+      "started_utc": "2026-10-17T04:29:23Z",
+      "completed_utc": "2026-10-17T05:05:35Z",
+      "failed_steps": [],
+      "skipped_steps": []
+    }
+  ],
+  "checks": {
+    "frontend_tests_passed": 431,
+    "frontend_tests_failed": 0,
+    "typescript_and_production_frontend": "passed",
+    "format_and_strict_clippy": "passed",
+    "build_rust_summary_count": 19,
+    "build_rust_passed": 492,
+    "build_rust_failed": 0,
+    "build_rust_default_ignored": 17,
+    "default_ignore_disclosure": "Required native lifecycle, native Typst, retained energy reference intake and panel reuse tests were separately invoked in the energy job. Genuine issued-project external-history portability and nine-record evidence checks were not invoked by this hosted workflow; local evidence is separate.",
+    "history_observer_source_checks_passed": 42,
+    "history_observer_source_checks_failure": null,
+    "history_observer_helper_sha256": "ad38b01028e225891af6fa4ce5d9f18e9e8a73d6222b0560e06ca87a52150e7f",
+    "history_observer_test_sha256": "1f808a565729d1c7df89626dbac24e063ff1ed7ad8029d0d50b5945c05749e47",
+    "supervisor_source_checks_passed": 111,
+    "explicit_native_lifecycle": "passed",
+    "explicit_native_typst": "passed",
+    "retained_reference_cold_copy": "passed",
+    "retained_report_sensitivity_numeric_reuse": "passed",
+    "exact_source_unsigned_packaging_and_notices": "passed",
+    "windows_atomic_publication_regressions_passed": [
+      "persistence::tests::delete_sharing_observer_does_not_block_manifest_replacement",
+      "persistence::tests::manifest_reader_without_delete_sharing_rejects_publication_without_losing_candidate",
+      "persistence::tests::readonly_manifest_rejects_replacement_and_preserves_complete_candidate"
+    ],
+    "log_step_label_disclosure": "The gh text log labels many lines UNKNOWN STEP; job and step outcomes are taken from the workflow API. Test names and counts are present in the retained log."
+  },
+  "energy": {
+    "production_audit_sha256": "481c72707b170789f75493631ca0110669d7675850bf249ed70abeb3f62f75f8",
+    "all_frozen_checks_passed": true,
+    "direct_csv_retention_and_arithmetic_passed": true,
+    "cases": [
+      {
+        "case": "A10",
+        "run_id": "5205b719-a079-4bcd-953a-ee151766a571",
+        "minutes": 10,
+        "rows": 52560,
+        "channels": 34,
+        "annual_facility_kwh": 16307.089802617933,
+        "aligned_peak_kw": 5.516090229474726,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 1576800,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      },
+      {
+        "case": "B10",
+        "run_id": "9f5f422a-f135-4076-9408-9aad951a2932",
+        "minutes": 10,
+        "rows": 52560,
+        "channels": 34,
+        "annual_facility_kwh": 12617.357232381652,
+        "aligned_peak_kw": 4.045870430025533,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 1576800,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      },
+      {
+        "case": "A5",
+        "run_id": "e94907d1-f47d-4c9f-b7a9-37e6959f0cc9",
+        "minutes": 5,
+        "rows": 105120,
+        "channels": 34,
+        "annual_facility_kwh": 16305.190534702979,
+        "aligned_peak_kw": 5.514467140552976,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 3153600,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      },
+      {
+        "case": "B5",
+        "run_id": "4e35d995-476d-499c-8374-537ea2e2c956",
+        "minutes": 5,
+        "rows": 105120,
+        "channels": 34,
+        "annual_facility_kwh": 12628.426687271483,
+        "aligned_peak_kw": 4.0473828908715905,
+        "maximum_interval_reconciliation_kw": 1.5522042910257975E-15,
+        "native_scalar_comparisons": 3153600,
+        "max_native_scalar_difference": 0.0,
+        "occupied_unmet_percent_max": 0.0,
+        "comfort_checks_passed": true,
+        "native_warning_count": 1,
+        "native_severe_count": 0
+      }
+    ],
+    "timestep_comparisons": [
+      {
+        "alternative": "A",
+        "quantity": "annual_kwh",
+        "ten_minute": 16307.089802617933,
+        "five_minute_reference": 16305.190534702979,
+        "relative_difference": 0.00011648241159230206,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "A",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 5.516090229474726,
+        "five_minute_reference": 5.514467140552976,
+        "relative_difference": 0.00029433286669048686,
+        "limit": 0.03,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "annual_kwh",
+        "ten_minute": 12617.357232381652,
+        "five_minute_reference": 12628.426687271483,
+        "relative_difference": 0.0008765505920851582,
+        "limit": 0.01,
+        "passed": true
+      },
+      {
+        "alternative": "B",
+        "quantity": "aligned_peak_kw",
+        "ten_minute": 4.045870430025533,
+        "five_minute_reference": 4.0473828908715905,
+        "relative_difference": 0.0003736885999761613,
+        "limit": 0.03,
+        "passed": true
+      }
+    ],
+    "warning_disclosure": "Each synthetic annual run retained one warning for its explicitly synthetic zero latitude/longitude/timezone; no severe errors. This is not real-location weather evidence.",
+    "distributed_replay": {
+      "package_sha256": "e03689a07ddc64c5293665be18352c9fb532b4e676a9167f5cd13eba7031bf78",
+      "runs": [
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "e804522b3207e3b6aa6134e4ba1f32e4aa2efa154fb4776ad69ef0991ffb4153",
+          "run_id": "5205b719-a079-4bcd-953a-ee151766a571",
+          "source_record_sha256": "dc420a43cf7e0cd28985c2f4acd4cbc337e337fc4729b143490e922ace840faa"
+        },
+        {
+          "check": {
+            "channels": 34,
+            "checked_values": 1787040,
+            "intervals": 52560,
+            "maximum_absolute_difference_across_channel_units": 0.0,
+            "maximum_error_allowance_ratio": 0.0,
+            "scope": "Identical-recipe integration agreement; not physical validation",
+            "tolerance": "max(1e-6 in each channel unit, 0.1% of reference)"
+          },
+          "replay_record_sha256": "f98608da479c55df80114ec3f1982a3ddbddd659711c9509895bc17266aed28b",
+          "run_id": "9f5f422a-f135-4076-9408-9aad951a2932",
+          "source_record_sha256": "eedbc1c991ddfe02918f5f83cf274a18a02a70fcf9b12aacf68d21317f79c9a6"
+        }
+      ],
+      "schema_version": "greenlens.energy-replay.v0.4",
+      "state": "completed"
+    },
+    "scientific_scope": "Frozen synthetic fixture arithmetic, numerical sensitivity and identical-recipe integration only. No general user-model physical validation, installed UI acceptance, new daylight qualification or stopped-protocol acceptance."
+  },
+  "static_compatibility": {
+    "report_sha256": "be776102ff4fea3efc0cdcbf0fb0c9abf4bb98b8bbe046c4b2ed4103562c765e",
+    "all_executed_checks_passed": true,
+    "checks": [
+      {
+        "id": "B",
+        "name": "Uniform hemisphere E=pi*L",
+        "passed": true
+      },
+      {
+        "id": "C",
+        "name": "Prescribed overcast exterior normalization",
+        "passed": true
+      },
+      {
+        "id": "D",
+        "name": "Sealed black enclosure",
+        "passed": true
+      },
+      {
+        "id": "E",
+        "name": "Independent black room aperture integration",
+        "passed": true
+      },
+      {
+        "id": "scaling",
+        "name": "Sky intensity scaling x2",
+        "passed": true
+      },
+      {
+        "id": "symmetry",
+        "name": "Black aperture mirror sensors",
+        "passed": true
+      },
+      {
+        "id": "nonzero_exit",
+        "name": "Malformed scene fails and retains native exit record",
+        "passed": true
+      },
+      {
+        "id": "cancellation",
+        "name": "Actual rtrace cancelled without finalized evidence",
+        "passed": true
+      },
+      {
+        "id": "A",
+        "name": "Adapter vs direct pinned-engine invocation (integration verification)",
+        "passed": true
+      },
+      {
+        "id": "F",
+        "name": "Shipping vs higher-quality profile convergence",
+        "passed": true
+      }
+    ],
+    "uniform_hemisphere_relative_error": 0.0013309638999280179,
+    "overcast_exterior_relative_error": 0.0016905080000000454,
+    "profile_mean_difference_ratio": 0.007590611273328036,
+    "distributed_replay": {
+      "checks": [
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "35fbe4b6-daa1-4006-8ab9-ede290a1a1cb",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "637453f4-ed94-4ad1-9332-6f83ceb3e458",
+          "sensors": 77
+        }
+      ],
+      "climate_assessments": {},
+      "passed": true,
+      "verification": "same-engine integration, not independent physical validation"
+    },
+    "legacy_v01_replay": {
+      "checks": [
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "78b6e8e6-8a46-4a6a-9e75-8931ae5d3528",
+          "sensors": 77
+        },
+        {
+          "max_absolute_error_lux": 0.0,
+          "passed": true,
+          "run_id": "270984ca-ecf9-482e-b8e5-d13b851eb4d0",
+          "sensors": 77
+        }
+      ],
+      "climate_assessments": {},
+      "passed": true,
+      "verification": "same-engine integration, not independent physical validation"
+    },
+    "scope": "Retained static analytical and integration criteria only; no annual daylight qualification transfer."
+  },
+  "hosted_products": {
+    "application_version": "0.8.0",
+    "cli_sha256": "4bf0d0d2a52335f98ef6630c17e16e2602b331508681518955c342590733037f",
+    "signed": false,
+    "package_members": [
+      {
+        "sha256": "7588a667ea5035fe705035cba2f0432cc75187baaf025be64700c6da734176b6",
+        "file": "GreenLens_0.8.0_x64-setup.exe"
+      },
+      {
+        "sha256": "7911147a62465043fb2978ca2f9994d887a0ece67ccdcd10935bc969752a03f8",
+        "file": "GreenLens-CLI-0.8.0-windows-x64.zip"
+      }
+    ],
+    "downloaded_member_hashes_checked": true,
+    "installed_or_launched_locally": false
+  },
+  "artifacts": [
+    {
+      "id": 12091090423,
+      "name": "energy-static-compatibility-1d272333b2ca3a7d4f132a435214a783734b8fa1",
+      "size_in_bytes": 5966803,
+      "digest": "sha256:f0abda6cef013bfa51a37d9c6d6b0bbb1a8d31c109b9ec7fca3fe674fd66b90d",
+      "expired": false,
+      "created_at": "2026-10-17T05:05:31Z"
+    },
+    {
+      "id": 12090266676,
+      "name": "energy-native-evidence-1d272333b2ca3a7d4f132a435214a783734b8fa1",
+      "size_in_bytes": 95386447,
+      "digest": "sha256:af337a53dbd980e52a5f3d4737dd57039cd6c504596f7a5fb743b2f54c688e00",
+      "expired": false,
+      "created_at": "2026-10-17T04:47:45Z"
+    },
+    {
+      "id": 12090192148,
+      "name": "energy-native-jobs-1d272333b2ca3a7d4f132a435214a783734b8fa1",
+      "size_in_bytes": 53015651,
+      "digest": "sha256:53317fd722d83c34925bae6ccd5cbf71e593ef371efbcd21b3258ffc484fb453",
+      "expired": false,
+      "created_at": "2026-10-17T04:47:52Z"
+    },
+    {
+      "id": 12089651869,
+      "name": "energy-cli-1d272333b2ca3a7d4f132a435214a783734b8fa1",
+      "size_in_bytes": 12680280,
+      "digest": "sha256:30f90558dfb6e8ee201a9732285498c2b4f0e3006538b8a5caa23fef989e3f1e",
+      "expired": false,
+      "created_at": "2026-10-17T04:29:12Z"
+    },
+    {
+      "id": 12089088728,
+      "name": "energy-unsigned-investigation-1d272333b2ca3a7d4f132a435214a783734b8fa1",
+      "size_in_bytes": 20187755,
+      "digest": "sha256:27b9117eb2f4711936fd933555b7c906ee3574328b167c4b931fcc741e165414",
+      "expired": false,
+      "created_at": "2026-10-17T04:29:14Z"
+    },
+    {
+      "id": 12088769521,
+      "name": "energy-build-diagnostics-1d272333b2ca3a7d4f132a435214a783734b8fa1",
+      "size_in_bytes": 1928531,
+      "digest": "sha256:6c86f9ac2cbee04aab353e5c8055c32d7a1348f632a1487fe8984ef0330392e8",
+      "expired": false,
+      "created_at": "2026-10-17T04:29:16Z"
+    }
+  ],
+  "raw_log": {
+    "file": "run-38998788896.log",
+    "bytes": 505053,
+    "sha256": "068bf1dcfb7d798fbac541eb719925d95771cd327cf7f07347ba795dc3197587",
+    "retention": "Original raw log and selected downloaded artifacts retained outside source. Machine-specific hosted paths are excluded from this receipt."
+  },
+  "boundaries": {
+    "installed_desktop_verified_by_ci": false,
+    "release_acceptance_complete": false,
+    "private_model_probed": false,
+    "later_source_covered": false,
+    "prior_native_save_failure_superseded": false,
+    "note": "This successful hosted run applies only to 1d272333. Its deterministic publication regressions do not substitute for a separately observed installed workflow or erase the prior native Save/publication failure."
+  }
+}

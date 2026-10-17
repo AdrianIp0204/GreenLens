@@ -1,5 +1,7 @@
 # GreenLens development contract
 
+2026-10-17: 1d27233 observation consumed. Save/frame checks passed; observer identity failed during issuance. R1/new revision preserved; no R2/cold regeneration. Test observer repair only; no native retry. Limits/protocols remain.
+
 The c3281d9 native observation is consumed and stopped at save error 5. Preserve staged candidate/history and original bytes; no automatic native retry or temporary-manifest promotion. Synthetic diagnosis and source checks continue; installed issuance/regeneration remain incomplete. Reader sharing alone is not an established remedy: the legacy replacement also fails with a Delete-sharing observer. A source repair requires exact-parent, held-reader and failed-publication regressions before a separately authorized installed observation.
 
 The 2026-10-17 storage continuation is authorized: versioned immutable hash-checked history files, with complete history, old revision/report algorithms and bytes preserved. Keep the 16 MiB disk-manifest and shared archive limits; bound decoded history explicitly. Existing projects remain readable; the new format requires the updated reader. At authorization, the same single unspent native observation applied to the tested candidate under unchanged limits; its stopped outcome is recorded above. Preserve the earlier capacity failure and stopped observations; no smaller-case substitution, pruning or limit increase.

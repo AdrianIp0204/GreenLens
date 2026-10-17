@@ -289,6 +289,15 @@ public sealed class NativeProcess : IDisposable {
         }
     }
     public uint[] MemberIds { get { Check(); return ProcessIds(); } }
+    // A PID list is only a snapshot; verify the newly held process, not its name.
+    public void RequireMember(SafeProcessHandle member) {
+        Check();
+        if(member==null || member.IsClosed || member.IsInvalid)
+            throw new ArgumentException("Observed process handle is unavailable.");
+        bool belongs;
+        if(!IsProcessInJob(member,job,out belongs)) Fail("Verify held process Job membership");
+        if(!belongs) throw new InvalidOperationException("Observed process is outside the owned Job.");
+    }
     public uint ActiveProcesses {
         get {
             Check(); BasicAccounting accounting;
@@ -363,6 +372,7 @@ public sealed class NativeProcess : IDisposable {
     [DllImport("kernel32.dll",SetLastError=true)] static extern bool TerminateJobObject(SafeFileHandle job,uint code);
     [DllImport("kernel32.dll",SetLastError=true)] static extern SafeFileHandle OpenProcess(uint access,bool inherit,uint processId);
     [DllImport("kernel32.dll",SetLastError=true)] static extern bool IsProcessInJob(SafeFileHandle process,SafeFileHandle job,out bool result);
+    [DllImport("kernel32.dll",SetLastError=true)] static extern bool IsProcessInJob(SafeProcessHandle process,SafeFileHandle job,out bool result);
     [DllImport("psapi.dll",SetLastError=true)] static extern bool GetProcessMemoryInfo(SafeFileHandle process,ref ProcessMemoryCounters counters,uint bytes);
 }
 }

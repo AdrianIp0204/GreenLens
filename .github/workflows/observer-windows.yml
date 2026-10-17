@@ -1,0 +1,43 @@
+name: Bounded observer Windows checks
+on:
+  push:
+    branches: [codex/v0.8-observer-identity]
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: pwsh
+jobs:
+  observer:
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Declare isolated evidence and exact source
+        run: |
+          $root = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/hosted-observer'
+          New-Item -ItemType Directory -Path $root | Out-Null
+          "OBSERVER_EVIDENCE=$root" >> $env:GITHUB_ENV
+          @{source=(git rev-parse HEAD); workflow=$env:GITHUB_RUN_ID; scope='Observer helper/source regressions only; no app, Typst, EnergyPlus or native report observation'} | ConvertTo-Json | Set-Content (Join-Path $root 'source.json')
+      - name: Held process identity with two harmless synthetic children
+        run: |
+          ./scripts/test-observed-process-image.ps1 -OutputDirectory (Join-Path $env:OBSERVER_EVIDENCE 'process-image')
+      - name: Shared Windows process helper regressions with synthetic children
+        run: |
+          ./scripts/test-annual-paired-native-process.ps1 -OutputDirectory (Join-Path $env:OBSERVER_EVIDENCE 'process-helper')
+      - name: Native observer source regressions
+        run: |
+          ./scripts/test-supervise-v08-report-review.ps1 -OutputDirectory (Join-Path $env:OBSERVER_EVIDENCE 'supervisor')
+      - name: Cold regeneration collector regressions without rendering
+        run: |
+          ./scripts/test-regenerate-v08-review.ps1 | Tee-Object (Join-Path $env:OBSERVER_EVIDENCE 'regeneration-checks.json')
+      - name: Exact offline documentation limits and links
+        run: |
+          ./scripts/test-package-documents.ps1 | Tee-Object (Join-Path $env:OBSERVER_EVIDENCE 'package-documents.txt')
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: observer-checks-${{ github.sha }}
+          path: ${{ env.OBSERVER_EVIDENCE }}
+          if-no-files-found: error

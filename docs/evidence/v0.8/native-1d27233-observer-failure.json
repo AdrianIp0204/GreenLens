@@ -1,0 +1,115 @@
+{
+  "schema_version": "greenlens.native-observation-summary.v1",
+  "source_commit": "1d272333b2ca3a7d4f132a435214a783734b8fa1",
+  "source_dirty_at_build": false,
+  "ci": {
+    "conclusion": "success",
+    "id": 38998788896,
+    "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/38998788896"
+  },
+  "artifacts": {
+    "raw_desktop_sha256": "d8218eaa3f3d7ad5e677cf511d2e1ae7fd1ed3ecbde78f0ddb320601c592490d",
+    "typst_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+    "installer_sha256": "8cd3b1ab351eeebb27cfc5a1b876e00c7bf1a59b8359c11474dc3a574241c672",
+    "cli_sha256": "31bb88327fd3d30ba2ad570cd2d695dd8cf961f51c7e8e8714643f6740afbbac",
+    "installed_executable_sha256": "a5618c2d03b1b892671fdaa5fc79e46451592869b51ec21400a544ad694d2835",
+    "bundle_marker_difference": "Only Tauri UNK to NSS marker; three bytes"
+  },
+  "protocol": {
+    "energyplus_allowed": false,
+    "max_processes": 16,
+    "protocol_sha256": "c8fdc7c6276b286e67550a7178158f796afaa84bfd109a34d75a251bd6b73836",
+    "supervisor_sha256": "b3ad76379fd504751f46fcaaba85f49ef10b3b68990aa0c7cc394095d2f3d234",
+    "authorization": "One separately authorized post-CI native observation; stop on substantive failure",
+    "render_deadline_seconds": 600,
+    "raw_peak_ceiling_bytes": 2147483648,
+    "consumed": true,
+    "kernel_guard_bytes": 1073741824
+  },
+  "native_observed": [
+    "Opened complete same-case study through native folder dialog",
+    "Inspected R1 bindings without mutation",
+    "Corrected exact proposed cooling COP source declaration using candidate forms",
+    "Captured Top/Z=1.5m/below and Front/Y=1.5m/below into candidate",
+    "Incomplete review remained unaccepted and editable",
+    "Accepted six decisions, four reviewed and two unresolved, as one new scope revision",
+    "Save succeeded with undo history retained and history v2 sidecars",
+    "Restored Top/Front accepted frames after panel width changed; fixed aspect and section with letterboxing",
+    "Selected exact unchanged A/B runs and new scope; issue readiness disclosed incomplete provenance and two unresolved decisions",
+    "Clicked Issue once after exact-pair/scope arming"
+  ],
+  "saved_revision": {
+    "revision_file_sha256": "7d0a0f6c26dcc578c77f0bbfe0b1407dc0228cd9296aee751e7c20a719db184a",
+    "unresolved": 2,
+    "reviewed": 4,
+    "unknown_coverage": true,
+    "manifest_bytes": 286768,
+    "id": "e275d8664b1d222803272a9e8f0d9f5c9b942513ceacae016fce445934948e3a",
+    "reference_occurrences": 81,
+    "width_m": 35.75962981881457,
+    "vertical_span_m": 21.981956236877554,
+    "frame_aspect": 1.6267719502972715,
+    "manifest_sha256": "0704b72c5153be55fba1e5c05a519494191bde0371dbb9f68eec34de45451201",
+    "parent": "62f739d054b8a1e57d9739247da53296958ed816c4920e30dbde3f19d1a68fb2"
+  },
+  "selected_pair": {
+    "proposed": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+    "proposed_record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+    "baseline": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+    "baseline_record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44"
+  },
+  "outcome": {
+    "sampled_private_peak_bytes": 986804224,
+    "elapsed_seconds": 1632.0225694,
+    "forced_owned_job_kill": true,
+    "completed": false,
+    "completed_utc": "2026-10-17T10:48:02.5175415Z",
+    "stage": "armed-report",
+    "second_issue_published": false,
+    "armed_utc": "2026-10-17T10:47:15.9098855Z",
+    "error": "Exception calling \".ctor\" with \"4\" argument(s): \"The value cannot be an empty string. (Parameter 'path')\"",
+    "cleanup_job_empty": true,
+    "energyplus_observed": false,
+    "pdf_pages_generated_or_reviewed": 0,
+    "raw_peak_bytes": 1054105600,
+    "cause": "Receipt records a Typst-named process with null image_path; observer hashes that path. Why image resolution returned null and renderer outcome are not established.",
+    "cold_regeneration_started": false,
+    "observed_typst_name_count": 1,
+    "max_sampled_processes": 7,
+    "verified_typst_count": 0
+  },
+  "preservation": {
+    "unpublished_diagnostics_files": 64,
+    "original_nonmanifest_checked": 575,
+    "retained_member_count": 580,
+    "scope_revisions": 4,
+    "runs": 7,
+    "issues": [
+      {
+        "id": "8d51a892887273071c2236a85e2e49e7aba3c1855a33bd96c48beaa6fdc9d171",
+        "scope_revision_sha256": "8378c41db3d3957e047f0c4ff079e5f495560b18febfd2961475305c5a3d9981",
+        "content_sha256": "88ddcdae97357bed327772262642db62d773748a1a1b67317bb6f3bb205b9e55",
+        "products_sha256": "f59bb492f8328210bc5efe5913eb7348e46119e56faf45b96d02738402748cdb"
+      }
+    ],
+    "armed_members_checked": 580,
+    "retained_bytes": 225550938,
+    "unpublished_diagnostics_bytes": 46874420,
+    "armed_members_unchanged": true,
+    "original_nonmanifest_unchanged": true,
+    "references": 2
+  },
+  "receipt_hashes": {
+    "preservation": "e5245b8a94181ac26e885798939efa56d8b0f2ccff0bfdd8f27ea22f1569609f",
+    "staged_inventory": "81fb2e1a70a316eeb47f18b87cf1c87d744b503d7abadbcf0713184b47706113",
+    "private_native_report": "bf9b132ef2f9c37c575d58fcf968436af70b4d696bcd897114356dd7f428c251"
+  },
+  "limitations": [
+    "This is an incomplete installed observation, not release acceptance.",
+    "No R2 Save As/cold inspection/regeneration or renderer3 PDF visual review.",
+    "Exact client-size/DPI, clean-machine, inherited modifier and live EnergyPlus cancellation rows remain.",
+    "No OpenSKP compatibility/memory/worker or private-model probe performed.",
+    "Synthetic workflow geometry is not architectural equivalence or physical validation.",
+    "No native retry under the consumed authorization."
+  ]
+}

@@ -1,9 +1,9 @@
 //! Typed analytical-only design report actions; scientific work remains shared.
 use crate::{blocking, energy::ReportControl, CommandResult};
-use anyhow::{ensure, Context};
+use anyhow::Context;
 use greenlens_runner::{
     design_report, design_report_service as service, energy_report::TypstConfig, Application,
-    JobState, Project,
+    Project,
 };
 use serde::Deserialize;
 use serde_json::{json, Value};
@@ -42,7 +42,7 @@ pub(crate) async fn design_report_action(
 ) -> CommandResult<Value> {
     blocking(move||{
         let control=app.state::<ReportControl>();let _guard=control.begin()?;
-        ensure!(!matches!(app.state::<Application>().status()?.state,JobState::Queued|JobState::Preparing|JobState::Running),"Finish or cancel the calculation before handling reports");
+        app.state::<Application>().ensure_report_ready()?;
         let root=Path::new(&path);
         match action {
             Action::Create{a,b,scope,north,html_only}=>{

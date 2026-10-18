@@ -1,5 +1,7 @@
 # GreenLens development contract
 
+2026-10-18 outcome: RC1 and VD1 native observations are consumed and failed, without accepted new reports. VD1's four declared annual runs and exact sensitivity completed; its report action failed before Typst on a cold-session readiness guard. Conditional regeneration is ineligible. Source checks do not authorize an installed issuance, renderer or simulation retry of these consumed protocols. CT1 stopped before execution; matrix/private probe remain unused. Preserve all retained evidence and failure receipts.
+
 2026-10-18: the source-only `docs/v0.8-report-design-continuation.md` activates three distinct prospective allowances: integrated-observer reporting closure, a justified fixed synthetic containment investigation, and a separate bounded visual-design demonstration. Only these override earlier no-retry restrictions after their declared prerequisites pass. Preserve all consumed failures. Root owns native/Cargo execution; exact ledgers precede spending any allowance. Keep old renderers/1–3 and source history, analytical-only paired figures, explicit B-only validated proposals and honest measured outcomes; no broader physics or guaranteed improvement.
 
 2026-10-17: 1d27233 observation consumed. Save/frame checks passed; observer identity failed during issuance. R1/new revision preserved; no R2/cold regeneration. Test observer repair only; no native retry. Limits/protocols remain.

@@ -42,6 +42,8 @@ mod report;
 pub mod report_issue_export;
 pub mod report_issues;
 pub mod report_product_delivery;
+#[cfg(test)]
+mod report_readiness_tests;
 pub mod studies;
 #[cfg(test)]
 mod studies_tests;
@@ -948,6 +950,33 @@ impl Application {
         let job = active.as_ref().context("No simulation has been started")?;
         let status = job.status.lock().unwrap().clone();
         Ok(status)
+    }
+    /// Retained reports do not require a calculation in this application
+    /// session. Inspect job state without changing, collecting or discarding it.
+    /// A poisoned state remains an error, not evidence that the application is idle.
+    pub fn ensure_report_ready(&self) -> Result<()> {
+        let active = self
+            .active
+            .lock()
+            .map_err(|_| anyhow::anyhow!("Cannot check report readiness: job mutex poisoned"))?;
+        let Some(job) = active.as_ref() else {
+            return Ok(());
+        };
+        let status = job.status.lock().map_err(|_| {
+            anyhow::anyhow!("Cannot check report readiness: job status mutex poisoned")
+        })?;
+        ensure!(
+            !matches!(
+                status.state,
+                JobState::Queued | JobState::Preparing | JobState::Running
+            ),
+            "Finish or cancel the calculation before handling reports"
+        );
+        ensure!(
+            !status.pending_evidence,
+            "A completed run is waiting to be saved. Collect or explicitly recover its evidence before handling reports"
+        );
+        Ok(())
     }
     pub fn cancel(&self) -> Result<JobStatus> {
         {

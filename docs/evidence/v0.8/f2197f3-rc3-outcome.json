@@ -1,0 +1,576 @@
+{
+  "schema_version": "greenlens.sanitized-rc3-outcome.v1",
+  "documentation_verification": {
+    "fresh_host_passed": true,
+    "exact_files": 414,
+    "local_links": 804,
+    "expanded_bytes_including_index": 16777174,
+    "limit_bytes": 16777216,
+    "remaining_bytes": 42,
+    "new_receipt_json_link_narrow_privacy_checks": 13,
+    "independent_receipt_anchors_matched": 16,
+    "independent_product_hashes_matched": 54,
+    "git_diff_check": "passed",
+    "preliminary_check_failures": [
+      "Development privacy-check Python literal ended in a raw backslash; corrected without changing artifacts",
+      "Document-test wrapper read a stale LASTEXITCODE after the script reported pass; fresh pwsh -NoProfile host passed"
+    ]
+  },
+  "date": "2026-10-18",
+  "status": "bounded_observation_and_conditional_regeneration_passed_release_incomplete",
+  "claim_scope": "Existing complete original synthetic case; unchanged genuine retained simulations, one installed issuance and one conditional cold CLI regeneration. No new engine execution or private model access. No fresh-profile native cold inspection claim.",
+  "application_source": "f2197f39eb845515fb48d5f5e1616ea529e4f031",
+  "observer_source": "0df5254dd44a124b62f4fc2125f4f4cf304dc93d",
+  "artifacts": {
+    "installed_sha256": "c1b430ad4d60abfcb5406bde3db95548aee0935eab175918038325a0786441c8",
+    "cli_sha256": "de2d13c1121d9d06e75013053cce0f7ddcf2cb006965a70aa55c75b64364f970",
+    "installer_sha256": "5cb262035975b0f792d38fc56627f94ca5fe14c10eb833b580cf7c7953e88d42"
+  },
+  "limits": {
+    "seconds_per_render": 600,
+    "kernel_committed_bytes": 1073741824,
+    "raw_committed_acceptance_bytes": 2147483648,
+    "active_processes": 16,
+    "energyplus_executions": 0
+  },
+  "native": {
+    "protocol_sha256": "5a9c86179c492649d1dff4327393d91443d80fd9061048f4ecc496ee48b0d25d",
+    "completed": true,
+    "failure": null,
+    "raw_peak_max_bytes": 888184832,
+    "member_count_max": 9,
+    "energyplus_observed": false,
+    "normal_close": true,
+    "cleanup_job_empty": true,
+    "arm_selection": {
+      "baseline": {
+        "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+        "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+        "design_id": "A"
+      },
+      "proposed": {
+        "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+        "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+        "design_id": "B"
+      },
+      "scope_revision_sha256": "e275d8664b1d222803272a9e8f0d9f5c9b942513ceacae016fce445934948e3a",
+      "scope_schema_version": "greenlens.scope-revision.v3",
+      "scope_storage_schema": "greenlens.scope-history.v2",
+      "scope_member_path": "scope-history/e275d8664b1d222803272a9e8f0d9f5c9b942513ceacae016fce445934948e3a.json",
+      "scope_member_bytes": 3284295,
+      "scope_member_sha256": "7d0a0f6c26dcc578c77f0bbfe0b1407dc0228cd9296aee751e7c20a719db184a",
+      "scope_observation": "Exact selected sidecar bytes and bounded descriptor inventory only; Rust checks historical identities, provenance and cross-bindings separately."
+    },
+    "publication": {
+      "id": "fe4924c32994ecb9fe63a53f1c7578e82483971f26167ff1859724714fd98dce",
+      "scope_revision_sha256": "e275d8664b1d222803272a9e8f0d9f5c9b942513ceacae016fce445934948e3a",
+      "baseline": {
+        "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+        "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+        "design_id": "A"
+      },
+      "proposed": {
+        "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+        "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+        "design_id": "B"
+      },
+      "product_count": 54,
+      "product_bytes": 17562597,
+      "pdf_count": 5,
+      "products_file_sha256": "d2db1401be5e8aeef833e239f0a3a23dc9aebbace18f1640f907b1031ca7b8e8",
+      "check": "Actual-byte inventory/hash verification only; Rust semantic/numerical inspection remains separate"
+    },
+    "publication_elapsed_ms": 69916,
+    "elapsed_seconds": 689.5395867,
+    "final_manifest_sha256": "867a53ea1937f68e69bddb4918cab7dd3610f877f357d1982853f9d3151133d9",
+    "retained_member_handles_total": 18,
+    "retained_member_handles_closed": 18,
+    "retained_member_handles_remaining": 0,
+    "observed_typst_processes": 5
+  },
+  "cold_cli": {
+    "protocol_sha256": "31fac462e423d26d77c632bd2f823a13b877959dddc092fa13287db15ef874b1",
+    "completed": true,
+    "failure": null,
+    "cleanup_errors": [],
+    "preservation_errors": [],
+    "raw_peak_max_bytes": 211333120,
+    "member_count_max": 4,
+    "energyplus_observed": false,
+    "cleanup_job_empty": true,
+    "products_identical": true,
+    "exit_code": 0,
+    "command_seconds": 33.6857586,
+    "elapsed_seconds": 35.415302,
+    "original_member_count": 637,
+    "original_member_bytes": 243129655,
+    "observed_typst_processes": 5,
+    "retained_member_handles_total": 12,
+    "retained_member_handles_closed": 12,
+    "retained_member_handles_remaining": 0
+  },
+  "cold_claim_limit": "Fresh owned runtime and absent configured engines; original paths remained physically available. Pinned Typst was required. This was not a fresh-profile native launch.",
+  "issue": {
+    "issue_id": "fe4924c32994ecb9fe63a53f1c7578e82483971f26167ff1859724714fd98dce",
+    "content_sha256": "7eff8e06784da107ee357f27fe31dda54e1a6548630d7985f039a5bd0cf1bf44",
+    "products_sha256": "d226bc3ebdcee8779888e5ed01329af8ac9ea31dbe1367ad3f113b3c4a7ec6b1",
+    "scope_revision_sha256": "e275d8664b1d222803272a9e8f0d9f5c9b942513ceacae016fce445934948e3a",
+    "renderer": {
+      "method": "greenlens.energy-report-issue-renderer/3",
+      "document_schema": "greenlens.energy-document.v0.8-review",
+      "html_method": "greenlens.owned-energy-html/3",
+      "figure_method": "greenlens.reference-analytical-orthographic/2",
+      "template_sha256": "a7d67198d034efea426ffe606e0a1abcd1059a9d2ab03c6f79a1fa53adaa28af",
+      "typst_version": "0.15.1",
+      "typst_executable_sha256": "081217a463adb006f8894b44227fe4b9c9e91fc85f5463d5948e8370db9bb31e",
+      "font_sha256": {
+        "NotoSansCJKtc-Bold.otf": "3ee160e5015106e3ec1a394301df54fa9bbbf8a251519984aec5c0abc50840c0",
+        "NotoSansCJKtc-Regular.otf": "dce08bd4fd91aa8aa76ed8fea4b694c2dfb8550f67871e326843212ddbeb88b4"
+      },
+      "pdf_creation_timestamp": 0,
+      "performance_png_ppi": 96,
+      "system_and_embedded_fonts_disabled": true
+    }
+  },
+  "products": [
+    {
+      "path": "aligned-figures.json",
+      "bytes": 12042,
+      "sha256": "bb3128e0979a4d1cd2d892212efa3cc764e8502740e41d6ced62bcaa24d686bb"
+    },
+    {
+      "path": "aligned-view-001.svg",
+      "bytes": 13811,
+      "sha256": "28a37ce5544a87027a70f677fd086b271114aafbbd0e06f510941bea2cc69bba"
+    },
+    {
+      "path": "aligned-view-002.svg",
+      "bytes": 23493,
+      "sha256": "c6431a80264fc990c8c1e3a1eab4f39348e4e52678a749e92f5e7943260b833e"
+    },
+    {
+      "path": "annual.svg",
+      "bytes": 1880,
+      "sha256": "2f9058718b9794165bc0f92012ff861c8ac57826db2ebc340863de2419cadf86"
+    },
+    {
+      "path": "assessment.html",
+      "bytes": 16685,
+      "sha256": "b38591023020a366e98219a08507b04001781df68e520c8bbcbaf88424308d36"
+    },
+    {
+      "path": "assessment.pdf",
+      "bytes": 77462,
+      "sha256": "bce49a728d62da63208f83285b64c6141067627f043d74e8a38cbfa369aac4c0"
+    },
+    {
+      "path": "baseline-model.svg",
+      "bytes": 3723,
+      "sha256": "9e4cd99480ae1f8e20a2e72ff0fecddefa87be94950d420682afba50407696ec"
+    },
+    {
+      "path": "energy-report.json",
+      "bytes": 209829,
+      "sha256": "5e997f6e3160298fdbef5cc79a5f36ed0ff527d037df70ca434eced5c904ae0c"
+    },
+    {
+      "path": "executive.html",
+      "bytes": 16685,
+      "sha256": "b38591023020a366e98219a08507b04001781df68e520c8bbcbaf88424308d36"
+    },
+    {
+      "path": "executive.pdf",
+      "bytes": 77462,
+      "sha256": "bce49a728d62da63208f83285b64c6141067627f043d74e8a38cbfa369aac4c0"
+    },
+    {
+      "path": "input-appendix.html",
+      "bytes": 215288,
+      "sha256": "13f802b13366b75f364aa43b8bea3aaff10f605eabb38938400d1cc747b8858a"
+    },
+    {
+      "path": "input-appendix.pdf",
+      "bytes": 1338537,
+      "sha256": "b95fe574c4caff6eaf2563c524eff79a605cd1158b3ed6759c1eb93fd5395acd"
+    },
+    {
+      "path": "input-provenance.csv",
+      "bytes": 1362342,
+      "sha256": "27a1773586e6d2d1b6a2f5c3ba666f20a40872658c4afdb0c4d8ae3a67ed42ca"
+    },
+    {
+      "path": "input-provenance.json",
+      "bytes": 2745258,
+      "sha256": "054933f3055a8c09d847228646e269f219edd4d8a297d92b32e05fe8d31c9c21"
+    },
+    {
+      "path": "inputs.csv",
+      "bytes": 69253,
+      "sha256": "9fb6b7f94e4c5bee6b721664708092f9d1ecff1120a56578242ba0981d8b4638"
+    },
+    {
+      "path": "issue-content.json",
+      "bytes": 3787191,
+      "sha256": "03d28e3be1a2d8a8bcb8c2f03bb3ca860121daa1e979148cfd53b59f111d403c"
+    },
+    {
+      "path": "monthly.svg",
+      "bytes": 3248,
+      "sha256": "0a0a4e820a78c9df2518dbfbc506bcc21c2df3d969eb0549cd70c047b12bdc1e"
+    },
+    {
+      "path": "performance-page-001.png",
+      "bytes": 303709,
+      "sha256": "3f0b50efa6333862aba65245ecf464397070c68c730a4875d22e25b61ee9a7fb"
+    },
+    {
+      "path": "performance-page-002.png",
+      "bytes": 326070,
+      "sha256": "25f3546b6e9159af6ea586a65bc018c8f219359a2231ee891065ebc7b85d7ce3"
+    },
+    {
+      "path": "performance-page-003.png",
+      "bytes": 363567,
+      "sha256": "714793542173a5575f8746ed1a5fe787b971b21db17e4a741b1057a4ed7ed75d"
+    },
+    {
+      "path": "performance-page-004.png",
+      "bytes": 198583,
+      "sha256": "d264a2389aeba26703c1f17e0e84033f6c867278dbaef9d7081b716b25b1a130"
+    },
+    {
+      "path": "performance-page-005.png",
+      "bytes": 292313,
+      "sha256": "8d81efed135be7df6806f98f9dd393c83ab0d1d49a8a1d1667f4e977ba43e2d8"
+    },
+    {
+      "path": "performance-page-006.png",
+      "bytes": 237724,
+      "sha256": "f61bea90247f8a30793dc9dc6e16ae7213b2135af0ecc21d0192ac540ac67730"
+    },
+    {
+      "path": "performance-page-007.png",
+      "bytes": 269738,
+      "sha256": "b52df31d32cd217e7c1149dcc91cf768c2593382084ea8106f78d495e762c1c3"
+    },
+    {
+      "path": "performance-page-008.png",
+      "bytes": 71699,
+      "sha256": "714c9718e3af9ce9cf07a96751461e1ada6c41b2561cf6ce53971098031bac3c"
+    },
+    {
+      "path": "performance.csv",
+      "bytes": 30203,
+      "sha256": "20c2ad6f19d62c5dc9cc2a86ed02b7794d1c8cbb6cbb817cce3a6fbdfc5e24be"
+    },
+    {
+      "path": "performance.html",
+      "bytes": 32368,
+      "sha256": "9422a35c00da5e18bf88dd70c35d71583e98c986c4cee6883d673be7c2294729"
+    },
+    {
+      "path": "performance.json",
+      "bytes": 62585,
+      "sha256": "a13f54861555fe7112d479bca7f32f788ab241c91c3bd0eba64bbb1f4b23af80"
+    },
+    {
+      "path": "performance.pdf",
+      "bytes": 273297,
+      "sha256": "ea2abc1990dfb988a530c647729080d4180acacd15091098252228115c37d2a0"
+    },
+    {
+      "path": "presentation-coverage.json",
+      "bytes": 501715,
+      "sha256": "faf15319c1b73fb392e9adb91f9af966241884d5c003bff5dfc981f151b21a53"
+    },
+    {
+      "path": "proposed-model.svg",
+      "bytes": 4393,
+      "sha256": "58c73578fe976350c32efe6986e75b3639aab052787f3b7062258625458b9644"
+    },
+    {
+      "path": "review-decisions.csv",
+      "bytes": 1970,
+      "sha256": "db579d14487de15da8cfe1dcda55ad2a959b00b6a1869cca16d0093628b404a5"
+    },
+    {
+      "path": "review-decisions.json",
+      "bytes": 3083,
+      "sha256": "48361e4d1907ca5d4a816aa21d9011b5b6fd939d0836c5c35df4e366176e3637"
+    },
+    {
+      "path": "review-readiness.json",
+      "bytes": 3660,
+      "sha256": "71599e9a74ab88be7fbc2ad869bd0ce07e4dab4e22489c99dc5f4550d90e5256"
+    },
+    {
+      "path": "schedule-baseline-000.svg",
+      "bytes": 16448,
+      "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+    },
+    {
+      "path": "schedule-baseline-001.svg",
+      "bytes": 16473,
+      "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+    },
+    {
+      "path": "schedule-baseline-002.svg",
+      "bytes": 15704,
+      "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+    },
+    {
+      "path": "schedule-baseline-003.svg",
+      "bytes": 15715,
+      "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+    },
+    {
+      "path": "schedule-baseline-004.svg",
+      "bytes": 15710,
+      "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+    },
+    {
+      "path": "schedule-proposed-000.svg",
+      "bytes": 16448,
+      "sha256": "de140ed42b3393b2eb573234a9e58005c3cc256b61ae54ee0ce78675976c7a66"
+    },
+    {
+      "path": "schedule-proposed-001.svg",
+      "bytes": 16473,
+      "sha256": "4ed5bfb2a2e22fecac32d51014695570dad7ad1dce719e1385b3b78d6e2e77a0"
+    },
+    {
+      "path": "schedule-proposed-002.svg",
+      "bytes": 15704,
+      "sha256": "0c19df2dae0fdf9e507969653a0fde405d925126f625ff650e3bf020c8e8cf77"
+    },
+    {
+      "path": "schedule-proposed-003.svg",
+      "bytes": 15715,
+      "sha256": "521b5ebdf63365b11d66d2bb11b828ac541198993d48fb9b8a4c218a82ef8157"
+    },
+    {
+      "path": "schedule-proposed-004.svg",
+      "bytes": 15710,
+      "sha256": "1652b22cfe33c8d2958b04524821d5dfe8f42d494d164ebca81c45272f9856ec"
+    },
+    {
+      "path": "scope-assumptions.csv",
+      "bytes": 24979,
+      "sha256": "417704077d249520e156f7db747e7012f0b0823b85c69f8d894534d4e088a772"
+    },
+    {
+      "path": "scope-assumptions.json",
+      "bytes": 39905,
+      "sha256": "0755dd116c62274561051c4b5745235aa4c4597421a2efaefd69945f7a7b52ee"
+    },
+    {
+      "path": "scope-mappings.csv",
+      "bytes": 14212,
+      "sha256": "f89d9e9f2dd6a8a7f80c62335c3e5e402753969f41c0bf7a29edcc17ebe3f192"
+    },
+    {
+      "path": "scope-mappings.json",
+      "bytes": 21550,
+      "sha256": "b10b7176dfaef7a84275a7448d54ece206fd7e484982cb7ee3a17cfa7b656b7c"
+    },
+    {
+      "path": "scope-reconciliations.json",
+      "bytes": 169,
+      "sha256": "75ab1c8fa16e6358b11fe5a6eb0c1257989ef43a7c81cdc73fde10d2bf4013cc"
+    },
+    {
+      "path": "scope-revision.json",
+      "bytes": 3284294,
+      "sha256": "e29c936e9dfadb98026ffba5c7a3ce931247944eef671e9174d35e71c3f61d83"
+    },
+    {
+      "path": "technical.html",
+      "bytes": 276967,
+      "sha256": "d9618320a13aba097d188a885f1ef05b672f56b4ef9b7f0a26c00db2eb8101f1"
+    },
+    {
+      "path": "technical.pdf",
+      "bytes": 527450,
+      "sha256": "1e87899fbf33df33faec4a7f67a0852d57599e2d5cef87583d7451803d117220"
+    },
+    {
+      "path": "typed-differences.json",
+      "bytes": 16650,
+      "sha256": "fc504fee7f9ba8462a24ee1d52707f94b2cae9bd0ea036ec97a08835aadabd08"
+    },
+    {
+      "path": "workbench-report.json",
+      "bytes": 245455,
+      "sha256": "2bfed5cfa8e0a2fe026d39e2c24d6168cda80996f7f26cd09db0a7328e641710"
+    }
+  ],
+  "arithmetic": {
+    "checks_passed": 2896,
+    "checks_total": 2896,
+    "max_residual": 1.8189894035458565e-12,
+    "tolerance": 1e-09,
+    "r1_products_unchanged": 49
+  },
+  "disclosures": {
+    "review_decisions": 6,
+    "reviewed": 4,
+    "unresolved": 2,
+    "input_rows": 6546,
+    "unreviewed_input_rows": 6545,
+    "assumed_input_rows": 1,
+    "missing_input_rows": 0,
+    "conflicting_input_rows": 0,
+    "mappings": 81,
+    "excluded_mappings": 1,
+    "unresolved_mappings": 1,
+    "assumptions": 83,
+    "exact_pair_sensitivity": "missing",
+    "calendar": "January1 retained; no-holidays declaration false; not an empty-calendar fixture"
+  },
+  "visual_review": {
+    "unique_pages": 86,
+    "assessment_pdf_byte_alias": "executive.pdf",
+    "raster_dpi": 100,
+    "rasterizer_sha256": "1ad6408dc3b02950d00ad407d79b6d52b1d6c3f3b85c96645455d58d390d8b20",
+    "pdfs": [
+      {
+        "file": "executive.pdf",
+        "bytes": 77462,
+        "sha256": "bce49a728d62da63208f83285b64c6141067627f043d74e8a38cbfa369aac4c0",
+        "pages": 4
+      },
+      {
+        "file": "technical.pdf",
+        "bytes": 527450,
+        "sha256": "1e87899fbf33df33faec4a7f67a0852d57599e2d5cef87583d7451803d117220",
+        "pages": 22
+      },
+      {
+        "file": "input-appendix.pdf",
+        "bytes": 1338537,
+        "sha256": "b95fe574c4caff6eaf2563c524eff79a605cd1158b3ed6759c1eb93fd5395acd",
+        "pages": 52
+      },
+      {
+        "file": "performance.pdf",
+        "bytes": 273297,
+        "sha256": "ea2abc1990dfb988a530c647729080d4180acacd15091098252228115c37d2a0",
+        "pages": 8
+      }
+    ],
+    "blocking_defects_observed": false,
+    "limitations": [
+      "Small fixed-frame figure/identifier scale and wireframe crossing some labels",
+      "Dense audit tables, split long rows and repetitive source wording",
+      "Sparse final pages",
+      "Dimensionless unit1 spacing and exact-value bars without numeric ticks"
+    ]
+  },
+  "copy": {
+    "source_manifest_sha256": "867a53ea1937f68e69bddb4918cab7dd3610f877f357d1982853f9d3151133d9",
+    "copy_manifest_sha256": "867a53ea1937f68e69bddb4918cab7dd3610f877f357d1982853f9d3151133d9",
+    "source_inventory_sha256": "8b3326c1dbc49223edfba2aa0a86054b43628decc9f5bb2055c7ca51fa436a54",
+    "copy_inventory_sha256": "8b3326c1dbc49223edfba2aa0a86054b43628decc9f5bb2055c7ca51fa436a54",
+    "source_member_count": 638,
+    "source_bytes": 243129655,
+    "copy_member_count": 638,
+    "copy_bytes": 243129655,
+    "differences": [],
+    "zero_byte_lock_differences": [],
+    "nonlock_differences": [],
+    "original_required_differences": []
+  },
+  "portable_cli": {
+    "schema_version": "greenlens.rc3-portable-check.v1",
+    "source": "f2197f39eb845515fb48d5f5e1616ea529e4f031",
+    "export_exit": 0,
+    "export_seconds": 47.3537248,
+    "inspect_exit": 0,
+    "inspect_seconds": 23.6031473,
+    "zip_bytes": 39205751,
+    "zip_sha256": "05f9ecb7ad7cfe3a53b5896fe01b85065d23aac7cb698db4c893d341fb755dd3",
+    "claim": "Distributed CLI complete export and actual-byte package inspection. No rendering, replay or engine request; not native export."
+  },
+  "archive_audit": {
+    "archive_sha256": "05f9ecb7ad7cfe3a53b5896fe01b85065d23aac7cb698db4c893d341fb755dd3",
+    "archive_bytes": 39205751,
+    "entry_count": 640,
+    "uncompressed_bytes": 243346045,
+    "max_entry_bytes": 5300731,
+    "limits": {
+      "entries": 5000,
+      "entry_bytes": 67108864,
+      "aggregate_bytes": 268435456,
+      "stream_chunk_bytes": 1048576,
+      "text_overlap_bytes": 512
+    },
+    "copy_members_checked": 638,
+    "copy_substantive_bytes": 243129655,
+    "copy_manifest_sha256": "867a53ea1937f68e69bddb4918cab7dd3610f877f357d1982853f9d3151133d9",
+    "copy_missing_substantive": [],
+    "copy_changed": [],
+    "omitted_zero_byte_cooperative_locks": [
+      {
+        "member": ".greenlens.lock",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "export_owned_additions": [
+      "REPLAY.txt",
+      "checksums.json",
+      "issued-project-export.json"
+    ],
+    "elapsed_seconds": 8.35184630000731
+  },
+  "archive_check_count": 5882,
+  "allowances": {
+    "RC3_issuance": "consumed_success",
+    "RC3_conditional_cold_regeneration": "consumed_success",
+    "additional_render_authorized": false,
+    "CT1": "source_blocked_before_execution",
+    "SKP_matrix": "unused_gated",
+    "private_probe": "unused_gated"
+  },
+  "unverified": [
+    "Fresh-profile installed cold inspection without Typst",
+    "Reveal/external PDF viewing",
+    "Native ZIP export",
+    "Inherited exact client/DPI/modifier and live EnergyPlus cancellation",
+    "Clean-machine installation",
+    "Separate paired-design report optional scope/context native observation"
+  ],
+  "prior_failure_policy": "All prior failed observations and the prior policy-rejected launch remain; no bypass or retry.",
+  "receipt_digests": {
+    "declaration.json": "f0b3e94f370782f477b82d2231884edd02c989356561b7814ef0e3cc08c675a1",
+    "preflight.json": "0f80a2ed7facc272056afea607eb7ba2ab0a96e081d388f5845a2f9b2ccda0a3",
+    "native-observation/protocol.json": "5a9c86179c492649d1dff4327393d91443d80fd9061048f4ecc496ee48b0d25d",
+    "native-observation/report.json": "0c7ce1318acf965f3471191789801c5b00b80a5aaeb5eb1d911e0fbd6c5efc5f",
+    "post-publication-read-only-audit.json": "65988ffa312f0fa21c276c1f8a593a98072bd161508ec487c647e4785b6480d3",
+    "complete-copy-read-only-audit.json": "f5609e11de967d0bc768c81376471014eaab382d2d52102242060c0d90479c7b",
+    "cold-regeneration/protocol.json": "31fac462e423d26d77c632bd2f823a13b877959dddc092fa13287db15ef874b1",
+    "cold-regeneration/receipt.json": "22d1fb24344b3c5a137468de9f15c8bfbe390aa18d81f2f63a6e73266158d159",
+    "root-visual-review.json": "2f6660670da6baae45d7feef5e3fddf0e59c1f3cf3d3ff44c364565968a24a3a",
+    "visual-review/technical-visual-review.json": "2434e1fa3caffb8a569cae92b6a27a5a0634a033af5298329d49b0d281c93789",
+    "appendix-visual-review.json": "81bc7da07fcf4b1803b41241007a0b5c68aa11fe17a8f6cf6fc3736d6e396f59",
+    "visual-review/review-inputs.json": "40f049767391f5bbb7e423359f3b4588a8a71d6bfbca7acd1373716a055c8f16",
+    "portable-receipt.json": "c0ebc47a8ba402ddb4a7b62dc526bb5b1f534522cf24d4e5f4a3bdc8ed6ebffd",
+    "independent-streaming-archive-audit.json": "bcb8f0ccc47642b25999ba65bcc911bea7c52de5eff35146f2c5744ef10e847f",
+    "application-ci-refreshed.json": "03290bd7f082b4d1d184a2ba4126a7d0eebcbc4b560f8e2b058df50d9f4f84d6",
+    "observer-ci-refreshed.json": "0735b3a1fb1b7bf8a72f4188cc2b53cbb4799929a1f3ea4570f7b929f5b86238"
+  },
+  "ci": [
+    {
+      "headSha": "f2197f39eb845515fb48d5f5e1616ea529e4f031",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/39104602643"
+    },
+    {
+      "headSha": "0df5254dd44a124b62f4fc2125f4f4cf304dc93d",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/39108158299"
+    }
+  ]
+}

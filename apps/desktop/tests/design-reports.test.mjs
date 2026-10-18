@@ -8,7 +8,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {JSDOM} from 'jsdom';
 import {transformWithOxc} from 'vite';
 import {inspectionCore} from './inspection-ipc.mjs';
-import {designReportFixture,designFixtureId,designFixtureA,designFixtureB} from './design-report-fixture.mjs';
+import {designReportFixture,designFixtureId,designFixtureA,designFixtureB,scopedDesignReportFixture} from './design-report-fixture.mjs';
 
 const dom=new JSDOM('<!doctype html><div id="root"></div>',{url:'https://greenlens.local/'});
 for(const key of ['window','document','HTMLElement','HTMLInputElement','HTMLTextAreaElement','HTMLSelectElement','Event','MouseEvent'])globalThis[key]=dom.window[key];
@@ -42,6 +42,12 @@ const button=label=>{const found=[...document.querySelectorAll('button')].find(n
 async function click(label){await act(async()=>button(label).click());}
 async function value(label,text){const element=document.querySelector(`[aria-label="${label}"]`);assert.ok(element,label);const proto=element.tagName==='SELECT'?HTMLSelectElement.prototype:element.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;await act(async()=>{Object.getOwnPropertyDescriptor(proto,'value').set.call(element,text);element.dispatchEvent(new Event(element.tagName==='SELECT'?'change':'input',{bubbles:true}));});}
 async function select(){await value('Retained analytical report',id);}
+async function check(label){const input=document.querySelector(`[aria-label="${label}"]`);assert.ok(input,label);await act(async()=>input.click());}
+function addScopes(){
+  const view=(id,title)=>({id,title,design_id:'B',section:id==='front'?{axis:'y',offset_m:1.5,keep:'below'}:null});
+  const revision=(hash,title,views)=>({revision_sha256:hash,scope:{title,report_views:views},reference:{manifest:{revision_sha256:'f'.repeat(64)}}});
+  props.project.architecture={scope_history:{schema_version:'greenlens.scope-history.v2',active_revision_sha256:'d'.repeat(64),revisions:[revision('c'.repeat(64),'Original accepted scope',[view('top','Roof plan'),view('front','Useful section'),view('right','Side view')]),revision('d'.repeat(64),'Later accepted scope',[view('top','Same name, different revision')])]}};
+}
 
 test('real form requires explicit scope and exact selected pair; HTML-only is an explicit action',async()=>{
   await setup();assert.equal(button('Issue analytical design report').disabled,true);assert.match(document.body.textContent,new RegExp(`Selected A: ${designFixtureA}`));assert.match(document.body.textContent,/no architectural reference|Imported reference scope/);
@@ -56,6 +62,26 @@ test('retained exact pair is distinct from current selection and missing sensiti
   const request=calls.find(([command])=>command==='design_report_inspect')[1];assert.equal(request.id,id);assert.equal(request.project,props.project);
   props={...props,a:'different-current-a'};await render();assert.match(document.body.textContent,/Historical pair; current inputs and selected runs are not substituted/);assert.match(document.body.textContent,new RegExp(`Retained A: ${designFixtureA}; B: ${designFixtureB}`));assert.match(document.body.textContent,/Four original synthetic zones/);
   await click('Regenerate exact products…');assert.deepEqual(actions,[{kind:'regenerate',id}]);assert.ok(calls.every(([command])=>!command.includes('start')));
+});
+
+test('retained v2 scope, views and documentation/review status never follow the active scope or local drawing draft',async()=>{
+  await setup();const f=scopedDesignReportFixture(),active=f.project.architecture.scope_history.revisions[1];
+  active.scope.title='Different active scope';active.scope.report_views=[];active.provenance.documentation_complete=false;active.review_decisions=[];
+  props={...props,project:f.project};answer=async command=>command==='project_capacity'?capacity():f.inspection;await render();await select();
+  const retained=()=>document.querySelector('[aria-label="Retained accepted drawing scope"]');
+  assert.match(retained().textContent,/Exact retained partial scope/);assert.match(retained().textContent,new RegExp(`exact scope revision ${'c'.repeat(64)}`));
+  assert.match(retained().textContent,/Additional accepted view IDs: 頂層 平面, front-section/);assert.match(retained().textContent,/Neutral reference context: requested/);
+  assert.match(retained().textContent,/Documentation completeness: complete\. Unresolved retained review decisions: 1 of 1/);
+  assert.match(retained().textContent,/neither establishes approval, physical qualification or whole-building coverage/);
+  assert.doesNotMatch(retained().textContent,/Different active scope|Documentation completeness: incomplete/);
+  const before=JSON.stringify(f.inspection);
+  await value('Accepted scope for design report','d'.repeat(64));
+  assert.equal(document.querySelector('[aria-label="Include neutral reference context"]').checked,false);
+  assert.match(retained().textContent,/Neutral reference context: requested/);assert.match(retained().textContent,/Unresolved retained review decisions: 1 of 1/);
+  props={...props,a:'different-current-a'};await render();assert.match(retained().textContent,new RegExp(`exact scope revision ${'c'.repeat(64)}`));assert.equal(JSON.stringify(f.inspection),before);
+  await setup();const plain=scopedDesignReportFixture({context:false,views:false});props={...props,project:plain.project};answer=async command=>command==='project_capacity'?capacity():plain.inspection;await render();await select();
+  assert.match(retained().textContent,/none; default paired frames only\. Neutral reference context: not requested/);
+  await setup();await select();assert.equal(retained(),null);assert.match(document.body.textContent,/Analytical-only report: no accepted scope revision or reference context is attached/);
 });
 
 test('mismatched inspection is rejected and a late old-document response remains hidden',async()=>{
@@ -87,6 +113,67 @@ test('document replacement hides late issuance acknowledgement without inventing
   await setup();await value('Design report analytical scope','Explicit synthetic scope.');const old=deferred();actionAnswer=()=>old.promise;await click('Issue analytical design report');assert.match(document.body.textContent,/Working with exact retained evidence/);
   props={...props,project:{...project(),id:'replacement-document'},path:'new-owned-path'};await render();await act(async()=>old.resolve({status:'issued',report:inspection()}));
   assert.doesNotMatch(document.body.textContent,/Immutable analytical report accepted/);assert.equal(document.querySelector('[aria-label="Retained analytical report"]').value,'');assert.equal(document.querySelector('[aria-label="Design report analytical scope"]').value,'');
+});
+
+test('real drawing controls bind an exact accepted revision and at most two views alongside default frames',async()=>{
+  await setup();addScopes();let editorOpened=0;props.onEditScope=()=>editorOpened++;await render();
+  await value('Design report analytical scope','Explicit supported portion; reference context is not analytical inclusion.');
+  assert.equal(document.querySelector('[aria-label="Accepted scope for design report"]').value,'');
+  await value('Accepted scope for design report','c'.repeat(64));
+  await check('Include accepted view top');await check('Include accepted view front');
+  assert.equal(document.querySelector('[aria-label="Include accepted view right"]').disabled,true);
+  assert.match(document.body.textContent,/2\/2 additional accepted views/);assert.match(document.body.textContent,/Default matched A\/B frames are always included/);
+  await check('Include neutral reference context');await click('Issue analytical design report');
+  assert.deepEqual(actions.at(-1).drawing,{schema_version:'greenlens.design-report-drawing-selection.v1',scope_revision_sha256:'c'.repeat(64),accepted_view_ids:['top','front'],include_reference_context:true});
+  assert.equal(actions.at(-1).a,designFixtureA);assert.equal(actions.at(-1).b,designFixtureB);
+  await click('Inspect or edit accepted scope and views…');assert.equal(editorOpened,1);
+  await value('Accepted scope for design report','d'.repeat(64));
+  assert.equal(document.querySelector('[aria-label="Include accepted view top"]').checked,false);
+  assert.equal(document.querySelector('[aria-label="Include neutral reference context"]').checked,false);
+  await click('Issue analytical design report');assert.deepEqual(actions.at(-1).drawing.accepted_view_ids,[]);
+  await value('Accepted scope for design report','');await click('Issue analytical design report');
+  assert.equal(Object.hasOwn(actions.at(-1),'drawing'),false,'Legacy analytical-only payload is preserved');
+});
+
+test('historical drawing selection survives active scope and selected-pair changes; Rust rejection preserves the draft',async()=>{
+  await setup();addScopes();await render();await value('Design report analytical scope','Keep exact historic drawing selection.');
+  await value('Accepted scope for design report','c'.repeat(64));await check('Include accepted view front');
+  const before=JSON.stringify(props.project.architecture);
+  props={...props,a:'another-retained-baseline',project:{...props.project,architecture:{...props.project.architecture,scope_history:{...props.project.architecture.scope_history,active_revision_sha256:'c'.repeat(64)}}}};await render();
+  assert.equal(document.querySelector('[aria-label="Accepted scope for design report"]').value,'c'.repeat(64));
+  actionAnswer=async()=>{throw Error('Selected scope does not match the exact retained A/B snapshots.');};await click('Issue analytical design report');
+  assert.match(document.body.textContent,/Selected scope does not match the exact retained A\/B/);
+  assert.equal(actions.at(-1).a,'another-retained-baseline');assert.equal(actions.at(-1).drawing.scope_revision_sha256,'c'.repeat(64));
+  assert.equal(document.querySelector('[aria-label="Include accepted view front"]').checked,true);
+  assert.equal(document.querySelector('[aria-label="Design report analytical scope"]').value,'Keep exact historic drawing selection.');
+  assert.equal(JSON.stringify({...props.project.architecture,scope_history:{...props.project.architecture.scope_history,active_revision_sha256:'d'.repeat(64)}}),before);
+});
+
+test('unavailable scope or view fails visibly without rebinding or silently dropping a selected frame',async()=>{
+  await setup();addScopes();await render();await value('Design report analytical scope','Retain unavailable selections until explicitly resolved.');
+  await value('Accepted scope for design report','c'.repeat(64));await check('Include accepted view front');
+  const history=structuredClone(props.project.architecture.scope_history);
+  props={...props,project:{...props.project,architecture:{scope_history:{...history,revisions:history.revisions.slice(1)}}}};await render();
+  assert.equal(button('Issue analytical design report').disabled,true);assert.match(document.body.textContent,/no active revision has been substituted/);
+  assert.equal(document.querySelector('[aria-label="Accepted scope for design report"]').value,'c'.repeat(64));
+  history.revisions[0].scope.report_views=history.revisions[0].scope.report_views.filter(view=>view.id!=='front');
+  props={...props,project:{...props.project,architecture:{scope_history:history}}};await render();
+  assert.match(document.body.textContent,/Accepted view front is unavailable/);assert.equal(button('Issue analytical design report').disabled,true);
+  await click('Remove unavailable view front');assert.equal(button('Issue analytical design report').disabled,false);
+  await click('Issue analytical design report');assert.deepEqual(actions.at(-1).drawing.accepted_view_ids,[]);
+});
+
+test('actual drawing form retains per-document choices through panel remount and complete Save As without changing accepted history',async()=>{
+  await setup();addScopes();await render();await value('Design report analytical scope','Local declaration only.');
+  await value('Accepted scope for design report','c'.repeat(64));await check('Include accepted view top');await check('Include neutral reference context');
+  const original=props,accepted=JSON.stringify(props.project);
+  await act(()=>root.unmount());root=createRoot(document.getElementById('root'));props={...props,path:'owned complete portable copy'};await render();
+  assert.equal(document.querySelector('[aria-label="Accepted scope for design report"]').value,'c'.repeat(64));
+  assert.equal(document.querySelector('[aria-label="Include accepted view top"]').checked,true);assert.equal(document.querySelector('[aria-label="Include neutral reference context"]').checked,true);
+  props={...props,project:{...project(),id:'another-document'}};await render();
+  assert.equal(document.querySelector('[aria-label="Accepted scope for design report"]').value,'');
+  props=original;await render();assert.equal(document.querySelector('[aria-label="Include accepted view top"]').checked,true);
+  assert.equal(JSON.stringify(props.project),accepted);assert.ok(calls.every(([command])=>!command.includes('start')));
 });
 
 test.after(async()=>{if(root)await act(()=>root.unmount());});

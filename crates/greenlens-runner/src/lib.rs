@@ -7,6 +7,7 @@ pub mod climate_export;
 mod climate_job;
 pub mod design_proposals;
 pub mod design_report;
+pub mod design_report_drawing;
 pub mod design_report_export;
 pub mod design_report_service;
 pub mod display;

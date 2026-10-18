@@ -19,6 +19,7 @@ pub(crate) enum Action {
         scope: String,
         north: Option<String>,
         html_only: bool,
+        drawing: Option<greenlens_runner::design_report_drawing::DrawingSelection>,
     },
     Recover {
         token: String,
@@ -45,9 +46,9 @@ pub(crate) async fn design_report_action(
         app.state::<Application>().ensure_report_ready()?;
         let root=Path::new(&path);
         match action {
-            Action::Create{a,b,scope,north,html_only}=>{
+            Action::Create{a,b,scope,north,html_only,drawing}=>{
                 let config=(!html_only).then(||TypstConfig::discover(typst_dir.as_deref().map(Path::new))).transpose()?;
-                match service::create(root,&project,Some(&expected_revision),&a,&b,scope,north,!html_only,config.as_ref(),control.cancelled.clone()){
+                match service::create_with_drawing(root,&project,Some(&expected_revision),&a,&b,scope,north,!html_only,drawing,config.as_ref(),control.cancelled.clone()){
                     Ok(result)=>Ok(json!({"status":"issued","view":result.view,"report":result.report})),
                     Err(error)=>if let Some(pending)=error.downcast_ref::<service::PendingDesignReportPublication>(){Ok(json!({"status":"pending","recovery_token":pending.recovery_token,"message":pending.to_string()}))}else{Err(error)},
                 }

@@ -222,7 +222,7 @@ fn unit(a: Point) -> Point {
     let n = dot(a, a).sqrt();
     a.map(|x| x / n)
 }
-fn axes(frame: &DesignFigureFrame) -> Result<(Point, Point)> {
+pub(crate) fn axes(frame: &DesignFigureFrame) -> Result<(Point, Point)> {
     identifier("figure.frame.id", &frame.id)?;
     text("figure.frame.title", &frame.title)?;
     let forward = sub(frame.target_m, frame.eye_m);
@@ -411,7 +411,7 @@ pub fn default_design_frames(
     }
     Ok(frames)
 }
-fn clip(a: &mut Point, b: &mut Point, n: Point, offset: f64) -> bool {
+pub(crate) fn clip(a: &mut Point, b: &mut Point, n: Point, offset: f64) -> bool {
     let da = dot(*a, n) - offset;
     let db = dot(*b, n) - offset;
     if da < 0. && db < 0. {
@@ -523,6 +523,7 @@ fn svg_product(
     b: &ThermalScene,
     request: &PairedDesignFigureRequest,
     changes: &[DesignObjectChange],
+    scoped_annotations: bool,
 ) -> Result<DesignFigureProduct> {
     let (right, up) = axes(frame)?;
     let width = frame.vertical_span_m * frame.aspect_ratio;
@@ -563,7 +564,15 @@ fn svg_product(
             "small",
         );
     }
-    text_lines(&mut svg, &wrapped_lines(&format!("Shared orthographic frame: {width:.4} × {height:.4} m; {:?}; no spatial simulation field",frame.kind),62,2),184,22,"frame","small");
+    let frame_label = if scoped_annotations
+        && frame.id.starts_with("accepted-")
+        && frame.kind == DesignViewKind::Axonometric
+    {
+        "accepted orthographic frame".into()
+    } else {
+        format!("{:?}", frame.kind)
+    };
+    text_lines(&mut svg, &wrapped_lines(&format!("Shared orthographic frame: {width:.4} × {height:.4} m; {frame_label}; no spatial simulation field"),62,2),184,22,"frame","small");
     if changes
         .iter()
         .all(|c| c.before_geometry_sha256 == c.after_geometry_sha256)
@@ -746,7 +755,15 @@ fn svg_product(
         .unwrap_or_else(|| {
             "No section; transparent outlines, not hidden-surface or thermal-field rendering".into()
         });
-    let footer=[("Legend: green added · red dashed removed · amber geometry modified · blue property-only · grey unchanged/renamed".to_owned(),2), (format!("{} · {}",section,request.north_declaration.as_deref().unwrap_or("True north not documented")),3), (format!("Scope: {}",request.scope),3), (format!("A model {} · B model {}",&a.model_sha256[..16],&b.model_sha256[..16]),1), (format!("Labels {displayed_labels}/{label_count}; complete IDs in JSON. {} change rows; {count} edges; no sampling. Exact run/scope bindings and full text accompany this figure.",changes.len()),3)];
+    // The public v1 path retains its exact text. Scoped drawings distinguish
+    // complete A/B outlines from separately bounded reference context before
+    // wrapping; a post-SVG string replacement misses split text nodes.
+    let completeness_note = if scoped_annotations {
+        "A/B only"
+    } else {
+        "no sampling"
+    };
+    let footer=[("Legend: green added · red dashed removed · amber geometry modified · blue property-only · grey unchanged/renamed".to_owned(),2), (format!("{} · {}",section,request.north_declaration.as_deref().unwrap_or("True north not documented")),3), (format!("Scope: {}",request.scope),3), (format!("A model {} · B model {}",&a.model_sha256[..16],&b.model_sha256[..16]),1), (format!("Labels {displayed_labels}/{label_count}; complete IDs in JSON. {} change rows; {count} edges; {completeness_note}. Exact run/scope bindings and full text accompany this figure.",changes.len()),3)];
     let mut footer_y = 804;
     for (line, limit) in footer {
         let lines = wrapped_lines(&line, 62, limit);
@@ -776,6 +793,13 @@ fn svg_product(
 }
 
 pub fn paired_design_figures(request: &PairedDesignFigureRequest) -> Result<PairedDesignFigures> {
+    paired_design_figures_with_annotations(request, false)
+}
+
+pub(crate) fn paired_design_figures_with_annotations(
+    request: &PairedDesignFigureRequest,
+    scoped_annotations: bool,
+) -> Result<PairedDesignFigures> {
     if request.schema_version != DESIGN_FIGURE_SCHEMA {
         return Err(invalid(
             "figure.schema",
@@ -859,7 +883,15 @@ pub fn paired_design_figures(request: &PairedDesignFigureRequest) -> Result<Pair
     let mut products = vec![];
     for frame in &request.frames {
         for side in ["A", "B", "overlay"] {
-            products.push(svg_product(frame, side, &a, &b, request, &changes)?);
+            products.push(svg_product(
+                frame,
+                side,
+                &a,
+                &b,
+                request,
+                &changes,
+                scoped_annotations,
+            )?);
         }
     }
     let mut value=PairedDesignFigures {schema_version:DESIGN_FIGURE_SCHEMA.into(),method:DESIGN_FIGURE_METHOD.into(),request:request.clone(),baseline_model_sha256:ah,proposed_model_sha256:bh,change_count:changes.len(),comparable_geometry_weather_calendar,unchanged_service_inputs,changes,products,limitations:vec!["Analytical-only geometry. Imported reference context is not supplied by this contract; source appearance is not thermal equivalence.".into(),"Complete analytical outlines are projected without hidden-surface removal or filled section cuts. SVG labels are bounded excerpts; exact IDs and all change snapshots remain in the accompanying JSON.".into(),"Colours show input changes, not spatial energy, temperature, daylight or CFD results. Property-only and rename-only edits do not fabricate changed geometry.".into(),"Run integrity is checked by the shared evidence service, not by deserializing this drawing. Numerical sensitivity and physical qualification remain distinct.".into()],content_sha256:String::new()};

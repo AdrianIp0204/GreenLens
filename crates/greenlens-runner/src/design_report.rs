@@ -22,9 +22,11 @@ use std::{
 };
 
 pub const CONTENT_SCHEMA: &str = "greenlens.design-report-content.v1";
+pub const CONTENT_SCHEMA_V2: &str = "greenlens.design-report-content.v2";
 pub const INDEX_SCHEMA: &str = "greenlens.design-report-index.v1";
 pub const PRODUCT_SCHEMA: &str = "greenlens.design-report-products.v1";
 pub const RENDERER_METHOD: &str = "greenlens.analytical-design-report-renderer/1";
+pub const RENDERER_METHOD_V2: &str = "greenlens.bound-design-report-renderer/2";
 pub const MAX_REPORTS: usize = 32;
 pub const MAX_PRODUCTS: usize = 252;
 const MAX_CONTENT_BYTES: u64 = 48 * 1024 * 1024;
@@ -63,6 +65,12 @@ pub fn renderer_identity() -> Result<DesignRendererIdentity> {
             .collect::<Result<_>>()?,
     })
 }
+pub fn bound_renderer_identity() -> Result<DesignRendererIdentity> {
+    let mut identity = renderer_identity()?;
+    identity.method = RENDERER_METHOD_V2.into();
+    identity.figure_method = crate::design_report_drawing::FIGURE_METHOD.into();
+    Ok(identity)
+}
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -77,6 +85,8 @@ pub struct DesignReportContent {
     pub north_declaration: Option<String>,
     pub renderer: DesignRendererIdentity,
     pub include_pdf: bool,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub drawing: Option<crate::design_report_drawing::DesignReportDrawing>,
 }
 impl DesignReportContent {
     pub fn identity(&self) -> Result<String> {
@@ -85,29 +95,42 @@ impl DesignReportContent {
         Ok(canonical_hash(&value)?)
     }
     pub fn figures(&self) -> Result<PairedDesignFigures> {
-        let mut a = DesignFigureCase::from_report_case(&self.workbench.base.baseline, None)?;
-        let mut b = DesignFigureCase::from_report_case(&self.workbench.base.proposed, None)?;
+        let revision = self
+            .drawing
+            .as_ref()
+            .map(|d| d.scope_revision.revision_sha256.clone());
+        let mut a =
+            DesignFigureCase::from_report_case(&self.workbench.base.baseline, revision.clone())?;
+        let mut b = DesignFigureCase::from_report_case(&self.workbench.base.proposed, revision)?;
         // A/B are presentation-side labels. The canonical report retains the
         // actual design IDs; neither record nor physical identity is modified.
         a.design_id = "A".into();
         b.design_id = "B".into();
-        Ok(paired_design_figures(&PairedDesignFigureRequest {
+        let request = PairedDesignFigureRequest {
             schema_version: DESIGN_FIGURE_SCHEMA.into(),
             baseline: a,
             proposed: b,
             frames: self.frames.clone(),
             scope: self.analytical_scope.clone(),
             north_declaration: self.north_declaration.clone(),
-        })?)
+        };
+        match &self.drawing {
+            Some(binding) => binding.figures(&request),
+            None => Ok(paired_design_figures(&request)?),
+        }
     }
     pub fn validate(&self) -> Result<()> {
         ensure!(
-            self.schema_version == CONTENT_SCHEMA,
+            (self.schema_version == CONTENT_SCHEMA && self.drawing.is_none())
+                || (self.schema_version == CONTENT_SCHEMA_V2 && self.drawing.is_some()),
             "Unsupported design-report content codec"
         );
         self.workbench.validate()?;
+        if let Some(binding) = &self.drawing {
+            binding.validate(&self.workbench, &self.frames)?;
+        }
         ensure!(self.workbench.attachments.included_ids.is_empty(),
-            "This analytical-only report does not include external attachments. Deselect them explicitly or use the full architectural issue workflow; checked evidence cannot disappear silently");
+            "This design report includes only its bound drawing/scope supplement and declared products. Other checked attachments require the full architectural issue workflow; checked evidence cannot disappear silently");
         if let Some(e) = &self.sensitivity {
             validate_sensitivity(e, &self.workbench)?;
         }
@@ -118,8 +141,18 @@ impl DesignReportContent {
         }
         self.figures()?;
         ensure!(
-            self.renderer.method == RENDERER_METHOD
-                && self.renderer.figure_method == DESIGN_FIGURE_METHOD
+            self.renderer.method
+                == if self.drawing.is_some() {
+                    RENDERER_METHOD_V2
+                } else {
+                    RENDERER_METHOD
+                }
+                && self.renderer.figure_method
+                    == if self.drawing.is_some() {
+                        crate::design_report_drawing::FIGURE_METHOD
+                    } else {
+                        DESIGN_FIGURE_METHOD
+                    }
                 && digest(&self.renderer.template_sha256)
                 && digest(&self.renderer.typst_executable_sha256)
                 && self.renderer.font_sha256.len() == 2
@@ -135,7 +168,12 @@ impl DesignReportContent {
     }
     pub fn ensure_supported_regeneration(&self) -> Result<()> {
         self.validate()?;
-        ensure!(self.renderer == renderer_identity()?, "Exact design-report regeneration unavailable: retained renderer/template/fonts differ. Preserved products remain inspectable; never replace them");
+        let expected = if self.drawing.is_some() {
+            bound_renderer_identity()?
+        } else {
+            renderer_identity()?
+        };
+        ensure!(self.renderer == expected, "Exact design-report regeneration unavailable: retained renderer/template/fonts differ. Preserved products remain inspectable; never replace them");
         Ok(())
     }
 }
@@ -158,6 +196,7 @@ pub fn prepare(
         north_declaration,
         renderer: renderer_identity()?,
         include_pdf,
+        drawing: None,
     };
     value.content_sha256 = value.identity()?;
     value.validate()?;
@@ -168,6 +207,21 @@ pub fn with_proposals(
     declarations: Vec<crate::design_proposals::ProposalReceipt>,
 ) -> Result<DesignReportContent> {
     content.proposal_declarations = declarations;
+    content.content_sha256 = content.identity()?;
+    content.validate()?;
+    Ok(content)
+}
+
+/// Explicit opt-in to the next derived codec. The v1 path and serialized None
+/// stay byte-for-byte unchanged; no retained content is migrated in place.
+pub fn with_drawing(
+    mut content: DesignReportContent,
+    binding: crate::design_report_drawing::DesignReportDrawing,
+) -> Result<DesignReportContent> {
+    content.schema_version = CONTENT_SCHEMA_V2.into();
+    content.frames = binding.frames.clone();
+    content.drawing = Some(binding);
+    content.renderer = bound_renderer_identity()?;
     content.content_sha256 = content.identity()?;
     content.validate()?;
     Ok(content)
@@ -283,6 +337,18 @@ fn checkpoint(cancel: &AtomicBool) -> Result<()> {
 fn json_bytes(value: &impl Serialize) -> Result<Vec<u8>> {
     let mut bytes = serde_json::to_vec_pretty(value)?;
     bytes.push(b'\n');
+    Ok(bytes)
+}
+fn admit_content_bytes(bytes: u64, limit: u64) -> Result<()> {
+    ensure!(
+        bytes <= limit,
+        "Serialized design report content exceeds its {limit}-byte bound; preserve the existing study and start a separately scoped document"
+    );
+    Ok(())
+}
+fn content_json_bytes(value: &impl Serialize, limit: u64) -> Result<Vec<u8>> {
+    let bytes = json_bytes(value)?;
+    admit_content_bytes(bytes.len() as u64, limit)?;
     Ok(bytes)
 }
 fn read(root: &Path, name: &str, cap: u64, cancel: &AtomicBool) -> Result<Vec<u8>> {
@@ -505,7 +571,11 @@ fn documents(
     let mut disclosures = data.service_disclosures();
     disclosures.extend(data.base.limitations.clone());
     disclosures.extend(figures.limitations.clone());
-    disclosures.push("Analytical-only scope: no architectural reference, mapping register, accepted scope revision or source-documentation review is attached. Geometry drawings identify the actual retained models and do not prove whole-building coverage. An empty provenance register must not be read as complete provenance.".into());
+    if let Some(binding) = &content.drawing {
+        disclosures.extend(binding.disclosures());
+    } else {
+        disclosures.push("Analytical-only scope: no architectural reference, mapping register, accepted scope revision or source-documentation review is attached. Geometry drawings identify the actual retained models and do not prove whole-building coverage. An empty provenance register must not be read as complete provenance.".into());
+    }
     disclosures.push("This report bundle retains canonical input/result snapshots, figures and product identities. It is not a complete engine replay archive. Retain/export the complete GreenLens project for original weather, run evidence and replay.".into());
     disclosures.push(format!("Comparison eligibility: geometry/weather/calendar compatible = {}; unchanged service inputs = {}. Signed differences are retained even when the proposal performs worse; no guaranteed savings or causal attribution is asserted.", figures.comparable_geometry_weather_calendar, figures.unchanged_service_inputs.map(|v|v.to_string()).unwrap_or_else(||"not assessed".into())));
     let comparison = Section::table(
@@ -578,7 +648,7 @@ fn documents(
         Section::table("Selected evidence and scientific status", &["Side / exact run", "Status and qualification limits"],
             [(&data.base.baseline,"A"),(&data.base.proposed,"B")].into_iter().map(|(c,side)|Ok(vec![format!("{side} · {}\n{}",c.label,c.run_id),format!("Execution {}; integrity {}; physical inputs {}; processed {}; derived {}. Scientific status {}: {}\nWarnings {}; severe {}. Full method, registry, diagnostic and input identities: technical report and energy-report.json.",ser(&c.assessment.execution)?,ser(&c.assessment.evidence_integrity)?,ser(&c.assessment.current_physical_inputs)?,ser(&c.assessment.current_processed_results)?,ser(&c.assessment.current_derived_results)?,ser(&c.assessment.scientific.status)?,c.assessment.scientific.reason,c.diagnostics.warning_count.map(|v|v.to_string()).unwrap_or_else(||"not checked".into()),c.diagnostics.severe_count.map(|v|v.to_string()).unwrap_or_else(||"not checked".into()))])).collect::<Result<_>>()?),
         Section::prose("Scope and interpretation",vec![
-            "Analytical-only report: no architectural reference, accepted mapping/scope revision or source-documentation review is attached. Coverage of a real or whole building is not established; an empty provenance register is not complete provenance.".into(),
+            if let Some(binding) = &content.drawing { binding.disclosures().join("\n") } else { "Analytical-only report: no architectural reference, accepted mapping/scope revision or source-documentation review is attached. Coverage of a real or whole building is not established; an empty provenance register is not complete provenance.".into() },
             format!("Weather source is synthetic for A: {}; B: {}. Values apply to the retained annual local-standard calendar and the named gross-area denominator. Occupied-unmet union is descriptive; per-zone comfort criteria and all native diagnostics remain in the technical report. Unsupported end uses and absent carbon factors remain explicitly unavailable.",data.base.baseline.weather_summary.source.synthetic,data.base.proposed.weather_summary.source.synthetic),
             format!("Lighting-service evidence: {}. No daylight, embodied-carbon, certification or spatial thermal-field benefit is inferred. Complete limitations, assumptions, meter boundaries and exact provenance are in the technical report and machine-readable evidence.",data.base.comparison.lighting_service_equivalence),
         ]),
@@ -674,8 +744,15 @@ fn documents(
             .iter()
             .find(|f| f.id == product.frame_id)
             .context("Figure frame")?;
-        figure_sections.push(Section::figure(&format!("{} — {}",frame.title,product.side), &product.filename,
-            format!("Shared frame {}: {:.6} × {:.6} m; {:?}; section {}. {} edges; {} labels displayed, {} omitted labels. Complete object/change identities: design-figures.json and design-changes.json. No geometry sampling or spatial results are implied.", frame.id, frame.vertical_span_m*frame.aspect_ratio,frame.vertical_span_m,frame.kind,ser(&frame.section)?,product.analytical_edge_count,product.displayed_label_count,product.omitted_label_count)));
+        let mut caption = format!("Shared frame {}: {:.6} × {:.6} m; {:?}; section {}. {} edges; {} labels displayed, {} omitted labels. Complete object/change identities: design-figures.json and design-changes.json. No geometry sampling or spatial results are implied.", frame.id, frame.vertical_span_m*frame.aspect_ratio,frame.vertical_span_m,frame.kind,ser(&frame.section)?,product.analytical_edge_count,product.displayed_label_count,product.omitted_label_count);
+        if content.drawing.is_some() {
+            caption = caption.replace("No geometry sampling or spatial results are implied.", "Analytical outlines are complete within the shared frame. Neutral reference reduction, exclusions and exact accepted view/source identities are disclosed in design-drawing.json; context is not a spatial simulation result or proof of equivalence.");
+        }
+        figure_sections.push(Section::figure(
+            &format!("{} — {}", frame.title, product.side),
+            &product.filename,
+            caption,
+        ));
     }
     let rows = figures
         .changes
@@ -707,7 +784,11 @@ fn documents(
     );
     changes.paragraphs.push(format!("Displayed {} of {} changes; no change rows are omitted. Complete before/after values are in design-changes.json and design-changes.csv. Properties-only and rename-only rows do not manufacture geometry changes.",figures.changes.len(),figures.change_count));
     let make = |kind: &str, sections| Document {
-        schema_version: "greenlens.design-report-document.v1",
+        schema_version: if content.drawing.is_some() {
+            "greenlens.design-report-document.v2"
+        } else {
+            "greenlens.design-report-document.v1"
+        },
         title: data.metadata.title.clone(),
         report_id: data.base.id.clone(),
         revision: data.metadata.revision.clone(),
@@ -739,6 +820,38 @@ fn documents(
         "Documentation and complete data",
         disclosures,
     )];
+    if let Some(binding) = &content.drawing {
+        let revision = &binding.scope_revision;
+        let unresolved: Vec<_> = revision
+            .review_decisions
+            .iter()
+            .filter(|d| {
+                d.resolution == greenlens_core::study_revision::ReviewResolution::Unresolved
+            })
+            .collect();
+        let mut register = Section::table(
+            "Unresolved scope review — bounded excerpt",
+            &["Affected review row", "Retained rationale"],
+            unresolved
+                .iter()
+                .take(80)
+                .map(|d| {
+                    let label = revision
+                        .reviewed_rows
+                        .as_ref()
+                        .and_then(|rows| rows.iter().find(|r| r.row_id == d.row_id))
+                        .map(|r| format!("{:?}: {} ({})", r.kind, r.key, d.row_id))
+                        .unwrap_or_else(|| {
+                            format!("{} — legacy field binding unavailable", d.row_id)
+                        });
+                    vec![label, d.rationale.clone()]
+                })
+                .collect(),
+        );
+        register.paragraphs.push(format!("Displayed {} of {} unresolved decisions from {} total decisions. All decisions, rationales, input documentation, mappings, assumptions and exact accepted source/model snapshots are retained without truncation in design-scope-revision.json. Unresolved matters limit interpretation and do not imply approval or physical qualification.", unresolved.len().min(80), unresolved.len(), revision.review_decisions.len()));
+        technical.push(register.clone());
+        appendix.push(register);
+    }
     appendix.append(&mut old[1].sections);
     let performance = std::mem::take(&mut old[2].sections);
     Ok(vec![
@@ -751,11 +864,14 @@ fn documents(
 type OwnedProducts = (Vec<Document>, BTreeMap<String, Vec<u8>>);
 fn owned_products(content: &DesignReportContent) -> Result<OwnedProducts> {
     content.validate()?;
+    // Admission covers the actual retained pretty JSON, including its newline,
+    // before preparing any native rendering. The reader uses the same bound.
+    let content_bytes = content_json_bytes(content, MAX_CONTENT_BYTES)?;
     let figures = content.figures()?;
     let p = content.workbench.base.presentation()?;
     let docs = documents(content, &figures)?;
     let mut products = BTreeMap::from([
-        ("design-content.json".into(), json_bytes(content)?),
+        ("design-content.json".into(), content_bytes),
         (
             "energy-report.json".into(),
             json_bytes(&content.workbench.base)?,
@@ -796,6 +912,13 @@ fn owned_products(content: &DesignReportContent) -> Result<OwnedProducts> {
         ("annual.svg".into(), report::chart(&p, false).into_bytes()),
         ("monthly.svg".into(), report::chart(&p, true).into_bytes()),
     ]);
+    if let Some(binding) = &content.drawing {
+        products.insert("design-drawing.json".into(), json_bytes(binding)?);
+        products.insert(
+            "design-scope-revision.json".into(),
+            json_bytes(&binding.scope_revision)?,
+        );
+    }
     for product in &figures.products {
         ensure!(
             products
@@ -986,7 +1109,7 @@ pub fn inspect_directory(directory: &Path, cancel: &AtomicBool) -> Result<Design
         budget.add(&p.path, p.bytes)?;
         total_bytes += p.bytes;
         if p.path == "design-content.json" {
-            ensure!(p.bytes <= MAX_CONTENT_BYTES, "Design content exceeds bound");
+            admit_content_bytes(p.bytes, MAX_CONTENT_BYTES)?;
             content_bytes = Some(bytes);
         }
     }
@@ -1241,6 +1364,15 @@ pub fn inspect(
             &evidence.receipt_reference,
         )?;
     }
+    if let Some(binding) = &result.content.drawing {
+        binding.verify_project(
+            root,
+            project,
+            &result.content.workbench,
+            &result.content.frames,
+            cancel,
+        )?;
+    }
     Ok(result)
 }
 fn validate_retained_sensitivity_reference(
@@ -1453,6 +1585,26 @@ pub fn regenerate(
 mod tests {
     use super::*;
 
+    #[test]
+    fn retained_content_admission_counts_pretty_bytes_and_trailing_newline() {
+        let value = serde_json::json!({"rows": [{"label": "空間", "value": 12.5}]});
+        let compact = serde_json::to_vec(&value).unwrap();
+        let actual = json_bytes(&value).unwrap();
+        assert!(actual.len() > compact.len());
+        assert_eq!(actual.last(), Some(&b'\n'));
+        // Compact admission alone would accept this smaller limit. Production
+        // serializes through the same helper before launching a renderer.
+        assert!(content_json_bytes(&value, compact.len() as u64).is_err());
+        assert_eq!(
+            content_json_bytes(&value, actual.len() as u64).unwrap(),
+            actual
+        );
+        assert!(content_json_bytes(&value, actual.len() as u64 - 1).is_err());
+        assert!(admit_content_bytes(MAX_CONTENT_BYTES, MAX_CONTENT_BYTES).is_ok());
+        assert!(admit_content_bytes(MAX_CONTENT_BYTES + 1, MAX_CONTENT_BYTES).is_err());
+        assert!(admit_content_bytes(u64::MAX, MAX_CONTENT_BYTES).is_err());
+    }
+
     /// Arithmetic fixture stays NotExecuted/NotChecked. Only pure presentation
     /// functions are tested with it; no accepted/native engine record is forged.
     fn fixture() -> (DesignReportContent, PairedDesignFigures) {
@@ -1480,7 +1632,7 @@ mod tests {
             &data.base.proposed.study.calendar,
         )
         .unwrap();
-        let mut content=DesignReportContent{schema_version:CONTENT_SCHEMA.into(),content_sha256:String::new(),workbench:data,sensitivity:None,proposal_declarations:vec![],frames,analytical_scope:"Original synthetic arithmetic/rendering fixture; not simulated or whole-building evidence.".into(),north_declaration:None,renderer:renderer_identity().unwrap(),include_pdf:false};
+        let mut content=DesignReportContent{schema_version:CONTENT_SCHEMA.into(),content_sha256:String::new(),workbench:data,sensitivity:None,proposal_declarations:vec![],frames,analytical_scope:"Original synthetic arithmetic/rendering fixture; not simulated or whole-building evidence.".into(),north_declaration:None,renderer:renderer_identity().unwrap(),include_pdf:false,drawing:None};
         content.content_sha256 = content.identity().unwrap();
         let case = |id: &str, c: &EnergyReportCase| DesignFigureCase {
             design_id: id.into(),
@@ -1577,6 +1729,58 @@ mod tests {
             serde_json::to_vec(&documents(&content, &figures).unwrap()).unwrap()
         );
     }
+    #[test]
+    fn bound_presentation_separates_documentation_and_complete_review_resolution() {
+        let (mut content, figures) = fixture();
+        let (_, mut revision, selection) = crate::design_report_drawing::tests::fixture();
+        // Presentation-only exception stress fixture, not a valid accepted
+        // revision or executed run. Publication remains forbidden by validate.
+        revision.provenance.documentation_complete = true;
+        revision.review_decisions = (0..81)
+            .map(|i| greenlens_core::study_revision::ReviewDecision {
+                row_id: format!("review-{i}"),
+                resolution: greenlens_core::study_revision::ReviewResolution::Unresolved,
+                rationale: format!("Rationale {i}: {}", "未確認 ".repeat(140)),
+            })
+            .collect();
+        revision.reviewed_rows = Some(
+            (0..81)
+                .map(|i| greenlens_core::study_revision::ReviewedRowBinding {
+                    row_id: format!("review-{i}"),
+                    kind: if i == 80 {
+                        greenlens_core::study_revision::RevisionRowKind::Reference
+                    } else {
+                        greenlens_core::study_revision::RevisionRowKind::Input
+                    },
+                    key: format!("affected-{i}"),
+                })
+                .collect(),
+        );
+        content.schema_version = CONTENT_SCHEMA_V2.into();
+        content.renderer = bound_renderer_identity().unwrap();
+        content.drawing = Some(crate::design_report_drawing::DesignReportDrawing {
+            schema_version: crate::design_report_drawing::DRAWING_SCHEMA.into(),
+            selection,
+            scope_revision: revision,
+            frames: content.frames.clone(),
+            context: None,
+        });
+        let docs = documents(&content, &figures).unwrap();
+        let executive = serde_json::to_string(&docs[0]).unwrap();
+        assert!(executive.contains("Documentation complete: true"));
+        assert!(executive.contains("81/81 decisions remain explicitly unresolved"));
+        let technical = serde_json::to_string(&docs[1]).unwrap();
+        assert!(technical.contains("Displayed 80 of 81 unresolved decisions"));
+        assert!(technical.contains("Input: affected-0 (review-0)"));
+        assert!(technical.contains(&"未確認 ".repeat(140)));
+        let complete =
+            serde_json::to_string(&content.drawing.as_ref().unwrap().scope_revision).unwrap();
+        assert!(complete.contains("affected-80"));
+        assert!(complete.contains("Rationale 80:"));
+        assert!(technical.contains("design-scope-revision.json"));
+        assert!(content.validate().is_err());
+    }
+
     #[test]
     fn executive_retains_outcomes_and_limits_without_the_full_technical_register() {
         let (content, mut figures) = fixture();
@@ -1901,6 +2105,28 @@ mod tests {
             .unwrap_err()
             .to_string()
             .contains("distinct"));
+    }
+    #[test]
+    fn old_content_omits_drawing_and_retains_its_original_identity_codec() {
+        // This stays a not-executed arithmetic fixture; no accepted record is
+        // fabricated. Check historical serialization, not physical validity.
+        let (content, _) = fixture();
+        let bytes = serde_json::to_vec(&content).unwrap();
+        let value: Value = serde_json::from_slice(&bytes).unwrap();
+        assert!(value.get("drawing").is_none());
+        assert_eq!(content.schema_version, CONTENT_SCHEMA);
+        assert_eq!(content.renderer, renderer_identity().unwrap());
+        let restored: DesignReportContent = serde_json::from_slice(&bytes).unwrap();
+        assert!(restored.drawing.is_none());
+        assert_eq!(restored.identity().unwrap(), content.identity().unwrap());
+        assert_eq!(serde_json::to_vec(&restored).unwrap(), bytes);
+        let mut unavailable = restored;
+        unavailable.schema_version = CONTENT_SCHEMA_V2.into();
+        assert!(unavailable
+            .validate()
+            .unwrap_err()
+            .to_string()
+            .contains("codec"));
     }
     #[test]
     fn png_dimensions_are_bounded_before_preview_or_copy() {

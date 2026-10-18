@@ -1,6 +1,6 @@
 # Progress and acceptance evidence
 
-2026-10-18: RC1 failed in the observer. VD1 four annuals/20 sensitivity checks pass; installed issuance failed before rendering on cold-session readiness. Both observations consumed; no retry/cold regeneration. CT1 stopped before execution; SKP/private probe unused. B-only proposals/paired figures implemented. Source-only evidence: `evidence/v0.8/visual-design-2d98b03.md`. Overall incomplete.
+2026-10-18: RC1/VD1 native issuance failed; no retry/regeneration. VD1 four annuals/20 checks pass. Cold-report guard repaired; B-only proposals and scope-bound paired figures checked. CT1 stopped; SKP/private probe unused. Source-only records: `evidence/v0.8/visual-design-2d98b03.md`, `evidence/v0.8/bound-drawing-completion.md`. New package/CI pending; overall incomplete.
 
 2026-10-17: 1d CI/Save/frames passed; observer failed. 580 members intact. e1947aa helper CI passed; R2/cold incomplete. No retry/EnergyPlus. Receipt: `docs/evidence/v0.8/native-1d27233-observer-failure.json`.
 

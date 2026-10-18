@@ -29,6 +29,15 @@ pub enum DesignReportCommand {
         /// Optional supported orientation statement; omission discloses unknown true north.
         #[arg(long)]
         north: Option<String>,
+        /// Exact retained scope revision; no active revision is substituted.
+        #[arg(long)]
+        scope_revision: Option<String>,
+        /// At most two view IDs from that accepted revision; repeat this flag.
+        #[arg(long, requires = "scope_revision")]
+        accepted_view: Vec<String>,
+        /// Add admitted neutral reference context to the same A/B drawing frame.
+        #[arg(long, requires = "scope_revision")]
+        reference_context: bool,
         #[arg(long)]
         html_only: bool,
         #[arg(long)]
@@ -125,6 +134,9 @@ pub fn execute(command: DesignReportCommand) -> Result<()> {
             b,
             scope,
             north,
+            scope_revision,
+            accepted_view,
+            reference_context,
             html_only,
             typst_dir,
             expected_revision,
@@ -134,7 +146,15 @@ pub fn execute(command: DesignReportCommand) -> Result<()> {
             let config = (!html_only)
                 .then(|| TypstConfig::discover(typst_dir.as_deref()))
                 .transpose()?;
-            publication(service::create(
+            let drawing = scope_revision.map(|scope_revision_sha256| {
+                greenlens_runner::design_report_drawing::DrawingSelection {
+                    schema_version: "greenlens.design-report-drawing-selection.v1".into(),
+                    scope_revision_sha256,
+                    accepted_view_ids: accepted_view,
+                    include_reference_context: reference_context,
+                }
+            });
+            publication(service::create_with_drawing(
                 &project,
                 &view.project,
                 Some(&view.revision),
@@ -143,6 +163,7 @@ pub fn execute(command: DesignReportCommand) -> Result<()> {
                 scope,
                 north,
                 !html_only,
+                drawing,
                 config.as_ref(),
                 cancel,
             ))
@@ -303,5 +324,47 @@ mod tests {
         assert!(revision_fence(Some("old"), "current").is_err());
         assert!(revision_fence(Some("current"), "current").is_ok());
         assert!(revision_fence(None, "current").is_ok());
+    }
+    #[test]
+    fn accepted_frames_and_context_require_an_explicit_scope_identity() {
+        let base = [
+            "test",
+            "create",
+            "project",
+            "--a",
+            "a",
+            "--b",
+            "b",
+            "--scope",
+            "Declared portion",
+        ];
+        for extra in [
+            vec!["--reference-context"],
+            vec!["--accepted-view", "section"],
+        ] {
+            assert!(Arguments::try_parse_from(base.into_iter().chain(extra)).is_err());
+        }
+        let parsed = Arguments::try_parse_from(base.into_iter().chain([
+            "--scope-revision",
+            "exact-retained-revision",
+            "--accepted-view",
+            "top",
+            "--accepted-view",
+            "section",
+            "--reference-context",
+        ]))
+        .unwrap();
+        let DesignReportCommand::Create {
+            scope_revision,
+            accepted_view,
+            reference_context,
+            ..
+        } = parsed.command
+        else {
+            panic!("create");
+        };
+        assert_eq!(scope_revision.as_deref(), Some("exact-retained-revision"));
+        assert_eq!(accepted_view, ["top", "section"]);
+        assert!(reference_context);
     }
 }

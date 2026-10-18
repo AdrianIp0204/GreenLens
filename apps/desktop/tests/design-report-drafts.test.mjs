@@ -35,6 +35,7 @@ async function request(reason='Replace document'){
 }
 const row=(id,scope='')=>({document_id:id,scope,north:'',selected:''});
 const encoded=rows=>JSON.stringify({schema_version:version,drafts:rows});
+const drawing=()=>({schema_version:'greenlens.design-report-drawing-selection.v1',scope_revision_sha256:'c'.repeat(64),accepted_view_ids:['Top 空間','front'],include_reference_context:true});
 
 test('local scope, orientation and selection survive panel/design navigation, Save As and remount',async()=>{
   await setup();const value={scope:'Original supported partial scope; context excluded.',north:'True north remains unknown.',selected:'a'.repeat(64)};
@@ -116,6 +117,28 @@ test('document change or hook unmount cancels an obsolete replacement request wi
 test('duplicate replacement requests fail without replacing the first pending decision',async()=>{
   await setup();await update({scope:'Await one explicit decision'});const first=await request('First action'),second=await request('Second action');
   assert.equal(second.result,false);assert.equal(first.settled,false);assert.equal(controller.guard.reason,'First action');await choose('cancel');assert.equal(first.result,false);
+});
+
+test('old v1 declarations remain readable; optional exact drawings persist in the bounded v2 local format',async()=>{
+  const old=encoded([row('synthetic-document-A','Retained legacy declaration')]);await setup(old);
+  assert.equal(window.localStorage.getItem(key),old);assert.equal(controller.value.drawing,undefined);
+  await update({drawing:drawing()});const stored=window.localStorage.getItem(key);
+  assert.equal(JSON.parse(stored).schema_version,'greenlens.local-design-report-declarations.v2');
+  await act(()=>root.unmount());root=createRoot(document.getElementById('root'));await draw();
+  assert.deepEqual(controller.value.drawing,drawing());assert.equal(controller.value.scope,'Retained legacy declaration');
+  const before=window.localStorage.getItem(key);
+  for(const invalid of [{...drawing(),accepted_view_ids:['same','same']},{...drawing(),accepted_view_ids:['one','two','three']},{...drawing(),accepted_view_ids:['界'.repeat(43)]},{...drawing(),scope_revision_sha256:'missing'}, {...drawing(),unexpected:'value'}]){
+    assert.equal(await update({drawing:invalid}),false);assert.deepEqual(controller.value.drawing,drawing());assert.equal(window.localStorage.getItem(key),before);
+  }
+});
+
+test('drawing-only declarations receive replacement guards and explicit discard; invalid stored bindings fail closed',async()=>{
+  await setup();await update({drawing:drawing()});const cancelled=await request();await choose('cancel');assert.equal(cancelled.result,false);assert.deepEqual(controller.value.drawing,drawing());
+  const kept=await request();await choose('keep');assert.equal(kept.result,true);
+  const discarded=await request();await choose('discard');assert.equal(discarded.result,true);assert.equal(controller.value.drawing,undefined);assert.equal((await request()).result,true);
+  for(const stored of [encoded([{...row('synthetic-document-A'),drawing:drawing()}]),JSON.stringify({schema_version:'greenlens.local-design-report-declarations.v2',drafts:[{...row('synthetic-document-A'),drawing:{...drawing(),include_reference_context:'yes'}}]})]){
+    await setup(stored);assert.equal(controller.locked,true);assert.equal(await update({drawing:null}),false);assert.equal(window.localStorage.getItem(key),stored);
+  }
 });
 
 test.after(async()=>{dom.window.Storage.prototype.setItem=setItem;if(root)await act(async()=>root.unmount());dom.window.close();});

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {assertEnergyResponse} from '../src/energy/response.mjs';
 import {validDesignReportSummary} from '../src/energy/design-report-response.mjs';
-import {designReportFixture,addDesignSensitivity} from './design-report-fixture.mjs';
+import {designReportFixture,addDesignSensitivity,scopedDesignReportFixture as scopedFixture} from './design-report-fixture.mjs';
 const check=fixture=>assertEnergyResponse('design_report_inspect',fixture.request,fixture.inspection);
 
 test('complete shape binds exact selected A/B without relabelling execution or qualification',()=>{
@@ -63,4 +63,57 @@ test('bounded traversal rejects cyclic, deeply nested and nonfinite hidden data 
   const cyclic=designReportFixture();cyclic.inspection.content.workbench.base.baseline.model.loop=cyclic.inspection;assert.throws(()=>check(cyclic),/bounded contract/);
   const deep=designReportFixture();let node=deep.inspection.content.workbench.base.baseline.model;for(let i=0;i<50;i++){node.child={};node=node.child;}assert.throws(()=>check(deep),/bounded contract/);
   const nonfinite=designReportFixture();nonfinite.inspection.content.workbench.base.baseline.totals.value=NaN;assert.throws(()=>check(nonfinite),/bounded contract/);
+});
+
+test('v2 exact historical scope, accepted Unicode views and neutral context use an explicit new codec without mutation',()=>{
+  for(const options of [{},{context:false},{views:false},{context:false,views:false,history:'greenlens.scope-history.v1',revision:'greenlens.scope-revision.v1'}]){
+    const f=scopedFixture(options),before=JSON.stringify(f);assert.equal(check(f),f.inspection);assert.equal(JSON.stringify(f),before);
+    assert.equal(f.inspection.content.drawing.scope_revision.provenance.documentation_complete,true);assert.equal(f.inspection.content.drawing.scope_revision.review_decisions[0].resolution,'unresolved');
+    assert.notEqual(f.inspection.content.drawing.scope_revision.revision_sha256,f.project.architecture.scope_history.active_revision_sha256);
+  }
+  const old=designReportFixture(),before=JSON.stringify(old);check(old);assert.equal(JSON.stringify(old),before);
+  old.inspection.content.drawing=null;check(old); // serde Option::None, not a v2 fallback.
+});
+
+test('v2 rejects missing/unknown/mixed contracts, undefined booleans and incomplete inventories',()=>{
+  for(const edit of [
+    f=>delete f.inspection.content.drawing,f=>f.inspection.content.drawing=null,f=>f.inspection.content.drawing=undefined,f=>f.inspection.content.schema_version='greenlens.design-report-content.v1',
+    f=>f.inspection.content.drawing.schema_version='future',f=>f.inspection.content.drawing.source_path='private-source',f=>f.inspection.content.drawing.selection.schema_version='future',
+    f=>f.inspection.content.drawing.selection.include_reference_context=undefined,f=>delete f.inspection.content.drawing.selection.include_reference_context,f=>f.inspection.content.drawing.selection.include_reference_context='true',
+    f=>f.inspection.content.drawing.selection.include_reference_context=false,f=>f.inspection.content.drawing.context=null,f=>delete f.inspection.content.drawing.context,
+    f=>f.inspection.content.renderer.method='greenlens.analytical-design-report-renderer/1',f=>f.inspection.content.renderer.figure_method='greenlens.analytical-paired-drawing/1',f=>f.inspection.content.renderer.figure_method='greenlens.scoped-paired-drawing/3',
+    f=>f.inspection.products.products=f.inspection.products.products.filter(p=>p.path!=='design-drawing.json'),f=>f.inspection.products.products=f.inspection.products.products.filter(p=>p.path!=='design-scope-revision.json'),
+  ]){const f=scopedFixture();edit(f);assert.throws(()=>check(f),/Design report/);}
+  const old=designReportFixture();old.inspection.content.drawing={};assert.throws(()=>check(old),/Design report/);
+  const extra=designReportFixture();extra.inspection.products.products.push({path:'design-drawing.json',bytes:128,sha256:'2'.repeat(64)});assert.throws(()=>check(extra),/Design report/);
+});
+
+test('v2 binds every historical field and selected view to the retained history and exact A/B snapshots',()=>{
+  for(const edit of [
+    f=>f.project.architecture.scope_history.revisions.shift(),f=>f.project.architecture.scope_history.schema_version='future',
+    f=>f.inspection.content.drawing.selection.scope_revision_sha256='d'.repeat(64),f=>f.inspection.content.drawing.scope_revision.scope.title='Resealed different title',
+    f=>f.inspection.content.drawing.scope_revision.review_decisions[0].resolution='reviewed',f=>f.inspection.content.drawing.scope_revision.provenance.documentation_complete=false,
+    f=>f.inspection.content.drawing.scope_revision.reference.manifest.source_sha256='0'.repeat(64),f=>f.inspection.content.drawing.scope_revision.extra='unknown',
+    f=>f.inspection.content.drawing.selection.accepted_view_ids=['頂層 平面','頂層 平面'],f=>f.inspection.content.drawing.selection.accepted_view_ids.push('third'),
+    f=>f.inspection.content.drawing.selection.accepted_view_ids[0]='missing',f=>f.inspection.content.drawing.selection.accepted_view_ids[0]='界'.repeat(43),
+    f=>f.inspection.content.drawing.frames[2].vertical_span_m=4.01,f=>{f.inspection.content.drawing.frames[3].section.keep='below';f.inspection.content.frames[3].section.keep='below';},
+    f=>f.inspection.content.workbench.base.proposed.model.zones[0].id='different-applied-model',f=>f.inspection.content.workbench.base.proposed.study.calendar.holidays=[1],
+    f=>f.inspection.content.workbench.base.proposed.study.weather.hash='different-weather',f=>f.inspection.content.workbench.base.proposed.model_input_sha256='0'.repeat(64),
+  ]){const f=scopedFixture();edit(f);assert.throws(()=>check(f),/Design report/);}
+});
+
+test('v2 context bounds original occurrence identities, complete counts and finite ordered triangles',()=>{
+  for(const edit of [
+    c=>c.schema_version='future',c=>c.reference_revision_sha256='0'.repeat(64),c=>c.reference_geometry_sha256='0'.repeat(64),c=>c.manifest_sha256='0'.repeat(64),c=>c.scope_revision_sha256='0'.repeat(64),c=>c.content_sha256='malformed',
+    c=>c.layers.pop(),c=>c.layers.push(c.layers[0]),c=>c.layers[0].frame_sha256='bad',c=>c.layers[0].source_triangle_count=4,c=>c.layers[0].source_triangle_count=1000001,
+    c=>c.layers[0].visible_triangle_count=4,c=>c.layers[0].protected_visible_triangle_count=3,c=>c.layers[0].omitted_visible_triangle_count=1,c=>c.layers[0].visible_triangle_count=NaN,
+    c=>c.layers[0].triangles.reverse(),c=>c.layers[0].triangles[0].source_ordinal=3,c=>c.layers[0].triangles[0].source_ordinal=-1,
+    c=>c.layers[0].triangles[0].occurrence_id='name-not-an-identity',c=>c.layers[0].represented_occurrence_ids=[],c=>c.layers[0].represented_occurrence_ids.push('synthetic-occurrence'),
+    c=>c.layers[0].triangles[0].vertices_m[0][0]=Infinity,c=>c.layers[0].triangles[0].vertices_m[0][0]=1e9+1,c=>c.layers[0].triangles[0].vertices_m.push([0,0,0]),
+    c=>c.layers[0].triangles[0].source_path='private-source',c=>c.layers[0].shell='anything',c=>c.layers[0].triangles=Array(8001).fill(c.layers[0].triangles[0]),
+    c=>c.layers[0].unavailable_reason='Cannot depict this frame',c=>c.layers[0].unavailable_reason='界'.repeat(5462),
+  ]){const f=scopedFixture();edit(f.inspection.content.drawing.context);assert.throws(()=>check(f),/Design report/);}
+  const unavailable=scopedFixture();Object.assign(unavailable.inspection.content.drawing.context.layers[0],{triangles:[],represented_occurrence_ids:[],omitted_visible_triangle_count:2,unavailable_reason:'No complete context can be depicted inside the fixed limit.'});check(unavailable);
+  const excessive=scopedFixture();excessive.inspection.content.drawing.scope_revision.provenance.rows=Array(65537).fill({});assert.throws(()=>check(excessive),/Design report/);
+  const tooMany=scopedFixture();tooMany.inspection.content.drawing.scope_revision.reference.manifest.occurrences=Array(50001).fill({id:'x'});assert.throws(()=>check(tooMany),/Design report/);
 });

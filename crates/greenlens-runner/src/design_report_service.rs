@@ -166,6 +166,21 @@ pub fn prepare(
     include_pdf: bool,
     cancel: Arc<AtomicBool>,
 ) -> Result<DesignReportContent> {
+    prepare_with_drawing(root, project, a, b, scope, north, include_pdf, None, cancel)
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn prepare_with_drawing(
+    root: &Path,
+    project: &Project,
+    a: &str,
+    b: &str,
+    scope: String,
+    north: Option<String>,
+    include_pdf: bool,
+    drawing: Option<crate::design_report_drawing::DrawingSelection>,
+    cancel: Arc<AtomicBool>,
+) -> Result<DesignReportContent> {
     crate::project_open::inspect_evidence(
         root,
         cancel.clone(),
@@ -203,10 +218,26 @@ pub fn prepare(
                 &data.base.proposed.study.calendar,
             )?;
             checkpoint(&cancel)?;
-            report::with_proposals(
+            let bound = drawing
+                .map(|selection| {
+                    crate::design_report_drawing::prepare(
+                        root,
+                        project,
+                        &data,
+                        frames.clone(),
+                        selection,
+                        &cancel,
+                    )
+                })
+                .transpose()?;
+            let content = report::with_proposals(
                 report::prepare(data, sensitivity, frames, scope, north, include_pdf)?,
                 declarations,
-            )
+            )?;
+            match bound {
+                Some(binding) => report::with_drawing(content, binding),
+                None => Ok(content),
+            }
         },
     )
 }
@@ -224,6 +255,35 @@ pub fn create(
     typst: Option<&TypstConfig>,
     cancel: Arc<AtomicBool>,
 ) -> Result<DesignReportResult> {
+    create_with_drawing(
+        root,
+        project,
+        expected_revision,
+        a,
+        b,
+        scope,
+        north,
+        include_pdf,
+        None,
+        typst,
+        cancel,
+    )
+}
+
+#[allow(clippy::too_many_arguments)]
+pub fn create_with_drawing(
+    root: &Path,
+    project: &Project,
+    expected_revision: Option<&str>,
+    a: &str,
+    b: &str,
+    scope: String,
+    north: Option<String>,
+    include_pdf: bool,
+    drawing: Option<crate::design_report_drawing::DrawingSelection>,
+    typst: Option<&TypstConfig>,
+    cancel: Arc<AtomicBool>,
+) -> Result<DesignReportResult> {
     checkpoint(&cancel)?;
     let expected =
         expected_revision.context("Save the complete document before issuing a design report")?;
@@ -233,7 +293,7 @@ pub fn create(
         "PDF issuance requires the pinned offline Typst/font installation"
     );
     persistence::check_revision(root, Some(expected))?;
-    let content = prepare(
+    let content = prepare_with_drawing(
         root,
         project,
         a,
@@ -241,6 +301,7 @@ pub fn create(
         scope,
         north,
         include_pdf,
+        drawing,
         cancel.clone(),
     )?;
     if let Some(existing) = retained(project, &content.content_sha256) {

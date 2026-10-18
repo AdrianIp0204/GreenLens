@@ -4,9 +4,72 @@
 function Initialize-ObservedOutputCapture {
  Add-Type -TypeDefinition @'
 using System;
+using System.ComponentModel;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using Microsoft.Win32.SafeHandles;
 namespace GreenLensObservedJob {
+ // Retention owns a duplicate, never the caller's Process/SafeHandle. A held
+ // process object keeps its PID from being recycled until this handle closes:
+ // https://devblogs.microsoft.com/oldnewthing/20110107-00/?p=11803
+ public sealed class RetainedMember : IDisposable {
+  public SafeProcessHandle Handle { get; private set; }
+  [StructLayout(LayoutKind.Sequential)]
+  struct MemoryCounters {
+   public uint Size, PageFaultCount;
+   public UIntPtr PeakWorkingSet, WorkingSet, PeakPagedPool, PagedPool;
+   public UIntPtr PeakNonPagedPool, NonPagedPool, Pagefile, PeakPagefile, Private;
+  }
+  [DllImport("kernel32.dll")] static extern IntPtr GetCurrentProcess();
+  [DllImport("kernel32.dll", SetLastError=true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  static extern bool DuplicateHandle(IntPtr sourceProcess, SafeProcessHandle source,
+   IntPtr targetProcess, out SafeProcessHandle target, uint access,
+   [MarshalAs(UnmanagedType.Bool)] bool inherit, uint options);
+  [DllImport("kernel32.dll", SetLastError=true)]
+  static extern uint WaitForSingleObject(SafeProcessHandle process, uint milliseconds);
+  [DllImport("psapi.dll", SetLastError=true)]
+  [return: MarshalAs(UnmanagedType.Bool)]
+  static extern bool GetProcessMemoryInfo(SafeProcessHandle process, ref MemoryCounters counters, uint size);
+  public RetainedMember(SafeProcessHandle source) {
+   if(source==null || source.IsClosed || source.IsInvalid)
+    throw new InvalidOperationException("Cannot retain an unavailable observed process handle.");
+   SafeProcessHandle duplicate;
+   if(!DuplicateHandle(GetCurrentProcess(),source,GetCurrentProcess(),out duplicate,0,false,2)) {
+    int error=Marshal.GetLastWin32Error(); if(duplicate!=null) duplicate.Dispose();
+    throw new Win32Exception(error,"Duplicate observed process handle");
+   }
+   Handle=duplicate;
+  }
+  public bool HasExited {
+   get {
+    if(Handle==null || Handle.IsClosed || Handle.IsInvalid)
+     throw new InvalidOperationException("Retained observed process handle is unavailable.");
+    uint state=WaitForSingleObject(Handle,0);
+    if(state==0) return true;
+    if(state==258) return false;
+    throw new Win32Exception(Marshal.GetLastWin32Error(),"Query retained observed process exit");
+   }
+  }
+  public long? PrivateBytes {
+   get {
+    if(HasExited) return null;
+    var counters=new MemoryCounters(); counters.Size=(uint)Marshal.SizeOf<MemoryCounters>();
+    if(IntPtr.Size!=8 || counters.Size!=80)
+     throw new PlatformNotSupportedException("Audited x64 process-memory ABI required.");
+    if(!GetProcessMemoryInfo(Handle,ref counters,counters.Size)) {
+     int error=Marshal.GetLastWin32Error();
+     if(HasExited) return null;
+     throw new Win32Exception(error,"Read retained observed process private commitment");
+    }
+    // Do not report a terminated member's stale counters as current or as zero.
+    if(HasExited) return null;
+    return checked((long)counters.Private.ToUInt64());
+   }
+  }
+  public void Dispose() { if(Handle!=null) Handle.Dispose(); }
+ }
  public sealed class Capture {
   readonly byte[] bytes=new byte[1048576]; readonly object gate=new object();
   int retained; long total; bool overflow;
@@ -29,7 +92,7 @@ namespace GreenLensObservedJob {
 
 function New-ObservedJobSession($Process,$Record,[scriptblock]$Policy,$Stdout,$Stderr,$OutTask,$ErrTask) {
  if(!$Process -or !$Record -or !$Policy -or !$Stdout -or !$Stderr -or !$OutTask -or !$ErrTask){throw 'Complete held-process, policy and bounded-drain state is required.'}
- return [pscustomobject]@{Process=$Process;Record=$Record;Policy=$Policy;Stdout=$Stdout;Stderr=$Stderr;OutTask=$OutTask;ErrTask=$ErrTask;Seen=@{};PolicyCounts=@{};SampleCount=0;Failed=$false;Finalized=$false;CleanupPassed=$false;MaximumIdentities=4096}
+ return [pscustomobject]@{Process=$Process;Record=$Record;Policy=$Policy;Stdout=$Stdout;Stderr=$Stderr;OutTask=$OutTask;ErrTask=$ErrTask;Seen=@{};HeldByPid=@{};PolicyCounts=@{};SampleCount=0;Failed=$false;Finalized=$false;CleanupPassed=$false;MaximumIdentities=4096}
 }
 
 function Set-ObservedJobFailure($Session,[string]$Stage,$ErrorRecord,$Member=$null) {
@@ -57,8 +120,12 @@ function Get-ObservedHeldMember($Session,[Diagnostics.Process]$Process,[int]$Exp
   $Session.Process.RequireMember($held)
   [GreenLensObservation.HeldProcessImage]::ValidateBinding($held,$ExpectedPid,$ExpectedStartedUtcTicks)
   $key=[string]$ExpectedPid+':'+$ExpectedStartedUtcTicks
-  if($Session.Seen.ContainsKey($key)){return $Session.Seen[$key]}
+  if($Session.Seen.ContainsKey($key)){
+   if(!$Session.HeldByPid.ContainsKey([string]$ExpectedPid) -or $Session.HeldByPid[[string]$ExpectedPid].key -cne $key){throw 'Cached identity has no exact retained process binding.'}
+   return $Session.Seen[$key]
+  }
   if($Session.Seen.Count -ge $Session.MaximumIdentities){throw 'Bounded observed identity capacity exceeded.'}
+  if($Session.HeldByPid.ContainsKey([string]$ExpectedPid)){throw 'Observed PID conflicts with a retained creation-time binding.'}
   $image=[GreenLensObservation.HeldProcessImage]::Read($held,$ExpectedPid,$ExpectedStartedUtcTicks)
   $row=[ordered]@{pid=$ExpectedPid;name=$image.Name;image_path=$image.ImagePath;started_utc=([DateTime]::new($ExpectedStartedUtcTicks,[DateTimeKind]::Utc)).ToString('o');first_observed_utc=[DateTime]::UtcNow.ToString('o');image_identity_method='held-handle-query-full-process-image-name.v1';image_sha256=(Get-ObservedImageHash $image.ImagePath);policy=$null}
  }catch{Set-ObservedJobFailure $Session 'identity' $_ @{pid=$ExpectedPid;expected_started_ticks=$ExpectedStartedUtcTicks};$Session.Record.process_identity_failure=$Session.Record.observation_failure;throw}
@@ -67,25 +134,57 @@ function Get-ObservedHeldMember($Session,[Diagnostics.Process]$Process,[int]$Exp
  try{
   $classification=& $Session.Policy $row
   if($classification -isnot [string] -or [string]::IsNullOrWhiteSpace($classification)){throw 'Observed executable policy did not return one explicit classification.'}
-  $row.policy=$classification;$Session.Seen[$key]=$row
+  $row.policy=$classification
+ }catch{Set-ObservedJobFailure $Session 'policy' $_ $row;throw}
+ $retained=$null
+ try{
+  $retained=[GreenLensObservedJob.RetainedMember]::new($held)
+  $Session.Process.RequireMember($retained.Handle)
+  [GreenLensObservation.HeldProcessImage]::ValidateBinding($retained.Handle,$ExpectedPid,$ExpectedStartedUtcTicks)
+  $Session.HeldByPid[[string]$ExpectedPid]=[pscustomobject]@{key=$key;pid=$ExpectedPid;started_ticks=$ExpectedStartedUtcTicks;member=$retained}
+  $retained=$null
+  $Session.Seen[$key]=$row
   if(!$Session.PolicyCounts.ContainsKey($classification)){$Session.PolicyCounts[$classification]=0}
   $Session.PolicyCounts[$classification]++
   return $row
- }catch{Set-ObservedJobFailure $Session 'policy' $_ $row;throw}
+ }catch{Set-ObservedJobFailure $Session 'identity-retention' $_ $row;throw}finally{if($retained){$retained.Dispose()}}
 }
 
 function Get-ObservedJobMember($Session,[int]$ProcessId) {
  $p=$null
  try{
-  $p=[Diagnostics.Process]::GetProcessById($ProcessId)
-  $started=$p.StartTime.ToUniversalTime()
-  $row=Get-ObservedHeldMember $Session $p $ProcessId $started.Ticks
-  $p.Refresh()
-  return [ordered]@{pid=$ProcessId;name=$row.name;private_bytes=[long]$p.PrivateMemorySize64}
+  if($Session.Failed -or $Session.Finalized){throw 'A failed/finalized observation cannot inspect another member.'}
+  if(!$Session.HeldByPid.ContainsKey([string]$ProcessId)){
+   # Unknown/disappeared first observations still fail closed. Never substitute
+   # a configured image, name or a stale metadata-only PID entry.
+   $p=[Diagnostics.Process]::GetProcessById($ProcessId)
+   $started=$p.StartTime.ToUniversalTime()
+   $null=Get-ObservedHeldMember $Session $p $ProcessId $started.Ticks
+  }
+  $entry=$Session.HeldByPid[[string]$ProcessId];$held=$entry.member.Handle
+  $Session.Process.RequireMember($held)
+  [GreenLensObservation.HeldProcessImage]::ValidateBinding($held,$ProcessId,$entry.started_ticks)
+  if($entry.key -cne ([string]$ProcessId+':'+$entry.started_ticks) -or !$Session.Seen.ContainsKey($entry.key)){throw 'Retained member has no exact policy-approved identity.'}
+  $row=$Session.Seen[$entry.key];$private=$entry.member.PrivateBytes
+  return [ordered]@{pid=$ProcessId;name=$row.name;started_utc=$row.started_utc;state=$(if($null -eq $private){'verified-exited'}else{'verified-live'});private_bytes=$private;private_bytes_observed=($null -ne $private)}
  }catch{
   if(!$Session.Failed){Set-ObservedJobFailure $Session 'identity-resource' $_ @{pid=$ProcessId};$Session.Record.process_identity_failure=$Session.Record.observation_failure}
   throw
  }finally{if($p){$p.Dispose()}}
+}
+
+# The collector and handshake regression share this exact post-enumeration path.
+# A known member may exit after MemberIds returns: retain its verified identity,
+# disclose an unavailable live-memory reading, and keep raw Job peaks unchanged.
+function Get-ObservedMemberSnapshot($Session,[uint[]]$MemberIds) {
+ if($MemberIds.Count -gt 16 -or @($MemberIds|Select-Object -Unique).Count -ne $MemberIds.Count){throw 'Owned member snapshot exceeds bounds or repeats an identity.'}
+ $observed=[Collections.Generic.List[object]]::new();[long]$private=0;[int]$exited=0
+ foreach($member in $MemberIds){
+  $row=Get-ObservedJobMember $Session ([int]$member)
+  if($row.private_bytes_observed){$private+=$row.private_bytes}else{$exited++}
+  $observed.Add($row)
+ }
+ return [ordered]@{members=$observed.ToArray();sampled_sum_private_bytes=$private;sampled_private_complete=($exited -eq 0);known_exited_members=$exited}
 }
 
 function Assert-ObservedElapsed($Session,[double]$ElapsedMilliseconds,[double]$DeadlineMilliseconds,[string]$Stage) {
@@ -107,12 +206,11 @@ function Get-ObservedJobSample($Session,[double]$ElapsedMilliseconds,[double]$De
   if($limits[3] -gt 2GB){throw 'Raw kernel Job peak exceeded the unchanged2 GiB acceptance ceiling.'}
   $members=@($proc.MemberIds);$active=$proc.ActiveProcesses;$working=$proc.WorkingSetBytes
   if($active -gt 16 -or $members.Count -gt 16){throw 'Owned Job process count exceeded16.'}
-  $observed=[Collections.Generic.List[object]]::new();[long]$private=0
-  foreach($member in $members){$row=Get-ObservedJobMember $Session ([int]$member);$private+=$row.private_bytes;$observed.Add($row)}
-  $Session.Record.sampled_private_max_bytes=[Math]::Max([long]$Session.Record.sampled_private_max_bytes,$private)
+  $observed=Get-ObservedMemberSnapshot $Session $members
+  $Session.Record.sampled_private_max_bytes=[Math]::Max([long]$Session.Record.sampled_private_max_bytes,[long]$observed.sampled_sum_private_bytes)
   $Session.Record.member_count_max=[Math]::Max([int]$Session.Record.member_count_max,[int]$active)
   $Session.SampleCount++
-  return [ordered]@{elapsed_ms=$ElapsedMilliseconds;active_processes=$active;member_ids=$members;members=$observed.ToArray();kernel_limit_bytes=$limits[2];raw_peak_bytes=$limits[3];sampled_sum_private_bytes=$private;sampled_sum_working_set_bytes=$working}
+  return [ordered]@{elapsed_ms=$ElapsedMilliseconds;active_processes=$active;member_ids=$members;members=$observed.members;kernel_limit_bytes=$limits[2];raw_peak_bytes=$limits[3];sampled_sum_private_bytes=$observed.sampled_sum_private_bytes;sampled_private_complete=$observed.sampled_private_complete;known_exited_members=$observed.known_exited_members;sampled_sum_working_set_bytes=$working}
  }catch{if(!$Session.Failed){Set-ObservedJobFailure $Session 'sample' $_};throw}
 }
 
@@ -130,6 +228,17 @@ function Close-ObservedJobSession($Session) {
   $Session.CleanupPassed=$true
  }catch{Set-ObservedJobFailure $Session 'cleanup' $_;$Session.Record.cleanup_error=$_.Exception.Message}
  finally{
+  $Session.Record.retained_member_handles_total=$Session.HeldByPid.Count
+  $Session.Record.retained_member_handles_closed=0
+  foreach($entry in @($Session.HeldByPid.Values)){
+   try{
+    $entry.member.Dispose()
+    if(!$entry.member.Handle.IsClosed){throw 'Retained member handle did not close.'}
+    $Session.Record.retained_member_handles_closed++
+   }catch{Set-ObservedJobFailure $Session 'member-disposal' $_;$Session.Record.cleanup_error=$_.Exception.Message;$Session.CleanupPassed=$false}
+  }
+  $Session.Record.retained_member_handles_remaining=$Session.Record.retained_member_handles_total-$Session.Record.retained_member_handles_closed
+  $Session.HeldByPid.Clear()
   try{$Session.Process.Dispose()}catch{Set-ObservedJobFailure $Session 'cleanup-disposal' $_;$Session.Record.cleanup_error=$_.Exception.Message;$Session.CleanupPassed=$false}
   $Session.Finalized=$true
  }

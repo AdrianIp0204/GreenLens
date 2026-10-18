@@ -17,7 +17,7 @@ $exe=[Environment]::ProcessPath;$exeHash=Get-ObservedImageHash $exe
 $conhost=Join-Path ([Environment]::GetFolderPath('System')) 'conhost.exe';$conhostHash=Get-ObservedImageHash $conhost
 $checks=[Collections.Generic.List[object]]::new();$cases=[Collections.Generic.List[object]]::new();$sessions=[Collections.Generic.List[object]]::new();$failure=$null;$launched=0;$timer=[Diagnostics.Stopwatch]::StartNew()
 $self=[Diagnostics.Process]::GetCurrentProcess();$selfPid=$self.Id;$selfStarted=$self.StartTime.ToUniversalTime().Ticks
-$protocol=[ordered]@{schema_version='greenlens.observed-job-integration.v1';synthetic_only=$true;declared_utc=[DateTime]::UtcNow.ToString('o');maximum_owned_children=12;total_deadline_seconds=180;handshake_deadline_seconds=15;kernel_guard_bytes=1GB;active_process_limit=16;output_stream_cap_bytes=1MB;app_renderer_engine_executions=0;cases=@('live-cache-normal-exit','disappeared-before-identity','pid-mismatch','creation-time-mismatch','foreign-job','unavailable-held-handle','policy-rejection-owned-descendants','receipt-write-failure','deadline-and-final-completion','bounded-output-overflow','cleanup-drain-failure');helpers=@{session=(Get-FileHash $helper).Hash.ToLowerInvariant();image=(Get-FileHash (Join-Path $PSScriptRoot 'observed-process-image.cs')).Hash.ToLowerInvariant();native=(Get-FileHash (Join-Path $PSScriptRoot 'annual-paired-native-process.cs')).Hash.ToLowerInvariant();test=(Get-FileHash $PSCommandPath).Hash.ToLowerInvariant()}}
+$protocol=[ordered]@{schema_version='greenlens.observed-job-integration.v2';synthetic_only=$true;declared_utc=[DateTime]::UtcNow.ToString('o');maximum_owned_children=12;total_deadline_seconds=180;handshake_deadline_seconds=15;kernel_guard_bytes=1GB;active_process_limit=16;output_stream_cap_bytes=1MB;maximum_retained_member_handles=4096;app_renderer_engine_executions=0;cases=@('live-cache-snapshot-known-exit','disappeared-before-identity','pid-mismatch','creation-time-mismatch','foreign-job','unavailable-held-handle','policy-rejection-owned-descendants','receipt-write-failure','deadline-and-final-completion','bounded-output-overflow','cleanup-drain-failure');helpers=@{session=(Get-FileHash $helper).Hash.ToLowerInvariant();image=(Get-FileHash (Join-Path $PSScriptRoot 'observed-process-image.cs')).Hash.ToLowerInvariant();native=(Get-FileHash (Join-Path $PSScriptRoot 'annual-paired-native-process.cs')).Hash.ToLowerInvariant();test=(Get-FileHash $PSCommandPath).Hash.ToLowerInvariant()}}
 $protocol|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $output 'protocol.json') -Encoding utf8NoBOM
 $fixture=Join-Path $output 'synthetic-child.ps1'
 @'
@@ -46,27 +46,42 @@ function New-Case([string]$Name,[string]$Mode='wait',[scriptblock]$Policy=$null)
  $case=[pscustomobject]@{name=$Name;directory=$dir;session=$session;ready=$ready;leaf=$leaf};$cases.Add($case);return $case
 }
 function Finish-Case($Case,[bool]$Success=$false){
- $s=$Case.session;Close-ObservedJobSession $s;Save-ObservedJobOutput $s $Case.directory
+ $s=$Case.session;$held=@($s.HeldByPid.Values);Close-ObservedJobSession $s;Save-ObservedJobOutput $s $Case.directory
  $s.Record.members=@($s.Seen.Values);$s.Record.completed=$Success
  if($Success){Assert-ObservedJobSuccess $s}
  Write-ObservedJobReceipt $s (Join-Path $Case.directory 'receipt.json') $s.Record $Case.directory
  Check $s.Record.cleanup_job_empty ($Case.name+': owned tree empty after cleanup')
+ Check ($s.HeldByPid.Count -eq 0 -and $s.Record.retained_member_handles_remaining -eq 0 -and $s.Record.retained_member_handles_closed -eq $s.Record.retained_member_handles_total -and @($held|Where-Object {!$_.member.Handle.IsClosed}).Count -eq 0) ($Case.name+': retained handles closed on success or failure')
  Check (!$self.HasExited -and $self.Id -eq $selfPid -and $self.StartTime.ToUniversalTime().Ticks -eq $selfStarted) ($Case.name+': unrelated observer process was not terminated')
  if(!$Success){Check (!(Get-Content -LiteralPath (Join-Path $Case.directory 'receipt.json') -Raw|ConvertFrom-Json).completed) ($Case.name+': failure cannot publish successful receipt')}
 }
 function Release-Case($Case){$writer=[IO.StreamWriter]::new($Case.session.Process.Input,[Text.UTF8Encoding]::new($false),1024,$true);$writer.WriteLine('controlled-exit');$writer.Flush();$writer.Dispose();$Case.session.Process.Input.Close();Check ($Case.session.Process.WaitForExit(15000) -and $Case.session.Process.ExitCode -eq 0) ($Case.name+': controlled normal exit');$clock=[Diagnostics.Stopwatch]::StartNew();while(!$Case.session.Process.JobEmpty){if($clock.ElapsedMilliseconds -gt 5000){throw 'Controlled tree failed to become empty'};Start-Sleep -Milliseconds 20}}
 try{
- $case=New-Case 'live-cache-normal-exit';$s=$case.session
+ $case=New-Case 'live-cache-snapshot-known-exit';$s=$case.session
  $first=Get-ObservedJobSample $s 0 15000 100
  Check ($s.Seen.Count -ge 1 -and $first.members.Count -ge 1) 'First production sample observes and admits actual child identity'
  $beforeCount=$s.Seen.Count;$policyCount=$s.PolicyCounts.synthetic_pwsh
  $second=Get-ObservedJobSample $s 1 15000 100
  Check ($s.Seen.Count -eq $beforeCount -and $s.PolicyCounts.synthetic_pwsh -eq $policyCount) 'Repeated production sample reuses policy-approved identity after held membership/time checks'
  Check (@($s.Seen.Values|Where-Object {$_.image_sha256 -ceq $exeHash -and $_.pid -eq $case.ready.pid}).Count -eq 1) 'Observed image hash comes from live executable and binds handshake identity'
- Release-Case $case;Get-ObservedJobSample $s 2 15000 100|Out-Null
+ Check ($s.HeldByPid.Count -eq $s.Seen.Count -and $s.HeldByPid.Count -le $s.MaximumIdentities) 'Every approved identity owns one bounded duplicate handle separately from receipt rows'
+ $snapshot=@($s.Process.MemberIds)
+ Check ($snapshot -contains [uint]$case.ready.pid) 'Controlled live child appears in actual held-Job PID snapshot'
+ # Handshake stops the already observed child between the production PID
+ # enumeration and the shared per-member read. No timing sleep or API mock.
+ Release-Case $case
+ Reject {[Diagnostics.Process]::GetProcessById([int]$case.ready.pid)} 'The RC1 managed PID-reopen path cannot find the controlled exited child' '*not running*'
+ $afterExit=Get-ObservedMemberSnapshot $s $snapshot
+ $exitRow=@($afterExit.members|Where-Object {$_.pid -eq $case.ready.pid})
+ Check ($exitRow.Count -eq 1 -and $exitRow[0].state -ceq 'verified-exited' -and $null -eq $exitRow[0].private_bytes -and !$exitRow[0].private_bytes_observed) 'Known exit retains exact identity and reports unavailable private memory rather than invented zero'
+ Check (!$s.Failed -and !$afterExit.sampled_private_complete -and $afterExit.known_exited_members -ge 1 -and $s.PolicyCounts.synthetic_pwsh -eq $policyCount) 'Post-enumeration known exit remains accepted without reclassifying policy or hiding incomplete sample'
+ $s.Record.controlled_post_enumeration_exit=$afterExit
+ Get-ObservedJobSample $s 2 15000 100|Out-Null
  Assert-ObservedElapsed $s 15000 15000 'final completion'
  Finish-Case $case $true
  Check (!(Test-Path (Join-Path $case.directory 'receipt.json.writing'))) 'Successful final receipt is atomic with no unpublished temporary'
+ $receiptText=Get-Content -LiteralPath (Join-Path $case.directory 'receipt.json') -Raw
+ Check (!$receiptText.Contains('SafeProcessHandle') -and !$receiptText.Contains('HeldByPid') -and !$receiptText.Contains('DangerousGetHandle')) 'Receipt serializes identity and lifecycle evidence without handles or live process objects'
 
  $case=New-Case 'disappeared-before-identity';Release-Case $case
  Reject {Get-ObservedJobMember $case.session ([int]$case.ready.pid)} 'Disappearance before first identification fails closed'
@@ -76,13 +91,20 @@ try{
  foreach($kind in @('pid-mismatch','creation-time-mismatch','foreign-job','unavailable-held-handle')){
   $case=New-Case $kind;$s=$case.session;$p=[Diagnostics.Process]::GetProcessById([int]$case.ready.pid)
   try{
+   # Two cases begin with a real approved cache entry to exercise the new
+   # retained path; PID mismatch and foreign membership still cover first use.
+   $expectedSeen=0
+   if($kind -in @('creation-time-mismatch','unavailable-held-handle')){
+    Get-ObservedJobSample $s 0 15000 100|Out-Null;$expectedSeen=$s.Seen.Count
+    Check ($expectedSeen -ge 1) ($kind+': establish real approved retained identity before fault')
+   }
    switch($kind){
     'pid-mismatch'{Reject {Get-ObservedHeldMember $s $p ($p.Id+1) ([long]$case.ready.started_ticks)} 'PID mismatch rejects whole shared identity/policy path' '*binding changed*'}
-    'creation-time-mismatch'{Reject {Get-ObservedHeldMember $s $p $p.Id ([long]$case.ready.started_ticks+1)} 'Creation-time mismatch cannot reuse identity' '*binding changed*'}
+    'creation-time-mismatch'{$s.HeldByPid[[string]$p.Id].started_ticks++;Reject {Get-ObservedJobMember $s $p.Id} 'Creation-time mismatch cannot reuse retained identity' '*binding changed*'}
     'foreign-job'{Reject {Get-ObservedHeldMember $s $self $selfPid $selfStarted} 'Foreign held identity fails exact owned Job membership' '*outside the owned Job*'}
-    'unavailable-held-handle'{$p.SafeHandle.Dispose();Reject {Get-ObservedHeldMember $s $p ([int]$case.ready.pid) ([long]$case.ready.started_ticks)} 'Unavailable held image is not replaced by expected executable' '*handle*'}
+    'unavailable-held-handle'{$s.HeldByPid[[string]$p.Id].member.Dispose();Reject {Get-ObservedJobMember $s $p.Id} 'Unavailable retained handle is not replaced by cached executable metadata' '*handle*'}
    }
-   Check ($s.Seen.Count -eq 0 -and $s.Failed) ($kind+': policy/cache cannot accept unresolved identity')
+   Check ($s.Seen.Count -eq $expectedSeen -and $s.Failed) ($kind+': policy/cache cannot accept an additional unresolved identity')
   }finally{$p.Dispose()}
   Finish-Case $case
  }

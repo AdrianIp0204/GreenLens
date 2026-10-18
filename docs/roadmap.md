@@ -1,8 +1,6 @@
 # GreenLens roadmap
 
-Current: 1d CI/Save/frames passed; observer failed at issuance. R1/revision intact; E/F incomplete, no retry.
-
-Earlier 1d build/CI and c328 Save checkpoints remain in the progress record.
+Active: `docs/v0.8-report-design-continuation.md`; prior failures remain. New allowances are gated and separate.
 
 2026-10-17: history storage implemented. c3281d9 stopped at failed Save; preserve staged history and consumed allowance. Issuance/regeneration incomplete; no retry/expansion.
 

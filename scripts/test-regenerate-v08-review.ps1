@@ -27,14 +27,12 @@ Check ($fresh.Count -eq 1 -and $fresh[0].Extent.StartOffset -gt $source.IndexOf(
 Add-Type -TypeDefinition 'namespace GreenLensColdRegeneration { public sealed class Capture {} }'
 $message=$null;try{. ([scriptblock]::Create($fresh[0].Extent.Text))}catch{$message=$_.Exception.Message}
 Check ($message -like 'A fresh PowerShell process is required;*GreenLensColdRegeneration.Capture*') 'Actual cold Run guard rejects preloaded helper rather than claiming current file identity'
-Check (!$source.Contains('.MainModule') -and $source.Contains('[GreenLensObservation.HeldProcessImage]::Read($held,[int]$member,$started.Ticks)')) 'Cold observer uses bound kernel image rather than nullable module enumeration'
-$unknown=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.AssignmentStatementAst] -and $a.Left.Extent.Text -ceq '$record.process_identity_failure'},$true))
-Check ($unknown.Count -eq 1 -and $unknown[0].Parent.Extent.Text.Contains('unidentified membership cannot pass')) 'Unknown cold member is recorded and fails closed'
-Check ($unknown[0].Extent.Text.Contains('exception_type=') -and $unknown[0].Extent.Text.Contains('category=') -and $unknown[0].Extent.Text.Contains('script_stack_trace=')) 'Cold unknown-member record retains category/type/stack'
-$boundImage=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.InvokeMemberExpressionAst] -and $a.Member.Value -ceq 'ValidateBinding'},$true))
-Check ($boundImage.Count -eq 1 -and $source.IndexOf('if($seen.ContainsKey($key))') -gt $boundImage[0].Extent.EndOffset) 'Cold identity cache lookup follows held PID/creation-time check'
-$membership=@($ast.FindAll({param($a) $a -is [Management.Automation.Language.InvokeMemberExpressionAst] -and $a.Member.Value -ceq 'RequireMember'},$true))
-Check ($membership.Count -eq 1 -and $membership[0].Extent.EndOffset -lt $boundImage[0].Extent.StartOffset) 'Cold exact Job membership precedes identity and cache reuse'
+$shared=[IO.File]::ReadAllText((Join-Path $PSScriptRoot 'observed-job-session.ps1'))
+Check ($source.Contains('Get-ObservedJobSample $session') -and $source.Contains('Close-ObservedJobSession $session') -and $source.Contains('Write-ObservedJobReceipt $session')) 'Cold collector uses common sample cleanup and publication path'
+Check (!$shared.Contains('.MainModule') -and $shared.Contains('[GreenLensObservation.HeldProcessImage]::Read($held,$ExpectedPid,$ExpectedStartedUtcTicks)')) 'Shared observer uses actual held kernel image'
+Check ($shared.IndexOf('$Session.Process.RequireMember($held)') -lt $shared.IndexOf('::ValidateBinding(') -and $shared.IndexOf('::ValidateBinding(') -lt $shared.IndexOf('if($Session.Seen.ContainsKey($key))')) 'Shared exact Job membership and held time precede cache reuse'
+Check ($shared.Contains('process_identity_failure=') -and $shared.Contains('exception_type=') -and $shared.Contains('category=') -and $shared.Contains('script_stack_trace=')) 'Shared unknown identity retains diagnostic detail and fails'
+Check ($shared.IndexOf('$classification=& $Session.Policy $row') -lt $shared.IndexOf('$Session.Seen[$key]=$row')) 'Shared cache admission follows policy success'
 $successBlock=[scriptblock]::Create($source.Substring($capture[0].Extent.StartOffset,$accept[0].Extent.EndOffset-$capture[0].Extent.StartOffset))
 $record=[ordered]@{};$timer=[pscustomobject]@{Elapsed=[TimeSpan]::FromTicks(6000000001L)};$commandPassed=$false;$rejected=$false
 try{. $successBlock}catch{$rejected=$true}

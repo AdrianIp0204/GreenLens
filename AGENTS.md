@@ -1,5 +1,7 @@
 # GreenLens development contract
 
+2026-10-18: the source-only `docs/v0.8-report-design-continuation.md` activates three distinct prospective allowances: integrated-observer reporting closure, a justified fixed synthetic containment investigation, and a separate bounded visual-design demonstration. Only these override earlier no-retry restrictions after their declared prerequisites pass. Preserve all consumed failures. Root owns native/Cargo execution; exact ledgers precede spending any allowance. Keep old renderers/1–3 and source history, analytical-only paired figures, explicit B-only validated proposals and honest measured outcomes; no broader physics or guaranteed improvement.
+
 2026-10-17: 1d27233 observation consumed. Save/frame checks passed; observer identity failed during issuance. R1/new revision preserved; no R2/cold regeneration. Test observer repair only; no native retry. Limits/protocols remain.
 
 The c3281d9 native observation is consumed and stopped at save error 5. Preserve staged candidate/history and original bytes; no automatic native retry or temporary-manifest promotion. Synthetic diagnosis and source checks continue; installed issuance/regeneration remain incomplete. Reader sharing alone is not an established remedy: the legacy replacement also fails with a Delete-sharing observer. A source repair requires exact-parent, held-reader and failed-publication regressions before a separately authorized installed observation.

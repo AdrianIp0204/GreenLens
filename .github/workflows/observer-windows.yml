@@ -1,7 +1,7 @@
 name: Bounded observer Windows checks
 on:
   push:
-    branches: [codex/v0.8-observer-identity]
+    branches: [codex/v0.8-observer-identity, codex/v0.8-report-design]
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,6 +26,9 @@ jobs:
       - name: Shared Windows process helper regressions with synthetic children
         run: |
           ./scripts/test-annual-paired-native-process.ps1 -OutputDirectory (Join-Path $env:OBSERVER_EVIDENCE 'process-helper')
+      - name: Shared collector membership identity policy cleanup integration
+        run: |
+          ./scripts/test-observed-job-session.ps1 -OutputDirectory (Join-Path $env:OBSERVER_EVIDENCE 'session-integration')
       - name: Native observer source regressions
         run: |
           ./scripts/test-supervise-v08-report-review.ps1 -OutputDirectory (Join-Path $env:OBSERVER_EVIDENCE 'supervisor')

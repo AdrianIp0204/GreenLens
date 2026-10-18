@@ -8,16 +8,19 @@ param(
  [Parameter(Mandatory)][string]$Project,
  [Parameter(Mandatory)][string]$OutputDirectory,
  [Parameter(Mandatory)][ValidatePattern('^[A-Fa-f0-9]{40}$')][string]$ExpectedSource,
- [Parameter(Mandatory)][string]$TypstDir
+ [Parameter(Mandatory)][string]$TypstDir,
+ [Parameter(Mandatory)][string]$AllowedRuntimeIdentities
 )
 $ErrorActionPreference='Stop'
 function Assert-FreshObserverHost {
- $loaded=@('GreenLensPairedProcess.NativeProcess','GreenLensObservation.HeldProcessImage','GreenLensReportObservation.Capture')|Where-Object {$_ -as [type]}
+ $loaded=@('GreenLensPairedProcess.NativeProcess','GreenLensObservation.HeldProcessImage','GreenLensReportObservation.Capture','GreenLensObservedJob.Capture')|Where-Object {$_ -as [type]}
  if($loaded){throw ('A fresh PowerShell process is required; loaded helper identities cannot be bound to current source bytes: '+($loaded -join ', '))}
 }
 Assert-FreshObserverHost
 $scopeHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-scope-history.ps1')).Path
 . $scopeHelper
+$sessionHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-job-session.ps1')).Path
+. $sessionHelper
 $cache=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'GreenLens'))
 $output=[IO.Path]::GetFullPath($OutputDirectory)
 $projectRoot=(Resolve-Path -LiteralPath $Project).Path.TrimEnd('\','/')
@@ -26,6 +29,7 @@ if($output.StartsWith($projectRoot+'\',[StringComparison]::OrdinalIgnoreCase) -o
 if(Test-Path -LiteralPath $output){throw 'Receipt directory must be new; previous observations are immutable.'}
 $exe=(Resolve-Path -LiteralPath $InstalledExe).Path
 $typst=(Resolve-Path -LiteralPath (Join-Path $TypstDir 'typst.exe')).Path
+$runtimeDeclaration=(Resolve-Path -LiteralPath $AllowedRuntimeIdentities).Path
 $native=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'annual-paired-native-process.cs')).Path
 $imageHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-process-image.cs')).Path
 function File-Hash([string]$Path){
@@ -36,34 +40,10 @@ function File-Hash([string]$Path){
 if((File-Hash $exe) -ne $InstalledSha256.ToLowerInvariant()){throw 'Installed executable differs from the declared artifact.'}
 $existing=@([Diagnostics.Process]::GetProcessesByName([IO.Path]::GetFileNameWithoutExtension($exe)))
 try{if($existing.Count){throw 'An installed app instance is already running; preserve and close its document explicitly before supervision.'}}finally{foreach($p in $existing){$p.Dispose()}}
-$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared build receipt plus exact executable SHA256; source commit is not inferred from binary bytes';installed_executable_sha256=(File-Hash $exe);typst_executable_sha256=(File-Hash $typst);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);process_image_helper_sha256=(File-Hash $imageHelper)}
+$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared build receipt plus exact executable SHA256; source commit is not inferred from binary bytes';installed_executable_sha256=(File-Hash $exe);typst_executable_sha256=(File-Hash $typst);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);process_image_helper_sha256=(File-Hash $imageHelper);session_helper_sha256=(File-Hash $sessionHelper);runtime_declaration_sha256=(File-Hash $runtimeDeclaration)}
 Add-Type -LiteralPath $native
 Add-Type -LiteralPath $imageHelper
-# Fixed capture buffers continuously drain output. Overflow is counted/discarded
-# until the observation loop kills the owned job; no unbounded MemoryStream.
-Add-Type -TypeDefinition @'
-using System;
-using System.IO;
-using System.Threading.Tasks;
-namespace GreenLensReportObservation {
- public sealed class Capture {
-  readonly byte[] bytes=new byte[1048576]; readonly object gate=new object();
-  int retained; long total; bool overflow;
-  public long Total { get { lock(gate) return total; } }
-  public bool Overflow { get { lock(gate) return overflow; } }
-  public byte[] Bytes { get { lock(gate) { var result=new byte[retained]; Array.Copy(bytes,result,retained); return result; } } }
-  public async Task Drain(Stream source) {
-   var buffer=new byte[65536]; int count;
-   while((count=await source.ReadAsync(buffer,0,buffer.Length).ConfigureAwait(false))!=0) {
-    lock(gate) { total=checked(total+count); int keep=Math.Min(count,bytes.Length-retained);
-     if(keep>0) { Array.Copy(buffer,0,bytes,retained,keep); retained+=keep; }
-     if(keep<count) overflow=true;
-    }
-   }
-  }
- }
-}
-'@
+Initialize-ObservedOutputCapture
 function Read-Json([string]$Path,[long]$Cap){
  $item=Get-Item -LiteralPath $Path -Force
  if($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $item.Length -gt $Cap){throw 'Invalid or oversized JSON evidence/marker.'}
@@ -130,19 +110,41 @@ function Assert-IssueProducts($Issue){
  if($total -gt 256MB -or !$pdfs){throw 'Published product package is oversized or lacks its requested PDFs.'}
  return [ordered]@{id=$Issue.id;scope_revision_sha256=$Issue.scope_revision_sha256;baseline=$Issue.baseline;proposed=$Issue.proposed;product_count=$products.products.Count;product_bytes=$total;pdf_count=$pdfs;products_file_sha256=$Issue.products_file_sha256;check='Actual-byte inventory/hash verification only; Rust semantic/numerical inspection remains separate'}
 }
-function Assert-MemberPolicy($Member,[string]$ExpectedTypstHash){
+function Normalize-ObservedImagePath([string]$Path){
+ if([string]::IsNullOrWhiteSpace($Path)){throw 'Observed executable identity is unavailable; configured paths cannot substitute for it.'}
+ if($Path.StartsWith('\\?\UNC\',[StringComparison]::OrdinalIgnoreCase)){$Path='\\'+$Path.Substring(8)}elseif($Path.StartsWith('\\?\',[StringComparison]::OrdinalIgnoreCase)){$Path=$Path.Substring(4)}
+ if(![IO.Path]::IsPathFullyQualified($Path)){throw 'Executable identity requires a fully qualified observed path.'}
+ return [IO.Path]::GetFullPath($Path)
+}
+function Read-AllowedRuntimeIdentities([string]$Path){
+ $declaration=Read-Json $Path 64KB
+ if($declaration.schema_version -cne 'greenlens.observer-runtime-allowlist.v1' -or $declaration.members -isnot [array] -or $declaration.members.Count -gt 8){throw 'Expected a bounded explicit runtime identity declaration.'}
+ $seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase);$members=[Collections.Generic.List[object]]::new()
+ foreach($member in $declaration.members){
+  $path=Normalize-ObservedImagePath $member.image_path
+  $expectedName=switch($member.role){'webview_runtime'{'msedgewebview2.exe'}'console_host'{'conhost.exe'}default{throw 'Only explicitly identified WebView runtime and canonical console host are supported auxiliary members.'}}
+  if([IO.Path]::GetFileName($path) -ine $expectedName -or $member.sha256 -cnotmatch '^[a-f0-9]{64}$' -or !$seen.Add($path)){throw 'Invalid, misnamed or duplicate runtime identity.'}
+  if($member.role -ceq 'console_host' -and !$path.Equals((Join-Path ([Environment]::GetFolderPath('System')) 'conhost.exe'),[StringComparison]::OrdinalIgnoreCase)){throw 'Console host must use the canonical operating-system path.'}
+  if((File-Hash $path) -cne $member.sha256){throw 'Runtime executable bytes differ from the prospective declaration.'}
+  $members.Add([ordered]@{role=$member.role;image_path=$path;sha256=$member.sha256})
+ }
+ return ,$members.ToArray()
+}
+function Assert-MemberPolicy($Member,$ExpectedApp,$ExpectedTypst,$AllowedRuntime){
  # Called outside the inspection-race catch: a policy failure remains a failure
  # even when the process exits immediately after its identity was observed.
  if($Member.name -imatch '^(energyplus|expandobjects|readvarseso)$'){throw 'Simulation-related executable observed during the no-engine protocol.'}
- if($Member.name -ieq 'typst'){
-  if([string]::IsNullOrWhiteSpace($Member.image_path)){throw 'Observed renderer executable identity is unavailable; no renderer verification is accepted.'}
-  $Member.image_sha256=File-Hash $Member.image_path
-  if($Member.image_sha256 -cne $ExpectedTypstHash){throw 'Observed Typst executable differs from the declared audited executable.'}
-  return $true
+ $path=Normalize-ObservedImagePath $Member.image_path
+ if($Member.image_sha256 -cnotmatch '^[a-f0-9]{64}$' -or $Member.name -ine [IO.Path]::GetFileNameWithoutExtension($path)){throw 'Observed executable name/hash is not a valid kernel image identity.'}
+ foreach($expected in @(@{role='pinned_application';image_path=$ExpectedApp.image_path;sha256=$ExpectedApp.sha256},@{role='pinned_typst';image_path=$ExpectedTypst.image_path;sha256=$ExpectedTypst.sha256})+@($AllowedRuntime)){
+  if($path.Equals((Normalize-ObservedImagePath $expected.image_path),[StringComparison]::OrdinalIgnoreCase) -and $Member.image_sha256 -ceq $expected.sha256){return $expected.role}
  }
- return $false
+ throw 'An observed executable is outside the exact prospective application/Typst/runtime identity policy.'
 }
 
+$allowedRuntime=Read-AllowedRuntimeIdentities $runtimeDeclaration
+$expectedApp=@{image_path=$exe;sha256=$identities.installed_executable_sha256};$expectedTypst=@{image_path=$typst;sha256=$identities.typst_executable_sha256}
+$identities.allowed_runtime=$allowedRuntime
 $manifestPath=Join-Path $projectRoot 'project.json'
 $initial=Read-Json $manifestPath 16MB;$before=Snapshot-Project
 if(!$initial.id -or !$initial.energy){throw 'A saved energy project is required.'}
@@ -150,44 +152,30 @@ $initialIssues=@(Issues $initial)
 if($initialIssues.Count -ne 1){throw 'This declared continuation requires exactly one prior issue; do not prune or substitute another project.'}
 New-Item -ItemType Directory -Path $output|Out-Null
 $before|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'before-members.json') -Encoding utf8NoBOM
-$protocol=[ordered]@{schema_version='greenlens.native-report-review-supervision.v1';declared_utc=[DateTime]::UtcNow.ToString('o');identities=$identities;project_id=$initial.id;initial_manifest_sha256=$before.files['project.json'].sha256;initial_issue_ids=@($initialIssues.id);expected_final_issue_count=2;kernel_job_commit_limit_bytes=1GB;acceptance_raw_peak_limit_bytes=2GB;active_process_limit=16;overall_deadline_seconds=3600;armed_report_deadline_seconds=600;normal_close_grace_seconds=30;sample_milliseconds=200;manifest_poll_milliseconds=1000;maximum_samples=18000;stdout_cap_bytes=1MB;stderr_cap_bytes=1MB;scope='Installed UI and one manually armed report issuance; no GUI commands, project mutations, simulation launches or automatic retry';historical_failures='The384 MiB CLR and native raw-peak tests remain failed. The instrumented native request was denied and remained reserved while raw peak increased by the attempted160 MiB. A stricter1 GiB kernel limit here is separate from the unchanged2 GiB acceptance ceiling, not a reinterpretation or converter qualification.';publication_check='Exactly one new issue appended after arming; selected pair/scope, actual products and prior member hashes checked. Neither successful rendering nor these checks establish scientific qualification.';unobserved_children='Polling can miss lifetimes entirely; kernel peak remains recorded. Every enumerated member requires a held PID/creation-bound executable identity; unknown membership fails explicitly. Missing pinned Typst observation also prevents success.'}
+$protocol=[ordered]@{schema_version='greenlens.native-report-review-supervision.v1';declared_utc=[DateTime]::UtcNow.ToString('o');identities=$identities;project_id=$initial.id;initial_manifest_sha256=$before.files['project.json'].sha256;initial_issue_ids=@($initialIssues.id);expected_final_issue_count=2;kernel_job_commit_limit_bytes=1GB;acceptance_raw_peak_limit_bytes=2GB;active_process_limit=16;overall_deadline_seconds=3600;armed_report_deadline_seconds=600;normal_close_grace_seconds=30;sample_milliseconds=200;manifest_poll_milliseconds=1000;maximum_samples=18000;stdout_cap_bytes=1MB;stderr_cap_bytes=1MB;maximum_observed_identities=4096;receipt_cap_bytes=64MB;success_receipt_commit='Only the final receipt commits acceptance; a summary or .writing file alone does not';scope='Installed UI and one manually armed report issuance; no GUI commands, project mutations, simulation launches or automatic retry';historical_failures='The384 MiB CLR and native raw-peak tests remain failed. The instrumented native request was denied and remained reserved while raw peak increased by the attempted160 MiB. A stricter1 GiB kernel limit here is separate from the unchanged2 GiB acceptance ceiling, not a reinterpretation or converter qualification.';publication_check='Exactly one new issue appended after arming; selected pair/scope, actual products and prior member hashes checked. Neither successful rendering nor these checks establish scientific qualification.';unobserved_children='Polling can miss lifetimes entirely; kernel peak remains recorded. Every enumerated member requires a held PID/creation-bound executable identity; unknown membership fails explicitly. Missing pinned Typst observation also prevents success.'}
 $protocol|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $output 'protocol.json') -Encoding utf8NoBOM
 $protocolHash=File-Hash (Join-Path $output 'protocol.json')
 $armTemplate=[ordered]@{schema_version='greenlens.native-report-arm.v1';protocol_sha256=$protocolHash;project_id=$initial.id;baseline_run_id='REPLACE';proposed_run_id='REPLACE';scope_revision_sha256='REPLACE';expected_new_issue_count=1}
 $armTemplate|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'arm-render.template.json') -Encoding utf8NoBOM
 @{schema_version='greenlens.native-report-stop.v1';protocol_sha256=$protocolHash;reason='Finished native review; closing normally';report_error=$null}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'stop-observation.template.json') -Encoding utf8NoBOM
 Write-Host "Root UI owner: open the declared project manually. Write arm-render.json from the template immediately before one Issue action. After review, write stop-observation.json then close GreenLens normally. Receipt directory: $output"
-$proc=$null;$stdout=[GreenLensReportObservation.Capture]::new();$stderr=[GreenLensReportObservation.Capture]::new();$outTask=$null;$errTask=$null
+$session=$null;$proc=$null;$stdout=[GreenLensObservedJob.Capture]::new();$stderr=[GreenLensObservedJob.Capture]::new();$outTask=$null;$errTask=$null
 $timer=[Diagnostics.Stopwatch]::StartNew();$seen=@{};$samples=[Collections.Generic.List[object]]::new();$arm=$null;$armedAt=$null;$armedBefore=$null;$armedManifest=$null;$published=$null;$publishedSummary=$null;$publishedMembers=$null;$stop=$null;$stopAt=$null;$nextManifest=0L;$lastManifestHash=$null;$typstCount=0
 $record=[ordered]@{schema_version=$protocol.schema_version;protocol_sha256=$protocolHash;identities=$identities;completed=$false;failure=$null;stage='startup-and-editing';raw_peak_max_bytes=0;sampled_private_max_bytes=0;member_count_max=0;energyplus_observed=$false;normal_close=$false;cleanup_job_empty=$false;initial_issue_ids=@($initialIssues.id)}
 try{
  $proc=[GreenLensPairedProcess.NativeProcess]::StartBounded($exe,@(),(Split-Path -Parent $exe),'.',1GB,16);$proc.Input.Close();$record.root_pid=$proc.Id
  @{stage='startup-and-editing';root_pid=$proc.Id;protocol_sha256=$protocolHash}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'state.json') -Encoding utf8NoBOM
  $outTask=$stdout.Drain($proc.Output);$errTask=$stderr.Drain($proc.Error)
+ $session=New-ObservedJobSession $proc $record {param($row)
+  if($row.name -imatch '^(energyplus|expandobjects|readvarseso)$'){$record.energyplus_observed=$true}
+  return (Assert-MemberPolicy $row $expectedApp $expectedTypst $allowedRuntime)
+ } $stdout $stderr $outTask $errTask
+ $seen=$session.Seen
  while($true){
   $elapsed=$timer.ElapsedMilliseconds
-  if($elapsed -gt 3600000 -or $samples.Count -ge 18000){throw 'Overall observation deadline/sample capacity exceeded.'}
-  if($stdout.Overflow -or $stderr.Overflow){throw 'Installed app output exceeded its fixed1 MiB stream cap.'}
-  if($outTask.IsFaulted -or $errTask.IsFaulted){throw 'A bounded app-output drain failed.'}
-  $limits=@($proc.CommittedMemoryLimitSnapshot)
-  if($limits.Count -ne 4 -or ($limits[0] -band 0x2208) -ne 0x2208 -or $limits[1] -ne 16 -or $limits[2] -ne 1GB){throw 'Held job kernel limits do not match the declared supervision.'}
-  $record.raw_peak_max_bytes=[Math]::Max([long]$record.raw_peak_max_bytes,[long]$limits[3]);if($limits[3] -gt 2GB){throw 'Raw kernel peak exceeded the unchanged2 GiB report acceptance ceiling.'}
-  $members=@($proc.MemberIds);$active=$proc.ActiveProcesses;$working=$proc.WorkingSetBytes;[long]$private=0;$observed=[Collections.Generic.List[object]]::new()
-  if($active -gt 16 -or $members.Count -gt 16){throw 'Owned job process count exceeded16.'}
-  foreach($member in $members){
-   $p=$null;$row=$null
-   try{$p=[Diagnostics.Process]::GetProcessById([int]$member);$held=$p.SafeHandle;$proc.RequireMember($held);$p.Refresh();$started=$p.StartTime.ToUniversalTime();[GreenLensObservation.HeldProcessImage]::ValidateBinding($held,[int]$member,$started.Ticks);$key=[string]$member+':'+$started.Ticks
-    if($seen.ContainsKey($key)){$name=$seen[$key].name;$image=$seen[$key].image_path}else{$identity=[GreenLensObservation.HeldProcessImage]::Read($held,[int]$member,$started.Ticks);$name=$identity.Name;$image=$identity.ImagePath}
-    $privateBytes=[long]$p.PrivateMemorySize64;$private+=$privateBytes;$observed.Add(@{pid=$member;name=$name;private_bytes=$privateBytes})
-    if(!$seen.ContainsKey($key)){$row=[ordered]@{pid=$member;name=$name;image_path=$image;started_utc=$started.ToString('o');first_observed_utc=[DateTime]::UtcNow.ToString('o');image_identity_method='held-handle-query-full-process-image-name.v1';image_sha256=$null};$seen[$key]=$row}
-   }catch{$record.process_identity_failure=@{pid=$member;identity_unavailable=$true;inspection_error=$_.Exception.Message;exception_type=$_.Exception.GetType().FullName;category=$_.CategoryInfo.Category.ToString();script_stack_trace=$_.ScriptStackTrace;position=$_.InvocationInfo.PositionMessage};throw ('Observed process identity/resource inspection failed; unidentified membership cannot pass: '+$_.Exception.Message)}finally{if($p){$p.Dispose()}}
-   if($row){
-    if($row.name -imatch '^(energyplus|expandobjects|readvarseso)$'){$record.energyplus_observed=$true}
-    if(Assert-MemberPolicy $row $identities.typst_executable_sha256){$typstCount++}
-   }
-  }
-  $record.sampled_private_max_bytes=[Math]::Max([long]$record.sampled_private_max_bytes,$private);$record.member_count_max=[Math]::Max([int]$record.member_count_max,[int]$active)
-  $samples.Add(@{elapsed_ms=$elapsed;stage=$record.stage;active_processes=$active;member_ids=$members;members=$observed.ToArray();kernel_limit_bytes=$limits[2];raw_peak_bytes=$limits[3];sampled_sum_private_bytes=$private;sampled_sum_working_set_bytes=$working})
+  $sample=Get-ObservedJobSample $session $elapsed 3600000 18000
+  $sample.stage=$record.stage;$samples.Add($sample)
+  $typstCount=[int]$session.PolicyCounts['pinned_typst']
   $stopPath=Join-Path $output 'stop-observation.json'
   if(!$stop -and (Test-Path -LiteralPath $stopPath)){$stop=Read-Json $stopPath 16KB;if($stop.schema_version -cne 'greenlens.native-report-stop.v1' -or $stop.protocol_sha256 -cne $protocolHash -or !$stop.reason){throw 'Invalid observation-stop marker.'};$record.stop=$stop;$stopAt=$elapsed;if($stop.report_error){throw ('UI owner reported render/review failure: '+[string]$stop.report_error)}}
   $armPath=Join-Path $output 'arm-render.json'
@@ -206,7 +194,7 @@ try{
    @{stage='armed-report';root_pid=$proc.Id;armed_utc=$record.armed_utc;arm=$arm;manifest_sha256=$record.armed_manifest_sha256}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'armed.json') -Encoding utf8NoBOM
    Write-Host 'Exact pair/scope observation armed; the600-second window is running. Root may perform the single Issue action now.'
   }
-  if($arm -and !$published -and ($elapsed-$armedAt) -gt 600000){throw 'One armed report issuance exceeded600 seconds without complete publication.'}
+  if($arm -and !$published){Assert-ObservedElapsed $session ($timer.ElapsedMilliseconds-$armedAt) 600000 'armed issuance'}
   if($elapsed -ge $nextManifest -or ($stop -and $proc.HasExited)){
    $nextManifest=$elapsed+1000;$current=Read-Json $manifestPath 16MB;$lastManifestHash=File-Hash $manifestPath
    if($current.id -cne $initial.id){throw 'Observed project identity changed.'};Assert-OldIssues $initial $current;Assert-NoNewRuns $initial $current
@@ -219,7 +207,7 @@ try{
     $after|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'published-members.json') -Encoding utf8NoBOM
     $record.publication=$published;$record.publication_elapsed_ms=$timer.ElapsedMilliseconds-$armedAt;$record.published_utc=[DateTime]::UtcNow.ToString('o');$record.stage='published-native-review'
     @{stage='published-native-review';root_pid=$proc.Id;publication=$published;elapsed_ms=$record.publication_elapsed_ms}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'state.json') -Encoding utf8NoBOM
-    if($record.publication_elapsed_ms -gt 600000){throw 'Complete publication verification exceeded the fixed600-second report window.'}
+    Assert-ObservedElapsed $session $record.publication_elapsed_ms 600000 'complete publication verification'
    }
   }
   if($stop -and $proc.HasExited -and $proc.JobEmpty){$record.normal_close=$true;break}
@@ -236,16 +224,17 @@ try{
  $finalMembers=Snapshot-Project;Assert-Preserved $before $finalMembers;Assert-Preserved $armedBefore $finalMembers;Assert-Preserved $publishedMembers $finalMembers
  $lastManifestHash=$finalMembers.files['project.json'].sha256
  $finalMembers|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'final-members.json') -Encoding utf8NoBOM
- if((File-Hash $exe) -cne $identities.installed_executable_sha256 -or (File-Hash $typst) -cne $identities.typst_executable_sha256 -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $imageHelper) -cne $identities.process_image_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256){throw 'Declared tooling changed during observation.'}
+ if((File-Hash $exe) -cne $identities.installed_executable_sha256 -or (File-Hash $typst) -cne $identities.typst_executable_sha256 -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $imageHelper) -cne $identities.process_image_helper_sha256 -or (File-Hash $sessionHelper) -cne $identities.session_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $runtimeDeclaration) -cne $identities.runtime_declaration_sha256){throw 'Declared tooling changed during observation.'}
+ foreach($runtime in $allowedRuntime){if((File-Hash $runtime.image_path) -cne $runtime.sha256){throw 'A declared runtime executable changed during observation.'}}
+ Assert-ObservedElapsed $session $timer.ElapsedMilliseconds 3600000 'final completion'
  $record.completed=$true
 }catch{$record.failure=$_.Exception.Message;$record.failure_detail=@{exception_type=$_.Exception.GetType().FullName;category=$_.CategoryInfo.Category.ToString();script_stack_trace=$_.ScriptStackTrace;position=$_.InvocationInfo.PositionMessage}}
 finally{
- if($proc){try{if(!$proc.JobEmpty){$record.forced_owned_job_kill=$true;$proc.Kill();$kill=[Diagnostics.Stopwatch]::StartNew();while(!$proc.JobEmpty -and $kill.Elapsed.TotalSeconds -le 5){Start-Sleep -Milliseconds 50}};$record.cleanup_job_empty=$proc.JobEmpty;$record.final_raw_peak_bytes=$proc.PeakJobCommittedBytes;$record.raw_peak_max_bytes=[Math]::Max([long]$record.raw_peak_max_bytes,[long]$record.final_raw_peak_bytes);if(!$record.cleanup_job_empty -or $record.raw_peak_max_bytes -gt 2GB){$record.completed=$false;$record.cleanup_error='Job remained nonempty or raw peak exceeded the acceptance ceiling.'};foreach($task in @($outTask,$errTask)){if($task -and !$task.Wait(5000)){$record.completed=$false;$record.drain_error='Bounded output did not reach EOF.'}}}catch{$record.completed=$false;$record.cleanup_error=$_.Exception.Message};$proc.Dispose()}
- [IO.File]::WriteAllBytes((Join-Path $output 'stdout.bin'),$stdout.Bytes);[IO.File]::WriteAllBytes((Join-Path $output 'stderr.bin'),$stderr.Bytes)
- $record.stdout_total_bytes=$stdout.Total;$record.stderr_total_bytes=$stderr.Total;$record.stdout_overflow=$stdout.Overflow;$record.stderr_overflow=$stderr.Overflow
+ if($session){Close-ObservedJobSession $session;Save-ObservedJobOutput $session $output}
+ elseif($proc){try{if(!$proc.JobEmpty){$proc.Kill()}}finally{$proc.Dispose()};$record.completed=$false}
  if($stdout.Overflow -or $stderr.Overflow -or $record.energyplus_observed){$record.completed=$false}
  $record.samples=$samples.ToArray();$record.members=@($seen.Values|Sort-Object first_observed_utc);$record.observed_typst_processes=$typstCount;$record.elapsed_seconds=$timer.Elapsed.TotalSeconds;$record.final_manifest_sha256=$lastManifestHash;$record.completed_utc=[DateTime]::UtcNow.ToString('o')
- $record|ConvertTo-Json -Depth 18|Set-Content -LiteralPath (Join-Path $output 'report.json') -Encoding utf8NoBOM
+ Write-ObservedJobReceipt $session (Join-Path $output 'report.json') $record $output
 }
 if(!$record.completed){throw "Native report observation incomplete/failed; retained receipt: $output; $($record.failure)"}
 Write-Host "One native issued report observed with prior retained bytes preserved. Receipt: $output"

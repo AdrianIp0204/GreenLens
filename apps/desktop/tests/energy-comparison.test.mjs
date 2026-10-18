@@ -19,7 +19,7 @@ const host={
     return{value:null,loading:false,error:null};
   },
   Assessment:()=>null,Cell:()=>null,ThermalEditor:()=>null,GeometryAuthoring:()=>null,NewEnergyProject:()=>null,EvidenceSettings:()=>null,ThermalView:()=>null,EnergyInvestigation:()=>null,ThermalDifferences:()=>null,EnergyPreflight:()=>null,ReportWorkbench:()=>null,ThermalInspectorResizer:()=>null,EnergySensitivity:()=>null,EnergyCommandBar:()=>null,RunHistory:()=>null,EnergyDependencySettings:()=>null,
-  DesignCopy:()=>null,useEnergyDependencyPaths:()=>({paths:{engineDir:'',typstDir:''},warning:'',setPath(){},reset(){}}),
+  DesignProposal:()=>{throw Error("Proposal panel is outside this read-only comparison test");},DesignReports:()=>{throw Error("Report panel is outside this read-only comparison test");},DesignCopy:()=>null,useEnergyDependencyPaths:()=>({paths:{engineDir:'',typstDir:''},warning:'',setPath(){},reset(){}}),
   ScopeRevisions:()=>null,ReferenceWorkbench:()=>null,ProjectCapacity:()=>null,useReferenceModel:()=>({overlay:null,context:null,assessment:null,error:''}),
   readable:s=>s.charAt(0).toUpperCase()+s.slice(1).replaceAll('_',' '),
 };
@@ -51,7 +51,7 @@ const inspectionModule='data:text/javascript;base64,'+Buffer.from(inspectionCode
 const {ThermalPresentationStore}=await import(presentationModule);
 // This older read-only comparison projection test excludes unrelated panels.
 // Real editing, metadata, reference and viewport interactions have dedicated DOM suites.
-const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./GeometryAuthoring','./NewEnergyProject','./EvidenceSettings','./ThermalView','./EnergyInvestigation','./ThermalDifferences','./EnergyPreflight','./ProjectCapacity','./ReportWorkbench','./ThermalInspectorResizer','./EnergySensitivity','./EnergyCommandBar','./RunHistory','./EnergyDependencySettings','./energy-dependency-settings','./DesignCopy','../reference/ScopeRevisions','../reference/ReferenceWorkbench','../reference/useReferenceModel']);
+const mocked=new Set(['react','@tauri-apps/api/core','./useEnergyRead','./EnergyAssessment','./ThermalEditor','./GeometryAuthoring','./NewEnergyProject','./EvidenceSettings','./ThermalView','./EnergyInvestigation','./ThermalDifferences','./EnergyPreflight','./ProjectCapacity','./ReportWorkbench','./ThermalInspectorResizer','./EnergySensitivity','./EnergyCommandBar','./RunHistory','./EnergyDependencySettings','./energy-dependency-settings','./DesignCopy','./DesignProposal','./DesignReports','../reference/ScopeRevisions','../reference/ReferenceWorkbench','../reference/useReferenceModel']);
 const linked=code.replace(/import\s+(['"])\.\/energy\.css\1;/g,'').replace(/import\s+([^;]+?)\s+from\s+(['"])([^'"]+)\2;/g,(_,binding,_q,specifier)=>{
   if(mocked.has(specifier)){
     const parts=[],named=binding.match(/\{([^}]+)\}/)?.[1];

@@ -20,6 +20,7 @@ pub enum Operation {
     ImportReference,
     EnergyRun { alternative: String },
     ReportIssue,
+    DesignReport,
 }
 #[derive(Debug, Clone, Serialize)]
 pub struct CapacityLimit {
@@ -104,6 +105,8 @@ pub(crate) fn inspect_staged(
     let mut names = BTreeSet::from(["project.json".to_owned()]);
     let mut largest_entry = manifest_bytes;
     let mut largest_issue = 0u64;
+    let mut largest_design_report = 0u64;
+    let mut design_product_size_mismatch = false;
     let mut largest_reference_geometry = 0u64;
     // Pending accepted revisions may not have sidecars yet. Their exact
     // deterministic bytes are accounted before publication; stage verifies any
@@ -187,6 +190,65 @@ pub(crate) fn inspect_staged(
             largest_issue = largest_issue.max(prefix_bytes);
         }
     }
+    // New analytical-only reports have a separate immutable product manifest,
+    // not a historical checksums.json. Actual lengths are measured without
+    // reading/decoding annual evidence or claiming product hash verification.
+    if let Some(index) = &project.design_reports {
+        for summary in &index.reports {
+            check(cancel, start)?;
+            let prefix = &summary.path;
+            let directory = if let Some((_, path)) = staged.iter().find(|(name, _)| name == prefix)
+            {
+                path.clone()
+            } else {
+                root.context("Save the project before inventorying retained design reports")?
+                    .join(prefix)
+            };
+            let manifest_bytes = read_evidence_bytes_checked(
+                &regular_child(&directory, "design-products.json")?,
+                crate::design_report::MAX_MANIFEST_BYTES,
+                &mut |_| check(cancel, start),
+            )?;
+            let manifest: crate::design_report::DesignProductManifest =
+                serde_json::from_slice(&manifest_bytes)?;
+            manifest.validate()?;
+            ensure!(manifest.content_sha256==summary.content_sha256&&manifest.products_sha256==summary.products_sha256&&bytes_hash(&manifest_bytes)==summary.manifest_file_sha256,
+                "Design product inventory differs from its retained index; preserve evidence and restore the exact manifest before adding work");
+            let mut prefix_bytes = 0u64;
+            for (member, declared) in manifest
+                .products
+                .iter()
+                .map(|p| (p.path.as_str(), p.bytes))
+                .chain(std::iter::once((
+                    "design-products.json",
+                    manifest_bytes.len() as u64,
+                )))
+            {
+                check(cancel, start)?;
+                let full = format!("{prefix}/{member}");
+                relative_path(&full)?;
+                ensure!(
+                    full.len() <= 240 && names.insert(full.to_ascii_lowercase()),
+                    "Unsafe or overlapping design capacity member"
+                );
+                ensure!(
+                    names.len() <= MAX_PACKAGE_ENTRIES + 1,
+                    "Retained member count exceeds supported capacity"
+                );
+                let actual = fs::metadata(regular_child(&directory, member)?)?.len();
+                design_product_size_mismatch |= actual != declared;
+                retained_bytes = retained_bytes
+                    .checked_add(actual)
+                    .context("Capacity byte overflow")?;
+                prefix_bytes = prefix_bytes
+                    .checked_add(actual)
+                    .context("Capacity byte overflow")?;
+                largest_entry = largest_entry.max(actual);
+                entries += 1;
+            }
+            largest_design_report = largest_design_report.max(prefix_bytes);
+        }
+    }
     if let Some(w) = project.energy.as_ref().and_then(|e| e.workbench.as_ref()) {
         for session in &w.sensitivity {
             for name in std::iter::once(format!("{}/plan.json", session.path)).chain(
@@ -219,6 +281,10 @@ pub(crate) fn inspect_staged(
         .and_then(|a| a.scope_history.as_ref())
         .map_or(0, |h| h.revisions.len());
     let issues = project.report_issues.as_ref().map_or(0, |i| i.issues.len());
+    let design_reports = project
+        .design_reports
+        .as_ref()
+        .map_or(0, |i| i.reports.len());
     let references = project.architecture.as_ref().map_or(0, |a| a.assets.len());
     let mut limits = vec![];
     for (name, used, limit) in [
@@ -236,11 +302,12 @@ pub(crate) fn inspect_staged(
         (
             "candidate manifest bytes",
             manifest_bytes,
-            if project
-                .architecture
-                .as_ref()
-                .and_then(|a| a.scope_history.as_ref())
-                .is_some()
+            if project.design_reports.is_some()
+                || project
+                    .architecture
+                    .as_ref()
+                    .and_then(|a| a.scope_history.as_ref())
+                    .is_some()
             {
                 crate::study_revisions::MAX_REVISION_PROJECT_BYTES as u64
             } else {
@@ -258,6 +325,11 @@ pub(crate) fn inspect_staged(
             crate::report_issues::MAX_ISSUES as u64,
         ),
         ("reference revision count", references as u64, 8),
+        (
+            "design report count",
+            design_reports as u64,
+            crate::design_report::MAX_REPORTS as u64,
+        ),
         (
             "external scope history bytes",
             history_bytes,
@@ -304,6 +376,13 @@ pub(crate) fn inspect_staged(
             report.estimated_incremental_bytes = (largest_issue > 0).then_some(largest_issue);
             report.estimate_basis="Estimate only: largest previously retained issue, when available. New scope, labels, figures or renderer can change size. Exact products and candidate manifest are admitted after rendering; failed publication preserves completed pending products.".into();
         }
+        Operation::DesignReport => {
+            report.can_start = design_reports < crate::design_report::MAX_REPORTS;
+            report.incremental_lower_bound_entries = 4;
+            report.estimated_incremental_bytes =
+                (largest_design_report > 0).then_some(largest_design_report);
+            report.estimate_basis="Estimate only: largest retained analytical design report, when present. Frames, complete changes, input snapshots and PDF pagination can change the size. Exact complete products and manifest are admitted before publication; pending completed products are retained on refusal.".into();
+        }
         Operation::Inspect => {}
     }
     if report.limits.iter().any(|l| l.used > l.limit)
@@ -318,6 +397,10 @@ pub(crate) fn inspect_staged(
     if history_size_mismatch {
         report.can_start = false;
         report.warnings.push("An existing immutable history file differs in size from its bound record. Restore the exact original member before continuing; it will not be overwritten.".into());
+    }
+    if design_product_size_mismatch {
+        report.can_start = false;
+        report.warnings.push("A design-report product differs in size from its bound inventory. Restore its exact original bytes before continuing; sizing is not integrity verification and no product will be overwritten.".into());
     }
     if report.available_bytes < 16 * 1024 * 1024 {
         report.warnings.push("Less than 16 MiB remains before archive overhead. A new run, reference or issue may not fit.".into());
@@ -384,6 +467,201 @@ mod tests {
         let r = inspect(None, &project, &Operation::ReportIssue, &cancel).unwrap();
         assert_eq!(r.estimated_incremental_bytes, None);
         assert!(r.estimate_basis.contains("Estimate only"));
+        let r = inspect(None, &project, &Operation::DesignReport, &cancel).unwrap();
+        assert_eq!(r.estimated_incremental_bytes, None);
+        assert_eq!(r.incremental_lower_bound_entries, 4);
+        assert!(r.estimate_basis.contains("Estimate only"));
+    }
+
+    /// Resource metadata only, never accepted scientific/report evidence. The
+    /// full reader must reject these intentionally absent record/product codecs.
+    fn design_inventory_fixture() -> (tempfile::TempDir, PathBuf, Project, PathBuf) {
+        use crate::design_report::*;
+        use std::collections::BTreeMap;
+        let parent = crate::local_root()
+            .unwrap()
+            .join("verification/design-capacity-tests");
+        fs::create_dir_all(&parent).unwrap();
+        let temp = tempfile::tempdir_in(parent).unwrap();
+        let root = temp.path().join("project");
+        fs::create_dir(&root).unwrap();
+        let mut project = crate::energy_services::example_document();
+        let mut bindings = vec![];
+        for side in ["A", "B"] {
+            let id = uuid::Uuid::new_v4().to_string();
+            let path = format!("runs/{id}");
+            let directory = root.join(&path);
+            fs::create_dir_all(&directory).unwrap();
+            fs::write(directory.join("capacity-only.bin"), b"x").unwrap();
+            write_json(
+                &directory.join("checksums.json"),
+                &Checksums {
+                    schema_version: "0.1.0".into(),
+                    sha256: BTreeMap::from([("capacity-only.bin".into(), bytes_hash(b"x"))]),
+                },
+            )
+            .unwrap();
+            project
+                .energy
+                .as_mut()
+                .unwrap()
+                .runs
+                .push(crate::energy::EnergyRunSummary {
+                    id: id.clone(),
+                    alternative_id: side.into(),
+                    path,
+                    physical_input_hash: "a".repeat(64),
+                    record_sha256: "b".repeat(64),
+                });
+            bindings.push(DesignRunBinding {
+                run_id: id,
+                record_sha256: "b".repeat(64),
+                design_id: side.into(),
+            });
+        }
+        let id = "c".repeat(64);
+        let path = format!("design-reports/{id}");
+        let directory = root.join(&path);
+        fs::create_dir_all(&directory).unwrap();
+        fs::write(directory.join("design-content.json"), b"x").unwrap();
+        let mut manifest = DesignProductManifest {
+            schema_version: PRODUCT_SCHEMA.into(),
+            content_sha256: id.clone(),
+            products_sha256: String::new(),
+            products: vec![crate::energy_report::ReportArtifact {
+                path: "design-content.json".into(),
+                bytes: 1,
+                sha256: bytes_hash(b"x"),
+            }],
+        };
+        manifest.products_sha256 = manifest.identity().unwrap();
+        write_json(&directory.join("design-products.json"), &manifest).unwrap();
+        project.design_reports = Some(DesignReportIndex {
+            schema_version: INDEX_SCHEMA.into(),
+            reports: vec![DesignReportSummary {
+                id: id.clone(),
+                path,
+                content_sha256: id,
+                manifest_file_sha256: bytes_hash(
+                    &fs::read(directory.join("design-products.json")).unwrap(),
+                ),
+                products_sha256: manifest.products_sha256,
+                baseline: bindings.remove(0),
+                proposed: bindings.remove(0),
+                sensitivity_run_ids: vec![],
+                title: "Capacity metadata only".into(),
+                report_revision: "Not accepted".into(),
+                include_pdf: false,
+            }],
+        });
+        (temp, root, project, directory)
+    }
+    #[test]
+    fn analytical_report_sizes_include_staging_and_do_not_assert_integrity() {
+        let (temp, root, project, directory) = design_inventory_fixture();
+        let cancel = AtomicBool::new(false);
+        let before = inspect(Some(&root), &project, &Operation::DesignReport, &cancel).unwrap();
+        assert_eq!(before.retained_entries, 7); // candidate manifest, two two-file runs, two report files
+        assert_eq!(
+            before
+                .limits
+                .iter()
+                .find(|l| l.name == "design report count")
+                .unwrap()
+                .used,
+            1
+        );
+        assert_eq!(
+            before
+                .limits
+                .iter()
+                .find(|l| l.name == "candidate manifest bytes")
+                .unwrap()
+                .limit,
+            crate::study_revisions::MAX_REVISION_PROJECT_BYTES as u64
+        );
+        assert_eq!(
+            before.estimated_incremental_bytes,
+            Some(
+                fs::metadata(directory.join("design-content.json"))
+                    .unwrap()
+                    .len()
+                    + fs::metadata(directory.join("design-products.json"))
+                        .unwrap()
+                        .len()
+            )
+        );
+        assert!(before.can_start);
+        fs::write(directory.join("design-content.json"), b"y").unwrap(); // equal-size tamper, sizing cannot detect it
+        let after = inspect(Some(&root), &project, &Operation::Inspect, &cancel).unwrap();
+        assert_eq!(before.retained_bytes, after.retained_bytes);
+        assert!(after.can_start);
+        assert!(crate::design_report::inspect_directory(&directory, &cancel).is_err());
+        let staged = temp.path().join("staged-report");
+        fs::rename(&directory, &staged).unwrap();
+        let staged_report = inspect_staged(
+            Some(&root),
+            &project,
+            &Operation::Inspect,
+            &[(
+                project.design_reports.as_ref().unwrap().reports[0]
+                    .path
+                    .clone(),
+                staged,
+            )],
+            &cancel,
+        )
+        .unwrap();
+        assert_eq!(after.retained_bytes, staged_report.retained_bytes);
+        assert!(staged_report
+            .inventory_scope
+            .contains("not content-integrity"));
+    }
+    #[test]
+    fn changed_product_lengths_and_oversized_members_refuse_publication_without_deleting() {
+        let (_temp, root, project, directory) = design_inventory_fixture();
+        let cancel = AtomicBool::new(false);
+        let path = directory.join("design-content.json");
+        let file = fs::OpenOptions::new().write(true).open(&path).unwrap();
+        file.set_len(MAX_EVIDENCE_FILE_BYTES + 1).unwrap();
+        drop(file);
+        let report = inspect(Some(&root), &project, &Operation::Inspect, &cancel).unwrap();
+        assert!(!report.can_start);
+        assert!(report
+            .warnings
+            .iter()
+            .any(|s| s.contains("differs in size")));
+        assert_eq!(
+            report
+                .limits
+                .iter()
+                .find(|l| l.name == "largest retained entry")
+                .unwrap()
+                .used,
+            MAX_EVIDENCE_FILE_BYTES + 1
+        );
+        assert!(require_publication(&root, &project, &[], &cancel).is_err());
+        assert_eq!(
+            fs::metadata(&path).unwrap().len(),
+            MAX_EVIDENCE_FILE_BYTES + 1
+        );
+    }
+    #[test]
+    fn design_inventory_rejects_changed_manifest_and_duplicate_paths() {
+        let (_temp, root, project, directory) = design_inventory_fixture();
+        let path = directory.join("design-products.json");
+        let mut manifest: crate::design_report::DesignProductManifest = read_json(&path).unwrap();
+        manifest.products.push(manifest.products[0].clone());
+        manifest.products_sha256 = manifest.identity().unwrap();
+        write_json(&path, &manifest).unwrap();
+        assert!(inspect(
+            Some(&root),
+            &project,
+            &Operation::Inspect,
+            &AtomicBool::new(false)
+        )
+        .is_err());
+        assert!(path.exists());
     }
 }
 

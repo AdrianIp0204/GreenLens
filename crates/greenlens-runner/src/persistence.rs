@@ -129,12 +129,12 @@ fn checked_metadata(path: &Path) -> Result<fs::Metadata> {
 /// While retained on Windows, this handle denies deletion/renaming of the
 /// checked directory. This prevents project/runs path replacement during a
 /// promotion. It does not require a directory to be outside OneDrive.
-struct DirectoryGuard {
+pub(crate) struct DirectoryGuard {
     #[cfg(windows)]
     _file: File,
 }
 impl DirectoryGuard {
-    fn open(path: &Path) -> Result<Self> {
+    pub(crate) fn open(path: &Path) -> Result<Self> {
         ensure!(
             checked_metadata(path)?.is_dir(),
             "Expected an evidence directory"
@@ -665,6 +665,7 @@ pub fn atomic_project_cancellable(
         let previous = crate::history_storage::read_project(root, cancel)?;
         crate::study_revisions::validate_preserved(&previous, project)?;
         crate::report_issues::validate_preserved(&previous, project)?;
+        crate::design_report::validate_preserved(&previous, project)?;
     }
     crate::capacity::require_publication(root, project, &[], cancel)?;
     let data = crate::history_storage::manifest_bytes(project)?;
@@ -1058,6 +1059,115 @@ pub(crate) fn promote_issue_bound(
     Ok(())
 }
 
+/// Additive design-report codec: independently bound members include its own
+/// manifest. No legacy checksum seal is invented or modified.
+pub(crate) fn promote_design_report_bound(
+    source: &Path,
+    project: &Path,
+    id: &str,
+    members: &BoundReferenceMembers,
+    checkpoint: &mut impl FnMut(u64) -> Result<()>,
+) -> Result<()> {
+    ensure!(
+        id.len() == 64
+            && id
+                .bytes()
+                .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b)),
+        "Invalid design-report identity"
+    );
+    ensure!(
+        !members.is_empty() && members.len() <= 253 && members.contains_key("design-products.json"),
+        "Invalid bounded design-report inventory"
+    );
+    let verify = |root: &Path, checkpoint: &mut dyn FnMut(u64) -> Result<()>| -> Result<()> {
+        let _guard = DirectoryGuard::open(root)?;
+        let mut names = std::collections::BTreeSet::new();
+        for entry in fs::read_dir(root)? {
+            checkpoint(0)?;
+            let entry = entry?;
+            ensure!(
+                names.len() < 253 && entry.file_type()?.is_file(),
+                "Unexpected design-report member"
+            );
+            names.insert(
+                entry
+                    .file_name()
+                    .into_string()
+                    .map_err(|_| anyhow::anyhow!("Invalid report filename"))?,
+            );
+        }
+        ensure!(
+            names == members.keys().cloned().collect(),
+            "Design report has missing or unlisted members"
+        );
+        let mut budget = PackageBudget::default();
+        for (name, (digest, size)) in members {
+            ensure!(!name.contains('/'), "Design report products must be flat");
+            budget.add(name, *size)?;
+            let path = regular_child(root, name)?;
+            let mut file = open_limited_file(&path, *size, "Design report member grew")?;
+            ensure!(
+                file.metadata()?.len() == *size,
+                "Design report member size differs"
+            );
+            let actual = hash_limited(
+                &mut CheckpointReader {
+                    source: &mut file,
+                    checkpoint: &mut |n| checkpoint(n),
+                },
+                *size,
+            )?;
+            crate::project_open::observed_file(&path, &actual)?;
+            ensure!(
+                &actual == digest,
+                "Design report member identity differs: {name}"
+            );
+        }
+        Ok(())
+    };
+    let _source_guard = DirectoryGuard::open(source)?;
+    verify(source, checkpoint)?;
+    let (reports, _guards) = create_checked_directories(project, Path::new("design-reports"))?;
+    let target = reports.join(id);
+    if fs::symlink_metadata(&target).is_ok() {
+        return verify(&target, checkpoint);
+    }
+    let temporary = reports.join(format!(".pending-{}", Uuid::new_v4()));
+    fs::create_dir(&temporary)?;
+    let temporary_guard = DirectoryGuard::open(&temporary)?;
+    for (name, (_, size)) in members {
+        checkpoint(0)?;
+        let relative = relative_path(name)?;
+        let input = open_limited_file(
+            &regular_child(source, name)?,
+            *size,
+            "Design source grew during copy",
+        )?;
+        let mut output = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(temporary.join(relative))?;
+        copy_bounded(
+            &mut CheckpointReader {
+                source: input,
+                checkpoint: &mut *checkpoint,
+            },
+            &mut output,
+            *size,
+        )?;
+        output.sync_all()?;
+    }
+    verify(&temporary, checkpoint)?;
+    checkpoint(0)?;
+    ensure!(
+        !target.try_exists()?,
+        "Design report target appeared; preserved staged products need explicit reconciliation"
+    );
+    drop(temporary_guard);
+    fs::rename(temporary, target)?;
+    Ok(())
+}
+
 struct CheckpointReader<'a, R, F> {
     source: R,
     checkpoint: &'a mut F,
@@ -1418,6 +1528,108 @@ pub fn extract_package(package: &Path, destination: &Path) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn design_promotion_fixture(root: &Path) -> BoundReferenceMembers {
+        fs::create_dir(root).unwrap();
+        // Inert file-copy fixtures, not report content or simulation evidence.
+        let files = [
+            ("design-products.json", b"inert manifest fixture".to_vec()),
+            ("inert-product.bin", vec![7u8; 192 * 1024]),
+        ];
+        files
+            .into_iter()
+            .map(|(name, bytes)| {
+                fs::write(root.join(name), &bytes).unwrap();
+                (name.into(), (bytes_hash(&bytes), bytes.len() as u64))
+            })
+            .collect()
+    }
+
+    #[test]
+    fn design_product_promotion_is_exact_idempotent_and_preserves_conflicts() {
+        let parent = tempfile::tempdir().unwrap();
+        let source = parent.path().join("source 空間");
+        let members = design_promotion_fixture(&source);
+        let project = parent.path().join("project with spaces");
+        fs::create_dir(&project).unwrap();
+        fs::write(project.join("project.json"), b"unchanged document").unwrap();
+        let id = "a".repeat(64);
+        let target = project.join("design-reports").join(&id);
+        promote_design_report_bound(&source, &project, &id, &members, &mut |_| Ok(())).unwrap();
+        promote_design_report_bound(&source, &project, &id, &members, &mut |_| Ok(())).unwrap();
+        for (name, (digest, size)) in &members {
+            let copied = fs::read(target.join(name)).unwrap();
+            assert_eq!(copied.len() as u64, *size);
+            assert_eq!(&bytes_hash(&copied), digest);
+        }
+        // An equal-size mutation is not a permissible idempotent copy and must
+        // never be overwritten by the apparently correct source.
+        let changed = vec![8u8; 192 * 1024];
+        fs::write(target.join("inert-product.bin"), &changed).unwrap();
+        assert!(
+            promote_design_report_bound(&source, &project, &id, &members, &mut |_| Ok(())).is_err()
+        );
+        assert_eq!(fs::read(target.join("inert-product.bin")).unwrap(), changed);
+        assert_eq!(
+            fs::read(source.join("inert-product.bin")).unwrap(),
+            vec![7u8; 192 * 1024]
+        );
+        fs::write(source.join("undeclared.bin"), b"must not silently copy").unwrap();
+        let another = "b".repeat(64);
+        assert!(promote_design_report_bound(
+            &source,
+            &project,
+            &another,
+            &members,
+            &mut |_| Ok(())
+        )
+        .is_err());
+        assert!(!project.join("design-reports").join(another).exists());
+        assert_eq!(
+            fs::read(project.join("project.json")).unwrap(),
+            b"unchanged document"
+        );
+    }
+
+    #[test]
+    fn cancelled_design_promotion_leaves_only_diagnostic_staging() {
+        let parent = tempfile::tempdir().unwrap();
+        let source = parent.path().join("source");
+        let members = design_promotion_fixture(&source);
+        let project = parent.path().join("project");
+        fs::create_dir(&project).unwrap();
+        fs::write(project.join("project.json"), b"unchanged document").unwrap();
+        let id = "c".repeat(64);
+        let reports = project.join("design-reports");
+        let mut cancelled_during_copy = false;
+        let error = promote_design_report_bound(&source, &project, &id, &members, &mut |bytes| {
+            let staging_exists = reports.is_dir()
+                && fs::read_dir(&reports)?.any(|e| {
+                    e.is_ok_and(|e| e.file_name().to_string_lossy().starts_with(".pending-"))
+                });
+            if bytes > 0 && staging_exists {
+                cancelled_during_copy = true;
+                anyhow::bail!("controlled synthetic cancellation during copy");
+            }
+            Ok(())
+        })
+        .unwrap_err();
+        assert!(cancelled_during_copy);
+        assert!(format!("{error:#}").contains("controlled synthetic cancellation"));
+        assert!(!reports.join(&id).exists());
+        assert!(fs::read_dir(&reports).unwrap().all(|e| e
+            .unwrap()
+            .file_name()
+            .to_string_lossy()
+            .starts_with(".pending-")));
+        assert_eq!(
+            fs::read(project.join("project.json")).unwrap(),
+            b"unchanged document"
+        );
+        for (name, (digest, _)) in &members {
+            assert_eq!(&bytes_hash(&fs::read(source.join(name)).unwrap()), digest);
+        }
+    }
 
     #[cfg(windows)]
     #[test]

@@ -14,11 +14,14 @@ param(
  [Parameter(Mandatory,ParameterSetName='Run')][string]$TypstDir,
  [Parameter(Mandatory,ParameterSetName='Run')][string]$OutputDirectory,
  [Parameter(ParameterSetName='Run')][string[]]$ColdUnavailablePaths=@(),
+ [Parameter(ParameterSetName='Run')][ValidateSet('ArchitecturalClosure','AnalyticalDesign')][string]$ReportKind='ArchitecturalClosure',
  [Parameter(Mandatory,ParameterSetName='Helpers')][switch]$FunctionsOnly
 )
 $ErrorActionPreference='Stop'
 $scopeHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-scope-history.ps1')).Path
 . $scopeHelper
+$designHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-design-report.ps1')).Path
+. $designHelper
 $sessionHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-job-session.ps1')).Path
 . $sessionHelper
 
@@ -76,7 +79,8 @@ function Assert-ImageIdentity([string]$Name,[string]$Hash,[string]$Image,[string
  throw 'An observed process is not the pinned CLI/Typst or canonical operating-system console host.'
 }
 function Assert-Products([string]$Root,$Manifest){
- if($Manifest.schema_version -cne 'greenlens.report-issue-products.v1' -or $Manifest.products.Count -lt 1 -or $Manifest.products.Count -gt 252){throw 'Invalid issued product inventory.'}
+ $schema=if($ReportKind -ceq 'AnalyticalDesign'){'greenlens.design-report-products.v1'}else{'greenlens.report-issue-products.v1'}
+ if($Manifest.schema_version -cne $schema -or $Manifest.products.Count -lt 1 -or $Manifest.products.Count -gt 252){throw 'Invalid separately typed issued product inventory.'}
  $seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase);[long]$total=0;$pdfs=0
  foreach($p in $Manifest.products){
   if(!$seen.Add($p.path) -or $p.bytes -le 0 -or $p.bytes -gt 64MB -or $p.sha256 -cnotmatch '^[a-f0-9]{64}$'){throw 'Invalid or duplicate product.'}
@@ -118,20 +122,29 @@ foreach($path in $ColdUnavailablePaths){if(Test-Path -LiteralPath $path){throw '
 $before=Snapshot-Members $root
 if(!$before.files.Contains('project.json') -or $before.files['project.json'].sha256 -cne $ExpectedManifestSha256.ToLowerInvariant()){throw 'Saved project differs from the explicitly declared manifest.'}
 $projectJson=Read-BoundedJson (Join-Path $root 'project.json') 16MB
-$issues=@($projectJson.report_issues.issues|Where-Object {$_.id -ceq $IssueId})
+$issues=@(if($ReportKind -ceq 'AnalyticalDesign'){Get-ObservedDesignReports $projectJson|Where-Object {$_.id -ceq $IssueId}}else{$projectJson.report_issues.issues|Where-Object {$_.id -ceq $IssueId}})
 if($issues.Count -ne 1){throw 'Exactly one retained issue must match the declaration.'};$issue=$issues[0]
-if($issue.path -cne ('report-issues/'+$IssueId) -or !$issue.include_pdf -or $issue.content_sha256 -cne $ExpectedContentSha256 -or $issue.products_sha256 -cne $ExpectedProductsSha256){throw 'Retained issue does not bind the declared content/products/PDF selection.'}
-$scopeObservation=Get-ObservedScopeSelection $root $projectJson $issue.scope_revision_sha256
+$reportPrefix=if($ReportKind -ceq 'AnalyticalDesign'){'design-reports/'}else{'report-issues/'}
+if($issue.path -cne ($reportPrefix+$IssueId) -or !$issue.include_pdf -or $issue.content_sha256 -cne $ExpectedContentSha256 -or $issue.products_sha256 -cne $ExpectedProductsSha256){throw 'Retained issue does not bind the declared content/products/PDF selection.'}
+$scopeObservation=$null;$designObservation=$null
 $issueDir=Portable-Child $root $issue.path
-foreach($pair in @(@('issue-content.json','content_file_sha256'),@('issue-products.json','products_file_sha256'),@('issue-runtime.json','receipt_file_sha256'))){if((File-Hash (Portable-Child $issueDir $pair[0])) -cne $issue[$pair[1]]){throw 'Retained issue metadata hash differs from the project binding.'}}
-$content=Read-BoundedJson (Portable-Child $issueDir 'issue-content.json') 48MB
-if($content.renderer.method -cne 'greenlens.energy-report-issue-renderer/3'){throw 'This single continuation is declared for the new renderer/3 issue only.'}
-if($content.scope_revision.revision_sha256 -cne $scopeObservation.revision.revision_sha256){throw 'The retained issue scope differs from its history selection.'}
-$products=Read-BoundedJson (Portable-Child $issueDir 'issue-products.json') 256KB
+$productName='issue-products.json';$productsFileHash=$issue.products_file_sha256
+if($ReportKind -ceq 'AnalyticalDesign'){
+ $designObservation=Assert-ObservedDesignProducts $root $issue ${function:File-Hash} ${function:Read-BoundedJson} ${function:Portable-Child} $null $typstHash
+ $productName='design-products.json';$productsFileHash=$issue.manifest_file_sha256
+}else{
+ $scopeObservation=Get-ObservedScopeSelection $root $projectJson $issue.scope_revision_sha256
+ foreach($pair in @(@('issue-content.json','content_file_sha256'),@('issue-products.json','products_file_sha256'),@('issue-runtime.json','receipt_file_sha256'))){if((File-Hash (Portable-Child $issueDir $pair[0])) -cne $issue[$pair[1]]){throw 'Retained issue metadata hash differs from the project binding.'}}
+ $content=Read-BoundedJson (Portable-Child $issueDir 'issue-content.json') 48MB
+ if($content.renderer.method -cne 'greenlens.energy-report-issue-renderer/3'){throw 'This single architectural continuation is declared for renderer/3 only.'}
+ if($content.scope_revision.revision_sha256 -cne $scopeObservation.revision.revision_sha256){throw 'The retained issue scope differs from its history selection.'}
+}
+$products=Read-BoundedJson (Portable-Child $issueDir $productName) 256KB
 if($products.content_sha256 -cne $ExpectedContentSha256 -or $products.products_sha256 -cne $ExpectedProductsSha256){throw 'Issued product manifest does not match the declared bindings.'}
 $productCheck=Assert-Products $issueDir $products
-$arguments=@('report-issue','regenerate',$root,$IssueId,$destination,'--typst-dir',(Split-Path -Parent $typst))
-$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared source/build receipt and exact CLI SHA256; source is not inferred from executable bytes';cli_sha256=$CliSha256.ToLowerInvariant();typst_sha256=$typstHash;typst_dependency_sha256=(File-Hash $typstPinPath);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);process_image_helper_sha256=(File-Hash $imageHelper);session_helper_sha256=(File-Hash $sessionHelper);conhost_sha256=$conhostHash}
+$command=if($ReportKind -ceq 'AnalyticalDesign'){'design-report'}else{'report-issue'}
+$arguments=@($command,'regenerate',$root,$IssueId,$destination,'--typst-dir',(Split-Path -Parent $typst))
+$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared source/build receipt and exact CLI SHA256; source is not inferred from executable bytes';cli_sha256=$CliSha256.ToLowerInvariant();typst_sha256=$typstHash;typst_dependency_sha256=(File-Hash $typstPinPath);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);design_report_helper_sha256=(File-Hash $designHelper);process_image_helper_sha256=(File-Hash $imageHelper);session_helper_sha256=(File-Hash $sessionHelper);conhost_sha256=$conhostHash}
 New-Item -ItemType Directory -Path $output|Out-Null
 $coldRuntime=Join-Path $output 'cold-runtime';$coldRoaming=Join-Path $output 'cold-roaming';$coldTemp=Join-Path $output 'cold-temp'
 foreach($path in @($coldRuntime,$coldRoaming,$coldTemp)){New-Item -ItemType Directory -Path $path|Out-Null}
@@ -139,7 +152,9 @@ $childEnvironment=[ordered]@{LOCALAPPDATA=$coldRuntime;APPDATA=$coldRoaming;TEMP
 $parentEnvironment=@{};foreach($key in $childEnvironment.Keys){$parentEnvironment[$key]=[Environment]::GetEnvironmentVariable($key,'Process')}
 Write-Receipt (Join-Path $output 'before-members.json') $before
 $protocol=[ordered]@{schema_version='greenlens.report-review-cold-regeneration.v1';declared_utc=[DateTime]::UtcNow.ToString('o');identities=$identities;project_id=$projectJson.id;manifest_sha256=$ExpectedManifestSha256.ToLowerInvariant();issue=$issue;arguments=$arguments;cold_unavailable_paths=$ColdUnavailablePaths;child_environment=$childEnvironment;cold_runtime_initial_entries=@(Get-ChildItem -LiteralPath $coldRuntime -Force).Count;attempt_limit=1;deadline_seconds=600;kernel_job_commit_limit_bytes=1GB;acceptance_raw_peak_limit_bytes=2GB;active_process_limit=16;sample_milliseconds=200;maximum_samples=3002;stdout_cap_bytes=1MB;stderr_cap_bytes=1MB;maximum_observed_identities=4096;receipt_cap_bytes=64MB;success_receipt_commit='Only the final receipt commits acceptance; a summary or .writing file alone does not';scope='One CLI regeneration only; fresh owned LOCALAPPDATA/APPDATA/TEMP, explicitly absent engine paths, OS-only PATH and explicit pinned Typst. No source hiding, input edit, new issue, simulation, retry, or historical mutation';process_observation='Only pinned CLI/Typst and canonical System32 conhost may be observed. Every enumerated member requires a held PID/creation-bound executable identity; unknown membership fails explicitly. Polling can miss lifetimes entirely. Kernel job peak includes all members; no peak normalization or denied-allocation subtraction.';failure_policy='Any substantive failure ends this attempt. Preserve logs, partial outputs and normal CLI scratch; never relaunch automatically.';claim_limit='Exact deterministic output agreement and retained-byte preservation are reproducibility checks, not scientific qualification.'}
-$protocol.scope_selection=[ordered]@{revision_sha256=$scopeObservation.revision.revision_sha256;storage_schema=$scopeObservation.storage_schema;member_path=$scopeObservation.member_path;member_bytes=$scopeObservation.member_bytes;member_sha256=$scopeObservation.member_sha256;verification_scope=$scopeObservation.verification_scope}
+$protocol.report_kind=$ReportKind
+if($ReportKind -ceq 'AnalyticalDesign'){$protocol.schema_version='greenlens.analytical-design-report-cold-regeneration.v1';$protocol.analytical_selection=$designObservation;$protocol.scope='Separately declared VD1 analytical-design cold regeneration, not RC1. One unchanged retained report, fresh owned runtime paths, explicitly absent engines, OS-only PATH and pinned Typst; no simulation, retry or historical mutation.'}
+else{$protocol.scope_selection=[ordered]@{revision_sha256=$scopeObservation.revision.revision_sha256;storage_schema=$scopeObservation.storage_schema;member_path=$scopeObservation.member_path;member_bytes=$scopeObservation.member_bytes;member_sha256=$scopeObservation.member_sha256;verification_scope=$scopeObservation.verification_scope}}
 Write-Receipt (Join-Path $output 'protocol.json') $protocol
 $protocolHash=File-Hash (Join-Path $output 'protocol.json')
 
@@ -181,7 +196,7 @@ finally{
  if($session){Close-ObservedJobSession $session;Save-ObservedJobOutput $session $output}
  elseif($proc){try{if(!$proc.JobEmpty){$proc.Kill()}}finally{$proc.Dispose()};$record.completed=$false}
  try{$after=Snapshot-Members $root;Write-Receipt (Join-Path $output 'after-members.json') $after;Assert-SameMembers $before $after;$record.original_members_preserved=$true;$record.original_member_count=$after.member_count;$record.original_member_bytes=$after.total_bytes}catch{$record.preservation_errors+=@($_.Exception.Message)}
- try{foreach($path in @($ColdUnavailablePaths)+@($childEnvironment.GREENLENS_ENERGYPLUS_DIR,$childEnvironment.GREENLENS_RADIANCE)){if(Test-Path -LiteralPath $path){throw 'A declared unavailable path became available.'}};if((File-Hash $cliPath) -cne $identities.cli_sha256 -or (File-Hash $typst) -cne $typstHash -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $imageHelper) -cne $identities.process_image_helper_sha256 -or (File-Hash $sessionHelper) -cne $identities.session_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $typstPinPath) -cne $identities.typst_dependency_sha256){throw 'Declared tooling changed during the operation.'}}catch{$record.preservation_errors+=@($_.Exception.Message)}
+ try{foreach($path in @($ColdUnavailablePaths)+@($childEnvironment.GREENLENS_ENERGYPLUS_DIR,$childEnvironment.GREENLENS_RADIANCE)){if(Test-Path -LiteralPath $path){throw 'A declared unavailable path became available.'}};if((File-Hash $cliPath) -cne $identities.cli_sha256 -or (File-Hash $typst) -cne $typstHash -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $designHelper) -cne $identities.design_report_helper_sha256 -or (File-Hash $imageHelper) -cne $identities.process_image_helper_sha256 -or (File-Hash $sessionHelper) -cne $identities.session_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $typstPinPath) -cne $identities.typst_dependency_sha256){throw 'Declared tooling changed during the operation.'}}catch{$record.preservation_errors+=@($_.Exception.Message)}
  $record.samples=$samples.ToArray();$record.members=@($seen.Values|Sort-Object first_observed_utc);$record.observed_typst_processes=$typstCount
 }
 # Publication is deliberately after cleanup and all preservation checks. A
@@ -189,9 +204,11 @@ finally{
 try{
  if(!$commandPassed -or $session.Failed -or $record.cleanup_errors.Count -or $record.preservation_errors.Count -or $stdout.Overflow -or $stderr.Overflow -or !$record.cleanup_job_empty){throw 'Command, cleanup, bounded-output or preservation checks did not pass.'}
  $response=[Text.UTF8Encoding]::new($false,$true).GetString($stdout.Bytes)|ConvertFrom-Json -AsHashtable -DateKind String -Depth 100
- if($response.issue_id -cne $IssueId -or $response.identity -cne $ExpectedContentSha256){throw 'CLI response does not bind the exact declared issue/content.'}
- $regenerated=Read-BoundedJson (Portable-Child $destination 'issue-products.json') 256KB
- if((File-Hash (Portable-Child $destination 'issue-products.json')) -cne $issue.products_file_sha256){throw 'Regenerated product inventory bytes differ from the retained inventory.'}
+ if($ReportKind -ceq 'AnalyticalDesign'){
+  if($response.report_id -cne $IssueId -or $response.content_sha256 -cne $ExpectedContentSha256 -or $response.products_sha256 -cne $ExpectedProductsSha256){throw 'CLI response does not bind the exact declared analytical report/content/products.'}
+ }elseif($response.issue_id -cne $IssueId -or $response.identity -cne $ExpectedContentSha256){throw 'CLI response does not bind the exact declared issue/content.'}
+ $regenerated=Read-BoundedJson (Portable-Child $destination $productName) 256KB
+ if((File-Hash (Portable-Child $destination $productName)) -cne $productsFileHash){throw 'Regenerated product inventory bytes differ from the retained inventory.'}
  $record.regenerated=Assert-Products $destination $products
  $actual=Snapshot-Members $destination
  if($actual.member_count -ne ($products.products.Count+1)){throw 'Regeneration contains missing or unadvertised additional members.'}

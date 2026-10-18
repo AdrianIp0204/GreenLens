@@ -19,6 +19,9 @@ pub struct EnergyWorkbench {
     pub report_metadata: Option<EnergyReportMetadata>,
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub sensitivity: Vec<crate::energy_sensitivity_workflow::EnergySensitivityReference>,
+    /// Accepted proposal declarations; separate from physical input identities.
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
+    pub design_proposals: Vec<crate::design_proposals::ProposalReceipt>,
 }
 impl Default for EnergyWorkbench {
     fn default() -> Self {
@@ -28,6 +31,7 @@ impl Default for EnergyWorkbench {
             calendars: BTreeMap::new(),
             report_metadata: None,
             sensitivity: vec![],
+            design_proposals: vec![],
         }
     }
 }
@@ -55,6 +59,7 @@ pub fn validate_state(project: &crate::energy::EnergyProject) -> Result<()> {
             metadata.validate()?;
         }
         crate::energy_sensitivity_workflow::validate_references(&state.sensitivity)?;
+        crate::design_proposals::validate_receipts(&state.design_proposals)?;
     }
     Ok(())
 }

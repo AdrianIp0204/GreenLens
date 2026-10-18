@@ -157,7 +157,11 @@ fn json_bytes(value: &impl Serialize) -> Result<Vec<u8>> {
 
 /// Inventory only: the caller must first complete the shared full reader.
 /// It reads known seals, not arbitrary directory contents or machine files.
-fn names(root: &Path, project: &Project, cancel: &AtomicBool) -> Result<BTreeSet<String>> {
+pub(crate) fn names(
+    root: &Path,
+    project: &Project,
+    cancel: &AtomicBool,
+) -> Result<BTreeSet<String>> {
     crate::validate_project(project)?;
     let mut prefixes = BTreeSet::new();
     for run in &project.runs {
@@ -252,6 +256,8 @@ fn names(root: &Path, project: &Project, cancel: &AtomicBool) -> Result<BTreeSet
 }
 
 fn declared_privacy(project: &Project) -> Result<()> {
+    ensure!(project.design_reports.as_ref().is_none_or(|index|index.reports.is_empty()),
+        "This historical package codec cannot bind analytical design reports. Use the complete design-project export; no new report history will be omitted");
     ensure!(
         project
             .report_issues
@@ -384,7 +390,7 @@ fn stage_pinned(
 
 /// Cancellable writer using the same path and resource admission as the shared
 /// reader. Hashes are checked while compressing, including equal-size changes.
-fn write_zip(
+pub(crate) fn write_zip(
     stage: &Path,
     members: &BTreeMap<String, PackageMember>,
     destination: &Path,
@@ -436,9 +442,10 @@ fn write_zip(
         !destination.exists(),
         "Export destination appeared while packaging; existing file was preserved"
     );
-    // Same-directory publication follows the existing portable writer. A
-    // failed/cancelled stage leaves only an unmistakable .tmp file, not a ZIP.
-    fs::rename(&temporary, destination)?;
+    // The held native no-replace operation closes the exists/rename race on
+    // Windows. Failure retains the complete .tmp bytes and any external file.
+    // This changes publication safety, not archive members or report codecs.
+    publish_extracted(&temporary, destination, cancel)?;
     Ok(())
 }
 
@@ -518,7 +525,7 @@ pub fn export(
 
 /// Shared structural rules with explicit block checkpoints. No directory,
 /// symlink, duplicate/case-alias or unsealed member is accepted.
-fn extract_checked(
+pub(crate) fn extract_checked(
     package: &Path,
     destination: &Path,
     cancel: &AtomicBool,
@@ -676,7 +683,11 @@ fn validate_extracted(
 /// Publish only after the owned staging directory has passed full verification.
 /// Windows MoveFileEx without REPLACE_EXISTING also rejects a destination that
 /// appeared after the preflight check, including an externally created empty dir.
-fn publish_extracted(stage: &Path, destination: &Path, cancel: &AtomicBool) -> Result<()> {
+pub(crate) fn publish_extracted(
+    stage: &Path,
+    destination: &Path,
+    cancel: &AtomicBool,
+) -> Result<()> {
     checkpoint(cancel)?;
     ensure!(
         !destination.try_exists()?,
@@ -831,6 +842,35 @@ pub fn replay(
 mod tests {
     use super::*;
     use std::path::PathBuf;
+    #[test]
+    fn historical_envelope_cannot_silently_omit_new_design_reports() {
+        let mut project = crate::example();
+        let binding = crate::design_report::DesignRunBinding {
+            run_id: "metadata-only".into(),
+            record_sha256: "a".repeat(64),
+            design_id: "A".into(),
+        };
+        project.design_reports = Some(crate::design_report::DesignReportIndex {
+            schema_version: crate::design_report::INDEX_SCHEMA.into(),
+            reports: vec![crate::design_report::DesignReportSummary {
+                id: "b".repeat(64),
+                path: format!("design-reports/{}", "b".repeat(64)),
+                content_sha256: "b".repeat(64),
+                manifest_file_sha256: "c".repeat(64),
+                products_sha256: "d".repeat(64),
+                baseline: binding.clone(),
+                proposed: binding,
+                sensitivity_run_ids: vec![],
+                title: "Metadata-only policy test".into(),
+                report_revision: "Draft".into(),
+                include_pdf: false,
+            }],
+        });
+        let error = declared_privacy(&project).unwrap_err().to_string();
+        assert!(error.contains("complete design-project export"));
+        // This is only a routing/admission test, not fabricated engine evidence.
+        assert!(crate::validate_project(&project).is_err());
+    }
     fn synthetic_envelope() -> IssuedProjectPackage {
         // Deliberately only archive metadata: this is never passed off as an
         // accepted engine record or complete report issue.
@@ -963,6 +1003,22 @@ mod tests {
         unknown.schema_version = "unrecognized executable recipe".into();
         unknown.content_sha256 = unknown.identity().unwrap();
         assert!(unknown.validate().is_err());
+    }
+    #[test]
+    fn zip_file_publication_preserves_external_destination_and_complete_staging() {
+        let temp = tempfile::tempdir().unwrap();
+        let stage = temp.path().join("complete.tmp");
+        let destination = temp.path().join("external.zip");
+        fs::write(&stage, b"complete staged fixture").unwrap();
+        fs::write(&destination, b"external bytes").unwrap();
+        let cancel = AtomicBool::new(false);
+        assert!(publish_extracted(&stage, &destination, &cancel).is_err());
+        assert_eq!(fs::read(&stage).unwrap(), b"complete staged fixture");
+        assert_eq!(fs::read(&destination).unwrap(), b"external bytes");
+        let fresh = temp.path().join("fresh.zip");
+        publish_extracted(&stage, &fresh, &cancel).unwrap();
+        assert_eq!(fs::read(&fresh).unwrap(), b"complete staged fixture");
+        assert!(!stage.exists());
     }
     #[test]
     fn invalid_or_cancelled_extraction_never_publishes_a_project_manifest() {

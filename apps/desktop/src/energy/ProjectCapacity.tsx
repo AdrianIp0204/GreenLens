@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { Project } from '../types';
 import { useEnergyRead } from './useEnergyRead';
 
-export type CapacityOperation = { kind: 'inspect' | 'import_reference' | 'report_issue' } | { kind: 'energy_run'; alternative: string };
+export type CapacityOperation = { kind: 'inspect' | 'import_reference' | 'report_issue' | 'design_report' } | { kind: 'energy_run'; alternative: string };
 export type CapacityReport = {
   schema_version: 'greenlens.project-capacity.v1'; project_content_sha256: string;
   retained_bytes: number; retained_entries: number; available_bytes: number; available_entries: number;
@@ -23,7 +23,7 @@ function validReport(value: CapacityReport | null): value is CapacityReport {
     && Array.isArray(value.limits) && value.limits.length <= 64 && value.limits.every(row => row && text(row.name) && count(row.used) && count(row.limit)));
 }
 const bytes = (value: number) => `${value.toLocaleString()} B (${(value / 1048576).toFixed(2)} MiB)`;
-const operationLabel = (operation: CapacityOperation) => operation.kind === 'energy_run' ? `Energy run · ${operation.alternative}` : ({ inspect: 'Retained project', import_reference: 'Reference import', report_issue: 'Report issuance' } as const)[operation.kind];
+const operationLabel = (operation: CapacityOperation) => operation.kind === 'energy_run' ? `Energy run · ${operation.alternative}` : ({ inspect: 'Retained project', import_reference: 'Reference import', report_issue: 'Report issuance',design_report:'Analytical design report' } as const)[operation.kind];
 
 /** Resource inventory only. Rust decides admission; this panel never predicts scientific output. */
 export default function ProjectCapacity({ path, project, operation }: Props) {

@@ -9,7 +9,8 @@ param(
  [Parameter(Mandatory)][string]$OutputDirectory,
  [Parameter(Mandatory)][ValidatePattern('^[A-Fa-f0-9]{40}$')][string]$ExpectedSource,
  [Parameter(Mandatory)][string]$TypstDir,
- [Parameter(Mandatory)][string]$AllowedRuntimeIdentities
+ [Parameter(Mandatory)][string]$AllowedRuntimeIdentities,
+ [ValidateSet('ArchitecturalClosure','AnalyticalDesign')][string]$ReportKind='ArchitecturalClosure'
 )
 $ErrorActionPreference='Stop'
 function Assert-FreshObserverHost {
@@ -19,6 +20,8 @@ function Assert-FreshObserverHost {
 Assert-FreshObserverHost
 $scopeHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-scope-history.ps1')).Path
 . $scopeHelper
+$designHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-design-report.ps1')).Path
+. $designHelper
 $sessionHelper=(Resolve-Path -LiteralPath (Join-Path $PSScriptRoot 'observed-job-session.ps1')).Path
 . $sessionHelper
 $cache=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'GreenLens'))
@@ -40,7 +43,7 @@ function File-Hash([string]$Path){
 if((File-Hash $exe) -ne $InstalledSha256.ToLowerInvariant()){throw 'Installed executable differs from the declared artifact.'}
 $existing=@([Diagnostics.Process]::GetProcessesByName([IO.Path]::GetFileNameWithoutExtension($exe)))
 try{if($existing.Count){throw 'An installed app instance is already running; preserve and close its document explicitly before supervision.'}}finally{foreach($p in $existing){$p.Dispose()}}
-$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared build receipt plus exact executable SHA256; source commit is not inferred from binary bytes';installed_executable_sha256=(File-Hash $exe);typst_executable_sha256=(File-Hash $typst);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);process_image_helper_sha256=(File-Hash $imageHelper);session_helper_sha256=(File-Hash $sessionHelper);runtime_declaration_sha256=(File-Hash $runtimeDeclaration)}
+$identities=[ordered]@{source_commit_declared=$ExpectedSource.ToLowerInvariant();source_binding='Declared build receipt plus exact executable SHA256; source commit is not inferred from binary bytes';installed_executable_sha256=(File-Hash $exe);typst_executable_sha256=(File-Hash $typst);supervisor_sha256=(File-Hash $PSCommandPath);native_helper_sha256=(File-Hash $native);scope_history_helper_sha256=(File-Hash $scopeHelper);design_report_helper_sha256=(File-Hash $designHelper);process_image_helper_sha256=(File-Hash $imageHelper);session_helper_sha256=(File-Hash $sessionHelper);runtime_declaration_sha256=(File-Hash $runtimeDeclaration)}
 Add-Type -LiteralPath $native
 Add-Type -LiteralPath $imageHelper
 Initialize-ObservedOutputCapture
@@ -82,12 +85,17 @@ function Snapshot-Project {
  return [ordered]@{files=$files;member_count=$files.Count;total_bytes=$bytes}
 }
 function Assert-Preserved($Before,$After){foreach($name in $Before.files.Keys){if($name -eq 'project.json'){continue};if(!$After.files.Contains($name) -or (Json-Identity $After.files[$name]) -cne (Json-Identity $Before.files[$name])){throw "Previously retained member changed or disappeared: $name"}}}
-function Issues($Manifest){if($Manifest.Contains('report_issues') -and $null -ne $Manifest.report_issues){return @($Manifest.report_issues.issues)};return @()}
-function Assert-OldIssues($Before,$After){$current=@(Issues $After);foreach($old in @(Issues $Before)){$same=@($current|Where-Object {$_.id -ceq $old.id});if($same.Count -ne 1 -or (Json-Identity $same[0]) -cne (Json-Identity $old)){throw 'A historical issue summary changed or disappeared.'}}}
+function Issues($Manifest){if($ReportKind -ceq 'AnalyticalDesign'){return @(Get-ObservedDesignReports $Manifest)};if($Manifest.Contains('report_issues') -and $null -ne $Manifest.report_issues){return @($Manifest.report_issues.issues)};return @()}
+function Assert-OldIssues($Before,$After){
+ $current=@(Issues $After);foreach($old in @(Issues $Before)){$same=@($current|Where-Object {$_.id -ceq $old.id});if($same.Count -ne 1 -or (Json-Identity $same[0]) -cne (Json-Identity $old)){throw 'A historical issue summary changed or disappeared.'}}
+ $other=if($ReportKind -ceq 'AnalyticalDesign'){'report_issues'}else{'design_reports'}
+ if((Json-Identity $Before[$other]) -cne (Json-Identity $After[$other])){throw 'The other report family changed during this separately declared observation.'}
+}
 function Assert-NoNewRuns($Before,$After){
  if((Json-Identity $Before.runs) -cne (Json-Identity $After.runs) -or (Json-Identity $Before.energy.runs) -cne (Json-Identity $After.energy.runs) -or (Json-Identity $Before.climate.runs) -cne (Json-Identity $After.climate.runs)){throw 'Run inventory changed during a no-simulation report observation.'}
 }
 function Assert-ArmSelection($Candidate,$Manifest,[string]$ExpectedProjectId){
+ if($ReportKind -ceq 'AnalyticalDesign'){return Get-ObservedDesignArmSelection $Candidate $Manifest $ExpectedProjectId}
  if($Manifest.id -cne $ExpectedProjectId -or $Candidate.project_id -cne $ExpectedProjectId){throw 'The arm marker and saved manifest must identify the declared project.'}
  if(!$Candidate.baseline_run_id -or !$Candidate.proposed_run_id -or $Candidate.baseline_run_id -ceq $Candidate.proposed_run_id -or $Candidate.scope_revision_sha256 -cnotmatch '^[a-f0-9]{64}$'){throw 'The arm marker requires distinct run IDs and an exact scope revision identity.'}
  $baseline=@($Manifest.energy.runs|Where-Object {$_.id -ceq $Candidate.baseline_run_id})
@@ -100,6 +108,7 @@ function Assert-ArmSelection($Candidate,$Manifest,[string]$ExpectedProjectId){
  return [ordered]@{baseline=[ordered]@{run_id=$baseline[0].id;record_sha256=$baseline[0].record_sha256;design_id=$baseline[0].alternative_id};proposed=[ordered]@{run_id=$proposed[0].id;record_sha256=$proposed[0].record_sha256;design_id=$proposed[0].alternative_id};scope_revision_sha256=$scope.revision.revision_sha256;scope_schema_version=$scope.revision.schema_version;scope_storage_schema=$scope.storage_schema;scope_member_path=$scope.member_path;scope_member_bytes=$scope.member_bytes;scope_member_sha256=$scope.member_sha256;scope_observation=$scope.verification_scope}
 }
 function Assert-IssueProducts($Issue){
+ if($ReportKind -ceq 'AnalyticalDesign'){return Assert-ObservedDesignProducts $projectRoot $Issue ${function:File-Hash} ${function:Read-Json} ${function:Member-Path} $armSelection $identities.typst_executable_sha256}
  if($Issue.id -cnotmatch '^[a-f0-9]{64}$' -or $Issue.path -cne ('report-issues/'+$Issue.id) -or !$Issue.include_pdf){throw 'Unexpected published issue identity/path/profile.'}
  $directory=Member-Path $projectRoot $Issue.path
  foreach($pair in @(@('issue-products.json','products_file_sha256'),@('issue-content.json','content_file_sha256'),@('issue-runtime.json','receipt_file_sha256'))){if((File-Hash (Member-Path $directory $pair[0])) -cne $Issue[$pair[1]]){throw 'Published issue metadata bytes do not bind the project summary.'}}
@@ -149,13 +158,17 @@ $manifestPath=Join-Path $projectRoot 'project.json'
 $initial=Read-Json $manifestPath 16MB;$before=Snapshot-Project
 if(!$initial.id -or !$initial.energy){throw 'A saved energy project is required.'}
 $initialIssues=@(Issues $initial)
-if($initialIssues.Count -ne 1){throw 'This declared continuation requires exactly one prior issue; do not prune or substitute another project.'}
+$expectedInitial=if($ReportKind -ceq 'AnalyticalDesign'){0}else{1};$expectedFinal=$expectedInitial+1
+if($initialIssues.Count -ne $expectedInitial){throw 'This separately typed observation has an unexpected prior report count; do not prune or substitute another project.'}
 New-Item -ItemType Directory -Path $output|Out-Null
 $before|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'before-members.json') -Encoding utf8NoBOM
 $protocol=[ordered]@{schema_version='greenlens.native-report-review-supervision.v1';declared_utc=[DateTime]::UtcNow.ToString('o');identities=$identities;project_id=$initial.id;initial_manifest_sha256=$before.files['project.json'].sha256;initial_issue_ids=@($initialIssues.id);expected_final_issue_count=2;kernel_job_commit_limit_bytes=1GB;acceptance_raw_peak_limit_bytes=2GB;active_process_limit=16;overall_deadline_seconds=3600;armed_report_deadline_seconds=600;normal_close_grace_seconds=30;sample_milliseconds=200;manifest_poll_milliseconds=1000;maximum_samples=18000;stdout_cap_bytes=1MB;stderr_cap_bytes=1MB;maximum_observed_identities=4096;receipt_cap_bytes=64MB;success_receipt_commit='Only the final receipt commits acceptance; a summary or .writing file alone does not';scope='Installed UI and one manually armed report issuance; no GUI commands, project mutations, simulation launches or automatic retry';historical_failures='The384 MiB CLR and native raw-peak tests remain failed. The instrumented native request was denied and remained reserved while raw peak increased by the attempted160 MiB. A stricter1 GiB kernel limit here is separate from the unchanged2 GiB acceptance ceiling, not a reinterpretation or converter qualification.';publication_check='Exactly one new issue appended after arming; selected pair/scope, actual products and prior member hashes checked. Neither successful rendering nor these checks establish scientific qualification.';unobserved_children='Polling can miss lifetimes entirely; kernel peak remains recorded. Every enumerated member requires a held PID/creation-bound executable identity; unknown membership fails explicitly. Missing pinned Typst observation also prevents success.'}
+$protocol.report_kind=$ReportKind;$protocol.expected_final_issue_count=$expectedFinal
+if($ReportKind -ceq 'AnalyticalDesign'){$protocol.schema_version='greenlens.native-analytical-design-report-supervision.v1';$protocol.scope='Separately declared VD1 installed analytical design report only; not RC1 or an architectural closure retry. One manually armed publication from unchanged genuine runs, zero engine execution.'}
 $protocol|ConvertTo-Json -Depth 10|Set-Content -LiteralPath (Join-Path $output 'protocol.json') -Encoding utf8NoBOM
 $protocolHash=File-Hash (Join-Path $output 'protocol.json')
 $armTemplate=[ordered]@{schema_version='greenlens.native-report-arm.v1';protocol_sha256=$protocolHash;project_id=$initial.id;baseline_run_id='REPLACE';proposed_run_id='REPLACE';scope_revision_sha256='REPLACE';expected_new_issue_count=1}
+if($ReportKind -ceq 'AnalyticalDesign'){$armTemplate=[ordered]@{schema_version='greenlens.native-analytical-design-report-arm.v1';protocol_sha256=$protocolHash;project_id=$initial.id;baseline_run_id='REPLACE';proposed_run_id='REPLACE';analytical_scope='REPLACE';north_declaration=$null;expected_new_issue_count=1}}
 $armTemplate|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'arm-render.template.json') -Encoding utf8NoBOM
 @{schema_version='greenlens.native-report-stop.v1';protocol_sha256=$protocolHash;reason='Finished native review; closing normally';report_error=$null}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'stop-observation.template.json') -Encoding utf8NoBOM
 Write-Host "Root UI owner: open the declared project manually. Write arm-render.json from the template immediately before one Issue action. After review, write stop-observation.json then close GreenLens normally. Receipt directory: $output"
@@ -181,10 +194,11 @@ try{
   $armPath=Join-Path $output 'arm-render.json'
   if(!$arm -and (Test-Path -LiteralPath $armPath)){
    $candidate=Read-Json $armPath 16KB
-   if($candidate.schema_version -cne 'greenlens.native-report-arm.v1' -or $candidate.protocol_sha256 -cne $protocolHash -or $candidate.project_id -cne $initial.id -or $candidate.scope_revision_sha256 -cnotmatch '^[a-f0-9]{64}$' -or !$candidate.baseline_run_id -or !$candidate.proposed_run_id -or $candidate.baseline_run_id -ceq $candidate.proposed_run_id -or $candidate.expected_new_issue_count -ne 1){throw 'Invalid exact-pair/scope arm marker.'}
+   $armSchema=if($ReportKind -ceq 'AnalyticalDesign'){'greenlens.native-analytical-design-report-arm.v1'}else{'greenlens.native-report-arm.v1'}
+   if($candidate.schema_version -cne $armSchema -or $candidate.protocol_sha256 -cne $protocolHash -or $candidate.project_id -cne $initial.id -or ($ReportKind -cne 'AnalyticalDesign' -and $candidate.scope_revision_sha256 -cnotmatch '^[a-f0-9]{64}$') -or !$candidate.baseline_run_id -or !$candidate.proposed_run_id -or $candidate.baseline_run_id -ceq $candidate.proposed_run_id -or $candidate.expected_new_issue_count -ne 1){throw 'Invalid separately typed exact-pair/scope arm marker.'}
    $armObservedAt=$elapsed;$armManifestHash=File-Hash $manifestPath
    $armedManifest=Read-Json $manifestPath 16MB;Assert-OldIssues $initial $armedManifest;Assert-NoNewRuns $initial $armedManifest
-   if(@(Issues $armedManifest).Count -ne 1){throw 'An issue appeared before the explicit arm boundary.'}
+   if(@(Issues $armedManifest).Count -ne $expectedInitial){throw 'An issue appeared before the explicit arm boundary.'}
    $armSelection=Assert-ArmSelection $candidate $armedManifest $initial.id
    $armedBefore=Snapshot-Project;Assert-Preserved $before $armedBefore
    if($armedBefore.files['project.json'].sha256 -cne $armManifestHash -or (File-Hash $manifestPath) -cne $armManifestHash){throw 'The saved manifest changed during arm preflight; the observation was not armed.'}
@@ -199,10 +213,10 @@ try{
    $nextManifest=$elapsed+1000;$current=Read-Json $manifestPath 16MB;$lastManifestHash=File-Hash $manifestPath
    if($current.id -cne $initial.id){throw 'Observed project identity changed.'};Assert-OldIssues $initial $current;Assert-NoNewRuns $initial $current
    $all=@(Issues $current);$new=@($all|Where-Object {$_.id -cnotin @($initialIssues.id)})
-   if($all.Count -gt 2 -or $new.Count -gt 1 -or (!$arm -and $new.Count)){throw 'Unexpected or unarmed additional issue publication.'}
+   if($all.Count -gt $expectedFinal -or $new.Count -gt 1 -or (!$arm -and $new.Count)){throw 'Unexpected or unarmed additional issue publication.'}
    if($published -and ($new.Count -ne 1 -or (Json-Identity $new[0]) -cne (Json-Identity $publishedSummary))){throw 'The newly published issue summary changed during review.'}
    if($new.Count -eq 1 -and !$published){
-    if($all.Count -ne 2 -or $new[0].scope_revision_sha256 -cne $arm.scope_revision_sha256 -or (Json-Identity $new[0].baseline) -cne (Json-Identity $armSelection.baseline) -or (Json-Identity $new[0].proposed) -cne (Json-Identity $armSelection.proposed)){throw 'Published issue does not bind the explicitly armed scope/pair and retained record identities.'}
+    if($all.Count -ne $expectedFinal -or ($ReportKind -cne 'AnalyticalDesign' -and $new[0].scope_revision_sha256 -cne $arm.scope_revision_sha256) -or (Json-Identity $new[0].baseline) -cne (Json-Identity $armSelection.baseline) -or (Json-Identity $new[0].proposed) -cne (Json-Identity $armSelection.proposed)){throw 'Published issue does not bind the explicitly armed scope/pair and retained record identities.'}
     $published=Assert-IssueProducts $new[0];$publishedSummary=$new[0];$after=Snapshot-Project;Assert-Preserved $before $after;Assert-Preserved $armedBefore $after;$publishedMembers=$after
     $after|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'published-members.json') -Encoding utf8NoBOM
     $record.publication=$published;$record.publication_elapsed_ms=$timer.ElapsedMilliseconds-$armedAt;$record.published_utc=[DateTime]::UtcNow.ToString('o');$record.stage='published-native-review'
@@ -218,13 +232,13 @@ try{
  if($record.energyplus_observed){throw 'A forbidden simulation-related process was observed; the report observation cannot pass.'}
  if(!$arm -or !$published -or !$typstCount){throw 'Observation lacks an armed publication or an observed pinned Typst process.'}
  $final=Read-Json $manifestPath 16MB;Assert-OldIssues $initial $final;Assert-NoNewRuns $initial $final
- if(@(Issues $final).Count -ne 2){throw 'Final issue inventory differs from the declared two-issue result.'}
+ if(@(Issues $final).Count -ne $expectedFinal){throw 'Final issue inventory differs from the separately declared result.'}
  $finalIssue=@((Issues $final)|Where-Object {$_.id -ceq $published.id})
  if($finalIssue.Count -ne 1 -or (Json-Identity $finalIssue[0]) -cne (Json-Identity $publishedSummary)){throw 'Final report issue differs from the observed publication.'}
  $finalMembers=Snapshot-Project;Assert-Preserved $before $finalMembers;Assert-Preserved $armedBefore $finalMembers;Assert-Preserved $publishedMembers $finalMembers
  $lastManifestHash=$finalMembers.files['project.json'].sha256
  $finalMembers|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'final-members.json') -Encoding utf8NoBOM
- if((File-Hash $exe) -cne $identities.installed_executable_sha256 -or (File-Hash $typst) -cne $identities.typst_executable_sha256 -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $imageHelper) -cne $identities.process_image_helper_sha256 -or (File-Hash $sessionHelper) -cne $identities.session_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $runtimeDeclaration) -cne $identities.runtime_declaration_sha256){throw 'Declared tooling changed during observation.'}
+ if((File-Hash $exe) -cne $identities.installed_executable_sha256 -or (File-Hash $typst) -cne $identities.typst_executable_sha256 -or (File-Hash $native) -cne $identities.native_helper_sha256 -or (File-Hash $scopeHelper) -cne $identities.scope_history_helper_sha256 -or (File-Hash $designHelper) -cne $identities.design_report_helper_sha256 -or (File-Hash $imageHelper) -cne $identities.process_image_helper_sha256 -or (File-Hash $sessionHelper) -cne $identities.session_helper_sha256 -or (File-Hash $PSCommandPath) -cne $identities.supervisor_sha256 -or (File-Hash $runtimeDeclaration) -cne $identities.runtime_declaration_sha256){throw 'Declared tooling changed during observation.'}
  foreach($runtime in $allowedRuntime){if((File-Hash $runtime.image_path) -cne $runtime.sha256){throw 'A declared runtime executable changed during observation.'}}
  Assert-ObservedElapsed $session $timer.ElapsedMilliseconds 3600000 'final completion'
  $record.completed=$true

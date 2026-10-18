@@ -35,6 +35,9 @@ jobs:
       - name: Cold regeneration collector regressions without rendering
         run: |
           ./scripts/test-regenerate-v08-review.ps1 | Tee-Object (Join-Path $env:OBSERVER_EVIDENCE 'regeneration-checks.json')
+      - name: Analytical report collector binding regressions without rendering
+        run: |
+          ./scripts/test-observed-design-report.ps1 -OutputDirectory (Join-Path $env:OBSERVER_EVIDENCE 'analytical-report')
       - name: Exact offline documentation limits and links
         run: |
           ./scripts/test-package-documents.ps1 | Tee-Object (Join-Path $env:OBSERVER_EVIDENCE 'package-documents.txt')

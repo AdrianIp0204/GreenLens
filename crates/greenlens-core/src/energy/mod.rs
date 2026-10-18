@@ -2,6 +2,8 @@
 //! execution or scientific qualification is implied by accepting these inputs.
 pub mod accounting;
 pub mod comparison;
+pub mod design_alternatives;
+pub mod design_figures;
 pub mod diagnostics;
 pub mod example;
 pub mod investigation;
@@ -17,6 +19,8 @@ pub mod workbench;
 
 pub use accounting::*;
 pub use comparison::*;
+pub use design_alternatives::*;
+pub use design_figures::*;
 pub use diagnostics::*;
 pub use example::*;
 pub use investigation::*;

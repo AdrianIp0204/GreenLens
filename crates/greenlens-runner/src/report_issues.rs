@@ -863,7 +863,7 @@ pub fn verify_project(root: &Path, project: &Project, cancel: &AtomicBool) -> Re
     Ok(())
 }
 
-fn validate_case_record(
+pub(crate) fn validate_case_record(
     case: &greenlens_core::energy::EnergyReportCase,
     run: &crate::energy::EnergyRunRecord,
 ) -> Result<()> {
@@ -889,7 +889,7 @@ fn validate_weather_source(
     Ok(())
 }
 
-fn validate_case_location(
+pub(crate) fn validate_case_location(
     root: &Path,
     case: &greenlens_core::energy::EnergyReportCase,
     locations: &mut BTreeMap<String, greenlens_core::weather::WeatherLocation>,
@@ -920,7 +920,7 @@ fn validate_case_location(
     Ok(())
 }
 
-fn validate_sensitivity_record(
+pub(crate) fn validate_sensitivity_record(
     expected: &greenlens_core::energy::EnergySensitivityRun,
     run: &crate::energy::EnergyRunRecord,
 ) -> Result<()> {

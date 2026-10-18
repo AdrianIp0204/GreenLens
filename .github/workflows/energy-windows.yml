@@ -1,7 +1,7 @@
 name: Bounded energy Windows verification
 on:
   push:
-    branches: [main, codex/v0.4-energy-reporting, codex/v0.5-thermal-workbench, codex/v0.6-architectural-intake, codex/v0.7-study-revisions, codex/v0.8-reliable-intake]
+    branches: [main, codex/v0.4-energy-reporting, codex/v0.5-thermal-workbench, codex/v0.6-architectural-intake, codex/v0.7-study-revisions, codex/v0.8-reliable-intake, codex/v0.8-report-design]
   pull_request:
   workflow_dispatch:
 permissions:
@@ -91,6 +91,7 @@ jobs:
           ./scripts/test-v08-report-collector.ps1
           ./scripts/test-regenerate-v08-review.ps1
           ./scripts/test-supervise-v08-report-review.ps1
+          ./scripts/test-observed-design-report.ps1 -OutputDirectory (Join-Path $env:ENERGY_BUILD_EVIDENCE 'analytical-report-observer')
           ./scripts/test-observed-scope-history.ps1 -OutputDirectory (Join-Path $env:ENERGY_BUILD_EVIDENCE 'scope-history-observer')
           ./scripts/test-installer-auth.ps1
           node --test scripts/test-license-supplement-binding.mjs

@@ -3,6 +3,24 @@ use super::*;
 use greenlens_core::energy::*;
 use greenlens_runner::{energy_report::TypstConfig, energy_services as service};
 use serde::Deserialize;
+#[tauri::command]
+pub(crate) async fn energy_proposal_preview(
+    project: Project,
+    draft: greenlens_runner::design_proposals::ProposalDraft,
+) -> CommandResult<greenlens_runner::design_proposals::ProposalReview> {
+    blocking(move || greenlens_runner::design_proposals::preview(&project, &draft)).await
+}
+#[tauri::command]
+pub(crate) async fn energy_proposal_commit(
+    project: Project,
+    draft: greenlens_runner::design_proposals::ProposalDraft,
+    expected_context_sha256: String,
+) -> CommandResult<Project> {
+    blocking(move || {
+        greenlens_runner::design_proposals::commit(&project, &draft, &expected_context_sha256)
+    })
+    .await
+}
 use std::sync::{
     atomic::{AtomicBool, Ordering},
     Arc, Condvar, Mutex,

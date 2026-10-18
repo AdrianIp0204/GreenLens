@@ -5,6 +5,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import {createHash} from 'node:crypto';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {JSDOM} from 'jsdom';
 import {transformWithOxc} from 'vite';
@@ -48,11 +49,23 @@ const daylight=JSON.parse(fs.readFileSync(new URL('./viewport-fixture.json',impo
 let doc,root,calls,rejectEdit=false,closeHandler,disk,fullWorkspace=false,appendEvidenceOnSave=false,metadataGate=null,sceneObjects=false,preflightIssues=[],referenceImportGate=null,referenceScopeGate=null,reportRuns=false,reportGate=null,reportError=null,saveDestination='test-project';
 let issueEvidence=new Map(),issueGate=null,issueInspectGate=null,issueProductGate=null,issueError=null,issuePending=false,pendingFixture=null;
 let referenceManifestGate=null,referenceRevision='2'.repeat(64),revisionOccurrenceId='synthetic-occurrence',withRevisions=false,revisionPrepareGate=null,revisionAcceptGate=null,revisionPlanMode='cop',revisionReadinessCase=false,historySchema='greenlens.scope-history.v1';
+let proposalContextVersion=0,proposalCommitError=null;
 dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};
 // Real ThermalView follows its WebGL-unavailable branch; no viewport acceptance claim.
 dom.window.HTMLCanvasElement.prototype.getContext=()=>{throw Error('No WebGL context in DOM test');};
 function fixture(){return {...(withRevisions?{architecture:revisionArchitecture()}:{}),schema_version:'0.4.0',id:'draft-fixture',name:'Draft fixture',alternatives:['A','B'].map(id=>({id,model:structuredClone(daylight.model)})),runs:[],energy:{designs:Object.fromEntries(['A','B'].map(id=>[id,{model:structuredClone(inputs.cases[id].model),study:structuredClone(inputs.cases[id].study)}])),weather:[],runs:reportRuns?[{id:'report-a',alternative_id:'A',record_sha256:'a'.repeat(64)},{id:'report-b',alternative_id:'B',record_sha256:'b'.repeat(64)},{id:'historical-a',alternative_id:'A',record_sha256:'c'.repeat(64)},{id:'historical-b',alternative_id:'B',record_sha256:'d'.repeat(64)}]:[],carbon_factor:null,lighting_service_evidence:null}};}
 function view(p){return{project:structuredClone(p),revision:'test-revision',results:[],climate_results:[],energy_results:[]};}
+// Original IPC fixtures exercise the actual proposal form/document/history
+// composition. This is not a substitute for Rust validation or engine evidence.
+const proposalContext=project=>createHash('sha256').update(JSON.stringify([project.energy,proposalContextVersion])).digest('hex');
+function proposalReply(project,draft){
+  assert.equal(draft.action.kind,'set_overhang','This bounded interaction fixture supports only its declared shading operation');
+  const candidate=structuredClone(project.energy.designs.B.model),action=draft.action;
+  const window=candidate.zones.find(z=>z.id===action.zone_id).windows.find(w=>w.id===action.window_id);
+  window.overhang=structuredClone(action.overhang);
+  const valid=action.overhang===null||action.overhang.projection_m<=1.5;
+  return{schema_version:'greenlens.energy-proposal-review.v1',target:'B',context_sha256:proposalContext(project),proposal:{candidate,valid,problems:valid?[]:['Synthetic fixture rejects projection above 1.5 m; accepted inputs unchanged.'],affected_object_ids:[action.window_id,`overhang:${action.window_id}`],tradeoffs:['A declared shading hypothesis can improve or worsen measured outcomes.'],base_model_sha256:'a'.repeat(64),candidate_model_sha256:valid?'b'.repeat(64):null,preview_sha256:'c'.repeat(64)}};
+}
 const referenceHash=value=>value.repeat(64);
 const referenceAsset={id:'synthetic-reference',path:'references/synthetic/manifest.json',revision_sha256:referenceHash('2'),manifest_sha256:referenceHash('4'),geometry_sha256:referenceHash('3')};
 function referenceManifest(){return{schema_version:'greenlens.reference-model.v1',importer_id:'greenlens.glb-static-triangles/1',source_sha256:referenceHash('1'),revision_sha256:referenceHash('2'),geometry_sha256:referenceHash('3'),options:{scene_index:null,metres_per_source_unit:1,clockwise_rotation_deg:0,translation_m:[0,0,0],declared_north_clockwise_deg:null,conversion:null},source_units:'metres',coordinate_convention:'Right-handed X/Y/Z-up',selected_scene:0,source_node_count:1,source_mesh_count:1,source_material_count:0,source_texture_count:0,occurrences:[{id:revisionOccurrenceId,node_index:0,parent_id:null,label:'Original fixture',node_path:[0],source_mesh_index:0,world_from_mesh:[1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],mirrored:false,bounds:{min_m:[0,0,0],max_m:[1,1,0]},triangle_count:1,triangle_area_m2:.5}],materials:[],chunks:[{path:'geometry/00000.bin',sha256:referenceHash('5'),byte_length:88,triangle_count:1}],bounds:{min_m:[0,0,0],max_m:[1,1,0]},triangle_count:1,triangle_area_m2:.5,warnings:[],exclusions:[],storage_policy:'Original synthetic IPC fixture only',resources:{elapsed_ms:1,source_bytes:100,normalized_bytes:88,json_bytes:100,decoded_allocation_estimate_bytes:200}};}
@@ -123,6 +136,7 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
   if(root)await act(()=>root.unmount());if(!retainCache)window.localStorage.clear();
   calls=[];rejectEdit=false;appendEvidenceOnSave=false;metadataGate=null;reportRuns=reports;reportGate=null;reportError=null;saveDestination='test-project';disk=fixture();sceneObjects=objects;preflightIssues=[];referenceImportGate=null;referenceScopeGate=null;
   referenceManifestGate=null;referenceRevision=referenceHash('2');
+  proposalContextVersion=0;proposalCommitError=null;
   globalThis.__draftWindow={onCloseRequested:async cb=>{closeHandler=cb;return()=>{};},destroy:async()=>calls.push(['destroy'])};
   globalThis.__draftIPC=async(command,args)=>{
     calls.push([command,args]);
@@ -155,6 +169,13 @@ async function setup({retainCache=false,workspace=false,objects=false,reports=fa
     if(command==='energy_scene')return{schema_version:'greenlens.thermal-scene.v1',model_sha256:'synthetic',coordinates:'world ENU',objects:sceneObjects?args.model.zones.flatMap(z=>[{id:z.id,label:z.name,kind:'zone',zone_id:z.id,storey:z.storey,polygons_m:[]},...z.surfaces.map(s=>({id:s.id,label:s.id,kind:'surface',zone_id:z.id,storey:z.storey,polygons_m:[]})),...z.windows.flatMap(w=>[{id:w.id,label:w.id,kind:'window',zone_id:z.id,storey:z.storey,polygons_m:[]},...(w.overhang?[{id:`overhang:${w.id}`,label:`Overhang ${w.id}`,kind:'overhang',zone_id:z.id,storey:z.storey,polygons_m:[]}]:[])])]):[]};
     if(command==='energy_preflight')return{schema_version:'greenlens.thermal-preflight.v1',can_prepare:false,coverage:'Synthetic issue-routing fixture; no native validation claim.',issues:preflightIssues};
     if(command==='energy_dependencies')return{schema_version:'greenlens.energy-dependencies.v1',energyplus_ready:true,typst_and_fonts_ready:true,issues:[]};
+    if(command==='energy_proposal_preview')return proposalReply(args.project,args.draft);
+    if(command==='energy_proposal_commit'){
+      if(proposalCommitError)throw Error(proposalCommitError);
+      if(args.expectedContextSha256!==proposalContext(args.project))throw Error('Synthetic stale proposal context: refresh the exact current preview.');
+      const reviewed=proposalReply(args.project,args.draft);if(!reviewed.proposal.valid)throw Error(reviewed.proposal.problems.join(' '));
+      const next=structuredClone(args.project);next.energy.designs.B.model=reviewed.proposal.candidate;return next;
+    }
     if(command==='energy_metadata'){if(metadataGate)await metadataGate;if(rejectEdit)throw Error('Synthetic report settings rejection');const next=structuredClone(args.project);if(args.change.kind==='report_issue'){const m=args.change.metadata;if(m&&(!m.title||!m.revision||m.issue_date&&!/^\d{4}-\d{2}-\d{2}$/.test(m.issue_date)))throw Error('Synthetic explicit report issue validation rejection');next.energy.workbench={...(next.energy.workbench??{locks:{},calendars:{}}),report_metadata:m};}else Object.assign(next.energy,{carbon_factor:args.change.carbon_factor,lighting_service_evidence:args.change.lighting_service_evidence});return next;}
     if(command==='energy_new'){
       if(rejectEdit)throw Error('Synthetic new-project validation rejection');
@@ -295,6 +316,42 @@ test('grouped A/B geometry has one undo entry; failed restore preserves both sta
   appendEvidenceOnSave=true;await click('Save');rejectEdit=true;await click('Undo');assert.equal(doc.history.past.length,1);assert.equal(doc.history.future.length,0);assert.equal(doc.project.energy.designs.B.model.name,'Grouped B');
   rejectEdit=false;await click('Undo');assert.deepEqual(doc.project.energy.designs,original);assert.equal(doc.history.past.length,0);assert.equal(doc.history.future.length,1);assert.deepEqual(doc.project.energy.runs,[{id:'completed-after-edit'}]);assert.deepEqual(doc.project.energy.weather,[{id:'weather-after-edit'}]);
   await act(async()=>{await doc.traverse('redo');});assert.equal(doc.project.energy.designs.A.model.name,'Grouped A');assert.equal(doc.project.energy.designs.B.model.name,'Grouped B');assert.deepEqual(doc.project.energy.runs,[{id:'completed-after-edit'}]);
+});
+
+test('actual workspace proposal Save guard applies exactly one B-only history transaction and undo/redo restores its parameters',async()=>{
+  await setup({workspace:true});const before=structuredClone(doc.project),zone=before.energy.designs.B.model.zones[0],windowId=zone.windows[0].id;
+  await click('Propose a design change…');assert.equal(doc.energyAuthoringOpen,true);assert.match(document.querySelector('dialog').textContent,/Proposed B/);
+  await type(input('Projection (m)'),'1.1');await type(input('Source / assumption'),'Original synthetic shade dimensions');await type(input('Rationale and applicability'),'Test this explicit overhang without changing service or claiming savings.');
+  await click('Preview in Rust');assert.equal(count('energy_proposal_preview'),1);assert.match(document.querySelector('[aria-label="Proposal preview"]').textContent,/Valid candidate/);assert.deepEqual(doc.project,before);assert.equal(doc.history.past.length,0);
+  await click('Save');const resolution=document.querySelector('[aria-label="Resolve proposed alternative"]');assert.ok(resolution);assert.equal(count('save_project_as'),0);
+  await click('Cancel',resolution);assert.equal(document.querySelector('[aria-label="Resolve proposed alternative"]'),null);assert.equal(input('Projection (m)').value,'1.1');assert.equal(count('energy_proposal_commit'),0);
+  await click('Save');await click('Apply',document.querySelector('[aria-label="Resolve proposed alternative"]'));
+  assert.equal(document.querySelector('dialog'),null);assert.equal(doc.energyAuthoringOpen,false);assert.equal(count('energy_proposal_commit'),1);assert.equal(count('save_project_as'),1);
+  assert.equal(doc.history.past.length,1);assert.equal(doc.history.future.length,0);assert.equal(doc.history.past[0].kind,'energy_group');assert.deepEqual(Object.keys(doc.history.past[0].before),['B']);assert.deepEqual(Object.keys(doc.history.past[0].after),['B']);
+  const accepted=structuredClone(doc.project),changed=accepted.energy.designs.B.model.zones.find(z=>z.id===zone.id).windows.find(w=>w.id===windowId);
+  assert.equal(changed.overhang.projection_m,1.1);assert.deepEqual(accepted.energy.designs.A,before.energy.designs.A);assert.deepEqual(accepted.energy.designs.B.study,before.energy.designs.B.study);assert.deepEqual(accepted.alternatives,before.alternatives);assert.deepEqual(disk.energy.designs,accepted.energy.designs);
+  assert.deepEqual(doc.energyDrafts.pending,[]);assert.equal(count('energy_start'),0);
+  await click('Undo');assert.deepEqual(doc.project.energy.designs,before.energy.designs);assert.equal(doc.history.past.length,0);assert.equal(doc.history.future.length,1);
+  await act(async()=>doc.traverse('redo'));assert.deepEqual(doc.project.energy.designs,accepted.energy.designs);assert.equal(doc.history.past.length,1);assert.equal(doc.history.future.length,0);assert.equal(count('energy_proposal_commit'),1,'redo uses the retained accepted transaction, not a new proposal');assert.equal(count('energy_restore_designs'),2);
+});
+
+test('actual proposal invalid preview, rejected Apply and stale context preserve exact draft and both document history stacks',async()=>{
+  await setup({workspace:true});await editName('An earlier accepted edit');await click('Validate and apply');await click('Undo');
+  const before=structuredClone(doc.project),past=structuredClone(doc.history.past),future=structuredClone(doc.history.future);
+  assert.equal(future.length,1);await click('Propose a design change…');await type(input('Source / assumption'),'Original independent UI fixture');await type(input('Rationale and applicability'),'Keep this exact declaration when validation or stale context rejects the proposal.');await type(input('Projection (m)'),'2');
+  await click('Preview in Rust');assert.equal(button('Apply to B').disabled,true);assert.match(document.querySelector('[aria-label="Proposal preview"]').textContent,/Invalid candidate/);assert.equal(count('energy_proposal_commit'),0);
+  await click('Save');assert.equal(button('Apply',document.querySelector('[aria-label="Resolve proposed alternative"]')).disabled,true);await click('Cancel',document.querySelector('[aria-label="Resolve proposed alternative"]'));assert.equal(input('Projection (m)').value,'2');assert.deepEqual(doc.project,before);assert.deepEqual(doc.history.past,past);assert.deepEqual(doc.history.future,future);
+  await type(input('Projection (m)'),'0.9');await click('Preview in Rust');proposalCommitError='Synthetic affected-object lock rejection';await click('Apply to B');assert.equal(count('energy_proposal_commit'),1);assert.match(doc.error,/affected-object lock rejection/);assert.equal(input('Projection (m)').value,'0.9');assert.deepEqual(doc.project,before);assert.deepEqual(doc.history.past,past);assert.deepEqual(doc.history.future,future);
+  proposalCommitError=null;proposalContextVersion++;await click('Apply to B');assert.equal(count('energy_proposal_commit'),2);assert.match(doc.error,/stale proposal context/);assert.equal(input('Source / assumption').value,'Original independent UI fixture');assert.match(input('Rationale and applicability').value,/exact declaration/);assert.deepEqual(doc.project,before);assert.deepEqual(doc.history.past,past);assert.deepEqual(doc.history.future,future);
+  await click('Discard / close…');await click('Cancel',document.querySelector('[aria-label="Resolve proposed alternative"]'));assert.equal(input('Projection (m)').value,'0.9');await click('Discard / close…');await click('Discard',document.querySelector('[aria-label="Resolve proposed alternative"]'));assert.equal(document.querySelector('dialog'),null);assert.deepEqual(doc.project,before);assert.deepEqual(doc.history.past,past);assert.deepEqual(doc.history.future,future);assert.equal(count('save_project_as'),0);assert.equal(count('energy_start'),0);
+});
+
+test('opening the actual proposal resolves inspector drafts before creating a candidate and rejected edits never bypass the guard',async()=>{
+  await setup({workspace:true});await click('Proposed B');const accepted=structuredClone(doc.project);await editName('Unapplied proposed-zone label');
+  await click('Propose a design change…');assert.ok(dialog());assert.equal(doc.energyAuthoringOpen,false);assert.equal(count('energy_proposal_preview'),0);await click('Cancel',dialog());assert.equal(input('Name').value,'Unapplied proposed-zone label');assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);
+  await click('Propose a design change…');rejectEdit=true;await click('Apply',dialog());assert.match(dialog().textContent,/atomic restore rejection/);assert.equal(doc.energyAuthoringOpen,false);assert.equal(input('Name').value,'Unapplied proposed-zone label');assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);
+  rejectEdit=false;await click('Discard',dialog());assert.equal(doc.energyAuthoringOpen,true);assert.deepEqual(doc.energyDrafts.pending,[]);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);assert.equal(count('energy_proposal_preview'),0);
+  await click('Discard / close…');await click('Discard',document.querySelector('[aria-label="Resolve proposed alternative"]'));assert.equal(doc.energyAuthoringOpen,false);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);
 });
 
 test('an active geometry modal blocks document mutation and verification while allowing cheap Open admission',async()=>{

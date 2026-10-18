@@ -200,13 +200,16 @@ struct ProjectRef<'a> {
     architecture: ArchitectureRef<'a>,
     #[serde(skip_serializing_if = "Option::is_none")]
     report_issues: &'a Option<crate::report_issues::ReportIssueIndex>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    design_reports: &'a Option<crate::design_report::DesignReportIndex>,
 }
 
 pub fn manifest_bytes(project: &Project) -> Result<Vec<u8>> {
-    let cap = if project
-        .architecture
-        .as_ref()
-        .is_some_and(|a| a.scope_history.is_some())
+    let cap = if project.design_reports.is_some()
+        || project
+            .architecture
+            .as_ref()
+            .is_some_and(|a| a.scope_history.is_some())
     {
         crate::study_revisions::MAX_REVISION_PROJECT_BYTES
     } else {
@@ -250,6 +253,7 @@ fn external_manifest_bytes(project: &Project, history_entries: &[HistoryEntry]) 
             },
         },
         report_issues: &project.report_issues,
+        design_reports: &project.design_reports,
     };
     bounded_pretty(&value, crate::study_revisions::MAX_REVISION_PROJECT_BYTES)
         .context("Project manifest exceeds the unchanged 16 MiB capacity")
@@ -353,6 +357,8 @@ struct DiskProject {
     architecture: Option<DiskArchitecture>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     report_issues: Option<crate::report_issues::ReportIssueIndex>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    design_reports: Option<crate::design_report::DesignReportIndex>,
 }
 
 fn decode_disk(bytes: &[u8], cancel: &AtomicBool) -> Result<DiskProject> {
@@ -434,6 +440,7 @@ impl DiskProject {
             energy: self.energy,
             architecture,
             report_issues: self.report_issues,
+            design_reports: self.design_reports,
         })
     }
 }

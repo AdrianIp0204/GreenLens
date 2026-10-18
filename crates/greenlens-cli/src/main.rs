@@ -1,3 +1,5 @@
+mod design;
+mod design_report;
 mod energy;
 mod report_issue;
 use anyhow::{ensure, Context, Result};
@@ -18,10 +20,20 @@ struct Cli {
 }
 #[derive(Subcommand)]
 enum Command {
+    /// Immutable paired analytical drawings and genuine energy outcomes.
+    DesignReport {
+        #[command(subcommand)]
+        command: design_report::DesignReportCommand,
+    },
+    /// Explicit B-only design hypotheses, validated edits and matched drawings.
+    Design {
+        #[command(subcommand)]
+        command: design::DesignCommand,
+    },
     /// Actual retained capacity and operation lower bounds; does not verify scientific evidence.
     Capacity {
         project: PathBuf,
-        #[arg(long, value_parser = ["inspect", "import-reference", "report-issue", "energy-run"], default_value = "inspect")]
+        #[arg(long, value_parser = ["inspect", "import-reference", "report-issue", "design-report", "energy-run"], default_value = "inspect")]
         operation: String,
         #[arg(long, default_value = "A")]
         alternative: String,
@@ -297,6 +309,7 @@ fn execute() -> Result<()> {
             let operation = match operation.as_str() {
                 "import-reference" => Operation::ImportReference,
                 "report-issue" => Operation::ReportIssue,
+                "design-report" => Operation::DesignReport,
                 "energy-run" => Operation::EnergyRun { alternative },
                 _ => Operation::Inspect,
             };
@@ -311,6 +324,8 @@ fn execute() -> Result<()> {
             );
         }
         Command::ReportIssue { command } => report_issue::execute(command)?,
+        Command::Design { command } => design::execute(command)?,
+        Command::DesignReport { command } => design_report::execute(command)?,
         Command::Open {
             project,
             admission_only,

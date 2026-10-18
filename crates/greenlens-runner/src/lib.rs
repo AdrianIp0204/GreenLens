@@ -5,6 +5,10 @@ pub mod climate;
 mod climate_document_tests;
 pub mod climate_export;
 mod climate_job;
+pub mod design_proposals;
+pub mod design_report;
+pub mod design_report_export;
+pub mod design_report_service;
 pub mod display;
 #[cfg(test)]
 mod document_tests;
@@ -91,6 +95,8 @@ pub struct Project {
     pub architecture: Option<reference::ArchitecturalProject>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub report_issues: Option<report_issues::ReportIssueIndex>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub design_reports: Option<design_report::DesignReportIndex>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -163,11 +169,13 @@ pub fn example() -> Project {
         energy: None,
         architecture: None,
         report_issues: None,
+        design_reports: None,
     }
 }
 pub fn validate_project(project: &Project) -> Result<()> {
     study_revisions::validate_project_capacity(project)?;
     report_issues::validate_index(project)?;
+    design_report::validate_index(project)?;
     ensure!(
         (project.schema_version == SCHEMA_VERSION
             && project.climate.is_none()
@@ -420,6 +428,7 @@ pub fn save_project(path: &Path, project: &Project, expected: Option<&str>) -> R
         reference::verify_project(path, extension, &AtomicBool::new(false))?;
     }
     report_issues::verify_project(path, project, &AtomicBool::new(false))?;
+    design_report::verify_project(path, project, &AtomicBool::new(false))?;
     check_revision(path, expected)?;
     atomic_project(path, project)?;
     open_project(path)
@@ -451,6 +460,7 @@ fn copy_project(
         );
         study_revisions::validate_preserved(&saved, project)?;
         report_issues::validate_preserved(&saved, project)?;
+        design_report::validate_preserved(&saved, project)?;
         if destination.exists() {
             ensure!(
                 source.canonicalize()? != destination.canonicalize()?,
@@ -461,6 +471,7 @@ fn copy_project(
         ensure!(
             project.architecture.is_none()
                 && project.report_issues.is_none()
+                && project.design_reports.is_none()
                 && project.runs.is_empty()
                 && project
                     .climate
@@ -501,6 +512,7 @@ fn copy_project(
             reference::copy_evidence(source, destination, extension)?;
         }
         report_issues::copy_evidence(source, destination, project, &AtomicBool::new(false))?;
+        design_report::copy_evidence(source, destination, project, &AtomicBool::new(false))?;
     }
     let mut project = project.clone();
     if let Some((scratch, run)) = pending {
@@ -1144,7 +1156,7 @@ pub fn export_project(path: &Path, destination: &Path) -> Result<()> {
     validate_project(&project)?;
     ensure!(project.energy.is_none(), "Choose an explicit energy baseline/proposed pair with energy export, or daylight run IDs with export --run");
     ensure!(project.climate.is_none(), "Choose explicit run IDs when exporting a climate project; use export --run <id> for each selected snapshot");
-    ensure!(project.architecture.is_none() && project.report_issues.is_none(),
+    ensure!(project.architecture.is_none() && project.report_issues.is_none() && project.design_reports.is_none(),
         "Use complete issued-project export for architectural history; daylight export cannot omit its required assets");
     let mut source_budget = PackageBudget::default();
     source_budget.add(

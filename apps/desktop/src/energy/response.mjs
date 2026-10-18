@@ -1,6 +1,8 @@
 import {assertIssueInspection} from './report-issue-response.mjs';
+import {assertDesignReportInspection} from './design-report-response.mjs';
 // Identity/IPC shape guards only. Rust computes and validates scientific values.
 export function assertEnergyResponse(command,request,value){
+  if(command==='design_report_inspect')return assertDesignReportInspection(request,value);
   if(command==='report_issue_inspect')return assertIssueInspection(request,value);
   if(command==='report_issue_product'){
     if(!['open','save_copy','reveal','preview','preview_pdf'].includes(request.action))throw Error('Unsupported product action.');

@@ -245,7 +245,7 @@ impl IssueContent {
     }
 }
 
-fn validate_sensitivity(
+pub(crate) fn validate_sensitivity(
     e: &SensitivityReportEvidence,
     data: &EnergyReportWorkbenchData,
 ) -> Result<()> {

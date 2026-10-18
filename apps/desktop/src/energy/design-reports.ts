@@ -1,0 +1,6 @@
+import type {ProjectView} from '../types';
+export interface DesignReportSummary {id:string;path:string;content_sha256:string;manifest_file_sha256:string;products_sha256:string;baseline:{run_id:string;record_sha256:string;design_id:string};proposed:{run_id:string;record_sha256:string;design_id:string};sensitivity_run_ids:string[];title:string;report_revision:string;include_pdf:boolean}
+export interface DesignReportIndex {schema_version:string;reports:DesignReportSummary[]}
+export interface DesignReportInspection {content:{schema_version:string;content_sha256:string;analytical_scope:string;north_declaration:string|null;sensitivity:unknown|null;workbench:{base:{baseline:import('./types').EnergyReportCase;proposed:import('./types').EnergyReportCase};metadata:{title:string;revision:string}}};products:{products_sha256:string;products:{path:string;sha256:string;bytes:number}[]};manifest_file_sha256:string;total_bytes:number}
+export type DesignReportAction={kind:'create';a:string;b:string;scope:string;north:string|null;html_only:boolean}|{kind:'regenerate';id:string}|{kind:'recover';token:string}|{kind:'export'};
+export interface DesignReportReply {status?:'issued'|'pending';view?:ProjectView;report?:DesignReportInspection;recovery_token?:string;message?:string;destination?:string}

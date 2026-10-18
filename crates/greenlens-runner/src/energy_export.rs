@@ -83,6 +83,7 @@ fn export_pair_impl(
     );
     let _lock = WriterLock::acquire(root)?;
     let view = crate::open_project(root)?;
+    ensure!(view.project.design_reports.is_none(), "Use complete design-report project export; a selected energy export cannot omit accepted reports.");
     ensure!(view.project.report_issues.as_ref().is_none_or(|index| index.issues.is_empty()),
         "This project retains immutable report issues. Use complete issued-project export to retain all issue dependencies; selected-pair export would remove required history");
     let supplement = if workbench {

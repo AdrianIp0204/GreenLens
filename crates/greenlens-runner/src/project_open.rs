@@ -641,6 +641,13 @@ fn verify_snapshot(
             .find(|run| run.id == id)
             .context("Issued report references a run outside the verified snapshot")
     })?;
+    control.stage("design_report_evidence", None)?;
+    crate::design_report::verify_project_with_provider(path, &project, &control.cancel, |id| {
+        energy_results
+            .iter()
+            .find(|run| run.id == id)
+            .context("Design report references a run outside the verified snapshot")
+    })?;
     let energy_assessments = crate::energy_services::assessments(&project, &energy_results)?;
     let climate_assessments =
         crate::qualification::assessments_for_verified_view(&project, &climate_results)?;

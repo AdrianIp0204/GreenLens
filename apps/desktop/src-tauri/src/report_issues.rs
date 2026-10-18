@@ -251,6 +251,7 @@ pub(crate) async fn report_issue_product(
     id: String,
     product: String,
     action: ProductAction,
+    design_report: Option<bool>,
     ticket: u64,
     on_progress: tauri::ipc::Channel<greenlens_runner::project_open::OpenProgress>,
 ) -> CommandResult<Value> {
@@ -258,7 +259,9 @@ pub(crate) async fn report_issue_product(
         .state::<crate::evidence_inspection::EvidenceControl>()
         .start(ticket)?;
     let result=blocking(move|| {
-        let (media_type,bytes)=service::product_bytes_with_progress(Path::new(&path),&project,&id,&product,action==ProductAction::Preview,cancel.clone(),move|progress|{let _=on_progress.send(progress);})?;
+        let (media_type,bytes)=if design_report.unwrap_or(false) {
+            greenlens_runner::project_open::inspect_evidence(Path::new(&path),cancel.clone(),move|progress|{let _=on_progress.send(progress);},||greenlens_runner::design_report::product_bytes(Path::new(&path),&project,&id,&product,&cancel))?
+        }else{service::product_bytes_with_progress(Path::new(&path),&project,&id,&product,action==ProductAction::Preview,cancel.clone(),move|progress|{let _=on_progress.send(progress);})?};
         ensure!(!cancel.load(std::sync::atomic::Ordering::Relaxed),"Report product inspection cancelled; no product was opened");
         let sha256=greenlens_runner::persistence::bytes_hash(&bytes);
         if matches!(action, ProductAction::Preview | ProductAction::PreviewPdf) {

@@ -16,6 +16,7 @@ use std::{
     path::{Path, PathBuf},
 };
 use tauri::Manager;
+mod design_reports;
 mod energy;
 mod evidence_inspection;
 mod project_intake;
@@ -722,6 +723,8 @@ pub fn run() {
             energy::energy_copy_design_preview,
             energy::energy_copy_design_commit,
             energy::energy_transaction_preview,
+            energy::energy_proposal_preview,
+            energy::energy_proposal_commit,
             energy::energy_operation_plan,
             energy::energy_transaction_commit,
             energy::energy_set_locks,
@@ -755,6 +758,7 @@ pub fn run() {
             energy::energy_report,
             energy::energy_cancel_report,
             report_issues::report_issue_action,
+            design_reports::design_report_action,
             report_issues::report_issue_product,
             project_capacity,
             energy::dialog_energy_report

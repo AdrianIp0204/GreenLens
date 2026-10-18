@@ -10,6 +10,8 @@ import { validatedEditLockReason } from './locks.mjs';
 import { useEnergyDrafts } from '../energy/useEnergyDrafts';
 import { useThermalPresentation } from '../energy/thermal-presentation';
 import type { EnergyDesign, EnergyRunRecord, EnergyCalendar, EnergyMetadataChange } from '../energy/types';
+import type {ProposalDraft} from '../energy/design-proposals';
+import type {DesignReportAction,DesignReportReply} from '../energy/design-reports';
 import type { OpenOperation, OpenProgress, ProjectAdmission, ProjectVerificationReceipt } from './project-intake';
 import type { Session } from '../energy/EnergySensitivity';
 import type {ArchitecturalScope,ReferenceImportOptions,ReferenceProgress} from '../reference/types';
@@ -19,6 +21,7 @@ import {scopeReviewContextKey,reviewDecisions,reviewCandidate} from '../referenc
 import {parseReferenceImportDraft,parseReferenceScopeDraft} from '../reference/reference-drafts';
 import {reportRequestBinding,type ReportOutput} from '../energy/report-request';
 import {usePendingReportIssues} from '../energy/usePendingReportIssues';
+import {useDesignReportDrafts} from '../energy/useDesignReportDrafts';
 import type {ReportIssueAction,ReportIssueActionResult} from '../energy/report-issues';
 import {assertIssueInspection} from '../energy/report-issue-response.mjs';
 
@@ -45,6 +48,8 @@ type GuardChoice = 'save'|'discard'|'cancel';
 export function useDocument() {
   const [project,setProject] = useState<Project|null>(null);
   const pendingReportIssues=usePendingReportIssues(project?.id);
+  const pendingDesignReports=usePendingReportIssues(project?.id,'greenlens.pending-design-reports.v1');
+  const designReportDrafts=useDesignReportDrafts(project?.id);
   const [alternative,setAlternative] = useState('A');
   const [validated,setValidated] = useState<ValidatedModel|null>(null);
   const [results,setResults] = useState<RunRecord[]>([]);
@@ -283,6 +288,13 @@ export function useDocument() {
     try{const next=await history.current.editEnergyGroup(s.project,s.alternative,Object.keys(requests),label,p=>invoke<Project>('energy_transaction_commit',{project:p,requests,expectedPreviewSha256}));setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage(`${label} accepted as one Rust-validated transaction.`);return true;}
     catch(e){setError(`Geometry rejected; accepted inputs and history unchanged. ${errorText(e)}`);return false;}finally{actionBusy.current=false;setBusy(false);}
   };
+  const commitEnergyProposal=async(draft:ProposalDraft,expectedContextSha256:string):Promise<boolean>=>{
+    if(!await energyDrafts.beforeAction('applying the proposed alternative'))return false;
+    const s=state.current;if(energyLocked||!s.project||actionBusy.current||collecting.current||activeJob(s.job)){setError('Finish the active operation and unlock thermal inputs before applying a proposal.');return false;}
+    actionBusy.current=true;setBusy(true);setError('');
+    try{const next=await history.current.editEnergyGroup(s.project,s.alternative,['B'],'Apply design proposal to B',p=>invoke<Project>('energy_proposal_commit',{project:p,draft,expectedContextSha256}));setProject(next.project);state.current.project=next.project;setHistoryVersion(v=>v+1);setMessage('Proposal accepted in B as one Rust-validated edit. A is unchanged. Select matching simulation evidence before claiming an outcome.');return true;}
+    catch(e){setError(`Proposal rejected; draft and accepted history preserved. ${errorText(e)}`);return false;}finally{actionBusy.current=false;setBusy(false);}
+  };
   const newEnergy=async(zone:unknown,calendar:EnergyCalendar)=>{let created=false;await runAction(async()=>{
     const s=state.current;
     await protectReplacement({needsGuard:documentSignature(s.project)!==s.savedSignature||activeJob(s.job)||hasPendingEvidence(s.job,s.results,s.climateResults,s.energyResults),decide:()=>decide('New Energy'),save:async()=>{await cancelAndWait();return save();},discard:async()=>{},proceed:async()=>{
@@ -328,6 +340,7 @@ export function useDocument() {
       try{selected=await invoke<string|null>('dialog_open_project',{initialPath:state.current.path||null});if(!selected)return;admission=await invoke<ProjectAdmission>('admit_project',{path:selected});}
       catch(e){setError(errorText(e));return;}
     }
+    if(!await designReportDrafts.beforeReplacement(kind))return;
     return runAction(async()=>{
     if(kind==='New Energy'){setEnergyNewOpen(true);return;}
     let discardPending=false;
@@ -433,6 +446,37 @@ export function useDocument() {
     if(mounted.current)setReportCompletion({documentId:requestDocumentId,projectId:request.project.id,output});
     setMessage(portableZip?'Portable A/B energy evidence and reports exported.':htmlOnly?'HTML, CSV, JSON and SVG reports written; PDF/PNG explicitly not requested.':'Offline HTML, PDF, PNG, CSV, JSON and SVG reports written.');
   });return output;};
+  const designReport=async(action:DesignReportAction,typstDir:string):Promise<DesignReportReply|undefined>=>{
+    let result:DesignReportReply|undefined;
+    await runAction(async()=>{
+      const initial=state.current;
+      if(!initial.project?.energy||activeJob(initial.job)||hasPendingEvidence(initial.job,initial.results,initial.climateResults,initial.energyResults))throw Error('Finish or collect the current calculation before handling design reports.');
+      if(action.kind==='create'&&!pendingDesignReports.capacityAvailable)throw Error(pendingDesignReports.warning||'Recover pending design reports before issuing another.');
+      if(action.kind!=='recover'&&!await save())return;
+      const current=state.current,owner=currentDocumentId.current;
+      if(!current.path||!current.project)throw Error('Save the complete study before handling retained design reports.');
+      let submitted:Record<string,unknown>=action;
+      if(action.kind==='export'||action.kind==='regenerate'){
+        const destination=await invoke<string|null>('dialog_energy_report',{portableZip:action.kind==='export'});if(!destination)return;
+        submitted={...action,destination};
+      }
+      const reply=await invoke<DesignReportReply>('design_report_action',{path:current.path,project:current.project,expectedRevision:current.revision,action:submitted,typstDir:typstDir.trim()||null});
+      if(reply.status==='pending'){
+        if(!reply.recovery_token||!reply.message)throw Error('Incomplete pending design-report receipt.');
+        pendingDesignReports.add(current.project.id,reply.recovery_token,reply.message);
+      }
+      if(currentDocumentId.current!==owner||state.current.project?.id!==current.project.id||state.current.path!==current.path)return;
+      if(reply.view){
+        const id=reply.report?.content.content_sha256,summary=reply.view.project.design_reports?.reports.find(row=>row.id===id);
+        if(reply.view.project.id!==current.project.id||!id||!summary||summary.products_sha256!==reply.report?.products.products_sha256)throw Error('Design report returned a different document or unbound products.');
+        acceptProject(reply.view as ProjectView,current.path);
+        if(action.kind==='recover')pendingDesignReports.remove(action.token);
+      }
+      result={...reply,...(submitted.destination?{destination:submitted.destination as string}:{})};
+      setMessage(reply.status==='pending'?'Completed design products remain staged; resolve the conflict then recover without rendering again.':action.kind==='export'?'Complete design study exported with its retained evidence and reports.':action.kind==='regenerate'?'Exact retained design products regenerated without simulation.':'Immutable design report accepted; previous products and baseline remain retained.');
+    },'handling the exact design report');
+    return result;
+  };
   const reportIssue=async(action:ReportIssueAction,typstDir:string):Promise<ReportIssueActionResult|undefined>=>{
     let result:ReportIssueActionResult|undefined;
     await runAction(async()=>{
@@ -467,6 +511,6 @@ export function useDocument() {
     },action.kind==='create'?'issuing this exact report':action.kind==='recover'?'recovering completed report products':'handling retained report evidence');
     return result;
   };
-  return {reportIssue,pendingReportIssues,scopeReviewDrafts,acceptScopeRevision,latestReport,referenceDrafts,referenceProgress,importReference,commitReferenceScope,cancelReferenceImport,opening,cancelOpening,projectVerification,sensitivitySnapshots,thermalPresentation,copyEnergyDesign,setEnergyObjectLocks,energyDrafts,registerEnergyAuthoringLifecycle,energyAuthoringOpen,setEnergyAuthoringOpen,energyNewOpen,setEnergyNewOpen,commitEnergyTransaction,newEnergy,project,alternative,setAlternative,model,validated,results,climateResults,energyResults,energyLocked,setEnergyLocked,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
+  return {designReportDrafts,designReport,pendingDesignReports,reportIssue,pendingReportIssues,scopeReviewDrafts,acceptScopeRevision,latestReport,referenceDrafts,referenceProgress,importReference,commitReferenceScope,cancelReferenceImport,opening,cancelOpening,projectVerification,sensitivitySnapshots,thermalPresentation,copyEnergyDesign,setEnergyObjectLocks,energyDrafts,registerEnergyAuthoringLifecycle,energyAuthoringOpen,setEnergyAuthoringOpen,energyNewOpen,setEnergyNewOpen,commitEnergyTransaction,commitEnergyProposal,newEnergy,project,alternative,setAlternative,model,validated,results,climateResults,energyResults,energyLocked,setEnergyLocked,study,currentClimate,currentClimateLoading,display,setDisplay,path,revision,documentId,job,busy,validating,dirty,running,pending,error,setError,message,setMessage,guard,resolveGuard,collectionError,historyVersion,history:history.current,
     commit,commitStudy,commitEnergy,commitEnergyMetadata,attachEnergyEvidence,attachWeather,importWeather,importEnergyWeather,startEnergy,energySensitivity,energyReport,traverse,replace,save:()=>runAction(async()=>{await save();},'Save'),saveAs:()=>runAction(async()=>{await save(true);},'Save As'),recover,start,cancel:()=>runAction(async()=>{await cancelAndWait();setMessage('Calculation cancelled; process tree joined.');},'Cancel calculation',true),exportEvidence,runAction};
 }

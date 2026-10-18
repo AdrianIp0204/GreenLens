@@ -35,6 +35,8 @@ pub enum EnergyEvidenceQuery {
     ExportSelection(PairQuery),
     #[serde(rename = "report_issue_inspect")]
     Issue(SessionQuery),
+    #[serde(rename = "design_report_inspect")]
+    DesignReport(SessionQuery),
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -109,7 +111,7 @@ impl EnergyEvidenceQuery {
             Self::Navigate(q) => &q.path,
             Self::NavigatePair(q) => &q.path,
             Self::Compare(q) | Self::Preflight(q) | Self::ExportSelection(q) => &q.path,
-            Self::Sensitivity(q) | Self::Issue(q) => &q.path,
+            Self::Sensitivity(q) | Self::Issue(q) | Self::DesignReport(q) => &q.path,
         }
     }
     pub fn execute(
@@ -163,6 +165,9 @@ impl EnergyEvidenceQuery {
             Self::Issue(q) => Ok(serde_json::to_value(
                 crate::report_issues::inspect_in_operation(root, &q.project, &q.id, &cancel)?,
             )?),
+            Self::DesignReport(q) => Ok(serde_json::to_value(crate::design_report::inspect(
+                root, &q.project, &q.id, &cancel,
+            )?)?),
         })
     }
 }

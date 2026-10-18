@@ -5,7 +5,7 @@ import type { OpenProgress } from '../workspace/project-intake';
 import { assertEnergyResponse } from './response.mjs';
 import {largeReadQueue,type BoundedRead} from './bounded-read';
 
-const inspectedCommands=new Set(['energy_default_runs','energy_run_catalog','energy_result','energy_rows','energy_navigate','energy_navigate_pair','energy_compare','energy_report_preflight','energy_sensitivity_inspect','energy_sensitivity_export_selection','report_issue_inspect','report_issue_product']);
+const inspectedCommands=new Set(['energy_default_runs','energy_run_catalog','energy_result','energy_rows','energy_navigate','energy_navigate_pair','energy_compare','energy_report_preflight','energy_sensitivity_inspect','energy_sensitivity_export_selection','report_issue_inspect','design_report_inspect','report_issue_product']);
 const count=(v:unknown):v is number=>typeof v==='number'&&Number.isSafeInteger(v)&&v>=0;
 function validProgress(p:OpenProgress):boolean {
   return Boolean(p&&p.schema_version==='greenlens.project-open-progress.v1'&&typeof p.stage==='string'&&p.stage.length>0&&p.stage.length<=128&&(p.run_id===null||typeof p.run_id==='string'&&p.run_id.length<=256)&&[p.runs_completed,p.runs_total,p.bytes_read,p.files_verified,p.elapsed_ms].every(count)&&p.runs_completed<=p.runs_total&&p.numeric_passes&&typeof p.numeric_passes==='object'&&!Array.isArray(p.numeric_passes)&&Object.keys(p.numeric_passes).length<=5000&&Object.entries(p.numeric_passes).every(([id,n])=>id.length<=256&&count(n)));

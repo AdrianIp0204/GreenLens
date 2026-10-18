@@ -1,5 +1,7 @@
 # Paired-drawing source and package checkpoint
 
+This pre-installation checkpoint is preserved. The later [RC2 outcome](f2197f3-rc2-outcome.md), [VD2 outcome](f2197f3-vd2-outcome.md) and [completed application CI](f2197f3-ci-final.json) supersede its pending/uninstalled status without changing artifact identities or relabeling historical checks. VD2 analytical reporting passed; full-study closure remains failed and overall acceptance incomplete.
+
 2026-10-18. Application source `f2197f39eb845515fb48d5f5e1616ea529e4f031`, branch `codex/v0.8-report-design`. This is a partial delivery, not acceptance of v0.8, a new issued report, a private building or a native retry. The installed application remains the separately observed 2d98b03 candidate.
 
 ## Implemented and checked

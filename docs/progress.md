@@ -1,6 +1,6 @@
 # Progress and acceptance evidence
 
-2026-10-18: RC1/VD1 failed; VD1 four annuals/20 checks pass. f2197f3 packaged; final CI pending. User authorized separate RC2/VD2 observations after CI, zero EnergyPlus; both unspent. Observer contract checks underway. CT1 stopped; SKP/private probe unused. Source-only receipts: `evidence/v0.8/f2197f3-delivery.md`, `v0.8-report-design-continuation.md`. Overall incomplete.
+2026-10-18: f2197f3/observer CI pass. RC2 failed exact Typst-path policy; full-study R2 incomplete. VD2 passed B-only edit/undo, native issue/PDF/copy/Save As and exact 34-product cold CLI regeneration; zero EnergyPlus. Fresh-profile native launch was policy-blocked. Presentation findings remain; CT1/SKP/private probe unused. Source-only receipt: `evidence/v0.8/f2197f3-vd2-outcome.md`. Prior failures retained; overall incomplete.
 
 2026-10-17: 1d CI/Save/frames passed; observer failed. 580 members intact. e1947aa helper CI passed; R2/cold incomplete. No retry/EnergyPlus. Receipt: `docs/evidence/v0.8/native-1d27233-observer-failure.json`.
 

@@ -95,7 +95,7 @@ function Assert-NoNewRuns($Before,$After){
  if((Json-Identity $Before.runs) -cne (Json-Identity $After.runs) -or (Json-Identity $Before.energy.runs) -cne (Json-Identity $After.energy.runs) -or (Json-Identity $Before.climate.runs) -cne (Json-Identity $After.climate.runs)){throw 'Run inventory changed during a no-simulation report observation.'}
 }
 function Assert-ArmSelection($Candidate,$Manifest,[string]$ExpectedProjectId){
- if($ReportKind -ceq 'AnalyticalDesign'){return Get-ObservedDesignArmSelection $Candidate $Manifest $ExpectedProjectId}
+ if($ReportKind -ceq 'AnalyticalDesign'){return Get-ObservedDesignArmSelection $Candidate $Manifest $ExpectedProjectId $projectRoot}
  if($Manifest.id -cne $ExpectedProjectId -or $Candidate.project_id -cne $ExpectedProjectId){throw 'The arm marker and saved manifest must identify the declared project.'}
  if(!$Candidate.baseline_run_id -or !$Candidate.proposed_run_id -or $Candidate.baseline_run_id -ceq $Candidate.proposed_run_id -or $Candidate.scope_revision_sha256 -cnotmatch '^[a-f0-9]{64}$'){throw 'The arm marker requires distinct run IDs and an exact scope revision identity.'}
  $baseline=@($Manifest.energy.runs|Where-Object {$_.id -ceq $Candidate.baseline_run_id})
@@ -107,8 +107,8 @@ function Assert-ArmSelection($Candidate,$Manifest,[string]$ExpectedProjectId){
  # current designs; the later immutable issue must bind these retained runs.
  return [ordered]@{baseline=[ordered]@{run_id=$baseline[0].id;record_sha256=$baseline[0].record_sha256;design_id=$baseline[0].alternative_id};proposed=[ordered]@{run_id=$proposed[0].id;record_sha256=$proposed[0].record_sha256;design_id=$proposed[0].alternative_id};scope_revision_sha256=$scope.revision.revision_sha256;scope_schema_version=$scope.revision.schema_version;scope_storage_schema=$scope.storage_schema;scope_member_path=$scope.member_path;scope_member_bytes=$scope.member_bytes;scope_member_sha256=$scope.member_sha256;scope_observation=$scope.verification_scope}
 }
-function Assert-IssueProducts($Issue){
- if($ReportKind -ceq 'AnalyticalDesign'){return Assert-ObservedDesignProducts $projectRoot $Issue ${function:File-Hash} ${function:Read-Json} ${function:Member-Path} $armSelection $identities.typst_executable_sha256}
+function Assert-IssueProducts($Issue,$ObservedManifest){
+ if($ReportKind -ceq 'AnalyticalDesign'){return Assert-ObservedDesignProducts $projectRoot $Issue ${function:File-Hash} ${function:Read-Json} ${function:Member-Path} $armSelection $identities.typst_executable_sha256 $ObservedManifest}
  if($Issue.id -cnotmatch '^[a-f0-9]{64}$' -or $Issue.path -cne ('report-issues/'+$Issue.id) -or !$Issue.include_pdf){throw 'Unexpected published issue identity/path/profile.'}
  $directory=Member-Path $projectRoot $Issue.path
  foreach($pair in @(@('issue-products.json','products_file_sha256'),@('issue-content.json','content_file_sha256'),@('issue-runtime.json','receipt_file_sha256'))){if((File-Hash (Member-Path $directory $pair[0])) -cne $Issue[$pair[1]]){throw 'Published issue metadata bytes do not bind the project summary.'}}
@@ -170,6 +170,10 @@ $protocolHash=File-Hash (Join-Path $output 'protocol.json')
 $armTemplate=[ordered]@{schema_version='greenlens.native-report-arm.v1';protocol_sha256=$protocolHash;project_id=$initial.id;baseline_run_id='REPLACE';proposed_run_id='REPLACE';scope_revision_sha256='REPLACE';expected_new_issue_count=1}
 if($ReportKind -ceq 'AnalyticalDesign'){$armTemplate=[ordered]@{schema_version='greenlens.native-analytical-design-report-arm.v1';protocol_sha256=$protocolHash;project_id=$initial.id;baseline_run_id='REPLACE';proposed_run_id='REPLACE';analytical_scope='REPLACE';north_declaration=$null;expected_new_issue_count=1}}
 $armTemplate|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'arm-render.template.json') -Encoding utf8NoBOM
+if($ReportKind -ceq 'AnalyticalDesign'){
+ $drawingTemplate=[ordered]@{schema_version='greenlens.native-analytical-design-report-arm.v2';protocol_sha256=$protocolHash;project_id=$initial.id;baseline_run_id='REPLACE';proposed_run_id='REPLACE';analytical_scope='REPLACE';north_declaration=$null;expected_new_issue_count=1;drawing_selection=[ordered]@{schema_version='greenlens.design-report-drawing-selection.v1';scope_revision_sha256='REPLACE';accepted_view_ids=@();include_reference_context=$false}}
+ $drawingTemplate|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'arm-render.drawing.template.json') -Encoding utf8NoBOM
+}
 @{schema_version='greenlens.native-report-stop.v1';protocol_sha256=$protocolHash;reason='Finished native review; closing normally';report_error=$null}|ConvertTo-Json|Set-Content -LiteralPath (Join-Path $output 'stop-observation.template.json') -Encoding utf8NoBOM
 Write-Host "Root UI owner: open the declared project manually. Write arm-render.json from the template immediately before one Issue action. After review, write stop-observation.json then close GreenLens normally. Receipt directory: $output"
 $session=$null;$proc=$null;$stdout=[GreenLensObservedJob.Capture]::new();$stderr=[GreenLensObservedJob.Capture]::new();$outTask=$null;$errTask=$null
@@ -194,8 +198,8 @@ try{
   $armPath=Join-Path $output 'arm-render.json'
   if(!$arm -and (Test-Path -LiteralPath $armPath)){
    $candidate=Read-Json $armPath 16KB
-   $armSchema=if($ReportKind -ceq 'AnalyticalDesign'){'greenlens.native-analytical-design-report-arm.v1'}else{'greenlens.native-report-arm.v1'}
-   if($candidate.schema_version -cne $armSchema -or $candidate.protocol_sha256 -cne $protocolHash -or $candidate.project_id -cne $initial.id -or ($ReportKind -cne 'AnalyticalDesign' -and $candidate.scope_revision_sha256 -cnotmatch '^[a-f0-9]{64}$') -or !$candidate.baseline_run_id -or !$candidate.proposed_run_id -or $candidate.baseline_run_id -ceq $candidate.proposed_run_id -or $candidate.expected_new_issue_count -ne 1){throw 'Invalid separately typed exact-pair/scope arm marker.'}
+   $armSchemas=if($ReportKind -ceq 'AnalyticalDesign'){@('greenlens.native-analytical-design-report-arm.v1','greenlens.native-analytical-design-report-arm.v2')}else{@('greenlens.native-report-arm.v1')}
+   if($candidate.schema_version -cnotin $armSchemas -or $candidate.protocol_sha256 -cne $protocolHash -or $candidate.project_id -cne $initial.id -or ($ReportKind -cne 'AnalyticalDesign' -and $candidate.scope_revision_sha256 -cnotmatch '^[a-f0-9]{64}$') -or !$candidate.baseline_run_id -or !$candidate.proposed_run_id -or $candidate.baseline_run_id -ceq $candidate.proposed_run_id -or $candidate.expected_new_issue_count -ne 1){throw 'Invalid separately typed exact-pair/scope arm marker.'}
    $armObservedAt=$elapsed;$armManifestHash=File-Hash $manifestPath
    $armedManifest=Read-Json $manifestPath 16MB;Assert-OldIssues $initial $armedManifest;Assert-NoNewRuns $initial $armedManifest
    if(@(Issues $armedManifest).Count -ne $expectedInitial){throw 'An issue appeared before the explicit arm boundary.'}
@@ -217,7 +221,7 @@ try{
    if($published -and ($new.Count -ne 1 -or (Json-Identity $new[0]) -cne (Json-Identity $publishedSummary))){throw 'The newly published issue summary changed during review.'}
    if($new.Count -eq 1 -and !$published){
     if($all.Count -ne $expectedFinal -or ($ReportKind -cne 'AnalyticalDesign' -and $new[0].scope_revision_sha256 -cne $arm.scope_revision_sha256) -or (Json-Identity $new[0].baseline) -cne (Json-Identity $armSelection.baseline) -or (Json-Identity $new[0].proposed) -cne (Json-Identity $armSelection.proposed)){throw 'Published issue does not bind the explicitly armed scope/pair and retained record identities.'}
-    $published=Assert-IssueProducts $new[0];$publishedSummary=$new[0];$after=Snapshot-Project;Assert-Preserved $before $after;Assert-Preserved $armedBefore $after;$publishedMembers=$after
+    $published=Assert-IssueProducts $new[0] $current;$publishedSummary=$new[0];$after=Snapshot-Project;Assert-Preserved $before $after;Assert-Preserved $armedBefore $after;$publishedMembers=$after
     $after|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'published-members.json') -Encoding utf8NoBOM
     $record.publication=$published;$record.publication_elapsed_ms=$timer.ElapsedMilliseconds-$armedAt;$record.published_utc=[DateTime]::UtcNow.ToString('o');$record.stage='published-native-review'
     @{stage='published-native-review';root_pid=$proc.Id;publication=$published;elapsed_ms=$record.publication_elapsed_ms}|ConvertTo-Json -Depth 8|Set-Content -LiteralPath (Join-Path $output 'state.json') -Encoding utf8NoBOM

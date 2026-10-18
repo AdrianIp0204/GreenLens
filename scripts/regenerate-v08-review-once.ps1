@@ -29,7 +29,7 @@ function Read-BoundedJson([string]$Path,[long]$Cap){
  $item=Get-Item -LiteralPath $Path -Force
  if($item.PSIsContainer -or ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) -or $item.Length -gt $Cap){throw 'Invalid or oversized JSON evidence.'}
  $stream=[IO.FileStream]::new($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::Read)
- try{if($stream.Length -gt $Cap){throw 'JSON grew beyond its bound.'};$bytes=[byte[]]::new([int]$stream.Length);$stream.ReadExactly($bytes,0,$bytes.Length);if($stream.ReadByte() -ne -1){throw 'JSON changed during its read.'};[Text.UTF8Encoding]::new($false,$true).GetString($bytes).TrimStart([char]0xFEFF)|ConvertFrom-Json -AsHashtable -DateKind String -Depth 100}finally{$stream.Dispose()}
+ try{if($stream.Length -gt $Cap){throw 'JSON grew beyond its bound.'};$bytes=[byte[]]::new([int]$stream.Length);$stream.ReadExactly($bytes,0,$bytes.Length);if($stream.ReadByte() -ne -1){throw 'JSON changed during its read.'};$text=[Text.UTF8Encoding]::new($false,$true).GetString($bytes).TrimStart([char]0xFEFF);$parsed=ConvertFrom-Json -InputObject $text -AsHashtable -DateKind String -Depth 100 -NoEnumerate;return ,$parsed}finally{$stream.Dispose()}
 }
 function File-Hash([string]$Path){
  if([string]::IsNullOrWhiteSpace($Path)){throw 'Cannot verify bytes without an observed nonempty file path.'}
@@ -130,7 +130,7 @@ $scopeObservation=$null;$designObservation=$null
 $issueDir=Portable-Child $root $issue.path
 $productName='issue-products.json';$productsFileHash=$issue.products_file_sha256
 if($ReportKind -ceq 'AnalyticalDesign'){
- $designObservation=Assert-ObservedDesignProducts $root $issue ${function:File-Hash} ${function:Read-BoundedJson} ${function:Portable-Child} $null $typstHash
+ $designObservation=Assert-ObservedDesignProducts $root $issue ${function:File-Hash} ${function:Read-BoundedJson} ${function:Portable-Child} $null $typstHash $projectJson
  $productName='design-products.json';$productsFileHash=$issue.manifest_file_sha256
 }else{
  $scopeObservation=Get-ObservedScopeSelection $root $projectJson $issue.scope_revision_sha256

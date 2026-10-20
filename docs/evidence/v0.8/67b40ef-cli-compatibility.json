@@ -1,0 +1,19 @@
+{
+  "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+  "cli_sha256": "0c0271647c84568347127efcd4d5a713d62373cdc9d583f11e97738fc744c55e",
+  "rc3_inspection": "passed",
+  "vd2_inspection": "passed",
+  "outputs": [
+    {
+      "file": "new-cli-rc3-inspection.json",
+      "sha256": "cc6320ac1c1aeef870b0288a2b71a38bea0f8a03171715c28178845df7f03bf6"
+    },
+    {
+      "file": "new-cli-vd2-inspection.json",
+      "sha256": "34acb1364bf714c9d1132e9a5c40f19c8ae89056cf05fe58a7b4c44253b86962"
+    }
+  ],
+  "engine_requested": false,
+  "renderer_requested": false,
+  "native_ui_asserted": false
+}

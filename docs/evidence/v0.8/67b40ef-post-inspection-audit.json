@@ -1,0 +1,95 @@
+{
+  "schema_version": "greenlens.post-inspection-read-only-audit.v1",
+  "checked_utc": "2026-10-20T11:24:48.022Z",
+  "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+  "cli_sha256": "0c0271647c84568347127efcd4d5a713d62373cdc9d583f11e97738fc744c55e",
+  "cli_identity_origin": "Parent inspection receipt; this audit reads its outputs and hashes the retained project, and does not launch or independently rehash the CLI executable.",
+  "scope": "Independent post-inspection byte fence and parsed-output binding reconciliation against retained complete synthetic copies and source-bound public receipts. No engine, renderer, CLI or desktop launched by this audit.",
+  "inspection_outputs": [
+    {
+      "file": "new-cli-rc3-inspection.json",
+      "bytes": 4046015,
+      "sha256": "cc6320ac1c1aeef870b0288a2b71a38bea0f8a03171715c28178845df7f03bf6",
+      "receipt_matches": true
+    },
+    {
+      "file": "new-cli-vd2-inspection.json",
+      "bytes": 586411,
+      "sha256": "34acb1364bf714c9d1132e9a5c40f19c8ae89056cf05fe58a7b4c44253b86962",
+      "receipt_matches": true
+    }
+  ],
+  "cases": [
+    {
+      "case": "RC3",
+      "issue_id": "fe4924c32994ecb9fe63a53f1c7578e82483971f26167ff1859724714fd98dce",
+      "content_sha256": "7eff8e06784da107ee357f27fe31dda54e1a6548630d7985f039a5bd0cf1bf44",
+      "products_sha256": "d226bc3ebdcee8779888e5ed01329af8ac9ea31dbe1367ad3f113b3c4a7ec6b1",
+      "scope_revision_sha256": "e275d8664b1d222803272a9e8f0d9f5c9b942513ceacae016fce445934948e3a",
+      "bindings": {
+        "baseline": {
+          "run_id": "f523dbb1-b134-4a1e-88db-f7d24a732f8c",
+          "record_sha256": "85f2beded5c6278cf3e783eca939c930b2e4a6348c3c1ef253c82b9899dfac44",
+          "design_id": "A"
+        },
+        "proposed": {
+          "run_id": "0a8f9f8d-7415-4011-8957-8bc85c708d8d",
+          "record_sha256": "5c1f9539145886f041ed5eef18e1c62bda37cd26435361a19afdea833fa7481b",
+          "design_id": "B"
+        }
+      },
+      "renderer": "greenlens.energy-report-issue-renderer/3",
+      "retained_content_and_manifest_match": true,
+      "products_matched": 54,
+      "product_bytes": 17562597,
+      "complete_members_matched": 638,
+      "complete_bytes": 243129655,
+      "inventory_source": "complete-copy-read-only-audit.json",
+      "inventory_source_sha256": "f5609e11de967d0bc768c81376471014eaab382d2d52102242060c0d90479c7b",
+      "unexpected_members": [],
+      "changed_members": [],
+      "public_receipts_match": true,
+      "unresolved_review_count": 2,
+      "included_zero_byte_lock_files": 1
+    },
+    {
+      "case": "VD2",
+      "issue_id": "ced3460d860a7a1b584e6587592e580be4d8954721d93a8e1ae2f5d221afe331",
+      "content_sha256": "ced3460d860a7a1b584e6587592e580be4d8954721d93a8e1ae2f5d221afe331",
+      "products_sha256": "73ef8ec561cb0a9b532c1cc1ea76cbea6a99b97d6879524b956800ad931a54d8",
+      "scope_revision_sha256": null,
+      "bindings": {
+        "baseline": {
+          "run_id": "51ff925a-755d-437d-a3f8-a615a55e50cb",
+          "record_sha256": "545372f539fdbf30133191f02a4f49cd21623be7be96a0c6df0b4472cd1310c8",
+          "design_id": "A"
+        },
+        "proposed": {
+          "run_id": "4e66b264-24b2-426c-a335-78e6f622931f",
+          "record_sha256": "dea78cdc5fe7603f4006da34426dfbf6d55e0b551708a4933ed1ac5d1c3db3ec",
+          "design_id": "B"
+        }
+      },
+      "renderer": "greenlens.analytical-design-report-renderer/1",
+      "retained_content_and_manifest_match": true,
+      "products_matched": 34,
+      "product_bytes": 5243729,
+      "complete_members_matched": 344,
+      "complete_bytes": 132404411,
+      "inventory_source": "cold-copy-audit.json",
+      "inventory_source_sha256": "6628bb5d289bf60bd405063ba124ce24bf9d467551b076850c7d40fa29f3b06d",
+      "unexpected_members": [],
+      "changed_members": [],
+      "public_receipts_match": true,
+      "included_zero_byte_lock_files": 1
+    }
+  ],
+  "checks_passed": true,
+  "elapsed_seconds": 1.3820093,
+  "limitations": [
+    "Complete inventory counts include original zero-byte cooperative lock files.",
+    "No new rendering, regeneration, replay, engine work, visual review or installed observation. Existing product bytes and previous receipts remain bound to their historical f2197f3 source.",
+    "No private architectural source or conversion was accessed.",
+    "CLI semantic inspection completion comes from the parent receipt; this supplement checks its output identities and complete retained byte preservation."
+  ]
+}

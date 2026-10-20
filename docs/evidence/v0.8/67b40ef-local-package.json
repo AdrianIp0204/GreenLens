@@ -1,0 +1,52 @@
+{
+  "schema_version": "greenlens.local-package-receipt.v1",
+  "built_from": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+  "source_clean_before_and_after": true,
+  "application_version": "0.8.0",
+  "platform": "native Windows x64 MSVC",
+  "unsigned": true,
+  "installed": false,
+  "new_native_observation": false,
+  "engines_and_typst_bundled": false,
+  "build_and_package": "passed",
+  "artifacts": [
+    {
+      "file": "greenlens-desktop.exe",
+      "bytes": 33375232,
+      "sha256": "6d71bc74329c0b58a110653e6c4e61cc4b00c55f5361cf33cb6156cd08746cf0"
+    },
+    {
+      "file": "distribution/GreenLens_0.8.0_x64-setup.exe",
+      "bytes": 7819588,
+      "sha256": "bea442c0dda45b566f79ecd88adc4b6d3688090ae402817187139cca7f28eb2c"
+    },
+    {
+      "file": "distribution/GreenLens-CLI-0.8.0-windows-x64/greenlens.exe",
+      "bytes": 18808832,
+      "sha256": "0c0271647c84568347127efcd4d5a713d62373cdc9d583f11e97738fc744c55e"
+    },
+    {
+      "file": "distribution/GreenLens-CLI-0.8.0-windows-x64.zip",
+      "bytes": 13421050,
+      "sha256": "09d16c87e0757aa4d0708a9a3a1d85d2fc981ed5e517ab5e965f0092500b5c18"
+    }
+  ],
+  "logs": [
+    {
+      "sha256": "642a4deada1b36d019359b655debb7e97f88da19225072a3b92b9c9f5ad32b02",
+      "file": "cli-build.log"
+    },
+    {
+      "sha256": "6bab91f1d4883fd75ad7aca2c0fb00650367292a1db0994c3f6607bacc57b517",
+      "file": "desktop-build.log"
+    },
+    {
+      "sha256": "89cda6e5bb78270b7b30687fc5e2dbfb9b009698d795049a13ab7a38038918a6",
+      "file": "license-package.log"
+    },
+    {
+      "sha256": "e9ede0ce9b92001eb05735ba7db7804e24703fdebebd7d35143a24270d1a3445",
+      "file": "packaging.log"
+    }
+  ]
+}

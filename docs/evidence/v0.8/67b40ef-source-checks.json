@@ -1,0 +1,25 @@
+{
+  "schema_version": "greenlens.final-source-check.v1",
+  "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+  "frontend": {
+    "failed": 0,
+    "tests": 492,
+    "skipped": 0,
+    "duration_seconds": 126.0656041,
+    "passed": 492,
+    "log_sha256": "30d095925546199df3ed8bd9888562c7e05c7c212de47d034590fe23c214d1dc"
+  },
+  "package_documents": {
+    "limit_bytes": 16777216,
+    "files": 414,
+    "links": 804,
+    "log_sha256": "55006f698b7a1c7581c355a8fa8c641bd19d9904417b33e52b5092d21f3fb92e",
+    "bytes": 16776789,
+    "passed": true
+  },
+  "observer_ci": {
+    "run_id": 39412130271,
+    "scope": "Synthetic observer/helper checks; not a fresh native application observation",
+    "conclusion": "success"
+  }
+}

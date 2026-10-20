@@ -1,0 +1,12 @@
+{
+  "schema_version": "greenlens.delivery-documentation-check.v1",
+  "application_source": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+  "scope": "Later documentation-only working tree; does not rebuild or identify new application binaries",
+  "passed": true,
+  "selected_files": 414,
+  "checked_local_links": 804,
+  "expanded_bytes_including_index": 16776764,
+  "unchanged_limit_bytes": 16777216,
+  "historical_evidence_removed": false,
+  "log_sha256": "fb223ad4c7913fd27b273e111a2a26e22af9de513efb9ba6b2bd5d49a1855076"
+}

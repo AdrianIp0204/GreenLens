@@ -1,0 +1,86 @@
+{
+  "schema_version": "greenlens.hosted-build-artifact-read-only.v1",
+  "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+  "checked_utc": "2026-10-20T12:12:17.505076+00:00",
+  "scope": "Hosted artifact download and bounded metadata inspection only. No extracted executable runs; no equality with local binaries assumed.",
+  "artifacts": [
+    {
+      "id": 12263602856,
+      "name": "energy-cli-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 13228503,
+      "digest": "sha256:db33277cc411607ce5877029266b7143387f4b5cd8a44cc4a7f81ec5905199c0",
+      "download_bytes": 13228503,
+      "download_sha256": "db33277cc411607ce5877029266b7143387f4b5cd8a44cc4a7f81ec5905199c0",
+      "digest_match": true,
+      "selected_members": [
+        {
+          "member": "ci-build.json",
+          "bytes": 304,
+          "sha256": "471d6871fae97a436b17eebc7a840af9b1009e176d4f5a6ed34b6639b7f72aeb",
+          "content": {
+            "schema": "greenlens.energy-ci-build.v1",
+            "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+            "source_dirty": false,
+            "application_version": "0.8.0",
+            "cli_sha256": "a587ef795786733dd139f532bfe1cee9da9f6994da72656c6b691c3ebb6dd276",
+            "scientific_acceptance_asserted": false
+          }
+        }
+      ],
+      "binary_member_checks": [
+        {
+          "member": "greenlens.exe",
+          "bytes": 18810368,
+          "sha256": "a587ef795786733dd139f532bfe1cee9da9f6994da72656c6b691c3ebb6dd276",
+          "matches_declared": true
+        }
+      ]
+    },
+    {
+      "id": 12262263609,
+      "name": "energy-unsigned-investigation-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 21137709,
+      "digest": "sha256:b762975b9b05966342885233e1d586c163789231c45705baa9f47e467e2f2325",
+      "download_bytes": 21137709,
+      "download_sha256": "b762975b9b05966342885233e1d586c163789231c45705baa9f47e467e2f2325",
+      "digest_match": true,
+      "selected_members": [
+        {
+          "member": "checksums.json",
+          "bytes": 465,
+          "sha256": "c162deae3580fb96707f35a1730623759c2bd615369ce6db20b52902b1945933",
+          "content": {
+            "schema_version": "0.1.0",
+            "artifacts": [
+              {
+                "sha256": "ef5072a97d7e178eff79b3be82a4fe661b8b6800e807e7ee806183d18037daf5",
+                "file": "GreenLens_0.8.0_x64-setup.exe"
+              },
+              {
+                "sha256": "efd427da8c28ce3464e55ad5ed9feb5f60a119c16f8b670e598e83e261a9b5aa",
+                "file": "GreenLens-CLI-0.8.0-windows-x64.zip"
+              }
+            ],
+            "signed": false,
+            "generated_utc": "2026-10-20T12:10:33.3914563Z",
+            "application_version": "0.8.0"
+          }
+        }
+      ],
+      "binary_member_checks": [
+        {
+          "member": "GreenLens_0.8.0_x64-setup.exe",
+          "bytes": 7821094,
+          "sha256": "ef5072a97d7e178eff79b3be82a4fe661b8b6800e807e7ee806183d18037daf5",
+          "matches_declared": true
+        },
+        {
+          "member": "GreenLens-CLI-0.8.0-windows-x64.zip",
+          "bytes": 13420771,
+          "sha256": "efd427da8c28ce3464e55ad5ed9feb5f60a119c16f8b670e598e83e261a9b5aa",
+          "matches_declared": true
+        }
+      ]
+    }
+  ]
+}

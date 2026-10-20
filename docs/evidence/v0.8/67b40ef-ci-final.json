@@ -1,0 +1,962 @@
+{
+  "schema_version": "greenlens.hosted-ci-read-only-receipt.v1",
+  "recorded_at_utc": "2026-10-20T12:45:57.817504+00:00",
+  "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+  "workflow_run_id": 39412130531,
+  "workflow_url": "https://github.com/AdrianIp0204/GreenLens/actions/runs/39412130531",
+  "workflow_name": "Bounded energy Windows verification",
+  "workflow_event": "push",
+  "branch": "codex/v0.8-report-design",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "build",
+      "job_id": 118592214747,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-20T11:02:28Z",
+      "completed_utc": "2026-10-20T12:10:47Z",
+      "steps": [
+        {
+          "completedAt": "2026-10-20T11:02:30Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-20T11:02:29Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:02:36Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-20T11:02:30Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:02:44Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-node@v4",
+          "number": 3,
+          "startedAt": "2026-10-20T11:02:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:02:45Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 4,
+          "startedAt": "2026-10-20T11:02:44Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:03:26Z",
+          "conclusion": "success",
+          "name": "Exact clean source and native toolchain",
+          "number": 5,
+          "startedAt": "2026-10-20T11:02:45Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:04:32Z",
+          "conclusion": "success",
+          "name": "Frontend types, interaction regressions and production assets",
+          "number": 6,
+          "startedAt": "2026-10-20T11:03:26Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:04:36Z",
+          "conclusion": "success",
+          "name": "Pinned Radiance for required legacy cancellation regressions",
+          "number": 7,
+          "startedAt": "2026-10-20T11:04:32Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:04:40Z",
+          "conclusion": "success",
+          "name": "Pinned text sources for required optional-worker patch tests",
+          "number": 8,
+          "startedAt": "2026-10-20T11:04:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:04:56Z",
+          "conclusion": "success",
+          "name": "Pinned miniz preallocation checks (no SKP parser or worker)",
+          "number": 9,
+          "startedAt": "2026-10-20T11:04:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T11:37:34Z",
+          "conclusion": "success",
+          "name": "Format, strict lint and unit/lifecycle regression suite",
+          "number": 10,
+          "startedAt": "2026-10-20T11:04:56Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:33Z",
+          "conclusion": "success",
+          "name": "Build and package exact-source unsigned binaries",
+          "number": 11,
+          "startedAt": "2026-10-20T11:37:34Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:37Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 12,
+          "startedAt": "2026-10-20T12:10:33Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:40Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 13,
+          "startedAt": "2026-10-20T12:10:37Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:43Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 14,
+          "startedAt": "2026-10-20T12:10:40Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:43Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 26,
+          "startedAt": "2026-10-20T12:10:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:43Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-node@v4",
+          "number": 27,
+          "startedAt": "2026-10-20T12:10:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:46Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 28,
+          "startedAt": "2026-10-20T12:10:43Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:46Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 29,
+          "startedAt": "2026-10-20T12:10:46Z",
+          "status": "completed"
+        }
+      ],
+      "retained_test_summaries": [
+        "\u2139 tests 492",
+        "\u2139 suites 0",
+        "\u2139 pass 492",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 46068.8712",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 132 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 141.42s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s",
+        "test result: ok. 11 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 3.14s",
+        "test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 6.62s",
+        "test result: ok. 11 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.75s",
+        "test result: ok. 293 passed; 0 failed; 7 ignored; 0 measured; 0 filtered out; finished in 836.20s",
+        "test result: ok. 0 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.65s",
+        "test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s",
+        "test result: ok. 14 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 4.21s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s",
+        "test result: ok. 47 passed; 0 failed; 7 ignored; 0 measured; 0 filtered out; finished in 14.51s",
+        "\u2139 tests 5",
+        "\u2139 suites 0",
+        "\u2139 pass 5",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 160.0964",
+        "\u2139 tests 12",
+        "\u2139 suites 0",
+        "\u2139 pass 12",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 97.574",
+        "\u2139 tests 31",
+        "\u2139 suites 0",
+        "\u2139 pass 31",
+        "\u2139 fail 0",
+        "\u2139 cancelled 0",
+        "\u2139 skipped 0",
+        "\u2139 todo 0",
+        "\u2139 duration_ms 283.9746",
+        "Ran 19 tests in 1.699s",
+        "OK"
+      ],
+      "log_sha256": "c22b9141e0bcfac1b7d25fba8d43715bfda5b3df1dafb439ad31c52a359d96cd",
+      "log_bytes": 302405,
+      "log_file": "hosted-build-118592214747.log"
+    },
+    {
+      "name": "static_compatibility",
+      "job_id": 118619285305,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-20T12:10:50Z",
+      "completed_utc": "2026-10-20T12:45:13Z",
+      "steps": [
+        {
+          "completedAt": "2026-10-20T12:10:52Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-20T12:10:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:11:21Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-20T12:10:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:11:22Z",
+          "conclusion": "success",
+          "name": "Owned verification paths",
+          "number": 3,
+          "startedAt": "2026-10-20T12:11:21Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:11:24Z",
+          "conclusion": "success",
+          "name": "Run actions/download-artifact@v4",
+          "number": 4,
+          "startedAt": "2026-10-20T12:11:22Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:11:48Z",
+          "conclusion": "success",
+          "name": "Frozen CLI identity and pinned static engine",
+          "number": 5,
+          "startedAt": "2026-10-20T12:11:24Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:31:17Z",
+          "conclusion": "success",
+          "name": "Required real static analytical suite",
+          "number": 6,
+          "startedAt": "2026-10-20T12:11:48Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:40:36Z",
+          "conclusion": "success",
+          "name": "Distributed CLI static A/B, copy, export and replay",
+          "number": 7,
+          "startedAt": "2026-10-20T12:31:17Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:45:07Z",
+          "conclusion": "success",
+          "name": "Historical v0.1 replay without annual executables",
+          "number": 8,
+          "startedAt": "2026-10-20T12:40:36Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:45:09Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 9,
+          "startedAt": "2026-10-20T12:45:07Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:45:11Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 18,
+          "startedAt": "2026-10-20T12:45:09Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:45:11Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 19,
+          "startedAt": "2026-10-20T12:45:11Z",
+          "status": "completed"
+        }
+      ],
+      "retained_test_summaries": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1070.77s"
+      ],
+      "log_sha256": "e6c89aba1e707ab706b8532c54f2a6d1af118f0e68e129f489a8c0688c6043d7",
+      "log_bytes": 47287,
+      "log_file": "hosted-static_compatibility-118619285305.log"
+    },
+    {
+      "name": "energy",
+      "job_id": 118619285311,
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-10-20T12:10:50Z",
+      "completed_utc": "2026-10-20T12:25:06Z",
+      "steps": [
+        {
+          "completedAt": "2026-10-20T12:10:52Z",
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "startedAt": "2026-10-20T12:10:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:58Z",
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "startedAt": "2026-10-20T12:10:52Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:58Z",
+          "conclusion": "success",
+          "name": "Run actions/setup-python@v5",
+          "number": 3,
+          "startedAt": "2026-10-20T12:10:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:10:59Z",
+          "conclusion": "success",
+          "name": "Owned verification paths and clean source assertions",
+          "number": 4,
+          "startedAt": "2026-10-20T12:10:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:11:01Z",
+          "conclusion": "success",
+          "name": "Run actions/download-artifact@v4",
+          "number": 5,
+          "startedAt": "2026-10-20T12:10:59Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:11:39Z",
+          "conclusion": "success",
+          "name": "Frozen CLI and independently installed pinned runtimes",
+          "number": 6,
+          "startedAt": "2026-10-20T12:11:01Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:14:04Z",
+          "conclusion": "success",
+          "name": "Explicit native lifecycle regression",
+          "number": 7,
+          "startedAt": "2026-10-20T12:11:39Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:15:11Z",
+          "conclusion": "success",
+          "name": "Explicit native report render regression",
+          "number": 8,
+          "startedAt": "2026-10-20T12:14:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:16:04Z",
+          "conclusion": "success",
+          "name": "Fixed four annual executions and complete immutable inspection",
+          "number": 9,
+          "startedAt": "2026-10-20T12:15:11Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:16:19Z",
+          "conclusion": "success",
+          "name": "Independent complete-series arithmetic and frozen scientific criteria",
+          "number": 10,
+          "startedAt": "2026-10-20T12:16:04Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:16:54Z",
+          "conclusion": "success",
+          "name": "Cold reports, export integrity and distributed replay despite numerical failure",
+          "number": 11,
+          "startedAt": "2026-10-20T12:16:19Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:24:49Z",
+          "conclusion": "success",
+          "name": "Retained real energy evidence through architectural intake and cold copy",
+          "number": 12,
+          "startedAt": "2026-10-20T12:16:54Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:24:50Z",
+          "conclusion": "success",
+          "name": "Retain qualification failure as job failure after independent delivery checks",
+          "number": 13,
+          "startedAt": "2026-10-20T12:24:49Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:24:57Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 14,
+          "startedAt": "2026-10-20T12:24:50Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:24:58Z",
+          "conclusion": "success",
+          "name": "Collect native diagnostics after any outcome",
+          "number": 15,
+          "startedAt": "2026-10-20T12:24:57Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:25:02Z",
+          "conclusion": "success",
+          "name": "Run actions/upload-artifact@v4",
+          "number": 16,
+          "startedAt": "2026-10-20T12:24:58Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:25:02Z",
+          "conclusion": "success",
+          "name": "Post Run actions/setup-python@v5",
+          "number": 31,
+          "startedAt": "2026-10-20T12:25:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:25:03Z",
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 32,
+          "startedAt": "2026-10-20T12:25:02Z",
+          "status": "completed"
+        },
+        {
+          "completedAt": "2026-10-20T12:25:04Z",
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 33,
+          "startedAt": "2026-10-20T12:25:03Z",
+          "status": "completed"
+        }
+      ],
+      "retained_test_summaries": [
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 59.13s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 299 filtered out; finished in 26.99s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 14 filtered out; finished in 69.47s",
+        "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 299 filtered out; finished in 32.75s"
+      ],
+      "log_sha256": "707180d6cc1bb4475db267a8f49aa89bb329c29c587a5638354fb39e4c9d5728",
+      "log_bytes": 80626,
+      "log_file": "hosted-energy-118619285311.log"
+    }
+  ],
+  "artifact_metadata": [
+    {
+      "id": 12264464712,
+      "name": "energy-static-compatibility-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 6520581,
+      "digest": "sha256:a77a312ae91331abc6f245fe402c66dd5b6309a16512ae01f9526027e520c024",
+      "expired": false,
+      "created_at": "2026-10-20T12:45:09Z",
+      "expires_at": "2026-11-03T12:45:07Z"
+    },
+    {
+      "id": 12264126420,
+      "name": "energy-native-jobs-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 53015598,
+      "digest": "sha256:855523fce5aca1eb716baecbde06e9bd0532e260bb3caa7d3c77cf663ae6eec0",
+      "expired": false,
+      "created_at": "2026-10-20T12:25:02Z",
+      "expires_at": "2026-11-03T12:24:58Z"
+    },
+    {
+      "id": 12264046520,
+      "name": "energy-native-evidence-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 97033814,
+      "digest": "sha256:42662b38daddf9823d641abad3ce9b55772eefdf558ab72179ffa324e03a9574",
+      "expired": false,
+      "created_at": "2026-10-20T12:24:57Z",
+      "expires_at": "2026-11-03T12:24:50Z"
+    },
+    {
+      "id": 12263602856,
+      "name": "energy-cli-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 13228503,
+      "digest": "sha256:db33277cc411607ce5877029266b7143387f4b5cd8a44cc4a7f81ec5905199c0",
+      "expired": false,
+      "created_at": "2026-10-20T12:10:37Z",
+      "expires_at": "2026-11-03T12:10:34Z"
+    },
+    {
+      "id": 12262403588,
+      "name": "energy-build-diagnostics-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 2633248,
+      "digest": "sha256:91e25a1b57d656d78147165936d7fbf2115311f24d13b6627e02cba0662c51cf",
+      "expired": false,
+      "created_at": "2026-10-20T12:10:43Z",
+      "expires_at": "2026-11-03T12:10:40Z"
+    },
+    {
+      "id": 12262263609,
+      "name": "energy-unsigned-investigation-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+      "size_in_bytes": 21137709,
+      "digest": "sha256:b762975b9b05966342885233e1d586c163789231c45705baa9f47e467e2f2325",
+      "expired": false,
+      "created_at": "2026-10-20T12:10:40Z",
+      "expires_at": "2026-11-03T12:10:37Z"
+    }
+  ],
+  "claim_scope": "Hosted checks of the exact source. No installed application, clean-machine, optional converter matrix or private-case acceptance is asserted. This collector only reads existing GitHub results; it does not rerun or cancel jobs.",
+  "log_collection_errors": [],
+  "artifact_count": 6,
+  "default_rust_tests": {
+    "passed": 556,
+    "failed": 0,
+    "ignored": 18,
+    "ignored_tests": [
+      {
+        "name": "reviewed_real_hong_kong_pvgis_full_year",
+        "reason": "explicit real-source acceptance; set GREENLENS_ACCEPTANCE_EPW to the reviewed original PVGIS file",
+        "default_status": "ignored",
+        "separate_coverage_status": "not_executed_in_this_workflow",
+        "separate_coverage": null
+      },
+      {
+        "name": "tests::native_child_fixture",
+        "reason": "Invoked by native supervisor parent tests",
+        "default_status": "ignored",
+        "separate_coverage_status": "synthetic_child_entry_point_called_by_parent_tests",
+        "separate_coverage": "Synthetic process-supervisor parent tests; not an independently selected default test or installed-app observation"
+      },
+      {
+        "name": "energy_report::tests::native_typst_all_three_documents_and_pages",
+        "reason": "Requires separately installed pinned native Typst; explicit missing-engine failure",
+        "default_status": "ignored",
+        "separate_coverage_status": "passed_in_explicit_energy_job",
+        "separate_coverage": "Explicit native report render regression"
+      },
+      {
+        "name": "energy_verified_cache::tests::concurrent_genuine_record_inspection_deduplicates_numeric_work",
+        "reason": "Requires the predeclared nine genuine retained records, no engine execution",
+        "default_status": "ignored",
+        "separate_coverage_status": "not_executed_in_this_workflow",
+        "separate_coverage": null
+      },
+      {
+        "name": "energy_verified_cache::tests::retained_nine_record_history_access_stays_bounded_without_numeric_rederivation",
+        "reason": "Requires nine distinct retained genuine records: GREENLENS_TEST_NINE_ENERGY_PROJECT; no engine run",
+        "default_status": "ignored",
+        "separate_coverage_status": "not_executed_in_this_workflow",
+        "separate_coverage": null
+      },
+      {
+        "name": "energy_verified_cache::tests::retained_report_and_sensitivity_panel_requests_do_not_repeat_numeric_traversal",
+        "reason": "Requires retained real evidence: GREENLENS_TEST_RETAINED_ENERGY_PROJECT; no engine run",
+        "default_status": "ignored",
+        "separate_coverage_status": "passed_in_explicit_energy_job",
+        "separate_coverage": "Retained real energy evidence through architectural intake and cold copy"
+      },
+      {
+        "name": "report_issue_export::tests::genuine_complete_issued_project_roundtrip_preserves_every_member_without_engines",
+        "reason": "Requires a saved genuine issued project in GREENLENS_TEST_ISSUED_PROJECT; never fabricates or runs energy evidence",
+        "default_status": "ignored",
+        "separate_coverage_status": "not_executed_in_this_workflow",
+        "separate_coverage": null
+      },
+      {
+        "name": "report_issue_export::tests::genuine_external_history_copy_export_and_cold_extract_preserve_all_evidence",
+        "reason": "Requires a genuine issued project in GREENLENS_TEST_ISSUED_PROJECT; no engine or report rendering is performed",
+        "default_status": "ignored",
+        "separate_coverage_status": "not_executed_in_this_workflow",
+        "separate_coverage": null
+      },
+      {
+        "name": "report_readiness_tests::cold_retained_report_preparation_and_genuine_pending_collection",
+        "reason": "Requires genuine retained A/B evidence; no engine/render execution. Set GREENLENS_TEST_RETAINED_ENERGY_PROJECT and exact A/B run IDs",
+        "default_status": "ignored",
+        "separate_coverage_status": "not_executed_in_this_workflow",
+        "separate_coverage": null
+      },
+      {
+        "name": "native_energy_conflict_copy_cancel_and_staleness",
+        "reason": "Requires pinned native EnergyPlus; release CI invokes explicitly",
+        "default_status": "ignored",
+        "separate_coverage_status": "passed_in_explicit_energy_job",
+        "separate_coverage": "Explicit native lifecycle regression"
+      },
+      {
+        "name": "retained_energy_evidence_is_immutable_through_reference_import_and_cold_copy",
+        "reason": "Requires retained real energy evidence; invoke explicitly with GREENLENS_TEST_RETAINED_ENERGY_PROJECT",
+        "default_status": "ignored",
+        "separate_coverage_status": "passed_in_explicit_energy_job",
+        "separate_coverage": "Retained real energy evidence through architectural intake and cold copy"
+      },
+      {
+        "name": "annual_primary::native_tests::native_hammersley_primary_stream_bridge",
+        "reason": "explicit isolated native bridge; coordinate one engine slot and invoke with --ignored --exact; no skip counts as acceptance",
+        "default_status": "ignored",
+        "separate_coverage_status": "not_executed_in_this_workflow",
+        "separate_coverage": null
+      },
+      {
+        "name": "annual_stream::tests::child_fixture",
+        "reason": "synthetic subprocess entry, invoked by native stream supervisor tests",
+        "default_status": "ignored",
+        "separate_coverage_status": "synthetic_child_entry_point_called_by_parent_tests",
+        "separate_coverage": "Synthetic process-supervisor parent tests; not an independently selected default test or installed-app observation"
+      },
+      {
+        "name": "process::resource_tests::deadline_child_fixture",
+        "reason": "synthetic deadline child entry point",
+        "default_status": "ignored",
+        "separate_coverage_status": "synthetic_child_entry_point_called_by_parent_tests",
+        "separate_coverage": "Synthetic process-supervisor parent tests; not an independently selected default test or installed-app observation"
+      },
+      {
+        "name": "process::resource_tests::resource_child_fixture",
+        "reason": "synthetic child entry point invoked by required resource-cap test",
+        "default_status": "ignored",
+        "separate_coverage_status": "synthetic_child_entry_point_called_by_parent_tests",
+        "separate_coverage": "Synthetic process-supervisor parent tests; not an independently selected default test or installed-app observation"
+      },
+      {
+        "name": "process::resource_tests::resource_grandchild_fixture",
+        "reason": "synthetic descendant entry point invoked by required resource-cap test",
+        "default_status": "ignored",
+        "separate_coverage_status": "synthetic_child_entry_point_called_by_parent_tests",
+        "separate_coverage": "Synthetic process-supervisor parent tests; not an independently selected default test or installed-app observation"
+      },
+      {
+        "name": "process::tests::child_fixture",
+        "reason": "child process fixture, invoked by cancellation_terminates_process_tree",
+        "default_status": "ignored",
+        "separate_coverage_status": "synthetic_child_entry_point_called_by_parent_tests",
+        "separate_coverage": "Synthetic process-supervisor parent tests; not an independently selected default test or installed-app observation"
+      },
+      {
+        "name": "process::tests::grandchild_fixture",
+        "reason": "grandchild process fixture, invoked by cancellation_terminates_process_tree",
+        "default_status": "ignored",
+        "separate_coverage_status": "synthetic_child_entry_point_called_by_parent_tests",
+        "separate_coverage": "Synthetic process-supervisor parent tests; not an independently selected default test or installed-app observation"
+      }
+    ],
+    "count_scope": "Sum of declared top-level Cargo target result summaries: workspace excluding Radiance plus separate Radiance library. Each summary follows its own Running or Doc-tests target; no nested child summary is counted. Explicit energy/static tests are separate.",
+    "targets": [
+      {
+        "target": "greenlens: unittests src\\main.rs",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.01
+      },
+      {
+        "target": "greenlens_core: unittests src\\lib.rs",
+        "passed": 132,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 141.42
+      },
+      {
+        "target": "study: tests\\study.rs",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.12
+      },
+      {
+        "target": "weather: tests\\weather.rs",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 3.14
+      },
+      {
+        "target": "greenlens_desktop_lib: unittests src\\lib.rs",
+        "passed": 6,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.01
+      },
+      {
+        "target": "greenlens_desktop: unittests src\\main.rs",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "greenlens_energyplus: unittests src\\lib.rs",
+        "passed": 12,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 6.62
+      },
+      {
+        "target": "greenlens_process: unittests src\\lib.rs",
+        "passed": 11,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 2.75
+      },
+      {
+        "target": "greenlens_runner: unittests src\\lib.rs",
+        "passed": 293,
+        "failed": 0,
+        "ignored": 7,
+        "seconds": 836.2
+      },
+      {
+        "target": "energy_lifecycle: tests\\energy_lifecycle.rs",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 0.0
+      },
+      {
+        "target": "jobs: tests\\jobs.rs",
+        "passed": 2,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.65
+      },
+      {
+        "target": "persistence: tests\\persistence.rs",
+        "passed": 16,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.88
+      },
+      {
+        "target": "reference_intake: tests\\reference_intake.rs",
+        "passed": 14,
+        "failed": 0,
+        "ignored": 1,
+        "seconds": 4.21
+      },
+      {
+        "target": "Doc-tests greenlens_core",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "Doc-tests greenlens_desktop_lib",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "Doc-tests greenlens_energyplus",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "Doc-tests greenlens_process",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "Doc-tests greenlens_runner",
+        "passed": 0,
+        "failed": 0,
+        "ignored": 0,
+        "seconds": 0.0
+      },
+      {
+        "target": "greenlens_radiance: unittests src\\lib.rs",
+        "passed": 47,
+        "failed": 0,
+        "ignored": 7,
+        "seconds": 14.51
+      }
+    ]
+  },
+  "frontend_tests": {
+    "passed": 492,
+    "failed": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "duration_ms": 46068.8712
+  },
+  "preallocation_tests": {
+    "schema_version": "greenlens.openskp-preallocation-tests.v1",
+    "passed": 3130,
+    "failed": 0,
+    "zip_intake_cases": 6,
+    "skp_parses": 0,
+    "worker_executions": 0,
+    "containment_qualified": false
+  },
+  "downloaded_build_artifacts": {
+    "schema_version": "greenlens.hosted-build-artifact-read-only.v1",
+    "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+    "checked_utc": "2026-10-20T12:12:17.505076+00:00",
+    "scope": "Hosted artifact download and bounded metadata inspection only. No extracted executable runs; no equality with local binaries assumed.",
+    "artifacts": [
+      {
+        "id": 12263602856,
+        "name": "energy-cli-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+        "size_in_bytes": 13228503,
+        "digest": "sha256:db33277cc411607ce5877029266b7143387f4b5cd8a44cc4a7f81ec5905199c0",
+        "download_bytes": 13228503,
+        "download_sha256": "db33277cc411607ce5877029266b7143387f4b5cd8a44cc4a7f81ec5905199c0",
+        "digest_match": true,
+        "selected_members": [
+          {
+            "member": "ci-build.json",
+            "bytes": 304,
+            "sha256": "471d6871fae97a436b17eebc7a840af9b1009e176d4f5a6ed34b6639b7f72aeb",
+            "content": {
+              "schema": "greenlens.energy-ci-build.v1",
+              "source_commit": "67b40efae29e8ec34f3ad6f815a3b63b64427646",
+              "source_dirty": false,
+              "application_version": "0.8.0",
+              "cli_sha256": "a587ef795786733dd139f532bfe1cee9da9f6994da72656c6b691c3ebb6dd276",
+              "scientific_acceptance_asserted": false
+            }
+          }
+        ],
+        "binary_member_checks": [
+          {
+            "member": "greenlens.exe",
+            "bytes": 18810368,
+            "sha256": "a587ef795786733dd139f532bfe1cee9da9f6994da72656c6b691c3ebb6dd276",
+            "matches_declared": true
+          }
+        ]
+      },
+      {
+        "id": 12262263609,
+        "name": "energy-unsigned-investigation-67b40efae29e8ec34f3ad6f815a3b63b64427646",
+        "size_in_bytes": 21137709,
+        "digest": "sha256:b762975b9b05966342885233e1d586c163789231c45705baa9f47e467e2f2325",
+        "download_bytes": 21137709,
+        "download_sha256": "b762975b9b05966342885233e1d586c163789231c45705baa9f47e467e2f2325",
+        "digest_match": true,
+        "selected_members": [
+          {
+            "member": "checksums.json",
+            "bytes": 465,
+            "sha256": "c162deae3580fb96707f35a1730623759c2bd615369ce6db20b52902b1945933",
+            "content": {
+              "schema_version": "0.1.0",
+              "artifacts": [
+                {
+                  "sha256": "ef5072a97d7e178eff79b3be82a4fe661b8b6800e807e7ee806183d18037daf5",
+                  "file": "GreenLens_0.8.0_x64-setup.exe"
+                },
+                {
+                  "sha256": "efd427da8c28ce3464e55ad5ed9feb5f60a119c16f8b670e598e83e261a9b5aa",
+                  "file": "GreenLens-CLI-0.8.0-windows-x64.zip"
+                }
+              ],
+              "signed": false,
+              "generated_utc": "2026-10-20T12:10:33.3914563Z",
+              "application_version": "0.8.0"
+            }
+          }
+        ],
+        "binary_member_checks": [
+          {
+            "member": "GreenLens_0.8.0_x64-setup.exe",
+            "bytes": 7821094,
+            "sha256": "ef5072a97d7e178eff79b3be82a4fe661b8b6800e807e7ee806183d18037daf5",
+            "matches_declared": true
+          },
+          {
+            "member": "GreenLens-CLI-0.8.0-windows-x64.zip",
+            "bytes": 13420771,
+            "sha256": "efd427da8c28ce3464e55ad5ed9feb5f60a119c16f8b670e598e83e261a9b5aa",
+            "matches_declared": true
+          }
+        ]
+      }
+    ]
+  },
+  "explicit_native_coverage": {
+    "energy_lifecycle_tests_passed": 1,
+    "typst_report_tests_passed": 1,
+    "retained_reference_intake_tests_passed": 1,
+    "retained_panel_reuse_tests_passed": 1,
+    "static_scientific_tests_passed": 1,
+    "fixed_annual_cases": [
+      "A10",
+      "B10",
+      "A5",
+      "B5"
+    ],
+    "energy_science_step": "success",
+    "energy_portability_replay_step": "success",
+    "static_cli_copy_export_replay_step": "success",
+    "historical_static_replay_without_annual_executables_step": "success",
+    "installed_desktop_verified": false,
+    "clean_machine_verified": false,
+    "optional_worker_matrix_executed": false,
+    "private_model_probe_executed": false
+  },
+  "all_job_step_skips": [],
+  "finalized_at_utc": "2026-10-20T12:47:42.936132+00:00",
+  "limitations": [
+    "Hosted build and engine/report checks are distinct from local package bytes and installed native observations.",
+    "Default ignored tests are not blanket passes; only the explicit coverage listed here is established.",
+    "Synthetic supervisor child entry points do not establish installed application cancellation.",
+    "The stopped daylight and real-weather qualification protocols were not restarted by this workflow.",
+    "Downloaded build artifact hashes and metadata were checked without executing their binaries.",
+    "Raw hosted logs remain external; this receipt retains only named conclusions, test summaries, relative diagnostic names and identity hashes."
+  ]
+}

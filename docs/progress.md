@@ -1,6 +1,6 @@
 # Progress and acceptance evidence
 
-2026-10-20: RC3/VD2 bytes intact. Proposal targeting repaired; 491 frontend and 3,130 native helper checks pass. Final source review/CI pending. `v0.8-oct20-continuation.md` records scope; no render/parser rerun.
+2026-10-20: 67b40ef proposal fix: 492 frontend, 3,130 helper assertions and required CI pass. New package uninstalled; RC3/VD2 unchanged. `v0.8-oct20-continuation.md` records remaining native/SKP gaps.
 
 2026-10-18 RC3: R2, 54-product cold CLI and complete copy pass; zero engine. Receipt: `evidence/v0.8/f2197f3-rc3-outcome.md`. Native/SKP gaps remain.
 

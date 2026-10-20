@@ -2,6 +2,35 @@
 
 **Not adopted, built, installed, or exposed by GreenLens by this source addition.** This is a bounded development candidate for the predeclared matrix in `docs/v0.8-skp-decision.md`. Successful exit means an *unaccepted candidate*, never accepted project geometry, complete source fidelity or scientific qualification. No private input is authorized by this recipe.
 
+The 2026-10-20 prerequisite repair moves the existing 5,000-entry admission into
+miniz before central-directory/index storage grows, including its ZIP64 path.
+Checked padding/product/sum arithmetic also precedes the instanced exporter's
+binary reserve and append operations. These are narrow buffer-request repairs.
+They do not establish process commitment, parser-wide allocation bounds or
+containment: dictionary/JSON intermediates, serializer copies, native runtime
+allocation and miniz's direct allocation paths remain separately unresolved.
+
+`tests/` is an independent low-resource C/C++ unit target. It contains no OpenSKP
+parser or worker and never reads SKP fixtures. It exercises the production
+arithmetic helper and actual patched miniz on original in-memory empty-file
+ZIPs, including positive 5,000-entry and rejected 5,001-entry normal/ZIP64 cases.
+Allocator observations require rejection before directory/index allocations;
+they are not aggregate process-memory measurements. The build owner runs:
+
+```powershell
+node tools/openskp-worker/prepare-preallocation-tests.mjs $MinizCheckout $NewExternalUnitSource
+cmake -S tools/openskp-worker/tests -B $NewExternalUnitBuild -G Ninja "-DGREENLENS_PREALLOCATION_SOURCE=$NewExternalUnitSource" -DCMAKE_BUILD_TYPE=Release
+cmake --build $NewExternalUnitBuild --parallel 2
+& (Join-Path $NewExternalUnitBuild 'greenlens-preallocation-tests.exe')
+node --test tools/openskp-worker/preallocation.test.mjs
+```
+
+The separate unit-test preparation checks the pinned clean source and exact
+bytes, retains notices and hashes every copied helper/test/dependency member.
+It creates a new external directory and preserves failures. It cannot prepare,
+build or execute the converter. Passing these tests does not consume or pass
+CT1, the independent conversion matrix or the private probe.
+
 Source pin: OpenSKP `dceb9fff0efc9668961530b535d5375c001343dc`; miniz `77d0dce8627735138c51770d1799a1ef48f2117d`; TinyGLTF `488a70a3df62a4df1a736e9e56fb8836580c4888` including nlohmann JSON 3.10.4. Exact notices are retained in `licenses/`. No SketchUp SDK, FlatBuffers/Fragments, image decoder, interpreter, online converter or application runtime dependency is introduced. MSVC runtime distribution remains separately reviewed if anything is later packaged.
 
 `prepare-source.mjs` checks those external Git pins/clean tracked content, copies only the selected source closure to a **new** external directory and applies unique-anchor strict patches. It leaves failed preparations inspectable. It never downloads, builds, parses a model or mutates an upstream checkout. Required Node.js is development tooling only. CMake checks every prepared source hash, has no acquisition or install target, and builds only the static parser/geometry/instanced GLB closure plus the Windows worker. Final linked closure still needs the build owner's check.

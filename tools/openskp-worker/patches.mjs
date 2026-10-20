@@ -1,6 +1,7 @@
 // Original GreenLens strictness modifications; Apache-2.0.
 // Anchors below quote pinned MIT OpenSKP source; retain LICENSE.openskp.
 export const pin = 'dceb9fff0efc9668961530b535d5375c001343dc';
+export const minizPin = '77d0dce8627735138c51770d1799a1ef48f2117d';
 export function replaceExactly(text, before, after, label) {
   const count = text.split(before).length - 1;
   if (count !== 1) throw new Error(`${label}: expected one pinned anchor, found ${count}`);
@@ -115,10 +116,58 @@ export function patchSource(path, original) {
     edit('          active.erase(*i.ref_idx);\n        }\n      }', '          active.erase(*i.ref_idx);\n        } else throw std::runtime_error("Unresolved component definition");\n      } else throw std::runtime_error("Missing component reference");');
   }
   if (path === 'src/instanced_glb.cpp') {
-    edit('constexpr std::size_t kGlbLimit = std::numeric_limits<std::uint32_t>::max();', 'constexpr std::size_t kGlbLimit = 64u * 1024 * 1024; // GreenLens candidate limit');
+    edit('#include <openskp/instanced_glb.hpp>', '#include <openskp/instanced_glb.hpp>\n#include "preallocation_bounds.h"');
+    edit('constexpr std::size_t kGlbLimit = std::numeric_limits<std::uint32_t>::max();', 'constexpr std::size_t kGlbLimit = GREENLENS_GLB_BYTE_LIMIT; // GreenLens candidate limit');
+    edit(`void check_binary_growth(std::size_t current, std::size_t count, std::size_t element_size) {
+  if (count > kGlbLimit / element_size || current > kGlbLimit - count * element_size) {
+    throw std::length_error("scene geometry exceeds GLB's 32-bit binary-buffer limit");
+  }
+}`, `std::size_t admitted_binary_size(std::size_t current, std::size_t count, std::size_t element_size) {
+  std::size_t aligned = 0, next = 0;
+  if (!greenlens_glb_append_size(current, count, element_size, &aligned, &next))
+    throw std::length_error("scene geometry exceeds GreenLens 64 MiB binary-buffer limit");
+  return next;
+}`);
+    edit(`  align_buffer(buffer);
+  check_binary_growth(buffer.size(), values.size(), sizeof(T));
+  const auto offset = buffer.size();
+  buffer.reserve(buffer.size() + values.size() * sizeof(T));`, `  // Admit padding and data together before reserve or padding can allocate.
+  const auto next_size = admitted_binary_size(buffer.size(), values.size(), sizeof(T));
+  buffer.reserve(next_size);
+  align_buffer(buffer);
+  const auto offset = buffer.size();`);
+    edit(`        total_bytes += source.positions.size() * 4 + source.normals.size() * 4 +
+                       source.uvs.size() * 4 + source.indices.size() * 4;`, `        total_bytes = admitted_binary_size(total_bytes, source.positions.size(), 4);
+        total_bytes = admitted_binary_size(total_bytes, source.normals.size(), 4);
+        total_bytes = admitted_binary_size(total_bytes, source.uvs.size(), 4);
+        total_bytes = admitted_binary_size(total_bytes, source.indices.size(), 4);`);
+    edit(`    binary.reserve(total_bytes);`, `    if (embed_textures) {
+      for (const auto& texture : scene.textures)
+        total_bytes = admitted_binary_size(total_bytes, texture.data.size(), 1);
+    }
+    binary.reserve(total_bytes);`);
   }
   if (path === 'src/vff.cpp') {
     edit('std::optional<std::string> read_meta_units(const ByteBuffer& meta_bytes) {', 'std::optional<std::string> read_meta_units(const ByteBuffer& meta_bytes) {\n  greenlens_strict::Depth strict_depth;');
   }
   return text === original.replaceAll('\r\n','\n') ? text : marker + text;
+}
+
+// The directory count is available in miniz before its central-directory/index
+// allocations, including the ZIP64 path. Keep upstream range/format validation.
+// This is not a second ZIP parser or an aggregate allocator.
+export function patchMiniz(path, original) {
+  if (path !== 'miniz_zip.c') return original.replaceAll('\r\n', '\n');
+  const marker = '/* GreenLens directory preallocation patch v1; retain upstream MIT notice. */\n';
+  let text = original.replaceAll('\r\n', '\n');
+  if (text.includes(marker.trim())) throw new Error(`${path}: patched anchor already present`);
+  text = replaceExactly(text, '#include "miniz.h"', '#include "miniz.h"\n#include "preallocation_bounds.h"', path);
+  text = replaceExactly(text,
+    '        if (pZip->m_total_files != cdir_entries_on_this_disk)',
+    `        /* Reject excessive normal/ZIP64 counts before directory/index growth. */
+        if (!greenlens_zip_entry_count_admitted(pZip->m_total_files))
+            return mz_zip_set_error(pZip, MZ_ZIP_TOO_MANY_FILES);
+
+        if (pZip->m_total_files != cdir_entries_on_this_disk)`, path);
+  return marker + text;
 }

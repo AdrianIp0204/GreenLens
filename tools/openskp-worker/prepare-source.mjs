@@ -4,7 +4,7 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
-import {pin, patchSource} from './patches.mjs';
+import {pin, minizPin, patchSource, patchMiniz} from './patches.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const [openSkp, miniz, tinyGltf, destination, ...extra] = process.argv.slice(2);
@@ -13,7 +13,7 @@ const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const git = (directory, ...args) => execFileSync('git', ['-c', 'core.longpaths=true', '-C', directory, ...args], {encoding:'utf8', maxBuffer:16*1024*1024}).trimEnd();
 const sources = [
   {name:'openskp', root:openSkp, pin},
-  {name:'miniz', root:miniz, pin:'77d0dce8627735138c51770d1799a1ef48f2117d'},
+  {name:'miniz', root:miniz, pin:minizPin},
   {name:'tinygltf', root:tinyGltf, pin:'488a70a3df62a4df1a736e9e56fb8836580c4888'},
 ];
 for (const source of sources) {
@@ -35,7 +35,9 @@ const copy = (source, relative, output, patch=false) => {
   const blob = execFileSync('git',['-C',source.root,'show',`${source.pin}:${relative.replaceAll(String.fromCharCode(92),'/')}`],{maxBuffer:16*1024*1024});
   const normalized = raw.toString('utf8').replaceAll('\r\n','\n');
   if (normalized !== blob.toString('utf8').replaceAll('\r\n','\n')) throw new Error(`Source changed: ${relative}`);
-  const data = Buffer.from(patch ? patchSource(relative.slice('packages/cpp/'.length), normalized) : normalized);
+  const data = Buffer.from(patch
+    ? source.name === 'miniz' ? patchMiniz(relative, normalized) : patchSource(relative.slice('packages/cpp/'.length), normalized)
+    : normalized);
   const dest = path.join(target,output);
   fs.mkdirSync(path.dirname(dest),{recursive:true});
   fs.writeFileSync(dest,data,{flag:'wx'});
@@ -58,11 +60,16 @@ try {
   for (const unit of units) copy(sources[0],`packages/cpp/src/${unit}.cpp`,`openskp/src/${unit}.cpp`,true);
   for (const header of ['internal.hpp','face_groups.hpp']) copy(sources[0],`packages/cpp/src/${header}`,`openskp/src/${header}`,true);
   copy(sources[0],'LICENSE','licenses/LICENSE.openskp');
-  for (const file of ['miniz.c','miniz.h','miniz_common.h','miniz_tdef.c','miniz_tdef.h','miniz_tinfl.c','miniz_tinfl.h','miniz_zip.c','miniz_zip.h','LICENSE']) copy(sources[1],file,`miniz/${file}`);
+  for (const file of ['miniz.c','miniz.h','miniz_common.h','miniz_tdef.c','miniz_tdef.h','miniz_tinfl.c','miniz_tinfl.h','miniz_zip.c','miniz_zip.h','LICENSE']) copy(sources[1],file,`miniz/${file}`,file === 'miniz_zip.c');
   for (const file of ['tiny_gltf.h','json.hpp','LICENSE']) copy(sources[2],file,`tinygltf/${file}`);
   const limits = fs.readFileSync(path.join(here,'strict_limits.hpp'));
   fs.writeFileSync(path.join(target,'openskp/src/strict_limits.hpp'),limits,{flag:'wx'});
   manifest.strict_limits_sha256=sha(limits);
+  const bounds = fs.readFileSync(path.join(here,'preallocation_bounds.h'));
+  for (const output of ['openskp/src/preallocation_bounds.h','miniz/preallocation_bounds.h']) {
+    fs.writeFileSync(path.join(target,output),bounds,{flag:'wx'});
+    manifest.files.push({source:'greenlens',path:output,original_sha256:sha(bounds),prepared_sha256:sha(bounds)});
+  }
   manifest.files.sort((a,b)=>a.path.localeCompare(b.path,'en'));
   fs.writeFileSync(path.join(target,'source-manifest.json'),JSON.stringify(manifest,null,2)+'\n',{flag:'wx'});
   console.log(JSON.stringify({schema_version:manifest.schema_version,prepared_files:manifest.files.length,manifest_sha256:sha(fs.readFileSync(path.join(target,'source-manifest.json')))}));

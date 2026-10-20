@@ -20,7 +20,7 @@
       "license": "MIT",
       "notice": "licenses/LICENSE.miniz",
       "notice_sha256": "0115478d567121238cf6cc1c0c361926cf07a49d9e4c9e66da97fac6a01646b3",
-      "modifications": "None; generated static export macro only.",
+      "modifications": "Owned unique-anchor miniz_zip.c patch rejects more than 5,000 decoded directory entries before central-directory/index allocation. Shared original C-compatible bound helper and generated static export macro. No other allocator changes; direct MZ_MALLOC paths remain outside this narrow admission repair.",
       "obligation": "Retain all listed authors/copyrights and permission notice."
     },
     {

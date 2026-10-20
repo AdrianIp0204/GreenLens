@@ -4,12 +4,13 @@
 #include <cstddef>
 #include <stdexcept>
 #include <string>
+#include "preallocation_bounds.h"
 
 namespace greenlens_strict {
 inline constexpr std::size_t source_bytes = 128u * 1024 * 1024;
-inline constexpr std::size_t entry_bytes = 64u * 1024 * 1024;
+inline constexpr std::size_t entry_bytes = GREENLENS_GLB_BYTE_LIMIT;
 inline constexpr std::size_t zip_bytes = 256u * 1024 * 1024;
-inline constexpr std::size_t zip_entries = 5000;
+inline constexpr std::size_t zip_entries = GREENLENS_ZIP_ENTRY_LIMIT;
 inline constexpr std::size_t entities = 50000;
 inline constexpr std::size_t max_depth = 64;
 inline constexpr std::size_t triangles = 1000000;

@@ -2,16 +2,35 @@ import {useEffect,useRef,useState} from 'react';
 import {invoke} from '@tauri-apps/api/core';
 import type {ClimateProjectDocument} from '../climate-types';
 import type {ProposalAction,ProposalDraft,ProposalReview} from './design-proposals';
-import type {ThermalWindow,ThermalZone} from './types';
+import type {ThermalModel,ThermalWindow,ThermalZone} from './types';
+import {inspectorIdentity,inspectorRoute,type ThermalInspectorTarget} from './thermal-inspector-target';
 import './authoring.css';
 
-type Props={project:ClimateProjectDocument;selectedZone:string;onCommit:(draft:ProposalDraft,sha:string)=>Promise<boolean>;onClose:()=>void;onActivityChange:(open:boolean)=>void;registerLifecycle:(request:(reason:string)=>Promise<boolean>)=>()=>void};
+type Props={project:ClimateProjectDocument;selectedZone:string;selectedTarget?:ThermalInspectorTarget|null;onCommit:(draft:ProposalDraft,sha:string)=>Promise<boolean>;onClose:()=>void;onActivityChange:(open:boolean)=>void;registerLifecycle:(request:(reason:string)=>Promise<boolean>)=>()=>void};
 const choices=[['set_overhang','External window shading'],['put_window','Add / resize rectangular window'],['remove_window','Remove window'],['put_detached_shade','Add / resize detached shading'],['remove_detached_shade','Remove detached shading'],['assign_window_glazing','Explicit glazing properties'],['assign_construction','Opaque construction assignment']] as const;
 const bytes=(v:string)=>new TextEncoder().encode(v).length;
-export default function DesignProposal({project,selectedZone,onCommit,onClose,onActivityChange,registerLifecycle}:Props){
-  const model=project.energy!.designs.B.model,initial=model.zones.find(z=>z.id===selectedZone)??model.zones[0];
-  const [kind,setKind]=useState<ProposalAction['kind']>('set_overhang'),[zoneId,setZoneId]=useState(initial.id),[windowId,setWindowId]=useState(initial.windows[0]?.id??''),[surfaceId,setSurfaceId]=useState(initial.windows[0]?.surface_id??initial.surfaces[0].id),[constructionId,setConstructionId]=useState(model.constructions[0]?.id??''),[glazingId,setGlazingId]=useState(initial.windows[0]?.glazing_id??model.glazing[0]?.id??'');
-  const w=initial.windows[0],g=model.glazing.find(x=>x.id===w?.glazing_id)??model.glazing[0],shade=model.detached_shading[0];
+function initialTarget(model:ThermalModel,selectedZone:string,target:ThermalInspectorTarget|null|undefined){
+  const fallback=model.zones.find(z=>z.id===selectedZone)??model.zones[0];
+  const base={zone:fallback,window:fallback.windows[0],surface:fallback.surfaces.find(s=>s.id===fallback.windows[0]?.surface_id)??fallback.surfaces[0],shade:model.detached_shading[0],kind:'set_overhang' as ProposalAction['kind'],problem:'',selected:''};
+  if(!target)return base;
+  const {kind,id}=inspectorIdentity(target),route=inspectorRoute(model,target);
+  const selected=`${kind} · ${id}`;
+  if(!['zone','window','overhang','surface','detached_shade'].includes(kind))return{...base,selected,problem:`Selected ${selected} has no supported design proposal. Choose an analytical window, surface, overhang, zone or detached shade explicitly.`};
+  if(!route.exists)return{...base,selected,problem:`Selected ${selected} is not present in proposed B with the same semantic identity. No other object has been selected as a substitute.`};
+  const zone=model.zones.find(z=>z.id===route.zoneId)??fallback;
+  const window=kind==='window'||kind==='overhang'?zone.windows.find(w=>w.id===id):zone.windows[0];
+  const surface=kind==='surface'?zone.surfaces.find(s=>s.id===id):zone.surfaces.find(s=>s.id===window?.surface_id)??zone.surfaces[0];
+  return{...base,zone,window,surface,shade:kind==='detached_shade'?model.detached_shading.find(s=>s.id===id):base.shade,kind:kind==='window'?'put_window' as const:kind==='surface'?'assign_construction' as const:kind==='detached_shade'?'put_detached_shade' as const:'set_overhang' as const,selected};
+}
+export default function DesignProposal({project,selectedZone,selectedTarget,onCommit,onClose,onActivityChange,registerLifecycle}:Props){
+  const model=project.energy!.designs.B.model;
+  // Resolve the entry selection once by semantic ID in B. Names and A-only
+  // objects never choose a different B object; subsequent target changes are explicit.
+  const [entry]=useState(()=>initialTarget(model,selectedZone,selectedTarget)),initial=entry.zone;
+  const [selectionProblem,setSelectionProblem]=useState(entry.problem);
+  const [selectionDiscarded,setSelectionDiscarded]=useState(false);
+  const [kind,setKind]=useState<ProposalAction['kind']>(entry.kind),[zoneId,setZoneId]=useState(initial.id),[windowId,setWindowId]=useState(entry.window?.id??''),[surfaceId,setSurfaceId]=useState(entry.surface?.id??''),[constructionId,setConstructionId]=useState(entry.surface?.construction_id??''),[glazingId,setGlazingId]=useState(entry.window?.glazing_id??model.glazing[0]?.id??'');
+  const w=entry.window,g=model.glazing.find(x=>x.id===w?.glazing_id)??model.glazing[0],shade=entry.shade;
   const [shadeTarget,setShadeTarget]=useState(shade?.id??'');
   const [fields,setFields]=useState<Record<string,string>>({windowId:w?.id??'proposed_window',width:String(w?.width_m??2),height:String(w?.height_m??1.5),u:String(w?.offset_u_m??1),v:String(w?.offset_v_m??1),projection:String(w?.overhang?.projection_m??0.6),extension:String(w?.overhang?.side_extension_m??0.1),gap:String(w?.overhang?.gap_above_m??0.1),shadeId:shade?.id??'proposed_shade',x:String(shade?.origin_m[0]??0),y:String(shade?.origin_m[1]??-3),z:String(shade?.origin_m[2]??0),sx:String(shade?.size_m[0]??4),sy:String(shade?.size_m[1]??0.3),sz:String(shade?.size_m[2]??3),newGlazingId:'proposed_glazing',uValue:String(g?.u_value_w_m2k??''),shgc:String(g?.shgc??''),vlt:String(g?.visible_transmittance??'')});
   const [removeOverhang,setRemoveOverhang]=useState(false),[citation,setCitation]=useState(''),[rationale,setRationale]=useState(''),[synthetic,setSynthetic]=useState(true);
@@ -21,12 +40,13 @@ export default function DesignProposal({project,selectedZone,onCommit,onClose,on
   useEffect(()=>{activity.current(true);dialog.current?.showModal();return()=>{activity.current(false);resolver.current?.(false);};},[]);
   useEffect(()=>lifecycle.current(message=>new Promise(resolve=>{resolver.current=resolve;setReason(message);setClosing(true);})),[]);
   const decide=(value:boolean)=>{resolver.current?.(value);resolver.current=null;setClosing(false);setReason('');};
-  const signature=JSON.stringify([project,kind,zoneId,windowId,surfaceId,constructionId,glazingId,shadeTarget,fields,removeOverhang,citation,rationale,synthetic]);
+  const signature=JSON.stringify([project,kind,zoneId,windowId,surfaceId,constructionId,glazingId,shadeTarget,fields,removeOverhang,citation,rationale,synthetic,selectionProblem]);
   const latest=useRef(signature);latest.current=signature;const reviewed=useRef(''),draftRef=useRef<ProposalDraft|null>(null);
   useEffect(()=>{setReview(null);},[signature]);
   const zone=model.zones.find(z=>z.id===zoneId)!;
   const n=(key:string)=>{if(!fields[key].trim()||!Number.isFinite(Number(fields[key])))throw Error(`${key}: enter a finite value in the displayed units.`);return Number(fields[key]);};
   const build=():ProposalDraft=>{
+    if(selectionProblem)throw Error(selectionProblem);
     if(!citation.trim()||!rationale.trim()||bytes(citation)>2048||bytes(rationale)>2048)throw Error('Provide a source and rationale, each at most 2,048 UTF-8 bytes.');
     let action:ProposalAction;
     if(kind==='set_overhang')action={kind,zone_id:zoneId,window_id:windowId,overhang:removeOverhang?null:{projection_m:n('projection'),side_extension_m:n('extension'),gap_above_m:n('gap')}};
@@ -50,7 +70,8 @@ export default function DesignProposal({project,selectedZone,onCommit,onClose,on
   const input=(key:string,label:string)=><label>{label}<input value={fields[key]} onChange={e=>setFields(old=>({...old,[key]:e.target.value}))}/></label>;
   const selectWindow=(target:ThermalZone,id:string)=>{
     const value=target.windows.find(x=>x.id===id),glazing=model.glazing.find(x=>x.id===value?.glazing_id)??model.glazing[0];
-    setZoneId(target.id);setWindowId(value?.id??'');setSurfaceId(value?.surface_id??target.surfaces[0].id);setGlazingId(value?.glazing_id??glazing?.id??'');setRemoveOverhang(false);
+    const surface=target.surfaces.find(s=>s.id===value?.surface_id)??target.surfaces[0];
+    setZoneId(target.id);setWindowId(value?.id??'');setSurfaceId(surface.id);setConstructionId(surface.construction_id);setGlazingId(value?.glazing_id??glazing?.id??'');setRemoveOverhang(false);
     setFields(old=>({...old,windowId:value?.id??'proposed_window',width:String(value?.width_m??2),height:String(value?.height_m??1.5),u:String(value?.offset_u_m??1),v:String(value?.offset_v_m??1),projection:String(value?.overhang?.projection_m??0.6),extension:String(value?.overhang?.side_extension_m??0.1),gap:String(value?.overhang?.gap_above_m??0.1),uValue:String(glazing?.u_value_w_m2k??''),shgc:String(glazing?.shgc??''),vlt:String(glazing?.visible_transmittance??'')}));
   };
   const selectShade=(id:string)=>{
@@ -60,13 +81,14 @@ export default function DesignProposal({project,selectedZone,onCommit,onClose,on
   };
   return <dialog ref={dialog} className="energy-authoring-dialog design-proposal-dialog" aria-labelledby="proposal-title" onCancel={e=>{e.preventDefault();setClosing(true);}}><header><h2 id="proposal-title">Design alternative · Proposed B</h2><button disabled={busy} onClick={()=>setClosing(true)} aria-label="Close proposal">×</button></header>
     <p>Test a declared hypothesis. Baseline A and imported reference geometry remain unchanged. A valid preview is <strong>Not simulated</strong>; savings and service equivalence require matching evidence.</p>
+    {selectionProblem?<div role="alert"><p>{selectionProblem}</p><button disabled={busy||closing} onClick={()=>{setSelectionProblem('');setSelectionDiscarded(true);}}>Discard selection and choose in B</button></div>:entry.selected&&!selectionDiscarded&&<p>Opened from: {entry.selected}, resolved by stable identity in proposed B. Review the current target below before applying; later target changes are explicit.</p>}
     {closing&&<div role="alertdialog" aria-label="Resolve proposed alternative"><p>Resolve this draft before {reason||'closing'}.</p><button disabled={busy||!review?.proposal.valid} onClick={()=>void apply()}>Apply</button><button disabled={busy} onClick={()=>{decide(true);onClose();}}>Discard</button><button disabled={busy} onClick={()=>decide(false)}>Cancel</button></div>}
-    <fieldset disabled={busy||closing}><legend>Applicable supported change</legend><label>Hypothesis<select value={kind} onChange={e=>setKind(e.target.value as ProposalAction['kind'])}>{choices.map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>
+    <fieldset disabled={busy||closing||!!selectionProblem}><legend>Applicable supported change</legend><label>Hypothesis<select value={kind} onChange={e=>setKind(e.target.value as ProposalAction['kind'])}>{choices.map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>
     <label>Zone in B<select value={zoneId} onChange={e=>{const z=model.zones.find(x=>x.id===e.target.value)!;selectWindow(z,z.windows[0]?.id??'');}}>{model.zones.map(z=><option key={z.id} value={z.id}>{z.name} · {z.id}</option>)}</select></label>
     {['set_overhang','put_window','remove_window','assign_window_glazing'].includes(kind)&&<label>Existing window<select value={windowId} onChange={e=>selectWindow(zone,e.target.value)}><option value="">Choose an existing window</option>{zone.windows.map(w=><option key={w.id} value={w.id}>{w.id}</option>)}</select></label>}
     {kind==='set_overhang'&&<><label><input type="checkbox" checked={removeOverhang} onChange={e=>setRemoveOverhang(e.target.checked)}/>Remove overhang</label>{!removeOverhang&&<>{input('projection','Projection (m)')}{input('extension','Side extension (m)')}{input('gap','Gap above window (m)')}</>}</>}
     {kind==='put_window'&&<>{input('windowId','Stable window ID (new or existing)')}{input('u','Horizontal offset on face (m)')}{input('v','Vertical offset on face (m)')}{input('width','Width (m)')}{input('height','Height (m)')}<label>Explicit glazing<select value={glazingId} onChange={e=>setGlazingId(e.target.value)}>{model.glazing.map(g=><option key={g.id} value={g.id}>{g.name} · {g.id}</option>)}</select></label><p>Editing an existing window retains its overhang. A new ID adds a window; it does not rename or remove another.</p></>}
-    {['put_window','assign_construction'].includes(kind)&&<label>Surface<select value={surfaceId} onChange={e=>setSurfaceId(e.target.value)}>{zone.surfaces.map(s=><option key={s.id} value={s.id}>{s.face} · {s.id}</option>)}</select></label>}
+    {['put_window','assign_construction'].includes(kind)&&<label>Surface<select value={surfaceId} onChange={e=>{setSurfaceId(e.target.value);if(kind==='assign_construction')setConstructionId(zone.surfaces.find(s=>s.id===e.target.value)?.construction_id??'');}}>{zone.surfaces.map(s=><option key={s.id} value={s.id}>{s.face} · {s.id}</option>)}</select></label>}
     {kind==='assign_construction'&&<label>Existing construction<select value={constructionId} onChange={e=>setConstructionId(e.target.value)}>{model.constructions.map(c=><option key={c.id} value={c.id}>{c.name} · {c.id}</option>)}</select></label>}
     {kind==='assign_window_glazing'&&<>{input('newGlazingId','New glazing ID')}{input('uValue','U-value (W/m²K)')}{input('shgc','SHGC (0–1)')}{input('vlt','Visible transmittance (0–1)')}<p>Values start from the original selected glazing, not a recommended product. Supply the applicable source; this assigns only the selected window.</p></>}
     {kind==='remove_detached_shade'&&<label>Detached shade<select value={shadeTarget} onChange={e=>selectShade(e.target.value)}><option value="">Choose an existing shade</option>{model.detached_shading.map(s=><option key={s.id}>{s.id}</option>)}</select></label>}
@@ -74,6 +96,6 @@ export default function DesignProposal({project,selectedZone,onCommit,onClose,on
     <label>Source / assumption<input value={citation} onChange={e=>setCitation(e.target.value)}/><small>{2048-bytes(citation)} UTF-8 bytes remaining</small></label><label><input type="checkbox" checked={synthetic} onChange={e=>setSynthetic(e.target.checked)}/>Explicitly synthetic assumption</label><label>Rationale and applicability<textarea value={rationale} onChange={e=>setRationale(e.target.value)}/><small>{2048-bytes(rationale)} UTF-8 bytes remaining</small></label>
     </fieldset>
     {error&&<p role="alert">{error}</p>}{review&&<section aria-label="Proposal preview"><h3>{review.proposal.valid?'Valid candidate — review before applying':'Invalid candidate — accepted inputs unchanged'}</h3><p>Affected objects: {review.proposal.affected_object_ids.join(', ')||'none'}</p>{review.proposal.problems.map((s,i)=><p key={i} role="alert">{s}</p>)}<ul>{review.proposal.tradeoffs.map((s,i)=><li key={i}>{s}</li>)}</ul><div className="paired-proposal-figures">{review.figures?.map(f=><figure key={f.filename}><img alt={`${f.frame_id} · ${f.side} · provisional analytical geometry`} src={`data:image/svg+xml;charset=utf-8,${encodeURIComponent(f.svg)}`}/><figcaption>{f.frame_id} · {f.side} · Not simulated</figcaption></figure>)}</div><p>Before: <code>{review.proposal.base_model_sha256}</code><br/>Candidate: <code>{review.proposal.candidate_model_sha256??'invalid'}</code></p></section>}
-    <footer><button disabled={busy||closing} onClick={()=>void preview()}>Preview in Rust</button><button disabled={busy||closing||!review?.proposal.valid} onClick={()=>void apply()}>Apply to B</button><button disabled={busy} onClick={()=>setClosing(true)}>Discard / close…</button><span role="status">{busy?'Validating proposal…':'Nothing is accepted until Apply.'}</span></footer>
+    <footer><button disabled={busy||closing||!!selectionProblem} onClick={()=>void preview()}>Preview in Rust</button><button disabled={busy||closing||!review?.proposal.valid} onClick={()=>void apply()}>Apply to B</button><button disabled={busy} onClick={()=>setClosing(true)}>Discard / close…</button><span role="status">{busy?'Validating proposal…':'Nothing is accepted until Apply.'}</span></footer>
   </dialog>;
 }

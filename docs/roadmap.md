@@ -1,6 +1,6 @@
 # GreenLens roadmap
 
-Active: `docs/v0.8-report-design-continuation.md`; prior failures remain. RC2 failed; VD2 analytical issue and cold CLI reproduction passed. Fresh-profile native launch is policy-blocked. No render allowance remains; optional SKP is gated. Complete these bounded acceptance gaps before later disciplines.
+Active: `docs/v0.8-oct20-continuation.md`. RC3/VD2 issued products and cold CLI reproduction pass; earlier failures remain. Repair selected-object proposal targeting and optional-worker pre-allocation checks. Native cold inspection and SKP remain gated. No later discipline is activated.
 
 2026-10-17: history storage implemented. c3281d9 stopped at failed Save; preserve staged history and consumed allowance. Issuance/regeneration incomplete; no retry/expansion.
 

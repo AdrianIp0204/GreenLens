@@ -41,14 +41,14 @@ function fixture(){
   return project;
 }
 const deferred=()=>{let resolve,reject;const promise=new Promise((r,j)=>{resolve=r;reject=j;});return{promise,resolve,reject};};
-let root,project,selectedZone,previewCalls,commitCalls,activities,closed,lifecycle,lifecycleCalls,previewImpl,commitImpl,visible;
+let root,project,selectedZone,selectedTarget,previewCalls,commitCalls,activities,closed,lifecycle,lifecycleCalls,previewImpl,commitImpl,visible;
 function reply(valid=true){return{schema_version:'greenlens.energy-proposal-review.v1',target:'B',context_sha256:'c'.repeat(64),proposal:{candidate:structuredClone(project.energy.designs.B.model),valid,problems:valid?[]:['Window exceeds the selected facade. Accepted inputs unchanged.'],affected_object_ids:['window-from-B'],tradeoffs:['External shading can reduce solar gains and useful daylight; test actual results.'],base_model_sha256:'a'.repeat(64),candidate_model_sha256:valid?'b'.repeat(64):null,preview_sha256:'d'.repeat(64)}};}
-function Harness(){return visible?React.createElement(DesignProposal,{project,selectedZone,onCommit:async(draft,sha)=>{commitCalls.push({draft:structuredClone(draft),sha});return commitImpl(draft,sha);},onClose:()=>{closed++;visible=false;void draw();},onActivityChange:value=>activities.push(value),registerLifecycle:handler=>{lifecycle=handler;return()=>{if(lifecycle===handler)lifecycle=null;};}}):React.createElement('p',null,'Proposal closed');}
+function Harness(){return visible?React.createElement(DesignProposal,{project,selectedZone,selectedTarget,onCommit:async(draft,sha)=>{commitCalls.push({draft:structuredClone(draft),sha});return commitImpl(draft,sha);},onClose:()=>{closed++;visible=false;void draw();},onActivityChange:value=>activities.push(value),registerLifecycle:handler=>{lifecycle=handler;return()=>{if(lifecycle===handler)lifecycle=null;};}}):React.createElement('p',null,'Proposal closed');}
 async function draw(){await act(async()=>root.render(React.createElement(Harness)));}
-async function setup(configure=()=>{}){
+async function setup(configure=()=>{},target=null){
   if(root)await act(async()=>root.unmount());
   document.body.innerHTML='<div id="root"></div>';root=createRoot(document.getElementById('root'));
-  project=fixture();configure(project);selectedZone=project.energy.designs.B.model.zones[0].id;previewCalls=[];commitCalls=[];activities=[];closed=0;lifecycle=null;lifecycleCalls=[];visible=true;
+  project=fixture();configure(project);selectedZone=project.energy.designs.B.model.zones[0].id;selectedTarget=typeof target==='function'?target(project):target;previewCalls=[];commitCalls=[];activities=[];closed=0;lifecycle=null;lifecycleCalls=[];visible=true;
   previewImpl=async()=>reply();commitImpl=async()=>true;
   globalThis.__proposalIPC=async(command,args)=>{previewCalls.push({command,args:structuredClone(args)});return previewImpl(command,args);};
   await draw();
@@ -219,6 +219,65 @@ test('new shade requires an explicit unique ID and does not implicitly replace a
   await set('Stable shade ID (new or existing)','synthetic_new_shade');await set('Origin x (m)','15');await set('Origin y (m)','-5');await set('Origin z (m)','0');await set('Width X (m)','2.2');await set('Depth Y (m)','0.4');await set('Height Z (m)','2.8');await click('Preview in Rust');
   assert.deepEqual(previewCalls[0].args.draft.action,{kind:'put_detached_shade',shade:{id:'synthetic_new_shade',origin_m:[15,-5,0],size_m:[2.2,.4,2.8]}});assert.equal(JSON.stringify(project),original);assert.deepEqual(commitCalls,[]);
   await set('Hypothesis','remove_detached_shade');await click('Preview in Rust');assert.equal(previewCalls.length,1);assert.match(document.body.textContent,/Select an existing detached shade to remove/);assert.equal(JSON.stringify(project),original);
+});
+
+const semanticTarget=(kind,id,zone_id=null)=>({object:{kind,id,zone_id},field_path:''});
+function withSecondWindow(p){
+  const zone=p.energy.designs.B.model.zones[0];
+  zone.windows.push({...structuredClone(zone.windows[0]),id:'second_supported_window',offset_u_m:4.4,width_m:1.2,height_m:1.1,overhang:{projection_m:.42,side_extension_m:.13,gap_above_m:.07}});
+}
+test('entry selection of a non-first window or its overhang uses that exact B object and values',async()=>{
+  for(const kind of ['window','overhang']){
+    await setup(withSecondWindow,p=>{const zone=p.energy.designs.B.model.zones[0];return semanticTarget(kind,kind==='overhang'?`overhang:${zone.windows[1].id}`:zone.windows[1].id,zone.id);});
+    const before=JSON.stringify(project),zone=project.energy.designs.B.model.zones[0],window=zone.windows[1];
+    assert.equal(field('Existing window').value,window.id);
+    assert.equal(field('Hypothesis').value,kind==='window'?'put_window':'set_overhang');
+    await documented();await click('Preview in Rust');
+    const action=previewCalls[0].args.draft.action;
+    if(kind==='window')assert.deepEqual(action.window,window);
+    else{assert.equal(action.window_id,window.id);assert.deepEqual(action.overhang,window.overhang);}
+    assert.equal(action.zone_id,zone.id);assert.equal(JSON.stringify(project),before);assert.deepEqual(commitCalls,[]);
+  }
+});
+test('entry surface selection retains its construction and detached shading uses its exact non-first geometry',async()=>{
+  await setup(()=>{},p=>{const zone=p.energy.designs.B.model.zones[1];return semanticTarget('surface',zone.surfaces[2].id,zone.id);});
+  const zone=project.energy.designs.B.model.zones[1],surface=zone.surfaces[2];
+  assert.equal(field('Hypothesis').value,'assign_construction');assert.equal(field('Zone in B').value,zone.id);
+  assert.equal(field('Surface').value,surface.id);assert.equal(field('Existing construction').value,surface.construction_id);
+  await documented();await click('Preview in Rust');assert.deepEqual(previewCalls[0].args.draft.action,{kind:'assign_construction',zone_id:zone.id,surface_id:surface.id,construction_id:surface.construction_id});
+  const another=zone.surfaces.find(s=>s.construction_id!==surface.construction_id);assert.ok(another);
+  await set('Surface',another.id);assert.equal(field('Existing construction').value,another.construction_id);assert.equal(button('Apply to B').disabled,true);
+  await click('Preview in Rust');assert.equal(previewCalls.at(-1).args.draft.action.construction_id,another.construction_id);
+  await setup(withShades,()=>semanticTarget('shading',originalShades[1].id));
+  assert.equal(field('Hypothesis').value,'put_detached_shade');assert.equal(field('Detached shade target').value,originalShades[1].id);
+  await documented();await click('Preview in Rust');assert.deepEqual(previewCalls[0].args.draft.action,{kind:'put_detached_shade',shade:originalShades[1]});assert.deepEqual(commitCalls,[]);
+});
+test('an A selection resolves the same stable identity in B without copying renamed labels or A dimensions',async()=>{
+  await setup(p=>{
+    withSecondWindow(p);p.energy.designs.A.model=structuredClone(p.energy.designs.B.model);
+    p.energy.designs.A.model.zones[0].name='Renamed baseline zone';p.energy.designs.A.model.zones[0].windows[1].width_m=2.8;
+  },p=>{const z=p.energy.designs.A.model.zones[0];return semanticTarget('window',z.windows[1].id,z.id);});
+  const before=JSON.stringify(project),expected=project.energy.designs.B.model.zones[0].windows[1];
+  assert.equal(field('Width (m)').value,'1.2');assert.equal(field('Existing window').value,expected.id);
+  await documented();await click('Preview in Rust');assert.deepEqual(previewCalls[0].args.draft.action.window,expected);
+  assert.equal(JSON.stringify(project),before);assert.deepEqual(commitCalls,[]);
+});
+test('missing, mismatched-parent and unsupported entry identities block preview until an explicit target reset',async()=>{
+  const targets=[
+    semanticTarget('window','missing_window','zone_1'),
+    semanticTarget('window',inputs.cases.B.model.zones[0].windows[0].id,inputs.cases.B.model.zones[1].id),
+    semanticTarget('cooling_system',inputs.cases.B.model.zones[0].cooling_system.id,inputs.cases.B.model.zones[0].id),
+    semanticTarget('zone','baseline-only-zone'),
+  ];
+  for(const target of targets){
+    await setup(()=>{},target);const before=JSON.stringify(project);
+    assert.equal(button('Preview in Rust').disabled,true);assert.equal(button('Apply to B').disabled,true);
+    assert.match(document.querySelector('[role="alert"]').textContent,/not present|no supported design proposal/);
+    await click('Preview in Rust');assert.deepEqual(previewCalls,[]);assert.deepEqual(commitCalls,[]);
+    await click('Discard selection and choose in B');assert.equal(button('Preview in Rust').disabled,false);
+    assert.doesNotMatch(document.body.textContent,/Opened from:/);await documented();await click('Preview in Rust');
+    assert.equal(previewCalls.length,1);assert.equal(JSON.stringify(project),before);assert.deepEqual(commitCalls,[]);
+  }
 });
 
 test.after(async()=>{if(root)await act(async()=>root.unmount());delete globalThis.__proposalIPC;dom.window.close();});

@@ -1,0 +1,147 @@
+{
+  "schema_version": "greenlens.source-check-supplement.v1",
+  "checked_utc": "2026-10-20T10:59:02.3118959Z",
+  "tested_parent_commit": "22cc5b66c278ae448f040dbd14d397269b14630a",
+  "tested_working_tree_dirty": true,
+  "byte_binding": "SHA-256 of tested working files; exact source commit is recorded separately after inspected publication",
+  "source_files": [
+    {
+      "sha256": "64270a0a1f2a984a9995ad7d6525ecd8ecf54d83bfb9873476ddad5564d9ca62",
+      "path": "apps/desktop/src/energy/DesignProposal.tsx"
+    },
+    {
+      "sha256": "d26264c76f7b4754e15def10c629331be57d35fe301f67c995f0322af2366505",
+      "path": "apps/desktop/src/energy/EnergyWorkspace.tsx"
+    },
+    {
+      "sha256": "a0c4d1ec18f77dbad684576640497a7bd088d9c5285bf9a84024f72d4859a150",
+      "path": "apps/desktop/tests/design-proposal.test.mjs"
+    },
+    {
+      "sha256": "727aa64a7c9b44263acb9812ba87b225129ec7b41748bf95af9bb0975726eab5",
+      "path": "apps/desktop/tests/energy-drafts.test.mjs"
+    },
+    {
+      "sha256": "07633c8421c3a32ee47451568233cbc3e83ab764d2bba2b8fcba3a23dc39649f",
+      "path": "tools/openskp-worker/patches.mjs"
+    },
+    {
+      "sha256": "9d194462a6cc13c15d85f0fe468a8c5a68ba2c3b650891d5580f17024b968fe6",
+      "path": "tools/openskp-worker/patches.test.mjs"
+    },
+    {
+      "sha256": "0b4e264649fce2c0f2611f290f187c53edfc8e060eb8a87e27522e3837f014a6",
+      "path": "tools/openskp-worker/preallocation.test.mjs"
+    },
+    {
+      "sha256": "b10303ec83bd0c93e37d4132b21faac24e849dbc1cd7d8830feb00f209626191",
+      "path": "tools/openskp-worker/preallocation_bounds.h"
+    },
+    {
+      "sha256": "5676ea3bd3416631f4686f0fe0dcc0644f58997800a45bb69d40581f87a43b45",
+      "path": "tools/openskp-worker/prepare-preallocation-tests.mjs"
+    },
+    {
+      "sha256": "ce72b37ca36397c54ebffec9ff4a8817f90db7f70f4541798356042d88b03149",
+      "path": "tools/openskp-worker/prepare-source.mjs"
+    },
+    {
+      "sha256": "bc96730fceede2f5b60bee859d0af81286b65ae5c4f5b6a6482d5305a52bf625",
+      "path": "tools/openskp-worker/tests/preallocation_test.cpp"
+    },
+    {
+      "sha256": "7f1ed649beade6e4bb8e2ccba0394bfc162b7c7db460d689c197456a91f40384",
+      "path": "tools/openskp-worker/tests/CMakeLists.txt"
+    },
+    {
+      "sha256": "63699b1f4d7414630d7d9879571d4160a028f8a4ee3bc50a9f44f628fb1da158",
+      "path": ".github/workflows/energy-windows.yml"
+    }
+  ],
+  "frontend": {
+    "types_and_production_build": "passed",
+    "failed": 0,
+    "tests": 491,
+    "duration_seconds": 243.6216602,
+    "passed": 491,
+    "skipped": 0,
+    "native_acceptance": false,
+    "warning": "Existing production JavaScript chunk exceeds 700 kB warning threshold"
+  },
+  "optional_worker": {
+    "source_tests": 31,
+    "binary_sha256": "a1fbcd818b90320999df2e4dd1a47123fa90ab78f7438dbc1324b1ffe26aac31",
+    "worker_executions": 0,
+    "miniz_commit": "77d0dce8627735138c51770d1799a1ef48f2117d",
+    "zip_intake_cases": 6,
+    "source_tests_passed": 31,
+    "containment_qualified": false,
+    "prepared_manifest_sha256": "f2fafac6b23517c4d003b8d1f710c64c27f2f73238d6081083a1536439b511dc",
+    "skp_parses": 0,
+    "native_failures": 0,
+    "native_assertions": 3130
+  },
+  "licenses": {
+    "notice_texts": 231,
+    "installer_cache_checked": false,
+    "review_gaps": 0,
+    "packages": 415
+  },
+  "package_documents": {
+    "local_links": 804,
+    "limit_bytes": 16777216,
+    "selected_files": 414,
+    "expanded_bytes": 16776781,
+    "actual_test": "passed",
+    "outer_wrapper": "False failure after passing script: caller inspected stale LASTEXITCODE from intentional negative tests. No failed package assertion. Final check uses PowerShell exception/success semantics."
+  },
+  "execution": {
+    "private_probe": 0,
+    "engine": 0,
+    "native_app": 0,
+    "render": 0,
+    "converter": 0
+  },
+  "logs": [
+    {
+      "sha256": "3c7a4af5a6b5ce756e04232017bc5e1a4e0fbb2589e1d0aaeaddd478bb8aeff9",
+      "name": "frontend-tests.log"
+    },
+    {
+      "sha256": "a20ab28e681eb34e165e89d3d66ca35e302c58d0dbb98765e98ca1c2b3c54a0b",
+      "name": "frontend-build.log"
+    },
+    {
+      "sha256": "cc73451d1f5201e344eb769ee321f649c92db95dd5132cb646aacedb846340b1",
+      "name": "worker-source-tests.log"
+    },
+    {
+      "sha256": "42d2353b8b2e8aa1cc2d3ae18c09479de970d60ff679b3fadf8f171df22ff230",
+      "name": "preallocation-tests.json"
+    },
+    {
+      "sha256": "018adff9416dd6e35792f2a8a5660bba7e86a748b75fafa0f9bb7359b5a51139",
+      "name": "preallocation-prepare.log"
+    },
+    {
+      "sha256": "b721218afb17257b9f02ef095d69c364bef77f37c516f141e23f5d780a58c410",
+      "name": "preallocation-configure.log"
+    },
+    {
+      "sha256": "4ddb60d6e7b8ee3f5fc101d1435704234e656c66b6177eb561a851a54fba2d10",
+      "name": "preallocation-build.log"
+    },
+    {
+      "sha256": "c8be7af837183e453d779b46cf3b335ba784e5fd507b4e2292297b0afe8722d4",
+      "name": "source-provision-tests.json"
+    },
+    {
+      "sha256": "6ce0f9e56741933b451db0dadde5139cd5f37e59e0c9864e8097876e800b0241",
+      "name": "license-inventory.log"
+    },
+    {
+      "sha256": "be03886799fe68cbde64377dacc173d6f7f5a5387af7fac912052d1e106ee926",
+      "name": "package-documents.log"
+    }
+  ]
+}

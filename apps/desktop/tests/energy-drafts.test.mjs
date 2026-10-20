@@ -354,6 +354,50 @@ test('opening the actual proposal resolves inspector drafts before creating a ca
   await click('Discard / close…');await click('Discard',document.querySelector('[aria-label="Resolve proposed alternative"]'));assert.equal(doc.energyAuthoringOpen,false);assert.deepEqual(doc.project,accepted);assert.equal(doc.history.past.length,0);
 });
 
+test('actual workspace tree selection seeds the exact non-first B window proposal and preserves A and atomic undo',async()=>{
+  await setup({workspace:true,objects:true});await click('Proposed B');
+  // Original interaction geometry, admitted by the explicit IPC double above.
+  // This tests selection/form/document composition, not Rust geometry or a run.
+  const candidate=structuredClone(doc.project.energy.designs.B),zone=candidate.model.zones[0];
+  zone.windows.push({...structuredClone(zone.windows[0]),id:'selected_second_window',width_m:1.2,offset_u_m:4.4,overhang:{projection_m:.42,side_extension_m:.13,gap_above_m:.07}});
+  await act(async()=>doc.commitEnergyTransaction({B:{candidate}},'explicit-test-preview','Original two-window interaction fixture'));
+  const before=structuredClone(doc.project),past=doc.history.past.length,window=zone.windows[1];
+  const item=[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith(`${window.id} · window`));
+  assert.ok(item);await act(()=>item.click());assert.equal(doc.thermalPresentation.value.selected,window.id);
+  await click('Propose a design change…');
+  assert.equal(input('Hypothesis').value,'put_window');assert.equal(input('Existing window').value,window.id);
+  assert.equal(input('Stable window ID (new or existing)').value,window.id);assert.equal(input('Width (m)').value,'1.2');
+  await type(input('Hypothesis'),'set_overhang');assert.equal(input('Projection (m)').value,'0.42');
+  await type(input('Source / assumption'),'Original selected-object interaction fixture');await type(input('Rationale and applicability'),'Explicit second-window shading test; no simulated benefit.');
+  await type(input('Projection (m)'),'0.7');await click('Preview in Rust');
+  const request=calls.filter(c=>c[0]==='energy_proposal_preview').at(-1)[1];
+  assert.equal(request.draft.action.window_id,window.id);assert.equal(request.draft.action.zone_id,zone.id);
+  await click('Apply to B');assert.equal(doc.history.past.length,past+1);
+  assert.deepEqual(doc.project.energy.designs.A,before.energy.designs.A);
+  assert.deepEqual(doc.project.energy.designs.B.model.zones[0].windows[0],before.energy.designs.B.model.zones[0].windows[0]);
+  assert.equal(doc.project.energy.designs.B.model.zones[0].windows[1].overhang.projection_m,.7);
+  await click('Undo');assert.deepEqual(doc.project.energy.designs,before.energy.designs);assert.equal(doc.history.past.length,past);
+});
+
+test('proposal entry keeps the intended identity when applying an inspector draft deletes its selected window',async()=>{
+  await setup({workspace:true,objects:true});await click('Proposed B');
+  const candidate=structuredClone(doc.project.energy.designs.B),zone=candidate.model.zones[0];
+  zone.windows.push({...structuredClone(zone.windows[0]),id:'removed_selected_window',width_m:1.2,offset_u_m:4.4});
+  await act(async()=>doc.commitEnergyTransaction({B:{candidate}},'explicit-test-preview','Original two-window guard fixture'));
+  const before=structuredClone(doc.project),past=doc.history.past.length,target=zone.windows[1];
+  const item=[...document.querySelectorAll('[role="treeitem"]')].find(el=>el.title.startsWith(`${target.id} · window`));
+  assert.ok(item);await act(()=>item.click());await click('advanced');
+  const removed=structuredClone(doc.project.energy.designs.B);removed.model.zones[0].windows.pop();
+  await type(document.querySelector('.thermal-editor textarea'),JSON.stringify(removed));
+  await click('Propose a design change…');assert.ok(dialog());assert.equal(doc.energyAuthoringOpen,false);
+  await click('Apply',dialog());
+  assert.equal(doc.energyAuthoringOpen,true);assert.deepEqual(doc.project.energy.designs.B,removed);
+  assert.deepEqual(doc.project.energy.designs.A,before.energy.designs.A);assert.equal(doc.history.past.length,past+1);
+  assert.match(document.querySelector('.design-proposal-dialog').textContent,/removed_selected_window.*not present in proposed B/s);
+  assert.equal(button('Preview in Rust').disabled,true);assert.equal(button('Apply to B').disabled,true);
+  assert.equal(count('energy_proposal_preview'),0);assert.equal(count('energy_proposal_commit'),0);
+});
+
 test('an active geometry modal blocks document mutation and verification while allowing cheap Open admission',async()=>{
   await setup();await act(()=>doc.setEnergyAuthoringOpen(true));calls=[];
   for(const action of ['Save','Save As','Run','Open','Close','Undo'])await click(action);

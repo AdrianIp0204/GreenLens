@@ -1,0 +1,82 @@
+{
+  "schema_version": "greenlens.retained-artifact-read-only-audit.v1",
+  "checked_utc": "2026-10-20T10:49:08Z",
+  "source_inspected": "22cc5b66c278ae448f040dbd14d397269b14630a",
+  "scope": "Fresh read-only SHA-256 and byte-count checks against retained synthetic copies, previously generated products, receipt anchors, archives and installed/distributed artifacts. No application, engine, renderer or CI execution; no new native or scientific acceptance.",
+  "application_source": "f2197f39eb845515fb48d5f5e1616ea529e4f031",
+  "observer_source": "0df5254dd44a124b62f4fc2125f4f4cf304dc93d",
+  "receipt_anchors": {
+    "rc3_expected": 16,
+    "rc3_matched": 16,
+    "vd2_expected": 13,
+    "vd2_matched": 13,
+    "mismatches": []
+  },
+  "retained_copies": [
+    {
+      "case": "RC3",
+      "inventory_members": 638,
+      "inventory_bytes": 243129655,
+      "members_matched": 638,
+      "extra_members": [],
+      "mismatches": [],
+      "issued_products_expected": 54,
+      "issued_products_matched": 54,
+      "previously_regenerated_products_matched": 54
+    },
+    {
+      "case": "VD2",
+      "inventory_members": 344,
+      "inventory_bytes": 132404411,
+      "members_matched": 344,
+      "extra_members": [],
+      "mismatches": [],
+      "issued_products_expected": 34,
+      "issued_products_matched": 34,
+      "previously_regenerated_products_matched": 34
+    }
+  ],
+  "binaries": [
+    {
+      "role": "installed desktop",
+      "bytes": 33374720,
+      "sha256": "c1b430ad4d60abfcb5406bde3db95548aee0935eab175918038325a0786441c8",
+      "matches_retained_identity": true
+    },
+    {
+      "role": "distributed CLI",
+      "bytes": 18808832,
+      "sha256": "de2d13c1121d9d06e75013053cce0f7ddcf2cb006965a70aa55c75b64364f970",
+      "matches_retained_identity": true
+    },
+    {
+      "role": "unsigned installer",
+      "bytes": 7819600,
+      "sha256": "5cb262035975b0f792d38fc56627f94ca5fe14c10eb833b580cf7c7953e88d42",
+      "matches_retained_identity": true
+    }
+  ],
+  "archives": [
+    {
+      "case": "RC3",
+      "sha256": "05f9ecb7ad7cfe3a53b5896fe01b85065d23aac7cb698db4c893d341fb755dd3",
+      "matches_retained_identity": true
+    },
+    {
+      "case": "VD2",
+      "sha256": "cc9e7dd22578a4c726fab276999a4089a180e2c3ce8f1c40478db42d72c73b7e",
+      "matches_retained_identity": true
+    }
+  ],
+  "hash_check_seconds": 5.356482499992126,
+  "method": "Stream SHA-256 of every listed retained member and product, compare byte lengths, enumerate each copied tree for unexpected files, and hash the two archives and three binaries. Historical receipt-anchor digests are checked against the current external files.",
+  "limitations": [
+    "Inventory counts include the zero-byte cooperative lock files present in the original copy audits; substantive-member counts therefore differ from the historical cold collectors.",
+    "Previously regenerated products were read, not regenerated again.",
+    "Archive whole-file identity was checked; this audit does not repeat extraction, replay, CRC/member admission or the earlier streaming archive audits.",
+    "Matching PDF and review-receipt bytes preserves the earlier identified visual-review scope; no new page review or viewer observation occurred.",
+    "Historical RC3 and VD2 observations remain bound to their original source, inputs, native sessions and consumed allowances.",
+    "Cold installed inspection, current-candidate reveal/external viewing, native export, exact layout/DPI, physical modifiers, cooperative native verification cancellation, live EnergyPlus cancellation and clean-machine acceptance are not established by this artifact audit.",
+    "No private architectural source or converted model was accessed."
+  ]
+}

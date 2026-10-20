@@ -71,6 +71,37 @@ jobs:
           $source = Initialize-OpenSkpPatchSource
           $source | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $env:ENERGY_BUILD_EVIDENCE 'openskp-patch-source.json') -Encoding utf8
           "GREENLENS_OPEN_SKP_AUDIT_SOURCE=$($source.source_path)" >> $env:GITHUB_ENV
+      - name: Pinned miniz preallocation checks (no SKP parser or worker)
+        timeout-minutes: 6
+        env:
+          GIT_TERMINAL_PROMPT: '0'
+          GCM_INTERACTIVE: Never
+        run: |
+          . ./scripts/dev-env.ps1
+          $root = Join-Path $env:ENERGY_BUILD_EVIDENCE 'preallocation'
+          if (Test-Path -LiteralPath $root) { throw 'Preserve existing unit-test evidence; expected absent directory' }
+          New-Item -ItemType Directory -Path $root | Out-Null
+          $miniz = Join-Path $root 'miniz'
+          $pin = '77d0dce8627735138c51770d1799a1ef48f2117d'
+          git -c core.autocrlf=false init $miniz
+          if ($LASTEXITCODE -ne 0) { throw 'Unit dependency initialization failed' }
+          git -C $miniz remote add origin https://github.com/richgel999/miniz.git
+          if ($LASTEXITCODE -ne 0) { throw 'Unit dependency origin failed' }
+          git -C $miniz fetch --depth 1 --no-tags origin $pin
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned unit dependency acquisition failed' }
+          git -C $miniz -c core.autocrlf=false checkout --detach FETCH_HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned unit dependency checkout failed' }
+          "GREENLENS_MINIZ_AUDIT_SOURCE=$miniz" >> $env:GITHUB_ENV
+          $prepared = Join-Path $root 'prepared'
+          node tools/openskp-worker/prepare-preallocation-tests.mjs $miniz $prepared > (Join-Path $root 'preparation.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Exact unit source preparation failed' }
+          $build = Join-Path $root 'build'
+          cmake -S tools/openskp-worker/tests -B $build -G Ninja "-DGREENLENS_PREALLOCATION_SOURCE=$prepared" -DCMAKE_BUILD_TYPE=Release *> (Join-Path $root 'configure.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Unit target configuration failed' }
+          cmake --build $build --parallel 2 *> (Join-Path $root 'build.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Unit target compilation failed' }
+          & (Join-Path $build 'greenlens-preallocation-tests.exe') > (Join-Path $root 'tests.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Preallocation arithmetic/intake tests failed' }
       - name: Format, strict lint and unit/lifecycle regression suite
         run: |
           . ./scripts/dev-env.ps1
@@ -98,7 +129,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }
           node --test scripts/test-license-inventory-diff.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Bounded inventory diagnostic regressions failed' }
-          node --test tools/openskp-worker/patches.test.mjs tools/openskp-worker/matrix-oracle.test.mjs
+          node --test tools/openskp-worker/patches.test.mjs tools/openskp-worker/preallocation.test.mjs tools/openskp-worker/matrix-oracle.test.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Optional worker source/oracle regressions failed (no converter execution)' }
           $cache = Join-Path $env:RUNNER_TEMP ('energy-pure-cache-' + [guid]::NewGuid().ToString('N'))
           if (Test-Path -LiteralPath $cache) { throw 'Expected absent Python cache' }

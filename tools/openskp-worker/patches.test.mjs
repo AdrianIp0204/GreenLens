@@ -37,3 +37,13 @@ test('no texture decoder dependency or source-tail retry in owned target',()=>{
   assert.match(worker,/CREATE_NEW/);assert.match(worker,/unaccepted_candidate/);
   assert.equal((worker.match(/openskp::full_parse\(/g)??[]).length,1);
 });
+test('GLB buffer admission precedes reserve and alignment in the exact patched exporter',()=>{
+  const glb=patchSource('src/instanced_glb.cpp',fs.readFileSync(path.join(source,'src/instanced_glb.cpp'),'utf8'));
+  assert.match(glb,/#include "preallocation_bounds.h"/);
+  assert.ok(!glb.includes('values.size() * sizeof(T)'));
+  assert.ok(!glb.includes('total_bytes += source.positions.size() * 4'));
+  const append=glb.slice(glb.indexOf('std::size_t append_values('),glb.indexOf('\nint add_view('));
+  assert.ok(append.indexOf('admitted_binary_size(')<append.indexOf('buffer.reserve('));
+  assert.ok(append.indexOf('buffer.reserve(')<append.indexOf('align_buffer('));
+  assert.equal((glb.match(/total_bytes = admitted_binary_size/g)??[]).length,5);
+});

@@ -14,6 +14,8 @@
 #include <vector>
 #include <json.hpp>
 #include "internal.hpp"
+#include "bounded_serialization.hpp"
+#include "streaming_sha256.hpp"
 #include <openskp/instanced_glb.hpp>
 
 namespace {
@@ -31,6 +33,25 @@ struct Handle {
   Handle(const Handle&) = delete;
 };
 void check(bool condition, const char* message) { limit::require(condition, message); }
+void failure_diagnostic(const char* message) noexcept {
+  // Fixed storage and direct pipe write also work after allocator exhaustion.
+  // Escape bytes (including non-ASCII) without allocating or emitting invalid JSON.
+  std::array<char,8192> buffer{};
+  std::size_t size=0;
+  auto append=[&](const char* text){while(*text)buffer[size++]=*text++;};
+  append("{\"status\":\"rejected\",\"message\":\"");
+  constexpr char hex[]="0123456789abcdef";
+  std::size_t n=0;
+  for(;message && message[n] && n<1024;++n){
+    const auto c=static_cast<unsigned char>(message[n]);
+    if(c>=32 && c<127 && c!='"' && c!='\\')buffer[size++]=static_cast<char>(c);
+    else {append("\\u00");buffer[size++]=hex[c>>4];buffer[size++]=hex[c&15];}
+  }
+  if(message && n==1024 && message[n])append(" [diagnostic truncated]");
+  append("\"}\n");
+  DWORD written=0;
+  WriteFile(GetStdHandle(STD_ERROR_HANDLE),buffer.data(),static_cast<DWORD>(size),&written,nullptr);
+}
 void require_job() {
   BOOL in_job = FALSE;
   check(IsProcessInJob(GetCurrentProcess(), nullptr, &in_job) && in_job, "Supervised Job Object required");
@@ -41,23 +62,7 @@ void require_job() {
   check(info.JobMemoryLimit > 0 && info.JobMemoryLimit <= 1024ull*1024*1024, "Job committed-memory limit must be at most 1 GiB");
 }
 std::string digest(const std::uint8_t* data, std::size_t size) {
-  BCRYPT_ALG_HANDLE algorithm = nullptr;
-  BCRYPT_HASH_HANDLE hash = nullptr;
-  check(BCryptOpenAlgorithmProvider(&algorithm, BCRYPT_SHA256_ALGORITHM, nullptr, 0) >= 0, "SHA-256 provider unavailable");
-  struct CloseAlgorithm { BCRYPT_ALG_HANDLE h; ~CloseAlgorithm(){ BCryptCloseAlgorithmProvider(h,0); } } ca{algorithm};
-  DWORD object_size=0, written=0;
-  check(BCryptGetProperty(algorithm,BCRYPT_OBJECT_LENGTH,reinterpret_cast<PUCHAR>(&object_size),sizeof(object_size),&written,0)>=0, "SHA-256 property unavailable");
-  std::vector<std::uint8_t> object(object_size);
-  check(BCryptCreateHash(algorithm,&hash,object.data(),object_size,nullptr,0,0)>=0,"SHA-256 context unavailable");
-  struct CloseHash { BCRYPT_HASH_HANDLE h; ~CloseHash(){ BCryptDestroyHash(h); } } ch{hash};
-  check(size <= std::numeric_limits<ULONG>::max(),"Hash input too large");
-  check(BCryptHashData(hash,const_cast<PUCHAR>(data),static_cast<ULONG>(size),0)>=0,"SHA-256 update failed");
-  std::array<std::uint8_t,32> result{};
-  check(BCryptFinishHash(hash,result.data(),static_cast<ULONG>(result.size()),0)>=0,"SHA-256 finalization failed");
-  constexpr char hex[]="0123456789abcdef";
-  std::string out;
-  for(auto byte:result){out.push_back(hex[byte>>4]);out.push_back(hex[byte&15]);}
-  return out;
+  return limit::digest_bytes(data, size);
 }
 std::string digest(const Bytes& b){return digest(b.data(),b.size());}
 std::string digest(const std::string& s){return digest(reinterpret_cast<const std::uint8_t*>(s.data()),s.size());}
@@ -139,12 +144,13 @@ Json validate_raw(const openskp::RawParsed& raw){
   add_count(total,raw.definitions.size());
   Json faces, definitions=Json::array();
   validate_builder(raw.root.builder,total,faces);
-  Json root_faces=faces;
+  Json root_faces=std::move(faces);
   for(const auto& entry:raw.definitions){
     const auto& definition=entry.second;
     check(!definition.is_image && !definition.always_faces_camera && !definition.shadows_face_sun,"Image/billboard definition unsupported");
     validate_builder(definition.builder,total,faces);
-    definitions.push_back({{"source_definition_id",entry.first},{"name",definition.name},{"faces",faces}});
+    definitions.push_back({{"source_definition_id",entry.first},{"name",definition.name}});
+    definitions.back()["faces"]=std::move(faces);
   }
   std::set<openskp::EntityId> active;
   std::size_t placed=0;
@@ -170,7 +176,10 @@ Json validate_raw(const openskp::RawParsed& raw){
     }
   };
   walk(raw.root.builder,0);
-  return {{"source_entity_count",total},{"placed_instance_count",placed},{"conservative_expanded_triangle_bound",triangle_bound},{"root_face_inventory",root_faces},{"definition_inventory",definitions},{"model_display_units",raw.units?Json(*raw.units):Json(nullptr)}};
+  Json result={{"source_entity_count",total},{"placed_instance_count",placed},{"conservative_expanded_triangle_bound",triangle_bound},{"model_display_units",raw.units?Json(*raw.units):Json(nullptr)}};
+  result["root_face_inventory"]=std::move(root_faces);
+  result["definition_inventory"]=std::move(definitions);
+  return result;
 }
 Matrix multiply(const Matrix&a,const Matrix&b){
   Matrix out{};for(int col=0;col<4;++col)for(int row=0;row<4;++row)for(int k=0;k<4;++k)out[col*4+row]+=a[k*4+row]*b[col*4+k];return out;
@@ -209,7 +218,9 @@ Json inspect_scene(const openskp::InstancedScene& scene){
   Matrix identity{1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1};
   walk(scene.scene_hierarchy,identity,"0",0);
   check(expanded>0,"No supported surface triangles");
-  return {{"node_count",nodes},{"expanded_triangles",expanded},{"occurrences",occurrences},{"bounds_gltf_m",{{"min",lo},{"max",hi}}},{"layer_hidden",scene.layer_hidden}};
+  Json result={{"node_count",nodes},{"expanded_triangles",expanded},{"bounds_gltf_m",{{"min",lo},{"max",hi}}},{"layer_hidden",scene.layer_hidden}};
+  result["occurrences"]=std::move(occurrences);
+  return result;
 }
 } // namespace
 
@@ -220,14 +231,16 @@ int wmain(int argc,wchar_t**argv){
     const fs::path source(argv[1]),stage(argv[2]);
     const std::wstring wide_hash(argv[3]);
     check(wide_hash.size()==64 && std::all_of(wide_hash.begin(),wide_hash.end(),[](wchar_t c){return(c>=L'0'&&c<=L'9')||(c>=L'a'&&c<=L'f');}),"Expected lowercase SHA-256 required");
-    const std::string expected(wide_hash.begin(),wide_hash.end());
+    std::string expected;expected.reserve(64);
+    for(const auto c:wide_hash)expected.push_back(static_cast<char>(c)); // ASCII checked above.
     Handle directory(CreateFileW(stage.c_str(),GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,FILE_FLAG_BACKUP_SEMANTICS|FILE_FLAG_OPEN_REPARSE_POINT,nullptr));
     FILE_ATTRIBUTE_TAG_INFO attributes{};
     check(GetFileInformationByHandleEx(directory.value,FileAttributeTagInfo,&attributes,sizeof(attributes)) && (attributes.FileAttributes&FILE_ATTRIBUTE_DIRECTORY) && !(attributes.FileAttributes&FILE_ATTRIBUTE_REPARSE_POINT),"Stage must be a non-reparse directory");
     check(fs::is_empty(stage),"Stage must be empty; never overwrite previous evidence");
     Handle input(CreateFileW(source.c_str(),GENERIC_READ,FILE_SHARE_READ,nullptr,OPEN_EXISTING,FILE_FLAG_OPEN_REPARSE_POINT|FILE_FLAG_SEQUENTIAL_SCAN,nullptr));
-    const Bytes bytes=read_source(input.value);
+    Bytes bytes=read_source(input.value);
     check(digest(bytes)==expected,"Source hash mismatch");
+    const auto source_size=bytes.size();
     const std::string version=openskp::extract_version(bytes);
     check(version=="{13.0.1}" || version=="{26.2.243}","Encoded version outside the fixed independent matrix");
     std::size_t logged=0;
@@ -235,35 +248,45 @@ int wmain(int argc,wchar_t**argv){
     options.log=[&](openskp::LogLevel,std::string_view message){
       // Bounded diagnostics contain source metadata; retain privately, never public automatically.
       if(message.find("Failed")!=std::string_view::npos)throw std::runtime_error("Upstream best-effort failure is fatal in strict worker");
-      const auto line=Json{{"stage","parser"},{"message",message}}.dump()+'\n';
-      // Count encoded bytes, including JSON escaping; reserve the final error receipt.
-      check(line.size()<=limit::log_bytes-8192-logged,"Worker log budget exceeded");logged+=line.size();
-      std::cerr<<line;
+      // Admit worst-case JSON escaping before copying source text into the DOM.
+      const auto remaining=limit::log_bytes-8192-logged;
+      check(remaining>=64 && message.size()<=(remaining-64)/6,"Worker log budget exceeded");
+      const auto line=limit::encode_json(Json{{"stage","parser"},{"message",message}},remaining,-1,true);
+      logged+=line.size();
+      std::cerr.write(reinterpret_cast<const char*>(line.data()),static_cast<std::streamsize>(line.size()));
+      check(static_cast<bool>(std::cerr),"Worker diagnostic pipe failed");
     };
     options.progress=[](const openskp::ParseProgress&){limit::check_time();};
     auto raw=openskp::full_parse(bytes,options);
+    Bytes().swap(bytes); // Release original byte copy before geometry/output assembly.
     Json source_inventory=validate_raw(raw);
     auto scene=openskp::build_instanced_scene_raw(std::move(raw),options);
-    Json metadata={{"schema_version","greenlens.openskp-development-candidate.v1"},{"status","unaccepted_candidate"},{"source_sha256",expected},{"encoded_version",version},{"source_pin","dceb9fff0efc9668961530b535d5375c001343dc"},{"source_units","SketchUp stored inches; output metres"},{"axes","right-handed glTF Y-up: (X,Z,-Y) from source Z-up"},{"north","unknown"},{"source",source_inventory},{"scene",inspect_scene(scene)},{"omissions",Json::array({"Texture and watermark image bytes; no image decoding","Saved application cameras/styles/pages and arbitrary property dictionaries are not reference geometry","Face-level visibility is inventoried but does not suppress triangles"})},{"qualification","No reader or physical qualification; independent fixture and Rust admission required"}};
+    raw={}; // The rvalue-reference API does not itself destroy the parsed owner.
+    Json metadata={{"schema_version","greenlens.openskp-development-candidate.v1"},{"status","unaccepted_candidate"},{"source_sha256",expected},{"encoded_version",version},{"source_pin","dceb9fff0efc9668961530b535d5375c001343dc"},{"source_units","SketchUp stored inches; output metres"},{"axes","right-handed glTF Y-up: (X,Z,-Y) from source Z-up"},{"north","unknown"},{"omissions",Json::array({"Texture and watermark image bytes; no image decoding","Saved application cameras/styles/pages and arbitrary property dictionaries are not reference geometry","Face-level visibility is inventoried but does not suppress triangles"})},{"qualification","No reader or physical qualification; independent fixture and Rust admission required"}};
+    metadata["source"]=std::move(source_inventory);
+    metadata["scene"]=inspect_scene(scene);
     openskp::InstancedGlbOptions glb_options;glb_options.textures=false;
     const auto glb=openskp::to_instanced_glb(scene,glb_options);
+    scene={}; // All retained occurrence data now belongs to metadata.
     check(glb.size()<=limit::entry_bytes,"Candidate GLB exceeds 64 MiB");
     metadata["candidate_glb_sha256"]=digest(glb);
-    const auto json=metadata.dump(2)+'\n';
-    check(json.size()<=limit::metadata_bytes,"Candidate metadata exceeds 4 MiB");
-    check(digest(read_source(input.value))==expected,"Source changed while parsing");
+    const auto json=limit::encode_json(metadata,limit::metadata_bytes,2,true);
+    metadata=Json(); // Encoded evidence replaces, rather than duplicates, this DOM.
+    check(limit::digest_held_file(input.value,source_size,[]{limit::check_time();})==expected,"Source changed while parsing");
     limit::check_time();
     write_new(stage/L"candidate.glb",glb.data(),glb.size());
-    write_new(stage/L"metadata.json",json);
+    write_new(stage/L"metadata.json",json.data(),json.size());
     // Completion is last. Parent must independently fence bytes and validate GLB;
     // absence of this file always means incomplete, never a project result.
-    const auto completion=Json{{"schema_version","greenlens.openskp-development-completion.v1"},{"status","unaccepted_candidate"},{"source_sha256",expected},{"glb_sha256",digest(glb)},{"metadata_sha256",digest(json)},{"glb_bytes",glb.size()},{"metadata_bytes",json.size()}}.dump(2)+'\n';
-    write_new(stage/L"completion.json",completion);
-    std::cout<<completion;
+    const auto completion=limit::encode_json(Json{{"schema_version","greenlens.openskp-development-completion.v1"},{"status","unaccepted_candidate"},{"source_sha256",expected},{"glb_sha256",digest(glb)},{"metadata_sha256",digest(json)},{"glb_bytes",glb.size()},{"metadata_bytes",json.size()}},8192,2,true);
+    write_new(stage/L"completion.json",completion.data(),completion.size());
+    std::cout.write(reinterpret_cast<const char*>(completion.data()),static_cast<std::streamsize>(completion.size()));
+    check(static_cast<bool>(std::cout),"Worker completion pipe failed");
     return 0;
   }catch(const std::exception&error){
-    std::string message=error.what();if(message.size()>4096)message.resize(4096);
-    std::cerr<<Json{{"status","rejected"},{"message",message}}.dump()<<'\n';
+    // The failure fallback must not allocate another JSON tree after bad_alloc.
+    // Detailed diagnostics are emitted earlier only when their budget admits them.
+    failure_diagnostic(error.what());
     return 2;
-  }catch(...){std::cerr<<"{\"status\":\"rejected\",\"message\":\"unknown worker failure\"}\n";return 3;}
+  }catch(...){failure_diagnostic("unknown worker failure");return 3;}
 }

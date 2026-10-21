@@ -1,0 +1,213 @@
+{
+  "schema_version": "greenlens.openskp-allocation-repair-evidence.v1",
+  "date": "2026-10-21",
+  "source_base": "9a8859592858ec5e4bdeac668059c4684364c93c",
+  "source_dirty_at_native_test": true,
+  "application_behavior_changed": false,
+  "scope": "Compile-only selected source closure; isolated original byte, parser-helper, hash and exporter tests. No SKP parser or worker execution.",
+  "source_files": [
+    {
+      "path": "tools/openskp-worker/worker.cpp",
+      "worktree_sha256": "40ebaccbe45c9897c46cb3d930dd89ea1b22862183441992479949e1301b1352"
+    },
+    {
+      "path": "tools/openskp-worker/patches.mjs",
+      "worktree_sha256": "07633c8421c3a32ee47451568233cbc3e83ab764d2bba2b8fcba3a23dc39649f"
+    },
+    {
+      "path": "tools/openskp-worker/miniz-allocation-patches.mjs",
+      "worktree_sha256": "4ebcbc446370e458e79ffad64424ef109f056be9e460e1bb04ed9acdbb08750b"
+    },
+    {
+      "path": "tools/openskp-worker/parser-allocation-patches.mjs",
+      "worktree_sha256": "02aad956aaa5cceb67cd27e4148f4a5b0971428cda28f9d08f4d85ecc253093d"
+    },
+    {
+      "path": "tools/openskp-worker/serialization-patches.mjs",
+      "worktree_sha256": "44076fe5baa30f23e74d8a7954ba7e0d5b4984bd1139c8788ad1c65ac56d3525"
+    },
+    {
+      "path": "tools/openskp-worker/preallocation_bounds.h",
+      "worktree_sha256": "b10303ec83bd0c93e37d4132b21faac24e849dbc1cd7d8830feb00f209626191"
+    },
+    {
+      "path": "tools/openskp-worker/parser_allocation_bounds.hpp",
+      "worktree_sha256": "082cfccb03429d61a6a7e791a7e3900156221b93d6d496030c6f59c87cc5b81e"
+    },
+    {
+      "path": "tools/openskp-worker/bounded_serialization.hpp",
+      "worktree_sha256": "0c8e12518940e0699c2cec1321a7f936ed66b3d1faf32cd0b75e96fe0e895e22"
+    },
+    {
+      "path": "tools/openskp-worker/streaming_sha256.hpp",
+      "worktree_sha256": "034246efa8d8c7556e6035cb84fffe185fab8c5a65abd15486e880de4df93e25"
+    },
+    {
+      "path": "tools/openskp-worker/CMakeLists.txt",
+      "worktree_sha256": "665508834494f758a7ad5954683eefdc6801b305ad603a4e51f398b2cbe7d46d"
+    },
+    {
+      "path": "tools/openskp-worker/tests/CMakeLists.txt",
+      "worktree_sha256": "c59ce620a4ad8db4043404492404506e3745f6a00a9fea9516b5bf77f39964e9"
+    },
+    {
+      "path": "tools/openskp-worker/tests/preallocation_test.cpp",
+      "worktree_sha256": "e56ba9a546fffa58cee2bedfb4d499e55988cb1c1d3f5d281b560e9e2d8385ef"
+    },
+    {
+      "path": "tools/openskp-worker/tests/miniz_extra_bounds_test.hpp",
+      "worktree_sha256": "b7bd774864d13d17ccb736f4c862ce8f44163209a1bb0b9b63e0f79cffeaebf0"
+    },
+    {
+      "path": "tools/openskp-worker/tests/parser_allocation_test.cpp",
+      "worktree_sha256": "bc339b5a3090c6add5b586ffe7df79b043c2b2d4598b2a46474aa8c6da747b88"
+    },
+    {
+      "path": "tools/openskp-worker/tests/serialization_test.cpp",
+      "worktree_sha256": "6607143d38ac07c00555cb554104cb69eabc3193306dd4539ecc342e45e9f399"
+    },
+    {
+      "path": "tools/openskp-worker/tests/instanced_export_test.cpp",
+      "worktree_sha256": "5499a1bc34b999e427efc294a81e0fa17d8731d47239e1c72eb66bf95b56af3f"
+    },
+    {
+      "path": "tools/openskp-worker/preparation-paths.mjs",
+      "worktree_sha256": "31c8741f2c14ba889b91b6db2e7942bffebbf151fb805eef521a0495cbba5649"
+    },
+    {
+      "path": "tools/openskp-worker/preparation-paths.test.mjs",
+      "worktree_sha256": "dd27eb6a99f170f45f5f64d3fbfb1dabf96e0de0c6817cad5af36cc05656c058"
+    },
+    {
+      "path": "tools/openskp-worker/prepare-source.mjs",
+      "worktree_sha256": "fa6c55e2aa83d9b5771075e81f558d9ca507c53bfc453257878bc33eb043353f"
+    },
+    {
+      "path": "tools/openskp-worker/prepare-preallocation-tests.mjs",
+      "worktree_sha256": "e201f79ebe4c5ec1deff32d8b76c4899fbaa2a0bb438bbbb1517bf88eaaa0c6d"
+    },
+    {
+      "path": "scripts/test-openskp-allocation.ps1",
+      "worktree_sha256": "3c802f8a6e2c0d946dbb134d4a13e9971d4245ac67b8f8b3963ce5e5c2b6966b"
+    },
+    {
+      "path": "scripts/test-openskp-allocation-guards.ps1",
+      "worktree_sha256": "080f4f44e42c21e92b97248b518526fd680003165f4ddd6e7260779791fa848b"
+    },
+    {
+      "path": ".github/workflows/energy-windows.yml",
+      "worktree_sha256": "281641a246050a54f3a600ee90cd99a96bed38e22476acd7f4d6a1f439da4b86"
+    }
+  ],
+  "artifacts": [
+    {
+      "artifact": "integrated-check/summary.json",
+      "sha256": "c1d024b426fa800eda863fdecd62963eb33a6090a31831d7f5dcf691a2aa818d"
+    },
+    {
+      "artifact": "integrated-check/unit-source/unit-source-manifest.json",
+      "sha256": "33f7ba5caeb051d1311a3a25336d82af03c48830f40910e0b7c6ddcf30859add"
+    },
+    {
+      "artifact": "integrated-check/compile-source/source-manifest.json",
+      "sha256": "242bbcdefa55a5f6105a2db9b0b4e1608dd83b86fd8ef725e0a32327ef73ef19"
+    },
+    {
+      "artifact": "integrated-check/preallocation-tests.json",
+      "sha256": "91e3b67c41d2a24cd9e38389898f94b0b881c9b6af36263876f878d3bf2717a0"
+    },
+    {
+      "artifact": "integrated-check/parser-allocation-tests.json",
+      "sha256": "851dbe1c883384be7f84843cf9fd7e1944a143944b15b8b2d0a9ffbb12890e3e"
+    },
+    {
+      "artifact": "integrated-check/serialization-tests.json",
+      "sha256": "48b2e03f8b63c6146cf13cec2cefb29060efa02eb465843d26c4c3bc22577c58"
+    },
+    {
+      "artifact": "integrated-check/instanced-export-tests.json",
+      "sha256": "f3d4fe0439ee138d50617c44c76470603b53b67a6a1547bbb260f67f48308b60"
+    },
+    {
+      "artifact": "integrated-check/unit-build/greenlens-preallocation-tests.exe",
+      "sha256": "bd34ebc89913f1641edda0841f628e059614f058eab2b03d2490464ac501aa8d"
+    },
+    {
+      "artifact": "integrated-check/unit-build/greenlens-parser-allocation-tests.exe",
+      "sha256": "a4522d9a538dedae777c4fe1aa19641661dbf6e5f46534a8caa2b3286c5cd7d2"
+    },
+    {
+      "artifact": "integrated-check/unit-build/greenlens-serialization-tests.exe",
+      "sha256": "4e0daceed3b68c38605e59aeb888f3187fb06f3f456488b35191ab490eed9023"
+    },
+    {
+      "artifact": "integrated-check/compile-only/greenlens-instanced-export-tests.exe",
+      "sha256": "b44f8492e973c9a03044cc528c6366b03a9ee3821b0c30d329cd127f4a88f024"
+    },
+    {
+      "artifact": "final-source-tests.log",
+      "sha256": "d362e0ac90d1d098ffe2b1879e9113075fc687c189060b4a7aef3c54632a597b"
+    },
+    {
+      "artifact": "preparation-guards/guard-tests.json",
+      "sha256": "15fa40b0fbf3f7c54a4943103d52485a950c0d72e91bc782a7ba01830e5cff7f"
+    },
+    {
+      "sha256": "70f042bc7530f3287a548378cac4bd69b6dbf409131f0feb81a862cd8d4e5939",
+      "artifact": "final-with-path-tests.log"
+    },
+    {
+      "sha256": "c20b1bf6853a32df244b0291d441f5853b866fe93eec3704393e596c8df8f1b7",
+      "artifact": "compiled-object-directives.log"
+    },
+    {
+      "sha256": "dd1565e0220a75e64402c0b0ae65064ec330f456e49029741981f9a5016fe83b",
+      "artifact": "compiled-object-symbols.log"
+    },
+    {
+      "sha256": "5ea24a87fa5be01fef6bb1df1a68317d20e66ebd30373a6e4c0989d7f9c4c897",
+      "artifact": "preparation-negative-1.log"
+    },
+    {
+      "sha256": "5eeb7c46e3369e8dc8753ca787724265645d4acaffb4a683792ea895371e3cc0",
+      "artifact": "preparation-negative-repaired-1.log"
+    },
+    {
+      "sha256": "535df264b7fe959b979b97f167beb3d861651fd2f89ee87776977d27cef20c2d",
+      "artifact": "preparation-negative-repaired-2.log"
+    }
+  ],
+  "checks": {
+    "source_tests_passed": 42,
+    "source_tests_skipped": 0,
+    "zip_cases": 12,
+    "preallocation_assertions": 3160,
+    "parser_helper_assertions": 32,
+    "serialization_assertions": 154,
+    "exporter_assertions": 107,
+    "preparation_path_guards": 18,
+    "dependency_inventory_packages": 415,
+    "dependency_inventory_notices": 231,
+    "cmake_negative_admission": 4,
+    "final_preparation_manifests_byte_identical": true
+  },
+  "protocols": {
+    "skp_parses": 0,
+    "worker_executions": 0,
+    "ct1_functional_cases": 0,
+    "ct1_termination_cases": 0,
+    "private_probes": 0,
+    "renderer_executions": 0,
+    "energyplus_executions": 0,
+    "containment_qualified": false
+  },
+  "limitations": [
+    "Native tests do not execute legacy/modern SKP parser semantics.",
+    "Logical payload budgets exclude allocator overhead, other parser/model/DOM lifetimes and native runtime commitment.",
+    "No justified internal Job guard, final linked worker/runtime audit, geometry matrix or application adoption.",
+    "The initial CMake path-expression configuration failure and repaired checks are retained externally.",
+    "Initial Node reparse negative check failed due to existsSync following a dangling junction; repaired using shared no-follow lstat admission, with retained failure and 42 passing final tests.",
+    "Object inspection confirms unrouted CRT allocation imports and three default runtime libraries; this is not final linked runtime closure."
+  ],
+  "hosted_current_source_status": "Not yet dispatched at receipt creation"
+}

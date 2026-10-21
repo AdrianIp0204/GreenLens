@@ -71,7 +71,7 @@ jobs:
           $source = Initialize-OpenSkpPatchSource
           $source | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $env:ENERGY_BUILD_EVIDENCE 'openskp-patch-source.json') -Encoding utf8
           "GREENLENS_OPEN_SKP_AUDIT_SOURCE=$($source.source_path)" >> $env:GITHUB_ENV
-      - name: Pinned miniz preallocation checks (no SKP parser or worker)
+      - name: Pinned allocation checks and compile-only closure (no SKP parsing)
         timeout-minutes: 6
         env:
           GIT_TERMINAL_PROMPT: '0'
@@ -92,16 +92,32 @@ jobs:
           git -C $miniz -c core.autocrlf=false checkout --detach FETCH_HEAD
           if ($LASTEXITCODE -ne 0) { throw 'Pinned unit dependency checkout failed' }
           "GREENLENS_MINIZ_AUDIT_SOURCE=$miniz" >> $env:GITHUB_ENV
-          $prepared = Join-Path $root 'prepared'
-          node tools/openskp-worker/prepare-preallocation-tests.mjs $miniz $prepared > (Join-Path $root 'preparation.json')
-          if ($LASTEXITCODE -ne 0) { throw 'Exact unit source preparation failed' }
-          $build = Join-Path $root 'build'
-          cmake -S tools/openskp-worker/tests -B $build -G Ninja "-DGREENLENS_PREALLOCATION_SOURCE=$prepared" -DCMAKE_BUILD_TYPE=Release *> (Join-Path $root 'configure.log')
-          if ($LASTEXITCODE -ne 0) { throw 'Unit target configuration failed' }
-          cmake --build $build --parallel 2 *> (Join-Path $root 'build.log')
-          if ($LASTEXITCODE -ne 0) { throw 'Unit target compilation failed' }
-          & (Join-Path $build 'greenlens-preallocation-tests.exe') > (Join-Path $root 'tests.json')
-          if ($LASTEXITCODE -ne 0) { throw 'Preallocation arithmetic/intake tests failed' }
+          $tiny = Join-Path $root 'tinygltf'
+          $tinyPin = '488a70a3df62a4df1a736e9e56fb8836580c4888'
+          git -c core.autocrlf=false init $tiny
+          if ($LASTEXITCODE -ne 0) { throw 'TinyGLTF source initialization failed' }
+          git -C $tiny remote add origin https://github.com/syoyo/tinygltf.git
+          if ($LASTEXITCODE -ne 0) { throw 'TinyGLTF source origin failed' }
+          git -C $tiny fetch --depth 1 --no-tags origin $tinyPin
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned TinyGLTF acquisition failed' }
+          git -C $tiny -c core.autocrlf=false checkout --detach FETCH_HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned TinyGLTF checkout failed' }
+          # The earlier patch-only cache intentionally has fewer files. Acquire
+          # the exact compile closure separately without modifying that cache.
+          $openSkp = Join-Path $root 'openskp'
+          git -c core.autocrlf=false init $openSkp
+          if ($LASTEXITCODE -ne 0) { throw 'Compile source initialization failed' }
+          git -C $openSkp remote add origin https://github.com/iamahsanmehmood/openskp.git
+          if ($LASTEXITCODE -ne 0) { throw 'Compile source origin failed' }
+          git -C $openSkp config core.sparseCheckout true
+          if ($LASTEXITCODE -ne 0) { throw 'Compile source sparse setup failed' }
+          @('/LICENSE','/packages/cpp/include/','/packages/cpp/src/') | Set-Content -LiteralPath (Join-Path $openSkp '.git/info/sparse-checkout') -Encoding utf8NoBOM
+          git -C $openSkp fetch --depth 1 --filter=blob:none --no-tags origin dceb9fff0efc9668961530b535d5375c001343dc
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned compile source acquisition failed' }
+          git -C $openSkp -c core.autocrlf=false checkout --detach FETCH_HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned compile source checkout failed' }
+          ./scripts/test-openskp-allocation-guards.ps1
+          ./scripts/test-openskp-allocation.ps1 -OpenSkpCheckout $openSkp -MinizCheckout $miniz -TinyGltfCheckout $tiny -OutputDirectory (Join-Path $root 'checks')
       - name: Format, strict lint and unit/lifecycle regression suite
         run: |
           . ./scripts/dev-env.ps1
@@ -129,7 +145,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Exact-package notice binding regressions failed' }
           node --test scripts/test-license-inventory-diff.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Bounded inventory diagnostic regressions failed' }
-          node --test tools/openskp-worker/patches.test.mjs tools/openskp-worker/preallocation.test.mjs tools/openskp-worker/matrix-oracle.test.mjs
+          node --test tools/openskp-worker/patches.test.mjs tools/openskp-worker/preallocation.test.mjs tools/openskp-worker/matrix-oracle.test.mjs tools/openskp-worker/parser-allocation.test.mjs tools/openskp-worker/miniz-allocation-patches.test.mjs tools/openskp-worker/serialization.test.mjs tools/openskp-worker/preparation-paths.test.mjs
           if ($LASTEXITCODE -ne 0) { throw 'Optional worker source/oracle regressions failed (no converter execution)' }
           $cache = Join-Path $env:RUNNER_TEMP ('energy-pure-cache-' + [guid]::NewGuid().ToString('N'))
           if (Test-Path -LiteralPath $cache) { throw 'Expected absent Python cache' }

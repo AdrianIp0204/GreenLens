@@ -202,6 +202,7 @@ std::size_t zip_case(std::uint32_t count, bool zip64, std::size_t initial_reques
   check(!allocations.recording_failed && allocations.live == 0, "ZIP allocator accounting/cleanup failed");
   return allocations.requests[0];
 }
+#include "miniz_extra_bounds_test.hpp"
 }
 
 int main() {
@@ -213,8 +214,9 @@ int main() {
     zip_case(5001, false, state_request);
     zip_case(5000, true, state_request);
     zip_case(5001, true, state_request);
+    miniz_extra_bounds_cases();
     std::cout << "{\"schema_version\":\"greenlens.openskp-preallocation-tests.v1\","
-                 "\"passed\":" << checks << ",\"failed\":0,\"zip_intake_cases\":6,"
+                 "\"passed\":" << checks << ",\"failed\":0,\"zip_intake_cases\":12,"
                  "\"skp_parses\":0,\"worker_executions\":0,\"containment_qualified\":false}\n";
     return 0;
   } catch (const std::exception& error) {

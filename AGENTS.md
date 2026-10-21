@@ -1,5 +1,7 @@
 # GreenLens development contract
 
+2026-10-21: `docs/v0.8-oct21-allocation-continuation.md` governs optional-parser source repairs. Compile-only objects and original in-memory helper/exporter tests are not worker execution, containment or SKP compatibility. Keep CT1/matrix/private probe unused until allocation/runtime closure justifies them. No consumed protocol is reopened.
+
 2026-10-20 continuation: reconcile against completed RC3/VD2 before acting. `docs/v0.8-oct20-continuation.md` governs the narrow selected-object proposal repair and development-only pre-allocation checks. Preserve all consumed allowances and exact old products. Pure compiler/helper tests do not qualify the worker; no CT1/matrix/private execution until the full allocation/serialization closure justifies it. Root remains the single native/build owner.
 
 RC3 consumed 2026-10-18: unchanged f2197f3 published full-study R2; all 54 products reproduced in its single cold CLI regeneration. Native inline PDF, verified copy and complete Save As passed; R1/history remain unchanged. No EnergyPlus. Both owned Jobs emptied within declared bounds. Preserve source-bound receipts and presentation limitations. No render allowance remains. Fresh-profile native inspection/reveal, inherited native/clean-machine and SKP gates remain incomplete; do not bypass the earlier policy rejection.

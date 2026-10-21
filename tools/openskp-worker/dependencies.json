@@ -10,7 +10,7 @@
       "license": "MIT",
       "notice": "licenses/LICENSE.openskp",
       "notice_sha256": "837fabd97124295917c7317d51290182760c4b36f008a0f2323cd3c4fc8dbbea",
-      "modifications": "Owned strictness patches in patches.mjs; only a new external prepared copy is modified. Original source checkout retained.",
+      "modifications": "Owned strictness, parser-construction admission and bounded serialization patches; only a new external prepared copy is modified. Original source checkout retained. Compile-only and synthetic exporter checks do not execute the parser or qualify containment.",
       "obligation": "Retain complete copyright and permission notice. No claim of complete SKP compatibility."
     },
     {
@@ -20,7 +20,7 @@
       "license": "MIT",
       "notice": "licenses/LICENSE.miniz",
       "notice_sha256": "0115478d567121238cf6cc1c0c361926cf07a49d9e4c9e66da97fac6a01646b3",
-      "modifications": "Owned unique-anchor miniz_zip.c patch rejects more than 5,000 decoded directory entries before central-directory/index allocation. Shared original C-compatible bound helper and generated static export macro. No other allocator changes; direct MZ_MALLOC paths remain outside this narrow admission repair.",
+      "modifications": "Owned unique-anchor miniz_zip.c patches reject more than 5,000 directory entries before allocation and malformed extra fields outside the directory before an unnecessary direct allocation/read. Shared original C-compatible helper and static export macro. Other callback/default allocation and runtime accounting remain separate.",
       "obligation": "Retain all listed authors/copyrights and permission notice."
     },
     {

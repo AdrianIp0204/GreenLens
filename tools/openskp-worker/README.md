@@ -1,14 +1,24 @@
 # Optional OpenSKP development worker
 
-**Not adopted, built, installed, or exposed by GreenLens by this source addition.** This is a bounded development candidate for the predeclared matrix in `docs/v0.8-skp-decision.md`. Successful exit means an *unaccepted candidate*, never accepted project geometry, complete source fidelity or scientific qualification. No private input is authorized by this recipe.
+**Not linked as a worker, executed, adopted, installed or exposed by GreenLens.** The source closure has a compile-only target; isolated tests contain no SKP parser. This is a development candidate for the predeclared matrix in `docs/v0.8-skp-decision.md`. Successful future worker exit would mean an *unaccepted candidate*, never accepted project geometry, complete source fidelity or scientific qualification. No private input is authorized by this recipe.
+
+The October 21 repair adds checked parser payload construction (64 MiB per
+logical request, 256 MiB cumulative work), rejects impossible ZIP extra extents
+before allocation, counts JSON/complete GLB output before allocation, and hashes
+the final held source through a 64 KiB buffer. Texture requests reject before
+export construction; parsed/source/scene owners are released when no longer
+needed. These internal work bounds can reject a source without simplifying it;
+they are not a total heap-memory guarantee. JSON DOMs, container overhead, other
+parser/scene copies and native runtime allocation still prevent a justified
+containment guard. CT1 and all SKP parses remain gated.
 
 The 2026-10-20 prerequisite repair moves the existing 5,000-entry admission into
 miniz before central-directory/index storage grows, including its ZIP64 path.
 Checked padding/product/sum arithmetic also precedes the instanced exporter's
 binary reserve and append operations. These are narrow buffer-request repairs.
 They do not establish process commitment, parser-wide allocation bounds or
-containment: dictionary/JSON intermediates, serializer copies, native runtime
-allocation and miniz's direct allocation paths remain separately unresolved.
+containment. The newer repairs above address several copies and the miniz reader
+direct-allocation branch; complete allocation/lifetime accounting remains open.
 
 `tests/` is an independent low-resource C/C++ unit target. It contains no OpenSKP
 parser or worker and never reads SKP fixtures. It exercises the production
@@ -18,10 +28,12 @@ Allocator observations require rejection before directory/index allocations;
 they are not aggregate process-memory measurements. The build owner runs:
 
 ```powershell
-node tools/openskp-worker/prepare-preallocation-tests.mjs $MinizCheckout $NewExternalUnitSource
+node tools/openskp-worker/prepare-preallocation-tests.mjs $MinizCheckout $NewExternalUnitSource $TinyGltfCheckout
 cmake -S tools/openskp-worker/tests -B $NewExternalUnitBuild -G Ninja "-DGREENLENS_PREALLOCATION_SOURCE=$NewExternalUnitSource" -DCMAKE_BUILD_TYPE=Release
 cmake --build $NewExternalUnitBuild --parallel 2
 & (Join-Path $NewExternalUnitBuild 'greenlens-preallocation-tests.exe')
+& (Join-Path $NewExternalUnitBuild 'greenlens-parser-allocation-tests.exe')
+& (Join-Path $NewExternalUnitBuild 'greenlens-serialization-tests.exe') $NewExternalUnitSource
 node --test tools/openskp-worker/preallocation.test.mjs
 ```
 
@@ -76,7 +88,10 @@ node --test tools/openskp-worker/matrix-oracle.test.mjs
 ```
 
 These tests use original in-memory bytes, not an SKP parser. The native strict
-containment peak criterion has failed in the independent discriminator; **do not
-execute preparation, worker builds or conversions as an implicit continuation**.
+containment peak criterion has failed in the independent discriminator. Only the
+explicit `GREENLENS_COMPILE_ONLY=ON` object check and original in-memory exporter
+unit test are currently used by `scripts/test-openskp-allocation.ps1`; it must not
+produce or launch a converter. **No executable worker build or conversion is an
+implicit continuation.**
 See the retained stop in `docs/v0.8-skp-decision.md`. The collector and worker
 remain unexecuted development candidates; the private probe remains unused.

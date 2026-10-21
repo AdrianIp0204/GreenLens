@@ -1,6 +1,6 @@
 # GreenLens roadmap
 
-Active: `docs/v0.8-oct20-continuation.md`. RC3/VD2 remain intact. Selected-object repair, narrow pre-allocation checks and `67b40ef` CI pass; its package is uninstalled. Native cold inspection and SKP remain gated. Earlier failures remain; no later discipline is activated.
+Active: `docs/v0.8-oct21-allocation-continuation.md` for optional parser allocation prerequisites. RC3/VD2 and application `67b40ef` remain intact; its package is uninstalled. Native cold inspection and SKP remain gated. Earlier failures remain; no later discipline is activated.
 
 2026-10-17: history storage implemented. c3281d9 stopped at failed Save; preserve staged history and consumed allowance. Issuance/regeneration incomplete; no retry/expansion.
 

@@ -1,5 +1,7 @@
 # Progress and acceptance evidence
 
+2026-10-21: parser/output allocation repairs; `v0.8-oct21-allocation-continuation.md` records tests and residual closure gaps. CT1/SKP/private probe unused; no consumed protocol repeated.
+
 2026-10-20: 67b40ef proposal fix: 492 frontend, 3,130 helper assertions and required CI pass. New package uninstalled; RC3/VD2 unchanged. `v0.8-oct20-continuation.md` records remaining native/SKP gaps.
 
 2026-10-18 RC3: R2, 54-product cold CLI and complete copy pass; zero engine. Receipt: `evidence/v0.8/f2197f3-rc3-outcome.md`. Native/SKP gaps remain.

@@ -5,6 +5,10 @@ import crypto from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import {fileURLToPath} from 'node:url';
 import {pin, minizPin, patchSource, patchMiniz} from './patches.mjs';
+import {patchMinizExtraBounds} from './miniz-allocation-patches.mjs';
+import {patchParserAllocations} from './parser-allocation-patches.mjs';
+import {patchSerialization} from './serialization-patches.mjs';
+import {validateNewExternalDestination} from './preparation-paths.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const [openSkp, miniz, tinyGltf, destination, ...extra] = process.argv.slice(2);
@@ -12,23 +16,17 @@ if (!destination || extra.length) throw new Error('Usage: node prepare-source.mj
 const sha = bytes => crypto.createHash('sha256').update(bytes).digest('hex');
 const git = (directory, ...args) => execFileSync('git', ['-c', 'core.longpaths=true', '-C', directory, ...args], {encoding:'utf8', maxBuffer:16*1024*1024}).trimEnd();
 const sources = [
-  {name:'openskp', root:openSkp, pin},
-  {name:'miniz', root:miniz, pin:minizPin},
-  {name:'tinygltf', root:tinyGltf, pin:'488a70a3df62a4df1a736e9e56fb8836580c4888'},
+  {name:'openskp', root:openSkp, pin, origin:'https://github.com/iamahsanmehmood/openskp.git'},
+  {name:'miniz', root:miniz, pin:minizPin, origin:'https://github.com/richgel999/miniz.git'},
+  {name:'tinygltf', root:tinyGltf, pin:'488a70a3df62a4df1a736e9e56fb8836580c4888', origin:'https://github.com/syoyo/tinygltf.git'},
 ];
 for (const source of sources) {
   if (git(source.root, 'rev-parse', 'HEAD') !== source.pin) throw new Error(`Wrong ${source.name} commit`);
-  if (git(source.root, 'status', '--porcelain', '--untracked-files=no')) throw new Error(`Modified ${source.name} source`);
+  if (git(source.root, 'status', '--porcelain', '--untracked-files=all')) throw new Error(`Modified ${source.name} source`);
+  if (git(source.root, 'remote','get-url','origin') !== source.origin) throw new Error(`Unexpected ${source.name} origin`);
 }
-const target = path.resolve(destination);
-const external = path.resolve(process.env.LOCALAPPDATA ?? '', 'GreenLens');
-if (!process.env.LOCALAPPDATA || !target.toLowerCase().startsWith(external.toLowerCase()+path.sep)) throw new Error('Destination must be a new external LOCALAPPDATA/GreenLens directory');
-if (fs.existsSync(target)) throw new Error('Destination exists: preserve it; never overwrite a previous preparation');
-for (let parent = path.dirname(target); fs.existsSync(parent); parent = path.dirname(parent)) {
-  if (fs.lstatSync(parent).isSymbolicLink()) throw new Error('Reparse/symlink destination ancestry is unsupported');
-  if (path.dirname(parent) === parent) break;
-}
-const manifest = {schema_version:'greenlens.openskp-development-source.v1', source_pins:sources.map(({name,pin})=>({name,pin})), patch_sha256:sha(fs.readFileSync(path.join(here,'patches.mjs'))), files:[]};
+const target = validateNewExternalDestination(destination);
+const manifest = {schema_version:'greenlens.openskp-development-source.v1', source_pins:sources.map(({name,pin})=>({name,pin})), patch_sha256:sha(fs.readFileSync(path.join(here,'patches.mjs'))), additional_patches:['miniz-allocation-patches.mjs','parser-allocation-patches.mjs','serialization-patches.mjs'].map(file=>({file,sha256:sha(fs.readFileSync(path.join(here,file)))})), files:[]};
 const copy = (source, relative, output, patch=false) => {
   const raw = fs.readFileSync(path.join(source.root, relative));
   // CRLF working checkouts are allowed; the exact LF Git blob must still match.
@@ -36,7 +34,7 @@ const copy = (source, relative, output, patch=false) => {
   const normalized = raw.toString('utf8').replaceAll('\r\n','\n');
   if (normalized !== blob.toString('utf8').replaceAll('\r\n','\n')) throw new Error(`Source changed: ${relative}`);
   const data = Buffer.from(patch
-    ? source.name === 'miniz' ? patchMiniz(relative, normalized) : patchSource(relative.slice('packages/cpp/'.length), normalized)
+    ? source.name === 'miniz' ? patchMinizExtraBounds(relative,patchMiniz(relative, normalized)) : patchSerialization(relative.slice('packages/cpp/'.length),patchParserAllocations(relative.slice('packages/cpp/'.length),patchSource(relative.slice('packages/cpp/'.length), normalized)))
     : normalized);
   const dest = path.join(target,output);
   fs.mkdirSync(path.dirname(dest),{recursive:true});
@@ -69,6 +67,12 @@ try {
   for (const output of ['openskp/src/preallocation_bounds.h','miniz/preallocation_bounds.h']) {
     fs.writeFileSync(path.join(target,output),bounds,{flag:'wx'});
     manifest.files.push({source:'greenlens',path:output,original_sha256:sha(bounds),prepared_sha256:sha(bounds)});
+  }
+  for (const name of ['parser_allocation_bounds.hpp','bounded_serialization.hpp','streaming_sha256.hpp']) {
+    const data=fs.readFileSync(path.join(here,name));
+    const output=`openskp/src/${name}`;
+    fs.writeFileSync(path.join(target,output),data,{flag:'wx'});
+    manifest.files.push({source:'greenlens',path:output,original_sha256:sha(data),prepared_sha256:sha(data)});
   }
   manifest.files.sort((a,b)=>a.path.localeCompare(b.path,'en'));
   fs.writeFileSync(path.join(target,'source-manifest.json'),JSON.stringify(manifest,null,2)+'\n',{flag:'wx'});

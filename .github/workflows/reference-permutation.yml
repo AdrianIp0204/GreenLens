@@ -12,6 +12,7 @@ defaults:
     shell: pwsh
 jobs:
   diagnostic:
+    if: ${{ false }}
     permissions:
       # Read the two explicitly reviewed unpublished data-only assets.
       contents: write
@@ -88,7 +89,7 @@ jobs:
           retention-days: 30
   fixed_comparisons:
     needs: diagnostic
-    if: always()
+    if: ${{ false }}
     runs-on: windows-latest
     timeout-minutes: 15
     steps:

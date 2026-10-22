@@ -1,0 +1,110 @@
+name: Fixed missing controlled-reference baselines
+on:
+  push:
+    branches: [codex/v0.3-reference-pilot]
+permissions:
+  contents: read
+concurrency:
+  group: greenlens-controlled-reference-fixed
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: pwsh
+# Historical fixed protocol is consumed. Preserve its original jobs and inputs
+# for inspection; merging this source grants no new scientific execution.
+jobs:
+  baseline:
+    if: ${{ false }}
+    permissions:
+      # Required only to read existing unpublished, reviewed data-only assets.
+      contents: write
+    runs-on: windows-latest
+    timeout-minutes: 300
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include:
+          - { alternative: A, interval: 1908 }
+          - { alternative: A, interval: 1912 }
+          - { alternative: A, interval: 4116 }
+          - { alternative: A, interval: 4120 }
+          - { alternative: A, interval: 6320 }
+          - { alternative: A, interval: 6324 }
+          - { alternative: A, interval: 6328 }
+          - { alternative: A, interval: 8508 }
+          - { alternative: B, interval: 1908 }
+          - { alternative: B, interval: 1912 }
+          - { alternative: B, interval: 4116 }
+          - { alternative: B, interval: 4120 }
+          - { alternative: B, interval: 6320 }
+          - { alternative: B, interval: 6324 }
+          - { alternative: B, interval: 6328 }
+          - { alternative: B, interval: 8504 }
+          - { alternative: B, interval: 8508 }
+    env:
+      REFERENCE_ALTERNATIVE: '${{ matrix.alternative }}'
+      REFERENCE_INTERVAL: '${{ matrix.interval }}'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Synthetic source and bounded-wrapper guards
+        run: |
+          if ($PSVersionTable.PSVersion -lt [version]'7.5') { throw 'PowerShell 7.5 or later required' }
+          ./scripts/test-prepare-reference-sources.ps1
+          ./scripts/test-hosted-reference-case.ps1
+      - name: Download exact reviewed alternative input bundle
+        timeout-minutes: 10
+        env:
+          GH_TOKEN: '${{ github.token }}'
+        run: |
+          . ./scripts/run-hosted-reference-case.ps1 -FunctionsOnly
+          $plan = Get-Content ./scripts/hosted-reference-plan.json -Raw | ConvertFrom-Json -Depth 40 -DateKind String
+          Assert-HostedReferencePlan $plan
+          Assert-HostedReferenceCase $env:REFERENCE_ALTERNATIVE ([int]$env:REFERENCE_INTERVAL)
+          $pinned = $plan.archives.($env:REFERENCE_ALTERNATIVE)
+          if ($pinned.asset_id -notmatch '^[0-9]+$') { throw 'Reviewed draft asset ID must be fixed before dispatch' }
+          $endpoint = "repos/$env:GITHUB_REPOSITORY/releases/assets/$($pinned.asset_id)"
+          $asset = & gh api $endpoint | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $asset.name -cne $pinned.name -or $asset.size -ne $pinned.bytes) { throw 'Draft asset metadata differs' }
+          $zip = Join-Path $env:RUNNER_TEMP $pinned.name
+          $info = [Diagnostics.ProcessStartInfo]::new()
+          $info.FileName = (Get-Command gh -CommandType Application | Select-Object -First 1).Source
+          $info.UseShellExecute = $false
+          $info.RedirectStandardOutput = $true
+          $info.RedirectStandardError = $true
+          foreach ($arg in @('api',$endpoint,'-H','Accept: application/octet-stream')) { $info.ArgumentList.Add($arg) }
+          $process = [Diagnostics.Process]::new(); $process.StartInfo = $info
+          $stream = [IO.File]::Open($zip,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write)
+          $started = $false
+          try {
+            $started = $process.Start()
+            if (!$started) { throw 'Cannot start authenticated input download' }
+            $copy = $process.StandardOutput.BaseStream.CopyToAsync($stream)
+            $errors = $process.StandardError.ReadToEndAsync()
+            if (!$process.WaitForExit(300000)) { $process.Kill($true); throw 'Input download deadline exceeded' }
+            if (!$copy.Wait(30000) -or !$errors.Wait(30000)) { throw 'Input download pipe drain deadline exceeded' }
+            $null = $copy.GetAwaiter().GetResult()
+            $null = $errors.GetAwaiter().GetResult()
+            if ($process.ExitCode -ne 0) { throw 'Authenticated input download failed' }
+          } finally { if ($started -and !$process.HasExited) { $process.Kill($true) }; $stream.Dispose(); $process.Dispose() }
+          if ((Get-Item -LiteralPath $zip).Length -ne $pinned.bytes -or (Get-FileHash -LiteralPath $zip).Hash.ToLowerInvariant() -cne $pinned.sha256) { throw 'Reviewed bundle digest/size differs' }
+          "REFERENCE_INPUT_ARCHIVE=$zip" >> $env:GITHUB_ENV
+          $out = Join-Path $env:RUNNER_TEMP ("GreenLens-reference-" + $env:REFERENCE_ALTERNATIVE + "-" + $env:REFERENCE_INTERVAL)
+          "REFERENCE_OUTPUT=$out" >> $env:GITHUB_ENV
+      - name: Acquire separately pinned Radiance
+        env:
+          GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+        run: ./scripts/install-radiance.ps1
+      - name: One unchanged baseline case with one engine worker
+        run: |
+          ./scripts/run-hosted-reference-case.ps1 -Alternative $env:REFERENCE_ALTERNATIVE -IntervalIndex ([int]$env:REFERENCE_INTERVAL) -InputArchive $env:REFERENCE_INPUT_ARCHIVE -OutputDirectory $env:REFERENCE_OUTPUT -SourceRoot $PWD
+      - name: Retain completed or failed bounded reference evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reference-${{ matrix.alternative }}-${{ matrix.interval }}-${{ github.run_id }}
+          path: '${{ runner.temp }}/GreenLens-reference-${{ matrix.alternative }}-${{ matrix.interval }}/'
+          if-no-files-found: warn
+          retention-days: 30

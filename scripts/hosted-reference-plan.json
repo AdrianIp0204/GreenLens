@@ -1,0 +1,136 @@
+{
+  "schema_version": "greenlens.hosted-reference-plan.v1",
+  "scope": "Seventeen missing baseline cases only; existing qualified seven and every prior failure remain immutable. Sensitivities are separate.",
+  "maximum_parallel_jobs": 4,
+  "engine_workers_per_job": 1,
+  "process_seconds": 7200,
+  "job_minutes": 300,
+  "archives": {
+    "A": {
+      "asset_id": "630834963",
+      "name": "GreenLens-reference-A8504-inputs.zip",
+      "bytes": 8682531,
+      "sha256": "0b77ddbcf6d1ca03ecece672c2d1d40bdaabab6c53e30b3648bb5e14264f6f83",
+      "manifest_sha256": "ad232a37630912863c1d2123275ede5080bccad123d8a5364df95c157d86cb99",
+      "manifest_schema": "greenlens.hosted-reference-inputs.v1",
+      "source_sha256": {
+        "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+        "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+        "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+        "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+        "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+        "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+        "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+        "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+        "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+      }
+    },
+    "B": {
+      "asset_id": "630970034",
+      "name": "GreenLens-reference-B-inputs.zip",
+      "bytes": 8658788,
+      "sha256": "62926589df94c456f58b2cfa0c8ea47e0e5370e85e3a8a8bb1e6b5f2589a84c9",
+      "manifest_sha256": "4d58382f5a2704f7e0d567c709c0fadc5bb38f2a84653fb12a25695ddf08d9aa",
+      "manifest_schema": "greenlens.hosted-reference-inputs.v2",
+      "source_sha256": {
+        "scripts/annual-controlled-reference.ps1": "ee7ad8aac99abdcdf670501025a80d690c5206c01e9d263a54ef48dfff7f726b",
+        "scripts/annual-reference-process.ps1": "b9b472dfd74548b3e7edae0d54a697866e2fe1874c45fc96b17e08899f229bbb",
+        "scripts/annual-reference-aggregation.cs": "fdee643c733450a84b2c4d5c59d4af35174f25ff214496eb0a5a0249e3090c84",
+        "scripts/annual-matched-corrected.ps1": "455b7422b57e05824403122d1882ae53f735d18b196705b7b785346dfb2170fb",
+        "scripts/annual-feasibility.ps1": "2386e6835ec073e6c0425bfc5092de4bf01a420af3a4cf862c80d97d3de0b354",
+        "scripts/annual-matched-evidence.ps1": "5d721d08511522cf8899d15c01e06120fd36defa2ead25e1a5b5edec10959d3a",
+        "scripts/verify-matrix-multiplication.ps1": "e60bb9cd86a8411f2d2176eba418f9646c25e125f7dffdca9a06b5cdb4a66caf",
+        "docs/v0.3-reference-protocol.md": "4641f6c2991396beb934d80eaec40e84efecfaea557de92a5543be1fbb1d71b7",
+        "dependencies/radiance.json": "e5a2b80317c850a2cde08cb384dbeae958ab28a4f1bf2e6ea5c256d35955cdfe"
+      }
+    }
+  },
+  "cases": [
+    {
+      "alternative": "A",
+      "interval_index": 1908
+    },
+    {
+      "alternative": "A",
+      "interval_index": 1912
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4116
+    },
+    {
+      "alternative": "A",
+      "interval_index": 4120
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6320
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6324
+    },
+    {
+      "alternative": "A",
+      "interval_index": 6328
+    },
+    {
+      "alternative": "A",
+      "interval_index": 8508
+    },
+    {
+      "alternative": "B",
+      "interval_index": 1908
+    },
+    {
+      "alternative": "B",
+      "interval_index": 1912
+    },
+    {
+      "alternative": "B",
+      "interval_index": 4116
+    },
+    {
+      "alternative": "B",
+      "interval_index": 4120
+    },
+    {
+      "alternative": "B",
+      "interval_index": 6320
+    },
+    {
+      "alternative": "B",
+      "interval_index": 6324
+    },
+    {
+      "alternative": "B",
+      "interval_index": 6328
+    },
+    {
+      "alternative": "B",
+      "interval_index": 8504
+    },
+    {
+      "alternative": "B",
+      "interval_index": 8508
+    }
+  ],
+  "excluded_qualified": [
+    "A:1904",
+    "A:4112",
+    "A:8504",
+    "A:8512",
+    "B:1904",
+    "B:4112",
+    "B:8512"
+  ],
+  "sensitivities_pending": [
+    "B:8512:scale10000",
+    "B:8512:weight1e10",
+    "B:8512:depth10-24",
+    "A:4116:scale10000",
+    "A:4116:weight1e10",
+    "A:4116:depth10-24"
+  ],
+  "release_acceptance_complete": false
+}

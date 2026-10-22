@@ -10,8 +10,11 @@ concurrency:
 defaults:
   run:
     shell: pwsh
+# Historical fixed protocol is consumed. Preserve its original jobs and inputs
+# for inspection; merging this source grants no new scientific execution.
 jobs:
   diagnostic:
+    if: ${{ false }}
     permissions:
       # Read the two explicitly reviewed unpublished data-only assets.
       contents: write
@@ -68,6 +71,7 @@ jobs:
           if-no-files-found: warn
           retention-days: 30
   descriptive_aggregate:
+    if: ${{ false }}
     needs: diagnostic
     runs-on: windows-latest
     timeout-minutes: 15

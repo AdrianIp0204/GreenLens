@@ -12,8 +12,13 @@ defaults:
 env:
   CARGO_HTTP_TIMEOUT: '300'
   CARGO_NET_RETRY: '3'
+# Historical v0.3 verification is retained for source/evidence inspection only.
+# Its bounded scientific protocols are consumed; consolidation cannot restart
+# them through push, pull_request or workflow_dispatch. Current verification is
+# energy-windows.yml plus observer-windows.yml, with their criteria unchanged.
 jobs:
   native:
+    if: ${{ false }}
     runs-on: windows-latest
     timeout-minutes: 150
     steps:
@@ -237,6 +242,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   selected_hour:
+    if: ${{ false }}
     needs: native
     runs-on: windows-latest
     timeout-minutes: 150
@@ -316,6 +322,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   annual:
+    if: ${{ false }}
     needs: native
     runs-on: windows-latest
     timeout-minutes: 350
@@ -398,6 +405,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   annual_convergence:
+    if: ${{ false }}
     needs: [native, selected_hour, annual]
     runs-on: windows-latest
     timeout-minutes: 45
@@ -500,6 +508,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   annual_replay:
+    if: ${{ false }}
     needs: [native, annual, annual_convergence]
     runs-on: windows-latest
     timeout-minutes: 350

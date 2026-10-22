@@ -1,7 +1,8 @@
 name: Bounded observer Windows checks
 on:
   push:
-    branches: [codex/v0.8-observer-identity, codex/v0.8-report-design]
+    branches: [main, codex/v0.8-observer-identity, codex/v0.8-report-design]
+  pull_request:
   workflow_dispatch:
 permissions:
   contents: read
@@ -14,6 +15,13 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Prevent consumed scientific workflow execution
+        run: |
+          node --test scripts/test-consolidation-workflows.mjs
+          if ($LASTEXITCODE -ne 0) { throw 'Consolidated workflow policy failed' }
       - name: Declare isolated evidence and exact source
         run: |
           $root = Join-Path $env:LOCALAPPDATA 'GreenLens/verification/hosted-observer'

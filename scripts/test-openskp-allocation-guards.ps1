@@ -66,6 +66,13 @@ try {
     $previousLocation=(Get-Location).Path
     Push-Location -LiteralPath $testRoot
     try {
+        Check-AllocationGuard ((Resolve-AllocationTestPath './dependency-source') -ceq (Join-Path $testRoot 'dependency-source')) 'Relative dependency path uses external caller location'
+        Check-AllocationGuard ((Resolve-AllocationTestPath './missing/../dependency-source') -ceq (Join-Path $testRoot 'dependency-source')) 'Relative dependency path normalizes missing parents without requiring existence'
+        Check-AllocationGuard ((Assert-AllocationTestDestination './relative-output') -ceq (Join-Path $testRoot 'relative-output')) 'Relative destination uses external caller location'
+        Check-AllocationGuard (-not (Test-Path -LiteralPath (Join-Path $testRoot 'dependency-source')) -and
+            -not (Test-Path -LiteralPath (Join-Path $testRoot 'relative-output'))) 'Caller-relative resolution creates no dependency or output directory'
+        Reject-AllocationGuard { Resolve-AllocationTestPath 'Env:LOCALAPPDATA' } 'Non-filesystem dependency provider rejected'
+        Reject-AllocationGuard { Assert-AllocationTestDestination 'Env:LOCALAPPDATA' } 'Non-filesystem destination provider rejected'
         Check-AllocationGuard ((Get-AllocationTestRepository) -ceq $expectedRepository) 'Repository identity independent of external caller CWD'
         Check-AllocationGuard ((Get-Location).Path -ceq $testRoot) 'Repository lookup does not change caller CWD'
     } finally { Pop-Location }

@@ -7,10 +7,20 @@ param(
     [switch]$FunctionsOnly
 )
 $ErrorActionPreference='Stop'
+function Resolve-AllocationTestPath([string]$Path) {
+    if ([string]::IsNullOrWhiteSpace($Path)) { throw 'A filesystem path is required.' }
+    # PowerShell's location can differ from the process working directory after
+    # Set-Location/Push-Location. Resolve caller paths through its provider first.
+    $provider=$null
+    $drive=$null
+    $resolved=$ExecutionContext.SessionState.Path.GetUnresolvedProviderPathFromPSPath($Path,[ref]$provider,[ref]$drive)
+    if ($provider.Name -cne 'FileSystem') { throw 'Only filesystem paths are supported.' }
+    return [IO.Path]::GetFullPath($resolved)
+}
 function Assert-AllocationTestDestination([string]$Path) {
     if (!$env:LOCALAPPDATA -or [string]::IsNullOrWhiteSpace($Path)) { throw 'An external destination is required.' }
-    $candidate=[IO.Path]::GetFullPath($Path)
-    $external=[IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'GreenLens'))+[IO.Path]::DirectorySeparatorChar
+    $candidate=Resolve-AllocationTestPath $Path
+    $external=(Resolve-AllocationTestPath (Join-Path $env:LOCALAPPDATA 'GreenLens'))+[IO.Path]::DirectorySeparatorChar
     if(-not $candidate.StartsWith($external,[StringComparison]::OrdinalIgnoreCase) -or (Test-Path -LiteralPath $candidate)) {
         throw 'Expected a new external GreenLens test directory; preserve previous evidence.'
     }
@@ -27,9 +37,9 @@ foreach($inputPath in @($OpenSkpCheckout,$MinizCheckout,$TinyGltfCheckout)) {
     if([string]::IsNullOrWhiteSpace($inputPath)) { throw 'All three pinned dependency checkouts are required.' }
 }
 # Resolve caller-provided paths before entering this script's repository.
-$OpenSkpCheckout=[IO.Path]::GetFullPath($OpenSkpCheckout)
-$MinizCheckout=[IO.Path]::GetFullPath($MinizCheckout)
-$TinyGltfCheckout=[IO.Path]::GetFullPath($TinyGltfCheckout)
+$OpenSkpCheckout=Resolve-AllocationTestPath $OpenSkpCheckout
+$MinizCheckout=Resolve-AllocationTestPath $MinizCheckout
+$TinyGltfCheckout=Resolve-AllocationTestPath $TinyGltfCheckout
 $root=Assert-AllocationTestDestination $OutputDirectory
 Push-Location (Get-AllocationTestRepository)
 try {

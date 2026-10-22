@@ -10,8 +10,11 @@ concurrency:
 defaults:
   run:
     shell: pwsh
+# Historical fixed protocol is consumed. Preserve its original jobs and inputs
+# for inspection; merging this source grants no new scientific execution.
 jobs:
   sensitivity:
+    if: ${{ false }}
     permissions:
       # Required only to read existing unpublished, reviewed data-only assets.
       contents: write

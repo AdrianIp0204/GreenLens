@@ -1,0 +1,230 @@
+{
+  "schema_version": "greenlens.presentation-source-checkpoint.v1",
+  "completed_utc": "2026-10-22T15:08:16.7259049Z",
+  "parent_commit": "1bdee88b81a0674edb5401dad0cdeeb7433f34f2",
+  "checkpoint": "Uncommitted source checkpoint; source files below bind final runtime, test, template and schema bytes. Documentation is source-only except the concise progress pointer.",
+  "source_files": [
+    {
+      "path": "apps/desktop/src/energy/design-report-response.mjs",
+      "bytes": 22966,
+      "sha256": "73f37965f8c555e153074951cfe5e09ae345eb54549f532a820a8bb904f05fcf"
+    },
+    {
+      "path": "apps/desktop/tests/design-report-response.test.mjs",
+      "bytes": 18804,
+      "sha256": "da2bdc2f096e3b30de2812e2b681663473fa8cb9d2d9f64a4a7928887c7c6b4f"
+    },
+    {
+      "path": "crates/greenlens-core/src/energy/report.rs",
+      "bytes": 45242,
+      "sha256": "39066c378a52ac127ecabfcb986fe287b0d973ba81279df17b5efe904956935a"
+    },
+    {
+      "path": "crates/greenlens-core/src/energy/sensitivity.rs",
+      "bytes": 38601,
+      "sha256": "af6d1637c4b753128f037358a238e3068eab217f7cba7807d877b74999454714"
+    },
+    {
+      "path": "crates/greenlens-runner/src/design_report.rs",
+      "bytes": 107290,
+      "sha256": "9c8c85d6d60e6a260567e756ed9788ff96cb4b27e6deb761dc01957f7b6496b3"
+    },
+    {
+      "path": "crates/greenlens-runner/src/design_report_service.rs",
+      "bytes": 20664,
+      "sha256": "932173f90e9c262fba0a15b114daf1c9050b7a3dcf3c742d5a8a50fca7264238"
+    },
+    {
+      "path": "crates/greenlens-runner/src/energy_report.rs",
+      "bytes": 78757,
+      "sha256": "9d4b7652aba7c2de60c46701b258f75fc5be380147b6e4cd4483229409add795"
+    },
+    {
+      "path": "reports/templates/design-comparison-v3.typ",
+      "bytes": 2353,
+      "sha256": "1544140cede22f478a9cad9881b40a329121091eab942aaa3bb1f9ed8aa2bc0d"
+    },
+    {
+      "path": "schemas/energy-report-presentation-v1.schema.json",
+      "bytes": 9558,
+      "sha256": "709a1b5154dc2374a935dad45ca2ab7342439c9784930b1d8ab44e8fc2c38a4c"
+    }
+  ],
+  "final_checks": {
+    "rust_format": "pass",
+    "rust_clippy": "pass; greenlens-core and greenlens-runner, all targets, locked/offline, warnings denied",
+    "core_tests": {
+      "ignored": 0,
+      "failed": 0,
+      "passed": 143
+    },
+    "runner_design_report_tests": {
+      "ignored": 0,
+      "filtered": 287,
+      "failed": 0,
+      "passed": 17
+    },
+    "frontend_full": {
+      "skipped": 0,
+      "failed": 0,
+      "passed": 496
+    },
+    "frontend_response": {
+      "passed": 14,
+      "failed": 0
+    },
+    "frontend_types_and_production_build": "pass; existing large-chunk warning retained; output external",
+    "workflow_retirement_guards": {
+      "passed": 10,
+      "failed": 0
+    },
+    "presentation_schema": "JSON parsed; 39 local references resolve; legacy schema unchanged",
+    "packaged_documentation": {
+      "local_links": 804,
+      "result": "pass",
+      "bytes_including_index": 16764551,
+      "limit_bytes": 16777216,
+      "files": 414
+    }
+  },
+  "prior_full_rust_pass": {
+    "runner_passed": 297,
+    "scope": "Before final exact-limit classification guard. Final core and affected runner checks above verify the guard; this is not a final full-runner result.",
+    "runner_ignored": 7,
+    "core_passed": 142,
+    "failed": 0
+  },
+  "ignored_tests": "One native Typst and six genuine retained-evidence tests remain gated; not executed.",
+  "preserved_failures": [
+    {
+      "repair": "Supply complete synthetic SVG set; fingerprints captured before production changes",
+      "log": "legacy-baseline.log",
+      "reason": "Synthetic HTML setup lacked owned inline SVGs"
+    },
+    {
+      "repair": "Assert parsed exact f64 bits, unit, precise state and display",
+      "log": "runner-focused.log",
+      "reason": "Test assumed identical Rust/JSON number spelling"
+    },
+    {
+      "repair": "Move comment above assertion; behavior unchanged",
+      "log": "rust-format-final.log",
+      "reason": "Comment alignment"
+    }
+  ],
+  "hosted_starting_source": {
+    "retired_native": {
+      "status": "skipped",
+      "run_id": 39794034222
+    },
+    "sha": "1bdee88b81a0674edb5401dad0cdeeb7433f34f2",
+    "application": {
+      "status": "in_progress",
+      "run_id": 39794034111
+    },
+    "observer": {
+      "status": "success",
+      "run_id": 39794034411
+    }
+  },
+  "hosted_new_source": "Not yet run at this precommit checkpoint; query the eventual exact commit separately. No workflow manually dispatched.",
+  "dependencies": "No dependency or lockfile change; no new dependency inventory required.",
+  "native_acceptance": "Unverified. No local app launch, EnergyPlus, Typst, real issuance/regeneration, SKP parsing, CT1/matrix/private probe or consumed cancellation demonstration.",
+  "logs": [
+    {
+      "file": "core-focused.log",
+      "bytes": 8069,
+      "sha256": "a7a9e223ac49b4fcce4c1ba616671bb967bc04eccce353b052fa1328f2e99648"
+    },
+    {
+      "file": "core-full-final.log",
+      "bytes": 14454,
+      "sha256": "648359f186d9eddee9e7f28792d60bf3cafebee2c229039f70480a357958bb65"
+    },
+    {
+      "file": "documentation-final.log",
+      "bytes": 212,
+      "sha256": "9055913f1ee9a61a5d7d2f97c4c702dd8e6a4bf99b2bef1f731b08b6313650ad"
+    },
+    {
+      "file": "documentation.log",
+      "bytes": 212,
+      "sha256": "fc809500a62b518ca303fbc0fb2ba23818c065756ef6316780fe35174d2b1986"
+    },
+    {
+      "file": "frontend-build.log",
+      "bytes": 2200,
+      "sha256": "95b2b026a31e687bc1e2647108f65e961e0cf6bbf04de46bfc5f8daa902b0a9d"
+    },
+    {
+      "file": "frontend-focused.log",
+      "bytes": 1646,
+      "sha256": "69a9485d42a7a7df572b2a84fef4c911704e3c95a0aa4b5a736ae6accc9394e8"
+    },
+    {
+      "file": "frontend-full.log",
+      "bytes": 59986,
+      "sha256": "c5e524986c5e8970ec23add3e5b271b9a1d1a122c60da1e32ee1238a1d9dd804"
+    },
+    {
+      "file": "legacy-baseline-repaired.log",
+      "bytes": 1201,
+      "sha256": "7a8bf62b704152a63a1b6c09bb4188bd202c96f3a8bd10e35c8be5d2232b547f"
+    },
+    {
+      "file": "legacy-baseline.log",
+      "bytes": 1418,
+      "sha256": "7aeb67db9a4a18f4357ee27b485e1faf26656937494c4e7306233d5fea29ffa8"
+    },
+    {
+      "file": "runner-focused-final.log",
+      "bytes": 2512,
+      "sha256": "baecc414e721b7f093acb806bb0b6e4b2b5986f3e848f3c8c828ab01b781c578"
+    },
+    {
+      "file": "runner-focused-repaired.log",
+      "bytes": 2183,
+      "sha256": "8e8ac383ad8c4a19d7fba600b743f9b4d70918f933ef2554dca35e9948c40b42"
+    },
+    {
+      "file": "runner-focused.log",
+      "bytes": 3119,
+      "sha256": "f356ade7d203bfd6d2a31d23e7d09990228cc9ef930761c3c5a65f7479553d44"
+    },
+    {
+      "file": "rust-clippy-final.log",
+      "bytes": 510,
+      "sha256": "7f87e64169a85ac5856c542ec267ecb64f01f07529a880ba95307064f0585ca2"
+    },
+    {
+      "file": "rust-clippy.log",
+      "bytes": 831,
+      "sha256": "18e5695117c25f17be5c842603ac133476bfd5e057b6bd97f24c993bc9f25534"
+    },
+    {
+      "file": "rust-format-final.log",
+      "bytes": 733,
+      "sha256": "7c75a6a37308e3c49aa4e00d9afbc5e8cd4cc1afc7bb5f03e64dac516952c3dd"
+    },
+    {
+      "file": "rust-format-repaired-final.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "rust-format.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "file": "rust-full.log",
+      "bytes": 48238,
+      "sha256": "0f46d4664571290a30624e5c3fae09f37091040ee4da6fe6ca9e5607647d3e94"
+    },
+    {
+      "file": "workflow-guards.log",
+      "bytes": 1028,
+      "sha256": "44b3fb2e5170c633f7d2de741efb29fe491cc53a8ec895854fb4180983dbe92d"
+    }
+  ]
+}

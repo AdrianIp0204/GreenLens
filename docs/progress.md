@@ -1,5 +1,7 @@
 # Progress and acceptance evidence
 
+Oct22 v3 N/A/precision: source-verified, native-unverified; `v0.8-oct22-presentation-continuation.md`.
+
 2026-10-22: branch consolidation and path/CI guards; see source-only `v0.8-main-consolidation.md`. Historical/native/SKP limits unchanged; acceptance incomplete.
 
 2026-10-21: parser/output allocation repairs; `v0.8-oct21-allocation-continuation.md` records tests and residual closure gaps. CT1/SKP/private probe unused; no consumed protocol repeated.

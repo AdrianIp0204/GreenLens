@@ -228,6 +228,79 @@ pub struct EnergySensitivityCriterion {
     pub passed: bool,
     pub explanation: String,
 }
+/// Presentation semantics only: this does not verify retained runs, evaluate a
+/// criterion, or change its serialized representation or outcome.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum EnergySensitivityCriterionSemantics {
+    PairedAnnual,
+    PairedPeak,
+    SingleRunComfort,
+    Unsupported,
+}
+impl EnergySensitivityCriterion {
+    pub fn semantics_v1(&self) -> EnergySensitivityCriterionSemantics {
+        use EnergySensitivityCriterionSemantics::{
+            PairedAnnual, PairedPeak, SingleRunComfort, Unsupported,
+        };
+        // Recognition is bound to the existing v1 generator's frozen limits;
+        // a changed policy must not inherit its presentation semantics.
+        let expected_limit = match self.quantity.as_str() {
+            "annual_facility_kwh" | "occupied_cooling_unmet_percent" => 1.,
+            "common_ten_minute_peak_kw" => 3.,
+            _ => return Unsupported,
+        };
+        if !matches!(self.alternative_id.as_str(), "A" | "B")
+            || self.limit_percent != expected_limit
+            || [
+                self.ten_minute,
+                self.five_minute_reference,
+                self.measured_percent,
+            ]
+            .into_iter()
+            .flatten()
+            .any(|value| !value.is_finite())
+        {
+            return Unsupported;
+        }
+        let ten_id = format!("{}10", self.alternative_id);
+        let five_id = format!("{}5", self.alternative_id);
+        match self.quantity.as_str() {
+            "annual_facility_kwh" | "common_ten_minute_peak_kw"
+                if self.zone_id.is_none()
+                    && self.id == format!("{}:{}", self.alternative_id, self.quantity)
+                    && self
+                        .slot_ids
+                        .iter()
+                        .map(String::as_str)
+                        .eq([ten_id.as_str(), five_id.as_str()]) =>
+            {
+                // Missing required paired measurements are still paired checks;
+                // callers must disclose Missing rather than infer N/A.
+                if self.quantity == "annual_facility_kwh" {
+                    PairedAnnual
+                } else {
+                    PairedPeak
+                }
+            }
+            "occupied_cooling_unmet_percent"
+                if self.ten_minute.is_none() && self.five_minute_reference.is_none() =>
+            {
+                let (Some(zone), [slot]) = (self.zone_id.as_deref(), self.slot_ids.as_slice())
+                else {
+                    return Unsupported;
+                };
+                if identifier("sensitivity.zone_id", zone).is_err()
+                    || (slot != &ten_id && slot != &five_id)
+                    || self.id != format!("{slot}:comfort:{zone}")
+                {
+                    return Unsupported;
+                }
+                SingleRunComfort
+            }
+            _ => Unsupported,
+        }
+    }
+}
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 #[serde(deny_unknown_fields)]
 pub struct EnergySensitivityAssessment {
@@ -449,6 +522,294 @@ pub fn assess_energy_sensitivity(
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn comfort_criterion() -> EnergySensitivityCriterion {
+        EnergySensitivityCriterion {
+            id: "A10:comfort:zone1".into(),
+            alternative_id: "A".into(),
+            slot_ids: vec!["A10".into()],
+            quantity: "occupied_cooling_unmet_percent".into(),
+            zone_id: Some("zone1".into()),
+            ten_minute: None,
+            five_minute_reference: None,
+            measured_percent: Some(0.5),
+            limit_percent: 1.,
+            passed: true,
+            explanation: "Original synthetic criterion.".into(),
+        }
+    }
+    fn paired_criterion(quantity: &str) -> EnergySensitivityCriterion {
+        EnergySensitivityCriterion {
+            id: format!("B:{quantity}"),
+            alternative_id: "B".into(),
+            slot_ids: vec!["B10".into(), "B5".into()],
+            quantity: quantity.into(),
+            zone_id: None,
+            ten_minute: Some(100.),
+            five_minute_reference: Some(100.),
+            measured_percent: Some(0.),
+            limit_percent: if quantity == "annual_facility_kwh" {
+                1.
+            } else {
+                3.
+            },
+            passed: true,
+            explanation: "Original synthetic paired criterion.".into(),
+        }
+    }
+    #[test]
+    fn criterion_semantics_preserve_generated_assessment_and_legacy_encoding() {
+        let (declaration, runs) = fixture();
+        let assessment = assess_energy_sensitivity(&declaration, &runs, &[]).unwrap();
+        let before = serde_json::to_vec(&assessment).unwrap();
+        let measurements = assessment
+            .criteria
+            .iter()
+            .map(|c| (c.measured_percent, c.limit_percent, c.passed))
+            .collect::<Vec<_>>();
+        for criterion in &assessment.criteria {
+            let expected = match criterion.quantity.as_str() {
+                "annual_facility_kwh" => EnergySensitivityCriterionSemantics::PairedAnnual,
+                "common_ten_minute_peak_kw" => EnergySensitivityCriterionSemantics::PairedPeak,
+                "occupied_cooling_unmet_percent" => {
+                    EnergySensitivityCriterionSemantics::SingleRunComfort
+                }
+                _ => panic!("Unexpected generated criterion"),
+            };
+            assert_eq!(criterion.semantics_v1(), expected);
+        }
+        assert_eq!(serde_json::to_vec(&assessment).unwrap(), before);
+        assert_eq!(
+            assessment
+                .criteria
+                .iter()
+                .map(|c| (c.measured_percent, c.limit_percent, c.passed))
+                .collect::<Vec<_>>(),
+            measurements
+        );
+        let criterion = comfort_criterion();
+        let bytes = serde_json::to_string(&criterion).unwrap();
+        assert_eq!(
+            bytes,
+            r#"{"id":"A10:comfort:zone1","alternative_id":"A","slot_ids":["A10"],"quantity":"occupied_cooling_unmet_percent","zone_id":"zone1","ten_minute":null,"five_minute_reference":null,"measured_percent":0.5,"limit_percent":1.0,"passed":true,"explanation":"Original synthetic criterion."}"#
+        );
+        let decoded: EnergySensitivityCriterion = serde_json::from_str(&bytes).unwrap();
+        assert_eq!(decoded, criterion);
+        assert_eq!(
+            decoded.semantics_v1(),
+            EnergySensitivityCriterionSemantics::SingleRunComfort
+        );
+    }
+    #[test]
+    fn paired_semantics_keep_absent_measurements_required() {
+        for (quantity, semantics) in [
+            (
+                "annual_facility_kwh",
+                EnergySensitivityCriterionSemantics::PairedAnnual,
+            ),
+            (
+                "common_ten_minute_peak_kw",
+                EnergySensitivityCriterionSemantics::PairedPeak,
+            ),
+        ] {
+            for (ten, five) in [
+                (Some(100.), Some(100.)),
+                (None, Some(100.)),
+                (Some(100.), None),
+                (None, None),
+            ] {
+                let mut criterion = paired_criterion(quantity);
+                criterion.ten_minute = ten;
+                criterion.five_minute_reference = five;
+                criterion.measured_percent = None;
+                criterion.passed = false;
+                assert_eq!(criterion.semantics_v1(), semantics);
+            }
+        }
+    }
+    #[test]
+    fn criterion_semantics_require_exact_frozen_limits_without_mutating_data() {
+        for (criterion, expected) in [
+            (
+                paired_criterion("annual_facility_kwh"),
+                EnergySensitivityCriterionSemantics::PairedAnnual,
+            ),
+            (
+                paired_criterion("common_ten_minute_peak_kw"),
+                EnergySensitivityCriterionSemantics::PairedPeak,
+            ),
+            (
+                comfort_criterion(),
+                EnergySensitivityCriterionSemantics::SingleRunComfort,
+            ),
+        ] {
+            assert_eq!(criterion.semantics_v1(), expected);
+            let frozen = criterion.limit_percent;
+            for limit in [
+                frozen + 1.,
+                -frozen,
+                0.,
+                f64::from_bits(frozen.to_bits() - 1),
+                f64::from_bits(frozen.to_bits() + 1),
+            ] {
+                let mut altered = criterion.clone();
+                altered.limit_percent = limit;
+                let before = serde_json::to_vec(&altered).unwrap();
+                assert_eq!(
+                    altered.semantics_v1(),
+                    EnergySensitivityCriterionSemantics::Unsupported
+                );
+                assert_eq!(serde_json::to_vec(&altered).unwrap(), before);
+            }
+        }
+    }
+    #[test]
+    fn paired_semantics_reject_malformed_ids_zones_and_slot_order() {
+        for quantity in ["annual_facility_kwh", "common_ten_minute_peak_kw"] {
+            let criterion = paired_criterion(quantity);
+            for slots in [
+                vec![],
+                vec!["B10"],
+                vec!["B10", "B10"],
+                vec!["B5", "B10"],
+                vec!["B10", "A5"],
+                vec!["B10", "B15"],
+                vec!["B10", "B5", "B5"],
+            ] {
+                let mut altered = criterion.clone();
+                altered.slot_ids = slots.into_iter().map(str::to_owned).collect();
+                assert_eq!(
+                    altered.semantics_v1(),
+                    EnergySensitivityCriterionSemantics::Unsupported
+                );
+            }
+            let mut altered = criterion.clone();
+            altered.id = format!("A:{quantity}");
+            assert_eq!(
+                altered.semantics_v1(),
+                EnergySensitivityCriterionSemantics::Unsupported
+            );
+            let mut altered = criterion.clone();
+            altered.zone_id = Some("zone1".into());
+            assert_eq!(
+                altered.semantics_v1(),
+                EnergySensitivityCriterionSemantics::Unsupported
+            );
+            let mut altered = criterion.clone();
+            altered.alternative_id = "C".into();
+            altered.id = format!("C:{quantity}");
+            altered.slot_ids = vec!["C10".into(), "C5".into()];
+            assert_eq!(
+                altered.semantics_v1(),
+                EnergySensitivityCriterionSemantics::Unsupported
+            );
+        }
+    }
+    #[test]
+    fn single_run_comfort_requires_exact_zone_slot_and_absent_pair() {
+        for alternative in ["A", "B"] {
+            for interval in ["10", "5"] {
+                let mut criterion = comfort_criterion();
+                let slot = format!("{alternative}{interval}");
+                criterion.alternative_id = alternative.into();
+                criterion.slot_ids = vec![slot.clone()];
+                criterion.id = format!("{slot}:comfort:zone1");
+                criterion.measured_percent = None;
+                criterion.passed = false;
+                assert_eq!(
+                    criterion.semantics_v1(),
+                    EnergySensitivityCriterionSemantics::SingleRunComfort
+                );
+            }
+        }
+        let criterion = comfort_criterion();
+        for slots in [
+            vec![],
+            vec!["A10", "A5"],
+            vec!["A10", "A10"],
+            vec!["B10"],
+            vec!["A15"],
+        ] {
+            let mut altered = criterion.clone();
+            altered.slot_ids = slots.into_iter().map(str::to_owned).collect();
+            assert_eq!(
+                altered.semantics_v1(),
+                EnergySensitivityCriterionSemantics::Unsupported
+            );
+        }
+        for zone in [None, Some(""), Some("zone:1"), Some("zone 1"), Some("区域")] {
+            let mut altered = criterion.clone();
+            altered.zone_id = zone.map(str::to_owned);
+            altered.id = format!("A10:comfort:{}", zone.unwrap_or_default());
+            assert_eq!(
+                altered.semantics_v1(),
+                EnergySensitivityCriterionSemantics::Unsupported
+            );
+        }
+        let mut altered = criterion.clone();
+        altered.zone_id = Some("z".repeat(81));
+        altered.id = format!("A10:comfort:{}", "z".repeat(81));
+        assert_eq!(
+            altered.semantics_v1(),
+            EnergySensitivityCriterionSemantics::Unsupported
+        );
+        let mut altered = criterion.clone();
+        altered.id = "A10:comfort:zone2".into();
+        assert_eq!(
+            altered.semantics_v1(),
+            EnergySensitivityCriterionSemantics::Unsupported
+        );
+        let mut altered = criterion.clone();
+        altered.alternative_id = "B".into();
+        assert_eq!(
+            altered.semantics_v1(),
+            EnergySensitivityCriterionSemantics::Unsupported
+        );
+        let mut altered = criterion.clone();
+        altered.ten_minute = Some(0.);
+        assert_eq!(
+            altered.semantics_v1(),
+            EnergySensitivityCriterionSemantics::Unsupported
+        );
+        let mut altered = criterion;
+        altered.five_minute_reference = Some(0.);
+        assert_eq!(
+            altered.semantics_v1(),
+            EnergySensitivityCriterionSemantics::Unsupported
+        );
+    }
+    #[test]
+    fn unknown_quantities_and_nonfinite_measurements_never_acquire_na_semantics() {
+        for mut criterion in [comfort_criterion(), paired_criterion("annual_facility_kwh")] {
+            criterion.quantity = "unknown_quantity".into();
+            criterion.ten_minute = None;
+            criterion.five_minute_reference = None;
+            assert_eq!(
+                criterion.semantics_v1(),
+                EnergySensitivityCriterionSemantics::Unsupported
+            );
+        }
+        for value in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            let mut criterion = comfort_criterion();
+            criterion.measured_percent = Some(value);
+            assert_eq!(
+                criterion.semantics_v1(),
+                EnergySensitivityCriterionSemantics::Unsupported
+            );
+            for field in 0..4 {
+                let mut criterion = paired_criterion("annual_facility_kwh");
+                match field {
+                    0 => criterion.ten_minute = Some(value),
+                    1 => criterion.five_minute_reference = Some(value),
+                    2 => criterion.measured_percent = Some(value),
+                    _ => criterion.limit_percent = value,
+                }
+                assert_eq!(
+                    criterion.semantics_v1(),
+                    EnergySensitivityCriterionSemantics::Unsupported
+                );
+            }
+        }
+    }
     fn fixture() -> (EnergySensitivityDeclaration, Vec<EnergySensitivityRun>) {
         let r = synthetic_energy_report().unwrap();
         let ten = r.baseline.method.clone();

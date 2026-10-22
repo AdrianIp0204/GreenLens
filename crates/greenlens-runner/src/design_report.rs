@@ -23,16 +23,20 @@ use std::{
 
 pub const CONTENT_SCHEMA: &str = "greenlens.design-report-content.v1";
 pub const CONTENT_SCHEMA_V2: &str = "greenlens.design-report-content.v2";
+pub const CONTENT_SCHEMA_V3: &str = "greenlens.design-report-content.v3";
 pub const INDEX_SCHEMA: &str = "greenlens.design-report-index.v1";
 pub const PRODUCT_SCHEMA: &str = "greenlens.design-report-products.v1";
 pub const RENDERER_METHOD: &str = "greenlens.analytical-design-report-renderer/1";
 pub const RENDERER_METHOD_V2: &str = "greenlens.bound-design-report-renderer/2";
+pub const RENDERER_METHOD_V3: &str = "greenlens.design-report-renderer/3";
 pub const MAX_REPORTS: usize = 32;
 pub const MAX_PRODUCTS: usize = 252;
 const MAX_CONTENT_BYTES: u64 = 48 * 1024 * 1024;
 pub(crate) const MAX_MANIFEST_BYTES: u64 = 256 * 1024;
 const TEMPLATE: &str = include_str!("../../../reports/templates/design-comparison-v1.typ");
+const TEMPLATE_V3: &str = include_str!("../../../reports/templates/design-comparison-v3.typ");
 const PINS: &str = include_str!("../../../dependencies/typst.json");
+const PRECISE_DISPLAY_POLICY: &str = "Difference display policy: six decimal places; nonzero differences that would round to zero use scientific notation with six fractional mantissa digits. Display precision is not measurement accuracy. Canonical numeric values, signs and units remain in performance.json and performance.csv; negative differences are increases, not improvements.";
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
@@ -72,6 +76,17 @@ pub fn bound_renderer_identity() -> Result<DesignRendererIdentity> {
     Ok(identity)
 }
 
+pub fn precise_renderer_identity(bound_drawing: bool) -> Result<DesignRendererIdentity> {
+    let mut identity = if bound_drawing {
+        bound_renderer_identity()?
+    } else {
+        renderer_identity()?
+    };
+    identity.method = RENDERER_METHOD_V3.into();
+    identity.template_sha256 = report::sha(TEMPLATE_V3.as_bytes());
+    Ok(identity)
+}
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct DesignReportContent {
@@ -89,6 +104,30 @@ pub struct DesignReportContent {
     pub drawing: Option<crate::design_report_drawing::DesignReportDrawing>,
 }
 impl DesignReportContent {
+    fn expected_renderer(&self) -> Result<DesignRendererIdentity> {
+        match (self.schema_version.as_str(), self.drawing.is_some()) {
+            (CONTENT_SCHEMA, false) => renderer_identity(),
+            (CONTENT_SCHEMA_V2, true) => bound_renderer_identity(),
+            (CONTENT_SCHEMA_V3, bound) => precise_renderer_identity(bound),
+            _ => anyhow::bail!("Unsupported design-report content codec"),
+        }
+    }
+    fn template(&self) -> Result<&'static str> {
+        self.expected_renderer()?;
+        Ok(if self.schema_version == CONTENT_SCHEMA_V3 {
+            TEMPLATE_V3
+        } else {
+            TEMPLATE
+        })
+    }
+    fn presentation(&self) -> Result<EnergyReportPresentation> {
+        self.expected_renderer()?;
+        Ok(if self.schema_version == CONTENT_SCHEMA_V3 {
+            self.workbench.base.precise_presentation_v1()?
+        } else {
+            self.workbench.base.presentation()?
+        })
+    }
     pub fn identity(&self) -> Result<String> {
         let mut value = self.clone();
         value.content_sha256.clear();
@@ -120,11 +159,7 @@ impl DesignReportContent {
         }
     }
     pub fn validate(&self) -> Result<()> {
-        ensure!(
-            (self.schema_version == CONTENT_SCHEMA && self.drawing.is_none())
-                || (self.schema_version == CONTENT_SCHEMA_V2 && self.drawing.is_some()),
-            "Unsupported design-report content codec"
-        );
+        let expected_renderer = self.expected_renderer()?;
         self.workbench.validate()?;
         if let Some(binding) = &self.drawing {
             binding.validate(&self.workbench, &self.frames)?;
@@ -141,12 +176,7 @@ impl DesignReportContent {
         }
         self.figures()?;
         ensure!(
-            self.renderer.method
-                == if self.drawing.is_some() {
-                    RENDERER_METHOD_V2
-                } else {
-                    RENDERER_METHOD
-                }
+            self.renderer.method == expected_renderer.method
                 && self.renderer.figure_method
                     == if self.drawing.is_some() {
                         crate::design_report_drawing::FIGURE_METHOD
@@ -168,11 +198,10 @@ impl DesignReportContent {
     }
     pub fn ensure_supported_regeneration(&self) -> Result<()> {
         self.validate()?;
-        let expected = if self.drawing.is_some() {
-            bound_renderer_identity()?
-        } else {
-            renderer_identity()?
-        };
+        self.ensure_supported_renderer()
+    }
+    fn ensure_supported_renderer(&self) -> Result<()> {
+        let expected = self.expected_renderer()?;
         ensure!(self.renderer == expected, "Exact design-report regeneration unavailable: retained renderer/template/fonts differ. Preserved products remain inspectable; never replace them");
         Ok(())
     }
@@ -222,6 +251,17 @@ pub fn with_drawing(
     content.frames = binding.frames.clone();
     content.drawing = Some(binding);
     content.renderer = bound_renderer_identity()?;
+    content.content_sha256 = content.identity()?;
+    content.validate()?;
+    Ok(content)
+}
+
+/// Select the new presentation only for newly prepared content. Existing issued
+/// directories are never passed through this constructor during inspection/replay.
+pub fn with_precise_presentation(mut content: DesignReportContent) -> Result<DesignReportContent> {
+    content.validate()?;
+    content.schema_version = CONTENT_SCHEMA_V3.into();
+    content.renderer = precise_renderer_identity(content.drawing.is_some())?;
     content.content_sha256 = content.identity()?;
     content.validate()?;
     Ok(content)
@@ -421,6 +461,35 @@ fn change_csv(figures: &PairedDesignFigures) -> Result<String> {
     }
     Ok(result)
 }
+fn paired_sensitivity_text(criterion: &EnergySensitivityCriterion, precise: bool) -> String {
+    let value = |value: Option<f64>| match value {
+        Some(v) if v.is_finite() => v.to_string(),
+        Some(_) if precise => "Invalid non-finite value".into(),
+        Some(v) => v.to_string(),
+        None => "Missing".into(),
+    };
+    if precise {
+        match criterion.semantics_v1() {
+            EnergySensitivityCriterionSemantics::SingleRunComfort => {
+                return format!("N/A / N/A — single-run zone comfort check for {}; paired timestep values do not apply.", criterion.slot_ids[0]);
+            }
+            EnergySensitivityCriterionSemantics::Unsupported => {
+                return format!(
+                    "{} / {} — Unsupported criterion shape; applicability is not inferred.",
+                    value(criterion.ten_minute),
+                    value(criterion.five_minute_reference)
+                );
+            }
+            _ => {}
+        }
+    }
+    format!(
+        "{} / {}",
+        value(criterion.ten_minute),
+        value(criterion.five_minute_reference)
+    )
+}
+
 fn sensitivity_sections(content: &DesignReportContent, detailed: bool) -> Result<Vec<Section>> {
     if let Some(e) = &content.sensitivity {
         let mut result = vec![Section::prose("Exact-pair numerical sensitivity", vec![
@@ -448,16 +517,9 @@ fn sensitivity_sections(content: &DesignReportContent, detailed: bool) -> Result
                                 criterion.zone_id.as_deref().unwrap_or("building"),
                                 criterion.quantity
                             ),
-                            format!(
-                                "{} / {}",
-                                criterion
-                                    .ten_minute
-                                    .map(|v| v.to_string())
-                                    .unwrap_or_else(|| "Missing".into()),
-                                criterion
-                                    .five_minute_reference
-                                    .map(|v| v.to_string())
-                                    .unwrap_or_else(|| "Missing".into())
+                            paired_sensitivity_text(
+                                criterion,
+                                content.schema_version == CONTENT_SCHEMA_V3,
                             ),
                             format!(
                                 "{}% / {}% / {}\n{}",
@@ -566,7 +628,7 @@ fn documents(
     figures: &PairedDesignFigures,
 ) -> Result<Vec<Document>> {
     let data = &content.workbench;
-    let p = data.base.presentation()?;
+    let p = content.presentation()?;
     let mut old = report::documents(&data.base, &p, &content.content_sha256)?;
     let mut disclosures = data.service_disclosures();
     disclosures.extend(data.base.limitations.clone());
@@ -642,6 +704,10 @@ fn documents(
             .collect::<Result<_>>()?,
     );
     let findings=Section::prose("Measured comparison findings",vec![format!("Baseline minus proposal annual facility electricity: {} ({} of baseline). Difference between the cases' own coincident facility peaks: {} ({} of baseline). Negative values are increases, not savings; the peaks may occur at different times. Undefined zero-baseline percentages remain N/A.",report::cell(&p.facility_energy_savings.absolute),report::cell(&p.facility_energy_savings.percent),report::cell(&p.facility_peak_savings.absolute),report::cell(&p.facility_peak_savings.percent)),format!("Comparison eligibility is explicitly {} for geometry/weather/calendar and {} for unchanged service inputs. Reduced demand with changed service must not be described as an efficiency improvement. These are observed results for the bound inputs; drawings and design hypotheses do not establish causation or universal benefit.",if figures.comparable_geometry_weather_calendar{"compatible"}else{"incompatible"},if figures.unchanged_service_inputs==Some(true){"unchanged"}else{"changed or unassessed"})]);
+    let mut findings = findings;
+    if content.schema_version == CONTENT_SCHEMA_V3 {
+        findings.paragraphs.push(PRECISE_DISPLAY_POLICY.into());
+    }
     let mut executive=vec![
         Section::prose("Issue declaration",vec![format!("Revision {} · issue date {} · author {} · preparer {}. No independent approval or professional sign-off is asserted.",data.metadata.revision,data.metadata.issue_date.as_deref().unwrap_or("not supplied"),data.metadata.author.as_deref().unwrap_or("not supplied"),data.metadata.preparer.as_deref().unwrap_or("not supplied"))]),
         findings.clone(),comparison.clone(),
@@ -784,7 +850,9 @@ fn documents(
     );
     changes.paragraphs.push(format!("Displayed {} of {} changes; no change rows are omitted. Complete before/after values are in design-changes.json and design-changes.csv. Properties-only and rename-only rows do not manufacture geometry changes.",figures.changes.len(),figures.change_count));
     let make = |kind: &str, sections| Document {
-        schema_version: if content.drawing.is_some() {
+        schema_version: if content.schema_version == CONTENT_SCHEMA_V3 {
+            "greenlens.design-report-document.v3"
+        } else if content.drawing.is_some() {
             "greenlens.design-report-document.v2"
         } else {
             "greenlens.design-report-document.v1"
@@ -853,7 +921,16 @@ fn documents(
         appendix.push(register);
     }
     appendix.append(&mut old[1].sections);
-    let performance = std::mem::take(&mut old[2].sections);
+    let mut performance = std::mem::take(&mut old[2].sections);
+    if content.schema_version == CONTENT_SCHEMA_V3 {
+        performance.insert(
+            0,
+            Section::prose(
+                "Difference display precision",
+                vec![PRECISE_DISPLAY_POLICY.into()],
+            ),
+        );
+    }
     Ok(vec![
         make("Design executive", executive),
         make("Design technical", technical),
@@ -868,7 +945,7 @@ fn owned_products(content: &DesignReportContent) -> Result<OwnedProducts> {
     // before preparing any native rendering. The reader uses the same bound.
     let content_bytes = content_json_bytes(content, MAX_CONTENT_BYTES)?;
     let figures = content.figures()?;
-    let p = content.workbench.base.presentation()?;
+    let p = content.presentation()?;
     let docs = documents(content, &figures)?;
     let mut products = BTreeMap::from([
         ("design-content.json".into(), content_bytes),
@@ -990,7 +1067,7 @@ pub fn render(
             NativeDocuments {
                 docs: &docs,
                 generated: &generated,
-                template: TEMPLATE,
+                template: content.template()?,
                 stages: &[
                     ("design-executive", 0, false),
                     ("design-technical", 1, false),
@@ -1584,6 +1661,261 @@ pub fn regenerate(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn legacy_presentation_byte_fingerprints() {
+        let (mut content, figures) = fixture();
+        // Pure unexecuted presentation fixture; never admitted or published.
+        for bound in [false, true] {
+            if bound {
+                let (_, revision, selection) = crate::design_report_drawing::tests::fixture();
+                content.schema_version = CONTENT_SCHEMA_V2.into();
+                content.renderer = bound_renderer_identity().unwrap();
+                content.drawing = Some(crate::design_report_drawing::DesignReportDrawing {
+                    schema_version: crate::design_report_drawing::DRAWING_SCHEMA.into(),
+                    selection,
+                    scope_revision: revision,
+                    frames: content.frames.clone(),
+                    context: None,
+                });
+                content.content_sha256 = content.identity().unwrap();
+            }
+            let docs = documents(&content, &figures).unwrap();
+            let p = content.workbench.base.presentation().unwrap();
+            let mut images: Vec<_> = figures
+                .products
+                .iter()
+                .map(|p| (p.filename.as_str(), p.svg.as_bytes().to_vec()))
+                .collect();
+            images.extend([
+                ("annual.svg", report::chart(&p, false).into_bytes()),
+                ("monthly.svg", report::chart(&p, true).into_bytes()),
+                (
+                    "baseline-model.svg",
+                    report::model_svg(&content.workbench.base.baseline).into_bytes(),
+                ),
+                (
+                    "proposed-model.svg",
+                    report::model_svg(&content.workbench.base.proposed).into_bytes(),
+                ),
+            ]);
+            let html: Vec<_> = docs
+                .iter()
+                .map(|d| report::html(d, &images).unwrap())
+                .collect();
+            // Captured from unchanged main implementation before presentation
+            // edits, using this same NotExecuted fixture (no native renderer).
+            let expected = if bound {
+                [
+                    "d905b82e86ada2c8545aedbd5a14daf7e98b3700cefc2e8e5180cfd81bcc834e",
+                    "8d29b6cdf826b28368cce2a63ed71373be28f4263fc351ffaa39a2fa2018ce1e",
+                    "07fb5025d691f27600edb2222029b95752e391f748cfe27731505ff841f5d3fc",
+                ]
+            } else {
+                [
+                    "3bc6afc8332b990a9e75f52446749051719553b2435da7c1aad28fcacdbc5d70",
+                    "72927ef2f372bff91187559e94e6ca5e6c4f9cde22ca6a81d4d500dcb01357b5",
+                    "4f492d8d5f3873806cc912bf049ee8cb3652c3c8cd7936f9db45afc502348c2f",
+                ]
+            };
+            assert_eq!(report::sha(&json_bytes(&content).unwrap()), expected[0]);
+            assert_eq!(report::sha(&json_bytes(&docs).unwrap()), expected[1]);
+            assert_eq!(report::sha(&json_bytes(&html).unwrap()), expected[2]);
+            assert_eq!(
+                report::sha(&json_bytes(&p).unwrap()),
+                "0840c70d20063356d963ba878f508920c04934fbb0f0dfbd17bbf16fa2b7b0f5"
+            );
+            assert_eq!(
+                report::sha(report::csv(&p).unwrap().as_bytes()),
+                "f481461f16213c1ded7696a78aa12d6ad3af23ddddaa6e9cae2f8fa92177dfe0"
+            );
+        }
+    }
+
+    #[test]
+    fn precise_dispatch_changes_only_derived_presentation_and_refuses_forged_identity() {
+        let (mut content, figures) = fixture();
+        let original = json_bytes(&content.workbench).unwrap();
+        let old_identity = content.content_sha256.clone();
+        let old_figures = json_bytes(&figures).unwrap();
+        // NotExecuted inputs remain inadmissible.
+        assert!(with_precise_presentation(content.clone()).is_err());
+        // Direct construction is restricted to isolated presentation checks.
+        content.schema_version = CONTENT_SCHEMA_V3.into();
+        content.renderer = precise_renderer_identity(false).unwrap();
+        content.content_sha256 = content.identity().unwrap();
+        assert_ne!(content.content_sha256, old_identity);
+        content.ensure_supported_renderer().unwrap();
+        assert_ne!(
+            content.renderer.template_sha256,
+            renderer_identity().unwrap().template_sha256
+        );
+        assert_eq!(content.renderer.figure_method, DESIGN_FIGURE_METHOD);
+        assert_eq!(
+            content.renderer.font_sha256,
+            renderer_identity().unwrap().font_sha256
+        );
+        assert_eq!(content.template().unwrap(), TEMPLATE_V3);
+        for doc in documents(&content, &figures).unwrap() {
+            assert_eq!(doc.schema_version, "greenlens.design-report-document.v3");
+            assert!(TEMPLATE_V3.contains(doc.schema_version));
+        }
+        let p = content.presentation().unwrap();
+        assert!(matches!(
+            p.facility_peak_savings.absolute,
+            ReportCell::PreciseValue { .. }
+        ));
+        assert!(report::csv(&p).unwrap().contains("precise_value"));
+        assert!(json_bytes(&p)
+            .unwrap()
+            .windows(13)
+            .any(|w| w == b"precise_value"));
+        assert_eq!(json_bytes(&content.workbench).unwrap(), original);
+        assert_eq!(json_bytes(&figures).unwrap(), old_figures);
+        assert!(owned_products(&content).is_err()); // Cannot publish artificial runs.
+        for bad in [RENDERER_METHOD, RENDERER_METHOD_V2, "unknown/99"] {
+            let mut changed = content.clone();
+            changed.renderer.method = bad.into();
+            assert!(changed.ensure_supported_renderer().is_err());
+        }
+        let mut changed = content.clone();
+        changed.renderer.template_sha256 = renderer_identity().unwrap().template_sha256;
+        assert!(changed.ensure_supported_renderer().is_err());
+        changed = content.clone();
+        changed.schema_version = "greenlens.design-report-content.v99".into();
+        assert!(changed.presentation().is_err());
+        assert!(changed.template().is_err());
+        let (_, revision, selection) = crate::design_report_drawing::tests::fixture();
+        content.drawing = Some(crate::design_report_drawing::DesignReportDrawing {
+            schema_version: crate::design_report_drawing::DRAWING_SCHEMA.into(),
+            selection,
+            scope_revision: revision,
+            frames: content.frames.clone(),
+            context: None,
+        });
+        assert!(content.ensure_supported_renderer().is_err()); // Wrong figure method.
+        content.renderer = precise_renderer_identity(true).unwrap();
+        content.ensure_supported_renderer().unwrap();
+        assert_eq!(
+            content.renderer.figure_method,
+            crate::design_report_drawing::FIGURE_METHOD
+        );
+        for doc in documents(&content, &figures).unwrap() {
+            assert_eq!(doc.schema_version, "greenlens.design-report-document.v3");
+        }
+        assert!(content.ensure_supported_regeneration().is_err());
+    }
+
+    #[test]
+    fn precise_paired_cells_distinguish_comfort_missing_and_unknown_without_mutation() {
+        let mut c = EnergySensitivityCriterion {
+            id: "A10:comfort:zone_1".into(),
+            alternative_id: "A".into(),
+            slot_ids: vec!["A10".into()],
+            quantity: "occupied_cooling_unmet_percent".into(),
+            zone_id: Some("zone_1".into()),
+            ten_minute: None,
+            five_minute_reference: None,
+            measured_percent: Some(1.25),
+            limit_percent: 1.,
+            passed: false,
+            explanation: "Original synthetic single-run criterion, not accepted engine evidence."
+                .into(),
+        };
+        let original = json_bytes(&c).unwrap();
+        assert_eq!(paired_sensitivity_text(&c, false), "Missing / Missing");
+        assert!(paired_sensitivity_text(&c, true).starts_with("N/A / N/A"));
+        assert_eq!(json_bytes(&c).unwrap(), original);
+        c.measured_percent = None; // Zero occupancy remains an undefined failing check.
+        assert!(paired_sensitivity_text(&c, true).starts_with("N/A / N/A"));
+        c.quantity = "unknown".into();
+        assert!(paired_sensitivity_text(&c, true).contains("Unsupported"));
+        assert!(!paired_sensitivity_text(&c, true).contains("N/A"));
+        c.id = "A:annual_facility_kwh".into();
+        c.quantity = "annual_facility_kwh".into();
+        c.zone_id = None;
+        c.slot_ids = vec!["A10".into(), "A5".into()];
+        assert_eq!(paired_sensitivity_text(&c, true), "Missing / Missing");
+        c.ten_minute = Some(100.);
+        assert_eq!(paired_sensitivity_text(&c, true), "100 / Missing");
+        c.ten_minute = Some(f64::NAN);
+        assert!(paired_sensitivity_text(&c, true).contains("Invalid non-finite"));
+    }
+
+    #[test]
+    fn tiny_signed_delta_is_consistent_in_documents_json_and_csv() {
+        let (mut content, figures) = fixture();
+        for delta in [0.004401474884355494, -0.004401474884355494, 1e-8, -1e-8] {
+            // Original artificial totals; these are never admitted as native records.
+            let base = &mut content.workbench.base;
+            base.proposed.totals.coincident_peak = base.baseline.totals.coincident_peak.clone();
+            base.proposed.totals.coincident_peak.facility_kw -= delta;
+            *base
+                .proposed
+                .totals
+                .coincident_peak
+                .end_use_contributions_kw
+                .values_mut()
+                .next()
+                .unwrap() -= delta;
+            base.comparison = compare_energy_totals(
+                &base.baseline.totals,
+                &base.proposed.totals,
+                compare_energy_inputs(
+                    &base.baseline.model,
+                    &base.baseline.study,
+                    &base.proposed.model,
+                    &base.proposed.study,
+                )
+                .unwrap(),
+                base.comparison.lighting_service_equivalence.clone(),
+            )
+            .unwrap();
+            content.schema_version = CONTENT_SCHEMA_V3.into();
+            content.renderer = precise_renderer_identity(false).unwrap();
+            let p = content.presentation().unwrap();
+            let ReportCell::PreciseValue { value, display, .. } = &p.facility_peak_savings.absolute
+            else {
+                panic!("precise delta required")
+            };
+            assert_ne!(display.parse::<f64>().unwrap(), 0.);
+            assert_eq!(value.is_sign_negative(), delta.is_sign_negative());
+            assert_eq!(
+                *value,
+                content
+                    .workbench
+                    .base
+                    .comparison
+                    .facility_peak_savings
+                    .absolute
+            );
+            let docs = documents(&content, &figures).unwrap();
+            for index in [0, 1, 3] {
+                assert!(serde_json::to_string(&docs[index])
+                    .unwrap()
+                    .contains(&format!("{display} kW")));
+            }
+            let json = serde_json::to_value(&p).unwrap();
+            assert_eq!(
+                json["facility_peak_savings"]["absolute"]["display"],
+                *display
+            );
+            let csv = report::csv(&p).unwrap();
+            let row = csv
+                .lines()
+                .find(|line| line.starts_with("\"presentation.facility_peak_savings.absolute\","))
+                .unwrap();
+            let fields: Vec<_> = row
+                .split(',')
+                .map(|field| field.trim_matches('"'))
+                .collect();
+            assert_eq!(fields[1], "precise_value");
+            assert_eq!(fields[2].parse::<f64>().unwrap().to_bits(), value.to_bits());
+            assert_eq!(fields[3], "kw");
+            assert_eq!(fields[4], display);
+            assert!(content.validate().is_err());
+        }
+    }
 
     #[test]
     fn retained_content_admission_counts_pretty_bytes_and_trailing_newline() {

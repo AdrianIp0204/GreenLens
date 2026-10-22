@@ -140,7 +140,8 @@ fn serialized(value: &impl Serialize) -> Result<String> {
 }
 pub(crate) fn cell(c: &ReportCell) -> String {
     match c {
-        ReportCell::Value { display, unit, .. } => format!("{display} {}", unit.symbol()),
+        ReportCell::Value { display, unit, .. }
+        | ReportCell::PreciseValue { display, unit, .. } => format!("{display} {}", unit.symbol()),
         ReportCell::NotApplicable { reason } => format!("N/A — {reason}"),
         ReportCell::Missing { reason } => format!("Missing — {reason}"),
         ReportCell::Unsupported { reason } => format!("Unsupported — {reason}"),
@@ -716,7 +717,7 @@ pub(crate) fn csv(p: &EnergyReportPresentation) -> Result<String> {
         + "\r\n")
 }
 fn numeric(c: &ReportCell) -> f64 {
-    if let ReportCell::Value { value, .. } = c {
+    if let ReportCell::Value { value, .. } | ReportCell::PreciseValue { value, .. } = c {
         *value
     } else {
         0.

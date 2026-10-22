@@ -4,6 +4,12 @@ import {assertEnergyResponse} from '../src/energy/response.mjs';
 import {validDesignReportSummary} from '../src/energy/design-report-response.mjs';
 import {designReportFixture,addDesignSensitivity,scopedDesignReportFixture as scopedFixture} from './design-report-fixture.mjs';
 const check=fixture=>assertEnergyResponse('design_report_inspect',fixture.request,fixture.inspection);
+const preciseFixture=(bound=false,options={})=>{
+  const f=bound?scopedFixture(options):designReportFixture();
+  f.inspection.content.schema_version='greenlens.design-report-content.v3';
+  f.inspection.content.renderer.method='greenlens.design-report-renderer/3';
+  return f;
+};
 
 test('complete shape binds exact selected A/B without relabelling execution or qualification',()=>{
   const fixture=designReportFixture(),before=JSON.stringify(fixture);assert.ok(validDesignReportSummary(fixture.summary));assert.equal(check(fixture),fixture.inspection);assert.equal(JSON.stringify(fixture),before);
@@ -116,4 +122,61 @@ test('v2 context bounds original occurrence identities, complete counts and fini
   const unavailable=scopedFixture();Object.assign(unavailable.inspection.content.drawing.context.layers[0],{triangles:[],represented_occurrence_ids:[],omitted_visible_triangle_count:2,unavailable_reason:'No complete context can be depicted inside the fixed limit.'});check(unavailable);
   const excessive=scopedFixture();excessive.inspection.content.drawing.scope_revision.provenance.rows=Array(65537).fill({});assert.throws(()=>check(excessive),/Design report/);
   const tooMany=scopedFixture();tooMany.inspection.content.drawing.scope_revision.reference.manifest.occurrences=Array(50001).fill({id:'x'});assert.throws(()=>check(tooMany),/Design report/);
+});
+
+test('v3 analytical reports accept absent or null drawing without changing retained evidence',()=>{
+  for(const explicitNull of [false,true]){
+    const f=addDesignSensitivity(preciseFixture());if(explicitNull)f.inspection.content.drawing=null;
+    const before=JSON.stringify(f);assert.equal(check(f),f.inspection);assert.equal(JSON.stringify(f),before);
+    assert.equal(f.inspection.content.renderer.figure_method,'greenlens.analytical-paired-drawing/1');
+    assert.equal(f.inspection.content.sensitivity.result.assessment.numerical_sensitivity_passed,false);
+    assert.equal(f.inspection.content.workbench.base.baseline.assessment.scientific.status,'unassessed');
+  }
+});
+
+test('v3 bound reports retain exact historical scopes, accepted views and optional context',()=>{
+  for(const options of [{},{context:false},{views:false},{context:false,views:false,history:'greenlens.scope-history.v1',revision:'greenlens.scope-revision.v1'}]){
+    const f=preciseFixture(true,options),before=JSON.stringify(f);assert.equal(check(f),f.inspection);assert.equal(JSON.stringify(f),before);
+    assert.equal(f.inspection.content.renderer.figure_method,'greenlens.scoped-paired-drawing/2');
+    assert.equal(f.inspection.content.drawing.scope_revision.review_decisions[0].resolution,'unresolved');
+    assert.notEqual(f.inspection.content.drawing.scope_revision.revision_sha256,f.project.architecture.scope_history.active_revision_sha256);
+  }
+});
+
+test('content, renderer and drawing identities admit only the four supported version combinations',()=>{
+  const schemas=['greenlens.design-report-content.v1','greenlens.design-report-content.v2','greenlens.design-report-content.v3'];
+  const renderers=['greenlens.analytical-design-report-renderer/1','greenlens.bound-design-report-renderer/2','greenlens.design-report-renderer/3'];
+  const figures=['greenlens.analytical-paired-drawing/1','greenlens.scoped-paired-drawing/2'];
+  const supported=new Set(['0:0:0:false','1:1:1:true','2:2:0:false','2:2:1:true']);
+  for(const [schemaIndex,schema] of schemas.entries())for(const [rendererIndex,renderer] of renderers.entries())for(const [figureIndex,figure] of figures.entries())for(const bound of [false,true]){
+    const f=bound?scopedFixture():designReportFixture(),c=f.inspection.content;
+    c.schema_version=schema;c.renderer.method=renderer;c.renderer.figure_method=figure;
+    const contract=`${schemaIndex}:${rendererIndex}:${figureIndex}:${bound}`,before=JSON.stringify(f);
+    if(supported.has(contract))assert.equal(check(f),f.inspection,contract);
+    else assert.throws(()=>check(f),/Design report/,contract);
+    assert.equal(JSON.stringify(f),before,contract);
+  }
+});
+
+test('v3 rejects unknown or malformed drawings and preserves bound inventory and historical checks',()=>{
+  for(const bound of [false,true])for(const edit of [
+    f=>f.inspection.content.schema_version='greenlens.design-report-content.v4',
+    f=>f.inspection.content.renderer.method='greenlens.design-report-renderer/4',
+    f=>f.inspection.content.renderer.figure_method='greenlens.scoped-paired-drawing/3',
+    f=>f.inspection.content.drawing=undefined,f=>f.inspection.content.drawing=[],f=>f.inspection.content.drawing='bound',f=>f.inspection.content.drawing={},
+  ]){const f=preciseFixture(bound);edit(f);assert.throws(()=>check(f),/Design report/);}
+  for(const edit of [
+    f=>f.inspection.content.drawing.schema_version='future',
+    f=>f.inspection.content.drawing.selection.scope_revision_sha256='d'.repeat(64),
+    f=>f.inspection.content.drawing.scope_revision.scope.title='Different retained scope',
+    f=>f.inspection.content.drawing.frames[2].vertical_span_m=4.01,
+    f=>f.inspection.content.drawing.context.layers[0].triangles[0].occurrence_id='unknown-occurrence',
+    f=>f.inspection.content.drawing.context.layers[0].omitted_visible_triangle_count=1,
+    f=>f.inspection.content.workbench.base.proposed.model.zones[0].id='different-applied-model',
+    f=>f.inspection.products.products=f.inspection.products.products.filter(p=>p.path!=='design-drawing.json'),
+    f=>f.inspection.products.products=f.inspection.products.products.filter(p=>p.path!=='design-scope-revision.json'),
+  ]){const f=preciseFixture(true);edit(f);assert.throws(()=>check(f),/Design report/);}
+  const extra=preciseFixture();extra.inspection.products.products.push(...['design-drawing.json','design-scope-revision.json'].map(path=>({path,bytes:128,sha256:'2'.repeat(64)})));
+  extra.inspection.products.products.sort((a,b)=>a.path<b.path?-1:1);extra.inspection.total_bytes+=256;
+  assert.throws(()=>check(extra),/product inventory/);
 });

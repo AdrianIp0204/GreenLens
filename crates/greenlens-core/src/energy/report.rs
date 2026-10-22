@@ -52,6 +52,11 @@ pub enum ReportCell {
         decimal_places: u8,
         display: String,
     },
+    PreciseValue {
+        value: f64,
+        unit: EnergyUnit,
+        display: String,
+    },
     NotApplicable {
         reason: String,
     },
@@ -84,6 +89,24 @@ impl ReportCell {
             display,
         })
     }
+    /// Versioned savings display policy; the original value, including signed
+    /// zero, remains unchanged. Display precision is not an uncertainty claim.
+    pub fn precise_value_v1(value: f64, unit: EnergyUnit) -> Result<Self> {
+        finite("report.value", value)?;
+        let normalized = if value == 0. { 0. } else { value };
+        let fixed = format!("{normalized:.6}");
+        let display = if value != 0. && matches!(fixed.parse::<f64>(), Ok(rounded) if rounded == 0.)
+        {
+            format!("{value:.6e}")
+        } else {
+            fixed
+        };
+        Ok(Self::PreciseValue {
+            value,
+            unit,
+            display,
+        })
+    }
     pub fn validate(&self) -> Result<()> {
         match self {
             Self::Value {
@@ -93,6 +116,20 @@ impl ReportCell {
                 display,
             } => {
                 if Self::value(*value, *unit, *decimal_places)? != *self {
+                    return Err(invalid(
+                        "report.display",
+                        format!(
+                            "Display text {display:?} differs from authoritative Rust formatting"
+                        ),
+                    ));
+                }
+            }
+            Self::PreciseValue {
+                value,
+                unit,
+                display,
+            } => {
+                if Self::precise_value_v1(*value, *unit)? != *self {
                     return Err(invalid(
                         "report.display",
                         format!(
@@ -799,6 +836,17 @@ fn savings_cells(s: &Savings, unit: EnergyUnit) -> Result<ReportSavings> {
         )?,
     })
 }
+fn precise_savings_cells_v1(s: &Savings, unit: EnergyUnit) -> Result<ReportSavings> {
+    Ok(ReportSavings {
+        absolute: ReportCell::precise_value_v1(s.absolute, unit)?,
+        percent: match s.percent {
+            Some(percent) => ReportCell::precise_value_v1(percent, EnergyUnit::Percent)?,
+            None => ReportCell::NotApplicable {
+                reason: "Baseline is zero; percentage savings are undefined.".into(),
+            },
+        },
+    })
+}
 fn period_cells(p: &super::EnergyPeriodTotal) -> Result<EnergyPeriodPresentation> {
     Ok(EnergyPeriodPresentation {
         facility: ReportCell::value(p.facility_kwh, EnergyUnit::Kwh, 2)?,
@@ -890,6 +938,20 @@ impl EnergyReportCase {
     }
 }
 impl EnergyReportData {
+    /// New presentations opt into precise savings cells explicitly. All other
+    /// cells and the retained dataset keep their existing representation.
+    pub fn precise_presentation_v1(&self) -> Result<EnergyReportPresentation> {
+        let mut presentation = self.presentation()?;
+        presentation.facility_energy_savings =
+            precise_savings_cells_v1(&self.comparison.facility_energy_savings, EnergyUnit::Kwh)?;
+        presentation.facility_peak_savings =
+            precise_savings_cells_v1(&self.comparison.facility_peak_savings, EnergyUnit::Kw)?;
+        for (row, source) in presentation.end_uses.iter_mut().zip(&self.comparison.rows) {
+            row.energy_savings = precise_savings_cells_v1(&source.energy_savings, EnergyUnit::Kwh)?;
+            row.demand_savings = precise_savings_cells_v1(&source.demand_savings, EnergyUnit::Kw)?;
+        }
+        Ok(presentation)
+    }
     pub fn presentation(&self) -> Result<EnergyReportPresentation> {
         self.validate()?;
         Ok(EnergyReportPresentation {
@@ -928,5 +990,215 @@ impl EnergyReportData {
                 EnergyUnit::Kw,
             )?,
         })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn assert_precise(cell: &ReportCell, expected: f64, unit: EnergyUnit, text: &str) {
+        let ReportCell::PreciseValue {
+            value,
+            unit: actual_unit,
+            display,
+        } = cell
+        else {
+            panic!("Expected a precise value cell");
+        };
+        assert_eq!(value.to_bits(), expected.to_bits());
+        assert_eq!(*actual_unit, unit);
+        assert_eq!(display, text);
+        cell.validate().unwrap();
+    }
+
+    #[test]
+    fn precise_values_keep_canonical_bits_and_nonzero_sign() {
+        for (value, expected) in [
+            (0., "0.000000"),
+            (-0., "0.000000"),
+            (0.004401474884355494, "0.004401"),
+            (-0.004401474884355494, "-0.004401"),
+            (0.0000001, "1.000000e-7"),
+            (-0.0000001, "-1.000000e-7"),
+            (f64::from_bits(1), "4.940656e-324"),
+            (-f64::from_bits(1), "-4.940656e-324"),
+            (f64::MIN_POSITIVE, "2.225074e-308"),
+            (-f64::MIN_POSITIVE, "-2.225074e-308"),
+        ] {
+            let cell = ReportCell::precise_value_v1(value, EnergyUnit::Kw).unwrap();
+            assert_precise(&cell, value, EnergyUnit::Kw, expected);
+            let bytes = serde_json::to_vec(&cell).unwrap();
+            let decoded: ReportCell = serde_json::from_slice(&bytes).unwrap();
+            assert_precise(&decoded, value, EnergyUnit::Kw, expected);
+        }
+        for value in [f64::MAX, -f64::MAX] {
+            let cell = ReportCell::precise_value_v1(value, EnergyUnit::Kwh).unwrap();
+            let ReportCell::PreciseValue { display, .. } = &cell else {
+                unreachable!();
+            };
+            assert!(display.ends_with(".000000"));
+            assert!(!display.contains('e'));
+            assert_eq!(display.parse::<f64>().unwrap().to_bits(), value.to_bits());
+            cell.validate().unwrap();
+        }
+    }
+
+    #[test]
+    fn precise_rounding_checks_exact_ties_and_adjacent_floats() {
+        // These binary-exact numbers are decimal half-way cases at six places.
+        for (tie, at_tie, below, above) in [
+            (0.0078125_f64, "0.007812", "0.007812", "0.007813"),
+            (0.0234375_f64, "0.023438", "0.023437", "0.023438"),
+        ] {
+            for (value, expected) in [
+                (f64::from_bits(tie.to_bits() - 1), below),
+                (tie, at_tie),
+                (f64::from_bits(tie.to_bits() + 1), above),
+            ] {
+                assert_precise(
+                    &ReportCell::precise_value_v1(value, EnergyUnit::Kw).unwrap(),
+                    value,
+                    EnergyUnit::Kw,
+                    expected,
+                );
+                assert_precise(
+                    &ReportCell::precise_value_v1(-value, EnergyUnit::Kw).unwrap(),
+                    -value,
+                    EnergyUnit::Kw,
+                    &format!("-{expected}"),
+                );
+            }
+        }
+        let threshold = 0.0000005_f64;
+        let below = f64::from_bits(threshold.to_bits() - 1);
+        let above = f64::from_bits(threshold.to_bits() + 1);
+        for (value, expected) in [
+            (below, "5.000000e-7"),
+            (-below, "-5.000000e-7"),
+            (above, "0.000001"),
+            (-above, "-0.000001"),
+        ] {
+            assert_precise(
+                &ReportCell::precise_value_v1(value, EnergyUnit::Percent).unwrap(),
+                value,
+                EnergyUnit::Percent,
+                expected,
+            );
+        }
+    }
+
+    #[test]
+    fn precise_cells_reject_nonfinite_and_altered_display() {
+        for value in [f64::NAN, f64::INFINITY, f64::NEG_INFINITY] {
+            assert!(ReportCell::precise_value_v1(value, EnergyUnit::Kw).is_err());
+            assert!(ReportCell::PreciseValue {
+                value,
+                unit: EnergyUnit::Kw,
+                display: "0.000000".into(),
+            }
+            .validate()
+            .is_err());
+        }
+        for display in ["0.00", "0.000000", "0.004402", "0.004401 kW"] {
+            assert!(ReportCell::PreciseValue {
+                value: 0.004401474884355494,
+                unit: EnergyUnit::Kw,
+                display: display.into(),
+            }
+            .validate()
+            .is_err());
+        }
+        assert!(ReportCell::PreciseValue {
+            value: -0.,
+            unit: EnergyUnit::Kw,
+            display: "-0.000000".into(),
+        }
+        .validate()
+        .is_err());
+        assert!(serde_json::from_str::<ReportCell>(
+            r#"{"state":"precise_value","value":0.0,"unit":"kw","display":"0.000000","decimal_places":6}"#
+        )
+        .is_err());
+    }
+
+    #[test]
+    fn precise_presentation_changes_only_all_savings_cells() {
+        let report = super::super::synthetic_energy_report().unwrap();
+        let data_before = serde_json::to_vec(&report).unwrap();
+        let legacy = report.presentation().unwrap();
+        let legacy_before = serde_json::to_vec(&legacy).unwrap();
+        let mut precise = report.precise_presentation_v1().unwrap();
+        assert_eq!(precise.baseline, legacy.baseline);
+        assert_eq!(precise.proposed, legacy.proposed);
+        assert_eq!(
+            precise.facility_energy_savings,
+            precise_savings_cells_v1(&report.comparison.facility_energy_savings, EnergyUnit::Kwh)
+                .unwrap()
+        );
+        assert_eq!(
+            precise.facility_peak_savings,
+            precise_savings_cells_v1(&report.comparison.facility_peak_savings, EnergyUnit::Kw)
+                .unwrap()
+        );
+        for ((row, old), source) in precise
+            .end_uses
+            .iter_mut()
+            .zip(&legacy.end_uses)
+            .zip(&report.comparison.rows)
+        {
+            assert_eq!(
+                row.energy_savings,
+                precise_savings_cells_v1(&source.energy_savings, EnergyUnit::Kwh).unwrap()
+            );
+            assert_eq!(
+                row.demand_savings,
+                precise_savings_cells_v1(&source.demand_savings, EnergyUnit::Kw).unwrap()
+            );
+            row.energy_savings = old.energy_savings.clone();
+            row.demand_savings = old.demand_savings.clone();
+        }
+        precise.facility_energy_savings = legacy.facility_energy_savings.clone();
+        precise.facility_peak_savings = legacy.facility_peak_savings.clone();
+        assert_eq!(precise, legacy);
+        assert_eq!(serde_json::to_vec(&report).unwrap(), data_before);
+        assert_eq!(
+            serde_json::to_vec(&report.presentation().unwrap()).unwrap(),
+            legacy_before
+        );
+    }
+
+    #[test]
+    fn precise_savings_preserve_undefined_percent_and_legacy_value_encoding() {
+        for proposed in [0., 1.] {
+            let values = savings(0., proposed).unwrap();
+            let precise = precise_savings_cells_v1(&values, EnergyUnit::Kwh).unwrap();
+            assert_eq!(
+                precise.percent,
+                savings_cells(&values, EnergyUnit::Kwh).unwrap().percent
+            );
+            assert!(matches!(precise.percent, ReportCell::NotApplicable { .. }));
+            assert_precise(
+                &precise.absolute,
+                values.absolute,
+                EnergyUnit::Kwh,
+                if proposed == 0. {
+                    "0.000000"
+                } else {
+                    "-1.000000"
+                },
+            );
+        }
+        let legacy = ReportCell::value(0.004401474884355494, EnergyUnit::Kw, 2).unwrap();
+        assert_eq!(
+            serde_json::to_string(&legacy).unwrap(),
+            r#"{"state":"value","value":0.004401474884355494,"unit":"kw","decimal_places":2,"display":"0.00"}"#
+        );
+        let precise = ReportCell::precise_value_v1(0.004401474884355494, EnergyUnit::Kw).unwrap();
+        assert_eq!(
+            serde_json::to_string(&precise).unwrap(),
+            r#"{"state":"precise_value","value":0.004401474884355494,"unit":"kw","display":"0.004401"}"#
+        );
+        legacy.validate().unwrap();
     }
 }

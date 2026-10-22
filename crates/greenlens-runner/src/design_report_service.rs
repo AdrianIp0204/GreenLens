@@ -234,10 +234,11 @@ pub fn prepare_with_drawing(
                 report::prepare(data, sensitivity, frames, scope, north, include_pdf)?,
                 declarations,
             )?;
-            match bound {
-                Some(binding) => report::with_drawing(content, binding),
-                None => Ok(content),
-            }
+            let content = match bound {
+                Some(binding) => report::with_drawing(content, binding)?,
+                None => content,
+            };
+            report::with_precise_presentation(content)
         },
     )
 }

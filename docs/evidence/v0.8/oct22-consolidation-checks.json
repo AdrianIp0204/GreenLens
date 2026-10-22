@@ -1,0 +1,83 @@
+{
+  "schema_version": "greenlens.consolidation-source-check.v1",
+  "date": "2026-10-22",
+  "inspected_base": "89aee02fad6df200869a4d7ae2bdc47ce031e20c",
+  "consolidated_commit": "693dffd231c9bcd20445e922ffacafbbb1c5239c",
+  "test_scope": "Working-source checks before commit; consolidated implementation tree retained; no installed or scientific acceptance",
+  "checks": {
+    "frontend_passed": 492,
+    "frontend_failed": 0,
+    "frontend_skipped": 0,
+    "typescript_passed": true,
+    "frontend_build_passed": true,
+    "allocation_path_guards": 24,
+    "reference_source_guards": 12,
+    "reference_wrapper_guards": 23,
+    "workflow_guards": 10,
+    "package_files": 414,
+    "package_local_links": 804,
+    "package_total_bytes": 16777147,
+    "package_limit_bytes": 16777216
+  },
+  "retained_failures": [
+    "Initial documentation total exceeded unchanged limit; only newly added workflow comments moved to source-only ledger"
+  ],
+  "local_execution": {
+    "cargo_cpp_builds": 0,
+    "app_launches": 0,
+    "engines": 0,
+    "report_issuances": 0,
+    "report_regenerations": 0,
+    "skp_parses": 0,
+    "worker_executions": 0,
+    "private_probes": 0
+  },
+  "logs": [
+    {
+      "name": "allocation-guards.log",
+      "bytes": 1468,
+      "sha256": "ea115b81a619cf3ba7ae3917c6df514188a37567cacfdd0cda7b3376c94d5ae0"
+    },
+    {
+      "name": "reference-source-tests.log",
+      "bytes": 241,
+      "sha256": "f8f8567989bf733549029de0ddb4c0d4b9b787cda461713383eb67fb72178d97"
+    },
+    {
+      "name": "reference-wrapper.log",
+      "bytes": 187,
+      "sha256": "3945bfd099bc5cf2e587018f46c02054b8199c858dc742a92b90139338636002"
+    },
+    {
+      "name": "workflow-guards.log",
+      "bytes": 1027,
+      "sha256": "e0e11ea7603eda3c9971e857da6c07ad3589c633e89480dbbf1e34a3873e7b23"
+    },
+    {
+      "name": "workflow-guards-final.log",
+      "bytes": 1027,
+      "sha256": "55469c5179e47305ca5881b87c780018202624d1eb69bf4c67fdb20b999d1757"
+    },
+    {
+      "name": "frontend-tests.log",
+      "bytes": 59489,
+      "sha256": "87016ceb42de64efe12bb5cd9ebdfac6bf8f79bc70ce89685cff76fef030f593"
+    },
+    {
+      "name": "frontend-build.log",
+      "bytes": 2497,
+      "sha256": "6b7cfd82e6067bf8fd045e7faf6267c1c41e8f8ae303321532f7bcd235bda471"
+    },
+    {
+      "name": "package-documents-failure.txt",
+      "bytes": 343,
+      "sha256": "81b6cb73b79e22be19287d654a43ad47c3c2227e9621f0b87e72f11b1b8ff1df"
+    },
+    {
+      "name": "package-documents-repaired.log",
+      "bytes": 212,
+      "sha256": "2326aaad5a441c902f4495bd2c37b1b701ac0edb201efc0f1201f51dec89fc07"
+    }
+  ],
+  "release_acceptance_complete": false
+}
